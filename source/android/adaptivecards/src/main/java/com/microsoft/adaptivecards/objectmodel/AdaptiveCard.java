@@ -39,12 +39,12 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_0(), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, minVersion, fallbackText, backgroundImage), true);
+  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, ContainerStyle style, String speak) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, minVersion, fallbackText, backgroundImage, style.swigValue(), speak), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImage, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, ContainerStyle style, String speak, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImage, style.swigValue(), speak, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -77,6 +77,22 @@ public class AdaptiveCard {
 
   public void SetBackgroundImage(String value) {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetBackgroundImage(swigCPtr, this, value);
+  }
+
+  public String GetSpeak() {
+    return AdaptiveCardObjectModelJNI.AdaptiveCard_GetSpeak(swigCPtr, this);
+  }
+
+  public void SetSpeak(String value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetSpeak(swigCPtr, this, value);
+  }
+
+  public ContainerStyle GetStyle() {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCard_GetStyle(swigCPtr, this));
+  }
+
+  public void SetStyle(ContainerStyle value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetStyle(swigCPtr, this, value.swigValue());
   }
 
   public BaseCardElementVector GetBody() {

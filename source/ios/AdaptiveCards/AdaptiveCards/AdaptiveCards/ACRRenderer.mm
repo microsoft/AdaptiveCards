@@ -54,6 +54,9 @@ using namespace AdaptiveCards;
         [ACRRenderer render:verticalView inputs:inputs withCardElems:body andHostConfig:config];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+
+        [ACRSeparator renderActionsSeparator:verticalView hostConfig:config];
+
         UIView<ACRIContentHoldingView> *actionChildView = [ACRRenderer renderButton:vc inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
         [verticalView addArrangedSubview:actionChildView];
     }
@@ -106,7 +109,7 @@ using namespace AdaptiveCards;
     return childview;
 }
 
-+ (UIView *)render:(UIView *)view
++ (UIView *)render:(UIView<ACRIContentHoldingView> *)view
             inputs:(NSMutableArray *)inputs
      withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
      andHostConfig:(std::shared_ptr<HostConfig> const &)config

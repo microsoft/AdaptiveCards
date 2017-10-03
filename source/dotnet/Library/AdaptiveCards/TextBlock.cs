@@ -91,7 +91,7 @@ namespace AdaptiveCards
 
         public bool ShouldSerializeSize()
         {
-            return Size != TextSize.Normal;
+            return Size != TextSize.Default;
         }
 
         public bool ShouldSerializeColor()
@@ -106,7 +106,7 @@ namespace AdaptiveCards
 
         public bool ShouldSerializeWeight()
         {
-            return Weight != TextWeight.Normal;
+            return Weight != TextWeight.Default;
         }
 
         public bool ShouldSerializeWrap()

@@ -4,9 +4,9 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
     {
@@ -21,12 +21,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard** card)
     {
         return MakeAndInitialize<AdaptiveCard>(card, m_sharedShowCardAction->GetCard());
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* /*card*/)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard* /*card*/)
     {
         return E_NOTIMPL;
     }
@@ -47,24 +47,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveCards::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard;
+        *actionType = ABI::AdaptiveCards::Uwp::ActionType::ShowCard;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveShowCardAction::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedShowCardAction->GetSpeak(), speak);
+        return UTF8ToHString(m_sharedShowCardAction->GetId(), id);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::put_Speak(HSTRING speak)
+    HRESULT AdaptiveShowCardAction::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedShowCardAction->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedShowCardAction->SetId(out);
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardAction::get_ActionTypeString(HSTRING* type)
+    {
+        ::ActionType typeEnum;
+        RETURN_IF_FAILED(get_ActionType(&typeEnum));
+        return ProjectedActionTypeToHString(typeEnum, type);
     }
 }}

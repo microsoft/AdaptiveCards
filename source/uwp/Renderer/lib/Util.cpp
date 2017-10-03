@@ -11,24 +11,30 @@
 #include "AdaptiveDateInput.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
-#include "AdaptiveHttpAction.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveImageSet.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveTextBlock.h"
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveToggleInput.h"
+#include "enums.h"
 #include "util.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::UI;
 using namespace std;
+using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Wrappers;
+using namespace AdaptiveCards::Uwp;
+using namespace Windows::Foundation;
 
 HRESULT UTF8ToHString(const string& in, HSTRING* out)
 {
@@ -52,6 +58,14 @@ HRESULT HStringToUTF8(const HSTRING& in, string& out)
     return S_OK;
 }
 
+std::string HStringToUTF8(const HSTRING &in)
+{
+    std::string typeAsKey;
+    HRESULT hr = HStringToUTF8(in, typeAsKey);
+    return FAILED(hr) ? "" : typeAsKey;
+}
+
+
 bool Boolify(const boolean value)
 {
     return value > 0 ? true : false;
@@ -59,59 +73,59 @@ bool Boolify(const boolean value)
 
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement> projectedContainedElement;
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement> projectedContainedElement;
         switch(containedElement->GetElementType())
         {
         case CardElementType::TextBlock:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveTextBlock>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTextBlock>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::TextBlock>(containedElement)));
             break;
         case CardElementType::Image:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveImage>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveImage>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::Image>(containedElement)));
             break;
         case CardElementType::Container:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveContainer>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveContainer>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::Container>(containedElement)));
             break;
         case CardElementType::ColumnSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveColumnSet>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveColumnSet>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::ColumnSet>(containedElement)));
             break;
         case CardElementType::FactSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveFactSet>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveFactSet>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::FactSet>(containedElement)));
             break;
         case CardElementType::ImageSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveImageSet>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveImageSet>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
             break;
         case CardElementType::ChoiceSetInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveChoiceSetInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveChoiceSetInput>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::ChoiceSetInput>(containedElement)));
             break;
         case CardElementType::DateInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveDateInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveDateInput>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::DateInput>(containedElement)));
             break;
         case CardElementType::NumberInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveNumberInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveNumberInput>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::NumberInput>(containedElement)));
             break;
         case CardElementType::TextInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveTextInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTextInput>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::TextInput>(containedElement)));
             break;
         case CardElementType::TimeInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveTimeInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTimeInput>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::TimeInput>(containedElement)));
             break;
         case CardElementType::ToggleInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveToggleInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveToggleInput>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::ToggleInput>(containedElement)));
             break;
         default:
@@ -125,27 +139,23 @@ HRESULT GenerateContainedElementsProjection(
 
 HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement*>* projectedParentContainer) noexcept try
 {
     for (auto& containedAction : containedActions)
     {
-        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement> projectedContainedAction;
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement> projectedContainedAction;
         switch (containedAction->GetElementType())
         {
-            case ActionType::Http:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveHttpAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::HttpAction>(containedAction)));
-                break;
             case ActionType::OpenUrl:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveOpenUrlAction>(&projectedContainedAction,
+                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveOpenUrlAction>(&projectedContainedAction,
                     std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(containedAction)));
                 break;
             case ActionType::ShowCard:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveShowCardAction>(&projectedContainedAction,
+                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveShowCardAction>(&projectedContainedAction,
                     std::static_pointer_cast<AdaptiveCards::ShowCardAction>(containedAction)));
                 break;
             case ActionType::Submit:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveSubmitAction>(&projectedContainedAction,
+                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveSubmitAction>(&projectedContainedAction,
                     std::static_pointer_cast<AdaptiveCards::SubmitAction>(containedAction)));
                 break;
             default:
@@ -159,12 +169,12 @@ HRESULT GenerateActionsProjection(
 
 HRESULT GenerateColumnsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveColumn*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveColumn>(&projectedContainedElement,
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColumn> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveColumn>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::Column>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -174,12 +184,12 @@ HRESULT GenerateColumnsProjection(
 
 HRESULT GenerateFactsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFact*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFact*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFact> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveFact>(&projectedContainedElement,
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveFact> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveFact>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::Fact>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -189,12 +199,12 @@ HRESULT GenerateFactsProjection(
 
 HRESULT GenerateImagesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveImage*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveImage>(&projectedContainedElement,
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveImage> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveImage>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::Image>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -204,12 +214,12 @@ HRESULT GenerateImagesProjection(
 
 HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveChoiceInput>(&projectedContainedElement,
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveChoiceInput>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::ChoiceInput>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -217,7 +227,37 @@ HRESULT GenerateInputChoicesProjection(
     return S_OK;
 } CATCH_RETURN;
 
-HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
+HRESULT GenerateSeparatorProjection(
+    std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
+    ABI::AdaptiveCards::Uwp::IAdaptiveSeparator** projectedSeparator) noexcept try
+{
+    *projectedSeparator = nullptr;
+    if (sharedSeparator != nullptr)
+    {
+        return MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveSeparator>(projectedSeparator, sharedSeparator);
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateSharedSeparator(
+    ABI::AdaptiveCards::Uwp::IAdaptiveSeparator* separator,
+    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut) noexcept try
+{
+    ABI::AdaptiveCards::Uwp::ForegroundColor color;
+    RETURN_IF_FAILED(separator->get_Color(&color));
+
+    ABI::AdaptiveCards::Uwp::SeparatorThickness thickness;
+    RETURN_IF_FAILED(separator->get_Thickness(&thickness));
+
+    auto sharedSeparator = std::make_shared<Separator>();
+    sharedSeparator->SetColor(static_cast<AdaptiveCards::ForegroundColor>(color));
+    sharedSeparator->SetThickness(static_cast<AdaptiveCards::SeparatorThickness>(thickness));
+
+    *sharedSeparatorOut = sharedSeparator;
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
     std::string alphaString = colorString.substr(1, 2);
     INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
@@ -238,3 +278,167 @@ HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
 
     return S_OK;
 } CATCH_RETURN;
+
+HRESULT GetColorFromAdaptiveColor(
+    ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveCards::Uwp::ForegroundColor adaptiveColor,
+    ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
+    bool isSubtle,
+    ABI::Windows::UI::Color * uiColor) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition> styles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&styles));
+
+    ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
+    if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle_Default)
+    {
+        RETURN_IF_FAILED(styles->get_Default(&styleDefinition));
+    }
+    else
+    {
+        RETURN_IF_FAILED(styles->get_Emphasis(&styleDefinition));
+    }
+
+    ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorsConfig> colorsConfig;
+    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig)); 
+
+    ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> colorConfig;
+    switch (adaptiveColor)
+    {
+    case ABI::AdaptiveCards::Uwp::ForegroundColor::Accent:
+        RETURN_IF_FAILED(colorsConfig->get_Accent(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::Uwp::ForegroundColor::Dark:
+        RETURN_IF_FAILED(colorsConfig->get_Dark(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::Uwp::ForegroundColor::Light:
+        RETURN_IF_FAILED(colorsConfig->get_Light(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::Uwp::ForegroundColor::Good:
+        RETURN_IF_FAILED(colorsConfig->get_Good(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::Uwp::ForegroundColor::Warning:
+        RETURN_IF_FAILED(colorsConfig->get_Warning(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::Uwp::ForegroundColor::Attention:
+        RETURN_IF_FAILED(colorsConfig->get_Attention(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::Uwp::ForegroundColor::Default:
+    default:
+        RETURN_IF_FAILED(colorsConfig->get_Default(&colorConfig));
+        break;
+    }
+
+    RETURN_IF_FAILED(isSubtle ? colorConfig->get_Subtle(uiColor) : colorConfig->get_Default(uiColor));
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetSpacingSizeFromSpacing(
+    ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveCards::Uwp::Spacing spacing,
+    UINT* spacingSize) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig> spacingConfig;
+    RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+
+    switch (spacing)
+    {
+    case ABI::AdaptiveCards::Uwp::Spacing::None:
+        *spacingSize = 0;
+        break;
+    case ABI::AdaptiveCards::Uwp::Spacing::Small:
+        RETURN_IF_FAILED(spacingConfig->get_Small(spacingSize));
+        break;
+    case ABI::AdaptiveCards::Uwp::Spacing::Medium:
+        RETURN_IF_FAILED(spacingConfig->get_Medium(spacingSize));
+        break;
+    case ABI::AdaptiveCards::Uwp::Spacing::Large:
+        RETURN_IF_FAILED(spacingConfig->get_Large(spacingSize));
+        break;
+    case ABI::AdaptiveCards::Uwp::Spacing::ExtraLarge:
+        RETURN_IF_FAILED(spacingConfig->get_ExtraLarge(spacingSize));
+        break;
+    case ABI::AdaptiveCards::Uwp::Spacing::Padding:
+        RETURN_IF_FAILED(spacingConfig->get_Padding(spacingSize));
+        break;
+    case ABI::AdaptiveCards::Uwp::Spacing::Default:
+    default:
+        RETURN_IF_FAILED(spacingConfig->get_Default(spacingSize));
+        break;
+    }
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetBackgroundColorFromStyle(
+    ABI::AdaptiveCards::Uwp::ContainerStyle style,
+    _In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig,
+    _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition> containerStyles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
+
+    ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
+    if (style == ABI::AdaptiveCards::Uwp::ContainerStyle::Default)
+    {
+        RETURN_IF_FAILED(containerStyles->get_Default(&styleDefinition));
+    }
+    else
+    {
+        RETURN_IF_FAILED(containerStyles->get_Emphasis(&styleDefinition));
+    }
+
+    RETURN_IF_FAILED(styleDefinition->get_BackgroundColor(backgroundColor));
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
+{
+    ComPtr<IJsonObjectStatics> jObjectStatics;
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
+    HSTRING inputsHString;
+    RETURN_IF_FAILED(UTF8ToHString(inputString, &inputsHString));
+    ComPtr<IJsonObject> jObject;
+    HRESULT hr = jObjectStatics->Parse(inputsHString, &jObject);
+    if (FAILED(hr))
+    {
+        RETURN_IF_FAILED(ActivateInstance(
+            HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(),
+            &jObject));
+    }
+    *result = jObject.Detach();
+    return S_OK;
+}
+
+HRESULT JsonObjectToString(IJsonObject* inputJson, string& result)
+{
+    HSTRING asHstring;
+    RETURN_IF_FAILED(JsonObjectToHString(inputJson, &asHstring));
+    return HStringToUTF8(asHstring, result);
+}
+
+HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
+{
+    if (!inputJson)
+    {
+        return E_INVALIDARG;
+    }
+    ComPtr<IJsonObject> localInputJson(inputJson);
+    ComPtr<IJsonValue> asJsonValue;
+    RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
+    return(asJsonValue->Stringify(result));
+}
+
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Uwp::ActionType projectedActionType, HSTRING* result)
+{
+    ActionType sharedActionType = static_cast<ActionType>(projectedActionType);
+    return UTF8ToHString(ActionTypeToString(sharedActionType), result);
+}
+
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Uwp::ElementType projectedElementType, HSTRING* result)
+{
+    CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
+    return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
+}

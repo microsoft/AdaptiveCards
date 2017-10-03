@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering
     /// </summary>
     public class ImageRenderer
     {
-        private XamlRenderer _xamlRenderer;
+        private AdaptiveCardRenderer _xamlRenderer;
 
         /// <summary>
         /// You can use this from within a WPF app, passing in resource dictionary directly
@@ -31,7 +31,10 @@ namespace AdaptiveCards.Rendering
         public ImageRenderer(HostConfig hostConfig, ResourceDictionary resources)
         {
             hostConfig.SupportsInteractivity = false;
-            _xamlRenderer = new XamlRenderer(hostConfig, resources);
+            _xamlRenderer = new AdaptiveCardRenderer(hostConfig)
+            {
+                Resources = resources
+            };
         }
 
         /// <summary>
@@ -42,12 +45,15 @@ namespace AdaptiveCards.Rendering
         public ImageRenderer(HostConfig hostConfig, string stylePath)
         {
             hostConfig.SupportsInteractivity = false;
-            _xamlRenderer = new XamlRenderer(hostConfig, stylePath);
+            _xamlRenderer = new AdaptiveCardRenderer(hostConfig)
+            {
+                StylePath = stylePath
+            };
         }
 
-        public XamlRenderer Renderer { get { return this._xamlRenderer; } }
+        public AdaptiveCardRenderer Renderer { get { return this._xamlRenderer; } }
 
-        public HostConfig Options { get { return _xamlRenderer.DefaultConfig; } set { _xamlRenderer.DefaultConfig = value; } }
+        public HostConfig Options { get { return _xamlRenderer.HostConfig; } set { _xamlRenderer.HostConfig = value; } }
 
 
 
@@ -104,15 +110,24 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
-            var uiCard = this._xamlRenderer.RenderAdaptiveCard(card, imageResolver);
+            // TODO: When ResourceResolver support is added, wire up the image resolver
+            var result = this._xamlRenderer.RenderCard(card);
+            if (result.FrameworkElement != null)
+            {
+                var uiCard = result.FrameworkElement;
 
-            uiCard.Measure(new System.Windows.Size(width, 4000));
-            uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));
-            uiCard.UpdateLayout();
+                uiCard.Measure(new System.Windows.Size(width, 4000));
+                uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));
+                uiCard.UpdateLayout();
 
-            RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)width, (int)uiCard.DesiredSize.Height, 96, 96, PixelFormats.Default);
-            bitmapImage.Render(uiCard);
-            return bitmapImage;
+                RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)width, (int)uiCard.DesiredSize.Height, 96, 96, PixelFormats.Default);
+                bitmapImage.Render(uiCard);
+                return bitmapImage;
+            }
+            else
+            {
+                throw new Exception("Rendering failed");
+            }
         }
     }
 

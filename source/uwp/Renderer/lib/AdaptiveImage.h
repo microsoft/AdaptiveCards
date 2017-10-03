@@ -1,19 +1,19 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include "Enums.h"
 #include "Image.h"
 #include <windows.foundation.h>
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     class AdaptiveImage :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveImage,
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveImage, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveImage, BaseTrust)
 
     public:
         AdaptiveImage();
@@ -24,26 +24,31 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Url(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
         IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
-        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageStyle* imageStyle);
-        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageStyle imageStyle);
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::Uwp::ImageStyle* imageStyle);
+        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::Uwp::ImageStyle imageStyle);
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize);
-        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize);
+        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::Uwp::ImageSize* imageSize);
+        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::Uwp::ImageSize imageSize);
 
         IFACEMETHODIMP get_AltText(_Out_ HSTRING *text);
         IFACEMETHODIMP put_AltText(_In_ HSTRING text);
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment* hAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment hAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Uwp::HAlignment* hAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveCards::Uwp::HAlignment hAlignment);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Uwp::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Uwp::Spacing spacing);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING *text);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING text);
+        IFACEMETHODIMP get_Separator(boolean* separator);
+        IFACEMETHODIMP put_Separator(boolean separator);
+
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
+
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
     private:
         std::shared_ptr<AdaptiveCards::Image> m_sharedImage;

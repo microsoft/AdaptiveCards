@@ -22,9 +22,9 @@ using namespace AdaptiveCards;
     return self;
 }
 
-+ (ACOParseResult *)fromJson:(NSString *)payload;
++ (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 {
-    ACOParseResult *result = [[ACOParseResult alloc] init];
+    ACOHostConfigParseResult *result = [[ACOHostConfigParseResult alloc] init];
 
     if(payload)
     {

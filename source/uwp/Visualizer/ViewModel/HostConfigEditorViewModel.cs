@@ -1,4 +1,4 @@
-﻿using AdaptiveCards.XamlCardRenderer;
+﻿using AdaptiveCards.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
-using XamlCardVisualizer.Helpers;
+using AdaptiveCardVisualizer.Helpers;
 
-namespace XamlCardVisualizer.ViewModel
+namespace AdaptiveCardVisualizer.ViewModel
 {
     public class HostConfigEditorViewModel : GenericDocumentViewModel
     {
@@ -22,16 +22,31 @@ namespace XamlCardVisualizer.ViewModel
         {
             try
             {
-                HostConfig = AdaptiveHostConfig.CreateHostConfigFromJson(payload);
+                var newHostConfig = AdaptiveHostConfig.FromJsonString(payload).HostConfig;
 
-                HostConfigChanged?.Invoke(this, HostConfig);
+                if (newHostConfig != null)
+                {
+                    HostConfig = newHostConfig;
+
+                    HostConfigChanged?.Invoke(this, HostConfig);
+
+                    MakeErrorsLike(new List<ErrorViewModel>());
+                }
+                else
+                {
+                    SetSingleError(new ErrorViewModel()
+                    {
+                        Message = "Invalid Host Config payload",
+                        Type = ErrorViewModelType.ErrorButRenderAllowed
+                    });
+                }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
                 SetSingleError(new ErrorViewModel()
                 {
-                    Message = "Invalid Host Config payload",
+                    Message = ex.ToString(),
                     Type = ErrorViewModelType.ErrorButRenderAllowed
                 });
             }

@@ -2,16 +2,16 @@
 #include "AdaptiveChoiceInput.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveChoiceInput::RuntimeClassInitialize() noexcept try
     {
@@ -53,21 +53,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(value, out));
         m_sharedChoiceInput->SetValue(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedChoiceInput->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedChoiceInput->SetSpeak(out);
         return S_OK;
     }
 

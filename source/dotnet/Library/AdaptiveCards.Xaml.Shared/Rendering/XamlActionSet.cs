@@ -20,15 +20,5 @@ namespace AdaptiveCards.Rendering
 {
     public static partial class XamlActionSet 
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
-        {
-            ActionSet actionSet = (ActionSet)element;
-            var uiContainer = new Grid();
-            uiContainer.Style = context.GetStyle("Adaptive.ActionSet");
-
-            AddActions(uiContainer, actionSet.Actions, context);
-
-            return uiContainer;
-        }
     }
 }

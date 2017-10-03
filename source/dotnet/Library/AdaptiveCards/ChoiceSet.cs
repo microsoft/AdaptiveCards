@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Xml.Serialization;
+using System;
 
 namespace AdaptiveCards
 {
@@ -18,7 +19,7 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        ///     The initial value for the field
+        ///      Comma separated string of selected Choice values
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
@@ -91,6 +92,7 @@ namespace AdaptiveCards
 #if NET452
         [XmlAttribute]
 #endif
+        [System.Obsolete("Choice.IsSelected has been deprecated.  Use ChoiceSet.Value", false)]
         public bool IsSelected { get; set; } = false;
 
         /// <summary>
@@ -100,11 +102,14 @@ namespace AdaptiveCards
 #if NET452
         [XmlElement]
 #endif
+        [Obsolete("ChoiceSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
 
         public bool ShouldSerializeIsSelected()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             return IsSelected;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }

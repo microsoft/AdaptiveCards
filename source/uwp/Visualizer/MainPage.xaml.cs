@@ -15,12 +15,12 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-using AdaptiveCards.XamlCardRenderer;
-using XamlCardVisualizer.ViewModel;
+using AdaptiveCards.Uwp;
+using AdaptiveCardVisualizer.ViewModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace XamlCardVisualizer
+namespace AdaptiveCardVisualizer
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.

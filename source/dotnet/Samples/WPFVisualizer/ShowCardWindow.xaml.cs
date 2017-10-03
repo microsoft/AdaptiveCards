@@ -29,10 +29,19 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var renderer = new XamlRendererExtended(new HostConfig(), this._resources, OnAction);
-            var element = renderer.RenderShowCard(_card);
+            var renderer = new XamlRendererExtended(new HostConfig())
+            {
+                Resources = this._resources
+            };
+            var result = renderer.RenderCard(_card.Card);
 
-            this.Body.Children.Add(element);
+            if (result.FrameworkElement != null)
+            {
+                // Wire up click handler
+                result.OnAction += OnAction;
+
+                this.Body.Children.Add(result.FrameworkElement);
+            }
         }
 
         private void OnAction(object sender, ActionEventArgs e)
@@ -50,16 +59,6 @@ namespace WpfVisualizer
             {
                 AC.SubmitAction action = (AC.SubmitAction)e.Action;
                 System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), "SubmitAction");
-                this.Close();
-            }
-            else if (e.Action is AC.HttpAction)
-            {
-                AC.HttpAction action = (AC.HttpAction)e.Action;
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine($"HEADERS={JsonConvert.SerializeObject(action.Headers)}");
-                sb.AppendLine($"BODY={action.Body}");
-                sb.AppendLine($"DATA={e.Data}");
-                System.Windows.MessageBox.Show(this, sb.ToString(), $"HttpAction {action.Method} {action.Url}");
                 this.Close();
             }
         }

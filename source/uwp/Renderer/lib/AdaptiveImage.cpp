@@ -2,16 +2,16 @@
 #include "AdaptiveImage.h"
 
 #include "Util.h"
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     AdaptiveImage::AdaptiveImage()
     {
@@ -66,28 +66,28 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ImageStyle* imageStyle)
+    HRESULT AdaptiveImage::get_Style(ABI::AdaptiveCards::Uwp::ImageStyle* imageStyle)
     {
-        *imageStyle = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageStyle>(m_sharedImage->GetImageStyle());
+        *imageStyle = static_cast<ABI::AdaptiveCards::Uwp::ImageStyle>(m_sharedImage->GetImageStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ImageStyle imageStyle)
+    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::Uwp::ImageStyle imageStyle)
     {
         m_sharedImage->SetImageStyle(static_cast<AdaptiveCards::ImageStyle>(imageStyle));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Size(ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize)
+    HRESULT AdaptiveImage::get_Size(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
     {
-        *imageSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageSize>(m_sharedImage->GetImageSize());
+        *imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(m_sharedImage->GetImageSize());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize)
+    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
     {
         m_sharedImage->SetImageSize(static_cast<AdaptiveCards::ImageSize>(imageSize));
         return S_OK;
@@ -109,14 +109,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveCards::XamlCardRenderer::HAlignment* alignment)
+    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveCards::Uwp::HAlignment* alignment)
     {
-        *alignment = static_cast<ABI::AdaptiveCards::XamlCardRenderer::HAlignment>(m_sharedImage->GetHorizontalAlignment());
+        *alignment = static_cast<ABI::AdaptiveCards::Uwp::HAlignment>(m_sharedImage->GetHorizontalAlignment());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveCards::XamlCardRenderer::HAlignment alignment)
+    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveCards::Uwp::HAlignment alignment)
     {
         m_sharedImage->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(alignment));
         return S_OK;
@@ -130,32 +130,64 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveImage::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedImage->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedImage->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveImage::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedImage->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedImage->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveImage::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedImage->GetSpeak(), speak);
+        *separator = m_sharedImage->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedImage->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Speak(HSTRING speak)
+    HRESULT AdaptiveImage::put_Separator(boolean separator)
+    {
+        m_sharedImage->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedImage->SetSeparator(sharedSeparator);
+        */
+
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedImage->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedImage->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedImage->SetId(out);
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
+    }
 }}

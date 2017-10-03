@@ -1,27 +1,24 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     class AdaptiveCardConfig :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardConfig>
+        ABI::AdaptiveCards::Uwp::IAdaptiveCardConfig>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveCardConfig, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveCardConfig, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig) noexcept;
 
-        IFACEMETHODIMP get_Padding(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition** value);
-        IFACEMETHODIMP put_Padding(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition* value);
-
-        IFACEMETHODIMP get_BackgroundColor(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_BackgroundColor(_In_ ABI::Windows::UI::Color value);
+        IFACEMETHODIMP get_AllowCustomStyle(_Out_ boolean* allowCustomStyle);
+        IFACEMETHODIMP put_AllowCustomStyle(_In_ boolean allowCustomStyle);
 
     private:
         AdaptiveCards::AdaptiveCardConfig m_sharedAdaptiveCardConfig;

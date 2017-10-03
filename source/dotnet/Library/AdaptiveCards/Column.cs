@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using System;
 
 namespace AdaptiveCards
 {
@@ -23,6 +24,16 @@ namespace AdaptiveCards
 #if NET452
         [XmlAttribute]
 #endif
+        [Obsolete("Column.Size has been deprecated.  Use Column.Width", false)]
         public string Size { get; set; }
+
+        /// <summary>
+        ///     Width for the column (either ColumnWidth string or number which is relative size of the column)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if NET452
+        [XmlAttribute]
+#endif
+        public string Width { get; set; }
     }
 }

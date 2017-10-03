@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XamlCardVisualizer.Helpers
+namespace AdaptiveCardVisualizer.Helpers
 {
     public static class IListExtensions
     {

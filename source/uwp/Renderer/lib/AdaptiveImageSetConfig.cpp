@@ -1,11 +1,10 @@
 #include "pch.h"
 #include "AdaptiveImageSetConfig.h"
-#include "AdaptiveSeparationConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept try
     {
@@ -20,29 +19,31 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::get_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize)
+    HRESULT AdaptiveImageSetConfig::get_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
     {
-        *imageSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageSize>(m_sharedImageSetConfig.imageSize);
+        *imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(m_sharedImageSetConfig.imageSize);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize)
+    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
     {
         m_sharedImageSetConfig.imageSize = static_cast<AdaptiveCards::ImageSize>(imageSize);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::get_Separation(IAdaptiveSeparationConfig** separationConfig)
+    HRESULT  AdaptiveImageSetConfig::get_MaxImageHeight(UINT32* maxImageHeight)
     {
-        return MakeAndInitialize<AdaptiveSeparationConfig>(separationConfig, m_sharedImageSetConfig.separation);
+        *maxImageHeight = m_sharedImageSetConfig.maxImageHeight;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::put_Separation(IAdaptiveSeparationConfig*)
+    HRESULT  AdaptiveImageSetConfig::put_MaxImageHeight(UINT32 maxImageHeight)
     {
-        return E_NOTIMPL;
+        m_sharedImageSetConfig.maxImageHeight = maxImageHeight;
+        return S_OK;
     }
 }
 }

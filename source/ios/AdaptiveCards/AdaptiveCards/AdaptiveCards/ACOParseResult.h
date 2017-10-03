@@ -5,13 +5,10 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-@class ACOAdaptiveCard;
-@class ACOHostConfig;
+#import <Foundation/Foundation.h>
 
 @interface ACOParseResult:NSObject
 
-@property ACOHostConfig *config;
-@property ACOAdaptiveCard *card;
 @property BOOL IsValid;
 
 @end    

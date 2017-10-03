@@ -26,9 +26,6 @@ namespace AdaptiveCards.Rendering
             if (cardElement is FactSet)
                 Visit((FactSet) cardElement);
 
-            if (cardElement is ActionSet)
-                Visit((ActionSet)cardElement);
-
             if (cardElement is ChoiceSet)
                 Visit((ChoiceSet) cardElement);
 
@@ -67,12 +64,6 @@ namespace AdaptiveCards.Rendering
         {
             foreach (var column in columnSet.Columns)
                 Visit(column);
-        }
-
-        public virtual void Visit(ActionSet actionSet)
-        {
-            foreach (var action in actionSet.Actions)
-                Visit(action);
         }
 
         public virtual void Visit(FactSet factSet)
@@ -125,18 +116,12 @@ namespace AdaptiveCards.Rendering
 
         public virtual void Visit(ActionBase action)
         {
-            if (action is HttpAction)
-                Visit((HttpAction) action);
             if (action is OpenUrlAction)
                 Visit((OpenUrlAction) action);
             if (action is SubmitAction)
                 Visit((SubmitAction) action);
             if (action is ShowCardAction)
                 Visit((ShowCardAction) action);
-        }
-
-        public virtual void Visit(HttpAction action)
-        {
         }
 
         public virtual void Visit(SubmitAction action)

@@ -43,12 +43,12 @@ public class ShowCardActionConfig {
     return ActionMode.swigToEnum(AdaptiveCardObjectModelJNI.ShowCardActionConfig_actionMode_get(swigCPtr, this));
   }
 
-  public void setBackgroundColor(String value) {
-    AdaptiveCardObjectModelJNI.ShowCardActionConfig_backgroundColor_set(swigCPtr, this, value);
+  public void setStyle(ContainerStyle value) {
+    AdaptiveCardObjectModelJNI.ShowCardActionConfig_style_set(swigCPtr, this, value.swigValue());
   }
 
-  public String getBackgroundColor() {
-    return AdaptiveCardObjectModelJNI.ShowCardActionConfig_backgroundColor_get(swigCPtr, this);
+  public ContainerStyle getStyle() {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ShowCardActionConfig_style_get(swigCPtr, this));
   }
 
   public void setInlineTopMargin(long value) {
@@ -57,15 +57,6 @@ public class ShowCardActionConfig {
 
   public long getInlineTopMargin() {
     return AdaptiveCardObjectModelJNI.ShowCardActionConfig_inlineTopMargin_get(swigCPtr, this);
-  }
-
-  public void setPadding(SpacingDefinition value) {
-    AdaptiveCardObjectModelJNI.ShowCardActionConfig_padding_set(swigCPtr, this, SpacingDefinition.getCPtr(value), value);
-  }
-
-  public SpacingDefinition getPadding() {
-    long cPtr = AdaptiveCardObjectModelJNI.ShowCardActionConfig_padding_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SpacingDefinition(cPtr, false);
   }
 
   public static ShowCardActionConfig Deserialize(SWIGTYPE_p_Json__Value json, ShowCardActionConfig defaultValue) {

@@ -41,12 +41,12 @@ public class Column extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Column__SWIG_0(), true);
   }
 
-  public Column(SeparationStyle separation, String speak, String size) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_1(separation.swigValue(), speak, size), true);
+  public Column(Spacing spacing, boolean separation, String size, ContainerStyle style) {
+    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_1(spacing.swigValue(), separation, size, style.swigValue()), true);
   }
 
-  public Column(SeparationStyle separation, String speak, String size, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_2(separation.swigValue(), speak, size, BaseCardElementVector.getCPtr(items), items), true);
+  public Column(Spacing spacing, boolean separation, String size, ContainerStyle style, BaseCardElementVector items) {
+    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_2(spacing.swigValue(), separation, size, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
   }
 
   public String Serialize() {
@@ -67,12 +67,20 @@ public class Column extends BaseCardElement {
     return (cPtr == 0) ? null : new Column(cPtr, true);
   }
 
-  public String GetSize() {
-    return AdaptiveCardObjectModelJNI.Column_GetSize(swigCPtr, this);
+  public String GetWidth() {
+    return AdaptiveCardObjectModelJNI.Column_GetWidth(swigCPtr, this);
   }
 
-  public void SetSize(String value) {
-    AdaptiveCardObjectModelJNI.Column_SetSize(swigCPtr, this, value);
+  public void SetWidth(String value) {
+    AdaptiveCardObjectModelJNI.Column_SetWidth(swigCPtr, this, value);
+  }
+
+  public ContainerStyle GetStyle() {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetStyle(swigCPtr, this));
+  }
+
+  public void SetStyle(ContainerStyle value) {
+    AdaptiveCardObjectModelJNI.Column_SetStyle(swigCPtr, this, value.swigValue());
   }
 
   public BaseCardElementVector GetItems() {

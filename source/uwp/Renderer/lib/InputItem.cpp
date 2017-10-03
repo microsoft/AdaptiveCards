@@ -5,18 +5,18 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Globalization::DateTimeFormatting;
 using namespace ABI::Windows::UI::Xaml; 
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-using namespace AdaptiveCards::XamlCardRenderer;
+using namespace AdaptiveCards::Uwp;
 
 void InputItem::SerializeTextInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     ComPtr<ITextBox> textBox;
     THROW_IF_FAILED(m_uiInputElement.As(&textBox));
@@ -35,7 +35,7 @@ void InputItem::SerializeTextInput(
 
 void InputItem::SerializeDateInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     ComPtr<ICalendarDatePicker> datePicker;
     THROW_IF_FAILED(m_uiInputElement.As(&datePicker));
@@ -49,12 +49,11 @@ void InputItem::SerializeDateInput(
         DateTime date;
         THROW_IF_FAILED(dateRef->get_Value(&date));
 
-        ComPtr<IDateTimeFormatterStatics> dateTimeStatics;
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeStatics));
+        ComPtr<IDateTimeFormatterFactory> dateTimeFactory;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeFactory));
 
-        // TODO: Confirm desired date format
         ComPtr<IDateTimeFormatter> dateTimeFormatter;
-        THROW_IF_FAILED(dateTimeStatics->get_ShortDate(&dateTimeFormatter));
+        THROW_IF_FAILED(dateTimeFactory->CreateDateTimeFormatter(HStringReference(L"{year.full}-{month.integer(2)}-{day.integer(2)}").Get(), &dateTimeFormatter));
 
         HString formattedDate;
         THROW_IF_FAILED(dateTimeFormatter->Format(date, formattedDate.GetAddressOf()));
@@ -67,7 +66,7 @@ void InputItem::SerializeDateInput(
 
 void InputItem::SerializeTimeInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     ComPtr<ITimePicker> timePicker;
     THROW_IF_FAILED(m_uiInputElement.As(&timePicker));
@@ -79,7 +78,6 @@ void InputItem::SerializeTimeInput(
     UINT64 hours = totalMinutes / 60;
     UINT64 minutesPastTheHour = totalMinutes - (hours * 60);
 
-    // TODO: Confirm desired time format
     char buffer[6];
     sprintf_s(buffer, sizeof(buffer), "%02llu:%02llu", hours, minutesPastTheHour);
 
@@ -88,7 +86,7 @@ void InputItem::SerializeTimeInput(
 
 void InputItem::SerializeToggleInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     boolean checkedValue = false;
     XamlHelpers::GetToggleValue(m_uiInputElement.Get(), &checkedValue);
@@ -115,7 +113,7 @@ void InputItem::SerializeToggleInput(
 void InputItem::GetChoiceValue(
     IAdaptiveChoiceSetInput* choiceInput,
     INT32 selectedIndex,
-    std::string& choiceValue)
+    std::string& choiceValue) const
 {
     if (selectedIndex != -1)
     {
@@ -134,18 +132,18 @@ void InputItem::GetChoiceValue(
 
 void InputItem::SerializeChoiceSetInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     ComPtr<IAdaptiveChoiceSetInput> choiceInput;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&choiceInput));
 
-    ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle;
+    ABI::AdaptiveCards::Uwp::ChoiceSetStyle choiceSetStyle;
     THROW_IF_FAILED(choiceInput->get_ChoiceSetStyle(&choiceSetStyle));
 
     boolean isMultiSelect;
     THROW_IF_FAILED(choiceInput->get_IsMultiSelect(&isMultiSelect));
 
-    if (choiceSetStyle == ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle_Compact && !isMultiSelect)
+    if (choiceSetStyle == ABI::AdaptiveCards::Uwp::ChoiceSetStyle_Compact && !isMultiSelect)
     {
         // Handle compact style
         ComPtr<ISelector> selector;
@@ -172,8 +170,8 @@ void InputItem::SerializeChoiceSetInput(
 
         if (isMultiSelect)
         {
-            // For multiselect, gather all the inputs in a Json::arrayValue
-            Json::Value multiSelectValues(Json::arrayValue);
+            // For multiselect, gather all the inputs in a comma delimited list
+            std::string multiSelectValues;
             for (UINT i = 0; i < size; i++)
             {
                 ComPtr<IUIElement> currentElement;
@@ -186,7 +184,7 @@ void InputItem::SerializeChoiceSetInput(
                 {
                     std::string choiceValue;
                     GetChoiceValue(choiceInput.Get(), i, choiceValue);
-                    multiSelectValues.append(Json::Value(choiceValue.c_str()));
+                    multiSelectValues += (i == 0) ? choiceValue : "," + choiceValue;
                 }
             }
             jsonValue[idString] = multiSelectValues;
@@ -216,16 +214,16 @@ void InputItem::SerializeChoiceSetInput(
     }
 }
 
-void InputItem::Serialize(Json::Value & jsonValue)
+void InputItem::Serialize(Json::Value & jsonValue) const
 {
     ComPtr<IAdaptiveCardElement> cardElement;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&cardElement));
 
-    ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType;
+    ABI::AdaptiveCards::Uwp::ElementType elementType;
     THROW_IF_FAILED(cardElement->get_ElementType(&elementType));
 
     HString id;
-    THROW_IF_FAILED(m_adaptiveInputElement->get_Id(id.GetAddressOf()));
+    THROW_IF_FAILED(cardElement->get_Id(id.GetAddressOf()));
 
     std::string idString;
     THROW_IF_FAILED(HStringToUTF8(id.Get(), idString));

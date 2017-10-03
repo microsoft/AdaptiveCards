@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering
 
         public static Button CreateActionButton(ActionBase action, RenderContext context)
         {
-            ActionConfig styling = context.Config.Actions;
+            ActionsConfig styling = context.Config.Actions;
             var uiButton = new Button()
             {
 #if WPF
@@ -37,7 +37,7 @@ namespace AdaptiveCards.Rendering
             {
                 Text = action.Title,                
                 FontSize = styling.FontSize,
-                Margin = new Thickness(styling.Padding.Left, styling.Padding.Top, styling.Padding.Right, styling.Padding.Bottom) ,
+                Margin = new Thickness(8, 8, 8, 8) ,
             };
             uiTitle.SetFontWeight(styling.FontWeight);
             uiTitle.SetColor(styling.TextColor, context);
@@ -56,6 +56,7 @@ namespace AdaptiveCards.Rendering
         public static string GetFallbackText(CardElement cardElement)
         {
 #if WPF
+#pragma warning disable CS0618 // Type or member is obsolete
             if (!string.IsNullOrEmpty(cardElement.Speak))
             {
                 var doc = new System.Xml.XmlDocument();
@@ -67,6 +68,7 @@ namespace AdaptiveCards.Rendering
                 doc.LoadXml(xml);
                 return doc.InnerText;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 #elif XAMARIN
             // TODO: Xamarin fallback
 #endif

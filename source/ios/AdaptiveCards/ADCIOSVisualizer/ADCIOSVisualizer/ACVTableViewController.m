@@ -22,7 +22,7 @@
     enum DesiredIdx { eDefaultViewIdx = 2 };
     if(cnt >= eDefaultViewIdx)
     {
-        [_delegate source:self userconfig:[NSString stringWithContentsOfFile:[main pathForResource:@"hostconfig" ofType:@"json"]
+        [_delegate source:self userconfig:[NSString stringWithContentsOfFile:[main pathForResource:@"sample" ofType:@"json"]
                                                                     encoding:NSUTF8StringEncoding
                                                                        error:nil]];
         [_delegate fromACVTable:self userSelectedJson:

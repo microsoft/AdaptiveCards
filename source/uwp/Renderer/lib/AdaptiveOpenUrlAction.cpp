@@ -4,10 +4,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept try
     {
@@ -73,24 +73,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveCards::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveCards::Uwp::ActionType::OpenUrl;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveOpenUrlAction::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedOpenUrlAction->GetSpeak(), speak);
+        return UTF8ToHString(m_sharedOpenUrlAction->GetId(), id);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::put_Speak(HSTRING speak)
+    HRESULT AdaptiveOpenUrlAction::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedOpenUrlAction->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedOpenUrlAction->SetId(out);
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::get_ActionTypeString(HSTRING* type)
+    {
+        ::ActionType typeEnum;
+        RETURN_IF_FAILED(get_ActionType(&typeEnum));
+        return ProjectedActionTypeToHString(typeEnum, type);
     }
 }}

@@ -41,12 +41,12 @@ public class ChoiceSetInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_0(), true);
   }
 
-  public ChoiceSetInput(SeparationStyle separation, String speak) {
-    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_1(separation.swigValue(), speak), true);
+  public ChoiceSetInput(Spacing spacing, boolean separation) {
+    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_1(spacing.swigValue(), separation), true);
   }
 
-  public ChoiceSetInput(SeparationStyle separation, String speak, ChoiceInputVector choices) {
-    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_2(separation.swigValue(), speak, ChoiceInputVector.getCPtr(choices), choices), true);
+  public ChoiceSetInput(Spacing spacing, boolean separation, ChoiceInputVector choices) {
+    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_2(spacing.swigValue(), separation, ChoiceInputVector.getCPtr(choices), choices), true);
   }
 
   public String Serialize() {

@@ -2,16 +2,16 @@
 #include "AdaptiveDateInput.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
     {
@@ -42,13 +42,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::get_Min(HSTRING* min)
+    HRESULT AdaptiveDateInput::get_Min(HSTRING* min)
     {
         return UTF8ToHString(m_sharedDateInput->GetMin(), min);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::put_Min(HSTRING min)
+    HRESULT AdaptiveDateInput::put_Min(HSTRING min)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(min, out));
@@ -57,13 +57,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::get_Placeholder(HSTRING* placeholder)
+    HRESULT AdaptiveDateInput::get_Placeholder(HSTRING* placeholder)
     {
         return UTF8ToHString(m_sharedDateInput->GetPlaceholder(), placeholder);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::put_Placeholder(HSTRING placeholder)
+    HRESULT AdaptiveDateInput::put_Placeholder(HSTRING placeholder)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(placeholder, out));
@@ -109,31 +109,41 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveDateInput::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedDateInput->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedDateInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveDateInput::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedDateInput->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedDateInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveDateInput::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedDateInput->GetSpeak(), speak);
+        *separator = m_sharedDateInput->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedDateInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Speak(HSTRING speak)
+    HRESULT AdaptiveDateInput::put_Separator(boolean separator)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedDateInput->SetSpeak(out);
+        m_sharedDateInput->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedDateInput->SetSeparator(sharedSeparator);
+        */
+
         return S_OK;
     }
 
@@ -149,6 +159,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedDateInput->SetIsRequired(isRequired);
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveDateInput::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
     }
 
 }}

@@ -43,13 +43,12 @@ public class ImageSetConfig {
     return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageSetConfig_imageSize_get(swigCPtr, this));
   }
 
-  public void setSeparation(SeparationConfig value) {
-    AdaptiveCardObjectModelJNI.ImageSetConfig_separation_set(swigCPtr, this, SeparationConfig.getCPtr(value), value);
+  public void setMaxImageHeight(long value) {
+    AdaptiveCardObjectModelJNI.ImageSetConfig_maxImageHeight_set(swigCPtr, this, value);
   }
 
-  public SeparationConfig getSeparation() {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageSetConfig_separation_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
+  public long getMaxImageHeight() {
+    return AdaptiveCardObjectModelJNI.ImageSetConfig_maxImageHeight_get(swigCPtr, this);
   }
 
   public static ImageSetConfig Deserialize(SWIGTYPE_p_Json__Value json, ImageSetConfig defaultValue) {

@@ -6,9 +6,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlExNumberInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(NumberInput input, RenderContext context)
         {
-            NumberInput input = (NumberInput)element;
             if (context.Config.SupportsInteractivity)
             {
 
@@ -27,7 +26,7 @@ namespace AdaptiveCards.Rendering
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
-                context.InputBindings.Add(input.Id, () => numberPicker.Value);
+                context.InputBindings.Add(input.Id, () => numberPicker.Value?.ToString());
                 return numberPicker;
             }
             else

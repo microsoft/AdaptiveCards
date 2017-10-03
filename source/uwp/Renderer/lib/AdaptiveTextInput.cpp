@@ -1,17 +1,18 @@
 #include "pch.h"
 #include "AdaptiveTextInput.h"
+
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
@@ -84,13 +85,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle * textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::Uwp::TextInputStyle * textInputStyle)
     {
-        *textInputStyle = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle>(m_sharedTextInput->GetTextInputStyle());
+        *textInputStyle = static_cast<ABI::AdaptiveCards::Uwp::TextInputStyle>(m_sharedTextInput->GetTextInputStyle());
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Uwp::TextInputStyle textInputStyle)
     {
         m_sharedTextInput->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(textInputStyle));
         return S_OK;
@@ -119,31 +120,40 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedTextInput->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedTextInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedTextInput->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedTextInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveTextInput::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedTextInput->GetSpeak(), speak);
+        *separator = m_sharedTextInput->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedTextInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Speak(HSTRING speak)
+    HRESULT AdaptiveTextInput::put_Separator(boolean separator)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedTextInput->SetSpeak(out);
+        m_sharedTextInput->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedTextInput->SetSeparator(sharedSeparator);
+        */
         return S_OK;
     }
 
@@ -159,6 +169,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedTextInput->SetIsRequired(isRequired);
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextInput::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
     }
 
 }}

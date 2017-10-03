@@ -11,10 +11,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlTextInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(TextInput input, RenderContext context)
         {
-            TextInput input = (TextInput)element;
-
             if (context.Config.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };

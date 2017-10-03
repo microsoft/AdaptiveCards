@@ -2,9 +2,9 @@
 #include "AdaptiveFontSizesConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize() noexcept try
     {
@@ -33,16 +33,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizesConfig::get_Normal(UINT32* normalFontSize)
+    HRESULT AdaptiveFontSizesConfig::get_Default(UINT32* defaultFontSize)
     {
-        *normalFontSize = m_sharedFontSizesConfig.normalFontSize;
+        *defaultFontSize = m_sharedFontSizesConfig.defaultFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizesConfig::put_Normal(UINT32 normalFontSize)
+    HRESULT AdaptiveFontSizesConfig::put_Default(UINT32 defaultFontSize)
     {
-        m_sharedFontSizesConfig.normalFontSize = normalFontSize;
+        m_sharedFontSizesConfig.defaultFontSize = defaultFontSize;
         return S_OK;
     }
 

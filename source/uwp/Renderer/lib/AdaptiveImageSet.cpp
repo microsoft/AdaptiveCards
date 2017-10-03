@@ -4,16 +4,16 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     AdaptiveImageSet::AdaptiveImageSet()
     {
@@ -41,14 +41,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
     {
-        *imageSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageSize>(m_sharedImageSet->GetImageSize());
+        *imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(m_sharedImageSet->GetImageSize());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
     {
         m_sharedImageSet->SetImageSize(static_cast<AdaptiveCards::ImageSize>(imageSize));
         return S_OK; 
@@ -62,32 +62,65 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveImageSet::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedImageSet->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedImageSet->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveImageSet::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedImageSet->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedImageSet->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveImageSet::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedImageSet->GetSpeak(), speak);
+        *separator = m_sharedImageSet->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedImageSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_Speak(HSTRING speak)
+    HRESULT AdaptiveImageSet::put_Separator(boolean separator)
+    {
+        m_sharedImageSet->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedImageSet->SetSeparator(sharedSeparator);
+        */
+
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSet::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedImageSet->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSet::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedImageSet->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedImageSet->SetId(out);
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSet::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
     }
 }
 }

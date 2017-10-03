@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using System;
 
 namespace AdaptiveCards
 {
@@ -27,7 +28,6 @@ namespace AdaptiveCards
         [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
-        [XmlElement(typeof(ActionSet))]
         [XmlElement(typeof(TextInput), ElementName = TextInput.TYPE)]
         [XmlElement(typeof(DateInput), ElementName = DateInput.TYPE)]
         [XmlElement(typeof(TimeInput), ElementName = TimeInput.TYPE)]
@@ -54,17 +54,23 @@ namespace AdaptiveCards
         public ContainerStyle Style { get; set; }
     }
 
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<ImageStyle>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<ContainerStyle>), true)]
     public enum ContainerStyle
     {
         /// <summary>
+        /// The container is a default container
+        /// </summary>
+        Default = 0,
+
+        /// <summary>
         /// The container is a normal container
         /// </summary>
-        Normal,
+        [Obsolete("ContainerStyle.Normal has been deprecated.  Use ContainerStyle.Default", false)]
+        Normal = 0,
 
         /// <summary>
         /// The container should be emphasized as a grouping of elements
         /// </summary>
-        Emphasis
+        Emphasis = 1
     }
 }

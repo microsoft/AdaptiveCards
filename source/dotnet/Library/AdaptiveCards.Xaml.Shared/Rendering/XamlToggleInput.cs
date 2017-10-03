@@ -12,9 +12,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlToggleInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(ToggleInput input, RenderContext context)
         {
-            ToggleInput input = (ToggleInput)element;
             if (context.Config.SupportsInteractivity)
             {
                 var uiToggle = new CheckBox();
