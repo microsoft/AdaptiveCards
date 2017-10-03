@@ -31,15 +31,15 @@ a.ac-anchor:visited:active {
   color: #004D84;
 }
 
-.ac-container.ac-selectable {
+.ac-container.ac-selectable, .ac-columnSet.ac-selectable {
   padding: 0px;
 }
 
-.ac-container.ac-selectable:hover {
+.ac-container.ac-selectable:hover, .ac-columnSet.ac-selectable:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.ac-container.ac-selectable:active {
+.ac-container.ac-selectable:active, .ac-columnSet.ac-selectable:active {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
@@ -78,7 +78,6 @@ a.ac-anchor:visited:active {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   color: black;
-  height: 31px;
 }
 
 .ac-input.ac-textInput {

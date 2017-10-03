@@ -906,7 +906,6 @@ export class Image extends CardElement {
             invokeSetParent(this.selectAction, this);
         }
 
-
         if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
             this.pixelWidth = json["pixelWidth"];
         }
@@ -2850,6 +2849,11 @@ export class ColumnSet extends CardElement {
 
             if (this.selectAction) {
                 element.classList.add("ac-selectable");
+
+                element.onclick = (e) => {
+                    this.selectAction.execute();
+                    e.cancelBubble = true;
+                }
             }
 
             switch (this.horizontalAlignment) {

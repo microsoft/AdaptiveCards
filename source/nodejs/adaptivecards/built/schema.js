@@ -10,14 +10,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var TypedElement = (function () {
+var TypedElement = /** @class */ (function () {
     function TypedElement(type) {
         this.type = type;
     }
     return TypedElement;
 }());
 exports.TypedElement = TypedElement;
-var Card = (function (_super) {
+var Card = /** @class */ (function (_super) {
     __extends(Card, _super);
     function Card(init) {
         var _this = _super.call(this, "AdaptiveCard") || this;
@@ -31,7 +31,7 @@ var Card = (function (_super) {
     return Card;
 }(TypedElement));
 exports.Card = Card;
-var ActionBase = (function (_super) {
+var ActionBase = /** @class */ (function (_super) {
     __extends(ActionBase, _super);
     function ActionBase(type, init) {
         var _this = _super.call(this, type) || this;
@@ -41,7 +41,7 @@ var ActionBase = (function (_super) {
     return ActionBase;
 }(TypedElement));
 exports.ActionBase = ActionBase;
-var ActionHttp = (function (_super) {
+var ActionHttp = /** @class */ (function (_super) {
     __extends(ActionHttp, _super);
     function ActionHttp(init) {
         var _this = _super.call(this, "Action.Http", init) || this;
@@ -51,7 +51,7 @@ var ActionHttp = (function (_super) {
     return ActionHttp;
 }(ActionBase));
 exports.ActionHttp = ActionHttp;
-var ActionOpenUrl = (function (_super) {
+var ActionOpenUrl = /** @class */ (function (_super) {
     __extends(ActionOpenUrl, _super);
     function ActionOpenUrl(init) {
         var _this = _super.call(this, "Action.OpenUrl", init) || this;
@@ -61,7 +61,7 @@ var ActionOpenUrl = (function (_super) {
     return ActionOpenUrl;
 }(ActionBase));
 exports.ActionOpenUrl = ActionOpenUrl;
-var ActionShowCard = (function (_super) {
+var ActionShowCard = /** @class */ (function (_super) {
     __extends(ActionShowCard, _super);
     function ActionShowCard(init) {
         var _this = _super.call(this, "Action.ShowCard", init) || this;
@@ -73,7 +73,7 @@ var ActionShowCard = (function (_super) {
     return ActionShowCard;
 }(ActionBase));
 exports.ActionShowCard = ActionShowCard;
-var ActionSubmit = (function (_super) {
+var ActionSubmit = /** @class */ (function (_super) {
     __extends(ActionSubmit, _super);
     function ActionSubmit(init) {
         var _this = _super.call(this, "Action.ShowCard", init) || this;
@@ -83,7 +83,7 @@ var ActionSubmit = (function (_super) {
     return ActionSubmit;
 }(ActionBase));
 exports.ActionSubmit = ActionSubmit;
-var CardElement = (function (_super) {
+var CardElement = /** @class */ (function (_super) {
     __extends(CardElement, _super);
     function CardElement(type, init) {
         var _this = _super.call(this, type) || this;
@@ -93,7 +93,7 @@ var CardElement = (function (_super) {
     return CardElement;
 }(TypedElement));
 exports.CardElement = CardElement;
-var ColumnSet = (function (_super) {
+var ColumnSet = /** @class */ (function (_super) {
     __extends(ColumnSet, _super);
     function ColumnSet(init) {
         var _this = _super.call(this, "ColumnSet", init) || this;
@@ -105,7 +105,7 @@ var ColumnSet = (function (_super) {
     return ColumnSet;
 }(CardElement));
 exports.ColumnSet = ColumnSet;
-var ContainerBase = (function (_super) {
+var ContainerBase = /** @class */ (function (_super) {
     __extends(ContainerBase, _super);
     function ContainerBase(type, init) {
         var _this = _super.call(this, type, init) || this;
@@ -120,7 +120,7 @@ var ContainerBase = (function (_super) {
     return ContainerBase;
 }(CardElement));
 exports.ContainerBase = ContainerBase;
-var Container = (function (_super) {
+var Container = /** @class */ (function (_super) {
     __extends(Container, _super);
     function Container(init) {
         var _this = _super.call(this, "Container", init) || this;
@@ -130,7 +130,7 @@ var Container = (function (_super) {
     return Container;
 }(ContainerBase));
 exports.Container = Container;
-var Column = (function (_super) {
+var Column = /** @class */ (function (_super) {
     __extends(Column, _super);
     function Column(init) {
         var _this = _super.call(this, "Column", init) || this;
@@ -140,14 +140,14 @@ var Column = (function (_super) {
     return Column;
 }(ContainerBase));
 exports.Column = Column;
-var Fact = (function () {
+var Fact = /** @class */ (function () {
     function Fact(init) {
         Object.assign(this, init);
     }
     return Fact;
 }());
 exports.Fact = Fact;
-var FactSet = (function (_super) {
+var FactSet = /** @class */ (function (_super) {
     __extends(FactSet, _super);
     function FactSet(init) {
         var _this = _super.call(this, "FactSet", init) || this;
@@ -159,7 +159,7 @@ var FactSet = (function (_super) {
     return FactSet;
 }(CardElement));
 exports.FactSet = FactSet;
-var Image = (function (_super) {
+var Image = /** @class */ (function (_super) {
     __extends(Image, _super);
     function Image(init) {
         var _this = _super.call(this, "Image", init) || this;
@@ -169,7 +169,7 @@ var Image = (function (_super) {
     return Image;
 }(CardElement));
 exports.Image = Image;
-var ImageSet = (function (_super) {
+var ImageSet = /** @class */ (function (_super) {
     __extends(ImageSet, _super);
     function ImageSet(init) {
         var _this = _super.call(this, "ImageSet") || this;
@@ -181,7 +181,7 @@ var ImageSet = (function (_super) {
     return ImageSet;
 }(CardElement));
 exports.ImageSet = ImageSet;
-var Input = (function (_super) {
+var Input = /** @class */ (function (_super) {
     __extends(Input, _super);
     function Input(type, init) {
         var _this = _super.call(this, type) || this;
@@ -191,7 +191,7 @@ var Input = (function (_super) {
     return Input;
 }(CardElement));
 exports.Input = Input;
-var InputDate = (function (_super) {
+var InputDate = /** @class */ (function (_super) {
     __extends(InputDate, _super);
     function InputDate(init) {
         var _this = _super.call(this, "Input.Date", init) || this;
@@ -201,7 +201,7 @@ var InputDate = (function (_super) {
     return InputDate;
 }(Input));
 exports.InputDate = InputDate;
-var InputNumber = (function (_super) {
+var InputNumber = /** @class */ (function (_super) {
     __extends(InputNumber, _super);
     function InputNumber(init) {
         var _this = _super.call(this, "Input.Number", init) || this;
@@ -211,7 +211,7 @@ var InputNumber = (function (_super) {
     return InputNumber;
 }(Input));
 exports.InputNumber = InputNumber;
-var InputText = (function (_super) {
+var InputText = /** @class */ (function (_super) {
     __extends(InputText, _super);
     function InputText(init) {
         var _this = _super.call(this, "Input.Text", init) || this;
@@ -221,7 +221,7 @@ var InputText = (function (_super) {
     return InputText;
 }(Input));
 exports.InputText = InputText;
-var InputTime = (function (_super) {
+var InputTime = /** @class */ (function (_super) {
     __extends(InputTime, _super);
     function InputTime(init) {
         var _this = _super.call(this, "Input.Time", init) || this;
@@ -231,7 +231,7 @@ var InputTime = (function (_super) {
     return InputTime;
 }(Input));
 exports.InputTime = InputTime;
-var InputToggle = (function (_super) {
+var InputToggle = /** @class */ (function (_super) {
     __extends(InputToggle, _super);
     function InputToggle(init) {
         var _this = _super.call(this, "Input.Toggle", init) || this;
@@ -241,7 +241,7 @@ var InputToggle = (function (_super) {
     return InputToggle;
 }(Input));
 exports.InputToggle = InputToggle;
-var TextBlock = (function (_super) {
+var TextBlock = /** @class */ (function (_super) {
     __extends(TextBlock, _super);
     function TextBlock(init) {
         var _this = _super.call(this, "TextBlock") || this;

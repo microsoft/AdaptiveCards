@@ -10,7 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var AbstractTextFormatter = (function () {
+var AbstractTextFormatter = /** @class */ (function () {
     function AbstractTextFormatter(regularExpression) {
         this._regularExpression = regularExpression;
     }
@@ -25,7 +25,7 @@ var AbstractTextFormatter = (function () {
     };
     return AbstractTextFormatter;
 }());
-var DateFormatter = (function (_super) {
+var DateFormatter = /** @class */ (function (_super) {
     __extends(DateFormatter, _super);
     function DateFormatter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -42,7 +42,7 @@ var DateFormatter = (function (_super) {
     };
     return DateFormatter;
 }(AbstractTextFormatter));
-var TimeFormatter = (function (_super) {
+var TimeFormatter = /** @class */ (function (_super) {
     __extends(TimeFormatter, _super);
     function TimeFormatter() {
         return _super !== null && _super.apply(this, arguments) || this;
