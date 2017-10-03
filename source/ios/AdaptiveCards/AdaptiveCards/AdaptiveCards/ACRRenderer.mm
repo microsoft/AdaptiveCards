@@ -99,9 +99,12 @@ using namespace AdaptiveCards;
                                       baseActionElement:elem
                                           andHostConfig:config];
         [childview addArrangedSubview:button];
-        ACRSeparator *buttonSeparation = [[ACRSeparator alloc] initWithFrame:CGRectMake(0,0,config->actions.buttonSpacing, config->actions.buttonSpacing)
-                                                               withSuperview:childview toAxis:axis];
-        [childview addArrangedSubview:buttonSeparation];
+        if(elems.size() > 1)
+        {
+            ACRSeparator *buttonSeparation = [[ACRSeparator alloc] initWithFrame:CGRectMake(0,0,config->actions.buttonSpacing, config->actions.buttonSpacing)
+                                                                   withSuperview:childview toAxis:axis];
+            [childview addArrangedSubview:buttonSeparation];
+        }
     }
 
     [childview adjustHuggingForLastElement];

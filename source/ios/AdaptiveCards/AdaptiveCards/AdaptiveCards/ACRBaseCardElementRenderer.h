@@ -13,4 +13,5 @@
             //SeparationConfig strongSeparationConfig,
             //(Boolean) horizontalLine)
 
++ (void)applyLayoutStyle:(NSString *)styleFormat view1:(UIView *)view1 view2:(UIView *)view2;
 @end

@@ -76,7 +76,8 @@ using namespace AdaptiveCards;
         self.max = [formatter dateFromString:maxDateStr];
         self.placeholder = [formatter stringFromDate:date];
         self.text = self.placeholder;
-        self.allowsEditingTextAttributes = NO;        
+        self.allowsEditingTextAttributes = NO;
+        self.borderStyle = UITextBorderStyleLine;
 
         if(date)
         {

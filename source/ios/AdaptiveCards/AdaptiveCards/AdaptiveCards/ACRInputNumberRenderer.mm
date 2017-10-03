@@ -23,7 +23,7 @@
     return CardElementType::NumberInput;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -45,14 +45,15 @@
     
     [wrappingview setAlignmentForSubview: HorizontalAlignment::Left];
                                   
-    if(viewGroup)
-    {
-        [(UIStackView *)viewGroup addArrangedSubview: wrappingview];
-    }
+    [viewGroup addArrangedSubview: wrappingview];
     
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     
     numInput.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
+    
+    [ACRBaseCardElementRenderer applyLayoutStyle:format view1:wrappingview view2:numInput];
     
     [inputs addObject:numInput];
     
