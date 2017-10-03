@@ -43,7 +43,7 @@ export class LiveTileContainer extends HostContainer {
     }
 
     public getHostConfig(): HostConfig {
-        return new HostConfig({
+        return merge(new HostConfig(), {
             spacing: {
                 small: 3,
                 default: 8,
