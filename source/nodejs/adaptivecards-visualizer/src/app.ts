@@ -237,7 +237,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Windows Timeline",
-            new TimelineContainer(320, 180, "css/timeline.css")));
+            new TimelineContainer(320, 176, "css/timeline.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(

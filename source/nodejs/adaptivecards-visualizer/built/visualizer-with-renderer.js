@@ -23285,12 +23285,12 @@ var TimelineContainer = (function (_super) {
     TimelineContainer.prototype.getHostConfig = function () {
         return {
             spacing: {
-                small: 3,
-                default: 8,
+                small: 4,
+                default: 12,
                 medium: 20,
                 large: 30,
                 extraLarge: 40,
-                padding: 10
+                padding: 15
             },
             separator: {
                 lineThickness: 1,
@@ -23300,15 +23300,15 @@ var TimelineContainer = (function (_super) {
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
-                default: 13,
+                default: 14,
                 medium: 20,
-                large: 24,
+                large: 20,
                 extraLarge: 26
             },
             fontWeights: {
                 lighter: 200,
                 default: 400,
-                bolder: 600
+                bolder: 700
             },
             containerStyles: {
                 default: {
@@ -23392,7 +23392,7 @@ var TimelineContainer = (function (_super) {
                 title: {
                     color: adaptivecards_1.TextColor.Default,
                     size: adaptivecards_1.TextSize.Default,
-                    isSubtle: true,
+                    isSubtle: false,
                     weight: adaptivecards_1.TextWeight.Bolder,
                     wrap: false,
                     maxWidth: 150,
@@ -23400,7 +23400,7 @@ var TimelineContainer = (function (_super) {
                 value: {
                     color: adaptivecards_1.TextColor.Default,
                     size: adaptivecards_1.TextSize.Default,
-                    isSubtle: true,
+                    isSubtle: false,
                     weight: adaptivecards_1.TextWeight.Default,
                     wrap: true,
                 },
@@ -26620,7 +26620,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(new HostContainerOption("Microsoft Teams", new teams_1.TeamsContainer("css/teams.css")));
     hostContainerOptions.push(new HostContainerOption("Microsoft Outlook Actionable Messages", new outlook_1.OutlookContainer("css/outlook.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Toast Notification", new toast_1.ToastContainer(362, "css/toast.css")));
-    hostContainerOptions.push(new HostContainerOption("Windows Timeline", new timeline_1.TimelineContainer(320, 180, "css/timeline.css")));
+    hostContainerOptions.push(new HostContainerOption("Windows Timeline", new timeline_1.TimelineContainer(320, 176, "css/timeline.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Live Tile", new live_tile_1.LiveTileContainer(310, 310, "css/liveTile.css")));
     hostContainerOptions.push(new HostContainerOption("Skype", new skype_1.SkypeContainer(350, "css/skype.css")));
     hostContainerOptions.push(new HostContainerOption("WebChat (Bot Framework)", new webchat_1.WebChatContainer("css/webchat.css")));
