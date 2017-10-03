@@ -67,26 +67,20 @@
             break;
         }
     }
-
-    CGSize intrinsicSz = [txtInput intrinsicContentSize];
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
-    [wrappingview addSubview: txtInput];
-    
-    [wrappingview setAlignmentForSubview: HorizontalAlignment::Left];
-
-    [viewGroup addArrangedSubview: wrappingview];
-
-    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
+ 
+    [viewGroup addArrangedSubview: txtInput];
 
     txtInput.translatesAutoresizingMaskIntoConstraints = false;
 
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
 
-    [ACRBaseCardElementRenderer applyLayoutStyle:format view1:wrappingview view2:txtInput];
+    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(txtInput);
+    
+    [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
     [inputs addObject:txtInput];
 
-    return wrappingview;
+    return txtInput;
 }
 
 @end

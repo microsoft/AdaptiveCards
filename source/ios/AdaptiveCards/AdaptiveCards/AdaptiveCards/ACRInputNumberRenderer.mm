@@ -38,26 +38,26 @@
     numInput.min = numInputBlck->GetMin();
     numInput.max = numInputBlck->GetMax();
     
-    CGSize intrinsicSz = [numInput intrinsicContentSize];
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+    //CGSize intrinsicSz = [numInput intrinsicContentSize];
+    //ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
     
-    [wrappingview addSubview: numInput];
+    //[wrappingview addSubview: numInput];
     
-    [wrappingview setAlignmentForSubview: HorizontalAlignment::Left];
+    //[wrappingview setAlignmentForSubview: HorizontalAlignment::Left];
                                   
-    [viewGroup addArrangedSubview: wrappingview];
-    
-    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+    [viewGroup addArrangedSubview: numInput];
     
     numInput.translatesAutoresizingMaskIntoConstraints = NO;
     
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
     
-    [ACRBaseCardElementRenderer applyLayoutStyle:format view1:wrappingview view2:numInput];
+    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(numInput);
+    
+    [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
     
     [inputs addObject:numInput];
     
-    return wrappingview;
+    return numInput;
 }
 
 @end

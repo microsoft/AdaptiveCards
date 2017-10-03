@@ -31,19 +31,17 @@
    return viewGroup;
 }
 
-+ (void)applyLayoutStyle:(NSString *)styleFormat view1:(UIView *)view1 view2:(UIView *)view2
++ (void)applyLayoutStyle:(NSString *)styleFormat viewsMap:(NSDictionary *)viewsMap
 {
-    NSDictionary *dictionary = NSDictionaryOfVariableBindings(view1, view2);
-
     NSArray<NSLayoutConstraint *> *constraints;
 
-    for(NSString *key in dictionary)
+    for(NSString *key in viewsMap)
     {
         NSString *formatString = [[NSString alloc] initWithFormat:styleFormat, key];
         constraints = [NSLayoutConstraint constraintsWithVisualFormat:formatString
                                                               options:0
                                                               metrics:nil
-                                                                views:dictionary];
+                                                                views:viewsMap];
         for(NSLayoutConstraint *constraint in constraints)
         {
             constraint.active = YES;
