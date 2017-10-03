@@ -18,10 +18,10 @@ export class SpacingDefinition {
 }
 
 export class PaddingDefinition {
-    readonly top: Enums.Padding = Enums.Padding.None;
-    readonly right: Enums.Padding = Enums.Padding.None;
-    readonly bottom: Enums.Padding = Enums.Padding.None;
-    readonly left: Enums.Padding = Enums.Padding.None;
+    top: Enums.Padding = Enums.Padding.None;
+    right: Enums.Padding = Enums.Padding.None;
+    bottom: Enums.Padding = Enums.Padding.None;
+    left: Enums.Padding = Enums.Padding.None;
 
     constructor(obj?: any) {
         if (obj) {
