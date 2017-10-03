@@ -2,10 +2,10 @@ import * as Enums from "./enums";
 import * as Utils from "./utils";
 
 export class SpacingDefinition {
-    readonly left: number = 0;
-    readonly top: number = 0;
-    readonly right: number = 0;
-    readonly bottom: number = 0;
+    left: number = 0;
+    top: number = 0;
+    right: number = 0;
+    bottom: number = 0;
 
     constructor(obj?: any) {
         if (obj) {
@@ -43,8 +43,8 @@ export class PaddingDefinition {
 }
 
 export class TextColorDefinition {
-    readonly normal: string = "#0000FF";
-    readonly subtle: string = "#222222";
+    normal: string = "#0000FF";
+    subtle: string = "#222222";
 
     constructor(obj?: any) {
         if (obj) {
@@ -56,12 +56,12 @@ export class TextColorDefinition {
 
 export class ContainerStyleDefinition {
     backgroundColor?: string;
-    readonly fontColors: {
-        readonly default: TextColorDefinition,
-        readonly accent: TextColorDefinition,
-        readonly good: TextColorDefinition,
-        readonly warning: TextColorDefinition,
-        readonly attention: TextColorDefinition
+    fontColors: {
+        default: TextColorDefinition,
+        accent: TextColorDefinition,
+        good: TextColorDefinition,
+        warning: TextColorDefinition,
+        attention: TextColorDefinition
     };
 
     constructor(obj?: any) {
@@ -79,7 +79,7 @@ export class ContainerStyleDefinition {
 }
 
 export class AdaptiveCardConfig {
-    readonly allowCustomStyle: boolean = false;
+    allowCustomStyle: boolean = false;
 
     constructor(obj?: any) {
         if (obj) {
@@ -89,7 +89,7 @@ export class AdaptiveCardConfig {
 }
 
 export class ImageConfig {
-    readonly size: Enums.Size = Enums.Size.Medium;
+    size: Enums.Size = Enums.Size.Medium;
 
     constructor(obj?: any) {
         if (obj) {
@@ -105,8 +105,8 @@ export class ImageConfig {
 }
 
 export class ImageSetConfig {
-    readonly imageSize: Enums.Size = Enums.Size.Medium;
-    readonly maxImageHeight: number = 100;
+    imageSize: Enums.Size = Enums.Size.Medium;
+    maxImageHeight: number = 100;
 
     constructor(obj?: any) {
         if (obj) {
@@ -124,11 +124,11 @@ export class ImageSetConfig {
 }
 
 export class FactTextDefinition {
-    readonly size: Enums.TextSize = Enums.TextSize.Default;
-    readonly color: Enums.TextColor = Enums.TextColor.Default;;
-    readonly isSubtle: boolean = false;
-    readonly weight: Enums.TextWeight = Enums.TextWeight.Default;
-    readonly wrap: boolean = true;
+    size: Enums.TextSize = Enums.TextSize.Default;
+    color: Enums.TextColor = Enums.TextColor.Default;;
+    isSubtle: boolean = false;
+    weight: Enums.TextWeight = Enums.TextWeight.Default;
+    wrap: boolean = true;
 
     constructor(obj?: any) {
         if (obj) {
@@ -153,7 +153,7 @@ export class FactTextDefinition {
 
 export class FactTitleDefinition extends FactTextDefinition {
     maxWidth?: number = 150;
-    readonly weight: Enums.TextWeight = Enums.TextWeight.Bolder;
+    weight: Enums.TextWeight = Enums.TextWeight.Bolder;
 
     constructor(obj?: any) {
         super(obj);
@@ -167,7 +167,7 @@ export class FactTitleDefinition extends FactTextDefinition {
 export class FactSetConfig {
     readonly title: FactTitleDefinition = new FactTitleDefinition();
     readonly value: FactTextDefinition = new FactTextDefinition();
-    readonly spacing: number;
+    spacing: number = 10;
 
     constructor(obj?: any) {
         if (obj) {
@@ -179,9 +179,9 @@ export class FactSetConfig {
 }
 
 export class ShowCardActionConfig {
-    readonly actionMode: Enums.ShowCardActionMode = Enums.ShowCardActionMode.Inline;
-    readonly inlineTopMargin: number = 16;
-    readonly style?: Enums.ContainerStyle = Enums.ContainerStyle.Emphasis;
+    actionMode: Enums.ShowCardActionMode = Enums.ShowCardActionMode.Inline;
+    inlineTopMargin: number = 16;
+    style?: Enums.ContainerStyle = Enums.ContainerStyle.Emphasis;
 
     constructor(obj?: any) {
         if (obj) {
@@ -201,13 +201,13 @@ export class ShowCardActionConfig {
 }
 
 export class ActionsConfig {
-    readonly maxActions: number = 5;
-    readonly spacing: Enums.Spacing = Enums.Spacing.Default;
-    readonly buttonSpacing: number = 20;
+    maxActions: number = 5;
+    spacing: Enums.Spacing = Enums.Spacing.Default;
+    buttonSpacing: number = 20;
     readonly showCard: ShowCardActionConfig = new ShowCardActionConfig();
-    readonly preExpandSingleShowCardAction?: boolean = false;
-    readonly actionsOrientation: Enums.Orientation = Enums.Orientation.Horizontal;
-    readonly actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
+    preExpandSingleShowCardAction?: boolean = false;
+    actionsOrientation: Enums.Orientation = Enums.Orientation.Horizontal;
+    actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
 
     constructor(obj?: any) {
         if (obj) {
@@ -253,27 +253,27 @@ export class HostConfig {
         return new HostConfig(obj);
     }
 
-    readonly supportsInteractivity: boolean = true;
-    readonly fontFamily?: string = "Segoe UI";
-    readonly fontSizes: {
+    supportsInteractivity: boolean = true;
+    fontFamily?: string = "Segoe UI";
+    fontSizes: {
         small: 8,
         default: 10,
         medium: 12,
         large: 14,
         extraLarge: 16
     };
-    readonly fontWeights: {
+    fontWeights: {
         lighter: 200,
         default: 400,
         bolder: 600
     };
-    readonly imageSizes: {
+    imageSizes: {
         small: 40,
         medium: 80,
         large: 160
     };
-    readonly containerStyles = new ContainerStyleSet();
-    readonly spacing: {
+    readonly containerStyles: ContainerStyleSet = new ContainerStyleSet();
+    spacing: {
         small: 3,
         default: 8,
         medium: 20,
@@ -281,7 +281,7 @@ export class HostConfig {
         extraLarge: 40,
         padding: 20
     };
-    readonly separator: {
+    separator: {
         lineThickness: 1,
         lineColor: "#EEEEEE"
     }
