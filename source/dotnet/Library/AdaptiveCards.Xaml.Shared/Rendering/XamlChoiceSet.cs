@@ -14,9 +14,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlChoiceSet
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(ChoiceSet choiceSet, RenderContext context)
         {
-            ChoiceSet choiceSet = (ChoiceSet)element;
+            var chosen = choiceSet.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 #if WPF
             if (context.Config.SupportsInteractivity)
             {
@@ -43,7 +43,7 @@ namespace AdaptiveCards.Rendering
                     {
                         var uiCheckbox = new CheckBox();
                         uiCheckbox.Content = choice.Title;
-                        uiCheckbox.IsChecked = choice.IsSelected;
+                        uiCheckbox.IsChecked = chosen.Contains(choice.Value);
                         uiCheckbox.DataContext = choice;
                         uiCheckbox.Style = context.GetStyle("Adaptive.Input.ChoiceSet.CheckBox");
                         uiChoices.Items.Add(uiCheckbox);
@@ -57,14 +57,14 @@ namespace AdaptiveCards.Rendering
                             uiComboItem.Content = choice.Title;
                             uiComboItem.DataContext = choice;
                             uiComboBox.Items.Add(uiComboItem);
-                            if (choice.IsSelected)
+                            if (chosen.Contains(choice.Value))
                                 uiComboBox.SelectedItem = uiComboItem;
                         }
                         else
                         {
                             var uiRadio = new RadioButton();
                             uiRadio.Content = choice.Title;
-                            uiRadio.IsChecked = choice.IsSelected;
+                            uiRadio.IsChecked = chosen.Contains(choice.Value);
                             uiRadio.GroupName = choiceSet.Id;
                             uiRadio.DataContext = choice;
                             uiRadio.Style = context.GetStyle("Adaptive.Input.ChoiceSet.Radio");
@@ -76,13 +76,13 @@ namespace AdaptiveCards.Rendering
                 {
                     if (choiceSet.IsMultiSelect == true)
                     {
-                        List<string> values = new List<string>();
+                        string values = string.Empty;
                         foreach (var item in uiChoices.Items)
                         {
                             CheckBox checkBox = (CheckBox)item;
                             Choice choice = checkBox.DataContext as Choice;
                             if (checkBox.IsChecked == true)
-                                values.Add(choice.Value);
+                                values += (values == string.Empty ? "" : ",") + choice.Value;
                         }
                         return values;
                     }
@@ -155,7 +155,7 @@ namespace AdaptiveCards.Rendering
             container.Items.Add(textBlock);
 
             textBlock = TypedElementConverter.CreateElement<TextBlock>();
-            textBlock.Text = RendererUtilities.JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and ");
+            textBlock.Text = RendererUtilities.JoinString(choiceSet.Choices.Where(c => chosen.Contains(c.Value)).Select(c => c.Title).ToList(), ", ", " and ");
             textBlock.Color = TextColor.Accent;
             textBlock.Wrap = true;
             container.Items.Add(textBlock);

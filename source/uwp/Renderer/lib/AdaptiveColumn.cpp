@@ -4,16 +4,16 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     AdaptiveColumn::AdaptiveColumn()
     {
@@ -35,17 +35,31 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Size(HSTRING* size)
+    HRESULT AdaptiveColumn::get_Width(HSTRING* width)
     {
-        return UTF8ToHString(m_sharedColumn->GetSize(), size);
+        return UTF8ToHString(m_sharedColumn->GetWidth(), width);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Size(HSTRING size)
+    HRESULT AdaptiveColumn::put_Width(HSTRING width)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(size, out));
-        m_sharedColumn->SetSize(out);
+        RETURN_IF_FAILED(HStringToUTF8(width, out));
+        m_sharedColumn->SetWidth(out);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
+    {
+        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedColumn->GetStyle());
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
+    {
+        m_sharedColumn->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
         return S_OK;
     }
 
@@ -62,31 +76,64 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveColumn::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedColumn->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedColumn->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveColumn::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedColumn->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedColumn->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveColumn::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedColumn->GetSpeak(), speak);
+        *separator = m_sharedColumn->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedColumn->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Speak(HSTRING speak)
+    HRESULT AdaptiveColumn::put_Separator(boolean separator)
+    {
+        m_sharedColumn->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedColumn->SetSeparator(sharedSeparator);
+        */
+
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedColumn->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedColumn->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedColumn->SetId(out);
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
     }
 }}

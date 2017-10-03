@@ -17,6 +17,9 @@
              forSuperview:(UIView *) view
            withHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &) config;
 
++ (void) renderActionsSeparator:(UIView *)view
+                     hostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
+
 - (instancetype)initWithFrame:(CGRect)frame 
                 withSuperview:(UIView<ACRIContentHoldingView> *)superview
                        toAxis:(UILayoutConstraintAxis)huggingAxis;

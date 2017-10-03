@@ -1,9 +1,10 @@
 #pragma once
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include <wrl\async.h>
 #include "XamlBuilder.h"
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 #include "XamlHelpers.h"
+#include "RenderedAdaptiveCard.h"
 
 #define MakeAgileDispatcherCallback ::Microsoft::WRL::Callback<::Microsoft::WRL::Implements<::Microsoft::WRL::RuntimeClassFlags<::Microsoft::WRL::ClassicCom>, ::ABI::Windows::UI::Core::IDispatchedHandler, ::Microsoft::WRL::FtmBase>>
 
@@ -13,7 +14,7 @@ class RenderAsyncBase :
     public Microsoft::WRL::RuntimeClass<
     Microsoft::WRL::AsyncBase<ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*>>,
     ABI::Windows::Foundation::IAsyncOperation<T*>,
-    AdaptiveCards::XamlCardRenderer::IXamlBuilderListener>
+    AdaptiveCards::Uwp::IXamlBuilderListener>
 {
     InspectableClass(L"Windows.Foundation.IAsyncInfo", BaseTrust)
 
@@ -21,7 +22,7 @@ public:
     typedef ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*> HandlerType;
 
     RenderAsyncBase(
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card, AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer)
+        ABI::AdaptiveCards::Uwp::IAdaptiveCard* card, AdaptiveCards::Uwp::AdaptiveCardRenderer* renderer)
         : m_card(card), 
           m_renderer(renderer)
     {
@@ -32,8 +33,16 @@ public:
         THROW_IF_FAILED(coreWindowStatic->GetForCurrentThread(coreWindow.GetAddressOf()));
         THROW_IF_FAILED(coreWindow->get_Dispatcher(&m_dispatcher));
 
-        m_builder = Microsoft::WRL::Make<AdaptiveCards::XamlCardRenderer::XamlBuilder>();
-        m_builder->SetHostConfig(m_renderer->GetHostConfig());
+        m_builder = Microsoft::WRL::Make<AdaptiveCards::Uwp::XamlBuilder>();
+        THROW_IF_FAILED(m_builder->SetHostConfig(m_renderer->GetHostConfig()));
+        THROW_IF_FAILED(m_builder->SetOverrideDictionary(m_renderer->GetOverrideDictionary()));
+        UINT32 width = 0;
+        UINT32 height = 0;
+        bool explicitDimensions = m_renderer->GetFixedDimensions(&width, &height);
+        if (explicitDimensions)
+        {
+            THROW_IF_FAILED(m_builder->SetFixedDimensions(width, height));
+        }
     }
 
     // IAsyncOperation
@@ -66,9 +75,9 @@ public:
 protected:
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_rootXamlElement;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Core::ICoreDispatcher> m_dispatcher;
-    Microsoft::WRL::ComPtr<AdaptiveCards::XamlCardRenderer::XamlBuilder> m_builder;
-    Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard> m_card;
-    Microsoft::WRL::ComPtr<AdaptiveCards::XamlCardRenderer::XamlCardRenderer> m_renderer;
+    Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::XamlBuilder> m_builder;
+    Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCard> m_card;
+    Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::AdaptiveCardRenderer> m_renderer;
 
     HRESULT OnStart(void) override
     {
@@ -79,7 +88,9 @@ protected:
             m_builder->AddListener(this);
             try
             {
-                m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get());
+                ComPtr<AdaptiveCards::Uwp::RenderedAdaptiveCard> renderResult;
+                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Uwp::RenderedAdaptiveCard>(&renderResult));
+                m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get(), renderResult.Get());
             }
             catch (...)
             {
@@ -118,7 +129,7 @@ protected:
     }
 
 private:
-    std::function<ABI::Windows::UI::Xaml::IUIElement*(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard*)> m_dispatchFunction;
+    std::function<ABI::Windows::UI::Xaml::IUIElement*(ABI::AdaptiveCards::Uwp::IAdaptiveCard*)> m_dispatchFunction;
 };
 
 
@@ -128,8 +139,8 @@ class RenderCardAsXamlAsyncOperation :
 {
 public:
     RenderCardAsXamlAsyncOperation(
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card,
-        AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer)
+        ABI::AdaptiveCards::Uwp::IAdaptiveCard* card,
+        AdaptiveCards::Uwp::AdaptiveCardRenderer* renderer)
         : RenderAsyncBase<ABI::Windows::UI::Xaml::UIElement>(card, renderer)
     {
         AsyncBase::Start();

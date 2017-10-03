@@ -9,7 +9,8 @@
 package com.microsoft.adaptivecards.objectmodel;
 
 public final class ContainerStyle {
-  public final static ContainerStyle Normal = new ContainerStyle("Normal", AdaptiveCardObjectModelJNI.ContainerStyle_Normal_get());
+  public final static ContainerStyle None = new ContainerStyle("None");
+  public final static ContainerStyle Default = new ContainerStyle("Default");
   public final static ContainerStyle Emphasis = new ContainerStyle("Emphasis");
 
   public final int swigValue() {
@@ -46,7 +47,7 @@ public final class ContainerStyle {
     swigNext = this.swigValue+1;
   }
 
-  private static ContainerStyle[] swigValues = { Normal, Emphasis };
+  private static ContainerStyle[] swigValues = { None, Default, Emphasis };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

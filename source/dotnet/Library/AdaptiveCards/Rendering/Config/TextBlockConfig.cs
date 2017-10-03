@@ -10,22 +10,22 @@ namespace AdaptiveCards.Rendering.Config
 {
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class TextConfig
+    public class TextBlockConfig
     {
-        public TextConfig()
+        public TextBlockConfig()
         { }
 
         /// <summary>
         ///  The size of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextSize Size { get; set; } = TextSize.Normal;
+        public TextSize Size { get; set; } = TextSize.Default;
 
         /// <summary>
         ///  The weight of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextWeight Weight { get; set; } = TextWeight.Normal;
+        public TextWeight Weight { get; set; } = TextWeight.Default;
 
         /// <summary>
         ///  The color of the text
@@ -46,7 +46,7 @@ namespace AdaptiveCards.Rendering.Config
 
         public bool ShouldSerializeSize()
         {
-            return Size != TextSize.Normal;
+            return Size != TextSize.Default;
         }
 
         public bool ShouldSerializeColor()
@@ -57,43 +57,12 @@ namespace AdaptiveCards.Rendering.Config
 
         public bool ShouldSerializeWeight()
         {
-            return Weight != TextWeight.Normal;
+            return Weight != TextWeight.Default;
         }
 
         public bool ShouldSerializeIsSubtle()
         {
             return IsSubtle;
         }
-    }
-
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class TextBlockConfig
-    {
-        public TextBlockConfig()
-        { }
-
-        public TextSizeSeparations Separations { get; set; } = new TextSizeSeparations();
-    }
-
-
-
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-
-    public class TextSizeSeparations
-    {
-        public TextSizeSeparations()
-        {
-        }
-
-        public SeparationConfig Small { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        public SeparationConfig Normal { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        public SeparationConfig Medium { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        public SeparationConfig Large { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        public SeparationConfig ExtraLarge { get; set; } = new SeparationConfig() { Spacing = 10 };
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using AdaptiveCards.Rendering;
+﻿using AdaptiveCards;
+using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Config;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +15,15 @@ namespace Render2Html
     {
         static void Main(string[] args)
         {
+            bool supportsInteractivity = false;
+
+            const string supportsInteractivityFlag = "/supportsInteractivity";
+            if (args.Contains(supportsInteractivityFlag))
+            {
+                supportsInteractivity = true;
+                args = args.Except(new string[] { supportsInteractivityFlag }).ToArray();
+            }
+
             Console.WriteLine(@"<html><head>");
             Console.WriteLine(@"<style>");
             Console.WriteLine(@".cardcontainer { ");
@@ -38,16 +48,44 @@ namespace Render2Html
                 {
                     Console.WriteLine("<hr/>");
                     Console.WriteLine($"<h1>{file}</h1>");
-                    var card = JsonConvert.DeserializeObject<AdaptiveCards.AdaptiveCard>(File.ReadAllText(file));
-                    HtmlRenderer renderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = false });
-                    var result = renderer.RenderAdaptiveCard(card);
-                    Console.WriteLine($"<div class='cardcontainer'>{result.ToString()}</div>");
+
+                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(File.ReadAllText(file));
+                    if (parseResult.Card != null)
+                    {
+                        AdaptiveCard card = parseResult.Card;
+
+                        AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(new HostConfig()
+                        {
+                            SupportsInteractivity = supportsInteractivity
+                        });
+
+                        Console.WriteLine($"<h3>Renderer schema version: {renderer.SupportedSchemaVersion}</h3>");
+
+                        RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
+
+                        if (renderedCard.HtmlTag != null)
+                        {
+                            Console.WriteLine($"<div class='cardcontainer'>{renderedCard.HtmlTag.ToString()}</div>");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"<p>Rendering failed</p>");
+                        }
+                    }
                 }
                 catch (Exception err)
                 {
                     Console.WriteLine($"{file} failed: {err.Message}<br/>");
                 }
             }
+
+#if DEBUG
+            // Leave the console up while debugging
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                Console.ReadLine();
+            }
+#endif
         }
     }
 }

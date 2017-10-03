@@ -1,31 +1,54 @@
 #include "pch.h"
 #include "AdaptiveCard.h"
+#include "AdaptiveCardParseResult.h"
 
 #include <json.h>
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
 
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::CreateCardFromJson(HSTRING adaptiveJson, IAdaptiveCard** card) noexcept try
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {
-        *card = nullptr;
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
-        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(adaptiveJsonString);
-        return MakeAndInitialize<AdaptiveCard>(card, sharedAdaptiveCard);
+        return FromJsonString(adaptiveJsonString, parseResult);
     } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
+
+        std::string adaptiveJsonString;
+        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
+
+        return FromJsonString(adaptiveJsonString, parseResult);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveCardParseResult** parseResult)
+    {
+        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString);
+
+        ComPtr<IAdaptiveCard> adaptiveCard;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(parseResult, adaptiveCard.Get()));
+        return S_OK;
+    }
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
@@ -157,6 +180,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
+    {
+        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedAdaptiveCard->GetStyle());
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
+    {
+        m_sharedAdaptiveCard->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Speak(HSTRING* speak)
     {
         return UTF8ToHString(m_sharedAdaptiveCard->GetSpeak(), speak);
@@ -172,8 +209,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::ToJsonString(HSTRING* jsonString)
+    HRESULT AdaptiveCard::ToJson(IJsonObject** result)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->Serialize(), jsonString);
+        return StringToJsonObject(m_sharedAdaptiveCard->Serialize(), result);
     }
 }}

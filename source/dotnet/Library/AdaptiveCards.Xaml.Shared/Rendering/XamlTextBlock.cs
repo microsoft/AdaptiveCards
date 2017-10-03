@@ -22,35 +22,34 @@ namespace AdaptiveCards.Rendering
 
     public static partial class XamlTextBlock
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(TextBlock textBlock, RenderContext context)
         {
-            TextBlock textBlock = (TextBlock)element;
             var uiTextBlock = CreateControl(textBlock, context);
 
-            ColorConfig colorOption;
+            FontColorConfig colorOption;
             switch (textBlock.Color)
             {
                 case TextColor.Accent:
-                    colorOption = context.Config.Colors.Accent;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Accent;
                     break;
                 case TextColor.Attention:
-                    colorOption = context.Config.Colors.Attention;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Attention;
                     break;
                 case TextColor.Dark:
-                    colorOption = context.Config.Colors.Dark;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Dark;
                     break;
                 case TextColor.Good:
-                    colorOption = context.Config.Colors.Good;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Good;
                     break;
                 case TextColor.Light:
-                    colorOption = context.Config.Colors.Light;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Light;
                     break;
                 case TextColor.Warning:
-                    colorOption = context.Config.Colors.Warning;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Warning;
                     break;
                 case TextColor.Default:
                 default:
-                    colorOption = context.Config.Colors.Default;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Default;
                     break;
             }
 
@@ -73,9 +72,9 @@ namespace AdaptiveCards.Rendering
                 case TextSize.ExtraLarge:
                     uiTextBlock.FontSize = context.Config.FontSizes.ExtraLarge;
                     break;
-                case TextSize.Normal:
+                case TextSize.Default:
                 default:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Normal;
+                    uiTextBlock.FontSize = context.Config.FontSizes.Default;
                     break;
             }
 

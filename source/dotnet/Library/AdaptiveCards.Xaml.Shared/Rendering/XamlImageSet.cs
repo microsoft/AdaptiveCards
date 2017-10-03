@@ -11,9 +11,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlImageSet
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(ImageSet imageSet, RenderContext context)
         {
-            ImageSet imageSet = (ImageSet)element;
 #if WPF
             var uiImageSet = new ListBox();
             ScrollViewer.SetHorizontalScrollBarVisibility(uiImageSet, ScrollBarVisibility.Disabled);

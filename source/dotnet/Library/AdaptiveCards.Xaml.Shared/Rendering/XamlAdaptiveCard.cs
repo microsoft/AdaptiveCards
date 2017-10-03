@@ -21,24 +21,23 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlAdaptiveCard
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveCard card, RenderContext context)
         {
-            AdaptiveCard card = (AdaptiveCard)element;
             var outerGrid = new Grid();
             outerGrid.Style = context.GetStyle("Adaptive.Card");
 #if WPF
             //TODO for Xamarin
-            outerGrid.Background = context.GetColorBrush(context.Config.AdaptiveCard.BackgroundColor);
+            outerGrid.Background = context.GetColorBrush(context.Config.ContainerStyles.Default.BackgroundColor);
 #endif
 
             outerGrid.SetBackgroundSource(card.BackgroundImage,context);
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
-            grid.Margin = new Thickness(context.Config.AdaptiveCard.Padding.Left,
-                context.Config.AdaptiveCard.Padding.Top,
-                context.Config.AdaptiveCard.Padding.Right,
-                context.Config.AdaptiveCard.Padding.Bottom);
+            grid.Margin = new Thickness(context.Config.Spacing.Padding,
+                context.Config.Spacing.Padding,
+                context.Config.Spacing.Padding,
+                context.Config.Spacing.Padding);
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 

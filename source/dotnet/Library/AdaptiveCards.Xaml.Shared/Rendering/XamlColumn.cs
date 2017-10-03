@@ -20,9 +20,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlColumn
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(Column column, RenderContext context)
         {
-            Column column = (Column)element;
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Column");
 

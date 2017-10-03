@@ -3,9 +3,10 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
     {
@@ -36,39 +37,47 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::Submit;
+        *actionType = ABI::AdaptiveCards::Uwp::ActionType::Submit;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveSubmitAction::get_DataJson(IJsonObject** data)
     {
-        return UTF8ToHString(m_sharedSubmitAction->GetSpeak(), speak);
+        return StringToJsonObject(m_sharedSubmitAction->GetDataJson(), data);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_Speak(HSTRING speak)
+    HRESULT AdaptiveSubmitAction::put_DataJson(IJsonObject* data)
+    {
+        std::string jsonAsString;
+        RETURN_IF_FAILED(JsonObjectToString(data, jsonAsString));
+        m_sharedSubmitAction->SetDataJson(jsonAsString);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedSubmitAction->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedSubmitAction->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedSubmitAction->SetId(out);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_DataJson(HSTRING* data)
+    HRESULT AdaptiveSubmitAction::get_ActionTypeString(HSTRING* type)
     {
-        return UTF8ToHString(m_sharedSubmitAction->GetDataJson(), data);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_DataJson(HSTRING data)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(data, out));
-        m_sharedSubmitAction->SetDataJson(out);
-        return S_OK;
+        ::ActionType typeEnum;
+        RETURN_IF_FAILED(get_ActionType(&typeEnum));
+        return ProjectedActionTypeToHString(typeEnum, type);
     }
 }}

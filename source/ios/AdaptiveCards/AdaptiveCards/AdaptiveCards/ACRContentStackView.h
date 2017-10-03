@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ACRIContentHoldingView.h"
+#import "SharedAdaptiveCard.h"
 
 @interface ACRContentStackView:UIView<ACRIContentHoldingView>
 

@@ -15,12 +15,12 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-using AdaptiveCards.XamlCardRenderer;
-using XamlCardVisualizer.ViewModel;
+using AdaptiveCards.Uwp;
+using AdaptiveCardVisualizer.ViewModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace XamlCardVisualizer
+namespace AdaptiveCardVisualizer
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -90,10 +90,38 @@ namespace XamlCardVisualizer
 
         private void SetIsCompactOnAppBarButtons(bool isCompact)
         {
-            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<AppBarButton>())
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ICommandBarElement>())
             {
                 button.IsCompact = isCompact;
             }
+        }
+
+        private void AppBarHostConfigEditor_Click(object sender, RoutedEventArgs e)
+        {
+            SetIsInHostConfigEditor(!IsInHostConfigEditor);
+        }
+
+        public bool IsInHostConfigEditor { get; private set; }
+
+        private void SetIsInHostConfigEditor(bool isInHostConfigEditor)
+        {
+            IsInHostConfigEditor = isInHostConfigEditor;
+
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ButtonBase>())
+            {
+                if (button != AppBarHostConfigEditor)
+                {
+                    button.IsEnabled = !isInHostConfigEditor;
+                }
+            }
+
+            HostConfigEditorView.Visibility = isInHostConfigEditor ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void HostConfigTransparentBackdrop_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AppBarHostConfigEditor.IsChecked = false;
+            SetIsInHostConfigEditor(false);
         }
     }
 }

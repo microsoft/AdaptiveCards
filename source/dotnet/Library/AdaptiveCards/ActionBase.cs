@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -6,7 +7,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     Base of Action types
     /// </summary>
-    public class ActionBase : TypedElement
+    public abstract class ActionBase : TypedElement
     {
         /// <summary>
         ///     Title of the action
@@ -24,6 +25,7 @@ namespace AdaptiveCards
 #if NET452
         [XmlElement]
 #endif
+        [Obsolete("ActionBase.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
     }
 }

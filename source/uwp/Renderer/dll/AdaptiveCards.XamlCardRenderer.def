@@ -1,6 +1,0 @@
-LIBRARY "AdaptiveCards.XamlCardRenderer.dll"
-
-EXPORTS
-    DllGetClassObject           PRIVATE
-    DllCanUnloadNow             PRIVATE
-    DllGetActivationFactory     PRIVATE

@@ -1,13 +1,12 @@
 #include "pch.h"
 #include "Util.h"
-#include "AdaptiveSpacingDefinition.h"
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
     {
@@ -21,41 +20,31 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveCards::XamlCardRenderer::ActionMode* value)
+    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveCards::Uwp::ActionMode* value)
     {
-        *value = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ActionMode>(m_sharedShowCardActionConfig.actionMode);
+        *value = static_cast<ABI::AdaptiveCards::Uwp::ActionMode>(m_sharedShowCardActionConfig.actionMode);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::XamlCardRenderer::ActionMode value)
+    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Uwp::ActionMode value)
     {
         m_sharedShowCardActionConfig.actionMode = static_cast<AdaptiveCards::ActionMode>(value);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::get_BackgroundColor(Color* value)
+        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
     {
-        return GetColorFromString(m_sharedShowCardActionConfig.backgroundColor, value);
+        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedShowCardActionConfig.style);
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_BackgroundColor(Color /*value*/)
+        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
     {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::get_Padding(IAdaptiveSpacingDefinition** spacingDefinition)
-    {
-        return MakeAndInitialize<AdaptiveSpacingDefinition>(spacingDefinition, m_sharedShowCardActionConfig.padding);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_Padding(IAdaptiveSpacingDefinition* /*value*/)
-    {
-        return E_NOTIMPL;
+        m_sharedShowCardActionConfig.style = static_cast<AdaptiveCards::ContainerStyle>(style);
+        return S_OK;
     }
 
     _Use_decl_annotations_

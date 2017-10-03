@@ -19,9 +19,11 @@
                                                green:122.0/255.0
                                                 blue:1.0
                                                alpha:1.0]];
-    
-    CGSize contentSize = [button.titleLabel intrinsicContentSize];    
-    button.frame = CGRectMake(0, 0, contentSize.width , contentSize.height);
+
+    CGSize contentSize = [button.titleLabel intrinsicContentSize];
+    button.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    button.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
+
     return button;
 }
 @end

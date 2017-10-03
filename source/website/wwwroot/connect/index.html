@@ -1,97 +1,192 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Adaptive Cards</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  
+  <title>Connect | Adaptive Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Connect">
+<meta property="og:url" content="http://adaptivecards.io/connect/index.html">
+<meta property="og:site_name" content="Adaptive Cards">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Connect">
+  
+  
+  
+  
+    <link rel="icon" href="/content/favicon.ico">
+  
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/content/fonts.css">
-    <link rel="stylesheet" href="/content/shared.css">
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <style>
-        .w3-row {
-            margin-top: 20px;
-        }
-    </style>
+
+  <link rel="stylesheet" href="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/css/500aeba2527cd489eed0.site.css ">
+  <link rel="stylesheet" href="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/css/500aeba2527cd489eed0.conceptual.css ">
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+
+  
+    <link rel="stylesheet" href="/css/style.css">
+  
+
+  <link rel="stylesheet" href="/visualizer/css/outlook.css">
+
+  
+
+
+  <link rel="stylesheet" href="https://statics-uhf-eus.akamaized.net/west-european/shell/_scrf/css/themes=default.device=uplevel_web_pc_webkit_chrome/59-bc11b0/dd-86b6b8/a4-a4a73d/a9-795ebf/34-34de2e/4b-2601fd?ver=2.0" type="text/css" media="all" />
+
 </head>
+
+
 <body>
-    <!-- Nav bar-->
-    <div class="w3-top">
-        <div class="w3-bar w3-black">
-            <a href="javascript:void(0);"><img src="/content/icons_transparent/white-48.png" class="logo" /></a>
-            <a href="/" class="w3-bar-item w3-button ">Adaptive Cards</a>
-            <a href="/documentation" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Documentation</a>
-            <a href="/explorer" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Schema Explorer</a>
-            <a href="/visualizer" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Visualizer</a>
-            <a href="/samples" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Samples</a>
-            <a href="/connect" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Connect</a>
-            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-hide-large w3-right " onclick="showNav()">&#9776;</a>
 
-        </div>
-    </div>
-    <!-- nav bar small-->
-    <div id="navBarSmall" class="w3-bar-block w3-black w3-hide w3-hide-large ">
-        <a href="/" class="w3-bar-item w3-button ">Adaptive Cards</a>
-        <a href="/documentation" class="w3-bar-item w3-button ">Documentation</a>
-        <a href="/explorer" class="w3-bar-item w3-button ">Schema Explorer</a>
-        <a href="/visualizer" class="w3-bar-item w3-button ">Visualizer</a>
-        <a href="/samples" class="w3-bar-item w3-button ">Samples</a>
-        <a href="/connect" class="w3-bar-item w3-button ">Connect</a>
-    </div>
-    <script>
-        function showNav() {
-            var x = document.getElementById("navBarSmall");
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-            } else {
-                x.className = x.className.replace(" w3-show", "");
-            }
-        }
-    </script>
+<section id="headerArea" data-m='{"cN":"headerArea","cT":"Area_coreuiArea","id":"a1Body","sN":1,"aN":"Body"}'>
+ <div id="headerRegion" data-region-key="headerregion" data-m='{"cN":"headerRegion","cT":"Region_coreui-region","id":"r1a1","sN":1,"aN":"a1"}' >
+ 
+ <div id="headerUniversalHeader" data-m='{"cN":"headerUniversalHeader","cT":"Module_coreui-universalheader","id":"m1r1a1","sN":1,"aN":"r1a1"}' data-module-id="Category|headerRegion|headerRegion|headerUniversalHeader|coreui-universalheader">
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <header role="banner" class="c-universal-header context-uhf no-js " itemscope="itemscope" data-header-footprint="en-us/MSDocsAdaptivecards/MSDocsAdaptivecardsheader" itemtype="http://schema.org/Organization">
+ <div class="theme-light js-global-head f-closed " ms.pgarea='Universal Header'>
+ <div>
+ <button class="c-action-trigger c-glyph glyph-global-nav-button" aria-label="Header navigation menu" aria-expanded="false" ms.title='Mobile menu button'></button>
+ <button class="c-action-trigger c-glyph glyph-arrow-htmllegacy" aria-expanded="false" ms.title='Close Search'></button>
+ <a id="uhfLogo" class="c-logo" itemprop="url" href="https://www.microsoft.com" aria-label="Microsoft" ms.cmpgrp='GlobalNav_Logo'>
+ <img itemprop="logo" itemscope="itemscope" class="c-image" alt="Microsoft" src="https://assets.onestore.ms/cdnfiles/external/uhf/long/9a49a7e9d8e881327e81b9eb43dabc01de70a9bb/images/microsoft-gray.png" />
+ <span>Microsoft</span>
+ </a>
+ <div class="f-mobile-title">
+ <button class="c-action-trigger c-glyph glyph-chevron-left" aria-label="See more menu options" ms.title='Mobile back button'></button>
+ <span data-global-title="Microsoft home" class="js-mobile-title">Adaptive Cards</span>
+ <button class="c-action-trigger c-glyph glyph-chevron-right" aria-label="See more menu options" ms.title='Mobile forward button'></button>
+ </div>
+ 
+ </div>
+ 
+ 
+ </div>
+ <div class="theme-dark brand-neutral js-cat-head" itemprop="brand" itemscope="itemscope" itemtype="http://schema.org/Brand" ms.cmpgrp='UHF category nav'>
+ 
+ <div>
+ <a id="uhfCatLogo" class="c-logo" href="http://adaptivecards.io" aria-label="Adaptive Cards" itemprop="url" ms.title='Adaptive Cards'>
+ <span>Adaptive Cards</span>
+ </a>
+ 
+ <button class="c-action-trigger c-glyph glyph-chevron-left" aria-label="Scroll left" title="Scroll left" ms.title='Previous'></button>
+ 
+ <button class="c-action-trigger c-glyph glyph-chevron-right" aria-label="Scroll right" title="Scroll right" ms.title='Next'></button>
+ <nav id="uhf-c-nav" role="navigation" aria-labelledby="uhfCatLogo" >
+ 
+ <a id="shellmenu_0" class="c-uhf-nav-link" href="https://docs.microsoft.com/en-us/adaptive-cards" ms.title='Documentation'>Documentation</a><a id="shellmenu_1" class="c-uhf-nav-link" href="http://adaptivecards.io/explorer/" ms.title='Schema Explorer'>Schema Explorer</a><a id="Visualizer" class="c-uhf-nav-link" href="http://adaptivecards.io/visualizer/" ms.title='Visualizer'>Visualizer</a><a id="shellmenu_3" class="c-uhf-nav-link" href="http://adaptivecards.io/samples/" ms.title='Samples'>Samples</a><a id="shellmenu_4" class="c-uhf-nav-link" href="http://adaptivecards.io/connect/" ms.title='Connect'>Connect</a> </nav>
+ 
+ </div>
+ 
+ 
+ 
+ </div>
+ 
+ 
+ </header>
+ 
+ 
+ </div>
+ </div>
+ 
+ </section>
 
-    <div class="w3-container" id="topic" style="margin-top:200px;margin-left:auto;margin-right:auto;max-width:1200px;">
-        <h1>Connect with us</h1>
-        <p class="banner-text">Tell us what’s working well, what you want to see added or improved, and find out about new updates.</p>
-        <div class="w3-row">
-            <div class="w3-third" style="margin-top:20px;">
-                <div class="w3-container w3-cell">
-                    <a href="https://github.com/Microsoft/AdaptiveCards/issues" target="_blank"><img src="/content/connect/github.png" style="display:flex" /></a>
-                </div>
-                <div class="w3-container w3-cell">
-                    <a href="https://github.com/Microsoft/AdaptiveCards/issues"><h2>GitHub</h2></a>
-                    <div>Found a bug, or want to give us feedback? <a href="https://github.com/Microsoft/AdaptiveCards/issues">Tell us on GitHub</a>.</div>
-                </div>
+<div id="mainContent">
+  
+<div class="w3-container" id="topic" style="margin-top:200px;margin-left:auto;margin-right:auto;max-width:1200px;">
+    <h1>Connect with us</h1>
+    <p class="banner-text">Tell us what’s working well, what you want to see added or improved, and find out about new updates.</p>
+    <div class="w3-row">
+        <div class="w3-third" style="margin-top:20px;">
+            <div class="w3-container w3-cell">
+                <a href="https://github.com/Microsoft/AdaptiveCards/issues" target="_blank"><img src="/content/connect/github.png" style="display:flex" /></a>
             </div>
-            <div class="w3-third" style="margin-top:20px;">
-                <div class="w3-container w3-cell">
-                    <a class="" href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank"><img src="/content/connect/stackoverflow.png" style="display:flex" / /></a>
-                </div>
-                <div class="w3-container w3-cell">
-                    <a href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank"><h2>Stack Overflow</h2></a>
-                    <div>Engage with your peers and ask questions about Adaptive Cards on <a href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank">Stack Overflow</a> using the tag <b>adaptive-cards.</b></div>
-                </div>
+            <div class="w3-container w3-cell">
+                <a href="https://github.com/Microsoft/AdaptiveCards/issues"><h2>GitHub</h2></a>
+                <div>Found a bug, or want to give us feedback? <a href="https://github.com/Microsoft/AdaptiveCards/issues">Tell us on GitHub</a>.</div>
+            </div>
+        </div>
+        <div class="w3-third" style="margin-top:20px;">
+            <div class="w3-container w3-cell">
+                <a class="" href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank"><img src="/content/connect/stackoverflow.png" style="display:flex" / /></a>
+            </div>
+            <div class="w3-container w3-cell">
+                <a href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank"><h2>Stack Overflow</h2></a>
+                <div>Engage with your peers and ask questions about Adaptive Cards on <a href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank">Stack Overflow</a> using the tag <b>adaptive-cards.</b></div>
+            </div>
+        </div>
+        <!--<div class="callout col-md-4">
+            <a class="icon blog img-circle" href="http://blogs.msdn.com/b/typescript/" target="_blank"><img src="content/connect/blog.png" /></a>
+            <a href="http://blogs.msdn.com/b/typescript/" target="_blank"><h2>Blog</h2></a>
+            <div class="text">Learn about the latest TypeScript developments via our <a href="http://blogs.msdn.com/b/typescript/" target="_blank">blog</a>!</div>
+        </div>-->
+        <div class="w3-third" style="margin-top:20px;">
+            <div class="w3-container w3-cell">
+                <a class="" href="http://twitter.com/#!/search/realtime/%23adaptivecards" target="_blank"><img src="/content/connect/twitter.png" style="display:flex" / /></a>
+            </div>
+            <div class="w3-container w3-cell">
+                <a href="http://twitter.com/#!/search/realtime/%23adaptivecards" target="_blank"><h2>Twitter</h2></a>
+                <div class="">Stay up to date via the #adaptivecards tag!</div>
             </div>
             <!--<div class="callout col-md-4">
-                <a class="icon blog img-circle" href="http://blogs.msdn.com/b/typescript/" target="_blank"><img src="content/connect/blog.png" /></a>
-                <a href="http://blogs.msdn.com/b/typescript/" target="_blank"><h2>Blog</h2></a>
-                <div class="text">Learn about the latest TypeScript developments via our <a href="http://blogs.msdn.com/b/typescript/" target="_blank">blog</a>!</div>
-            </div>-->
-            <div class="w3-third" style="margin-top:20px;">
-                <div class="w3-container w3-cell">
-                    <a class="" href="http://twitter.com/#!/search/realtime/%23adaptivecards" target="_blank"><img src="/content/connect/twitter.png" style="display:flex" / /></a>
-                </div>
-                <div class="w3-container w3-cell">
-                    <a href="http://twitter.com/#!/search/realtime/%23adaptivecards" target="_blank"><h2>Twitter</h2></a>
-                    <div class="">Stay up to date via the #adaptivecards tag!</div>
-                </div>
-                <!--<div class="callout col-md-4">
-            <a class="icon friends-of-typescript img-circle" href="/community/friends.html"><img src="content/connect/friends.png" /></a>
-            <a href="/community/friends.html"><h2>Friends of TypeScript</h2></a>
-            <div class="text">Learn about <a href="/community/friends.html">who's already improving their workflows</a> with TypeScript!</div>
-        </div>-->
-            </div>
+        <a class="icon friends-of-typescript img-circle" href="/community/friends.html"><img src="content/connect/friends.png" /></a>
+        <a href="/community/friends.html"><h2>Friends of TypeScript</h2></a>
+        <div class="text">Learn about <a href="/community/friends.html">who's already improving their workflows</a> with TypeScript!</div>
+    </div>-->
         </div>
+    </div>
+</div>
+        
+
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="/js/sticky-sidebar.js"></script>
+
+
+<script src="https://statics-uhf-eus.akamaized.net/shell/_scrf/js/themes=default/87-0bce27/f8-3b6b36/ea-962395/79-8a148a/f2-1d184e/90-1e650e/64-5bbd4a/5d-f9c916/e8-497be9/fb-9086e3/d7-748562/71-cabf1b/45-ab2026/65-eb25b1/21-de971d/df-f8d789/ea-955802/8b-daf680/7d-dec6ac/21-0be778/4a-4774eb/8c-131ebd/1f-2c26b9/75-61dbdc/fe-16c6b5/fe-7734a7/7a-6864d5/53-234da1/e2-5d02cf/6e-aaef0a?ver=2.0&iife=1"></script><script src="https://mem.gfx.ms/meversion?partner=MSDocsAdaptivecards&market=en-us"></script>
+
+
+
+
+  <script src="/js/adaptive-cards.js"></script>
+  
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+
+  // Used to toggle the menu on small screens when clicking on the menu button
+  function toggleNav() {
+      var x = document.getElementById("nav");
+      if (x.className.indexOf("w3-show") == -1) {
+          x.className += " w3-show";
+      } else { 
+          x.className = x.className.replace(" w3-show", "");
+      }
+  }
+</script>
 
 </body>
 </html>

@@ -12,11 +12,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using XamlCardVisualizer.ViewModel;
+using AdaptiveCardVisualizer.ViewModel;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace XamlCardVisualizer
+namespace AdaptiveCardVisualizer
 {
     public sealed partial class TabView : UserControl
     {

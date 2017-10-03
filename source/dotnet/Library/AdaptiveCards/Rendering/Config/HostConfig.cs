@@ -13,36 +13,27 @@ namespace AdaptiveCards.Rendering.Config
     {
         public HostConfig() { }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionConfig Actions { get; set; } = new ActionConfig();
+        public static HostConfigParseResult FromJson(string json)
+        {
+            HostConfig hostConfig = null;
 
+            try
+            {
+                hostConfig = JsonConvert.DeserializeObject<HostConfig>(json);
+            }
+            catch { }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveCardConfig AdaptiveCard { get; set; } = new AdaptiveCardConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ChoiceSetConfig ChoiceSet { get; set; } = new ChoiceSetConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorsConfig Colors { get; set; } = new ColorsConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColumnConfig Column { get; set; } = new ColumnConfig();
+            return new HostConfigParseResult(hostConfig);
+        }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColumnSetConfig ColumnSet { get; set; } = new ColumnSetConfig();
+        public ActionsConfig Actions { get; set; } = new ActionsConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ContainerConfig Container { get; set; } = new ContainerConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public DateInputConfig DateInput { get; set; } = new DateInputConfig();
+        public ContainerStylesConfig ContainerStyles { get; set; } = new ContainerStylesConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ImageSizesConfig ImageSizes { get; set; } = new ImageSizesConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ImageConfig Image { get; set; } = new ImageConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ImageSetConfig ImageSet { get; set; } = new ImageSetConfig();
@@ -57,135 +48,42 @@ namespace AdaptiveCards.Rendering.Config
         public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public NumberInputConfig NumberInput { get; set; } = new NumberInputConfig();
+        public SpacingsConfig Spacing { get; set; } = new SpacingsConfig();
 
-
-        /// <summary>
-        /// Separation settings 
-        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public SeparationConfig StrongSeparation { get; set; } = new SeparationConfig() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
+        public SeparatorConfig Separator { get; set; } = new SeparatorConfig();
 
         /// <summary>
         /// Toggles whether or not to render inputs and actions
         /// </summary>
         public bool SupportsInteractivity { get; set; } = true;
-        
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextBlockConfig TextBlock { get; set; } = new TextBlockConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextInputConfig TextInput { get; set; } = new TextInputConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TimeInputConfig TimeInput { get; set; } = new TimeInputConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ToggleInputConfig ToggleInput { get; set; } = new ToggleInputConfig();
-
-        public virtual SeparationConfig GetSeparationForElement(TypedElement element, bool strong)
+        public int GetSpacing(Spacing spacing)
         {
-            if (strong)
+            switch (spacing)
             {
-                return this.StrongSeparation;
-            }
+                case AdaptiveCards.Spacing.Small:
+                    return Spacing.Small;
 
-            switch (element.Type)
-            {
-                case AdaptiveCards.TextBlock.TYPE:
-                    {
-                        TextBlock tb = (TextBlock)element;
-                        switch (tb.Size)
-                        {
-                            case TextSize.Small:
-                                return this.TextBlock.Separations.Small;
-                            case TextSize.Normal:
-                                return this.TextBlock.Separations.Normal;
-                            case TextSize.Medium:
-                                return this.TextBlock.Separations.Medium;
-                            case TextSize.Large:
-                                return this.TextBlock.Separations.Large;
-                            case TextSize.ExtraLarge:
-                                return this.TextBlock.Separations.ExtraLarge;
-                        }
-                    }
-                    break;
+                case AdaptiveCards.Spacing.Default:
+                    return Spacing.Default;
 
-                case AdaptiveCards.Image.TYPE:
-                    return this.Image.Separation;
+                case AdaptiveCards.Spacing.Medium:
+                    return Spacing.Medium;
 
-                case AdaptiveCards.Column.TYPE:
-                    return this.Column.Separation;
+                case AdaptiveCards.Spacing.Large:
+                    return Spacing.Large;
 
-                case AdaptiveCards.ColumnSet.TYPE:
-                    return this.ColumnSet.Separation;
+                case AdaptiveCards.Spacing.ExtraLarge:
+                    return Spacing.ExtraLarge;
 
-                case AdaptiveCards.Container.TYPE:
-                    return this.Container.Separation;
-
-                case AdaptiveCards.FactSet.TYPE:
-                    return this.FactSet.Separation;
-
-                case AdaptiveCards.ImageSet.TYPE:
-                    return this.ImageSet.Separation;
-
-                case AdaptiveCards.ActionSet.TYPE:
-                    return this.Actions.Separation;
-
-                case AdaptiveCards.ChoiceSet.TYPE:
-                    return this.ChoiceSet.Separation;
-
-                case AdaptiveCards.TextInput.TYPE:
-                    return this.TextInput.Separation;
-
-                case AdaptiveCards.NumberInput.TYPE:
-                    return this.NumberInput.Separation;
-
-                case AdaptiveCards.TimeInput.TYPE:
-                    return this.TimeInput.Separation;
-
-                case AdaptiveCards.DateInput.TYPE:
-                    return this.DateInput.Separation;
-
-                case AdaptiveCards.ToggleInput.TYPE:
-                    return this.ToggleInput.Separation;
+                case AdaptiveCards.Spacing.Padding:
+                    return Spacing.Padding;
 
                 default:
-                    break;
+                    throw new NotImplementedException();
             }
-            return new SeparationConfig() { Spacing = 10 };
         }
-    }
-
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class SpacingDefinition
-    {
-        public SpacingDefinition() { }
-
-        public SpacingDefinition(int allMargin)
-        {
-            Left = Right = Top = Bottom = allMargin;
-        }
-        public SpacingDefinition(int left, int top, int right, int bottom)
-        {
-            Left = left;
-            Top = top;
-            Right = right;
-            Bottom = bottom;
-        }
-
-
-        public int Left { get; set; }
-        public int Top { get; set; }
-        public int Right { get; set; }
-        public int Bottom { get; set; }
-    }
-
-
-
-
-
-
-
+    }   
 }
 

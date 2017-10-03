@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XamlCardVisualizer.Helpers
+namespace AdaptiveCardVisualizer.Helpers
 {
     public abstract class BindableBase : INotifyPropertyChanged
     {

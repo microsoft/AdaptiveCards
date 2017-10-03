@@ -3,10 +3,10 @@
 #include "AdaptiveColorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept try
     {
@@ -21,25 +21,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::get_Normal(Color* value)
+    HRESULT AdaptiveColorConfig::get_Default(ABI::Windows::UI::Color* value)
     {
-        return GetColorFromString(m_sharedColorConfig.normal, value);
+        return GetColorFromString(m_sharedColorConfig.defaultColor, value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Normal(Color /*value*/)
+    HRESULT AdaptiveColorConfig::put_Default(ABI::Windows::UI::Color /*value*/)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::get_Subtle(Color* value)
+    HRESULT AdaptiveColorConfig::get_Subtle(ABI::Windows::UI::Color* value)
     {
-        return GetColorFromString(m_sharedColorConfig.subtle, value);
+        return GetColorFromString(m_sharedColorConfig.subtleColor, value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Subtle(Color /*value*/)
+    HRESULT AdaptiveColorConfig::put_Subtle(ABI::Windows::UI::Color /*value*/)
     {
         return E_NOTIMPL;
     }

@@ -43,12 +43,12 @@ public class FontSizesConfig {
     return AdaptiveCardObjectModelJNI.FontSizesConfig_smallFontSize_get(swigCPtr, this);
   }
 
-  public void setNormalFontSize(long value) {
-    AdaptiveCardObjectModelJNI.FontSizesConfig_normalFontSize_set(swigCPtr, this, value);
+  public void setDefaultFontSize(long value) {
+    AdaptiveCardObjectModelJNI.FontSizesConfig_defaultFontSize_set(swigCPtr, this, value);
   }
 
-  public long getNormalFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizesConfig_normalFontSize_get(swigCPtr, this);
+  public long getDefaultFontSize() {
+    return AdaptiveCardObjectModelJNI.FontSizesConfig_defaultFontSize_get(swigCPtr, this);
   }
 
   public void setMediumFontSize(long value) {

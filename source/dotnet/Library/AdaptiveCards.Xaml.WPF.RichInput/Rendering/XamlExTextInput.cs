@@ -6,9 +6,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlExTextInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(TextInput input, RenderContext context)
         {
-            TextInput input = (TextInput)element;
             if (context.Config.SupportsInteractivity)
             {
                 var textBox = new WatermarkTextBox() { Text = input.Value };

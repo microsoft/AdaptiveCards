@@ -7,14 +7,23 @@
 
 #include "ACRContentStackView.h"
 
+using namespace AdaptiveCards;
+
 @implementation ACRContentStackView
 {
-    NSMutableArray* targets;
+    NSMutableArray* _targets;
+    ContainerStyle _style;
 }
 
-- (instancetype)init 
+- (instancetype)initWithStyle:(ContainerStyle)style
+                   hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    return [self initWithFrame:CGRectMake(0,0,0,0)];
+    self = [self initWithFrame:CGRectMake(0,0,0,0)];
+    if(self)
+    {
+        [self setBackgroundColor:style hostConfig:config];
+    }
+    return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -25,15 +34,15 @@
         _stackView = [[UIStackView alloc] initWithFrame:frame];
         [self config];
     }
-    
+
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
 
-    if (self) 
+    if (self)
     {
         _stackView = [[UIStackView alloc] init];
         [self config];
@@ -42,10 +51,38 @@
     return self;
 }
 
+- (ContainerStyle)getStyle
+{
+    return _style;
+}
+
+- (void)setBackgroundColor:(ContainerStyle)style
+                hostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    _style = style;
+    long num = 0;
+    if(style == ContainerStyle::Emphasis)
+    {
+        num = std::stoul(config->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
+    }
+    else
+    {
+        num = std::stoul(config->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
+    }
+
+    self.backgroundColor =
+        [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
+                        green:((num & 0x0000FF00) >>  8) / 255.0
+                         blue:((num & 0x000000FF)) / 255.0
+                        alpha:((num & 0xFF000000) >> 24) / 255.0];
+}
+
 - (void)config
-{ 
+{
     if(!self.stackView) return;
-    
+
+    _style = ContainerStyle::None;
+
     [self addSubview:self.stackView];
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
@@ -79,11 +116,11 @@
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1
                                    constant:0]];
-    
+
     self.stackView.translatesAutoresizingMaskIntoConstraints = false;
     self.translatesAutoresizingMaskIntoConstraints = false;
 
-    targets = [[NSMutableArray alloc] init];
+    _targets = [[NSMutableArray alloc] init];
 }
 
 - (CGSize)intrinsicContentSize
@@ -98,7 +135,7 @@
 
 - (void)addTarget:(NSObject *)target
 {
-    [targets addObject:target];
+    [_targets addObject:target];
 }
 
 // let the last element to strech

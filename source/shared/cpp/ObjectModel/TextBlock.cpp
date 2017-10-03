@@ -5,9 +5,9 @@ using namespace AdaptiveCards;
 
 TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock),
-    m_textSize(TextSize::Normal),
-    m_textWeight(TextWeight::Normal),
-    m_textColor(TextColor::Default),
+    m_textSize(TextSize::Default),
+    m_textWeight(TextWeight::Default),
+    m_textColor(ForegroundColor::Default),
     m_isSubtle(false),
     m_wrap(false),
     m_hAlignment(HorizontalAlignment::Left),
@@ -15,17 +15,18 @@ TextBlock::TextBlock() :
 {
 }
 
-TextBlock::TextBlock(SeparationStyle separationStyle,
-    std::string speak,
+TextBlock::TextBlock(
+    Spacing spacing,
+    bool separator,
     std::string text,
     TextSize textSize,
     TextWeight textWeight,
-    TextColor textColor,
+    ForegroundColor textColor,
     bool isSubtle,
     bool wrap,
     int maxLines,
     HorizontalAlignment hAlignment) :
-    BaseCardElement(CardElementType::TextBlock, separationStyle, speak),
+    BaseCardElement(CardElementType::TextBlock, spacing, separator),
     m_text(text),
     m_textSize(textSize),
     m_textWeight(textWeight),
@@ -44,9 +45,9 @@ std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
     std::shared_ptr<TextBlock> textBlock = BaseCardElement::Deserialize<TextBlock>(json);
 
     textBlock->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
-    textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Normal, TextSizeFromString));
-    textBlock->SetTextColor(ParseUtil::GetEnumValue<TextColor>(json, AdaptiveCardSchemaKey::Color, TextColor::Default, TextColorFromString));
-    textBlock->SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Normal, TextWeightFromString));
+    textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));
+    textBlock->SetTextColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
+    textBlock->SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));
     textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
     textBlock->SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
     textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
@@ -71,7 +72,7 @@ Json::Value TextBlock::SerializeToJsonValue()
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(GetTextSize());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = TextColorToString(GetTextColor());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(GetTextColor());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(GetTextWeight());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = 
         HorizontalAlignmentToString(GetHorizontalAlignment());
@@ -113,12 +114,12 @@ void TextBlock::SetTextWeight(const TextWeight value)
     m_textWeight = value;
 }
 
-TextColor TextBlock::GetTextColor() const
+ForegroundColor TextBlock::GetTextColor() const
 {
     return m_textColor;
 }
 
-void TextBlock::SetTextColor(const TextColor value)
+void TextBlock::SetTextColor(const ForegroundColor value)
 {
     m_textColor = value;
 }
