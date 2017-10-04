@@ -38,7 +38,26 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];	
+    [super viewDidLoad];
+    UIStackView *mainContentView = [[UIStackView alloc] init];
+    [self.view addSubview:mainContentView];
+    
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(mainContentView);
+    NSArray<NSString *> *formats = [NSArray arrayWithObjects: @"H:|-[mainContentView]-|", @"V:|-[mainContentView]-]", nil];
+    NSArray<NSLayoutConstraint *> *constraints = nil;
+    
+    for(NSString *format in formats)
+    { 
+        constraints = [NSLayoutConstraint constraintsWithVisualFormat:format
+                                                              options:0
+                                                              metrics:nil
+                                                                views:viewMap];
+        for(NSLayoutConstraint *con in constraints)
+        {
+            con.active = YES;
+        }
+    }
+    
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     self.ACVTabVC.delegate = self;
@@ -51,14 +70,16 @@
     self.ACVTabVC.tableView.userInteractionEnabled = YES;
     self.ACVTabVC.tableView.bounces = YES;
     self.ACVTabVC.tableView.layer.borderWidth = 1.25;
-    [self.view addSubview:self.ACVTabVC.tableView];
+    [mainContentView addArrangedSubview:self.ACVTabVC.tableView];
     
     self.editView = [[UITextView alloc] initWithFrame:CGRectMake(20, 50, 250, 150) textContainer: nil];
     self.editView.directionalLockEnabled = NO;
-    [self.view addSubview:self.editView];
+    [mainContentView addArrangedSubview:self.editView];
     self.editView.hidden = true;
 
+    UIStackView *buttonLayout = [[UIStackView alloc] init];
     // try button
+    buttonLayout.axis = UILayoutConstraintAxisHorizontal;
     self.tryButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.tryButton setTitle:@"Try Yourself" forState:UIControlStateNormal];
     [self.tryButton setTitleColor:UIColor.blueColor forState:UIControlStateSelected];
@@ -67,7 +88,7 @@
     self.tryButton.backgroundColor = UIColor.lightGrayColor;
     [self.tryButton addTarget:self action:@selector(editText:)
              forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.tryButton];
+    [buttonLayout addArrangedSubview:self.tryButton];
 
     // apply button
     self.applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -79,9 +100,12 @@
     self.applyButton.frame = CGRectMake(20 + contentSize.width + 20, 210, contentSize1.width + 8, contentSize1.height + 8);
     [self.applyButton addTarget:self action:@selector(applyText:)
                forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.applyButton];
-    [NSLayoutConstraint activateConstraints:
-     @[[self.tryButton.trailingAnchor constraintEqualToAnchor:self.applyButton.leadingAnchor]]];
+    [buttonLayout addArrangedSubview:self.applyButton];
+    //[NSLayoutConstraint activateConstraints:
+    // @[[self.tryButton.trailingAnchor constraintEqualToAnchor:self.applyButton.leadingAnchor]]];
+    [mainContentView addArrangedSubview:buttonLayout];
+    self.scrView = [[UIScrollView alloc] init];
+    [mainContentView addArrangedSubview:self.scrView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -110,7 +134,7 @@
         self.curView = adcVc.view;
         self.curView.frame = CGRectMake(20, 250, 300, 1250);
         [self addChildViewController:adcVc];
-        [self.view addSubview:adcVc.view];
+        [self.scrView addSubview:adcVc.view];
         [adcVc didMoveToParentViewController:self];
     }
 }
