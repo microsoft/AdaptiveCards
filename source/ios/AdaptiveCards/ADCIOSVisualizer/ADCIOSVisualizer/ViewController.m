@@ -43,7 +43,7 @@
     [self.view addSubview:mainContentView];
     
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(mainContentView);
-    NSArray<NSString *> *formats = [NSArray arrayWithObjects: @"H:|-[mainContentView]-|", @"V:|-[mainContentView]-]", nil];
+    NSArray<NSString *> *formats = [NSArray arrayWithObjects: @"H:|-[mainContentView]-|", @"V:|-[mainContentView]-|", nil];
     NSArray<NSLayoutConstraint *> *constraints = nil;
     
     for(NSString *format in formats)
