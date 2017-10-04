@@ -152,6 +152,10 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson.Stringify();
             }
+            else if (args.Action is AdaptiveOpenUrlAction)
+            {
+                answer += "\nUrl: " + (args.Action as AdaptiveOpenUrlAction).Url;
+            }
 
             answer += "\nInputs: " + args.Inputs.Stringify();
 
