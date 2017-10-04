@@ -56,7 +56,7 @@ export class TextColorDefinition {
 
 export class ContainerStyleDefinition {
     backgroundColor?: string;
-    fontColors: {
+    readonly fontColors: {
         default: TextColorDefinition,
         accent: TextColorDefinition,
         good: TextColorDefinition,
@@ -255,25 +255,25 @@ export class HostConfig {
 
     supportsInteractivity: boolean = true;
     fontFamily?: string = "Segoe UI";
-    fontSizes: {
+    readonly fontSizes: {
         small: 8,
         default: 10,
         medium: 12,
         large: 14,
         extraLarge: 16
     };
-    fontWeights: {
+    readonly fontWeights: {
         lighter: 200,
         default: 400,
         bolder: 600
     };
-    imageSizes: {
+    readonly imageSizes: {
         small: 40,
         medium: 80,
         large: 160
     };
     readonly containerStyles: ContainerStyleSet = new ContainerStyleSet();
-    spacing: {
+    readonly spacing: {
         small: 3,
         default: 8,
         medium: 20,
@@ -281,7 +281,7 @@ export class HostConfig {
         extraLarge: 40,
         padding: 20
     };
-    separator: {
+    readonly separator: {
         lineThickness: 1,
         lineColor: "#EEEEEE"
     }
