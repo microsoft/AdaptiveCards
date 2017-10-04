@@ -36,7 +36,7 @@ namespace AdaptiveCards { namespace Uwp
         std::shared_ptr<std::vector<InputItem>> GetInputItems();
         void SetFrameworkElement(ABI::Windows::UI::Xaml::IUIElement* value);
         void SetOriginatingCard(ABI::AdaptiveCards::Uwp::IAdaptiveCard* value);
-        HRESULT SendActionEvent(ABI::AdaptiveCards::Uwp::IAdaptiveActionEventArgs* eventArgs);
+        HRESULT SendActionEvent(ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* eventArgs);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCard> m_originatingCard;
