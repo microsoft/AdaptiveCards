@@ -98,7 +98,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                             }
                             else
                             {
-                                m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs.ToString();
+                                m_actionDialog.Content = SerializeActionEventArgsToString(e);
                             }
 
                             m_actionDialog.PrimaryButtonText = "Close";
@@ -140,6 +140,22 @@ namespace AdaptiveCardVisualizer.ViewModel
                 });
                 MakeErrorsLike(newErrors);
             }
+        }
+
+        public string SerializeActionEventArgsToString(AdaptiveActionEventArgs args)
+        {
+            string answer = "Action invoked!";
+
+            answer += "\nType: " + args.Action.ActionType;
+
+            if (args.Action is AdaptiveSubmitAction)
+            {
+                answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson.Stringify();
+            }
+
+            answer += "\nInputs: " + args.Inputs.Stringify();
+
+            return answer;
         }
 
         public static void InitializeRenderer(AdaptiveHostConfig hostConfig)
