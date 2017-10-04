@@ -248,11 +248,6 @@ export class ContainerStyleSet {
 }
 
 export class HostConfig {
-    static parse(serializedHostConfigString: string): HostConfig {
-        const obj = JSON.parse(serializedHostConfigString);
-        return new HostConfig(obj);
-    }
-
     supportsInteractivity: boolean = true;
     fontFamily?: string = "Segoe UI";
     readonly fontSizes: {
@@ -293,6 +288,10 @@ export class HostConfig {
 
     constructor(obj?: any) {
         if (obj) {
+            if(typeof obj === "string" || obj instanceof String){
+                obj = JSON.parse(obj as string);
+            }
+
             this.supportsInteractivity = obj["supportsInteractivity"] || this.supportsInteractivity;
             this.fontFamily = obj["fontFamily"] || this.fontFamily;
             this.fontSizes = {
