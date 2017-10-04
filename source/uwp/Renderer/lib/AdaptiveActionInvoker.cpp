@@ -26,9 +26,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveActionInvoker::SendActionEvent(IAdaptiveActionElement* actionElement)
     {
-
         return m_renderResult->SendActionEvent(actionElement);
     }
-
 
 }}
