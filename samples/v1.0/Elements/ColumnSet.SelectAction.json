@@ -66,6 +66,7 @@
         {
           "type": "Column",
           "width": 4,
+          "style": "emphasis",
           "items": [
             {
               "type": "TextBlock",
@@ -73,7 +74,7 @@
             },
             {
               "type": "TextBlock",
-              "text": "PowerPoint",
+              "text": "With EMPHASIS",
               "isSubtle": true,
               "separation": "none"
             }
