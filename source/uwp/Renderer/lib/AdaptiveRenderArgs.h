@@ -18,6 +18,7 @@ namespace AdaptiveCards { namespace Uwp
             ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle) noexcept;
 
         IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveCards::Uwp::ContainerStyle *value);
+        IFACEMETHODIMP put_ContainerStyle(_In_ ABI::AdaptiveCards::Uwp::ContainerStyle value);
 
 
     private:

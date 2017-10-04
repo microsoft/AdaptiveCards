@@ -28,4 +28,11 @@ namespace AdaptiveCards { namespace Uwp
         *value = m_containerStyle;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveCards::Uwp::ContainerStyle value)
+    {
+        m_containerStyle = value;
+        return S_OK;
+    }
 }}
