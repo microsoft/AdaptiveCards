@@ -90,12 +90,12 @@ export declare class FactSet extends CardElement {
     renderSpeech(): string;
 }
 export declare class Image extends CardElement {
+    private _selectAction;
     protected readonly useDefaultSizing: boolean;
     protected internalRender(): HTMLElement;
     style: Enums.ImageStyle;
     url: string;
     size: Enums.Size;
-    selectAction: Action;
     pixelWidth?: number;
     pixelHeight?: number;
     altText: string;
@@ -103,6 +103,7 @@ export declare class Image extends CardElement {
     getActionById(id: string): Action;
     parse(json: any): void;
     renderSpeech(): string;
+    selectAction: Action;
 }
 export declare class ImageSet extends CardElement {
     private _images;
@@ -266,6 +267,7 @@ export declare class BackgroundImage {
     apply(element: HTMLElement): void;
 }
 export declare class Container extends CardElement {
+    private _selectAction;
     private isElementAllowed(element, forbiddenElementTypes);
     private _items;
     private _style?;
@@ -277,7 +279,6 @@ export declare class Container extends CardElement {
     protected readonly hasBackground: boolean;
     protected readonly defaultStyle: Enums.ContainerStyle;
     protected readonly allowCustomStyle: boolean;
-    selectAction: Action;
     backgroundImage: BackgroundImage;
     readonly style: Enums.ContainerStyle;
     getJsonTypeName(): string;
@@ -293,6 +294,7 @@ export declare class Container extends CardElement {
     getActionById(id: string): Action;
     renderSpeech(): string;
     updateLayout(processChildren?: boolean): void;
+    selectAction: Action;
 }
 export declare class Column extends Container {
     private _computedWeight;
@@ -305,8 +307,8 @@ export declare class Column extends Container {
 }
 export declare class ColumnSet extends CardElement {
     private _columns;
+    private _selectAction;
     protected internalRender(): HTMLElement;
-    selectAction: Action;
     getJsonTypeName(): string;
     parse(json: any): void;
     validate(): Array<IValidationError>;
@@ -318,6 +320,7 @@ export declare class ColumnSet extends CardElement {
     getElementById(id: string): CardElement;
     getActionById(id: string): Action;
     renderSpeech(): string;
+    selectAction: Action;
 }
 export interface IVersion {
     major: number;

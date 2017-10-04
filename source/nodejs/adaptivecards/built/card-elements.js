@@ -14,12 +14,16 @@ var Enums = require("./enums");
 var Utils = require("./utils");
 var TextFormatters = require("./text-formatters");
 function invokeSetParent(obj, parent) {
-    // This is not super pretty, but it the closest emulation of
-    // "internal" in TypeScript.
-    obj["setParent"](parent);
+    if (obj) {
+        // Closest emulation of "internal" in TypeScript.
+        obj["setParent"](parent);
+    }
 }
 function invokeSetCollection(action, collection) {
-    action["setCollection"](collection);
+    if (action) {
+        // Closest emulation of "internal" in TypeScript.
+        action["setCollection"](collection);
+    }
 }
 function isActionAllowed(action, forbiddenActionTypes) {
     if (forbiddenActionTypes) {
@@ -251,9 +255,9 @@ var CardElement = /** @class */ (function () {
         if (this._renderedElement) {
             this._renderedElement.style.boxSizing = "border-box";
             this.adjustRenderedElementSize(this._renderedElement);
+            this.updateLayout(false);
+            this.updateRenderedElementVisibility();
         }
-        this.updateLayout(false);
-        this.updateRenderedElementVisibility();
         return this._renderedElement;
     };
     CardElement.prototype.updateLayout = function (processChildren) {
@@ -792,7 +796,6 @@ var Image = /** @class */ (function (_super) {
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
         if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
             this.pixelWidth = json["pixelWidth"];
@@ -807,6 +810,19 @@ var Image = /** @class */ (function (_super) {
         }
         return null;
     };
+    Object.defineProperty(Image.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Image;
 }(CardElement));
 exports.Image = Image;
@@ -2169,20 +2185,21 @@ var Container = /** @class */ (function (_super) {
             element.tabIndex = 0;
             element.setAttribute("role", "button");
             element.setAttribute("aria-label", this.selectAction.title);
-        }
-        element.onclick = function (e) {
-            if (_this.selectAction != null) {
-                _this.selectAction.execute();
-                e.cancelBubble = true;
-            }
-        };
-        element.onkeypress = function (e) {
-            if (_this.selectAction != null) {
-                if (e.keyCode == 13 || e.keyCode == 32) {
+            element.onclick = function (e) {
+                if (_this.selectAction != null) {
                     _this.selectAction.execute();
+                    e.cancelBubble = true;
                 }
-            }
-        };
+            };
+            element.onkeypress = function (e) {
+                if (_this.selectAction != null) {
+                    // Enter or space pressed
+                    if (e.keyCode == 13 || e.keyCode == 32) {
+                        _this.selectAction.execute();
+                    }
+                }
+            };
+        }
         if (this._items.length > 0) {
             var renderedElementCount = 0;
             for (var i = 0; i < this._items.length; i++) {
@@ -2298,14 +2315,15 @@ var Container = /** @class */ (function (_super) {
                         message: "Unknown element type: " + elementType
                     });
                 }
-                this.addItem(element);
-                element.parse(items[i]);
+                else {
+                    this.addItem(element);
+                    element.parse(items[i]);
+                }
             }
         }
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
     };
     Container.prototype.addItem = function (item) {
@@ -2391,6 +2409,19 @@ var Container = /** @class */ (function (_super) {
             }
         }
     };
+    Object.defineProperty(Container.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Container;
 }(CardElement));
 exports.Container = Container;
@@ -2544,7 +2575,6 @@ var ColumnSet = /** @class */ (function (_super) {
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
         if (json["columns"] != null) {
             var jsonColumns = json["columns"];
@@ -2641,6 +2671,19 @@ var ColumnSet = /** @class */ (function (_super) {
         }
         return speak;
     };
+    Object.defineProperty(ColumnSet.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ColumnSet;
 }(CardElement));
 exports.ColumnSet = ColumnSet;
@@ -2886,9 +2929,11 @@ var AdaptiveCard = /** @class */ (function (_super) {
         }
         else {
             renderedCard = _super.prototype.render.call(this);
-            renderedCard.tabIndex = 0;
-            if (!Utils.isNullOrEmpty(this.speak)) {
-                renderedCard.setAttribute("aria-label", this.speak);
+            if (renderedCard) {
+                renderedCard.tabIndex = 0;
+                if (!Utils.isNullOrEmpty(this.speak)) {
+                    renderedCard.setAttribute("aria-label", this.speak);
+                }
             }
         }
         return renderedCard;

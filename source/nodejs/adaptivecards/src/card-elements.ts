@@ -4,13 +4,17 @@ import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 
 function invokeSetParent(obj: any, parent: CardElement) {
-    // This is not super pretty, but it the closest emulation of
-    // "internal" in TypeScript.
-    obj["setParent"](parent);
+    if (obj) {
+        // Closest emulation of "internal" in TypeScript.
+        obj["setParent"](parent);
+    }
 }
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
-    action["setCollection"](collection);
+    if (action) {
+        // Closest emulation of "internal" in TypeScript.
+        action["setCollection"](collection);
+    }
 }
 
 function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): boolean {
@@ -284,10 +288,9 @@ export abstract class CardElement {
             this._renderedElement.style.boxSizing = "border-box";
 
             this.adjustRenderedElementSize(this._renderedElement);
+            this.updateLayout(false);
+            this.updateRenderedElementVisibility();    
         }
-
-        this.updateLayout(false);
-        this.updateRenderedElementVisibility();
 
         return this._renderedElement;
     }
@@ -758,6 +761,8 @@ export class FactSet extends CardElement {
 }
 
 export class Image extends CardElement {
+    private _selectAction: Action;
+    
     protected get useDefaultSizing() {
         return false;
     }
@@ -856,7 +861,6 @@ export class Image extends CardElement {
     style: Enums.ImageStyle = Enums.ImageStyle.Default;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
-    selectAction: Action;
     pixelWidth?: number = null;
     pixelHeight?: number = null;
     altText: string = "";
@@ -903,7 +907,6 @@ export class Image extends CardElement {
 
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
 
         if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
@@ -921,6 +924,18 @@ export class Image extends CardElement {
         }
 
         return null;
+    }
+
+    get selectAction(): Action {
+        return this._selectAction;
+    }
+
+    set selectAction(value: Action) {
+        this._selectAction = value;
+
+        if (this._selectAction) {
+            invokeSetParent(this._selectAction, this);
+        }
     }
 }
 
@@ -2294,6 +2309,8 @@ export class BackgroundImage {
 }
 
 export class Container extends CardElement {
+    private _selectAction: Action;
+
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
             return false;
@@ -2480,21 +2497,22 @@ export class Container extends CardElement {
             element.tabIndex = 0;
             element.setAttribute("role", "button");
             element.setAttribute("aria-label", this.selectAction.title);
-        }
 
-        element.onclick = (e) => {
-            if (this.selectAction != null) {
-                this.selectAction.execute();
-                e.cancelBubble = true;
-            }
-        }
-
-        element.onkeypress = (e) => {
-            if (this.selectAction != null) {
-                if (e.keyCode == 13 || e.keyCode == 32) { // enter or space pressed
+            element.onclick = (e) => {
+                if (this.selectAction != null) {
                     this.selectAction.execute();
+                    e.cancelBubble = true;
                 }
             }
+    
+            element.onkeypress = (e) => {
+                if (this.selectAction != null) {
+                    // Enter or space pressed
+                    if (e.keyCode == 13 || e.keyCode == 32) {
+                        this.selectAction.execute();
+                    }
+                }
+            }    
         }
 
         if (this._items.length > 0) {
@@ -2534,7 +2552,6 @@ export class Container extends CardElement {
         return true;
     }
 
-    selectAction: Action;
     backgroundImage: BackgroundImage;
 
     get style(): Enums.ContainerStyle {
@@ -2631,10 +2648,11 @@ export class Container extends CardElement {
                             message: "Unknown element type: " + elementType
                         });
                 }
-
-                this.addItem(element);
-
-                element.parse(items[i]);
+                else {
+                    this.addItem(element);
+                    
+                    element.parse(items[i]);
+                }
             }
         }
 
@@ -2642,7 +2660,6 @@ export class Container extends CardElement {
 
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
     }
 
@@ -2752,6 +2769,18 @@ export class Container extends CardElement {
             }
         }
     }
+
+    get selectAction(): Action {
+        return this._selectAction;
+    }
+
+    set selectAction(value: Action) {
+        this._selectAction = value;
+
+        if (this._selectAction) {
+            invokeSetParent(this._selectAction, this);
+        }
+    }
 }
 
 export class Column extends Container {
@@ -2840,7 +2869,9 @@ export class Column extends Container {
 
 export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
-
+    private _selectAction: Action;
+    
+    
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
@@ -2908,8 +2939,6 @@ export class ColumnSet extends CardElement {
         }
     }
 
-    selectAction: Action;
-
     getJsonTypeName(): string {
         return "ColumnSet";
     }
@@ -2921,7 +2950,6 @@ export class ColumnSet extends CardElement {
 
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
 
         if (json["columns"] != null) {
@@ -3046,6 +3074,18 @@ export class ColumnSet extends CardElement {
         }
 
         return speak;
+    }
+
+    get selectAction(): Action {
+        return this._selectAction;
+    }
+
+    set selectAction(value: Action) {
+        this._selectAction = value;
+
+        if (this._selectAction) {
+            invokeSetParent(this._selectAction, this);
+        }
     }
 }
 
@@ -3355,10 +3395,13 @@ export class AdaptiveCard extends ContainerWithActions {
         }
         else {
             renderedCard = super.render();
-            renderedCard.tabIndex = 0;
 
-            if (!Utils.isNullOrEmpty(this.speak)) {
-                renderedCard.setAttribute("aria-label", this.speak);
+            if (renderedCard) {
+                renderedCard.tabIndex = 0;
+
+                if (!Utils.isNullOrEmpty(this.speak)) {
+                    renderedCard.setAttribute("aria-label", this.speak);
+                }
             }
         }
 
