@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "AdaptiveRenderContext.h"
-#include "AdaptiveHostConfig.h"
 #include "InputItem.h"
 #include "Util.h"
 
@@ -29,7 +28,7 @@ namespace AdaptiveCards { namespace Uwp
         m_actionRendererRegistration = actionRendererRegistration;
         m_renderResult = renderResult;
 
-        return S_OK;
+        return MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
@@ -54,6 +53,13 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveRenderContext::get_ActionInvoker(IAdaptiveActionInvoker** value)
+    {
+        m_actionInvoker.CopyTo(value);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveRenderContext::AddInputItem(IAdaptiveCardElement* cardElement, ABI::Windows::UI::Xaml::IUIElement* uiElement)
     {
         ComPtr<IAdaptiveCardElement> localCardElement(cardElement);
@@ -63,38 +69,18 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IUIElement> localUiElement(uiElement);
 
         InputItem item(inputElement.Get(), localUiElement.Get());
+
         auto inputItems = m_renderResult->GetInputItems();
 
         if (inputItems != nullptr)
         {
             inputItems->push_back(item);
         }
+        else
+        {
+            // Add to Errors
+        }
 
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::SendActionEvent(IAdaptiveActionEventArgs* eventArgs)
-    {
-        return m_renderResult->SendActionEvent(eventArgs);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::get_ContainerStyle(ABI::AdaptiveCards::Uwp::ContainerStyle *value)
-    {
-        *value = m_containerStyle;
-        return S_OK;
-    }
-    _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::put_ParentContainerStyle(ABI::AdaptiveCards::Uwp::ContainerStyle value)
-    {
-        m_containerStyle = value;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::get_UserInputs(IAdaptiveInputs** value)
-    {
-        return m_renderResult->get_UserInputs(value);
     }
 }}

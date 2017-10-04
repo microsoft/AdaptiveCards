@@ -73,6 +73,7 @@
     <ClCompile Include="lib\AdaptiveColumnSetRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveContainerRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveRenderArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
+    <ClInclude Include="lib\AdaptiveActionInvoker.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Uwp.idl" />

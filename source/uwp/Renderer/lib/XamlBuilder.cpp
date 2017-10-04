@@ -4,7 +4,6 @@
 #include "AdaptiveColorConfig.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveImage.h"
-#include "AdaptiveActionEventArgs.h"
 #include "DefaultResourceDictionary.h"
 #include <windows.foundation.collections.h>
 #include <windows.storage.h>
@@ -111,7 +110,7 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveCard* adaptiveCard,
         IUIElement** xamlTreeRoot, 
         AdaptiveCardRenderer* renderer,
-        IAdaptiveRenderContext* renderContext,
+        AdaptiveRenderContext* renderContext,
         boolean isOuterCard,
         ABI::AdaptiveCards::Uwp::ContainerStyle defaultContainerStyle)
     {
@@ -653,11 +652,11 @@ namespace AdaptiveCards { namespace Uwp
         AdaptiveCardRenderer* renderer,
         IAdaptiveShowCardActionConfig* showCardActionConfig,
         IAdaptiveActionElement* action,
-        IAdaptiveRenderContext* renderContext,
+        AdaptiveRenderContext* renderContext,
         IUIElement** uiShowCard)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<IAdaptiveRenderContext> localRenderContext(renderContext);
+        ComPtr<AdaptiveRenderContext> localRenderContext(renderContext);
         ComPtr<IAdaptiveShowCardAction> showCardAction;
         THROW_IF_FAILED(localAction.As(&showCardAction));
 
@@ -707,11 +706,11 @@ namespace AdaptiveCards { namespace Uwp
         AdaptiveCardRenderer* renderer,
         IPanel* parentPanel,
         bool insertSeparator,
-        IAdaptiveRenderContext* renderContext)
+        AdaptiveRenderContext* renderContext)
     {
         ComPtr<IAdaptiveActionsConfig> actionsConfig;
         THROW_IF_FAILED(m_hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-        ComPtr<IAdaptiveRenderContext> strongRenderContext(renderContext);
+        ComPtr<AdaptiveRenderContext> strongRenderContext(renderContext);
         // Create a separator between the body and the actions
         if (insertSeparator)
         {
@@ -883,9 +882,10 @@ namespace AdaptiveCards { namespace Uwp
                 // Add click handler
                 ComPtr<IButtonBase> buttonBase;
                 THROW_IF_FAILED(button.As(&buttonBase));
-
+                ComPtr<IAdaptiveActionInvoker> actionInvoker;
+                THROW_IF_FAILED(strongRenderContext->get_ActionInvoker(&actionInvoker));
                 EventRegistrationToken clickToken;
-                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, strongRenderer, strongRenderContext](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
                     if (actionType == ABI::AdaptiveCards::Uwp::ActionType::ShowCard &&
                         showCardActionMode != ABI::AdaptiveCards::Uwp::ActionMode_Popup)
@@ -908,15 +908,7 @@ namespace AdaptiveCards { namespace Uwp
                     }
                     else
                     {
-                        // get the inputElements in Json form.
-                        ComPtr<IAdaptiveInputs> gatheredInputs;
-                        THROW_IF_FAILED(strongRenderContext->get_UserInputs(&gatheredInputs));
-                        ComPtr<IJsonObject> inputsAsJson;
-                        THROW_IF_FAILED(gatheredInputs->AsJson(InputValueMode::RawString, &inputsAsJson));
-
-                        ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputsAsJson.Get()));
-                        THROW_IF_FAILED(strongRenderContext->SendActionEvent(eventArgs.Get()));
+                        THROW_IF_FAILED(actionInvoker->SendActionEvent(action.Get()));
                     }
 
                     return S_OK;
@@ -1662,7 +1654,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
         ComPtr<IAdaptiveElementRenderer> imageRenderer;
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
-        if (imageRenderer == nullptr)
+        if (imageRenderer != nullptr)
         {
             XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid, renderContext, renderArgs, imageRenderer](IAdaptiveImage* adaptiveImage)
             {
@@ -1680,8 +1672,6 @@ namespace AdaptiveCards { namespace Uwp
                 XamlHelpers::AppendXamlElementToPanel(uiImage.Get(), gridAsPanel.Get());
             });
         }
-
-
 
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
     }

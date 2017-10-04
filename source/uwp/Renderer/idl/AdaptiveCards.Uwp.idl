@@ -72,6 +72,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveOpenUrlActionRenderer;
         runtimeclass AdaptiveRenderContext;
         runtimeclass AdaptiveRenderArgs;
+        runtimeclass AdaptiveActionInvoker;
         runtimeclass AdaptiveShowCardActionRenderer;
         runtimeclass AdaptiveSubmitActionRenderer;
         runtimeclass AdaptiveTextBlockRenderer;
@@ -138,6 +139,7 @@ namespace AdaptiveCards
         interface IAdaptiveElementRendererRegistration;
         interface IAdaptiveRenderContext;
         interface IAdaptiveRenderArgs;
+        interface IAdaptiveActionInvoker;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -1732,6 +1734,25 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(c7435e94-1028-4543-b52e-54126fcb411f),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveActionInvoker)
+        ]
+        interface IAdaptiveActionInvoker : IInspectable
+        {
+            HRESULT SendActionEvent([in] IAdaptiveActionElement* actionElement);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveActionInvoker
+        {
+            [default] interface IAdaptiveActionInvoker;
+        };
+
+        [
             uuid(d2ad59a2-01aa-4b39-b2a7-5ce1d4028fbb),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveRenderContext)
@@ -1744,12 +1765,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
 
-            [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
+            [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
 
             HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
-
-            HRESULT SendActionEvent([in] AdaptiveActionEventArgs* eventArgs);
-
         };
 
         [

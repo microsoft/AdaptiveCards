@@ -31,7 +31,7 @@ namespace AdaptiveCards { namespace Uwp
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveCard* adaptiveCard,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot,
             _In_ AdaptiveCards::Uwp::AdaptiveCardRenderer* renderer,
-            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
+            _In_ AdaptiveCards::Uwp::AdaptiveRenderContext* renderContext,
             boolean isOuterCard = true,
             ABI::AdaptiveCards::Uwp::ContainerStyle defaultContainerStyle = ABI::AdaptiveCards::Uwp::ContainerStyle::Default);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
@@ -180,14 +180,14 @@ namespace AdaptiveCards { namespace Uwp
             AdaptiveCards::Uwp::AdaptiveCardRenderer* renderer,
             ABI::AdaptiveCards::Uwp::IAdaptiveShowCardActionConfig* showCardActionConfig,
             ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
-            _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
+            _Inout_ AdaptiveCards::Uwp::AdaptiveRenderContext* renderContext,
             ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement*>* children,
             _In_ AdaptiveCards::Uwp::AdaptiveCardRenderer* renderer,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
             _In_ bool insertSeparator,
-            _Inout_ _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
+            _Inout_ AdaptiveCards::Uwp::AdaptiveRenderContext* renderContext);
         void GetSeparationConfigForElement(
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* element,
             _Out_ UINT* spacing,

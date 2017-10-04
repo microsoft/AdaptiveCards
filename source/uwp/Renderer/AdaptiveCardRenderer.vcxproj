@@ -114,6 +114,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveActionParserRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
