@@ -1,9 +1,12 @@
 ﻿#pragma once
 
 #include "AdaptiveCards.Uwp.h"
+#include "XamlBuilder.h"
 
 namespace AdaptiveCards { namespace Uwp
 {
+    class XamlBuilder;
+
     // This class is effectively a singleton, and stays around between subsequent renders.
     class AdaptiveCardRenderer :
         public Microsoft::WRL::RuntimeClass<
@@ -18,7 +21,6 @@ namespace AdaptiveCards { namespace Uwp
         HRESULT RuntimeClassInitialize();
 
         // IAdaptiveCardRenderer
-        IFACEMETHODIMP SetRenderOptions(_In_ ABI::AdaptiveCards::Uwp::RenderOptions options);
         IFACEMETHODIMP SetOverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
         IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig);
         IFACEMETHODIMP get_HostConfig(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig** hostConfig);
@@ -54,8 +56,8 @@ namespace AdaptiveCards { namespace Uwp
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionRendererRegistration> m_actionRendererRegistration;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext> m_renderContext;
 
+        std::shared_ptr<AdaptiveCards::Uwp::XamlBuilder> m_xamlBuilder;
         HRESULT RegisterDefaultElementRenderers();
         HRESULT RegisterDefaultActionRenderers();
 

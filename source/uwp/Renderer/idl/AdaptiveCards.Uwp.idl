@@ -849,15 +849,6 @@ namespace AdaptiveCards
             interface IAdaptiveCardElement;
         };
 
-        [flags]
-        [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum RenderOptions
-        {
-            None = 0x0,
-            SupportsActionBar = 0x1,
-            SupportsInlineActions = 0x2,
-        }RenderOptions;
-
         [
             uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022),
             version(NTDDI_WIN10_RS1),
@@ -1750,6 +1741,15 @@ namespace AdaptiveCards
             [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** value);
 
             [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
+
+            [propget] HRESULT ParentContainerStyle([out, retval] ContainerStyle* value);
+            [propput] HRESULT ParentContainerStyle([in] ContainerStyle value);
+
+            [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
+
+            HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
+
+            HRESULT SendActionEvent([in] AdaptiveActionEventArgs* eventArgs);
 
         };
 

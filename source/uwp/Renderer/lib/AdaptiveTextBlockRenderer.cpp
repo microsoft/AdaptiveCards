@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "AdaptiveTextBlockRenderer.h"
+#include "AdaptiveRenderContext.h"
 #include "Util.h"
 
 using namespace Microsoft::WRL;
@@ -10,6 +11,15 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Uwp
 {
+    AdaptiveTextBlockRenderer::AdaptiveTextBlockRenderer()
+    {
+    }
+
+    AdaptiveTextBlockRenderer::AdaptiveTextBlockRenderer(const std::shared_ptr<XamlBuilder> xamlBuilder) :
+        m_xamlBuilder(xamlBuilder)
+    {
+    }
+
     HRESULT AdaptiveTextBlockRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -21,6 +31,7 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveRenderContext* renderContext,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
+        m_xamlBuilder->BuildTextBlock(cardElement, renderContext, result);
         return S_OK;
     }
 }}

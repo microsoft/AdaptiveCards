@@ -211,12 +211,13 @@ enum class CardElementType
     FactSet,
     Fact,
     ImageSet,
+    ChoiceInput,
+    ChoiceSetInput,
     DateInput,
     NumberInput,
     TextInput,
     TimeInput,
     ToggleInput,
-    ChoiceSetInput,
     Custom
 };
 
