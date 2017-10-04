@@ -5,6 +5,7 @@ using namespace AdaptiveCards;
 
 OpenUrlAction::OpenUrlAction() : BaseActionElement(ActionType::OpenUrl)
 {
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url));
 }
 
 std::shared_ptr<OpenUrlAction> OpenUrlAction::Deserialize(const Json::Value& json)

@@ -5,6 +5,7 @@ using namespace AdaptiveCards;
 
 SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit)
 {
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data));
 }
 
 std::string SubmitAction::GetDataJson() const

@@ -6,6 +6,9 @@ using namespace AdaptiveCards;
 BaseActionElement::BaseActionElement(ActionType type) :
     m_type(type)
 {
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
 }
 
 AdaptiveCards::BaseActionElement::~BaseActionElement()
@@ -44,4 +47,16 @@ Json::Value BaseActionElement::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
     return root;
+}
+
+void BaseActionElement::GetAdditionalProperty(std::string name, Json::Value & json)
+{
+    if (m_additionalProperties.find(name) != m_additionalProperties.end())
+    {
+        json = m_additionalProperties[name];
+    }
+    else
+    {
+        json = Json::Value();
+    }
 }

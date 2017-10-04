@@ -75,4 +75,12 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(get_ActionType(&typeEnum));
         return ProjectedActionTypeToHString(typeEnum, type);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardAction::GetAdditionalProperty(HSTRING propertyName, ABI::Windows::Data::Json::IJsonObject ** result)
+    {
+        Json::Value jsonCppObject;
+        m_sharedShowCardAction->GetAdditionalProperty(HStringToUTF8(propertyName), jsonCppObject);
+        return JsonCppToJsonObject(jsonCppObject, result);
+    }
 }}

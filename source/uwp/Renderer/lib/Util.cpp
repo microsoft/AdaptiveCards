@@ -431,6 +431,13 @@ HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
     return(asJsonValue->Stringify(result));
 }
 
+HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, IJsonObject** result)
+{
+    Json::FastWriter fastWriter;
+    std::string jsonString = fastWriter.write(jsonCppValue);
+    return StringToJsonObject(jsonString, result);
+}
+
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Uwp::ActionType projectedActionType, HSTRING* result)
 {
     ActionType sharedActionType = static_cast<ActionType>(projectedActionType);

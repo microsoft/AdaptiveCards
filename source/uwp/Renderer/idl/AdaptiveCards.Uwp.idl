@@ -1440,6 +1440,7 @@ namespace AdaptiveCards
         interface IAdaptiveActionElement : IInspectable
         {
             [propget] HRESULT ActionType([out, retval] ActionType* value);
+            [propget] HRESULT ActionTypeString([out, retval] HSTRING* value);
 
             [propget] HRESULT Title([out, retval] HSTRING* value);
             [propput] HRESULT Title([in] HSTRING value);
@@ -1447,7 +1448,7 @@ namespace AdaptiveCards
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
 
-            [propget] HRESULT ActionTypeString([out, retval] HSTRING* value);
+            HRESULT GetAdditionalProperty([in] HSTRING propertyName, [out, retval] Windows.Data.Json.JsonObject** json);
         };
 
         [
