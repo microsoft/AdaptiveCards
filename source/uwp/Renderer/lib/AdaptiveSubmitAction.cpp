@@ -82,10 +82,8 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::GetAdditionalProperty(HSTRING propertyName, ABI::Windows::Data::Json::IJsonObject ** result)
+    HRESULT AdaptiveSubmitAction::GetAdditionalProperty(HSTRING propertyName, ABI::Windows::Data::Json::IJsonObject** result)
     {
-        Json::Value jsonCppObject;
-        m_sharedSubmitAction->GetAdditionalProperty(HStringToUTF8(propertyName), jsonCppObject);
-        return JsonCppToJsonObject(jsonCppObject, result);
+        return JsonCppToJsonObject(m_sharedSubmitAction->GetAdditionalProperty(HStringToUTF8(propertyName)), result);
     }
 }}

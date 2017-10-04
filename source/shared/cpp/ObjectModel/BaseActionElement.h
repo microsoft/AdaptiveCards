@@ -28,7 +28,7 @@ public:
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
-    void GetAdditionalProperty(std::string name, Json::Value& json);
+    Json::Value GetAdditionalProperty(std::string name);
 
 private:
     ActionType m_type;
