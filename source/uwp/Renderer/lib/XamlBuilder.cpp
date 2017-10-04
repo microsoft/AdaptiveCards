@@ -17,6 +17,7 @@
 #include "AdaptiveCardResourceResolvers.h"
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
+#include "AdaptiveRenderArgs.h"
 #include "json/json.h"
 
 using namespace Microsoft::WRL;
@@ -134,15 +135,16 @@ namespace AdaptiveCards { namespace Uwp
                 containerStyle = cardStyle;
             }
         }
-        renderContext->put_ParentContainerStyle(containerStyle);
+        ComPtr<IAdaptiveRenderArgs> renderArgs;
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle));
+
         ComPtr<IPanel> childElementContainer;
-        ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, renderContext, &childElementContainer);
+        ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), &childElementContainer);
 
         // Enumerate the child items of the card and build xaml for them
         ComPtr<IVector<IAdaptiveCardElement*>> body;
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
-        THROW_IF_FAILED(renderContext->put_ParentContainerStyle(containerStyle));
-        BuildPanelChildren(body.Get(), childElementContainer.Get(), renderContext, [](IUIElement*) {});
+        BuildPanelChildren(body.Get(), childElementContainer.Get(), renderContext, renderArgs.Get(), [](IUIElement*) {});
 
         if (this->SupportsInteractivity())
         {
@@ -313,6 +315,7 @@ namespace AdaptiveCards { namespace Uwp
     ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(
         IAdaptiveCard* adaptiveCard,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IPanel** childElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
@@ -328,7 +331,7 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IPanel> rootAsPanel;
         THROW_IF_FAILED(rootElement.As(&rootAsPanel));
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
-        THROW_IF_FAILED(renderContext->get_ParentContainerStyle(&containerStyle));
+        THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         ABI::Windows::UI::Color backgroundColor;
         if (SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor)))
@@ -380,7 +383,7 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
         ComPtr<IUIElement> backgroundImage;
-        BuildImage(adaptiveCardElement.Get(), renderContext, &backgroundImage);
+        BuildImage(adaptiveCardElement.Get(), renderContext, nullptr, &backgroundImage);
         XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
 
         // The overlay applied to the background image is determined by a resouce, so create
@@ -608,15 +611,14 @@ namespace AdaptiveCards { namespace Uwp
         IVector<IAdaptiveCardElement*>* children,
         IPanel* parentPanel,
         ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* context,
+        ABI::AdaptiveCards::Uwp::IAdaptiveRenderArgs* renderArgs,
         std::function<void(IUIElement* child)> childCreatedCallback)
     {
         int currentElement = 0;
         unsigned int childrenSize;
         THROW_IF_FAILED(children->get_Size(&childrenSize));
-        ComPtr<IVector<IAdaptiveCardElement*>> localChildren(children);
-        XamlHelpers::IterateOverVector<IAdaptiveCardElement>(localChildren.Get(), [&](IAdaptiveCardElement* element)
+        XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, [&](IAdaptiveCardElement* element)
         {
-            ComPtr<IAdaptiveRenderContext> localContext(context);
             HSTRING elementType;
             THROW_IF_FAILED(element->get_ElementTypeString(&elementType));
             ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
@@ -640,7 +642,7 @@ namespace AdaptiveCards { namespace Uwp
                     }
                 }
                 ComPtr<IUIElement> newControl;
-                elementRenderer->Render(element, localContext.Get(), &newControl);
+                elementRenderer->Render(element, context, renderArgs, &newControl);
                 XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel);
                 childCreatedCallback(newControl.Get());
             }
@@ -1100,6 +1102,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildTextBlock(
         IAdaptiveCardElement* adaptiveCardElement, 
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** textBlockControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -1178,7 +1181,7 @@ namespace AdaptiveCards { namespace Uwp
 
         //Style the TextBlock using Host Options
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
-        THROW_IF_FAILED(renderContext->get_ParentContainerStyle(&containerStyle));
+        THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
         StyleXamlTextBlock(textblockSize, textColor, containerStyle, isSubtle, shouldWrap, MAXUINT32, textWeight, xamlTextBlock.Get());
 
         THROW_IF_FAILED(xamlTextBlock.CopyTo(textBlockControl));
@@ -1188,6 +1191,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildImage(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* /*renderArgs*/,
         IUIElement** imageControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -1318,6 +1322,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildContainer(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** containerControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -1332,15 +1337,17 @@ namespace AdaptiveCards { namespace Uwp
         if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
         {
             ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
-            THROW_IF_FAILED(renderContext->get_ParentContainerStyle(&parentContainerStyle));
+            THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
             containerStyle = parentContainerStyle;
         }
-        renderContext->put_ParentContainerStyle(containerStyle);
+        ComPtr<IAdaptiveRenderArgs> newRenderArgs;
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle));
+
         ComPtr<IPanel> stackPanelAsPanel;
         THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveContainer->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, [](IUIElement*) {});
+        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
         ComPtr<IBorder> containerBorder = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
         ABI::Windows::UI::Color backgroundColor;
@@ -1368,6 +1375,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildColumn(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** ColumnControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -1382,10 +1390,11 @@ namespace AdaptiveCards { namespace Uwp
         if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
         {
             ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
-            THROW_IF_FAILED(renderContext->get_ParentContainerStyle(&parentContainerStyle));
+            THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
             containerStyle = parentContainerStyle;
         }
-        renderContext->put_ParentContainerStyle(containerStyle);
+        ComPtr<IAdaptiveRenderArgs> newRenderArgs;
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle));
 
         ABI::Windows::UI::Color backgroundColor;
         if (SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor)))
@@ -1401,7 +1410,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, [](IUIElement*) {});
+        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
         THROW_IF_FAILED(xamlStackPanel.CopyTo(ColumnControl));
     }
@@ -1410,6 +1419,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildColumnSet(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** columnSetControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -1423,7 +1433,12 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IVector<IAdaptiveColumn*>> columns;
         THROW_IF_FAILED(adaptiveColumnSet->get_Columns(&columns));
         int currentColumn = 0;
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [this, xamlGrid, gridStatics, &currentColumn, renderContext](IAdaptiveColumn* column)
+        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+        THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+        ComPtr<IAdaptiveElementRenderer> columnRenderer;
+        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Column").Get(), &columnRenderer));
+
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [this, xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer](IAdaptiveColumn* column)
         {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
@@ -1497,7 +1512,7 @@ namespace AdaptiveCards { namespace Uwp
 
             // Build the Column
             ComPtr<IUIElement> xamlColumn;
-            BuildColumn(columnAsCardElement.Get(), renderContext, &xamlColumn);
+            columnRenderer->Render(columnAsCardElement.Get(), renderContext, renderArgs, &xamlColumn);
 
             // Mark the column container with the current column
             ComPtr<IFrameworkElement> columnAsFrameworkElement;
@@ -1524,6 +1539,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildFactSet(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** factSetControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -1549,7 +1565,7 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IVector<IAdaptiveFact*>> facts;
         THROW_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
         int currentFact = 0;
-        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [this, xamlGrid, gridStatics, factSetGridLength, &currentFact, renderContext](IAdaptiveFact* fact)
+        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [this, xamlGrid, gridStatics, factSetGridLength, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
         {
             ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
             THROW_IF_FAILED(factRow->put_Height(factSetGridLength));
@@ -1571,7 +1587,7 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(factSetConfig->get_Title(&titleTextConfig));
 
             ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
-            THROW_IF_FAILED(renderContext->get_ParentContainerStyle(&containerStyle));
+            THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
             StyleXamlTextBlock(titleTextConfig.Get(), containerStyle, titleTextBlock.Get());
 
             // Create the value xaml textblock and style it from Host options
@@ -1618,6 +1634,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildImageSet(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** imageSetControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -1641,22 +1658,30 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(imageSetConfig->get_ImageSize(&imageSize));
         }
 
-        XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid, renderContext](IAdaptiveImage* adaptiveImage)
+        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+        THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+        ComPtr<IAdaptiveElementRenderer> imageRenderer;
+        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
+        if (imageRenderer == nullptr)
         {
-            ComPtr<IAdaptiveImage> localAdaptiveImage(adaptiveImage);
-            THROW_IF_FAILED(localAdaptiveImage->put_Size(imageSize));
+            XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid, renderContext, renderArgs, imageRenderer](IAdaptiveImage* adaptiveImage)
+            {
+                ComPtr<IUIElement> uiImage;
+                ComPtr<IAdaptiveImage> localAdaptiveImage(adaptiveImage);
+                THROW_IF_FAILED(localAdaptiveImage->put_Size(imageSize));
 
-            ComPtr<IAdaptiveCardElement> adaptiveElementImage;
-            localAdaptiveImage.As(&adaptiveElementImage);
+                ComPtr<IAdaptiveCardElement> adaptiveElementImage;
+                localAdaptiveImage.As(&adaptiveElementImage);
+                imageRenderer->Render(adaptiveElementImage.Get(), renderContext, renderArgs, &uiImage);
 
-            ComPtr<IUIElement> uiImage;
-            BuildImage(adaptiveElementImage.Get(), renderContext, &uiImage);
+                ComPtr<IPanel> gridAsPanel;
+                THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
-            ComPtr<IPanel> gridAsPanel;
-            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+                XamlHelpers::AppendXamlElementToPanel(uiImage.Get(), gridAsPanel.Get());
+            });
+        }
 
-            XamlHelpers::AppendXamlElementToPanel(uiImage.Get(), gridAsPanel.Get());
-        });
+
 
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
     }
@@ -1713,7 +1738,6 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(comboBox.As(&selector));
         THROW_IF_FAILED(selector->put_SelectedIndex(selectedIndex));
 
-        // TODO: 11508861
         THROW_IF_FAILED(comboBox.CopyTo(choiceInputSet));
     }
 
@@ -1756,13 +1780,13 @@ namespace AdaptiveCards { namespace Uwp
             XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
         });
 
-        // TODO: 11508861
         THROW_IF_FAILED(stackPanel.CopyTo(choiceInputSet));
     }
 
     void XamlBuilder::BuildChoiceSetInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* /*renderArgs*/,
         IUIElement** choiceInputSet)
     {
         if (!this->SupportsInteractivity())
@@ -1796,6 +1820,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildDateInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* /*renderArgs*/,
         IUIElement** dateInputControl)
     {
         if (!this->SupportsInteractivity())
@@ -1826,6 +1851,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildNumberInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* /*renderArgs*/,
         IUIElement** numberInputControl)
     {
         if (!this->SupportsInteractivity())
@@ -1870,6 +1896,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildTextInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** textInputControl)
     {
         if (!this->SupportsInteractivity())
@@ -1935,6 +1962,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildTimeInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** timeInputControl)
     {
         if (!this->SupportsInteractivity())
@@ -1958,6 +1986,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildToggleInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** toggleInputControl)
     {
         if (!this->SupportsInteractivity())

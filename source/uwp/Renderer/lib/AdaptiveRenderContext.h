@@ -28,7 +28,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP SendActionEvent(ABI::AdaptiveCards::Uwp::IAdaptiveActionEventArgs* eventArgs);
         IFACEMETHODIMP get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveInputs** value);
 
-        IFACEMETHODIMP get_ParentContainerStyle(_Out_ ABI::AdaptiveCards::Uwp::ContainerStyle *value);
+        IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveCards::Uwp::ContainerStyle *value);
         IFACEMETHODIMP put_ParentContainerStyle(_In_ ABI::AdaptiveCards::Uwp::ContainerStyle value);
 
 

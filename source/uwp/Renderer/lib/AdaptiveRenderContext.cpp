@@ -80,7 +80,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::get_ParentContainerStyle(ABI::AdaptiveCards::Uwp::ContainerStyle *value)
+    HRESULT AdaptiveRenderContext::get_ContainerStyle(ABI::AdaptiveCards::Uwp::ContainerStyle *value)
     {
         *value = m_containerStyle;
         return S_OK;

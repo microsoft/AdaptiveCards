@@ -29,9 +29,10 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveNumberInputRenderer::Render(
         IAdaptiveCardElement* cardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder->BuildNumberInput(cardElement, renderContext, result);
+        m_xamlBuilder->BuildNumberInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 }}

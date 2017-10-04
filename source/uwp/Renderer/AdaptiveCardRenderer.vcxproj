@@ -140,6 +140,7 @@
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
     <ClInclude Include="lib\AdaptiveNumberInputRenderer.h" />
+    <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveOpenUrlActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputs.cpp" />
     <ClCompile Include="lib\AdaptiveNumberInputRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveRenderArgs.cpp" />
     <ClCompile Include="lib\AdaptiveOpenUrlActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveRenderContext.cpp" />
     <ClCompile Include="lib\AdaptiveSeparator.cpp" />

@@ -29,9 +29,10 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveImageSetRenderer::Render(
         IAdaptiveCardElement* cardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder->BuildImageSet(cardElement, renderContext, result);
+        m_xamlBuilder->BuildImageSet(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 }}

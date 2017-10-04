@@ -29,9 +29,10 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveColumnRenderer::Render(
         IAdaptiveCardElement* cardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder->BuildColumn(cardElement, renderContext, result);
+        m_xamlBuilder->BuildColumn(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 

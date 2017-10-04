@@ -29,9 +29,10 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveToggleInputRenderer::Render(
         IAdaptiveCardElement* cardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder->BuildToggleInput(cardElement, renderContext, result);
+        m_xamlBuilder->BuildToggleInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 }}
