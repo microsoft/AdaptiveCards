@@ -1,6 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
-    IHostConfig,
+    HostConfig,
     Size,
     TextSize,
     TextColor,
@@ -8,7 +8,7 @@ import {
     Spacing,
     ShowCardActionMode,
     Orientation,
-    ActionAlignment
+    ActionAlignment,
 } from "adaptivecards";
 
 export class TimelineContainer extends HostContainer {
@@ -39,8 +39,8 @@ export class TimelineContainer extends HostContainer {
         return element;
     }
 
-    public getHostConfig(): IHostConfig {
-        return {
+    public getHostConfig(): HostConfig {
+        return new HostConfig({
             spacing: {
                 small: 4,
                 default: 12,
@@ -163,6 +163,6 @@ export class TimelineContainer extends HostContainer {
                 },
                 spacing: 10
             }
-        };
+        });
     }
 }
