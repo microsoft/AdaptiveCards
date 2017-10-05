@@ -157,7 +157,7 @@ HRESULT GenerateActionProjection(
 {
     if (action == nullptr)
     {
-        projectedAction = nullptr;
+        *projectedAction = nullptr;
         return S_OK;
     }
 
