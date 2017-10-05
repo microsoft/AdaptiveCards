@@ -47,7 +47,8 @@
       "items": [
         {
           "type": "TextBlock",
-          "text": "Default container again"
+          "text": "Default container again, using ShowCard",
+          "wrap": true
         },
         {
           "type": "Image",
@@ -55,9 +56,44 @@
         }
       ],
       "selectAction": {
-        "type": "Action.OpenUrl",
-        "title": "cool link 3",
-        "url": "https://microsoft.com"
+        "type": "Action.ShowCard",
+        "title": "Show card action",
+        "card": {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "TextBlock",
+              "text": "What do you think?"
+            }
+          ],
+          "actions": [
+            {
+              "type": "Action.Submit",
+              "title": "Neat!"
+            }
+          ]
+        }
+      }
+    },
+
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Submit action"
+        },
+        {
+          "type": "Image",
+          "url": "http://adaptivecards.io/content/cats/1.png"
+        }
+      ],
+      "selectAction": {
+        "type": "Action.Submit",
+        "title": "Submit action",
+        "data": {
+          "info": "My submit action data"
+        }
       }
     }
   ]
