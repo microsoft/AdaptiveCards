@@ -11,6 +11,15 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Uwp
 {
+    AdaptiveTimeInputRenderer::AdaptiveTimeInputRenderer()
+    {
+    }
+
+    AdaptiveTimeInputRenderer::AdaptiveTimeInputRenderer(const std::shared_ptr<XamlBuilder> xamlBuilder) :
+        m_xamlBuilder(xamlBuilder)
+    {
+    }
+
     HRESULT AdaptiveTimeInputRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -20,8 +29,10 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveTimeInputRenderer::Render(
         IAdaptiveCardElement* cardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
+        m_xamlBuilder->BuildTimeInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 }}

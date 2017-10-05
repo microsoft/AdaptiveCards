@@ -54,22 +54,13 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
     {
+        m_xamlBuilder = std::make_shared<XamlBuilder>();
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionRendererRegistration>(&m_actionRendererRegistration));
         RETURN_IF_FAILED(RegisterDefaultElementRenderers());
         RETURN_IF_FAILED(RegisterDefaultActionRenderers());
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderContext>(&m_renderContext,
-            m_hostConfig.Get(),
-            m_elementRendererRegistration.Get(),
-            m_actionRendererRegistration.Get()));
         return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardRenderer::SetRenderOptions(ABI::AdaptiveCards::Uwp::RenderOptions /*options*/)
-    {
-        return S_OK;
     }
 
     _Use_decl_annotations_
@@ -122,30 +113,37 @@ namespace AdaptiveCards { namespace Uwp
         if (adaptiveCard)
         {
             ComPtr<IUIElement> xamlTreeRoot;
-            XamlBuilder builder;
 
             if (m_overrideDictionary != nullptr)
             {
-                THROW_IF_FAILED(builder.SetOverrideDictionary(m_overrideDictionary.Get()));
+                RETURN_IF_FAILED(m_xamlBuilder->SetOverrideDictionary(m_overrideDictionary.Get()));
             }
 
             if (m_hostConfig != nullptr)
             {
-                THROW_IF_FAILED(builder.SetHostConfig(m_hostConfig.Get()));
+                RETURN_IF_FAILED(m_xamlBuilder->SetHostConfig(m_hostConfig.Get()));
             }
 
             if (m_explicitDimensions)
             {
-                THROW_IF_FAILED(builder.SetFixedDimensions(m_desiredWidth, m_desiredHeight));
+                RETURN_IF_FAILED(m_xamlBuilder->SetFixedDimensions(m_desiredWidth, m_desiredHeight));
             }
+
+            ComPtr<AdaptiveRenderContext> renderContext;
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderContext>(
+                &renderContext,
+                m_hostConfig.Get(),
+                m_elementRendererRegistration.Get(),
+                m_actionRendererRegistration.Get(),
+                renderedCard.Get()));
 
             // This path is used for synchronous Xaml card rendering, so we don't want
             // to manually download the image assets and instead just want xaml to do
             // that automatically
-            builder.SetEnableXamlImageHandling(true);
+            m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
             {
-                builder.BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderedCard.Get());
+                m_xamlBuilder->BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderContext.Get());
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }
             catch (...)
@@ -286,19 +284,19 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RegisterDefaultElementRenderers()
     {
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(), Make<AdaptiveChoiceSetInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(), Make<AdaptiveColumnSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Container").Get(), Make<AdaptiveContainerRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Date").Get(), Make<AdaptiveDateInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"FactSet").Get(), Make<AdaptiveFactSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(), Make<AdaptiveImageRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ImageSet").Get(), Make<AdaptiveImageSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Number").Get(), Make<AdaptiveNumberInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"TextBlock").Get(), Make<AdaptiveTextBlockRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Text").Get(), Make<AdaptiveTextInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(), Make<AdaptiveTimeInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(), Make<AdaptiveToggleInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(), Make<AdaptiveChoiceSetInputRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(), Make<AdaptiveColumnSetRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Container").Get(), Make<AdaptiveContainerRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Date").Get(), Make<AdaptiveDateInputRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"FactSet").Get(), Make<AdaptiveFactSetRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(), Make<AdaptiveImageRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ImageSet").Get(), Make<AdaptiveImageSetRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Number").Get(), Make<AdaptiveNumberInputRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"TextBlock").Get(), Make<AdaptiveTextBlockRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Text").Get(), Make<AdaptiveTextInputRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(), Make<AdaptiveTimeInputRenderer>(m_xamlBuilder).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(), Make<AdaptiveToggleInputRenderer>(m_xamlBuilder).Get()));
         return S_OK;
     }
 

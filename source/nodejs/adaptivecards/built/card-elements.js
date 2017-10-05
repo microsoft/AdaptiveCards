@@ -14,12 +14,16 @@ var Enums = require("./enums");
 var Utils = require("./utils");
 var TextFormatters = require("./text-formatters");
 function invokeSetParent(obj, parent) {
-    // This is not super pretty, but it the closest emulation of
-    // "internal" in TypeScript.
-    obj["setParent"](parent);
+    if (obj) {
+        // Closest emulation of "internal" in TypeScript.
+        obj["setParent"](parent);
+    }
 }
 function invokeSetCollection(action, collection) {
-    action["setCollection"](collection);
+    if (action) {
+        // Closest emulation of "internal" in TypeScript.
+        action["setCollection"](collection);
+    }
 }
 function isActionAllowed(action, forbiddenActionTypes) {
     if (forbiddenActionTypes) {
@@ -87,7 +91,7 @@ function createActionInstance(json) {
     }
     return result;
 }
-var CardElement = (function () {
+var CardElement = /** @class */ (function () {
     function CardElement() {
         this._internalPadding = null;
         this._parent = null;
@@ -251,9 +255,9 @@ var CardElement = (function () {
         if (this._renderedElement) {
             this._renderedElement.style.boxSizing = "border-box";
             this.adjustRenderedElementSize(this._renderedElement);
+            this.updateLayout(false);
+            this.updateRenderedElementVisibility();
         }
-        this.updateLayout(false);
-        this.updateRenderedElementVisibility();
         return this._renderedElement;
     };
     CardElement.prototype.updateLayout = function (processChildren) {
@@ -381,7 +385,7 @@ var CardElement = (function () {
     return CardElement;
 }());
 exports.CardElement = CardElement;
-var TextBlock = (function (_super) {
+var TextBlock = /** @class */ (function (_super) {
     __extends(TextBlock, _super);
     function TextBlock() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -553,7 +557,7 @@ var TextBlock = (function (_super) {
     return TextBlock;
 }(CardElement));
 exports.TextBlock = TextBlock;
-var Fact = (function () {
+var Fact = /** @class */ (function () {
     function Fact() {
     }
     Fact.prototype.renderSpeech = function () {
@@ -565,7 +569,7 @@ var Fact = (function () {
     return Fact;
 }());
 exports.Fact = Fact;
-var FactSet = (function (_super) {
+var FactSet = /** @class */ (function (_super) {
     __extends(FactSet, _super);
     function FactSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -666,7 +670,7 @@ var FactSet = (function (_super) {
     return FactSet;
 }(CardElement));
 exports.FactSet = FactSet;
-var Image = (function (_super) {
+var Image = /** @class */ (function (_super) {
     __extends(Image, _super);
     function Image() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -792,7 +796,6 @@ var Image = (function (_super) {
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
         if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
             this.pixelWidth = json["pixelWidth"];
@@ -807,10 +810,23 @@ var Image = (function (_super) {
         }
         return null;
     };
+    Object.defineProperty(Image.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Image;
 }(CardElement));
 exports.Image = Image;
-var ImageSet = (function (_super) {
+var ImageSet = /** @class */ (function (_super) {
     __extends(ImageSet, _super);
     function ImageSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -877,7 +893,7 @@ var ImageSet = (function (_super) {
     return ImageSet;
 }(CardElement));
 exports.ImageSet = ImageSet;
-var Input = (function (_super) {
+var Input = /** @class */ (function (_super) {
     __extends(Input, _super);
     function Input() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -917,7 +933,7 @@ var Input = (function (_super) {
     return Input;
 }(CardElement));
 exports.Input = Input;
-var TextInput = (function (_super) {
+var TextInput = /** @class */ (function (_super) {
     __extends(TextInput, _super);
     function TextInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -983,7 +999,7 @@ var TextInput = (function (_super) {
     return TextInput;
 }(Input));
 exports.TextInput = TextInput;
-var ToggleInput = (function (_super) {
+var ToggleInput = /** @class */ (function (_super) {
     __extends(ToggleInput, _super);
     function ToggleInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1043,13 +1059,13 @@ var ToggleInput = (function (_super) {
     return ToggleInput;
 }(Input));
 exports.ToggleInput = ToggleInput;
-var Choice = (function () {
+var Choice = /** @class */ (function () {
     function Choice() {
     }
     return Choice;
 }());
 exports.Choice = Choice;
-var ChoiceSetInput = (function (_super) {
+var ChoiceSetInput = /** @class */ (function (_super) {
     __extends(ChoiceSetInput, _super);
     function ChoiceSetInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1228,7 +1244,7 @@ var ChoiceSetInput = (function (_super) {
     return ChoiceSetInput;
 }(Input));
 exports.ChoiceSetInput = ChoiceSetInput;
-var NumberInput = (function (_super) {
+var NumberInput = /** @class */ (function (_super) {
     __extends(NumberInput, _super);
     function NumberInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -1269,7 +1285,7 @@ var NumberInput = (function (_super) {
     return NumberInput;
 }(Input));
 exports.NumberInput = NumberInput;
-var DateInput = (function (_super) {
+var DateInput = /** @class */ (function (_super) {
     __extends(DateInput, _super);
     function DateInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -1297,7 +1313,7 @@ var DateInput = (function (_super) {
     return DateInput;
 }(Input));
 exports.DateInput = DateInput;
-var TimeInput = (function (_super) {
+var TimeInput = /** @class */ (function (_super) {
     __extends(TimeInput, _super);
     function TimeInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -1331,7 +1347,7 @@ var ActionButtonState;
     ActionButtonState[ActionButtonState["Expanded"] = 1] = "Expanded";
     ActionButtonState[ActionButtonState["Subdued"] = 2] = "Subdued";
 })(ActionButtonState || (ActionButtonState = {}));
-var ActionButton = (function () {
+var ActionButton = /** @class */ (function () {
     function ActionButton(action) {
         var _this = this;
         this._element = null;
@@ -1404,7 +1420,7 @@ var ActionButton = (function () {
     });
     return ActionButton;
 }());
-var Action = (function () {
+var Action = /** @class */ (function () {
     function Action() {
         this._parent = null;
         this._actionCollection = null; // hold the reference to its action collection
@@ -1462,7 +1478,7 @@ var Action = (function () {
     return Action;
 }());
 exports.Action = Action;
-var SubmitAction = (function (_super) {
+var SubmitAction = /** @class */ (function (_super) {
     __extends(SubmitAction, _super);
     function SubmitAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1505,7 +1521,7 @@ var SubmitAction = (function (_super) {
     return SubmitAction;
 }(Action));
 exports.SubmitAction = SubmitAction;
-var OpenUrlAction = (function (_super) {
+var OpenUrlAction = /** @class */ (function (_super) {
     __extends(OpenUrlAction, _super);
     function OpenUrlAction() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -1528,7 +1544,7 @@ var OpenUrlAction = (function (_super) {
     return OpenUrlAction;
 }(Action));
 exports.OpenUrlAction = OpenUrlAction;
-var HttpHeader = (function () {
+var HttpHeader = /** @class */ (function () {
     function HttpHeader() {
         this._value = new Utils.StringWithSubstitutions();
     }
@@ -1548,7 +1564,7 @@ var HttpHeader = (function () {
     return HttpHeader;
 }());
 exports.HttpHeader = HttpHeader;
-var HttpAction = (function (_super) {
+var HttpAction = /** @class */ (function (_super) {
     __extends(HttpAction, _super);
     function HttpAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1628,7 +1644,7 @@ var HttpAction = (function (_super) {
     return HttpAction;
 }(Action));
 exports.HttpAction = HttpAction;
-var ShowCardAction = (function (_super) {
+var ShowCardAction = /** @class */ (function (_super) {
     __extends(ShowCardAction, _super);
     function ShowCardAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1662,7 +1678,7 @@ var ShowCardAction = (function (_super) {
     return ShowCardAction;
 }(Action));
 exports.ShowCardAction = ShowCardAction;
-var ActionCollection = (function () {
+var ActionCollection = /** @class */ (function () {
     function ActionCollection(owner) {
         this._actionButtons = [];
         this._expandedAction = null;
@@ -1903,7 +1919,7 @@ var ActionCollection = (function () {
     };
     return ActionCollection;
 }());
-var ActionSet = (function (_super) {
+var ActionSet = /** @class */ (function (_super) {
     __extends(ActionSet, _super);
     function ActionSet() {
         var _this = _super.call(this) || this;
@@ -1953,7 +1969,7 @@ var ActionSet = (function (_super) {
     return ActionSet;
 }(CardElement));
 exports.ActionSet = ActionSet;
-var BackgroundImage = (function () {
+var BackgroundImage = /** @class */ (function () {
     function BackgroundImage() {
         this.mode = Enums.BackgroundImageMode.Stretch;
         this.horizontalAlignment = Enums.HorizontalAlignment.Left;
@@ -2005,7 +2021,7 @@ var BackgroundImage = (function () {
     return BackgroundImage;
 }());
 exports.BackgroundImage = BackgroundImage;
-var Container = (function (_super) {
+var Container = /** @class */ (function (_super) {
     __extends(Container, _super);
     function Container() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -2169,20 +2185,21 @@ var Container = (function (_super) {
             element.tabIndex = 0;
             element.setAttribute("role", "button");
             element.setAttribute("aria-label", this.selectAction.title);
-        }
-        element.onclick = function (e) {
-            if (_this.selectAction != null) {
-                _this.selectAction.execute();
-                e.cancelBubble = true;
-            }
-        };
-        element.onkeypress = function (e) {
-            if (_this.selectAction != null) {
-                if (e.keyCode == 13 || e.keyCode == 32) {
+            element.onclick = function (e) {
+                if (_this.selectAction != null) {
                     _this.selectAction.execute();
+                    e.cancelBubble = true;
                 }
-            }
-        };
+            };
+            element.onkeypress = function (e) {
+                if (_this.selectAction != null) {
+                    // Enter or space pressed
+                    if (e.keyCode == 13 || e.keyCode == 32) {
+                        _this.selectAction.execute();
+                    }
+                }
+            };
+        }
         if (this._items.length > 0) {
             var renderedElementCount = 0;
             for (var i = 0; i < this._items.length; i++) {
@@ -2298,14 +2315,15 @@ var Container = (function (_super) {
                         message: "Unknown element type: " + elementType
                     });
                 }
-                this.addItem(element);
-                element.parse(items[i]);
+                else {
+                    this.addItem(element);
+                    element.parse(items[i]);
+                }
             }
         }
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
     };
     Container.prototype.addItem = function (item) {
@@ -2391,10 +2409,23 @@ var Container = (function (_super) {
             }
         }
     };
+    Object.defineProperty(Container.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Container;
 }(CardElement));
 exports.Container = Container;
-var Column = (function (_super) {
+var Column = /** @class */ (function (_super) {
     __extends(Column, _super);
     function Column() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -2476,7 +2507,7 @@ var Column = (function (_super) {
     return Column;
 }(Container));
 exports.Column = Column;
-var ColumnSet = (function (_super) {
+var ColumnSet = /** @class */ (function (_super) {
     __extends(ColumnSet, _super);
     function ColumnSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -2484,12 +2515,17 @@ var ColumnSet = (function (_super) {
         return _this;
     }
     ColumnSet.prototype.internalRender = function () {
+        var _this = this;
         if (this._columns.length > 0) {
             var element = document.createElement("div");
             element.className = "ac-columnSet";
             element.style.display = "flex";
             if (this.selectAction) {
                 element.classList.add("ac-selectable");
+                element.onclick = function (e) {
+                    _this.selectAction.execute();
+                    e.cancelBubble = true;
+                };
             }
             switch (this.horizontalAlignment) {
                 case Enums.HorizontalAlignment.Center:
@@ -2539,7 +2575,6 @@ var ColumnSet = (function (_super) {
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
         if (json["columns"] != null) {
             var jsonColumns = json["columns"];
@@ -2636,6 +2671,19 @@ var ColumnSet = (function (_super) {
         }
         return speak;
     };
+    Object.defineProperty(ColumnSet.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ColumnSet;
 }(CardElement));
 exports.ColumnSet = ColumnSet;
@@ -2669,7 +2717,7 @@ function raiseParseError(error) {
         AdaptiveCard.onParseError(error);
     }
 }
-var TypeRegistry = (function () {
+var TypeRegistry = /** @class */ (function () {
     function TypeRegistry() {
         this._items = [];
     }
@@ -2712,7 +2760,7 @@ var TypeRegistry = (function () {
     return TypeRegistry;
 }());
 exports.TypeRegistry = TypeRegistry;
-var ContainerWithActions = (function (_super) {
+var ContainerWithActions = /** @class */ (function (_super) {
     __extends(ContainerWithActions, _super);
     function ContainerWithActions() {
         var _this = _super.call(this) || this;
@@ -2774,7 +2822,7 @@ var ContainerWithActions = (function (_super) {
     return ContainerWithActions;
 }(Container));
 exports.ContainerWithActions = ContainerWithActions;
-var AdaptiveCard = (function (_super) {
+var AdaptiveCard = /** @class */ (function (_super) {
     __extends(AdaptiveCard, _super);
     function AdaptiveCard() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -2881,9 +2929,11 @@ var AdaptiveCard = (function (_super) {
         }
         else {
             renderedCard = _super.prototype.render.call(this);
-            renderedCard.tabIndex = 0;
-            if (!Utils.isNullOrEmpty(this.speak)) {
-                renderedCard.setAttribute("aria-label", this.speak);
+            if (renderedCard) {
+                renderedCard.tabIndex = 0;
+                if (!Utils.isNullOrEmpty(this.speak)) {
+                    renderedCard.setAttribute("aria-label", this.speak);
+                }
             }
         }
         return renderedCard;
@@ -2907,7 +2957,7 @@ var AdaptiveCard = (function (_super) {
 exports.AdaptiveCard = AdaptiveCard;
 // This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
-var InlineAdaptiveCard = (function (_super) {
+var InlineAdaptiveCard = /** @class */ (function (_super) {
     __extends(InlineAdaptiveCard, _super);
     function InlineAdaptiveCard() {
         return _super !== null && _super.apply(this, arguments) || this;

@@ -1,4 +1,4 @@
-renderer/built/
-renderer/dist/
-visualizer/built/
+adaptivecards/built/
+adaptivecards/dist/
+adaptivecards-visualizer/built/
 .npmrc

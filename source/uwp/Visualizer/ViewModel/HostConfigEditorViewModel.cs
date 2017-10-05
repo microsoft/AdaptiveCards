@@ -22,16 +22,31 @@ namespace AdaptiveCardVisualizer.ViewModel
         {
             try
             {
-                HostConfig = AdaptiveHostConfig.FromJsonString(payload).HostConfig;
+                var newHostConfig = AdaptiveHostConfig.FromJsonString(payload).HostConfig;
 
-                HostConfigChanged?.Invoke(this, HostConfig);
+                if (newHostConfig != null)
+                {
+                    HostConfig = newHostConfig;
+
+                    HostConfigChanged?.Invoke(this, HostConfig);
+
+                    MakeErrorsLike(new List<ErrorViewModel>());
+                }
+                else
+                {
+                    SetSingleError(new ErrorViewModel()
+                    {
+                        Message = "Invalid Host Config payload",
+                        Type = ErrorViewModelType.ErrorButRenderAllowed
+                    });
+                }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
                 SetSingleError(new ErrorViewModel()
                 {
-                    Message = "Invalid Host Config payload",
+                    Message = ex.ToString(),
                     Type = ErrorViewModelType.ErrorButRenderAllowed
                 });
             }

@@ -1,6 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
-    IHostConfig,
+    HostConfig,
     Size,
     TextSize,
     TextColor,
@@ -8,7 +8,9 @@ import {
     Spacing,
     ShowCardActionMode,
     Orientation,
-    ActionAlignment
+    ActionAlignment,
+    FactTitleDefinition,
+    FactTextDefinition
 } from "adaptivecards";
 
 export class FacebookContainer extends HostContainer {
@@ -29,8 +31,8 @@ export class FacebookContainer extends HostContainer {
         return outerElement;
     }
 
-    public getHostConfig(): IHostConfig {
-        return {
+    public getHostConfig(): HostConfig {
+        return new HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -153,6 +155,6 @@ export class FacebookContainer extends HostContainer {
                 },
                 spacing: 20
             }
-        };
+        });
     }
 }

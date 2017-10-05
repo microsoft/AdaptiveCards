@@ -71,6 +71,8 @@ namespace AdaptiveCards
         runtimeclass AdaptiveNumberInputRenderer;
         runtimeclass AdaptiveOpenUrlActionRenderer;
         runtimeclass AdaptiveRenderContext;
+        runtimeclass AdaptiveRenderArgs;
+        runtimeclass AdaptiveActionInvoker;
         runtimeclass AdaptiveShowCardActionRenderer;
         runtimeclass AdaptiveSubmitActionRenderer;
         runtimeclass AdaptiveTextBlockRenderer;
@@ -136,6 +138,8 @@ namespace AdaptiveCards
         interface IAdaptiveElementRenderer;
         interface IAdaptiveElementRendererRegistration;
         interface IAdaptiveRenderContext;
+        interface IAdaptiveRenderArgs;
+        interface IAdaptiveActionInvoker;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -851,15 +855,6 @@ namespace AdaptiveCards
             [default] interface IAdaptiveFactSet;
             interface IAdaptiveCardElement;
         };
-
-        [flags]
-        [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum RenderOptions
-        {
-            None = 0x0,
-            SupportsActionBar = 0x1,
-            SupportsInlineActions = 0x2,
-        }RenderOptions;
 
         [
             uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022),
@@ -1742,6 +1737,25 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(c7435e94-1028-4543-b52e-54126fcb411f),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveActionInvoker)
+        ]
+        interface IAdaptiveActionInvoker : IInspectable
+        {
+            HRESULT SendActionEvent([in] IAdaptiveActionElement* actionElement);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveActionInvoker
+        {
+            [default] interface IAdaptiveActionInvoker;
+        };
+
+        [
             uuid(d2ad59a2-01aa-4b39-b2a7-5ce1d4028fbb),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveRenderContext)
@@ -1754,6 +1768,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
 
+            [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
+
+            HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
         };
 
         [
@@ -1771,7 +1788,7 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveElementRenderer : IInspectable
         {
-            HRESULT Render([in] IAdaptiveCardElement* element, [in] AdaptiveRenderContext* context, [out, retval] Windows.UI.Xaml.UIElement** result);
+            HRESULT Render([in] IAdaptiveCardElement* element, [in] AdaptiveRenderContext* context, [in] AdaptiveRenderArgs* renderArgs, [out, retval] Windows.UI.Xaml.UIElement** result);
         };
 
         [
@@ -1934,6 +1951,25 @@ namespace AdaptiveCards
         runtimeclass AdaptiveShowCardActionRenderer
         {
             [default] interface IAdaptiveActionRenderer;
+        };
+
+        [
+            uuid(8615baba-2695-46d2-a764-9ab473c65bb9),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveRenderArgs)
+        ]
+        interface IAdaptiveRenderArgs : IInspectable
+        {
+            [propget] HRESULT ContainerStyle([out, retval] ContainerStyle* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveRenderArgs
+        {
+            [default] interface IAdaptiveRenderArgs;
         };
 
     }
