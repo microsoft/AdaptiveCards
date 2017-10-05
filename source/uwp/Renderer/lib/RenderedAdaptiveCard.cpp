@@ -85,11 +85,8 @@ namespace AdaptiveCards { namespace Uwp
         // get the inputElements in Json form.
         ComPtr<IAdaptiveInputs> gatheredInputs;
         RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
-        ComPtr<IJsonObject> inputsAsJson;
-        RETURN_IF_FAILED(gatheredInputs->AsJson(InputValueMode::RawString, &inputsAsJson));
-
         ComPtr<IAdaptiveActionEventArgs> eventArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, inputsAsJson.Get()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
 
         return m_events->InvokeAll(this, eventArgs.Get());
     }

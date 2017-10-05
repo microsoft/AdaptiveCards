@@ -896,7 +896,7 @@ namespace AdaptiveCards
         interface IAdaptiveActionEventArgs : IInspectable
         {
             [propget] HRESULT Action([out, retval] IAdaptiveActionElement** action);
-            [propget] HRESULT Inputs([out, retval] Windows.Data.Json.JsonObject** value);
+            [propget] HRESULT Inputs([out, retval] AdaptiveInputs** value);
         }
 
         [

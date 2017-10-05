@@ -98,7 +98,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                             }
                             else
                             {
-                                m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs.ToString();
+                                m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs.AsJson(InputValueMode.RawString).ToString();
                             }
 
                             m_actionDialog.PrimaryButtonText = "Close";
