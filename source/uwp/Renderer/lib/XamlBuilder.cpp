@@ -2093,7 +2093,9 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(buttonAsControl->put_HorizontalContentAlignment(HorizontalAlignment_Stretch));
         ComPtr<IBrush> buttonBackgroundBrush = GetSolidColorBrush(Color());
         THROW_IF_FAILED(buttonAsControl->put_Background(buttonBackgroundBrush.Get()));
-        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding, 0, (double)cardPadding, 0 }));
+
+        // For button padding, we apply the cardPadding minus two pixels, since the button's BorderThickness defaults to 2
+        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding - 2, -2, (double)cardPadding - 2, -2 }));
 
         ComPtr<IFrameworkElement> buttonAsFrameworkElement;
         THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
