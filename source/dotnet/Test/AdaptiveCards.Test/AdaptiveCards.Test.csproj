@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdaptiveCardSerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AdaptiveCardApiTests.cs" />
     <Compile Include="HostConfigApiTests.cs" />
