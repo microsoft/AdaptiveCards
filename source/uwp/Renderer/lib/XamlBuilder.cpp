@@ -1326,8 +1326,10 @@ namespace AdaptiveCards { namespace Uwp
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
+        bool hasExplicitContainerStyle = true;
         if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
         {
+            hasExplicitContainerStyle = false;
             ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
             containerStyle = parentContainerStyle;
@@ -1342,10 +1344,15 @@ namespace AdaptiveCards { namespace Uwp
         BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
         ComPtr<IBorder> containerBorder = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
-        ABI::Windows::UI::Color backgroundColor;
-        THROW_IF_FAILED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor));
-        ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
-        THROW_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+
+        // If container style was explicitly assigned, apply background
+        if (hasExplicitContainerStyle)
+        {
+            ABI::Windows::UI::Color backgroundColor;
+            THROW_IF_FAILED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor));
+            ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
+            THROW_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+        }
 
         ComPtr<IUIElement> stackPanelAsUIElement;
         THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsUIElement));
@@ -1360,7 +1367,18 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(stackPanelAsFrameworkElement->put_Style(style.Get()));
         }
 
-        THROW_IF_FAILED(containerBorder.CopyTo(containerControl));
+        ComPtr<IAdaptiveActionElement> selectAction;
+        THROW_IF_FAILED(adaptiveContainer->get_SelectAction(&selectAction));
+        if (selectAction != nullptr)
+        {
+            ComPtr<IUIElement> containerBorderAsUIElement;
+            THROW_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
+            WrapInFullWidthTouchTarget(containerBorderAsUIElement.Get(), selectAction.Get(), renderContext, containerControl);
+        }
+        else
+        {
+            THROW_IF_FAILED(containerBorder.CopyTo(containerControl));
+        }
     }
 
     _Use_decl_annotations_
@@ -1379,8 +1397,10 @@ namespace AdaptiveCards { namespace Uwp
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveColumn->get_Style(&containerStyle));
+        bool hasExplicitContainerStyle = true;
         if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
         {
+            hasExplicitContainerStyle = false;
             ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
             containerStyle = parentContainerStyle;
@@ -1388,8 +1408,9 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle));
 
+        // If container style was explicitly assigned, apply background
         ABI::Windows::UI::Color backgroundColor;
-        if (SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor)))
+        if (hasExplicitContainerStyle && SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor)))
         {
             ComPtr<IPanel> columnAsPanel;
             THROW_IF_FAILED(xamlStackPanel.As(&columnAsPanel));
@@ -1524,7 +1545,18 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(gridAsFrameworkElement->put_Style(style.Get()));
         }
 
-        THROW_IF_FAILED(xamlGrid.CopyTo(columnSetControl));
+        ComPtr<IAdaptiveActionElement> selectAction;
+        THROW_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
+        if (selectAction != nullptr)
+        {
+            ComPtr<IUIElement> gridAsUIElement;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
+            WrapInFullWidthTouchTarget(gridAsUIElement.Get(), selectAction.Get(), renderContext, columnSetControl);
+        }
+        else
+        {
+            THROW_IF_FAILED(xamlGrid.CopyTo(columnSetControl));
+        }
     }
 
     _Use_decl_annotations_
@@ -2015,5 +2047,93 @@ namespace AdaptiveCards { namespace Uwp
         boolean supportsInteractivity;
         THROW_IF_FAILED(m_hostConfig->get_SupportsInteractivity(&supportsInteractivity));
         return Boolify(supportsInteractivity);
+    }
+
+    void XamlBuilder::WrapInFullWidthTouchTarget(
+        IUIElement* elementToWrap,
+        IAdaptiveActionElement* action,
+        IAdaptiveRenderContext* renderContext,
+        IUIElement** finalElement)
+    {
+        ABI::AdaptiveCards::Uwp::ActionType actionType;
+        THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+        // TODO: In future should support inline ShowCard, but that's complicated for inline elements
+        if (actionType == ABI::AdaptiveCards::Uwp::ActionType::ShowCard)
+        {
+            ComPtr<IAdaptiveActionsConfig> actionsConfig;
+            THROW_IF_FAILED(m_hostConfig->get_Actions(actionsConfig.GetAddressOf()));
+            ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
+            THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
+            ABI::AdaptiveCards::Uwp::ActionMode showCardActionMode;
+            THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
+            if (showCardActionMode == ABI::AdaptiveCards::Uwp::ActionMode::Inline)
+            {
+                // Was inline show card, so don't wrap the element and just return
+                ComPtr<IUIElement> localElementToWrap(elementToWrap);
+                localElementToWrap.CopyTo(finalElement);
+                return;
+            }
+        }
+
+        ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+
+        ComPtr<IContentControl> buttonAsContentControl;
+        THROW_IF_FAILED(button.As(&buttonAsContentControl));
+        THROW_IF_FAILED(buttonAsContentControl->put_Content(elementToWrap));
+
+        ComPtr<IAdaptiveSpacingConfig> spacingConfig;
+        THROW_IF_FAILED(m_hostConfig->get_Spacing(&spacingConfig));
+
+        UINT32 cardPadding;
+        THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));
+
+        ComPtr<IControl> buttonAsControl;
+        THROW_IF_FAILED(button.As(&buttonAsControl));
+        THROW_IF_FAILED(buttonAsControl->put_HorizontalContentAlignment(HorizontalAlignment_Stretch));
+        ComPtr<IBrush> buttonBackgroundBrush = GetSolidColorBrush(Color());
+        THROW_IF_FAILED(buttonAsControl->put_Background(buttonBackgroundBrush.Get()));
+
+        // For button padding, we apply the cardPadding minus two pixels, since the button's BorderThickness defaults to 2
+        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding - 2, -2, (double)cardPadding - 2, -2 }));
+
+        ComPtr<IFrameworkElement> buttonAsFrameworkElement;
+        THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
+        THROW_IF_FAILED(buttonAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+
+        double negativeCardMargin = cardPadding * -1.0;
+
+        // TODO: Apply negative margin to top/bottom that causes button to appear halfway between spacing between elements.
+        // However this will be tricky, since to get the spacing for the bottom, we need to know the NEXT card element.
+
+        THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, 0, negativeCardMargin, 0 }));
+
+        WireButtonClickToAction(button.Get(), action, renderContext);
+
+        THROW_IF_FAILED(button.CopyTo(finalElement));
+    }
+
+    void XamlBuilder::WireButtonClickToAction(
+        IButton* button,
+        IAdaptiveActionElement* action,
+        IAdaptiveRenderContext* renderContext)
+    {
+        // Note that this method currently doesn't support inline show card actions, it
+        // assumes the caller won't call this method if inline show card is specified.
+        ComPtr<IButton> localButton(button);
+        ComPtr<IAdaptiveActionInvoker> actionInvoker;
+        THROW_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
+        ComPtr<IAdaptiveActionElement> strongAction(action);
+
+        // Add click handler
+        ComPtr<IButtonBase> buttonBase;
+        THROW_IF_FAILED(localButton.As(&buttonBase));
+
+        EventRegistrationToken clickToken;
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([this, strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        {
+            THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
+            return S_OK;
+        }).Get(), &clickToken));
     }
 }}
