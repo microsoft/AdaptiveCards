@@ -57,7 +57,6 @@ namespace AdaptiveCards
 
         runtimeclass AdaptiveElementParserRegistration;
         runtimeclass AdaptiveActionParserRegistration;
-        runtimeclass AdaptiveActionRendererRegistration;
         runtimeclass AdaptiveCardRenderer;
         runtimeclass AdaptiveChoiceSetInputRenderer;
         runtimeclass AdaptiveColumnRenderer;
@@ -69,12 +68,9 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageRenderer;
         runtimeclass AdaptiveImageSetRenderer;
         runtimeclass AdaptiveNumberInputRenderer;
-        runtimeclass AdaptiveOpenUrlActionRenderer;
         runtimeclass AdaptiveRenderContext;
         runtimeclass AdaptiveRenderArgs;
         runtimeclass AdaptiveActionInvoker;
-        runtimeclass AdaptiveShowCardActionRenderer;
-        runtimeclass AdaptiveSubmitActionRenderer;
         runtimeclass AdaptiveTextBlockRenderer;
         runtimeclass AdaptiveTextInputRenderer;
         runtimeclass AdaptiveTimeInputRenderer;
@@ -133,8 +129,6 @@ namespace AdaptiveCards
         interface IAdaptiveElementParser;
         interface IAdaptiveActionParser;
 
-        interface IAdaptiveActionRenderer;
-        interface IAdaptiveActionRendererRegistration;
         interface IAdaptiveElementRenderer;
         interface IAdaptiveElementRendererRegistration;
         interface IAdaptiveRenderContext;
@@ -876,7 +870,6 @@ namespace AdaptiveCards
             HRESULT RenderAdaptiveCardFromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
 
             [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** result);
-            [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** result);
         };
 
         [
@@ -1713,27 +1706,6 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(ca06924a-9c41-4831-9cc7-caa182a1d087),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveActionRendererRegistration)
-        ]
-        interface IAdaptiveActionRendererRegistration : IInspectable
-        {
-            HRESULT Set([in] HSTRING type, [in] IAdaptiveActionRenderer* renderer);
-            HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveActionRenderer** result);
-            HRESULT Remove([in] HSTRING type);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveActionRendererRegistration
-        {
-            [default] interface IAdaptiveActionRendererRegistration;
-        };
-
-        [
             uuid(c7435e94-1028-4543-b52e-54126fcb411f),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveActionInvoker)
@@ -1762,8 +1734,6 @@ namespace AdaptiveCards
             [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
 
             [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** value);
-
-            [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
 
             [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
 
@@ -1912,42 +1882,6 @@ namespace AdaptiveCards
         runtimeclass AdaptiveFactSetRenderer
         {
             [default] interface IAdaptiveElementRenderer;
-        };
-
-        [
-            uuid(296143e3-0c4f-41fd-bb52-e8e57878b19b),
-            version(NTDDI_WIN10_RS1),
-        ]
-        interface IAdaptiveActionRenderer : IInspectable
-        {
-            HRESULT Render([in] IAdaptiveActionElement* element, [in] AdaptiveRenderContext* context, [out, retval] Windows.UI.Xaml.UIElement** result);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveSubmitActionRenderer
-        {
-            [default] interface IAdaptiveActionRenderer;
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveOpenUrlActionRenderer
-        {
-            [default] interface IAdaptiveActionRenderer;
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveShowCardActionRenderer
-        {
-            [default] interface IAdaptiveActionRenderer;
         };
 
         [

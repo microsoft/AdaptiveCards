@@ -93,15 +93,12 @@ protected:
                 THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Uwp::RenderedAdaptiveCard>(&renderResult));
                 ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration> elementRenderers;
                 THROW_IF_FAILED(m_renderer->get_ElementRenderers(&elementRenderers));
-                ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionRendererRegistration> actionRenderers;
-                THROW_IF_FAILED(m_renderer->get_ActionRenderers(&actionRenderers));
 
                 ComPtr<AdaptiveCards::Uwp::AdaptiveRenderContext> renderContext;
                 RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveRenderContext>(
                     &renderContext,
                     m_renderer->GetHostConfig(),
                     elementRenderers.Get(),
-                    actionRenderers.Get(),
                     renderResult.Get()));
 
                 m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get(), renderContext.Get());
