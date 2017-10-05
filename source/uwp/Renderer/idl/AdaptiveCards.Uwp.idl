@@ -751,6 +751,9 @@ namespace AdaptiveCards
             [propput] HRESULT Style([in] ContainerStyle value);
 
             [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+
+            [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+            [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
         };
 
         [

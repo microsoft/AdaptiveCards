@@ -1360,7 +1360,18 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(stackPanelAsFrameworkElement->put_Style(style.Get()));
         }
 
-        THROW_IF_FAILED(containerBorder.CopyTo(containerControl));
+        ComPtr<IAdaptiveActionElement> selectAction;
+        THROW_IF_FAILED(adaptiveContainer->get_SelectAction(&selectAction));
+        if (selectAction != nullptr)
+        {
+            ComPtr<IUIElement> containerBorderAsUIElement;
+            THROW_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
+            WrapInFullWidthTouchTarget(containerBorderAsUIElement.Get(), selectAction.Get(), renderContext, containerControl);
+        }
+        else
+        {
+            THROW_IF_FAILED(containerBorder.CopyTo(containerControl));
+        }
     }
 
     _Use_decl_annotations_
