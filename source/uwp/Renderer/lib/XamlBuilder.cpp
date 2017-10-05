@@ -1326,8 +1326,10 @@ namespace AdaptiveCards { namespace Uwp
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
+        bool hasExplicitContainerStyle = true;
         if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
         {
+            hasExplicitContainerStyle = false;
             ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
             containerStyle = parentContainerStyle;
@@ -1342,10 +1344,15 @@ namespace AdaptiveCards { namespace Uwp
         BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
         ComPtr<IBorder> containerBorder = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
-        ABI::Windows::UI::Color backgroundColor;
-        THROW_IF_FAILED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor));
-        ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
-        THROW_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+
+        // If container style was explicitly assigned, apply background
+        if (hasExplicitContainerStyle)
+        {
+            ABI::Windows::UI::Color backgroundColor;
+            THROW_IF_FAILED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor));
+            ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
+            THROW_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+        }
 
         ComPtr<IUIElement> stackPanelAsUIElement;
         THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsUIElement));
@@ -1390,8 +1397,10 @@ namespace AdaptiveCards { namespace Uwp
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveColumn->get_Style(&containerStyle));
+        bool hasExplicitContainerStyle = true;
         if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
         {
+            hasExplicitContainerStyle = false;
             ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
             containerStyle = parentContainerStyle;
@@ -1399,8 +1408,9 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle));
 
+        // If container style was explicitly assigned, apply background
         ABI::Windows::UI::Color backgroundColor;
-        if (SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor)))
+        if (hasExplicitContainerStyle && SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor)))
         {
             ComPtr<IPanel> columnAsPanel;
             THROW_IF_FAILED(xamlStackPanel.As(&columnAsPanel));
