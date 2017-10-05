@@ -206,10 +206,12 @@ namespace AdaptiveCards { namespace Uwp
         void WrapInFullWidthTouchTarget(
             _In_ ABI::Windows::UI::Xaml::IUIElement* elementToWrap,
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
+            _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
-        void WireButtonCickToAction(
+        void WireButtonClickToAction(
             _In_ ABI::Windows::UI::Xaml::Controls::IButton* button,
-            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action);
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
+            _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
     };
 }}
