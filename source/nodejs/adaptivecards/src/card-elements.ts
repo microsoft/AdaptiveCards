@@ -114,13 +114,13 @@ export abstract class CardElement {
 
     protected showBottomSpacer(requestingElement: CardElement) {
         if (this.parent) {
-            this.parent.showBottomSpacer(this);
+            this.parent.showBottomSpacer(requestingElement);
         }
     }
 
     protected hideBottomSpacer(requestingElement: CardElement) {
         if (this.parent) {
-            this.parent.hideBottomSpacer(this);
+            this.parent.hideBottomSpacer(requestingElement);
         }
     }
 
@@ -2292,9 +2292,9 @@ export class Container extends CardElement {
 
     protected showBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
-            this.renderedElement.style.paddingBottom = this.hostConfig.paddingToSpacingDefinition(this.internalPadding).bottom + "px";
+            this.applyPadding();
 
-            super.showBottomSpacer(this);
+            super.showBottomSpacer(requestingElement);
         }
     }
 
@@ -2302,7 +2302,7 @@ export class Container extends CardElement {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
             this.renderedElement.style.paddingBottom = "0px";
 
-            super.hideBottomSpacer(this);
+            super.hideBottomSpacer(requestingElement);
         }
     }
 

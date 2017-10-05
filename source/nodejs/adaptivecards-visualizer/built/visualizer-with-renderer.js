@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 40);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -150,7 +150,7 @@ var UNESCAPE_ALL_RE = new RegExp(UNESCAPE_MD_RE.source + '|' + ENTITY_RE.source,
 
 var DIGITAL_ENTITY_TEST_RE = /^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))/i;
 
-var entities = __webpack_require__(10);
+var entities = __webpack_require__(11);
 
 function replaceEntityPattern(match, name) {
   var code = 0;
@@ -327,7 +327,7 @@ function normalizeReference(str) {
 // bundled size (e.g. a browser build).
 //
 exports.lib                 = {};
-exports.lib.mdurl           = __webpack_require__(14);
+exports.lib.mdurl           = __webpack_require__(15);
 exports.lib.ucmicro         = __webpack_require__(98);
 
 exports.assign              = assign;
@@ -358,9 +358,9 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(43));
-__export(__webpack_require__(3));
 __export(__webpack_require__(44));
+__export(__webpack_require__(3));
+__export(__webpack_require__(9));
 //# sourceMappingURL=adaptivecards.js.map
 
 /***/ }),
@@ -371,7 +371,7 @@ __export(__webpack_require__(44));
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var adaptivecards_1 = __webpack_require__(1);
-var vkbeautify = __webpack_require__(40);
+var vkbeautify = __webpack_require__(41);
 var HostContainer = /** @class */ (function () {
     function HostContainer(styleSheet) {
         this.supportsActionBar = false;
@@ -471,7 +471,7 @@ var HostContainer = /** @class */ (function () {
         }
     };
     HostContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -594,7 +594,7 @@ var HostContainer = /** @class */ (function () {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     HostContainer.prototype.renderContainer = function (renderedCard) {
         return null;
@@ -1394,6 +1394,359 @@ module.exports = g;
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Enums = __webpack_require__(3);
+var Utils = __webpack_require__(10);
+var SpacingDefinition = /** @class */ (function () {
+    function SpacingDefinition(obj) {
+        this.left = 0;
+        this.top = 0;
+        this.right = 0;
+        this.bottom = 0;
+        if (obj) {
+            this.top = obj["top"] || this.top;
+            this.right = obj["right"] || this.right;
+            this.bottom = obj["bottom"] || this.bottom;
+            this.left = obj["left"] || this.left;
+        }
+    }
+    return SpacingDefinition;
+}());
+exports.SpacingDefinition = SpacingDefinition;
+var PaddingDefinition = /** @class */ (function () {
+    function PaddingDefinition(obj) {
+        this.top = Enums.Padding.None;
+        this.right = Enums.Padding.None;
+        this.bottom = Enums.Padding.None;
+        this.left = Enums.Padding.None;
+        if (obj) {
+            this.top = Utils.parseHostConfigEnum(Enums.Padding, obj["top"], Enums.Padding.None);
+            this.right = Utils.parseHostConfigEnum(Enums.Padding, obj["right"], Enums.Padding.None);
+            this.bottom = Utils.parseHostConfigEnum(Enums.Padding, obj["bottom"], Enums.Padding.None);
+            this.left = Utils.parseHostConfigEnum(Enums.Padding, obj["left"], Enums.Padding.None);
+        }
+    }
+    PaddingDefinition.prototype.toJSON = function () {
+        return {
+            top: Enums.Padding[this.top],
+            right: Enums.Padding[this.right],
+            bottom: Enums.Padding[this.bottom],
+            left: Enums.Padding[this.left],
+        };
+    };
+    return PaddingDefinition;
+}());
+exports.PaddingDefinition = PaddingDefinition;
+var TextColorDefinition = /** @class */ (function () {
+    function TextColorDefinition(obj) {
+        this.normal = "#0000FF";
+        this.subtle = "#222222";
+        if (obj) {
+            this.normal = obj["normal"] || this.normal;
+            this.subtle = obj["subtle"] || this.subtle;
+        }
+    }
+    return TextColorDefinition;
+}());
+exports.TextColorDefinition = TextColorDefinition;
+var ContainerStyleDefinition = /** @class */ (function () {
+    function ContainerStyleDefinition(obj) {
+        if (obj) {
+            this.backgroundColor = obj["backgroundColor"];
+            this.fontColors = {
+                default: new TextColorDefinition(obj["fontColors"]["default"]),
+                accent: new TextColorDefinition(obj["fontColors"]["accent"]),
+                good: new TextColorDefinition(obj["fontColors"]["good"]),
+                warning: new TextColorDefinition(obj["fontColors"]["warning"]),
+                attention: new TextColorDefinition(obj["fontColors"]["attention"])
+            };
+        }
+    }
+    return ContainerStyleDefinition;
+}());
+exports.ContainerStyleDefinition = ContainerStyleDefinition;
+var AdaptiveCardConfig = /** @class */ (function () {
+    function AdaptiveCardConfig(obj) {
+        this.allowCustomStyle = false;
+        if (obj) {
+            this.allowCustomStyle = obj["allowCustomStyle"] || this.allowCustomStyle;
+        }
+    }
+    return AdaptiveCardConfig;
+}());
+exports.AdaptiveCardConfig = AdaptiveCardConfig;
+var ImageConfig = /** @class */ (function () {
+    function ImageConfig(obj) {
+        this.size = Enums.Size.Medium;
+        if (obj) {
+            this.size = obj["size"] || this.size;
+        }
+    }
+    ImageConfig.prototype.toJSON = function () {
+        return {
+            size: Enums.Size[this.size]
+        };
+    };
+    return ImageConfig;
+}());
+exports.ImageConfig = ImageConfig;
+var ImageSetConfig = /** @class */ (function () {
+    function ImageSetConfig(obj) {
+        this.imageSize = Enums.Size.Medium;
+        this.maxImageHeight = 100;
+        if (obj) {
+            this.imageSize = obj["imageSize"] || this.imageSize;
+            this.maxImageHeight = Utils.getValueOrDefault("maxImageHeight", 100);
+        }
+    }
+    ImageSetConfig.prototype.toJSON = function () {
+        return {
+            imageSize: Enums.Size[this.imageSize],
+            maxImageHeight: this.maxImageHeight
+        };
+    };
+    return ImageSetConfig;
+}());
+exports.ImageSetConfig = ImageSetConfig;
+var FactTextDefinition = /** @class */ (function () {
+    function FactTextDefinition(obj) {
+        this.size = Enums.TextSize.Default;
+        this.color = Enums.TextColor.Default;
+        this.isSubtle = false;
+        this.weight = Enums.TextWeight.Default;
+        this.wrap = true;
+        if (obj) {
+            this.size = Utils.parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default);
+            this.color = Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
+            this.isSubtle = obj["isSubtle"] || this.isSubtle;
+            this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Default);
+            this.wrap = obj["wrap"] || this.wrap;
+        }
+    }
+    ;
+    FactTextDefinition.prototype.toJSON = function () {
+        return {
+            size: Enums.TextSize[this.size],
+            color: Enums.TextColor[this.color],
+            isSubtle: this.isSubtle,
+            weight: Enums.TextWeight[this.weight],
+            warp: this.wrap
+        };
+    };
+    return FactTextDefinition;
+}());
+exports.FactTextDefinition = FactTextDefinition;
+var FactTitleDefinition = /** @class */ (function (_super) {
+    __extends(FactTitleDefinition, _super);
+    function FactTitleDefinition(obj) {
+        var _this = _super.call(this, obj) || this;
+        _this.maxWidth = 150;
+        _this.weight = Enums.TextWeight.Bolder;
+        if (obj) {
+            _this.maxWidth = obj["maxWidth"] || _this.maxWidth;
+        }
+        return _this;
+    }
+    return FactTitleDefinition;
+}(FactTextDefinition));
+exports.FactTitleDefinition = FactTitleDefinition;
+var FactSetConfig = /** @class */ (function () {
+    function FactSetConfig(obj) {
+        this.title = new FactTitleDefinition();
+        this.value = new FactTextDefinition();
+        this.spacing = 10;
+        if (obj) {
+            this.title = new FactTitleDefinition(obj["title"]);
+            this.value = new FactTextDefinition(obj["value"]);
+            this.spacing = obj["spacing"] || this.spacing;
+        }
+    }
+    return FactSetConfig;
+}());
+exports.FactSetConfig = FactSetConfig;
+var ShowCardActionConfig = /** @class */ (function () {
+    function ShowCardActionConfig(obj) {
+        this.actionMode = Enums.ShowCardActionMode.Inline;
+        this.inlineTopMargin = 16;
+        this.style = Enums.ContainerStyle.Emphasis;
+        if (obj) {
+            this.actionMode = Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
+            this.inlineTopMargin = obj["inlineTopMargin"] || this.inlineTopMargin;
+            this.style = Utils.parseHostConfigEnum(Enums.ContainerStyle, obj["style"], Enums.ContainerStyle.Emphasis);
+        }
+    }
+    ShowCardActionConfig.prototype.toJSON = function () {
+        return {
+            actionMode: Enums.ShowCardActionMode[this.actionMode],
+            inlineTopMargin: this.inlineTopMargin,
+            style: Enums.ContainerStyle[this.style]
+        };
+    };
+    return ShowCardActionConfig;
+}());
+exports.ShowCardActionConfig = ShowCardActionConfig;
+var ActionsConfig = /** @class */ (function () {
+    function ActionsConfig(obj) {
+        this.maxActions = 5;
+        this.spacing = Enums.Spacing.Default;
+        this.buttonSpacing = 20;
+        this.showCard = new ShowCardActionConfig();
+        this.preExpandSingleShowCardAction = false;
+        this.actionsOrientation = Enums.Orientation.Horizontal;
+        this.actionAlignment = Enums.ActionAlignment.Left;
+        if (obj) {
+            this.maxActions = obj["maxActions"] || this.maxActions;
+            this.spacing = Utils.parseHostConfigEnum(Enums.Spacing, obj["spacing"], Enums.Spacing.Default);
+            this.buttonSpacing = obj["buttonSpacing"] || this.buttonSpacing;
+            this.showCard = new ShowCardActionConfig(obj["showCard"]);
+            this.preExpandSingleShowCardAction = Utils.getValueOrDefault(obj["preExpandSingleShowCardAction"], false);
+            this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
+            this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
+        }
+    }
+    ActionsConfig.prototype.toJSON = function () {
+        return {
+            maxActions: this.maxActions,
+            spacing: Enums.Spacing[this.spacing],
+            buttonSpacing: this.buttonSpacing,
+            showCard: this.showCard,
+            preExpandSingleShowCardAction: this.preExpandSingleShowCardAction,
+            actionsOrientation: Enums.Orientation[this.actionsOrientation],
+            actionAlignment: Enums.ActionAlignment[this.actionAlignment]
+        };
+    };
+    return ActionsConfig;
+}());
+exports.ActionsConfig = ActionsConfig;
+var ContainerStyleSet = /** @class */ (function () {
+    function ContainerStyleSet(obj) {
+        this.default = new ContainerStyleDefinition();
+        this.emphasis = new ContainerStyleDefinition();
+        this.emphasis.backgroundColor = "#EEEEEE";
+        if (obj) {
+            this.default = new ContainerStyleDefinition(obj["default"]);
+            this.emphasis = new ContainerStyleDefinition(obj["emphasis"]);
+        }
+    }
+    return ContainerStyleSet;
+}());
+exports.ContainerStyleSet = ContainerStyleSet;
+var HostConfig = /** @class */ (function () {
+    function HostConfig(obj) {
+        this.supportsInteractivity = true;
+        this.fontFamily = "Segoe UI";
+        this.containerStyles = new ContainerStyleSet();
+        this.actions = new ActionsConfig();
+        this.adaptiveCard = new AdaptiveCardConfig();
+        this.image = new ImageConfig();
+        this.imageSet = new ImageSetConfig();
+        this.factSet = new FactSetConfig();
+        if (obj) {
+            if (typeof obj === "string" || obj instanceof String) {
+                obj = JSON.parse(obj);
+            }
+            this.supportsInteractivity = obj["supportsInteractivity"] || this.supportsInteractivity;
+            this.fontFamily = obj["fontFamily"] || this.fontFamily;
+            this.fontSizes = {
+                small: obj["fontSizes"]["small"] || this.fontSizes.small,
+                default: obj["fontSizes"]["default"] || this.fontSizes.default,
+                medium: obj["fontSizes"]["medium"] || this.fontSizes.medium,
+                large: obj["fontSizes"]["large"] || this.fontSizes.large,
+                extraLarge: obj["fontSizes"]["extraLarge"] || this.fontSizes.extraLarge
+            };
+            this.fontWeights = {
+                lighter: obj["fontWeights"]["lighter"] || this.fontWeights.lighter,
+                default: obj["fontWeights"]["default"] || this.fontWeights.default,
+                bolder: obj["fontWeights"]["bolder"] || this.fontWeights.bolder
+            };
+            this.imageSizes = {
+                small: obj["imageSizes"]["small"] || this.imageSizes.small,
+                medium: obj["imageSizes"]["medium"] || this.imageSizes.medium,
+                large: obj["imageSizes"]["large"] || this.imageSizes.large,
+            };
+            this.containerStyles = new ContainerStyleSet(obj["containerStyles"]);
+            this.spacing = {
+                small: obj["spacing"]["small"] || this.spacing.small,
+                default: obj["spacing"]["default"] || this.spacing.default,
+                medium: obj["spacing"]["medium"] || this.spacing.medium,
+                large: obj["spacing"]["large"] || this.spacing.large,
+                extraLarge: obj["spacing"]["extraLarge"] || this.spacing.extraLarge,
+                padding: obj["spacing"]["padding"] || this.spacing.padding
+            };
+            this.separator = {
+                lineThickness: obj["separator"]["lineThickness"] || this.separator.lineThickness,
+                lineColor: obj["separator"]["lineColor"] || this.separator.lineColor
+            };
+            this.actions = new ActionsConfig(obj["actions"]);
+            this.adaptiveCard = new AdaptiveCardConfig(obj["adaptiveCard"]);
+            this.image = new ImageConfig(obj["image"]);
+            this.imageSet = new ImageSetConfig(obj["imageSet"]);
+            this.factSet = new FactSetConfig(obj["factSet"]);
+        }
+    }
+    HostConfig.prototype.getEffectiveSpacing = function (spacing) {
+        switch (spacing) {
+            case Enums.Spacing.Small:
+                return this.spacing.small;
+            case Enums.Spacing.Default:
+                return this.spacing.default;
+            case Enums.Spacing.Medium:
+                return this.spacing.medium;
+            case Enums.Spacing.Large:
+                return this.spacing.large;
+            case Enums.Spacing.ExtraLarge:
+                return this.spacing.extraLarge;
+            case Enums.Spacing.Padding:
+                return this.spacing.padding;
+            default:
+                return 0;
+        }
+    };
+    HostConfig.prototype.getEffectivePadding = function (padding) {
+        switch (padding) {
+            case Enums.Padding.Default:
+                return this.spacing.padding;
+            default:
+                return 0;
+        }
+    };
+    HostConfig.prototype.paddingToSpacingDefinition = function (padding) {
+        return new SpacingDefinition({
+            top: this.getEffectivePadding(padding.top),
+            right: this.getEffectivePadding(padding.right),
+            bottom: this.getEffectivePadding(padding.bottom),
+            left: this.getEffectivePadding(padding.left)
+        });
+    };
+    HostConfig.prototype.getContainerStyleDefinition = function (containerStyle) {
+        switch (containerStyle) {
+            case Enums.ContainerStyle.Emphasis:
+                return this.containerStyles.emphasis;
+            default:
+                return this.containerStyles.default;
+        }
+    };
+    return HostConfig;
+}());
+exports.HostConfig = HostConfig;
+//# sourceMappingURL=host-config.js.map
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 Object.defineProperty(exports, "__esModule", { value: true });
 var Enums = __webpack_require__(3);
 var markdownIt = __webpack_require__(48);
@@ -1535,7 +1888,7 @@ exports.StringWithSubstitutions = StringWithSubstitutions;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1544,11 +1897,11 @@ exports.StringWithSubstitutions = StringWithSubstitutions;
 
 
 /*eslint quotes:0*/
-module.exports = __webpack_require__(37);
+module.exports = __webpack_require__(38);
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1583,7 +1936,7 @@ module.exports.HTML_OPEN_CLOSE_TAG_RE = HTML_OPEN_CLOSE_TAG_RE;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1717,7 +2070,7 @@ module.exports.postProcess = function emphasis(state) {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1841,7 +2194,7 @@ module.exports.postProcess = function strikethrough(state) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1855,25 +2208,25 @@ module.exports.parse  = __webpack_require__(96);
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports=/[\0-\x1F\x7F-\x9F]/
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports=/[ \xA0\u1680\u2000-\u200A\u202F\u205F\u3000]/
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports=/[\0-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* ***** BEGIN LICENSE BLOCK *****
@@ -18673,7 +19026,7 @@ var WorkerClient = function(topLevelNamespaces, mod, classname, workerUrl) {
 
     try {
             var workerSrc = mod.src;
-    var Blob = __webpack_require__(41);
+    var Blob = __webpack_require__(42);
     var blob = new Blob([ workerSrc ], { type: 'application/javascript' });
     var blobUrl = (window.URL || window.webkitURL).createObjectURL(blob);
 
@@ -20954,7 +21307,7 @@ exports.version = "1.2.6";
 module.exports = window.ace.acequire("ace/ace");
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ace.define("ace/mode/json_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(acequire, exports, module) {
@@ -21248,7 +21601,7 @@ oop.inherits(Mode, TextMode);
     };
 
     this.createWorker = function(session) {
-        var worker = new WorkerClient(["ace"], __webpack_require__(36), "JsonWorker");
+        var worker = new WorkerClient(["ace"], __webpack_require__(37), "JsonWorker");
         worker.attachToDocument(session.getDocument());
 
         worker.on("annotate", function(e) {
@@ -21271,7 +21624,7 @@ exports.Mode = Mode;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 ace.define("ace/theme/chrome",["require","exports","module","ace/lib/dom"], function(acequire, exports, module) {
@@ -21405,7 +21758,7 @@ dom.importCssString(exports.cssText, exports.cssClass);
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21417,7 +21770,7 @@ exports.defaultPayload = "{\n\t\"$schema\": \"http://adaptivecards.io/schemas/ad
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21452,7 +21805,7 @@ var BingContainer = /** @class */ (function (_super) {
         return element;
     };
     BingContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21575,7 +21928,7 @@ var BingContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     BingContainer.backgroundColor = "#fff";
     return BingContainer;
@@ -21584,7 +21937,7 @@ exports.BingContainer = BingContainer;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21618,7 +21971,7 @@ var FacebookContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     FacebookContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21741,7 +22094,7 @@ var FacebookContainer = /** @class */ (function (_super) {
                 },
                 spacing: 20
             }
-        };
+        });
     };
     return FacebookContainer;
 }(host_container_1.HostContainer));
@@ -21749,7 +22102,7 @@ exports.FacebookContainer = FacebookContainer;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21783,7 +22136,7 @@ var GroupMeContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     GroupMeContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21816,11 +22169,11 @@ var GroupMeContainer = /** @class */ (function (_super) {
                     fontColors: {
                         default: {
                             normal: "#333333",
-                            subtle: "#EE333333"
+                            subtle: "#EE333333",
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC"
+                            subtle: "#882E89FC",
                         },
                         attention: {
                             normal: "#FF0000",
@@ -21828,13 +22181,13 @@ var GroupMeContainer = /** @class */ (function (_super) {
                         },
                         good: {
                             normal: "#54a254",
-                            subtle: "#DD54a254"
+                            subtle: "#DD54a254",
                         },
                         warning: {
                             normal: "#c3ab23",
-                            subtle: "#DDc3ab23"
-                        }
-                    }
+                            subtle: "#DDc3ab23",
+                        },
+                    },
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
@@ -21858,14 +22211,14 @@ var GroupMeContainer = /** @class */ (function (_super) {
                         warning: {
                             normal: "#c3ab23",
                             subtle: "#DDc3ab23"
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
             imageSizes: {
                 small: 60,
                 medium: 120,
-                large: 180
+                large: 180,
             },
             actions: {
                 maxActions: 5,
@@ -21873,20 +22226,20 @@ var GroupMeContainer = /** @class */ (function (_super) {
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: adaptivecards_1.ShowCardActionMode.Inline,
-                    inlineTopMargin: 16
+                    inlineTopMargin: 16,
                 },
                 actionsOrientation: adaptivecards_1.Orientation.Horizontal,
-                actionAlignment: adaptivecards_1.ActionAlignment.Left
+                actionAlignment: adaptivecards_1.ActionAlignment.Left,
             },
             adaptiveCard: {
-                allowCustomStyle: false
+                allowCustomStyle: false,
             },
             image: {
                 size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
-                maxImageHeight: 100
+                maxImageHeight: 100,
             },
             factSet: {
                 title: {
@@ -21895,18 +22248,18 @@ var GroupMeContainer = /** @class */ (function (_super) {
                     isSubtle: false,
                     weight: adaptivecards_1.TextWeight.Bolder,
                     wrap: true,
-                    maxWidth: 150
+                    maxWidth: 150,
                 },
                 value: {
                     color: adaptivecards_1.TextColor.Default,
                     size: adaptivecards_1.TextSize.Default,
                     isSubtle: false,
                     weight: adaptivecards_1.TextWeight.Default,
-                    wrap: true
+                    wrap: true,
                 },
-                spacing: 10
-            }
-        };
+                spacing: 10,
+            },
+        });
     };
     return GroupMeContainer;
 }(host_container_1.HostContainer));
@@ -21914,7 +22267,7 @@ exports.GroupMeContainer = GroupMeContainer;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21948,7 +22301,7 @@ var KikContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     KikContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22071,7 +22424,7 @@ var KikContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return KikContainer;
 }(host_container_1.HostContainer));
@@ -22079,7 +22432,7 @@ exports.KikContainer = KikContainer;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22117,7 +22470,7 @@ var LiveTileContainer = /** @class */ (function (_super) {
         return element;
     };
     LiveTileContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22240,7 +22593,7 @@ var LiveTileContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return LiveTileContainer;
 }(host_container_1.HostContainer));
@@ -22248,7 +22601,7 @@ exports.LiveTileContainer = LiveTileContainer;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22281,7 +22634,7 @@ var OutlookContainer = /** @class */ (function (_super) {
         return element;
     };
     OutlookContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22404,7 +22757,7 @@ var OutlookContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return OutlookContainer;
 }(host_container_1.HostContainer));
@@ -22412,7 +22765,7 @@ exports.OutlookContainer = OutlookContainer;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22455,7 +22808,7 @@ var SkypeContainer = /** @class */ (function (_super) {
         return element;
     };
     SkypeContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22578,7 +22931,7 @@ var SkypeContainer = /** @class */ (function (_super) {
                 },
                 spacing: 5
             }
-        };
+        });
     };
     return SkypeContainer;
 }(host_container_1.HostContainer));
@@ -22586,7 +22939,7 @@ exports.SkypeContainer = SkypeContainer;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22620,7 +22973,7 @@ var SlackContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     SlackContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22743,7 +23096,7 @@ var SlackContainer = /** @class */ (function (_super) {
                 },
                 spacing: 20
             }
-        };
+        });
     };
     return SlackContainer;
 }(host_container_1.HostContainer));
@@ -22751,7 +23104,7 @@ exports.SlackContainer = SlackContainer;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22785,7 +23138,7 @@ var SMSContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     SMSContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22908,7 +23261,7 @@ var SMSContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return SMSContainer;
 }(host_container_1.HostContainer));
@@ -22916,7 +23269,7 @@ exports.SMSContainer = SMSContainer;
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22949,7 +23302,7 @@ var TeamsContainer = /** @class */ (function (_super) {
         return element;
     };
     TeamsContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -23072,7 +23425,7 @@ var TeamsContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TeamsContainer;
 }(host_container_1.HostContainer));
@@ -23080,7 +23433,7 @@ exports.TeamsContainer = TeamsContainer;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23114,7 +23467,7 @@ var TelegramContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     TelegramContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -23237,7 +23590,7 @@ var TelegramContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TelegramContainer;
 }(host_container_1.HostContainer));
@@ -23245,7 +23598,7 @@ exports.TelegramContainer = TelegramContainer;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23283,7 +23636,7 @@ var TimelineContainer = /** @class */ (function (_super) {
         return element;
     };
     TimelineContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 4,
                 default: 12,
@@ -23406,7 +23759,7 @@ var TimelineContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TimelineContainer;
 }(host_container_1.HostContainer));
@@ -23414,7 +23767,7 @@ exports.TimelineContainer = TimelineContainer;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23448,7 +23801,7 @@ var ToastContainer = /** @class */ (function (_super) {
         return element;
     };
     ToastContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -23571,7 +23924,7 @@ var ToastContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return ToastContainer;
 }(host_container_1.HostContainer));
@@ -23579,7 +23932,7 @@ exports.ToastContainer = ToastContainer;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23627,7 +23980,7 @@ var WebChatContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     WebChatContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -23750,7 +24103,7 @@ var WebChatContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return WebChatContainer;
 }(host_container_1.HostContainer));
@@ -23758,14 +24111,14 @@ exports.WebChatContainer = WebChatContainer;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 module.exports.id = 'ace/mode/json_worker';
 module.exports.src = "\"no use strict\";(function(window){function resolveModuleId(id,paths){for(var testPath=id,tail=\"\";testPath;){var alias=paths[testPath];if(\"string\"==typeof alias)return alias+tail;if(alias)return alias.location.replace(/\\/*$/,\"/\")+(tail||alias.main||alias.name);if(alias===!1)return\"\";var i=testPath.lastIndexOf(\"/\");if(-1===i)break;tail=testPath.substr(i)+tail,testPath=testPath.slice(0,i)}return id}if(!(void 0!==window.window&&window.document||window.acequire&&window.define)){window.console||(window.console=function(){var msgs=Array.prototype.slice.call(arguments,0);postMessage({type:\"log\",data:msgs})},window.console.error=window.console.warn=window.console.log=window.console.trace=window.console),window.window=window,window.ace=window,window.onerror=function(message,file,line,col,err){postMessage({type:\"error\",data:{message:message,data:err.data,file:file,line:line,col:col,stack:err.stack}})},window.normalizeModule=function(parentId,moduleName){if(-1!==moduleName.indexOf(\"!\")){var chunks=moduleName.split(\"!\");return window.normalizeModule(parentId,chunks[0])+\"!\"+window.normalizeModule(parentId,chunks[1])}if(\".\"==moduleName.charAt(0)){var base=parentId.split(\"/\").slice(0,-1).join(\"/\");for(moduleName=(base?base+\"/\":\"\")+moduleName;-1!==moduleName.indexOf(\".\")&&previous!=moduleName;){var previous=moduleName;moduleName=moduleName.replace(/^\\.\\//,\"\").replace(/\\/\\.\\//,\"/\").replace(/[^\\/]+\\/\\.\\.\\//,\"\")}}return moduleName},window.acequire=function acequire(parentId,id){if(id||(id=parentId,parentId=null),!id.charAt)throw Error(\"worker.js acequire() accepts only (parentId, id) as arguments\");id=window.normalizeModule(parentId,id);var module=window.acequire.modules[id];if(module)return module.initialized||(module.initialized=!0,module.exports=module.factory().exports),module.exports;if(!window.acequire.tlns)return console.log(\"unable to load \"+id);var path=resolveModuleId(id,window.acequire.tlns);return\".js\"!=path.slice(-3)&&(path+=\".js\"),window.acequire.id=id,window.acequire.modules[id]={},importScripts(path),window.acequire(parentId,id)},window.acequire.modules={},window.acequire.tlns={},window.define=function(id,deps,factory){if(2==arguments.length?(factory=deps,\"string\"!=typeof id&&(deps=id,id=window.acequire.id)):1==arguments.length&&(factory=id,deps=[],id=window.acequire.id),\"function\"!=typeof factory)return window.acequire.modules[id]={exports:factory,initialized:!0},void 0;deps.length||(deps=[\"require\",\"exports\",\"module\"]);var req=function(childId){return window.acequire(id,childId)};window.acequire.modules[id]={exports:{},factory:function(){var module=this,returnExports=factory.apply(this,deps.map(function(dep){switch(dep){case\"require\":return req;case\"exports\":return module.exports;case\"module\":return module;default:return req(dep)}}));return returnExports&&(module.exports=returnExports),module}}},window.define.amd={},acequire.tlns={},window.initBaseUrls=function(topLevelNamespaces){for(var i in topLevelNamespaces)acequire.tlns[i]=topLevelNamespaces[i]},window.initSender=function(){var EventEmitter=window.acequire(\"ace/lib/event_emitter\").EventEmitter,oop=window.acequire(\"ace/lib/oop\"),Sender=function(){};return function(){oop.implement(this,EventEmitter),this.callback=function(data,callbackId){postMessage({type:\"call\",id:callbackId,data:data})},this.emit=function(name,data){postMessage({type:\"event\",name:name,data:data})}}.call(Sender.prototype),new Sender};var main=window.main=null,sender=window.sender=null;window.onmessage=function(e){var msg=e.data;if(msg.event&&sender)sender._signal(msg.event,msg.data);else if(msg.command)if(main[msg.command])main[msg.command].apply(main,msg.args);else{if(!window[msg.command])throw Error(\"Unknown command:\"+msg.command);window[msg.command].apply(window,msg.args)}else if(msg.init){window.initBaseUrls(msg.tlns),acequire(\"ace/lib/es5-shim\"),sender=window.sender=window.initSender();var clazz=acequire(msg.module)[msg.classname];main=window.main=new clazz(sender)}}}})(this),ace.define(\"ace/lib/oop\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";exports.inherits=function(ctor,superCtor){ctor.super_=superCtor,ctor.prototype=Object.create(superCtor.prototype,{constructor:{value:ctor,enumerable:!1,writable:!0,configurable:!0}})},exports.mixin=function(obj,mixin){for(var key in mixin)obj[key]=mixin[key];return obj},exports.implement=function(proto,mixin){exports.mixin(proto,mixin)}}),ace.define(\"ace/range\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";var comparePoints=function(p1,p2){return p1.row-p2.row||p1.column-p2.column},Range=function(startRow,startColumn,endRow,endColumn){this.start={row:startRow,column:startColumn},this.end={row:endRow,column:endColumn}};(function(){this.isEqual=function(range){return this.start.row===range.start.row&&this.end.row===range.end.row&&this.start.column===range.start.column&&this.end.column===range.end.column},this.toString=function(){return\"Range: [\"+this.start.row+\"/\"+this.start.column+\"] -> [\"+this.end.row+\"/\"+this.end.column+\"]\"},this.contains=function(row,column){return 0==this.compare(row,column)},this.compareRange=function(range){var cmp,end=range.end,start=range.start;return cmp=this.compare(end.row,end.column),1==cmp?(cmp=this.compare(start.row,start.column),1==cmp?2:0==cmp?1:0):-1==cmp?-2:(cmp=this.compare(start.row,start.column),-1==cmp?-1:1==cmp?42:0)},this.comparePoint=function(p){return this.compare(p.row,p.column)},this.containsRange=function(range){return 0==this.comparePoint(range.start)&&0==this.comparePoint(range.end)},this.intersects=function(range){var cmp=this.compareRange(range);return-1==cmp||0==cmp||1==cmp},this.isEnd=function(row,column){return this.end.row==row&&this.end.column==column},this.isStart=function(row,column){return this.start.row==row&&this.start.column==column},this.setStart=function(row,column){\"object\"==typeof row?(this.start.column=row.column,this.start.row=row.row):(this.start.row=row,this.start.column=column)},this.setEnd=function(row,column){\"object\"==typeof row?(this.end.column=row.column,this.end.row=row.row):(this.end.row=row,this.end.column=column)},this.inside=function(row,column){return 0==this.compare(row,column)?this.isEnd(row,column)||this.isStart(row,column)?!1:!0:!1},this.insideStart=function(row,column){return 0==this.compare(row,column)?this.isEnd(row,column)?!1:!0:!1},this.insideEnd=function(row,column){return 0==this.compare(row,column)?this.isStart(row,column)?!1:!0:!1},this.compare=function(row,column){return this.isMultiLine()||row!==this.start.row?this.start.row>row?-1:row>this.end.row?1:this.start.row===row?column>=this.start.column?0:-1:this.end.row===row?this.end.column>=column?0:1:0:this.start.column>column?-1:column>this.end.column?1:0},this.compareStart=function(row,column){return this.start.row==row&&this.start.column==column?-1:this.compare(row,column)},this.compareEnd=function(row,column){return this.end.row==row&&this.end.column==column?1:this.compare(row,column)},this.compareInside=function(row,column){return this.end.row==row&&this.end.column==column?1:this.start.row==row&&this.start.column==column?-1:this.compare(row,column)},this.clipRows=function(firstRow,lastRow){if(this.end.row>lastRow)var end={row:lastRow+1,column:0};else if(firstRow>this.end.row)var end={row:firstRow,column:0};if(this.start.row>lastRow)var start={row:lastRow+1,column:0};else if(firstRow>this.start.row)var start={row:firstRow,column:0};return Range.fromPoints(start||this.start,end||this.end)},this.extend=function(row,column){var cmp=this.compare(row,column);if(0==cmp)return this;if(-1==cmp)var start={row:row,column:column};else var end={row:row,column:column};return Range.fromPoints(start||this.start,end||this.end)},this.isEmpty=function(){return this.start.row===this.end.row&&this.start.column===this.end.column},this.isMultiLine=function(){return this.start.row!==this.end.row},this.clone=function(){return Range.fromPoints(this.start,this.end)},this.collapseRows=function(){return 0==this.end.column?new Range(this.start.row,0,Math.max(this.start.row,this.end.row-1),0):new Range(this.start.row,0,this.end.row,0)},this.toScreenRange=function(session){var screenPosStart=session.documentToScreenPosition(this.start),screenPosEnd=session.documentToScreenPosition(this.end);return new Range(screenPosStart.row,screenPosStart.column,screenPosEnd.row,screenPosEnd.column)},this.moveBy=function(row,column){this.start.row+=row,this.start.column+=column,this.end.row+=row,this.end.column+=column}}).call(Range.prototype),Range.fromPoints=function(start,end){return new Range(start.row,start.column,end.row,end.column)},Range.comparePoints=comparePoints,Range.comparePoints=function(p1,p2){return p1.row-p2.row||p1.column-p2.column},exports.Range=Range}),ace.define(\"ace/apply_delta\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";exports.applyDelta=function(docLines,delta){var row=delta.start.row,startColumn=delta.start.column,line=docLines[row]||\"\";switch(delta.action){case\"insert\":var lines=delta.lines;if(1===lines.length)docLines[row]=line.substring(0,startColumn)+delta.lines[0]+line.substring(startColumn);else{var args=[row,1].concat(delta.lines);docLines.splice.apply(docLines,args),docLines[row]=line.substring(0,startColumn)+docLines[row],docLines[row+delta.lines.length-1]+=line.substring(startColumn)}break;case\"remove\":var endColumn=delta.end.column,endRow=delta.end.row;row===endRow?docLines[row]=line.substring(0,startColumn)+line.substring(endColumn):docLines.splice(row,endRow-row+1,line.substring(0,startColumn)+docLines[endRow].substring(endColumn))}}}),ace.define(\"ace/lib/event_emitter\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";var EventEmitter={},stopPropagation=function(){this.propagationStopped=!0},preventDefault=function(){this.defaultPrevented=!0};EventEmitter._emit=EventEmitter._dispatchEvent=function(eventName,e){this._eventRegistry||(this._eventRegistry={}),this._defaultHandlers||(this._defaultHandlers={});var listeners=this._eventRegistry[eventName]||[],defaultHandler=this._defaultHandlers[eventName];if(listeners.length||defaultHandler){\"object\"==typeof e&&e||(e={}),e.type||(e.type=eventName),e.stopPropagation||(e.stopPropagation=stopPropagation),e.preventDefault||(e.preventDefault=preventDefault),listeners=listeners.slice();for(var i=0;listeners.length>i&&(listeners[i](e,this),!e.propagationStopped);i++);return defaultHandler&&!e.defaultPrevented?defaultHandler(e,this):void 0}},EventEmitter._signal=function(eventName,e){var listeners=(this._eventRegistry||{})[eventName];if(listeners){listeners=listeners.slice();for(var i=0;listeners.length>i;i++)listeners[i](e,this)}},EventEmitter.once=function(eventName,callback){var _self=this;callback&&this.addEventListener(eventName,function newCallback(){_self.removeEventListener(eventName,newCallback),callback.apply(null,arguments)})},EventEmitter.setDefaultHandler=function(eventName,callback){var handlers=this._defaultHandlers;if(handlers||(handlers=this._defaultHandlers={_disabled_:{}}),handlers[eventName]){var old=handlers[eventName],disabled=handlers._disabled_[eventName];disabled||(handlers._disabled_[eventName]=disabled=[]),disabled.push(old);var i=disabled.indexOf(callback);-1!=i&&disabled.splice(i,1)}handlers[eventName]=callback},EventEmitter.removeDefaultHandler=function(eventName,callback){var handlers=this._defaultHandlers;if(handlers){var disabled=handlers._disabled_[eventName];if(handlers[eventName]==callback)handlers[eventName],disabled&&this.setDefaultHandler(eventName,disabled.pop());else if(disabled){var i=disabled.indexOf(callback);-1!=i&&disabled.splice(i,1)}}},EventEmitter.on=EventEmitter.addEventListener=function(eventName,callback,capturing){this._eventRegistry=this._eventRegistry||{};var listeners=this._eventRegistry[eventName];return listeners||(listeners=this._eventRegistry[eventName]=[]),-1==listeners.indexOf(callback)&&listeners[capturing?\"unshift\":\"push\"](callback),callback},EventEmitter.off=EventEmitter.removeListener=EventEmitter.removeEventListener=function(eventName,callback){this._eventRegistry=this._eventRegistry||{};var listeners=this._eventRegistry[eventName];if(listeners){var index=listeners.indexOf(callback);-1!==index&&listeners.splice(index,1)}},EventEmitter.removeAllListeners=function(eventName){this._eventRegistry&&(this._eventRegistry[eventName]=[])},exports.EventEmitter=EventEmitter}),ace.define(\"ace/anchor\",[\"require\",\"exports\",\"module\",\"ace/lib/oop\",\"ace/lib/event_emitter\"],function(acequire,exports){\"use strict\";var oop=acequire(\"./lib/oop\"),EventEmitter=acequire(\"./lib/event_emitter\").EventEmitter,Anchor=exports.Anchor=function(doc,row,column){this.$onChange=this.onChange.bind(this),this.attach(doc),column===void 0?this.setPosition(row.row,row.column):this.setPosition(row,column)};(function(){function $pointsInOrder(point1,point2,equalPointsInOrder){var bColIsAfter=equalPointsInOrder?point1.column<=point2.column:point1.column<point2.column;return point1.row<point2.row||point1.row==point2.row&&bColIsAfter}function $getTransformedPoint(delta,point,moveIfEqual){var deltaIsInsert=\"insert\"==delta.action,deltaRowShift=(deltaIsInsert?1:-1)*(delta.end.row-delta.start.row),deltaColShift=(deltaIsInsert?1:-1)*(delta.end.column-delta.start.column),deltaStart=delta.start,deltaEnd=deltaIsInsert?deltaStart:delta.end;return $pointsInOrder(point,deltaStart,moveIfEqual)?{row:point.row,column:point.column}:$pointsInOrder(deltaEnd,point,!moveIfEqual)?{row:point.row+deltaRowShift,column:point.column+(point.row==deltaEnd.row?deltaColShift:0)}:{row:deltaStart.row,column:deltaStart.column}}oop.implement(this,EventEmitter),this.getPosition=function(){return this.$clipPositionToDocument(this.row,this.column)},this.getDocument=function(){return this.document},this.$insertRight=!1,this.onChange=function(delta){if(!(delta.start.row==delta.end.row&&delta.start.row!=this.row||delta.start.row>this.row)){var point=$getTransformedPoint(delta,{row:this.row,column:this.column},this.$insertRight);this.setPosition(point.row,point.column,!0)}},this.setPosition=function(row,column,noClip){var pos;if(pos=noClip?{row:row,column:column}:this.$clipPositionToDocument(row,column),this.row!=pos.row||this.column!=pos.column){var old={row:this.row,column:this.column};this.row=pos.row,this.column=pos.column,this._signal(\"change\",{old:old,value:pos})}},this.detach=function(){this.document.removeEventListener(\"change\",this.$onChange)},this.attach=function(doc){this.document=doc||this.document,this.document.on(\"change\",this.$onChange)},this.$clipPositionToDocument=function(row,column){var pos={};return row>=this.document.getLength()?(pos.row=Math.max(0,this.document.getLength()-1),pos.column=this.document.getLine(pos.row).length):0>row?(pos.row=0,pos.column=0):(pos.row=row,pos.column=Math.min(this.document.getLine(pos.row).length,Math.max(0,column))),0>column&&(pos.column=0),pos}}).call(Anchor.prototype)}),ace.define(\"ace/document\",[\"require\",\"exports\",\"module\",\"ace/lib/oop\",\"ace/apply_delta\",\"ace/lib/event_emitter\",\"ace/range\",\"ace/anchor\"],function(acequire,exports){\"use strict\";var oop=acequire(\"./lib/oop\"),applyDelta=acequire(\"./apply_delta\").applyDelta,EventEmitter=acequire(\"./lib/event_emitter\").EventEmitter,Range=acequire(\"./range\").Range,Anchor=acequire(\"./anchor\").Anchor,Document=function(textOrLines){this.$lines=[\"\"],0===textOrLines.length?this.$lines=[\"\"]:Array.isArray(textOrLines)?this.insertMergedLines({row:0,column:0},textOrLines):this.insert({row:0,column:0},textOrLines)};(function(){oop.implement(this,EventEmitter),this.setValue=function(text){var len=this.getLength()-1;this.remove(new Range(0,0,len,this.getLine(len).length)),this.insert({row:0,column:0},text)},this.getValue=function(){return this.getAllLines().join(this.getNewLineCharacter())},this.createAnchor=function(row,column){return new Anchor(this,row,column)},this.$split=0===\"aaa\".split(/a/).length?function(text){return text.replace(/\\r\\n|\\r/g,\"\\n\").split(\"\\n\")}:function(text){return text.split(/\\r\\n|\\r|\\n/)},this.$detectNewLine=function(text){var match=text.match(/^.*?(\\r\\n|\\r|\\n)/m);this.$autoNewLine=match?match[1]:\"\\n\",this._signal(\"changeNewLineMode\")},this.getNewLineCharacter=function(){switch(this.$newLineMode){case\"windows\":return\"\\r\\n\";case\"unix\":return\"\\n\";default:return this.$autoNewLine||\"\\n\"}},this.$autoNewLine=\"\",this.$newLineMode=\"auto\",this.setNewLineMode=function(newLineMode){this.$newLineMode!==newLineMode&&(this.$newLineMode=newLineMode,this._signal(\"changeNewLineMode\"))},this.getNewLineMode=function(){return this.$newLineMode},this.isNewLine=function(text){return\"\\r\\n\"==text||\"\\r\"==text||\"\\n\"==text},this.getLine=function(row){return this.$lines[row]||\"\"},this.getLines=function(firstRow,lastRow){return this.$lines.slice(firstRow,lastRow+1)},this.getAllLines=function(){return this.getLines(0,this.getLength())},this.getLength=function(){return this.$lines.length},this.getTextRange=function(range){return this.getLinesForRange(range).join(this.getNewLineCharacter())},this.getLinesForRange=function(range){var lines;if(range.start.row===range.end.row)lines=[this.getLine(range.start.row).substring(range.start.column,range.end.column)];else{lines=this.getLines(range.start.row,range.end.row),lines[0]=(lines[0]||\"\").substring(range.start.column);var l=lines.length-1;range.end.row-range.start.row==l&&(lines[l]=lines[l].substring(0,range.end.column))}return lines},this.insertLines=function(row,lines){return console.warn(\"Use of document.insertLines is deprecated. Use the insertFullLines method instead.\"),this.insertFullLines(row,lines)},this.removeLines=function(firstRow,lastRow){return console.warn(\"Use of document.removeLines is deprecated. Use the removeFullLines method instead.\"),this.removeFullLines(firstRow,lastRow)},this.insertNewLine=function(position){return console.warn(\"Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead.\"),this.insertMergedLines(position,[\"\",\"\"])},this.insert=function(position,text){return 1>=this.getLength()&&this.$detectNewLine(text),this.insertMergedLines(position,this.$split(text))},this.insertInLine=function(position,text){var start=this.clippedPos(position.row,position.column),end=this.pos(position.row,position.column+text.length);return this.applyDelta({start:start,end:end,action:\"insert\",lines:[text]},!0),this.clonePos(end)},this.clippedPos=function(row,column){var length=this.getLength();void 0===row?row=length:0>row?row=0:row>=length&&(row=length-1,column=void 0);var line=this.getLine(row);return void 0==column&&(column=line.length),column=Math.min(Math.max(column,0),line.length),{row:row,column:column}},this.clonePos=function(pos){return{row:pos.row,column:pos.column}},this.pos=function(row,column){return{row:row,column:column}},this.$clipPosition=function(position){var length=this.getLength();return position.row>=length?(position.row=Math.max(0,length-1),position.column=this.getLine(length-1).length):(position.row=Math.max(0,position.row),position.column=Math.min(Math.max(position.column,0),this.getLine(position.row).length)),position},this.insertFullLines=function(row,lines){row=Math.min(Math.max(row,0),this.getLength());var column=0;this.getLength()>row?(lines=lines.concat([\"\"]),column=0):(lines=[\"\"].concat(lines),row--,column=this.$lines[row].length),this.insertMergedLines({row:row,column:column},lines)},this.insertMergedLines=function(position,lines){var start=this.clippedPos(position.row,position.column),end={row:start.row+lines.length-1,column:(1==lines.length?start.column:0)+lines[lines.length-1].length};return this.applyDelta({start:start,end:end,action:\"insert\",lines:lines}),this.clonePos(end)},this.remove=function(range){var start=this.clippedPos(range.start.row,range.start.column),end=this.clippedPos(range.end.row,range.end.column);return this.applyDelta({start:start,end:end,action:\"remove\",lines:this.getLinesForRange({start:start,end:end})}),this.clonePos(start)},this.removeInLine=function(row,startColumn,endColumn){var start=this.clippedPos(row,startColumn),end=this.clippedPos(row,endColumn);return this.applyDelta({start:start,end:end,action:\"remove\",lines:this.getLinesForRange({start:start,end:end})},!0),this.clonePos(start)},this.removeFullLines=function(firstRow,lastRow){firstRow=Math.min(Math.max(0,firstRow),this.getLength()-1),lastRow=Math.min(Math.max(0,lastRow),this.getLength()-1);var deleteFirstNewLine=lastRow==this.getLength()-1&&firstRow>0,deleteLastNewLine=this.getLength()-1>lastRow,startRow=deleteFirstNewLine?firstRow-1:firstRow,startCol=deleteFirstNewLine?this.getLine(startRow).length:0,endRow=deleteLastNewLine?lastRow+1:lastRow,endCol=deleteLastNewLine?0:this.getLine(endRow).length,range=new Range(startRow,startCol,endRow,endCol),deletedLines=this.$lines.slice(firstRow,lastRow+1);return this.applyDelta({start:range.start,end:range.end,action:\"remove\",lines:this.getLinesForRange(range)}),deletedLines},this.removeNewLine=function(row){this.getLength()-1>row&&row>=0&&this.applyDelta({start:this.pos(row,this.getLine(row).length),end:this.pos(row+1,0),action:\"remove\",lines:[\"\",\"\"]})},this.replace=function(range,text){if(range instanceof Range||(range=Range.fromPoints(range.start,range.end)),0===text.length&&range.isEmpty())return range.start;if(text==this.getTextRange(range))return range.end;this.remove(range);var end;return end=text?this.insert(range.start,text):range.start},this.applyDeltas=function(deltas){for(var i=0;deltas.length>i;i++)this.applyDelta(deltas[i])},this.revertDeltas=function(deltas){for(var i=deltas.length-1;i>=0;i--)this.revertDelta(deltas[i])},this.applyDelta=function(delta,doNotValidate){var isInsert=\"insert\"==delta.action;(isInsert?1>=delta.lines.length&&!delta.lines[0]:!Range.comparePoints(delta.start,delta.end))||(isInsert&&delta.lines.length>2e4&&this.$splitAndapplyLargeDelta(delta,2e4),applyDelta(this.$lines,delta,doNotValidate),this._signal(\"change\",delta))},this.$splitAndapplyLargeDelta=function(delta,MAX){for(var lines=delta.lines,l=lines.length,row=delta.start.row,column=delta.start.column,from=0,to=0;;){from=to,to+=MAX-1;var chunk=lines.slice(from,to);if(to>l){delta.lines=chunk,delta.start.row=row+from,delta.start.column=column;break}chunk.push(\"\"),this.applyDelta({start:this.pos(row+from,column),end:this.pos(row+to,column=0),action:delta.action,lines:chunk},!0)}},this.revertDelta=function(delta){this.applyDelta({start:this.clonePos(delta.start),end:this.clonePos(delta.end),action:\"insert\"==delta.action?\"remove\":\"insert\",lines:delta.lines.slice()})},this.indexToPosition=function(index,startRow){for(var lines=this.$lines||this.getAllLines(),newlineLength=this.getNewLineCharacter().length,i=startRow||0,l=lines.length;l>i;i++)if(index-=lines[i].length+newlineLength,0>index)return{row:i,column:index+lines[i].length+newlineLength};return{row:l-1,column:lines[l-1].length}},this.positionToIndex=function(pos,startRow){for(var lines=this.$lines||this.getAllLines(),newlineLength=this.getNewLineCharacter().length,index=0,row=Math.min(pos.row,lines.length),i=startRow||0;row>i;++i)index+=lines[i].length+newlineLength;return index+pos.column}}).call(Document.prototype),exports.Document=Document}),ace.define(\"ace/lib/lang\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";exports.last=function(a){return a[a.length-1]},exports.stringReverse=function(string){return string.split(\"\").reverse().join(\"\")},exports.stringRepeat=function(string,count){for(var result=\"\";count>0;)1&count&&(result+=string),(count>>=1)&&(string+=string);return result};var trimBeginRegexp=/^\\s\\s*/,trimEndRegexp=/\\s\\s*$/;exports.stringTrimLeft=function(string){return string.replace(trimBeginRegexp,\"\")},exports.stringTrimRight=function(string){return string.replace(trimEndRegexp,\"\")},exports.copyObject=function(obj){var copy={};for(var key in obj)copy[key]=obj[key];return copy},exports.copyArray=function(array){for(var copy=[],i=0,l=array.length;l>i;i++)copy[i]=array[i]&&\"object\"==typeof array[i]?this.copyObject(array[i]):array[i];return copy},exports.deepCopy=function deepCopy(obj){if(\"object\"!=typeof obj||!obj)return obj;var copy;if(Array.isArray(obj)){copy=[];for(var key=0;obj.length>key;key++)copy[key]=deepCopy(obj[key]);return copy}if(\"[object Object]\"!==Object.prototype.toString.call(obj))return obj;copy={};for(var key in obj)copy[key]=deepCopy(obj[key]);return copy},exports.arrayToMap=function(arr){for(var map={},i=0;arr.length>i;i++)map[arr[i]]=1;return map},exports.createMap=function(props){var map=Object.create(null);for(var i in props)map[i]=props[i];return map},exports.arrayRemove=function(array,value){for(var i=0;array.length>=i;i++)value===array[i]&&array.splice(i,1)},exports.escapeRegExp=function(str){return str.replace(/([.*+?^${}()|[\\]\\/\\\\])/g,\"\\\\$1\")},exports.escapeHTML=function(str){return str.replace(/&/g,\"&#38;\").replace(/\"/g,\"&#34;\").replace(/'/g,\"&#39;\").replace(/</g,\"&#60;\")},exports.getMatchOffsets=function(string,regExp){var matches=[];return string.replace(regExp,function(str){matches.push({offset:arguments[arguments.length-2],length:str.length})}),matches},exports.deferredCall=function(fcn){var timer=null,callback=function(){timer=null,fcn()},deferred=function(timeout){return deferred.cancel(),timer=setTimeout(callback,timeout||0),deferred};return deferred.schedule=deferred,deferred.call=function(){return this.cancel(),fcn(),deferred},deferred.cancel=function(){return clearTimeout(timer),timer=null,deferred},deferred.isPending=function(){return timer},deferred},exports.delayedCall=function(fcn,defaultTimeout){var timer=null,callback=function(){timer=null,fcn()},_self=function(timeout){null==timer&&(timer=setTimeout(callback,timeout||defaultTimeout))};return _self.delay=function(timeout){timer&&clearTimeout(timer),timer=setTimeout(callback,timeout||defaultTimeout)},_self.schedule=_self,_self.call=function(){this.cancel(),fcn()},_self.cancel=function(){timer&&clearTimeout(timer),timer=null},_self.isPending=function(){return timer},_self}}),ace.define(\"ace/worker/mirror\",[\"require\",\"exports\",\"module\",\"ace/range\",\"ace/document\",\"ace/lib/lang\"],function(acequire,exports){\"use strict\";acequire(\"../range\").Range;var Document=acequire(\"../document\").Document,lang=acequire(\"../lib/lang\"),Mirror=exports.Mirror=function(sender){this.sender=sender;var doc=this.doc=new Document(\"\"),deferredUpdate=this.deferredUpdate=lang.delayedCall(this.onUpdate.bind(this)),_self=this;sender.on(\"change\",function(e){var data=e.data;if(data[0].start)doc.applyDeltas(data);else for(var i=0;data.length>i;i+=2){if(Array.isArray(data[i+1]))var d={action:\"insert\",start:data[i],lines:data[i+1]};else var d={action:\"remove\",start:data[i],end:data[i+1]};doc.applyDelta(d,!0)}return _self.$timeout?deferredUpdate.schedule(_self.$timeout):(_self.onUpdate(),void 0)})};(function(){this.$timeout=500,this.setTimeout=function(timeout){this.$timeout=timeout},this.setValue=function(value){this.doc.setValue(value),this.deferredUpdate.schedule(this.$timeout)},this.getValue=function(callbackId){this.sender.callback(this.doc.getValue(),callbackId)},this.onUpdate=function(){},this.isPending=function(){return this.deferredUpdate.isPending()}}).call(Mirror.prototype)}),ace.define(\"ace/mode/json/json_parse\",[\"require\",\"exports\",\"module\"],function(){\"use strict\";var at,ch,text,value,escapee={'\"':'\"',\"\\\\\":\"\\\\\",\"/\":\"/\",b:\"\\b\",f:\"\\f\",n:\"\\n\",r:\"\\r\",t:\"\t\"},error=function(m){throw{name:\"SyntaxError\",message:m,at:at,text:text}},next=function(c){return c&&c!==ch&&error(\"Expected '\"+c+\"' instead of '\"+ch+\"'\"),ch=text.charAt(at),at+=1,ch},number=function(){var number,string=\"\";for(\"-\"===ch&&(string=\"-\",next(\"-\"));ch>=\"0\"&&\"9\">=ch;)string+=ch,next();if(\".\"===ch)for(string+=\".\";next()&&ch>=\"0\"&&\"9\">=ch;)string+=ch;if(\"e\"===ch||\"E\"===ch)for(string+=ch,next(),(\"-\"===ch||\"+\"===ch)&&(string+=ch,next());ch>=\"0\"&&\"9\">=ch;)string+=ch,next();return number=+string,isNaN(number)?(error(\"Bad number\"),void 0):number},string=function(){var hex,i,uffff,string=\"\";if('\"'===ch)for(;next();){if('\"'===ch)return next(),string;if(\"\\\\\"===ch)if(next(),\"u\"===ch){for(uffff=0,i=0;4>i&&(hex=parseInt(next(),16),isFinite(hex));i+=1)uffff=16*uffff+hex;string+=String.fromCharCode(uffff)}else{if(\"string\"!=typeof escapee[ch])break;string+=escapee[ch]}else string+=ch}error(\"Bad string\")},white=function(){for(;ch&&\" \">=ch;)next()},word=function(){switch(ch){case\"t\":return next(\"t\"),next(\"r\"),next(\"u\"),next(\"e\"),!0;case\"f\":return next(\"f\"),next(\"a\"),next(\"l\"),next(\"s\"),next(\"e\"),!1;case\"n\":return next(\"n\"),next(\"u\"),next(\"l\"),next(\"l\"),null}error(\"Unexpected '\"+ch+\"'\")},array=function(){var array=[];if(\"[\"===ch){if(next(\"[\"),white(),\"]\"===ch)return next(\"]\"),array;for(;ch;){if(array.push(value()),white(),\"]\"===ch)return next(\"]\"),array;next(\",\"),white()}}error(\"Bad array\")},object=function(){var key,object={};if(\"{\"===ch){if(next(\"{\"),white(),\"}\"===ch)return next(\"}\"),object;for(;ch;){if(key=string(),white(),next(\":\"),Object.hasOwnProperty.call(object,key)&&error('Duplicate key \"'+key+'\"'),object[key]=value(),white(),\"}\"===ch)return next(\"}\"),object;next(\",\"),white()}}error(\"Bad object\")};return value=function(){switch(white(),ch){case\"{\":return object();case\"[\":return array();case'\"':return string();case\"-\":return number();default:return ch>=\"0\"&&\"9\">=ch?number():word()}},function(source,reviver){var result;return text=source,at=0,ch=\" \",result=value(),white(),ch&&error(\"Syntax error\"),\"function\"==typeof reviver?function walk(holder,key){var k,v,value=holder[key];if(value&&\"object\"==typeof value)for(k in value)Object.hasOwnProperty.call(value,k)&&(v=walk(value,k),void 0!==v?value[k]=v:delete value[k]);return reviver.call(holder,key,value)}({\"\":result},\"\"):result}}),ace.define(\"ace/mode/json_worker\",[\"require\",\"exports\",\"module\",\"ace/lib/oop\",\"ace/worker/mirror\",\"ace/mode/json/json_parse\"],function(acequire,exports){\"use strict\";var oop=acequire(\"../lib/oop\"),Mirror=acequire(\"../worker/mirror\").Mirror,parse=acequire(\"./json/json_parse\"),JsonWorker=exports.JsonWorker=function(sender){Mirror.call(this,sender),this.setTimeout(200)};oop.inherits(JsonWorker,Mirror),function(){this.onUpdate=function(){var value=this.doc.getValue(),errors=[];try{value&&parse(value)}catch(e){var pos=this.doc.indexToPosition(e.at-1);errors.push({row:pos.row,column:pos.column,text:e.message,type:\"error\"})}this.sender.emit(\"annotate\",errors)}}.call(JsonWorker.prototype)}),ace.define(\"ace/lib/es5-shim\",[\"require\",\"exports\",\"module\"],function(){function Empty(){}function doesDefinePropertyWork(object){try{return Object.defineProperty(object,\"sentinel\",{}),\"sentinel\"in object}catch(exception){}}function toInteger(n){return n=+n,n!==n?n=0:0!==n&&n!==1/0&&n!==-(1/0)&&(n=(n>0||-1)*Math.floor(Math.abs(n))),n}Function.prototype.bind||(Function.prototype.bind=function(that){var target=this;if(\"function\"!=typeof target)throw new TypeError(\"Function.prototype.bind called on incompatible \"+target);var args=slice.call(arguments,1),bound=function(){if(this instanceof bound){var result=target.apply(this,args.concat(slice.call(arguments)));return Object(result)===result?result:this}return target.apply(that,args.concat(slice.call(arguments)))};return target.prototype&&(Empty.prototype=target.prototype,bound.prototype=new Empty,Empty.prototype=null),bound});var defineGetter,defineSetter,lookupGetter,lookupSetter,supportsAccessors,call=Function.prototype.call,prototypeOfArray=Array.prototype,prototypeOfObject=Object.prototype,slice=prototypeOfArray.slice,_toString=call.bind(prototypeOfObject.toString),owns=call.bind(prototypeOfObject.hasOwnProperty);if((supportsAccessors=owns(prototypeOfObject,\"__defineGetter__\"))&&(defineGetter=call.bind(prototypeOfObject.__defineGetter__),defineSetter=call.bind(prototypeOfObject.__defineSetter__),lookupGetter=call.bind(prototypeOfObject.__lookupGetter__),lookupSetter=call.bind(prototypeOfObject.__lookupSetter__)),2!=[1,2].splice(0).length)if(function(){function makeArray(l){var a=Array(l+2);return a[0]=a[1]=0,a}var lengthBefore,array=[];return array.splice.apply(array,makeArray(20)),array.splice.apply(array,makeArray(26)),lengthBefore=array.length,array.splice(5,0,\"XXX\"),lengthBefore+1==array.length,lengthBefore+1==array.length?!0:void 0\n}()){var array_splice=Array.prototype.splice;Array.prototype.splice=function(start,deleteCount){return arguments.length?array_splice.apply(this,[void 0===start?0:start,void 0===deleteCount?this.length-start:deleteCount].concat(slice.call(arguments,2))):[]}}else Array.prototype.splice=function(pos,removeCount){var length=this.length;pos>0?pos>length&&(pos=length):void 0==pos?pos=0:0>pos&&(pos=Math.max(length+pos,0)),length>pos+removeCount||(removeCount=length-pos);var removed=this.slice(pos,pos+removeCount),insert=slice.call(arguments,2),add=insert.length;if(pos===length)add&&this.push.apply(this,insert);else{var remove=Math.min(removeCount,length-pos),tailOldPos=pos+remove,tailNewPos=tailOldPos+add-remove,tailCount=length-tailOldPos,lengthAfterRemove=length-remove;if(tailOldPos>tailNewPos)for(var i=0;tailCount>i;++i)this[tailNewPos+i]=this[tailOldPos+i];else if(tailNewPos>tailOldPos)for(i=tailCount;i--;)this[tailNewPos+i]=this[tailOldPos+i];if(add&&pos===lengthAfterRemove)this.length=lengthAfterRemove,this.push.apply(this,insert);else for(this.length=lengthAfterRemove+add,i=0;add>i;++i)this[pos+i]=insert[i]}return removed};Array.isArray||(Array.isArray=function(obj){return\"[object Array]\"==_toString(obj)});var boxedString=Object(\"a\"),splitString=\"a\"!=boxedString[0]||!(0 in boxedString);if(Array.prototype.forEach||(Array.prototype.forEach=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,thisp=arguments[1],i=-1,length=self.length>>>0;if(\"[object Function]\"!=_toString(fun))throw new TypeError;for(;length>++i;)i in self&&fun.call(thisp,self[i],i,object)}),Array.prototype.map||(Array.prototype.map=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0,result=Array(length),thisp=arguments[1];if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");for(var i=0;length>i;i++)i in self&&(result[i]=fun.call(thisp,self[i],i,object));return result}),Array.prototype.filter||(Array.prototype.filter=function(fun){var value,object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0,result=[],thisp=arguments[1];if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");for(var i=0;length>i;i++)i in self&&(value=self[i],fun.call(thisp,value,i,object)&&result.push(value));return result}),Array.prototype.every||(Array.prototype.every=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0,thisp=arguments[1];if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");for(var i=0;length>i;i++)if(i in self&&!fun.call(thisp,self[i],i,object))return!1;return!0}),Array.prototype.some||(Array.prototype.some=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0,thisp=arguments[1];if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");for(var i=0;length>i;i++)if(i in self&&fun.call(thisp,self[i],i,object))return!0;return!1}),Array.prototype.reduce||(Array.prototype.reduce=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0;if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");if(!length&&1==arguments.length)throw new TypeError(\"reduce of empty array with no initial value\");var result,i=0;if(arguments.length>=2)result=arguments[1];else for(;;){if(i in self){result=self[i++];break}if(++i>=length)throw new TypeError(\"reduce of empty array with no initial value\")}for(;length>i;i++)i in self&&(result=fun.call(void 0,result,self[i],i,object));return result}),Array.prototype.reduceRight||(Array.prototype.reduceRight=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0;if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");if(!length&&1==arguments.length)throw new TypeError(\"reduceRight of empty array with no initial value\");var result,i=length-1;if(arguments.length>=2)result=arguments[1];else for(;;){if(i in self){result=self[i--];break}if(0>--i)throw new TypeError(\"reduceRight of empty array with no initial value\")}do i in this&&(result=fun.call(void 0,result,self[i],i,object));while(i--);return result}),Array.prototype.indexOf&&-1==[0,1].indexOf(1,2)||(Array.prototype.indexOf=function(sought){var self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):toObject(this),length=self.length>>>0;if(!length)return-1;var i=0;for(arguments.length>1&&(i=toInteger(arguments[1])),i=i>=0?i:Math.max(0,length+i);length>i;i++)if(i in self&&self[i]===sought)return i;return-1}),Array.prototype.lastIndexOf&&-1==[0,1].lastIndexOf(0,-3)||(Array.prototype.lastIndexOf=function(sought){var self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):toObject(this),length=self.length>>>0;if(!length)return-1;var i=length-1;for(arguments.length>1&&(i=Math.min(i,toInteger(arguments[1]))),i=i>=0?i:length-Math.abs(i);i>=0;i--)if(i in self&&sought===self[i])return i;return-1}),Object.getPrototypeOf||(Object.getPrototypeOf=function(object){return object.__proto__||(object.constructor?object.constructor.prototype:prototypeOfObject)}),!Object.getOwnPropertyDescriptor){var ERR_NON_OBJECT=\"Object.getOwnPropertyDescriptor called on a non-object: \";Object.getOwnPropertyDescriptor=function(object,property){if(\"object\"!=typeof object&&\"function\"!=typeof object||null===object)throw new TypeError(ERR_NON_OBJECT+object);if(owns(object,property)){var descriptor,getter,setter;if(descriptor={enumerable:!0,configurable:!0},supportsAccessors){var prototype=object.__proto__;object.__proto__=prototypeOfObject;var getter=lookupGetter(object,property),setter=lookupSetter(object,property);if(object.__proto__=prototype,getter||setter)return getter&&(descriptor.get=getter),setter&&(descriptor.set=setter),descriptor}return descriptor.value=object[property],descriptor}}}if(Object.getOwnPropertyNames||(Object.getOwnPropertyNames=function(object){return Object.keys(object)}),!Object.create){var createEmpty;createEmpty=null===Object.prototype.__proto__?function(){return{__proto__:null}}:function(){var empty={};for(var i in empty)empty[i]=null;return empty.constructor=empty.hasOwnProperty=empty.propertyIsEnumerable=empty.isPrototypeOf=empty.toLocaleString=empty.toString=empty.valueOf=empty.__proto__=null,empty},Object.create=function(prototype,properties){var object;if(null===prototype)object=createEmpty();else{if(\"object\"!=typeof prototype)throw new TypeError(\"typeof prototype[\"+typeof prototype+\"] != 'object'\");var Type=function(){};Type.prototype=prototype,object=new Type,object.__proto__=prototype}return void 0!==properties&&Object.defineProperties(object,properties),object}}if(Object.defineProperty){var definePropertyWorksOnObject=doesDefinePropertyWork({}),definePropertyWorksOnDom=\"undefined\"==typeof document||doesDefinePropertyWork(document.createElement(\"div\"));if(!definePropertyWorksOnObject||!definePropertyWorksOnDom)var definePropertyFallback=Object.defineProperty}if(!Object.defineProperty||definePropertyFallback){var ERR_NON_OBJECT_DESCRIPTOR=\"Property description must be an object: \",ERR_NON_OBJECT_TARGET=\"Object.defineProperty called on non-object: \",ERR_ACCESSORS_NOT_SUPPORTED=\"getters & setters can not be defined on this javascript engine\";Object.defineProperty=function(object,property,descriptor){if(\"object\"!=typeof object&&\"function\"!=typeof object||null===object)throw new TypeError(ERR_NON_OBJECT_TARGET+object);if(\"object\"!=typeof descriptor&&\"function\"!=typeof descriptor||null===descriptor)throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR+descriptor);if(definePropertyFallback)try{return definePropertyFallback.call(Object,object,property,descriptor)}catch(exception){}if(owns(descriptor,\"value\"))if(supportsAccessors&&(lookupGetter(object,property)||lookupSetter(object,property))){var prototype=object.__proto__;object.__proto__=prototypeOfObject,delete object[property],object[property]=descriptor.value,object.__proto__=prototype}else object[property]=descriptor.value;else{if(!supportsAccessors)throw new TypeError(ERR_ACCESSORS_NOT_SUPPORTED);owns(descriptor,\"get\")&&defineGetter(object,property,descriptor.get),owns(descriptor,\"set\")&&defineSetter(object,property,descriptor.set)}return object}}Object.defineProperties||(Object.defineProperties=function(object,properties){for(var property in properties)owns(properties,property)&&Object.defineProperty(object,property,properties[property]);return object}),Object.seal||(Object.seal=function(object){return object}),Object.freeze||(Object.freeze=function(object){return object});try{Object.freeze(function(){})}catch(exception){Object.freeze=function(freezeObject){return function(object){return\"function\"==typeof object?object:freezeObject(object)}}(Object.freeze)}if(Object.preventExtensions||(Object.preventExtensions=function(object){return object}),Object.isSealed||(Object.isSealed=function(){return!1}),Object.isFrozen||(Object.isFrozen=function(){return!1}),Object.isExtensible||(Object.isExtensible=function(object){if(Object(object)===object)throw new TypeError;for(var name=\"\";owns(object,name);)name+=\"?\";object[name]=!0;var returnValue=owns(object,name);return delete object[name],returnValue}),!Object.keys){var hasDontEnumBug=!0,dontEnums=[\"toString\",\"toLocaleString\",\"valueOf\",\"hasOwnProperty\",\"isPrototypeOf\",\"propertyIsEnumerable\",\"constructor\"],dontEnumsLength=dontEnums.length;for(var key in{toString:null})hasDontEnumBug=!1;Object.keys=function(object){if(\"object\"!=typeof object&&\"function\"!=typeof object||null===object)throw new TypeError(\"Object.keys called on a non-object\");var keys=[];for(var name in object)owns(object,name)&&keys.push(name);if(hasDontEnumBug)for(var i=0,ii=dontEnumsLength;ii>i;i++){var dontEnum=dontEnums[i];owns(object,dontEnum)&&keys.push(dontEnum)}return keys}}Date.now||(Date.now=function(){return(new Date).getTime()});var ws=\"\t\\n\u000b\\f\\r   ᠎             　\\u2028\\u2029﻿\";if(!String.prototype.trim||ws.trim()){ws=\"[\"+ws+\"]\";var trimBeginRegexp=RegExp(\"^\"+ws+ws+\"*\"),trimEndRegexp=RegExp(ws+ws+\"*$\");String.prototype.trim=function(){return(this+\"\").replace(trimBeginRegexp,\"\").replace(trimEndRegexp,\"\")}}var toObject=function(o){if(null==o)throw new TypeError(\"can't convert \"+o+\" to object\");return Object(o)}});";
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -25897,7 +26250,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.1 by @mathias */
@@ -26433,10 +26786,10 @@ module.exports = {
 
 }(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(42)(module), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(43)(module), __webpack_require__(8)))
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26453,24 +26806,24 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Adaptive = __webpack_require__(1);
-var Constants = __webpack_require__(21);
-var live_tile_1 = __webpack_require__(26);
-var skype_1 = __webpack_require__(28);
-var webchat_1 = __webpack_require__(35);
-var teams_1 = __webpack_require__(31);
-var toast_1 = __webpack_require__(34);
-var groupme_1 = __webpack_require__(24);
-var telegram_1 = __webpack_require__(32);
-var sms_1 = __webpack_require__(30);
-var slack_1 = __webpack_require__(29);
-var kik_1 = __webpack_require__(25);
-var facebook_1 = __webpack_require__(23);
-var bing_1 = __webpack_require__(22);
-var timeline_1 = __webpack_require__(33);
-var outlook_1 = __webpack_require__(27);
-var ace = __webpack_require__(18);
-__webpack_require__(19);
+var Constants = __webpack_require__(22);
+var live_tile_1 = __webpack_require__(27);
+var skype_1 = __webpack_require__(29);
+var webchat_1 = __webpack_require__(36);
+var teams_1 = __webpack_require__(32);
+var toast_1 = __webpack_require__(35);
+var groupme_1 = __webpack_require__(25);
+var telegram_1 = __webpack_require__(33);
+var sms_1 = __webpack_require__(31);
+var slack_1 = __webpack_require__(30);
+var kik_1 = __webpack_require__(26);
+var facebook_1 = __webpack_require__(24);
+var bing_1 = __webpack_require__(23);
+var timeline_1 = __webpack_require__(34);
+var outlook_1 = __webpack_require__(28);
+var ace = __webpack_require__(19);
 __webpack_require__(20);
+__webpack_require__(21);
 var editor;
 var hostContainerOptions = [];
 var hostContainerPicker;
@@ -26486,7 +26839,7 @@ function renderCard() {
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
     var json = JSON.parse(currentCardPayload);
     var adaptiveCard = new Adaptive.AdaptiveCard();
-    adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
+    adaptiveCard.hostConfig = new Adaptive.HostConfig(currentConfigPayload);
     adaptiveCard.parse(json);
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
     showValidationErrors();
@@ -26855,7 +27208,7 @@ window.onload = function () {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 /**
@@ -27212,7 +27565,7 @@ module.exports = new vkbeautify();
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {module.exports = get_blob()
@@ -27247,7 +27600,7 @@ function get_blob() {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -27275,7 +27628,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27292,7 +27645,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Enums = __webpack_require__(3);
-var Utils = __webpack_require__(9);
+var Utils = __webpack_require__(10);
+var HostConfig = __webpack_require__(9);
 var TextFormatters = __webpack_require__(45);
 function invokeSetParent(obj, parent) {
     if (obj) {
@@ -27315,48 +27669,6 @@ function isActionAllowed(action, forbiddenActionTypes) {
         }
     }
     return true;
-}
-function getEffectiveSpacing(hostConfig, spacing) {
-    switch (spacing) {
-        case Enums.Spacing.Small:
-            return hostConfig.spacing.small;
-        case Enums.Spacing.Default:
-            return hostConfig.spacing.default;
-        case Enums.Spacing.Medium:
-            return hostConfig.spacing.medium;
-        case Enums.Spacing.Large:
-            return hostConfig.spacing.large;
-        case Enums.Spacing.ExtraLarge:
-            return hostConfig.spacing.extraLarge;
-        case Enums.Spacing.Padding:
-            return hostConfig.spacing.padding;
-        default:
-            return 0;
-    }
-}
-function getEffectivePadding(hostConfig, padding) {
-    switch (padding) {
-        case Enums.Padding.Default:
-            return hostConfig.spacing.padding;
-        default:
-            return 0;
-    }
-}
-function paddingToSpacingDefinition(hostConfig, padding) {
-    return {
-        top: getEffectivePadding(hostConfig, padding.top),
-        right: getEffectivePadding(hostConfig, padding.right),
-        bottom: getEffectivePadding(hostConfig, padding.bottom),
-        left: getEffectivePadding(hostConfig, padding.left)
-    };
-}
-function getContainerStyleDefinition(hostConfig, containerStyle) {
-    switch (containerStyle) {
-        case Enums.ContainerStyle.Emphasis:
-            return hostConfig.containerStyles.emphasis;
-        default:
-            return hostConfig.containerStyles.default;
-    }
 }
 function createActionInstance(json) {
     var actionType = json["type"];
@@ -27386,7 +27698,7 @@ var CardElement = /** @class */ (function () {
     }
     CardElement.prototype.internalRenderSeparator = function () {
         return Utils.renderSeparation({
-            spacing: getEffectiveSpacing(this.hostConfig, this.spacing),
+            spacing: this.hostConfig.getEffectiveSpacing(this.spacing),
             lineThickness: this.separator ? this.hostConfig.separator.lineThickness : null,
             lineColor: this.separator ? this.hostConfig.separator.lineColor : null
         }, this.separatorOrientation);
@@ -27426,12 +27738,12 @@ var CardElement = /** @class */ (function () {
     };
     CardElement.prototype.showBottomSpacer = function (requestingElement) {
         if (this.parent) {
-            this.parent.showBottomSpacer(this);
+            this.parent.showBottomSpacer(requestingElement);
         }
     };
     CardElement.prototype.hideBottomSpacer = function (requestingElement) {
         if (this.parent) {
-            this.parent.hideBottomSpacer(this);
+            this.parent.hideBottomSpacer(requestingElement);
         }
     };
     CardElement.prototype.setParent = function (value) {
@@ -27453,12 +27765,12 @@ var CardElement = /** @class */ (function () {
     });
     Object.defineProperty(CardElement.prototype, "defaultPadding", {
         get: function () {
-            return {
+            return new HostConfig.PaddingDefinition({
                 top: Enums.Padding.None,
                 right: Enums.Padding.None,
                 bottom: Enums.Padding.None,
                 left: Enums.Padding.None
-            };
+            });
         },
         enumerable: true,
         configurable: true
@@ -27481,12 +27793,12 @@ var CardElement = /** @class */ (function () {
         configurable: true
     });
     CardElement.prototype.getNonZeroPadding = function () {
-        var padding = {
+        var padding = new HostConfig.PaddingDefinition({
             top: Enums.Padding.None,
             right: Enums.Padding.None,
             bottom: Enums.Padding.None,
             left: Enums.Padding.None
-        };
+        });
         this.internalGetNonZeroPadding(padding);
         return padding;
     };
@@ -27720,7 +28032,7 @@ var TextBlock = /** @class */ (function (_super) {
             element.style.fontSize = fontSize + "px";
             element.style.lineHeight = computedLineHeight + "px";
             var parentContainer = this.getParentContainer();
-            var styleDefinition = getContainerStyleDefinition(this.hostConfig, parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
+            var styleDefinition = this.hostConfig.getContainerStyleDefinition(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
             var actualTextColor = this.color ? this.color : Enums.TextColor.Default;
             var colorDefinition;
             switch (actualTextColor) {
@@ -28994,7 +29306,7 @@ var ActionCollection = /** @class */ (function () {
             this.onShowActionCardPane(null);
         }
         this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? this._owner.hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
-        var padding = paddingToSpacingDefinition(this._owner.hostConfig, this._owner.getNonZeroPadding());
+        var padding = this._owner.hostConfig.paddingToSpacingDefinition(this._owner.getNonZeroPadding());
         if (this._actionCard !== null) {
             this._actionCard.style.paddingLeft = padding.left + "px";
             this._actionCard.style.paddingRight = padding.right + "px";
@@ -29332,29 +29644,30 @@ var Container = /** @class */ (function (_super) {
     });
     Container.prototype.showBottomSpacer = function (requestingElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
-            this.renderedElement.style.paddingBottom = paddingToSpacingDefinition(this.hostConfig, this.internalPadding).bottom + "px";
-            _super.prototype.showBottomSpacer.call(this, this);
+            // this.renderedElement.style.paddingBottom = this.hostConfig.paddingToSpacingDefinition(this.internalPadding).bottom + "px";
+            this.applyPadding();
+            _super.prototype.showBottomSpacer.call(this, requestingElement);
         }
     };
     Container.prototype.hideBottomSpacer = function (requestingElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
             this.renderedElement.style.paddingBottom = "0px";
-            _super.prototype.hideBottomSpacer.call(this, this);
+            _super.prototype.hideBottomSpacer.call(this, requestingElement);
         }
     };
     Container.prototype.applyPadding = function () {
         if (this.hasBackground) {
-            var physicalMargin = { top: 0, right: 0, bottom: 0, left: 0 };
-            var physicalPadding = { top: 0, right: 0, bottom: 0, left: 0 };
+            var physicalMargin = new HostConfig.SpacingDefinition();
+            var physicalPadding = new HostConfig.SpacingDefinition();
             var useAutoPadding = AdaptiveCard.useAutoPadding && (this.parent ? this.parent.canContentBleed() : false);
             if (useAutoPadding) {
                 var effectivePadding = this.getNonZeroPadding();
-                var effectiveMargin = {
+                var effectiveMargin = new HostConfig.PaddingDefinition({
                     top: effectivePadding.top,
                     right: effectivePadding.right,
                     bottom: effectivePadding.bottom,
                     left: effectivePadding.left,
-                };
+                });
                 if (!this.isAtTheVeryTop()) {
                     effectivePadding.top = Enums.Padding.None;
                     effectiveMargin.top = Enums.Padding.None;
@@ -29398,31 +29711,37 @@ var Container = /** @class */ (function (_super) {
                         effectivePadding.right = Enums.Padding.Default;
                     }
                     if (effectivePadding.bottom == Enums.Padding.None) {
-                        effectivePadding.bottom = Enums.Padding.Default;
+                        effectivePadding = Object.assign({}, effectivePadding, {
+                            bottom: Enums.Padding.Default
+                        });
                     }
                     if (effectivePadding.left == Enums.Padding.None) {
-                        effectivePadding.left = Enums.Padding.Default;
+                        effectivePadding = Object.assign({}, effectivePadding, {
+                            left: Enums.Padding.Default
+                        });
                     }
                 }
                 if (effectivePadding.top == Enums.Padding.None &&
                     effectivePadding.right == Enums.Padding.None &&
                     effectivePadding.bottom == Enums.Padding.None &&
                     effectivePadding.left == Enums.Padding.None) {
-                    effectivePadding.top = Enums.Padding.Default;
-                    effectivePadding.right = Enums.Padding.Default;
-                    effectivePadding.bottom = Enums.Padding.Default;
-                    effectivePadding.left = Enums.Padding.Default;
+                    effectivePadding = new HostConfig.PaddingDefinition({
+                        top: Enums.Padding.Default,
+                        right: Enums.Padding.Default,
+                        bottom: Enums.Padding.Default,
+                        left: Enums.Padding.Default,
+                    });
                 }
-                physicalMargin = paddingToSpacingDefinition(this.hostConfig, effectiveMargin);
-                physicalPadding = paddingToSpacingDefinition(this.hostConfig, effectivePadding);
+                physicalMargin = this.hostConfig.paddingToSpacingDefinition(effectiveMargin);
+                physicalPadding = this.hostConfig.paddingToSpacingDefinition(effectivePadding);
             }
             else {
-                physicalPadding = paddingToSpacingDefinition(this.hostConfig, {
+                physicalPadding = this.hostConfig.paddingToSpacingDefinition(new HostConfig.PaddingDefinition({
                     top: Enums.Padding.Default,
                     right: Enums.Padding.Default,
                     bottom: Enums.Padding.Default,
                     left: Enums.Padding.Default
-                });
+                }));
             }
             if (this.renderedElement) {
                 this.renderedElement.style.marginTop = "-" + physicalMargin.top + "px";
@@ -29456,7 +29775,7 @@ var Container = /** @class */ (function (_super) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
             }
-            var styleDefinition = getContainerStyleDefinition(this.hostConfig, this.style);
+            var styleDefinition = this.hostConfig.getContainerStyleDefinition(this.style);
             if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
                 element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
             }
@@ -30055,7 +30374,7 @@ var ContainerWithActions = /** @class */ (function (_super) {
         var renderedActions = this._actionCollection.render();
         if (renderedActions) {
             Utils.appendChild(element, Utils.renderSeparation({
-                spacing: getEffectiveSpacing(this.hostConfig, this.hostConfig.actions.spacing),
+                spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing),
                 lineThickness: null,
                 lineColor: null
             }, Enums.Orientation.Horizontal));
@@ -30137,7 +30456,7 @@ var AdaptiveCard = /** @class */ (function (_super) {
         return !unsupportedVersion;
     };
     AdaptiveCard.prototype.applyPadding = function () {
-        var effectivePadding = paddingToSpacingDefinition(this.hostConfig, this.internalPadding);
+        var effectivePadding = this.hostConfig.paddingToSpacingDefinition(this.internalPadding);
         this.renderedElement.style.paddingTop = effectivePadding.top + "px";
         this.renderedElement.style.paddingRight = effectivePadding.right + "px";
         this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
@@ -30145,7 +30464,12 @@ var AdaptiveCard = /** @class */ (function (_super) {
     };
     Object.defineProperty(AdaptiveCard.prototype, "defaultPadding", {
         get: function () {
-            return { top: Enums.Padding.Default, right: Enums.Padding.Default, bottom: Enums.Padding.Default, left: Enums.Padding.Default };
+            return new HostConfig.PaddingDefinition({
+                top: Enums.Padding.Default,
+                right: Enums.Padding.Default,
+                bottom: Enums.Padding.Default,
+                left: Enums.Padding.Default
+            });
         },
         enumerable: true,
         configurable: true
@@ -30245,7 +30569,12 @@ var InlineAdaptiveCard = /** @class */ (function (_super) {
     }
     Object.defineProperty(InlineAdaptiveCard.prototype, "defaultPadding", {
         get: function () {
-            return { top: Enums.Padding.Default, right: Enums.Padding.Default, bottom: Enums.Padding.Default, left: Enums.Padding.Default };
+            return new HostConfig.PaddingDefinition({
+                top: Enums.Padding.Default,
+                right: Enums.Padding.Default,
+                bottom: Enums.Padding.Default,
+                left: Enums.Padding.Default
+            });
         },
         enumerable: true,
         configurable: true
@@ -30268,247 +30597,8 @@ var InlineAdaptiveCard = /** @class */ (function (_super) {
     };
     return InlineAdaptiveCard;
 }(AdaptiveCard));
-var defaultHostConfig = {
-    supportsInteractivity: true,
-    spacing: {
-        small: 3,
-        default: 8,
-        medium: 20,
-        large: 30,
-        extraLarge: 40,
-        padding: 20
-    },
-    separator: {
-        lineThickness: 1,
-        lineColor: "#EEEEEE"
-    },
-    fontFamily: "Segoe UI",
-    fontSizes: {
-        small: 8,
-        default: 10,
-        medium: 12,
-        large: 14,
-        extraLarge: 16
-    },
-    fontWeights: {
-        lighter: 200,
-        default: 400,
-        bolder: 600
-    },
-    containerStyles: {
-        default: {
-            fontColors: {
-                default: { normal: "#0000FF", subtle: "#222222" },
-                accent: { normal: "#0000FF", subtle: "#0000DD" },
-                attention: { normal: "#FF6600", subtle: "#DD4400" },
-                good: { normal: "#00FF00", subtle: "#00DD00" },
-                warning: { normal: "#FF0000", subtle: "#DD0000" }
-            }
-        },
-        emphasis: {
-            backgroundColor: "#EEEEEE",
-            fontColors: {
-                default: { normal: "#0000FF", subtle: "#222222" },
-                accent: { normal: "#0000FF", subtle: "#0000DD" },
-                attention: { normal: "#FF6600", subtle: "#DD4400" },
-                good: { normal: "#00FF00", subtle: "#00DD00" },
-                warning: { normal: "#FF0000", subtle: "#DD0000" }
-            }
-        }
-    },
-    imageSizes: {
-        small: 40,
-        medium: 80,
-        large: 160
-    },
-    actions: {
-        maxActions: 5,
-        spacing: Enums.Spacing.Default,
-        buttonSpacing: 20,
-        showCard: {
-            actionMode: Enums.ShowCardActionMode.Inline,
-            inlineTopMargin: 16
-        },
-        actionsOrientation: Enums.Orientation.Horizontal,
-        actionAlignment: Enums.ActionAlignment.Left
-    },
-    adaptiveCard: {
-        allowCustomStyle: false
-    },
-    image: {
-        size: Enums.Size.Medium
-    },
-    imageSet: {
-        imageSize: Enums.Size.Medium,
-        maxImageHeight: 100
-    },
-    factSet: {
-        title: {
-            color: Enums.TextColor.Default,
-            size: Enums.TextSize.Default,
-            isSubtle: false,
-            weight: Enums.TextWeight.Bolder,
-            wrap: true,
-            maxWidth: 150
-        },
-        value: {
-            color: Enums.TextColor.Default,
-            size: Enums.TextSize.Default,
-            isSubtle: false,
-            weight: Enums.TextWeight.Default,
-            wrap: true
-        },
-        spacing: 10
-    }
-};
+var defaultHostConfig = new HostConfig.HostConfig();
 //# sourceMappingURL=card-elements.js.map
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Enums = __webpack_require__(3);
-var Utils = __webpack_require__(9);
-function parseSpacingDefinition(obj) {
-    return obj ? {
-        top: obj["top"],
-        right: obj["right"],
-        bottom: obj["bottom"],
-        left: obj["left"]
-    } : null;
-}
-function parsePaddingDefinition(obj) {
-    return obj ? {
-        top: Utils.parseHostConfigEnum(Enums.Padding, obj["top"], Enums.Padding.None),
-        right: Utils.parseHostConfigEnum(Enums.Padding, obj["right"], Enums.Padding.None),
-        bottom: Utils.parseHostConfigEnum(Enums.Padding, obj["bottom"], Enums.Padding.None),
-        left: Utils.parseHostConfigEnum(Enums.Padding, obj["left"], Enums.Padding.None),
-    } : null;
-}
-function parseTextColorDefinition(obj) {
-    return obj ? {
-        normal: obj["normal"],
-        subtle: obj["subtle"]
-    } : null;
-}
-function parseColorPaletteDefinition(obj) {
-    return obj ? {
-        backgroundColor: obj["backgroundColor"],
-        fontColors: {
-            default: parseTextColorDefinition(obj["fontColors"]["default"]),
-            accent: parseTextColorDefinition(obj["fontColors"]["accent"]),
-            good: parseTextColorDefinition(obj["fontColors"]["good"]),
-            warning: parseTextColorDefinition(obj["fontColors"]["warning"]),
-            attention: parseTextColorDefinition(obj["fontColors"]["attention"])
-        }
-    } : null;
-}
-function parseAdaptiveCardConfiguration(obj) {
-    return obj ? {
-        allowCustomStyle: obj["allowCustomStyle"]
-    } : null;
-}
-function parseImageConfiguration(obj) {
-    return obj ? {
-        size: obj["size"]
-    } : null;
-}
-function parseImageSetConfiguration(obj) {
-    return obj ? {
-        imageSize: obj["imageSize"],
-        maxImageHeight: Utils.getValueOrDefault("maxImageHeight", 100)
-    } : null;
-}
-function parseFactTextDefinition(obj) {
-    return obj ? {
-        size: Utils.parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default),
-        color: Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default),
-        isSubtle: obj["isSubtle"],
-        weight: Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Default),
-        wrap: obj["wrap"]
-    } : null;
-}
-function parseFactTitleDefinition(obj) {
-    var result = parseFactTextDefinition(obj);
-    if (result) {
-        result.maxWidth = obj["maxWidth"];
-    }
-    return result;
-}
-function parseFactSetConfiguration(obj) {
-    return obj ? {
-        title: parseFactTitleDefinition(obj["title"]),
-        value: parseFactTextDefinition(obj["value"]),
-        spacing: obj["spacing"]
-    } : null;
-}
-function parseShowCardActionConfiguration(obj) {
-    return obj ? {
-        actionMode: Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline),
-        inlineTopMargin: obj["inlineTopMargin"],
-        style: Utils.parseHostConfigEnum(Enums.ContainerStyle, obj["style"], Enums.ContainerStyle.Emphasis)
-    } : null;
-}
-function parseActionsConfiguration(obj) {
-    return obj ? {
-        maxActions: obj["maxActions"],
-        spacing: Utils.parseHostConfigEnum(Enums.Spacing, obj["spacing"], Enums.Spacing.Default),
-        buttonSpacing: obj["buttonSpacing"],
-        showCard: parseShowCardActionConfiguration(obj["showCard"]),
-        actionsOrientation: Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal),
-        actionAlignment: Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left),
-    } : null;
-}
-function parseHostConfig(serializedConfiguration) {
-    var obj = JSON.parse(serializedConfiguration);
-    return obj ? {
-        supportsInteractivity: obj["supportsInteractivity"],
-        fontFamily: obj["fontFamily"],
-        fontSizes: {
-            small: obj["fontSizes"]["small"],
-            default: obj["fontSizes"]["default"],
-            medium: obj["fontSizes"]["medium"],
-            large: obj["fontSizes"]["large"],
-            extraLarge: obj["fontSizes"]["extraLarge"]
-        },
-        fontWeights: {
-            lighter: obj["fontWeights"]["lighter"],
-            default: obj["fontWeights"]["default"],
-            bolder: obj["fontWeights"]["bolder"]
-        },
-        imageSizes: {
-            small: obj["imageSizes"]["small"],
-            medium: obj["imageSizes"]["medium"],
-            large: obj["imageSizes"]["large"],
-        },
-        containerStyles: {
-            default: parseColorPaletteDefinition(obj["containerStyles"]["default"]),
-            emphasis: parseColorPaletteDefinition(obj["containerStyles"]["emphasis"])
-        },
-        spacing: {
-            small: obj["spacing"]["small"],
-            default: obj["spacing"]["default"],
-            medium: obj["spacing"]["medium"],
-            large: obj["spacing"]["large"],
-            extraLarge: obj["spacing"]["extraLarge"],
-            padding: obj["spacing"]["padding"]
-        },
-        separator: {
-            lineThickness: obj["separator"]["lineThickness"],
-            lineColor: obj["separator"]["lineColor"]
-        },
-        actions: parseActionsConfiguration(obj["actions"]),
-        adaptiveCard: parseAdaptiveCardConfiguration(obj["adaptiveCard"]),
-        image: parseImageConfiguration(obj["image"]),
-        imageSet: parseImageSetConfiguration(obj["imageSet"]),
-        factSet: parseFactSetConfiguration(obj["factSet"])
-    } : null;
-}
-exports.parseHostConfig = parseHostConfig;
-//# sourceMappingURL=host-config.js.map
 
 /***/ }),
 /* 45 */
@@ -31240,9 +31330,9 @@ module.exports = function (opts) {
   var re = {};
 
   // Use direct extract instead of `regenerate` to reduse browserified size
-  re.src_Any = __webpack_require__(17).source;
-  re.src_Cc  = __webpack_require__(15).source;
-  re.src_Z   = __webpack_require__(16).source;
+  re.src_Any = __webpack_require__(18).source;
+  re.src_Cc  = __webpack_require__(16).source;
+  re.src_Z   = __webpack_require__(17).source;
   re.src_P   = __webpack_require__(6).source;
 
   // \p{\Z\P\Cc\CF} (white spaces + control + format + punctuation)
@@ -31734,8 +31824,8 @@ var ParserCore   = __webpack_require__(56);
 var ParserBlock  = __webpack_require__(55);
 var ParserInline = __webpack_require__(57);
 var LinkifyIt    = __webpack_require__(46);
-var mdurl        = __webpack_require__(14);
-var punycode     = __webpack_require__(38);
+var mdurl        = __webpack_require__(15);
+var punycode     = __webpack_require__(39);
 
 
 var config = {
@@ -32523,8 +32613,8 @@ var _rules = [
   [ 'newline',         __webpack_require__(89) ],
   [ 'escape',          __webpack_require__(85) ],
   [ 'backticks',       __webpack_require__(82) ],
-  [ 'strikethrough',   __webpack_require__(13).tokenize ],
-  [ 'emphasis',        __webpack_require__(12).tokenize ],
+  [ 'strikethrough',   __webpack_require__(14).tokenize ],
+  [ 'emphasis',        __webpack_require__(13).tokenize ],
   [ 'link',            __webpack_require__(88) ],
   [ 'image',           __webpack_require__(87) ],
   [ 'autolink',        __webpack_require__(81) ],
@@ -32534,8 +32624,8 @@ var _rules = [
 
 var _rules2 = [
   [ 'balance_pairs',   __webpack_require__(83) ],
-  [ 'strikethrough',   __webpack_require__(13).postProcess ],
-  [ 'emphasis',        __webpack_require__(12).postProcess ],
+  [ 'strikethrough',   __webpack_require__(14).postProcess ],
+  [ 'emphasis',        __webpack_require__(13).postProcess ],
   [ 'text_collapse',   __webpack_require__(92) ]
 ];
 
@@ -33788,7 +33878,7 @@ module.exports = function hr(state, startLine, endLine, silent) {
 
 
 var block_names = __webpack_require__(49);
-var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(11).HTML_OPEN_CLOSE_TAG_RE;
+var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(12).HTML_OPEN_CLOSE_TAG_RE;
 
 // An array of opening and corresponding closing sequences for html tags,
 // last argument defines whether it can terminate a paragraph or not
@@ -35735,7 +35825,7 @@ module.exports = function link_pairs(state) {
 
 
 
-var entities          = __webpack_require__(10);
+var entities          = __webpack_require__(11);
 var has               = __webpack_require__(0).has;
 var isValidEntityCode = __webpack_require__(0).isValidEntityCode;
 var fromCodePoint     = __webpack_require__(0).fromCodePoint;
@@ -35850,7 +35940,7 @@ module.exports = function escape(state, silent) {
 
 
 
-var HTML_TAG_RE = __webpack_require__(11).HTML_TAG_RE;
+var HTML_TAG_RE = __webpack_require__(12).HTML_TAG_RE;
 
 
 function isLetter(ch) {
@@ -37130,11 +37220,11 @@ module.exports=/[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\u2
 "use strict";
 
 
-exports.Any = __webpack_require__(17);
-exports.Cc  = __webpack_require__(15);
+exports.Any = __webpack_require__(18);
+exports.Cc  = __webpack_require__(16);
 exports.Cf  = __webpack_require__(97);
 exports.P   = __webpack_require__(6);
-exports.Z   = __webpack_require__(16);
+exports.Z   = __webpack_require__(17);
 
 
 /***/ })

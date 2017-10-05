@@ -180,7 +180,7 @@ var HostContainer = /** @class */ (function () {
         }
     };
     HostContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -303,7 +303,7 @@ var HostContainer = /** @class */ (function () {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     HostContainer.prototype.renderContainer = function (renderedCard) {
         return null;
@@ -19965,7 +19965,7 @@ var BingContainer = /** @class */ (function (_super) {
         return element;
     };
     BingContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20088,7 +20088,7 @@ var BingContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     BingContainer.backgroundColor = "#fff";
     return BingContainer;
@@ -20131,7 +20131,7 @@ var FacebookContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     FacebookContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20254,7 +20254,7 @@ var FacebookContainer = /** @class */ (function (_super) {
                 },
                 spacing: 20
             }
-        };
+        });
     };
     return FacebookContainer;
 }(host_container_1.HostContainer));
@@ -20296,7 +20296,7 @@ var GroupMeContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     GroupMeContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20329,11 +20329,11 @@ var GroupMeContainer = /** @class */ (function (_super) {
                     fontColors: {
                         default: {
                             normal: "#333333",
-                            subtle: "#EE333333"
+                            subtle: "#EE333333",
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC"
+                            subtle: "#882E89FC",
                         },
                         attention: {
                             normal: "#FF0000",
@@ -20341,13 +20341,13 @@ var GroupMeContainer = /** @class */ (function (_super) {
                         },
                         good: {
                             normal: "#54a254",
-                            subtle: "#DD54a254"
+                            subtle: "#DD54a254",
                         },
                         warning: {
                             normal: "#c3ab23",
-                            subtle: "#DDc3ab23"
-                        }
-                    }
+                            subtle: "#DDc3ab23",
+                        },
+                    },
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
@@ -20371,14 +20371,14 @@ var GroupMeContainer = /** @class */ (function (_super) {
                         warning: {
                             normal: "#c3ab23",
                             subtle: "#DDc3ab23"
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
             imageSizes: {
                 small: 60,
                 medium: 120,
-                large: 180
+                large: 180,
             },
             actions: {
                 maxActions: 5,
@@ -20386,20 +20386,20 @@ var GroupMeContainer = /** @class */ (function (_super) {
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: adaptivecards_1.ShowCardActionMode.Inline,
-                    inlineTopMargin: 16
+                    inlineTopMargin: 16,
                 },
                 actionsOrientation: adaptivecards_1.Orientation.Horizontal,
-                actionAlignment: adaptivecards_1.ActionAlignment.Left
+                actionAlignment: adaptivecards_1.ActionAlignment.Left,
             },
             adaptiveCard: {
-                allowCustomStyle: false
+                allowCustomStyle: false,
             },
             image: {
                 size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
-                maxImageHeight: 100
+                maxImageHeight: 100,
             },
             factSet: {
                 title: {
@@ -20408,18 +20408,18 @@ var GroupMeContainer = /** @class */ (function (_super) {
                     isSubtle: false,
                     weight: adaptivecards_1.TextWeight.Bolder,
                     wrap: true,
-                    maxWidth: 150
+                    maxWidth: 150,
                 },
                 value: {
                     color: adaptivecards_1.TextColor.Default,
                     size: adaptivecards_1.TextSize.Default,
                     isSubtle: false,
                     weight: adaptivecards_1.TextWeight.Default,
-                    wrap: true
+                    wrap: true,
                 },
-                spacing: 10
-            }
-        };
+                spacing: 10,
+            },
+        });
     };
     return GroupMeContainer;
 }(host_container_1.HostContainer));
@@ -20461,7 +20461,7 @@ var KikContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     KikContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20584,7 +20584,7 @@ var KikContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return KikContainer;
 }(host_container_1.HostContainer));
@@ -20630,7 +20630,7 @@ var LiveTileContainer = /** @class */ (function (_super) {
         return element;
     };
     LiveTileContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20753,7 +20753,7 @@ var LiveTileContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return LiveTileContainer;
 }(host_container_1.HostContainer));
@@ -20794,7 +20794,7 @@ var OutlookContainer = /** @class */ (function (_super) {
         return element;
     };
     OutlookContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20917,7 +20917,7 @@ var OutlookContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return OutlookContainer;
 }(host_container_1.HostContainer));
@@ -20968,7 +20968,7 @@ var SkypeContainer = /** @class */ (function (_super) {
         return element;
     };
     SkypeContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21091,7 +21091,7 @@ var SkypeContainer = /** @class */ (function (_super) {
                 },
                 spacing: 5
             }
-        };
+        });
     };
     return SkypeContainer;
 }(host_container_1.HostContainer));
@@ -21133,7 +21133,7 @@ var SlackContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     SlackContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21256,7 +21256,7 @@ var SlackContainer = /** @class */ (function (_super) {
                 },
                 spacing: 20
             }
-        };
+        });
     };
     return SlackContainer;
 }(host_container_1.HostContainer));
@@ -21298,7 +21298,7 @@ var SMSContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     SMSContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21421,7 +21421,7 @@ var SMSContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return SMSContainer;
 }(host_container_1.HostContainer));
@@ -21462,7 +21462,7 @@ var TeamsContainer = /** @class */ (function (_super) {
         return element;
     };
     TeamsContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21585,7 +21585,7 @@ var TeamsContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TeamsContainer;
 }(host_container_1.HostContainer));
@@ -21627,7 +21627,7 @@ var TelegramContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     TelegramContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21750,7 +21750,7 @@ var TelegramContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TelegramContainer;
 }(host_container_1.HostContainer));
@@ -21796,7 +21796,7 @@ var TimelineContainer = /** @class */ (function (_super) {
         return element;
     };
     TimelineContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 4,
                 default: 12,
@@ -21919,7 +21919,7 @@ var TimelineContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TimelineContainer;
 }(host_container_1.HostContainer));
@@ -21961,7 +21961,7 @@ var ToastContainer = /** @class */ (function (_super) {
         return element;
     };
     ToastContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22084,7 +22084,7 @@ var ToastContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return ToastContainer;
 }(host_container_1.HostContainer));
@@ -22140,7 +22140,7 @@ var WebChatContainer = /** @class */ (function (_super) {
         return outerElement;
     };
     WebChatContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22263,7 +22263,7 @@ var WebChatContainer = /** @class */ (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return WebChatContainer;
 }(host_container_1.HostContainer));
@@ -22328,7 +22328,7 @@ function renderCard() {
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
     var json = JSON.parse(currentCardPayload);
     var adaptiveCard = new Adaptive.AdaptiveCard();
-    adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
+    adaptiveCard.hostConfig = new Adaptive.HostConfig(currentConfigPayload);
     adaptiveCard.parse(json);
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
     showValidationErrors();
