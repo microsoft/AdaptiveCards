@@ -2088,11 +2088,6 @@ namespace AdaptiveCards { namespace Uwp
         UINT32 cardPadding;
         THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));
 
-        double negativeCardMargin = cardPadding * -1.0;
-
-        // TODO: Apply negative margin to top/bottom that causes button to appear halfway between spacing between elements.
-        // However this will be tricky, since to get the spacing for the bottom, we need to know the NEXT card element.
-
         ComPtr<IControl> buttonAsControl;
         THROW_IF_FAILED(button.As(&buttonAsControl));
         THROW_IF_FAILED(buttonAsControl->put_HorizontalContentAlignment(HorizontalAlignment_Stretch));
@@ -2103,6 +2098,11 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IFrameworkElement> buttonAsFrameworkElement;
         THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
         THROW_IF_FAILED(buttonAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+
+        double negativeCardMargin = cardPadding * -1.0;
+
+        // TODO: Apply negative margin to top/bottom that causes button to appear halfway between spacing between elements.
+        // However this will be tricky, since to get the spacing for the bottom, we need to know the NEXT card element.
 
         THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, 0, negativeCardMargin, 0 }));
 
