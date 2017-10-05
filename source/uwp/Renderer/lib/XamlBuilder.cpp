@@ -2070,7 +2070,8 @@ namespace AdaptiveCards { namespace Uwp
             if (showCardActionMode == ABI::AdaptiveCards::Uwp::ActionMode::Inline)
             {
                 // Was inline show card, so don't wrap the element and just return
-                *finalElement = elementToWrap;
+                ComPtr<IUIElement> localElementToWrap(elementToWrap);
+                localElementToWrap.CopyTo(finalElement);
                 return;
             }
         }
