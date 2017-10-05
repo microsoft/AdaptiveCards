@@ -52,6 +52,10 @@ HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
 
+HRESULT GenerateActionProjection(
+    const std::shared_ptr<AdaptiveCards::BaseActionElement> action,
+    ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** projectedAction) noexcept;
+
 HRESULT GenerateColumnsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveColumn*>* projectedParentContainer) noexcept;

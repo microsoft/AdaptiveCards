@@ -26,6 +26,9 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement*>** items);
 
+        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action);
+
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
 

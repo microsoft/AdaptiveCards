@@ -202,5 +202,16 @@ namespace AdaptiveCards { namespace Uwp
             boolean isMultiSelect,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
         bool SupportsInteractivity();
+
+        void WrapInFullWidthTouchTarget(
+            _In_ ABI::Windows::UI::Xaml::IUIElement* elementToWrap,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
+            _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
+
+        void WireButtonClickToAction(
+            _In_ ABI::Windows::UI::Xaml::Controls::IButton* button,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
+            _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
     };
 }}

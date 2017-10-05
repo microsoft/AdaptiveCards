@@ -144,26 +144,42 @@ HRESULT GenerateActionsProjection(
     for (auto& containedAction : containedActions)
     {
         ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement> projectedContainedAction;
-        switch (containedAction->GetElementType())
-        {
-            case ActionType::OpenUrl:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveOpenUrlAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(containedAction)));
-                break;
-            case ActionType::ShowCard:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveShowCardAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::ShowCardAction>(containedAction)));
-                break;
-            case ActionType::Submit:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveSubmitAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::SubmitAction>(containedAction)));
-                break;
-            default:
-                return E_UNEXPECTED;
-                break;
-        }
+        RETURN_IF_FAILED(GenerateActionProjection(containedAction, &projectedContainedAction));
+
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedAction.Detach()));
     }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateActionProjection(
+    const std::shared_ptr<AdaptiveCards::BaseActionElement> action,
+    ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** projectedAction) noexcept try
+{
+    if (action == nullptr)
+    {
+        *projectedAction = nullptr;
+        return S_OK;
+    }
+
+    switch (action->GetElementType())
+    {
+        case ActionType::OpenUrl:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveOpenUrlAction>(projectedAction,
+                std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(action)));
+            break;
+        case ActionType::ShowCard:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveShowCardAction>(projectedAction,
+                std::static_pointer_cast<AdaptiveCards::ShowCardAction>(action)));
+            break;
+        case ActionType::Submit:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveSubmitAction>(projectedAction,
+                std::static_pointer_cast<AdaptiveCards::SubmitAction>(action)));
+            break;
+        default:
+            return E_UNEXPECTED;
+            break;
+    }
+
     return S_OK;
 } CATCH_RETURN;
 
