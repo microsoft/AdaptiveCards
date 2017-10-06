@@ -20,11 +20,13 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize(
         IAdaptiveHostConfig* hostConfig,
         IAdaptiveElementRendererRegistration* elementRendererRegistration,
+        IAdaptiveCardResourceResolvers* resourceResolvers,
         RenderedAdaptiveCard* renderResult) noexcept try
     {
         m_hostConfig = hostConfig;
         m_elementRendererRegistration = elementRendererRegistration;
         m_renderResult = renderResult;
+        m_resourceResolvers = resourceResolvers;
 
         return MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult);
     } CATCH_RETURN;
@@ -32,22 +34,25 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveRenderContext::get_HostConfig(IAdaptiveHostConfig** value)
     {
-        m_hostConfig.CopyTo(value);
-        return S_OK;
+        return m_hostConfig.CopyTo(value);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveRenderContext::get_ElementRenderers(IAdaptiveElementRendererRegistration** value)
     {
-        m_elementRendererRegistration.CopyTo(value);
-        return S_OK;
+        return m_elementRendererRegistration.CopyTo(value);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveRenderContext::get_ActionInvoker(IAdaptiveActionInvoker** value)
     {
-        m_actionInvoker.CopyTo(value);
-        return S_OK;
+        return m_actionInvoker.CopyTo(value);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveRenderContext::get_ResourceResolvers(IAdaptiveCardResourceResolvers** value)
+    {
+        return m_resourceResolvers.CopyTo(value);
     }
 
     _Use_decl_annotations_

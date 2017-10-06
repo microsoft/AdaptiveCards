@@ -39,7 +39,6 @@ namespace AdaptiveCards { namespace Uwp
         HRESULT SetFixedDimensions(_In_ UINT width, _In_ UINT height) noexcept;
         HRESULT SetEnableXamlImageHandling(_In_ bool enableXamlImageHandling) noexcept;
         HRESULT SetOverrideDictionary(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) noexcept;
-        HRESULT SetHostConfig(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig) noexcept;
 
         void BuildTextBlock(
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* adaptiveCardElement,
@@ -109,7 +108,6 @@ namespace AdaptiveCards { namespace Uwp
 
     private:
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardRenderer> m_renderer;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IPropertyValueStatics> m_propertyValueStatics;
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
@@ -118,7 +116,6 @@ namespace AdaptiveCards { namespace Uwp
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT64, UINT64>>> m_copyStreamOperations;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig> m_hostConfig;
 
         UINT m_fixedWidth = 0;
         UINT m_fixedHeight = 0;
@@ -129,6 +126,7 @@ namespace AdaptiveCards { namespace Uwp
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
             UINT spacing, UINT separatorThickness, ABI::Windows::UI::Color separatorColor, bool isHorizontal = true);
         void ApplyMarginToXamlElement(
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig,
             _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
         void StyleXamlTextBlock(
@@ -139,11 +137,13 @@ namespace AdaptiveCards { namespace Uwp
             bool wrap,
             UINT32 maxWidth,
             _In_ ABI::AdaptiveCards::Uwp::TextWeight weight,
-            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
+            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig);
         void StyleXamlTextBlock(
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig* textConfig,
             ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
-            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
+            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig);
         void InitializeDefaultResourceDictionary();
         template<typename T>
         HRESULT TryGetResoureFromResourceDictionaries(
@@ -165,7 +165,7 @@ namespace AdaptiveCards { namespace Uwp
         template<typename T>
         void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource);
         template<typename T>
-        void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* uiElement);
+        void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* uiElement, ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();
@@ -190,6 +190,7 @@ namespace AdaptiveCards { namespace Uwp
             _Inout_ AdaptiveCards::Uwp::AdaptiveRenderContext* renderContext);
         void GetSeparationConfigForElement(
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* element,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig,
             _Out_ UINT* spacing,
             _Out_ UINT* separatorThickness,
             _Out_ ABI::Windows::UI::Color* separatorColor,
@@ -201,7 +202,7 @@ namespace AdaptiveCards { namespace Uwp
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceInputSet,
             boolean isMultiSelect,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
-        bool SupportsInteractivity();
+        bool SupportsInteractivity(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig);
 
         void WrapInFullWidthTouchTarget(
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* adaptiveCardElement,
