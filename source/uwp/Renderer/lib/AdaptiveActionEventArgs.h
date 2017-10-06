@@ -12,14 +12,14 @@ namespace AdaptiveCards { namespace Uwp
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action, _In_ ABI::Windows::Data::Json::IJsonObject* inputs);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action, _In_ ABI::AdaptiveCards::Uwp::IAdaptiveInputs* inputs);
 
         // IAdaptiveActionEventArgs
         IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** action);
-        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::Windows::Data::Json::IJsonObject** inputs);
+        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveInputs** inputs);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement> m_action;
-        Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_inputs;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveInputs> m_inputs;
     };
 }}
