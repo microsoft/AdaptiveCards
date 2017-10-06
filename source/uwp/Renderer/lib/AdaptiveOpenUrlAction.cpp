@@ -101,4 +101,10 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(get_ActionType(&typeEnum));
         return ProjectedActionTypeToHString(typeEnum, type);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return JsonCppToJsonObject(m_sharedOpenUrlAction->GetAdditionalProperties(), result);
+    }
 }}

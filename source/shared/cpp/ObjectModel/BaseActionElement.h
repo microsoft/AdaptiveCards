@@ -28,10 +28,16 @@ public:
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
+    Json::Value GetAdditionalProperties();
+
 private:
     ActionType m_type;
     std::string m_title;
     std::string m_id;
+    Json::Value m_additionalProperties;
+
+protected:
+    std::unordered_set<std::string> m_knownProperties;
 };
 
 template <typename T>
@@ -45,6 +51,15 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
     baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     baseActionElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
 
+    // Walk all properties and put any unknown ones in the additional properties json
+    for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)
+    {
+        std::string key = it.key().asCString();
+        if (baseActionElement->m_knownProperties.find(key) == baseActionElement->m_knownProperties.end())
+        {
+            baseActionElement->m_additionalProperties[key] = *it;
+        }
+    }
     return cardElement;
 }
 }

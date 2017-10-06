@@ -6,6 +6,7 @@ using namespace AdaptiveCards;
 
 ShowCardAction::ShowCardAction() : BaseActionElement(ActionType::ShowCard)
 {
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card));
 }
 
 std::shared_ptr<ShowCardAction> ShowCardAction::Deserialize(const Json::Value& json)
