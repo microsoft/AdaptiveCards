@@ -20,12 +20,10 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize(
         IAdaptiveHostConfig* hostConfig,
         IAdaptiveElementRendererRegistration* elementRendererRegistration,
-        IAdaptiveActionRendererRegistration* actionRendererRegistration,
         RenderedAdaptiveCard* renderResult) noexcept try
     {
         m_hostConfig = hostConfig;
         m_elementRendererRegistration = elementRendererRegistration;
-        m_actionRendererRegistration = actionRendererRegistration;
         m_renderResult = renderResult;
 
         return MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult);
@@ -42,13 +40,6 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveRenderContext::get_ElementRenderers(IAdaptiveElementRendererRegistration** value)
     {
         m_elementRendererRegistration.CopyTo(value);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::get_ActionRenderers(IAdaptiveActionRendererRegistration** value)
-    {
-        m_actionRendererRegistration.CopyTo(value);
         return S_OK;
     }
 

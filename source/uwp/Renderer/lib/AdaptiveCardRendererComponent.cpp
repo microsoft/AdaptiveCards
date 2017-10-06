@@ -1,7 +1,6 @@
 ﻿#include "pch.h"
 #include "AdaptiveCardRendererComponent.h"
 
-#include "AdaptiveActionRendererRegistration.h"
 #include "AdaptiveCard.h"
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveColumnRenderer.h"
@@ -14,10 +13,7 @@
 #include "AdaptiveImageRenderer.h"
 #include "AdaptiveImageSetRenderer.h"
 #include "AdaptiveNumberInputRenderer.h"
-#include "AdaptiveOpenUrlActionRenderer.h"
 #include "AdaptiveRenderContext.h"
-#include "AdaptiveShowCardActionRenderer.h"
-#include "AdaptiveSubmitActionRenderer.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "AdaptiveTimeInputRenderer.h"
@@ -56,9 +52,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         m_xamlBuilder = std::make_shared<XamlBuilder>();
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionRendererRegistration>(&m_actionRendererRegistration));
         RETURN_IF_FAILED(RegisterDefaultElementRenderers());
-        RETURN_IF_FAILED(RegisterDefaultActionRenderers());
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
         return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
     }
@@ -134,7 +128,6 @@ namespace AdaptiveCards { namespace Uwp
                 &renderContext,
                 m_hostConfig.Get(),
                 m_elementRendererRegistration.Get(),
-                m_actionRendererRegistration.Get(),
                 renderedCard.Get()));
 
             // This path is used for synchronous Xaml card rendering, so we don't want
@@ -274,12 +267,6 @@ namespace AdaptiveCards { namespace Uwp
         *value = m_elementRendererRegistration.Get();
         return S_OK;
     }
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardRenderer::get_ActionRenderers(IAdaptiveActionRendererRegistration **value)
-    {
-        *value = m_actionRendererRegistration.Get();
-        return S_OK;
-    }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RegisterDefaultElementRenderers()
@@ -297,15 +284,6 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Text").Get(), Make<AdaptiveTextInputRenderer>(m_xamlBuilder).Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(), Make<AdaptiveTimeInputRenderer>(m_xamlBuilder).Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(), Make<AdaptiveToggleInputRenderer>(m_xamlBuilder).Get()));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardRenderer::RegisterDefaultActionRenderers()
-    {
-        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.Submit").Get(), Make<AdaptiveSubmitActionRenderer>().Get()));
-        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.OpenUrl").Get(), Make<AdaptiveOpenUrlActionRenderer>().Get()));
-        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.ShowCard").Get(), Make<AdaptiveShowCardActionRenderer>().Get()));
         return S_OK;
     }
 

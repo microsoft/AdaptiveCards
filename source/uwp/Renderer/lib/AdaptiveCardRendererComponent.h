@@ -41,7 +41,6 @@ namespace AdaptiveCards { namespace Uwp
             _COM_Outptr_ ABI::AdaptiveCards::Uwp::IRenderedAdaptiveCard** result);
 
         IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration** result);
-        IFACEMETHODIMP get_ActionRenderers(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveActionRendererRegistration** result);
 
         ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* GetHostConfig();
         ABI::Windows::UI::Xaml::IResourceDictionary* GetOverrideDictionary();
@@ -55,11 +54,9 @@ namespace AdaptiveCards { namespace Uwp
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig> m_hostConfig;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionRendererRegistration> m_actionRendererRegistration;
 
         std::shared_ptr<AdaptiveCards::Uwp::XamlBuilder> m_xamlBuilder;
         HRESULT RegisterDefaultElementRenderers();
-        HRESULT RegisterDefaultActionRenderers();
 
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
