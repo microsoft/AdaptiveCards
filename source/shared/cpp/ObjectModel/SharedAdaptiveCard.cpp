@@ -1,45 +1,7 @@
 #include "SharedAdaptiveCard.h"
-#include "ChoiceSetInput.h"
-#include "ColumnSet.h"
-#include "Container.h"
-#include "DateInput.h"
-#include "FactSet.h"
-#include "Image.h"
-#include "ImageSet.h"
-#include "NumberInput.h"
-#include "OpenUrlAction.h"
 #include "ParseUtil.h"
-#include "ShowCardAction.h"
-#include "SubmitAction.h"
-#include "TextBlock.h"
-#include "TextInput.h"
-#include "TimeInput.h"
-#include "ToggleInput.h"
 
 using namespace AdaptiveCards;
-
-const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> AdaptiveCard::CardElementParsers =
-{
-    { CardElementType::Container, Container::Deserialize },
-    { CardElementType::ColumnSet, ColumnSet::Deserialize },
-    { CardElementType::FactSet, FactSet::Deserialize },
-    { CardElementType::Image, Image::Deserialize },
-    { CardElementType::ImageSet, ImageSet::Deserialize },
-    { CardElementType::TextBlock, TextBlock::Deserialize },
-    { CardElementType::ChoiceSetInput, ChoiceSetInput::Deserialize },
-    { CardElementType::DateInput, DateInput::Deserialize },
-    { CardElementType::NumberInput, NumberInput::Deserialize },
-    { CardElementType::TextInput, TextInput::Deserialize },
-    { CardElementType::TimeInput, TimeInput::Deserialize },
-    { CardElementType::ToggleInput, ToggleInput::Deserialize },
-};
-
-const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> AdaptiveCard::ActionParsers =
-{
-    { ActionType::OpenUrl, OpenUrlAction::Deserialize },
-    { ActionType::ShowCard, ShowCardAction::Deserialize },
-    { ActionType::Submit, SubmitAction::Deserialize },
-};
 
 AdaptiveCard::AdaptiveCard()
 {
@@ -113,10 +75,10 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers, false);
+    auto body = ParseUtil::GetElementCollection(json, AdaptiveCardSchemaKey::Body, false);
 
     // Parse actions if present
-    auto actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::ActionParsers);
+    auto actions = ParseUtil::GetActionCollection(json, AdaptiveCardSchemaKey::Actions);
 
     auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, body, actions);
     return result;

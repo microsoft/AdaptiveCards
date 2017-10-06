@@ -91,7 +91,7 @@ std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(cons
     Json::Value selectActionValue = ParseUtil::ExtractJsonValue(json, key, false);
     if (!selectActionValue.empty())
     {
-        return ParseUtil::GetActionFromJsonValue<BaseActionElement>(selectActionValue, BaseCardElement::ActionParsers);
+        return ParseUtil::GetActionFromJsonValue(selectActionValue);
     }
     return nullptr;
 }

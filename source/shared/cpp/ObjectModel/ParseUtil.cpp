@@ -1,5 +1,7 @@
 #include "ParseUtil.h"
 #include "AdaptiveCardParseException.h"
+#include "ElementParserRegistration.h"
+#include "ActionParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -301,6 +303,92 @@ std::string ParseUtil::ToLowercase(std::string value)
 {
     std::transform(value.begin(), value.end(), value.begin(), [](char c) { return std::tolower(c); });
     return value;
+}
+
+std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key,
+    bool isRequired)
+{
+    auto elementArray = GetArray(json, key, isRequired);
+
+    std::vector<std::shared_ptr<BaseCardElement>> elements;
+    if (elementArray.empty())
+    {
+        return elements;
+    }
+
+    elements.reserve(elementArray.size());
+
+    for (const auto& curJsonValue : elementArray)
+    {
+        // Get the element's type
+        std::string typeString = GetTypeAsString(curJsonValue);
+
+        std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)> parserFunction;
+        bool hasParser = ElementParserRegistration::GetParser(typeString, &parserFunction);
+
+        //Parse it if it's allowed by the current parsers
+        if (hasParser)
+        {
+            // Use the parser that maps to the type
+            elements.push_back(parserFunction(curJsonValue));
+        }
+    }
+
+    return elements;
+}
+
+std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(
+    const Json::Value& json)
+{
+    if (json.empty() || !json.isObject())
+    {
+        throw AdaptiveCardParseException("Expected a Json object to extract Action element");
+    }
+
+    // Get the element's type
+    std::string typeString = GetTypeAsString(json);
+
+    std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)> parserFunction;
+    bool hasParser = ActionParserRegistration::GetParser(typeString, &parserFunction);
+
+    //Parse it if it's allowed by the current parsers
+    if (hasParser)
+    {
+        // Use the parser that maps to the type
+        return parserFunction(json);
+    }
+
+    return nullptr;
+}
+
+std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key,
+    bool isRequired)
+{
+    auto elementArray = GetArray(json, key, isRequired);
+
+    std::vector<std::shared_ptr<BaseActionElement>> elements;
+
+    if (elementArray.empty())
+    {
+        return elements;
+    }
+
+    elements.reserve(elementArray.size());
+
+    for (const auto& curJsonValue : elementArray)
+    {
+        auto action = ParseUtil::GetActionFromJsonValue(curJsonValue);
+        if (action != nullptr)
+        {
+            elements.push_back(action);
+        }
+    }
+
+    return elements;
 }
 
 ParseUtil::ParseUtil()
