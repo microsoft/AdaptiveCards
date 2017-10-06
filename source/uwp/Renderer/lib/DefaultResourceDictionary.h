@@ -9,43 +9,16 @@ const PCWSTR c_defaultResourceDictionary = L"\
         <ResourceDictionary x:Key=\"Dark\"> \
             <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
             <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
-\
-            <!-- Resources for HitTarget --> \
-            <StaticResource x:Key=\"HitTargetBackground\" ResourceKey=\"SystemControlTransparentBrush\" /> \
-            <StaticResource x:Key=\"HitTargetBackgroundPointerOver\" ResourceKey=\"SystemControlHighlightListLowBrush\" /> \
-            <StaticResource x:Key=\"HitTargetBackgroundPressed\" ResourceKey=\"SystemControlHighlightListMediumBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusVisualPrimaryBrush\" ResourceKey=\"SystemControlFocusVisualPrimaryBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusVisualSecondaryBrush\" ResourceKey=\"SystemControlFocusVisualSecondaryBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusBorderBrush\" ResourceKey=\"SystemControlForegroundAltHighBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusSecondaryBorderBrush\" ResourceKey=\"SystemControlForegroundBaseHighBrush\" /> \
         </ResourceDictionary> \
 \
         <ResourceDictionary x:Key=\"Light\"> \
             <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
             <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
-\
-            <!-- Resources for HitTarget --> \
-            <StaticResource x:Key=\"HitTargetBackground\" ResourceKey=\"SystemControlTransparentBrush\" /> \
-            <StaticResource x:Key=\"HitTargetBackgroundPointerOver\" ResourceKey=\"SystemControlHighlightListLowBrush\" /> \
-            <StaticResource x:Key=\"HitTargetBackgroundPressed\" ResourceKey=\"SystemControlHighlightListMediumBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusVisualPrimaryBrush\" ResourceKey=\"SystemControlFocusVisualPrimaryBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusVisualSecondaryBrush\" ResourceKey=\"SystemControlFocusVisualSecondaryBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusBorderBrush\" ResourceKey=\"SystemControlForegroundAltHighBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusSecondaryBorderBrush\" ResourceKey=\"SystemControlForegroundBaseHighBrush\" /> \
         </ResourceDictionary> \
 \
         <ResourceDictionary x:Key=\"HighContrast\"> \
             <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemColorWindowColor}\"/> \
             <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemColorButtonTextColor}\"/> \
-\
-            <!-- Resources for HitTarget --> \
-            <StaticResource x:Key=\"HitTargetBackground\" ResourceKey=\"SystemControlTransparentBrush\" /> \
-            <StaticResource x:Key=\"HitTargetBackgroundPointerOver\" ResourceKey=\"SystemControlHighlightListLowBrush\" /> \
-            <StaticResource x:Key=\"HitTargetBackgroundPressed\" ResourceKey=\"SystemControlHighlightListMediumBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusVisualPrimaryBrush\" ResourceKey=\"SystemControlFocusVisualPrimaryBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusVisualSecondaryBrush\" ResourceKey=\"SystemControlFocusVisualSecondaryBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusBorderBrush\" ResourceKey=\"SystemControlForegroundAltHighBrush\" /> \
-            <StaticResource x:Key=\"HitTargetFocusSecondaryBorderBrush\" ResourceKey=\"SystemControlForegroundBaseHighBrush\" /> \
         </ResourceDictionary> \
     </ResourceDictionary.ThemeDictionaries> \
 \
@@ -71,10 +44,8 @@ const PCWSTR c_defaultResourceDictionary = L"\
     </Style> \
     <Style TargetType=\"TextBlock\" x:Key=\"TextBlock.Small\"> \
         <Setter Property=\"FontSize\" Value=\"8\"/> \
-    </Style>"
-
-// Split into two strings, otherwise we hit "string too big" error
-"\
+    </Style> \
+\
     <Style TargetType=\"StackPanel\" x:Key=\"Container\"> \
         <Setter Property=\"Margin\" Value=\"0,0,0,0\"/> \
     </Style> \
@@ -87,7 +58,7 @@ const PCWSTR c_defaultResourceDictionary = L"\
     </Style> \
 \
     <Style x:Key=\"HitTarget\" TargetType=\"Button\"> \
-        <Setter Property=\"Background\" Value=\"{ThemeResource HitTargetBackground}\" /> \
+        <Setter Property=\"Background\" Value=\"{ThemeResource ListViewItemBackground}\" /> \
         <Setter Property=\"BorderThickness\" Value=\"0\" /> \
         <Setter Property=\"Padding\" Value=\"0\" /> \
         <Setter Property=\"HorizontalAlignment\" Value=\"Stretch\" /> \
@@ -95,9 +66,9 @@ const PCWSTR c_defaultResourceDictionary = L"\
         <Setter Property=\"VerticalAlignment\" Value=\"Center\" /> \
         <Setter Property=\"UseSystemFocusVisuals\" Value=\"True\" /> \
         <Setter Property=\"FocusVisualMargin\" Value=\"0\" /> \
-        <Setter Property=\"FocusVisualPrimaryBrush\" Value=\"{ThemeResource HitTargetFocusVisualPrimaryBrush}\" /> \
+        <Setter Property=\"FocusVisualPrimaryBrush\" Value=\"{ThemeResource ListViewItemFocusVisualPrimaryBrush}\" /> \
         <Setter Property=\"FocusVisualPrimaryThickness\" Value=\"2\" /> \
-        <Setter Property=\"FocusVisualSecondaryBrush\" Value=\"{ThemeResource HitTargetFocusVisualSecondaryBrush}\" /> \
+        <Setter Property=\"FocusVisualSecondaryBrush\" Value=\"{ThemeResource ListViewItemFocusVisualSecondaryBrush}\" /> \
         <Setter Property=\"FocusVisualSecondaryThickness\" Value=\"1\" /> \
         <Setter Property=\"Template\"> \
             <Setter.Value> \
@@ -113,7 +84,7 @@ const PCWSTR c_defaultResourceDictionary = L"\
                                 <VisualState x:Name=\"PointerOver\"> \
                                     <Storyboard> \
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
-                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource HitTargetBackgroundPointerOver}\" /> \
+                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ListViewItemBackgroundPointerOver}\" /> \
                                         </ObjectAnimationUsingKeyFrames> \
                                         <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
                                     </Storyboard> \
@@ -121,7 +92,7 @@ const PCWSTR c_defaultResourceDictionary = L"\
                                 <VisualState x:Name=\"Pressed\"> \
                                     <Storyboard> \
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
-                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource HitTargetBackgroundPressed}\" /> \
+                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ListViewItemBackgroundPressed}\" /> \
                                         </ObjectAnimationUsingKeyFrames> \
                                         <PointerDownThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
                                     </Storyboard> \
