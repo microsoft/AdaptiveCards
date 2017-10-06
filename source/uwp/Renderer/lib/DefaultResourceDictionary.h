@@ -7,18 +7,18 @@ const PCWSTR c_defaultResourceDictionary = L"\
 \
     <ResourceDictionary.ThemeDictionaries> \
         <ResourceDictionary x:Key=\"Dark\"> \
-            <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
-            <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
+          <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
+          <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
         </ResourceDictionary> \
 \
         <ResourceDictionary x:Key=\"Light\"> \
-            <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
-            <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
+          <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
+          <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
         </ResourceDictionary> \
 \
         <ResourceDictionary x:Key=\"HighContrast\"> \
-            <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemColorWindowColor}\"/> \
-            <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemColorButtonTextColor}\"/> \
+          <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemColorWindowColor}\"/> \
+          <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemColorButtonTextColor}\"/> \
         </ResourceDictionary> \
     </ResourceDictionary.ThemeDictionaries> \
 \
