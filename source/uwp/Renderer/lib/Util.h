@@ -85,6 +85,7 @@ HRESULT JsonObjectToHString(ABI::Windows::Data::Json::IJsonObject* inputJson, HS
 HRESULT JsonObjectToString(ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
 
 HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, ABI::Windows::Data::Json::IJsonObject** result);
+HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject* jsonObject, Json::Value* jsonCppValue);
 
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Uwp::ActionType projectedActionType, HSTRING* result);
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Uwp::ElementType projectedElementType, HSTRING* result);

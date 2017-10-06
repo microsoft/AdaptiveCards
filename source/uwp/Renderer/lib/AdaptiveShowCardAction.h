@@ -33,6 +33,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
         IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
     private:
         std::shared_ptr<AdaptiveCards::ShowCardAction> m_sharedShowCardAction;

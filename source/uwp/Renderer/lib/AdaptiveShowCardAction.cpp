@@ -81,4 +81,13 @@ namespace AdaptiveCards { namespace Uwp
     {
         return JsonCppToJsonObject(m_sharedShowCardAction->GetAdditionalProperties(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardAction::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    {
+        Json::Value jsonCpp;
+        RETURN_IF_FAILED(JsonObjectToJsonCpp(jsonObject, &jsonCpp));
+        m_sharedShowCardAction->SetAdditionalProperties(jsonCpp);
+        return S_OK;
+    }
 }}
