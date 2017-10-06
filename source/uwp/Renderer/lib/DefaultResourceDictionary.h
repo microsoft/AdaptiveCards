@@ -7,18 +7,45 @@ const PCWSTR c_defaultResourceDictionary = L"\
 \
     <ResourceDictionary.ThemeDictionaries> \
         <ResourceDictionary x:Key=\"Dark\"> \
-          <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
-          <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
+            <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
+            <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
+\
+            <!-- Resources for HitTarget --> \
+            <StaticResource x:Key=\"HitTargetBackground\" ResourceKey=\"SystemControlTransparentBrush\" /> \
+            <StaticResource x:Key=\"HitTargetBackgroundPointerOver\" ResourceKey=\"SystemControlHighlightListLowBrush\" /> \
+            <StaticResource x:Key=\"HitTargetBackgroundPressed\" ResourceKey=\"SystemControlHighlightListMediumBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusVisualPrimaryBrush\" ResourceKey=\"SystemControlFocusVisualPrimaryBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusVisualSecondaryBrush\" ResourceKey=\"SystemControlFocusVisualSecondaryBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusBorderBrush\" ResourceKey=\"SystemControlForegroundAltHighBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusSecondaryBorderBrush\" ResourceKey=\"SystemControlForegroundBaseHighBrush\" /> \
         </ResourceDictionary> \
 \
         <ResourceDictionary x:Key=\"Light\"> \
-          <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
-          <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
+            <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemAccentColor}\"/> \
+            <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemBaseHighColor}\"/> \
+\
+            <!-- Resources for HitTarget --> \
+            <StaticResource x:Key=\"HitTargetBackground\" ResourceKey=\"SystemControlTransparentBrush\" /> \
+            <StaticResource x:Key=\"HitTargetBackgroundPointerOver\" ResourceKey=\"SystemControlHighlightListLowBrush\" /> \
+            <StaticResource x:Key=\"HitTargetBackgroundPressed\" ResourceKey=\"SystemControlHighlightListMediumBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusVisualPrimaryBrush\" ResourceKey=\"SystemControlFocusVisualPrimaryBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusVisualSecondaryBrush\" ResourceKey=\"SystemControlFocusVisualSecondaryBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusBorderBrush\" ResourceKey=\"SystemControlForegroundAltHighBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusSecondaryBorderBrush\" ResourceKey=\"SystemControlForegroundBaseHighBrush\" /> \
         </ResourceDictionary> \
 \
         <ResourceDictionary x:Key=\"HighContrast\"> \
-          <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemColorWindowColor}\"/> \
-          <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemColorButtonTextColor}\"/> \
+            <SolidColorBrush x:Key=\"TextColor.Accent\" Color=\"{ThemeResource SystemColorWindowColor}\"/> \
+            <SolidColorBrush x:Key=\"TextColor.Default\" Color=\"{ThemeResource SystemColorButtonTextColor}\"/> \
+\
+            <!-- Resources for HitTarget --> \
+            <StaticResource x:Key=\"HitTargetBackground\" ResourceKey=\"SystemControlTransparentBrush\" /> \
+            <StaticResource x:Key=\"HitTargetBackgroundPointerOver\" ResourceKey=\"SystemControlHighlightListLowBrush\" /> \
+            <StaticResource x:Key=\"HitTargetBackgroundPressed\" ResourceKey=\"SystemControlHighlightListMediumBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusVisualPrimaryBrush\" ResourceKey=\"SystemControlFocusVisualPrimaryBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusVisualSecondaryBrush\" ResourceKey=\"SystemControlFocusVisualSecondaryBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusBorderBrush\" ResourceKey=\"SystemControlForegroundAltHighBrush\" /> \
+            <StaticResource x:Key=\"HitTargetFocusSecondaryBorderBrush\" ResourceKey=\"SystemControlForegroundBaseHighBrush\" /> \
         </ResourceDictionary> \
     </ResourceDictionary.ThemeDictionaries> \
 \
@@ -44,8 +71,10 @@ const PCWSTR c_defaultResourceDictionary = L"\
     </Style> \
     <Style TargetType=\"TextBlock\" x:Key=\"TextBlock.Small\"> \
         <Setter Property=\"FontSize\" Value=\"8\"/> \
-    </Style> \
-\
+    </Style>"
+
+// Split into two strings, otherwise we hit "string too big" error
+"\
     <Style TargetType=\"StackPanel\" x:Key=\"Container\"> \
         <Setter Property=\"Margin\" Value=\"0,0,0,0\"/> \
     </Style> \
@@ -55,5 +84,63 @@ const PCWSTR c_defaultResourceDictionary = L"\
 \
     <Style TargetType=\"Grid\" x:Key=\"ColumnSet\"> \
         <Setter Property=\"Margin\" Value=\"0,0,0,0\"/> \
+    </Style> \
+\
+    <Style x:Key=\"HitTarget\" TargetType=\"Button\"> \
+        <Setter Property=\"Background\" Value=\"{ThemeResource HitTargetBackground}\" /> \
+        <Setter Property=\"BorderThickness\" Value=\"0\" /> \
+        <Setter Property=\"Padding\" Value=\"0\" /> \
+        <Setter Property=\"HorizontalAlignment\" Value=\"Stretch\" /> \
+        <Setter Property=\"HorizontalContentAlignment\" Value=\"Stretch\" /> \
+        <Setter Property=\"VerticalAlignment\" Value=\"Center\" /> \
+        <Setter Property=\"UseSystemFocusVisuals\" Value=\"True\" /> \
+        <Setter Property=\"FocusVisualMargin\" Value=\"0\" /> \
+        <Setter Property=\"FocusVisualPrimaryBrush\" Value=\"{ThemeResource HitTargetFocusVisualPrimaryBrush}\" /> \
+        <Setter Property=\"FocusVisualPrimaryThickness\" Value=\"2\" /> \
+        <Setter Property=\"FocusVisualSecondaryBrush\" Value=\"{ThemeResource HitTargetFocusVisualSecondaryBrush}\" /> \
+        <Setter Property=\"FocusVisualSecondaryThickness\" Value=\"1\" /> \
+        <Setter Property=\"Template\"> \
+            <Setter.Value> \
+                <ControlTemplate TargetType=\"Button\"> \
+                    <Grid x:Name=\"RootGrid\" Background=\"{TemplateBinding Background}\"> \
+                        <VisualStateManager.VisualStateGroups> \
+                            <VisualStateGroup x:Name=\"CommonStates\"> \
+                                <VisualState x:Name=\"Normal\"> \
+                                    <Storyboard> \
+                                        <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                    </Storyboard> \
+                                </VisualState> \
+                                <VisualState x:Name=\"PointerOver\"> \
+                                    <Storyboard> \
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
+                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource HitTargetBackgroundPointerOver}\" /> \
+                                        </ObjectAnimationUsingKeyFrames> \
+                                        <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                    </Storyboard> \
+                                </VisualState> \
+                                <VisualState x:Name=\"Pressed\"> \
+                                    <Storyboard> \
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
+                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource HitTargetBackgroundPressed}\" /> \
+                                        </ObjectAnimationUsingKeyFrames> \
+                                        <PointerDownThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                    </Storyboard> \
+                                </VisualState> \
+                            </VisualStateGroup> \
+                        </VisualStateManager.VisualStateGroups> \
+                        <ContentPresenter x:Name=\"ContentPresenter\" \
+                            BorderBrush=\"{TemplateBinding BorderBrush}\" \
+                            BorderThickness=\"{TemplateBinding BorderThickness}\" \
+                            Content=\"{TemplateBinding Content}\" \
+                            ContentTransitions=\"{TemplateBinding ContentTransitions}\" \
+                            ContentTemplate=\"{TemplateBinding ContentTemplate}\" \
+                            Padding=\"{TemplateBinding Padding}\" \
+                            HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" \
+                            VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\" \
+                            AutomationProperties.AccessibilityView=\"Raw\" /> \
+                    </Grid> \
+                </ControlTemplate> \
+            </Setter.Value> \
+        </Setter> \
     </Style> \
 </ResourceDictionary>";

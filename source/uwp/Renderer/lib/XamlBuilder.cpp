@@ -2088,18 +2088,19 @@ namespace AdaptiveCards { namespace Uwp
         UINT32 cardPadding;
         THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));
 
+        // For button padding, we apply the cardPadding (since we negate the card padding in the margin)
         ComPtr<IControl> buttonAsControl;
         THROW_IF_FAILED(button.As(&buttonAsControl));
-        THROW_IF_FAILED(buttonAsControl->put_HorizontalContentAlignment(HorizontalAlignment_Stretch));
-        ComPtr<IBrush> buttonBackgroundBrush = GetSolidColorBrush(Color());
-        THROW_IF_FAILED(buttonAsControl->put_Background(buttonBackgroundBrush.Get()));
+        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding, 0, (double)cardPadding, 0 }));
 
-        // For button padding, we apply the cardPadding minus two pixels, since the button's BorderThickness defaults to 2
-        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding - 2, -2, (double)cardPadding - 2, -2 }));
-
+        // Style the hit target button
         ComPtr<IFrameworkElement> buttonAsFrameworkElement;
         THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
-        THROW_IF_FAILED(buttonAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+        ComPtr<IStyle> style;
+        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(L"HitTarget", &style)))
+        {
+            THROW_IF_FAILED(buttonAsFrameworkElement->put_Style(style.Get()));
+        }
 
         double negativeCardMargin = cardPadding * -1.0;
 
