@@ -57,7 +57,7 @@ const PCWSTR c_defaultResourceDictionary = L"\
         <Setter Property=\"Margin\" Value=\"0,0,0,0\"/> \
     </Style> \
 \
-    <Style x:Key=\"HitTarget\" TargetType=\"Button\"> \
+    <Style x:Key=\"SelectAction\" TargetType=\"Button\"> \
         <Setter Property=\"Background\" Value=\"{ThemeResource ListViewItemBackground}\" /> \
         <Setter Property=\"BorderThickness\" Value=\"0\" /> \
         <Setter Property=\"Padding\" Value=\"0\" /> \

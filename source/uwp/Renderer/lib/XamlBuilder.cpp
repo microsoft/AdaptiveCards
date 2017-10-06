@@ -2113,7 +2113,7 @@ namespace AdaptiveCards { namespace Uwp
 
         // Style the hit target button
         ComPtr<IStyle> style;
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(L"HitTarget", &style)))
+        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(L"SelectAction", &style)))
         {
             THROW_IF_FAILED(buttonAsFrameworkElement->put_Style(style.Get()));
         }
