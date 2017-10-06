@@ -32,7 +32,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
-        IFACEMETHODIMP GetAdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
     private:
         std::shared_ptr<AdaptiveCards::OpenUrlAction> m_sharedOpenUrlAction;

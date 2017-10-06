@@ -31,7 +31,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_DataJson(_Out_ ABI::Windows::Data::Json::IJsonObject** data);
         IFACEMETHODIMP put_DataJson(_In_ ABI::Windows::Data::Json::IJsonObject* data);
 
-        IFACEMETHODIMP GetAdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
     private:
         std::shared_ptr<AdaptiveCards::SubmitAction> m_sharedSubmitAction;

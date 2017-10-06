@@ -77,7 +77,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::GetAdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    HRESULT AdaptiveShowCardAction::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
     {
         return JsonCppToJsonObject(m_sharedShowCardAction->GetAdditionalProperties(), result);
     }
