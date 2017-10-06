@@ -49,15 +49,7 @@ Json::Value BaseActionElement::SerializeToJsonValue()
     return root;
 }
 
-Json::Value BaseActionElement::GetAdditionalProperty(std::string name)
+Json::Value BaseActionElement::GetAdditionalProperties()
 {
-    auto foundProperty = m_additionalProperties.find(name);
-    if (foundProperty != m_additionalProperties.end())
-    {
-        return foundProperty->second;
-    }
-    else
-    {
-        return Json::Value();
-    }
+    return m_additionalProperties;
 }

@@ -77,8 +77,8 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::GetAdditionalProperty(HSTRING propertyName, ABI::Windows::Data::Json::IJsonObject** result)
+    HRESULT AdaptiveShowCardAction::GetAdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        return JsonCppToJsonObject(m_sharedShowCardAction->GetAdditionalProperty(HStringToUTF8(propertyName)), result);
+        return JsonCppToJsonObject(m_sharedShowCardAction->GetAdditionalProperties(), result);
     }
 }}
