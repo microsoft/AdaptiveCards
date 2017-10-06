@@ -52,12 +52,14 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
     baseActionElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
 
     // Walk all properties and put any unknown ones in the additional properties map
-    auto memberNames = json.getMemberNames();
-    for (auto memberName = memberNames.begin(); memberName != memberNames.end(); memberName++)
+    for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)
     {
-        if (baseActionElement->m_knownProperties.find(*memberName) == baseActionElement->m_knownProperties.end())
+        std::string key = it.key().asCString();
+        if (baseActionElement->m_knownProperties.find(key) == baseActionElement->m_knownProperties.end())
         {
-            baseActionElement->m_additionalProperties.insert({ *memberName, json.get(*memberName, Json::Value()) });
+            Json::Value value;
+            value[key] = *it;
+            baseActionElement->m_additionalProperties.insert({ key, value });
         }
     }
     return cardElement;
