@@ -1373,7 +1373,7 @@ namespace AdaptiveCards { namespace Uwp
         {
             ComPtr<IUIElement> containerBorderAsUIElement;
             THROW_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
-            WrapInFullWidthTouchTarget(containerBorderAsUIElement.Get(), selectAction.Get(), renderContext, containerControl);
+            WrapInFullWidthTouchTarget(adaptiveCardElement, containerBorderAsUIElement.Get(), selectAction.Get(), renderContext, containerControl);
         }
         else
         {
@@ -1551,7 +1551,7 @@ namespace AdaptiveCards { namespace Uwp
         {
             ComPtr<IUIElement> gridAsUIElement;
             THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
-            WrapInFullWidthTouchTarget(gridAsUIElement.Get(), selectAction.Get(), renderContext, columnSetControl);
+            WrapInFullWidthTouchTarget(adaptiveCardElement, gridAsUIElement.Get(), selectAction.Get(), renderContext, columnSetControl);
         }
         else
         {
@@ -2050,6 +2050,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     void XamlBuilder::WrapInFullWidthTouchTarget(
+        IAdaptiveCardElement* adaptiveCardElement,
         IUIElement* elementToWrap,
         IAdaptiveActionElement* action,
         IAdaptiveRenderContext* renderContext,
@@ -2088,25 +2089,34 @@ namespace AdaptiveCards { namespace Uwp
         UINT32 cardPadding;
         THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));
 
+        // We want the hit target to equally split the vertical space above and below the current item.
+        // However, all we know is the spacing of the current item, which only applies to the spacing above.
+        // We don't know what the spacing of the NEXT element will be, so we can't calculate the correct spacing below.
+        // For now, we'll simply assume the bottom spacing is the same as the top.
+        ABI::AdaptiveCards::Uwp::Spacing elementSpacing;
+        THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));
+        UINT spacingSize;
+        THROW_IF_FAILED(GetSpacingSizeFromSpacing(m_hostConfig.Get(), elementSpacing, &spacingSize));
+        double topBottomPadding = spacingSize / 2.0;
+
+        // For button padding, we apply the cardPadding and topBottomPadding (and then we negate these in the margin)
         ComPtr<IControl> buttonAsControl;
         THROW_IF_FAILED(button.As(&buttonAsControl));
-        THROW_IF_FAILED(buttonAsControl->put_HorizontalContentAlignment(HorizontalAlignment_Stretch));
-        ComPtr<IBrush> buttonBackgroundBrush = GetSolidColorBrush(Color());
-        THROW_IF_FAILED(buttonAsControl->put_Background(buttonBackgroundBrush.Get()));
+        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding, topBottomPadding, (double)cardPadding, topBottomPadding }));
 
-        // For button padding, we apply the cardPadding minus two pixels, since the button's BorderThickness defaults to 2
-        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding - 2, -2, (double)cardPadding - 2, -2 }));
+        double negativeCardMargin = cardPadding * -1.0;
+        double negativeTopBottomMargin = topBottomPadding * -1.0;
 
         ComPtr<IFrameworkElement> buttonAsFrameworkElement;
         THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
-        THROW_IF_FAILED(buttonAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+        THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, negativeTopBottomMargin, negativeCardMargin, negativeTopBottomMargin }));
 
-        double negativeCardMargin = cardPadding * -1.0;
-
-        // TODO: Apply negative margin to top/bottom that causes button to appear halfway between spacing between elements.
-        // However this will be tricky, since to get the spacing for the bottom, we need to know the NEXT card element.
-
-        THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, 0, negativeCardMargin, 0 }));
+        // Style the hit target button
+        ComPtr<IStyle> style;
+        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(L"SelectAction", &style)))
+        {
+            THROW_IF_FAILED(buttonAsFrameworkElement->put_Style(style.Get()));
+        }
 
         WireButtonClickToAction(button.Get(), action, renderContext);
 

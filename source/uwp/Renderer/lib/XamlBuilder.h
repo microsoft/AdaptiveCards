@@ -204,6 +204,7 @@ namespace AdaptiveCards { namespace Uwp
         bool SupportsInteractivity();
 
         void WrapInFullWidthTouchTarget(
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::Windows::UI::Xaml::IUIElement* elementToWrap,
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
             _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
