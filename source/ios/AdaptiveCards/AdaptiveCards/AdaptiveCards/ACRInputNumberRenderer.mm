@@ -37,26 +37,19 @@
     numInput.keyboardType = UIKeyboardTypeNumberPad;
     numInput.min = numInputBlck->GetMin();
     numInput.max = numInputBlck->GetMax();
-    
-    //CGSize intrinsicSz = [numInput intrinsicContentSize];
-    //ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
-    
-    //[wrappingview addSubview: numInput];
-    
-    //[wrappingview setAlignmentForSubview: HorizontalAlignment::Left];
-                                  
+
     [viewGroup addArrangedSubview: numInput];
-    
+
     numInput.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
-    
+
     NSDictionary *viewsMap = NSDictionaryOfVariableBindings(numInput);
-    
+
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
-    
+
     [inputs addObject:numInput];
-    
+
     return numInput;
 }
 

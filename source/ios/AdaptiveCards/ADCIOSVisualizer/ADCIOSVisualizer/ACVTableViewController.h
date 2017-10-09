@@ -19,6 +19,5 @@
 @property (nonatomic, weak) id <ACVTableViewControllerDelegate> delegate;
 @property NSString *userSelectedJSon;
 
-
 @end
 

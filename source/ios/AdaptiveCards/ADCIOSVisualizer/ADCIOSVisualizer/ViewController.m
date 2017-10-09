@@ -53,7 +53,7 @@
     [self.view addSubview:ACVTabView];
     ACVTabView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    /*
+    /* disabled for current commits -jwoo
     //self.editView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) textContainer: nil];
     self.editView.directionalLockEnabled = NO;
     self.editView.hidden = true;
@@ -133,7 +133,7 @@
     {
         renderResult = [ACRRenderer render:cardParseResult.card
                                     config:hostconfigParseResult.config
-                                     frame:CGRectMake(0, 0, 200, 1000)];
+                                     frame:CGRectMake(0, 0, 200, 0)];
     }	
     
     if(renderResult.succeeded)

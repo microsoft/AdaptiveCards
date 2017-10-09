@@ -24,7 +24,6 @@
     {
         [_delegate source:self userconfig:[NSString stringWithContentsOfFile:[main pathForResource:@"sample" ofType:@"json"]
                                                                     encoding:NSUTF8StringEncoding
-                            
                                                                        error:nil]];
         self.userSelectedJSon =
         [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - eDefaultViewIdx]
