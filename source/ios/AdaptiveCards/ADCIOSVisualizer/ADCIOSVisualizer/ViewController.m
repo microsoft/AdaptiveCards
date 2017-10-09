@@ -101,8 +101,8 @@
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, view, scrollview, buttonLayout);
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|", 
-                              @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]-[scrollview(>=150)]-|",
-                              @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", @"H:|-10-[view(<=scrollview)]-10-|", @"V:|-[view]-|",nil];
+                              @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]-[scrollview(>=100)]-|",
+         @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", @"H:|-10-[view(<=scrollview)]-10-|", @"V:|-[view(>=scrollview)]",nil];
     NSArray<NSLayoutConstraint *> *constraints = nil;
     
     
@@ -133,7 +133,7 @@
     {
         renderResult = [ACRRenderer render:cardParseResult.card
                                     config:hostconfigParseResult.config
-                                     frame:CGRectMake(0, 0, 150, 0)];
+                                     frame:CGRectMake(0, 0, 200, 1000)];
     }	
     
     if(renderResult.succeeded)
@@ -145,13 +145,20 @@
         else
         {
             self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,0,0)];
-            self.scrView.showsHorizontalScrollIndicator = NO;
+            self.scrView.showsHorizontalScrollIndicator = YES;
         }
         self.curView = adcVc.view;
+        self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLog(@"ContentView H = %f", self.curView.frame.size.height);
+        NSLog(@"ContentView W = %f", self.curView.frame.size.width);
+        
         //self.curView.frame = CGRectMake(0, 0, 0, 0);
         [self addChildViewController:adcVc];
         [self.scrView addSubview:adcVc.view];
         [adcVc didMoveToParentViewController:self];
+        self.scrView.contentSize = self.curView.frame.size;
+        NSLog(@"ContentView H = %f", self.scrView.contentSize.height);
+        NSLog(@"ContentView W = %f", self.scrView.contentSize.width);
         
         UIScrollView *scrollview = self.scrView;
         UIView *view = self.curView;
@@ -160,7 +167,7 @@
         
         NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
         NSArray<NSString *> *formats =
-        [NSArray arrayWithObjects:@"H:|-10-[view(<=scrollview)]-10-|", @"V:|-[view]-|",nil];
+        [NSArray arrayWithObjects:@"H:|-10-[view(<=scrollview)]-10-|", @"V:|-[view(>=scrollview)]-|",nil];
         NSArray<NSLayoutConstraint *> *constraints = nil;
         
         
@@ -175,7 +182,8 @@
                 con.active = YES;
             }
         }
-
+        NSLog(@"ContentView H = %f", self.scrView.contentSize.height);
+        NSLog(@"ContentView W = %f", self.scrView.contentSize.width);
     }
 }
 
