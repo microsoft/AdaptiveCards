@@ -77,9 +77,13 @@ using namespace AdaptiveCards;
         self.placeholder = [formatter stringFromDate:date];
         self.text = self.placeholder;
         self.allowsEditingTextAttributes = NO;
+        self.borderStyle = UITextBorderStyleLine;
+
+        if(date)
+        {
+            picker.date = date;
+        }
         
-        
-        picker.date = date;
         [picker setMinimumDate:self.min];
         [picker setMaximumDate:self.max];
         [picker addTarget:self action:@selector(update:) forControlEvents:UIControlEventValueChanged];

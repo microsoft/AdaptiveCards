@@ -22,7 +22,7 @@
     return CardElementType::DateInput;
 }
 
-- (UIView *)render:(UIView *) viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *) viewGroup
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &) elem
      andHostConfig:(std::shared_ptr<HostConfig> const &) config
@@ -30,10 +30,7 @@
     std::shared_ptr<BaseInputElement> dateInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *dateField = [[ACRDateTextField alloc] initWithTimeDateInput:dateInput dateStyle:NSDateFormatterShortStyle];
 
-    if(viewGroup)
-    {
-        [(UIStackView *)viewGroup addArrangedSubview: dateField];
-    }
+    [viewGroup addArrangedSubview: dateField];
     
     [inputs addObject:dateField];
     
