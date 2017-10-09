@@ -42,10 +42,7 @@
                                                               options:0
                                                               metrics:nil
                                                                 views:viewsMap];
-        for(NSLayoutConstraint *constraint in constraints)
-        {
-            constraint.active = YES;
-        }
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 }
 

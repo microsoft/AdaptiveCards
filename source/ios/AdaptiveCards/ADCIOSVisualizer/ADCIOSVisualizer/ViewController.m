@@ -149,16 +149,12 @@
         }
         self.curView = adcVc.view;
         self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
-        NSLog(@"ContentView H = %f", self.curView.frame.size.height);
-        NSLog(@"ContentView W = %f", self.curView.frame.size.width);
         
         //self.curView.frame = CGRectMake(0, 0, 0, 0);
         [self addChildViewController:adcVc];
         [self.scrView addSubview:adcVc.view];
         [adcVc didMoveToParentViewController:self];
         self.scrView.contentSize = self.curView.frame.size;
-        NSLog(@"ContentView H = %f", self.scrView.contentSize.height);
-        NSLog(@"ContentView W = %f", self.scrView.contentSize.width);
         
         UIScrollView *scrollview = self.scrView;
         UIView *view = self.curView;
@@ -176,14 +172,9 @@
             constraints = [NSLayoutConstraint constraintsWithVisualFormat:format
                                                                   options:0
                                                                   metrics:nil
-                                                                    views:viewMap];
-            for(NSLayoutConstraint *con in constraints)
-            {
-                con.active = YES;
-            }
+                                                                    views:viewMap]; 
+            [NSLayoutConstraint activateConstraints:constraints];
         }
-        NSLog(@"ContentView H = %f", self.scrView.contentSize.height);
-        NSLog(@"ContentView W = %f", self.scrView.contentSize.width);
     }
 }
 
