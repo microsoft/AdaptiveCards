@@ -1762,7 +1762,6 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<IUIElement> comboBoxAsUIElement;
         THROW_IF_FAILED(comboBox.As(&comboBoxAsUIElement));
-
         THROW_IF_FAILED(AddHandledTappedEvent(comboBoxAsUIElement.Get()));
 
         THROW_IF_FAILED(comboBoxAsUIElement.CopyTo(choiceInputSet));
@@ -2051,7 +2050,6 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(AddHandledTappedEvent(checkboxAsUIElement.Get()));
         THROW_IF_FAILED(renderContext->AddInputItem(adaptiveCardElement, checkboxAsUIElement.Get()));
         THROW_IF_FAILED(checkboxAsUIElement.CopyTo(toggleInputControl));
-        
     }
 
     bool XamlBuilder::SupportsInteractivity()
