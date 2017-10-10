@@ -56,12 +56,12 @@ export class TextColorDefinition {
 
 export class ContainerStyleDefinition {
     backgroundColor?: string;
-    readonly fontColors: {
-        default: TextColorDefinition,
-        accent: TextColorDefinition,
-        good: TextColorDefinition,
-        warning: TextColorDefinition,
-        attention: TextColorDefinition
+    readonly fontColors = {
+        default: new TextColorDefinition(),
+        accent: new TextColorDefinition(),
+        good: new TextColorDefinition(),
+        warning: new TextColorDefinition(),
+        attention: new TextColorDefinition()
     };
 
     constructor(obj?: any) {
@@ -250,25 +250,25 @@ export class ContainerStyleSet {
 export class HostConfig {
     supportsInteractivity: boolean = true;
     fontFamily?: string = "Segoe UI";
-    readonly fontSizes: {
+    readonly fontSizes = {
         small: 8,
         default: 10,
         medium: 12,
         large: 14,
         extraLarge: 16
     };
-    readonly fontWeights: {
+    readonly fontWeights = {
         lighter: 200,
         default: 400,
         bolder: 600
     };
-    readonly imageSizes: {
+    readonly imageSizes = {
         small: 40,
         medium: 80,
         large: 160
     };
     readonly containerStyles: ContainerStyleSet = new ContainerStyleSet();
-    readonly spacing: {
+    readonly spacing = {
         small: 3,
         default: 8,
         medium: 20,
@@ -276,7 +276,7 @@ export class HostConfig {
         extraLarge: 40,
         padding: 20
     };
-    readonly separator: {
+    readonly separator = {
         lineThickness: 1,
         lineColor: "#EEEEEE"
     }
@@ -288,7 +288,7 @@ export class HostConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            if(typeof obj === "string" || obj instanceof String){
+            if (typeof obj === "string" || obj instanceof String) {
                 obj = JSON.parse(obj as string);
             }
 
