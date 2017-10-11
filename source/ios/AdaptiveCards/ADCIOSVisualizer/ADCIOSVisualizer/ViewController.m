@@ -50,7 +50,6 @@
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[editView]-|",   
                               @"V:|-40-[editView(>=150,<=200)]-[buttonLayout]", nil];
-
     [ViewController applyConstraints:formats variables:viewMap];
 }
 
@@ -66,7 +65,6 @@
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
                               @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]", nil];
-
     [ViewController applyConstraints:formats variables:viewMap];
 }
 
@@ -185,7 +183,6 @@
         NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
         NSArray<NSString *> *formats =
         [NSArray arrayWithObjects:@"H:|-10-[view(<=scrollview)]-10-|", @"V:|-[view(>=scrollview)]-|",nil];
-
         [ViewController applyConstraints:formats variables:viewMap];
     }
 }
