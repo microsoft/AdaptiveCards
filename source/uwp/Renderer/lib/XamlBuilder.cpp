@@ -1760,7 +1760,11 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(comboBox.As(&selector));
         THROW_IF_FAILED(selector->put_SelectedIndex(selectedIndex));
 
-        THROW_IF_FAILED(comboBox.CopyTo(choiceInputSet));
+        ComPtr<IUIElement> comboBoxAsUIElement;
+        THROW_IF_FAILED(comboBox.As(&comboBoxAsUIElement));
+        THROW_IF_FAILED(AddHandledTappedEvent(comboBoxAsUIElement.Get()));
+
+        THROW_IF_FAILED(comboBoxAsUIElement.CopyTo(choiceInputSet));
     }
 
     void XamlBuilder::BuildExpandedChoiceSetInput(
@@ -1779,7 +1783,7 @@ namespace AdaptiveCards { namespace Uwp
 
         XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [this, panel, isMultiSelect](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
-            ComPtr<IInspectable> choiceItem;
+            ComPtr<IUIElement> choiceItem;
             if (isMultiSelect)
             {
                 ComPtr<ICheckBox> checkBox = XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
@@ -1798,6 +1802,8 @@ namespace AdaptiveCards { namespace Uwp
             boolean isSelected;
             THROW_IF_FAILED(adaptiveChoiceInput->get_IsSelected(&isSelected));
             XamlHelpers::SetToggleValue(choiceItem.Get(), isSelected);
+
+            THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
 
             XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
         });
@@ -2038,8 +2044,12 @@ namespace AdaptiveCards { namespace Uwp
 
         XamlHelpers::SetToggleValue(checkBox.Get(), (compareValueOn == 0));
 
-        THROW_IF_FAILED(checkBox.CopyTo(toggleInputControl));
-        renderContext->AddInputItem(adaptiveCardElement, *toggleInputControl);
+        ComPtr<IUIElement> checkboxAsUIElement;
+        THROW_IF_FAILED(checkBox.As(&checkboxAsUIElement));
+
+        THROW_IF_FAILED(AddHandledTappedEvent(checkboxAsUIElement.Get()));
+        THROW_IF_FAILED(renderContext->AddInputItem(adaptiveCardElement, checkboxAsUIElement.Get()));
+        THROW_IF_FAILED(checkboxAsUIElement.CopyTo(toggleInputControl));
     }
 
     bool XamlBuilder::SupportsInteractivity()
@@ -2145,5 +2155,20 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
             return S_OK;
         }).Get(), &clickToken));
+    }
+
+    HRESULT XamlBuilder::AddHandledTappedEvent(IUIElement* uiElement)
+    {
+        if (uiElement == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        EventRegistrationToken clickToken;
+        // Add Tap handler that sets the event as handled so that it doesn't propagate to the parent containers.
+        return uiElement->add_Tapped(Callback<ITappedEventHandler>([](IInspectable* /*sender*/, ITappedRoutedEventArgs* args) -> HRESULT
+        {
+            return args->put_Handled(TRUE);
+        }).Get(), &clickToken);
     }
 }}
