@@ -1443,6 +1443,7 @@ namespace AdaptiveCards
             [propput] HRESULT Id([in] HSTRING value);
 
             [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
+            [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
         };
 
         [

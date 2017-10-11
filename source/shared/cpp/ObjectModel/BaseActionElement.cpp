@@ -53,3 +53,8 @@ Json::Value BaseActionElement::GetAdditionalProperties()
 {
     return m_additionalProperties;
 }
+
+void BaseActionElement::SetAdditionalProperties(Json::Value value)
+{
+    m_additionalProperties = value;
+}

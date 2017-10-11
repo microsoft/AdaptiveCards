@@ -454,6 +454,17 @@ HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, IJsonObject** result)
     return StringToJsonObject(jsonString, result);
 }
 
+HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject * jsonObject, Json::Value * jsonCppValue)
+{
+    std::string jsonString;
+    RETURN_IF_FAILED(JsonObjectToString(jsonObject, jsonString));
+
+    Json::Value value = ParseUtil::GetJsonValueFromString(jsonString);
+    *jsonCppValue = value;
+
+    return S_OK;
+}
+
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Uwp::ActionType projectedActionType, HSTRING* result)
 {
     ActionType sharedActionType = static_cast<ActionType>(projectedActionType);
