@@ -7,12 +7,14 @@
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
 #include "AdaptiveHostConfig.h"
+#include "AdaptiveActionEventArgs.h"
 #include "vector.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI;
@@ -78,9 +80,15 @@ namespace AdaptiveCards { namespace Uwp
         return m_warnings.CopyTo(value);
     }
 
-    HRESULT RenderedAdaptiveCard::SendActionEvent(IAdaptiveActionEventArgs* eventArgs)
+    HRESULT RenderedAdaptiveCard::SendActionEvent(IAdaptiveActionElement* actionElement)
     {
-        return m_events->InvokeAll(this, eventArgs);
+        // get the inputElements in Json form.
+        ComPtr<IAdaptiveInputs> gatheredInputs;
+        RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
+        ComPtr<IAdaptiveActionEventArgs> eventArgs;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
+
+        return m_events->InvokeAll(this, eventArgs.Get());
     }
 
     void RenderedAdaptiveCard::SetFrameworkElement(ABI::Windows::UI::Xaml::IUIElement* value)

@@ -10,11 +10,11 @@ $font-family: 'Segoe UI', sans-serif;
             padding: $selectable-padding;
 
             &:hover {
-                background-color: $selectable-hover-background;
+                background-color: $selectable-hover-background !important;
             }
 
             &:active {
-                background-color: $selectable-active-background;
+                background-color: $selectable-active-background !important;
             }
         }
     }

@@ -23,7 +23,7 @@
     return CardElementType::TextInput;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -38,7 +38,7 @@
     txtInput.allowsEditingTextAttributes = YES;
     txtInput.borderStyle = UITextBorderStyleLine;
     txtInput.isRequired  = inputBlck->GetIsRequired();
-    
+
     switch(inputBlck->GetTextInputStyle())
     {
         case TextInputStyle::Text:
@@ -67,24 +67,20 @@
             break;
         }
     }
-    
-    CGSize intrinsicSz = [txtInput intrinsicContentSize];
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
-    [wrappingview addSubview: txtInput];
-    [wrappingview setAlignmentForSubview: HorizontalAlignment::Left];
-    
-    if(viewGroup)
-    {
-        [(UIStackView *)viewGroup addArrangedSubview: wrappingview];
-    }
-    
-    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
-    
+ 
+    [viewGroup addArrangedSubview: txtInput];
+
     txtInput.translatesAutoresizingMaskIntoConstraints = false;
+
+    NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
+
+    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(txtInput);
     
+    [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
+
     [inputs addObject:txtInput];
-    
-    return wrappingview;
+
+    return txtInput;
 }
 
 @end

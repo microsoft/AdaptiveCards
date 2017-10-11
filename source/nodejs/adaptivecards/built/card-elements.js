@@ -12,14 +12,19 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Enums = require("./enums");
 var Utils = require("./utils");
+var HostConfig = require("./host-config");
 var TextFormatters = require("./text-formatters");
 function invokeSetParent(obj, parent) {
-    // This is not super pretty, but it the closest emulation of
-    // "internal" in TypeScript.
-    obj["setParent"](parent);
+    if (obj) {
+        // Closest emulation of "internal" in TypeScript.
+        obj["setParent"](parent);
+    }
 }
 function invokeSetCollection(action, collection) {
-    action["setCollection"](collection);
+    if (action) {
+        // Closest emulation of "internal" in TypeScript.
+        action["setCollection"](collection);
+    }
 }
 function isActionAllowed(action, forbiddenActionTypes) {
     if (forbiddenActionTypes) {
@@ -30,48 +35,6 @@ function isActionAllowed(action, forbiddenActionTypes) {
         }
     }
     return true;
-}
-function getEffectiveSpacing(hostConfig, spacing) {
-    switch (spacing) {
-        case Enums.Spacing.Small:
-            return hostConfig.spacing.small;
-        case Enums.Spacing.Default:
-            return hostConfig.spacing.default;
-        case Enums.Spacing.Medium:
-            return hostConfig.spacing.medium;
-        case Enums.Spacing.Large:
-            return hostConfig.spacing.large;
-        case Enums.Spacing.ExtraLarge:
-            return hostConfig.spacing.extraLarge;
-        case Enums.Spacing.Padding:
-            return hostConfig.spacing.padding;
-        default:
-            return 0;
-    }
-}
-function getEffectivePadding(hostConfig, padding) {
-    switch (padding) {
-        case Enums.Padding.Default:
-            return hostConfig.spacing.padding;
-        default:
-            return 0;
-    }
-}
-function paddingToSpacingDefinition(hostConfig, padding) {
-    return {
-        top: getEffectivePadding(hostConfig, padding.top),
-        right: getEffectivePadding(hostConfig, padding.right),
-        bottom: getEffectivePadding(hostConfig, padding.bottom),
-        left: getEffectivePadding(hostConfig, padding.left)
-    };
-}
-function getContainerStyleDefinition(hostConfig, containerStyle) {
-    switch (containerStyle) {
-        case Enums.ContainerStyle.Emphasis:
-            return hostConfig.containerStyles.emphasis;
-        default:
-            return hostConfig.containerStyles.default;
-    }
 }
 function createActionInstance(json) {
     var actionType = json["type"];
@@ -101,7 +64,7 @@ var CardElement = /** @class */ (function () {
     }
     CardElement.prototype.internalRenderSeparator = function () {
         return Utils.renderSeparation({
-            spacing: getEffectiveSpacing(this.hostConfig, this.spacing),
+            spacing: this.hostConfig.getEffectiveSpacing(this.spacing),
             lineThickness: this.separator ? this.hostConfig.separator.lineThickness : null,
             lineColor: this.separator ? this.hostConfig.separator.lineColor : null
         }, this.separatorOrientation);
@@ -141,12 +104,12 @@ var CardElement = /** @class */ (function () {
     };
     CardElement.prototype.showBottomSpacer = function (requestingElement) {
         if (this.parent) {
-            this.parent.showBottomSpacer(this);
+            this.parent.showBottomSpacer(requestingElement);
         }
     };
     CardElement.prototype.hideBottomSpacer = function (requestingElement) {
         if (this.parent) {
-            this.parent.hideBottomSpacer(this);
+            this.parent.hideBottomSpacer(requestingElement);
         }
     };
     CardElement.prototype.setParent = function (value) {
@@ -168,12 +131,12 @@ var CardElement = /** @class */ (function () {
     });
     Object.defineProperty(CardElement.prototype, "defaultPadding", {
         get: function () {
-            return {
+            return new HostConfig.PaddingDefinition({
                 top: Enums.Padding.None,
                 right: Enums.Padding.None,
                 bottom: Enums.Padding.None,
                 left: Enums.Padding.None
-            };
+            });
         },
         enumerable: true,
         configurable: true
@@ -196,12 +159,12 @@ var CardElement = /** @class */ (function () {
         configurable: true
     });
     CardElement.prototype.getNonZeroPadding = function () {
-        var padding = {
+        var padding = new HostConfig.PaddingDefinition({
             top: Enums.Padding.None,
             right: Enums.Padding.None,
             bottom: Enums.Padding.None,
             left: Enums.Padding.None
-        };
+        });
         this.internalGetNonZeroPadding(padding);
         return padding;
     };
@@ -251,9 +214,9 @@ var CardElement = /** @class */ (function () {
         if (this._renderedElement) {
             this._renderedElement.style.boxSizing = "border-box";
             this.adjustRenderedElementSize(this._renderedElement);
+            this.updateLayout(false);
+            this.updateRenderedElementVisibility();
         }
-        this.updateLayout(false);
-        this.updateRenderedElementVisibility();
         return this._renderedElement;
     };
     CardElement.prototype.updateLayout = function (processChildren) {
@@ -435,7 +398,7 @@ var TextBlock = /** @class */ (function (_super) {
             element.style.fontSize = fontSize + "px";
             element.style.lineHeight = computedLineHeight + "px";
             var parentContainer = this.getParentContainer();
-            var styleDefinition = getContainerStyleDefinition(this.hostConfig, parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
+            var styleDefinition = this.hostConfig.getContainerStyleDefinition(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
             var actualTextColor = this.color ? this.color : Enums.TextColor.Default;
             var colorDefinition;
             switch (actualTextColor) {
@@ -792,7 +755,6 @@ var Image = /** @class */ (function (_super) {
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
         if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
             this.pixelWidth = json["pixelWidth"];
@@ -807,6 +769,19 @@ var Image = /** @class */ (function (_super) {
         }
         return null;
     };
+    Object.defineProperty(Image.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Image;
 }(CardElement));
 exports.Image = Image;
@@ -1697,7 +1672,7 @@ var ActionCollection = /** @class */ (function () {
             this.onShowActionCardPane(null);
         }
         this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? this._owner.hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
-        var padding = paddingToSpacingDefinition(this._owner.hostConfig, this._owner.getNonZeroPadding());
+        var padding = this._owner.hostConfig.paddingToSpacingDefinition(this._owner.getNonZeroPadding());
         if (this._actionCard !== null) {
             this._actionCard.style.paddingLeft = padding.left + "px";
             this._actionCard.style.paddingRight = padding.right + "px";
@@ -2035,29 +2010,30 @@ var Container = /** @class */ (function (_super) {
     });
     Container.prototype.showBottomSpacer = function (requestingElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
-            this.renderedElement.style.paddingBottom = paddingToSpacingDefinition(this.hostConfig, this.internalPadding).bottom + "px";
-            _super.prototype.showBottomSpacer.call(this, this);
+            // this.renderedElement.style.paddingBottom = this.hostConfig.paddingToSpacingDefinition(this.internalPadding).bottom + "px";
+            this.applyPadding();
+            _super.prototype.showBottomSpacer.call(this, requestingElement);
         }
     };
     Container.prototype.hideBottomSpacer = function (requestingElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
             this.renderedElement.style.paddingBottom = "0px";
-            _super.prototype.hideBottomSpacer.call(this, this);
+            _super.prototype.hideBottomSpacer.call(this, requestingElement);
         }
     };
     Container.prototype.applyPadding = function () {
         if (this.hasBackground) {
-            var physicalMargin = { top: 0, right: 0, bottom: 0, left: 0 };
-            var physicalPadding = { top: 0, right: 0, bottom: 0, left: 0 };
+            var physicalMargin = new HostConfig.SpacingDefinition();
+            var physicalPadding = new HostConfig.SpacingDefinition();
             var useAutoPadding = AdaptiveCard.useAutoPadding && (this.parent ? this.parent.canContentBleed() : false);
             if (useAutoPadding) {
                 var effectivePadding = this.getNonZeroPadding();
-                var effectiveMargin = {
+                var effectiveMargin = new HostConfig.PaddingDefinition({
                     top: effectivePadding.top,
                     right: effectivePadding.right,
                     bottom: effectivePadding.bottom,
                     left: effectivePadding.left,
-                };
+                });
                 if (!this.isAtTheVeryTop()) {
                     effectivePadding.top = Enums.Padding.None;
                     effectiveMargin.top = Enums.Padding.None;
@@ -2101,31 +2077,37 @@ var Container = /** @class */ (function (_super) {
                         effectivePadding.right = Enums.Padding.Default;
                     }
                     if (effectivePadding.bottom == Enums.Padding.None) {
-                        effectivePadding.bottom = Enums.Padding.Default;
+                        effectivePadding = Object.assign({}, effectivePadding, {
+                            bottom: Enums.Padding.Default
+                        });
                     }
                     if (effectivePadding.left == Enums.Padding.None) {
-                        effectivePadding.left = Enums.Padding.Default;
+                        effectivePadding = Object.assign({}, effectivePadding, {
+                            left: Enums.Padding.Default
+                        });
                     }
                 }
                 if (effectivePadding.top == Enums.Padding.None &&
                     effectivePadding.right == Enums.Padding.None &&
                     effectivePadding.bottom == Enums.Padding.None &&
                     effectivePadding.left == Enums.Padding.None) {
-                    effectivePadding.top = Enums.Padding.Default;
-                    effectivePadding.right = Enums.Padding.Default;
-                    effectivePadding.bottom = Enums.Padding.Default;
-                    effectivePadding.left = Enums.Padding.Default;
+                    effectivePadding = new HostConfig.PaddingDefinition({
+                        top: Enums.Padding.Default,
+                        right: Enums.Padding.Default,
+                        bottom: Enums.Padding.Default,
+                        left: Enums.Padding.Default,
+                    });
                 }
-                physicalMargin = paddingToSpacingDefinition(this.hostConfig, effectiveMargin);
-                physicalPadding = paddingToSpacingDefinition(this.hostConfig, effectivePadding);
+                physicalMargin = this.hostConfig.paddingToSpacingDefinition(effectiveMargin);
+                physicalPadding = this.hostConfig.paddingToSpacingDefinition(effectivePadding);
             }
             else {
-                physicalPadding = paddingToSpacingDefinition(this.hostConfig, {
+                physicalPadding = this.hostConfig.paddingToSpacingDefinition(new HostConfig.PaddingDefinition({
                     top: Enums.Padding.Default,
                     right: Enums.Padding.Default,
                     bottom: Enums.Padding.Default,
                     left: Enums.Padding.Default
-                });
+                }));
             }
             if (this.renderedElement) {
                 this.renderedElement.style.marginTop = "-" + physicalMargin.top + "px";
@@ -2159,7 +2141,7 @@ var Container = /** @class */ (function (_super) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
             }
-            var styleDefinition = getContainerStyleDefinition(this.hostConfig, this.style);
+            var styleDefinition = this.hostConfig.getContainerStyleDefinition(this.style);
             if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
                 element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
             }
@@ -2169,20 +2151,21 @@ var Container = /** @class */ (function (_super) {
             element.tabIndex = 0;
             element.setAttribute("role", "button");
             element.setAttribute("aria-label", this.selectAction.title);
-        }
-        element.onclick = function (e) {
-            if (_this.selectAction != null) {
-                _this.selectAction.execute();
-                e.cancelBubble = true;
-            }
-        };
-        element.onkeypress = function (e) {
-            if (_this.selectAction != null) {
-                if (e.keyCode == 13 || e.keyCode == 32) {
+            element.onclick = function (e) {
+                if (_this.selectAction != null) {
                     _this.selectAction.execute();
+                    e.cancelBubble = true;
                 }
-            }
-        };
+            };
+            element.onkeypress = function (e) {
+                if (_this.selectAction != null) {
+                    // Enter or space pressed
+                    if (e.keyCode == 13 || e.keyCode == 32) {
+                        _this.selectAction.execute();
+                    }
+                }
+            };
+        }
         if (this._items.length > 0) {
             var renderedElementCount = 0;
             for (var i = 0; i < this._items.length; i++) {
@@ -2298,14 +2281,15 @@ var Container = /** @class */ (function (_super) {
                         message: "Unknown element type: " + elementType
                     });
                 }
-                this.addItem(element);
-                element.parse(items[i]);
+                else {
+                    this.addItem(element);
+                    element.parse(items[i]);
+                }
             }
         }
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
     };
     Container.prototype.addItem = function (item) {
@@ -2391,6 +2375,19 @@ var Container = /** @class */ (function (_super) {
             }
         }
     };
+    Object.defineProperty(Container.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Container;
 }(CardElement));
 exports.Container = Container;
@@ -2544,7 +2541,6 @@ var ColumnSet = /** @class */ (function (_super) {
         var selectActionJson = json["selectAction"];
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
-            invokeSetParent(this.selectAction, this);
         }
         if (json["columns"] != null) {
             var jsonColumns = json["columns"];
@@ -2641,6 +2637,19 @@ var ColumnSet = /** @class */ (function (_super) {
         }
         return speak;
     };
+    Object.defineProperty(ColumnSet.prototype, "selectAction", {
+        get: function () {
+            return this._selectAction;
+        },
+        set: function (value) {
+            this._selectAction = value;
+            if (this._selectAction) {
+                invokeSetParent(this._selectAction, this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ColumnSet;
 }(CardElement));
 exports.ColumnSet = ColumnSet;
@@ -2731,7 +2740,7 @@ var ContainerWithActions = /** @class */ (function (_super) {
         var renderedActions = this._actionCollection.render();
         if (renderedActions) {
             Utils.appendChild(element, Utils.renderSeparation({
-                spacing: getEffectiveSpacing(this.hostConfig, this.hostConfig.actions.spacing),
+                spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing),
                 lineThickness: null,
                 lineColor: null
             }, Enums.Orientation.Horizontal));
@@ -2813,7 +2822,7 @@ var AdaptiveCard = /** @class */ (function (_super) {
         return !unsupportedVersion;
     };
     AdaptiveCard.prototype.applyPadding = function () {
-        var effectivePadding = paddingToSpacingDefinition(this.hostConfig, this.internalPadding);
+        var effectivePadding = this.hostConfig.paddingToSpacingDefinition(this.internalPadding);
         this.renderedElement.style.paddingTop = effectivePadding.top + "px";
         this.renderedElement.style.paddingRight = effectivePadding.right + "px";
         this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
@@ -2821,7 +2830,12 @@ var AdaptiveCard = /** @class */ (function (_super) {
     };
     Object.defineProperty(AdaptiveCard.prototype, "defaultPadding", {
         get: function () {
-            return { top: Enums.Padding.Default, right: Enums.Padding.Default, bottom: Enums.Padding.Default, left: Enums.Padding.Default };
+            return new HostConfig.PaddingDefinition({
+                top: Enums.Padding.Default,
+                right: Enums.Padding.Default,
+                bottom: Enums.Padding.Default,
+                left: Enums.Padding.Default
+            });
         },
         enumerable: true,
         configurable: true
@@ -2886,9 +2900,11 @@ var AdaptiveCard = /** @class */ (function (_super) {
         }
         else {
             renderedCard = _super.prototype.render.call(this);
-            renderedCard.tabIndex = 0;
-            if (!Utils.isNullOrEmpty(this.speak)) {
-                renderedCard.setAttribute("aria-label", this.speak);
+            if (renderedCard) {
+                renderedCard.tabIndex = 0;
+                if (!Utils.isNullOrEmpty(this.speak)) {
+                    renderedCard.setAttribute("aria-label", this.speak);
+                }
             }
         }
         return renderedCard;
@@ -2919,7 +2935,12 @@ var InlineAdaptiveCard = /** @class */ (function (_super) {
     }
     Object.defineProperty(InlineAdaptiveCard.prototype, "defaultPadding", {
         get: function () {
-            return { top: Enums.Padding.Default, right: Enums.Padding.Default, bottom: Enums.Padding.Default, left: Enums.Padding.Default };
+            return new HostConfig.PaddingDefinition({
+                top: Enums.Padding.Default,
+                right: Enums.Padding.Default,
+                bottom: Enums.Padding.Default,
+                left: Enums.Padding.Default
+            });
         },
         enumerable: true,
         configurable: true
@@ -2942,97 +2963,5 @@ var InlineAdaptiveCard = /** @class */ (function (_super) {
     };
     return InlineAdaptiveCard;
 }(AdaptiveCard));
-var defaultHostConfig = {
-    supportsInteractivity: true,
-    spacing: {
-        small: 3,
-        default: 8,
-        medium: 20,
-        large: 30,
-        extraLarge: 40,
-        padding: 20
-    },
-    separator: {
-        lineThickness: 1,
-        lineColor: "#EEEEEE"
-    },
-    fontFamily: "Segoe UI",
-    fontSizes: {
-        small: 8,
-        default: 10,
-        medium: 12,
-        large: 14,
-        extraLarge: 16
-    },
-    fontWeights: {
-        lighter: 200,
-        default: 400,
-        bolder: 600
-    },
-    containerStyles: {
-        default: {
-            fontColors: {
-                default: { normal: "#0000FF", subtle: "#222222" },
-                accent: { normal: "#0000FF", subtle: "#0000DD" },
-                attention: { normal: "#FF6600", subtle: "#DD4400" },
-                good: { normal: "#00FF00", subtle: "#00DD00" },
-                warning: { normal: "#FF0000", subtle: "#DD0000" }
-            }
-        },
-        emphasis: {
-            backgroundColor: "#EEEEEE",
-            fontColors: {
-                default: { normal: "#0000FF", subtle: "#222222" },
-                accent: { normal: "#0000FF", subtle: "#0000DD" },
-                attention: { normal: "#FF6600", subtle: "#DD4400" },
-                good: { normal: "#00FF00", subtle: "#00DD00" },
-                warning: { normal: "#FF0000", subtle: "#DD0000" }
-            }
-        }
-    },
-    imageSizes: {
-        small: 40,
-        medium: 80,
-        large: 160
-    },
-    actions: {
-        maxActions: 5,
-        spacing: Enums.Spacing.Default,
-        buttonSpacing: 20,
-        showCard: {
-            actionMode: Enums.ShowCardActionMode.Inline,
-            inlineTopMargin: 16
-        },
-        actionsOrientation: Enums.Orientation.Horizontal,
-        actionAlignment: Enums.ActionAlignment.Left
-    },
-    adaptiveCard: {
-        allowCustomStyle: false
-    },
-    image: {
-        size: Enums.Size.Medium
-    },
-    imageSet: {
-        imageSize: Enums.Size.Medium,
-        maxImageHeight: 100
-    },
-    factSet: {
-        title: {
-            color: Enums.TextColor.Default,
-            size: Enums.TextSize.Default,
-            isSubtle: false,
-            weight: Enums.TextWeight.Bolder,
-            wrap: true,
-            maxWidth: 150
-        },
-        value: {
-            color: Enums.TextColor.Default,
-            size: Enums.TextSize.Default,
-            isSubtle: false,
-            weight: Enums.TextWeight.Default,
-            wrap: true
-        },
-        spacing: 10
-    }
-};
+var defaultHostConfig = new HostConfig.HostConfig();
 //# sourceMappingURL=card-elements.js.map

@@ -19,22 +19,22 @@ var assets = [
     },
     {
         // renderer script
-        path: "../renderer/dist/adaptive-cards.js",
-        dest: function (p) { return "js/adaptive-cards.js"; }
+        path: "../adaptivecards/dist/adaptivecards.js",
+        dest: function (p) { return "js/adaptivecards.js"; }
     },
     {
         // visualizer script
-        path: "../visualizer/built/visualizer-with-renderer.js",
-        dest: function (p) { return "visualizer/js/visualizer-with-renderer.js"; }
+        path: "../adaptivecards-visualizer/built/adaptivecards-visualizer.js",
+        dest: function (p) { return "visualizer/adaptivecards-visualizer.js"; }
     },
     {
         // visualizer css
-        path: "../visualizer/css/*.css",
+        path: "../adaptivecards-visualizer/css/*.css",
         dest: function (p) { return "visualizer/css/" + path.basename(p); }
     },
     {
         // visualizer assets
-        path: "../visualizer/assets/*",
+        path: "../adaptivecards-visualizer/assets/*",
         dest: function (p) { return "visualizer/assets/" + path.basename(p); }
     }
 ];

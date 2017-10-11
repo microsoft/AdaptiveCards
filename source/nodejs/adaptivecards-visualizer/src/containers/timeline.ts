@@ -1,6 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
-    IHostConfig,
+    HostConfig,
     Size,
     TextSize,
     TextColor,
@@ -8,7 +8,7 @@ import {
     Spacing,
     ShowCardActionMode,
     Orientation,
-    ActionAlignment
+    ActionAlignment,
 } from "adaptivecards";
 
 export class TimelineContainer extends HostContainer {
@@ -39,15 +39,15 @@ export class TimelineContainer extends HostContainer {
         return element;
     }
 
-    public getHostConfig(): IHostConfig {
-        return {
+    public getHostConfig(): HostConfig {
+        return new HostConfig({
             spacing: {
-                small: 3,
-                default: 8,
+                small: 4,
+                default: 12,
                 medium: 20,
                 large: 30,
                 extraLarge: 40,
-                padding: 10
+                padding: 15
             },
             separator: {
                 lineThickness: 1,
@@ -57,15 +57,15 @@ export class TimelineContainer extends HostContainer {
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
-                default: 13,
+                default: 14,
                 medium: 20,
-                large: 24,
+                large: 20,
                 extraLarge: 26
             },
             fontWeights: {
                 lighter: 200,
                 default: 400,
-                bolder: 600
+                bolder: 700
             },
             containerStyles: {
                 default: {
@@ -149,7 +149,7 @@ export class TimelineContainer extends HostContainer {
                 title: {
                     color: TextColor.Default,
                     size: TextSize.Default,
-                    isSubtle: true,
+                    isSubtle: false,
                     weight: TextWeight.Bolder,
                     wrap: false,
                     maxWidth: 150,
@@ -157,12 +157,12 @@ export class TimelineContainer extends HostContainer {
                 value: {
                     color: TextColor.Default,
                     size: TextSize.Default,
-                    isSubtle: true,
+                    isSubtle: false,
                     weight: TextWeight.Default,
                     wrap: true,
                 },
                 spacing: 10
             }
-        };
+        });
     }
 }

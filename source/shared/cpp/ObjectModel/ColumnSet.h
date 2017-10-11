@@ -21,8 +21,12 @@ public:
     static std::shared_ptr<ColumnSet> Deserialize(const Json::Value& root);
     static std::shared_ptr<ColumnSet> DeserializeFromString(const std::string& jsonString);
 
+    std::shared_ptr<BaseActionElement> GetSelectAction() const;
+    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+
 private:
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
     std::vector<std::shared_ptr<Column>> m_columns;
+    std::shared_ptr<BaseActionElement> m_selectAction;
 };
 }

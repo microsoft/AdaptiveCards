@@ -114,8 +114,8 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
-    <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnRenderer.h" />
@@ -140,11 +140,9 @@
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
     <ClInclude Include="lib\AdaptiveNumberInputRenderer.h" />
-    <ClInclude Include="lib\AdaptiveOpenUrlActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
-    <ClInclude Include="lib\AdaptiveShowCardActionRenderer.h" />
-    <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
@@ -191,8 +189,8 @@
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveActionParserRegistration.cpp" />
-    <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveColumnRenderer.cpp" />
@@ -217,11 +215,9 @@
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputs.cpp" />
     <ClCompile Include="lib\AdaptiveNumberInputRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveOpenUrlActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveRenderArgs.cpp" />
     <ClCompile Include="lib\AdaptiveRenderContext.cpp" />
     <ClCompile Include="lib\AdaptiveSeparator.cpp" />
-    <ClCompile Include="lib\AdaptiveShowCardActionRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveSubmitActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlockRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTextInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTimeInputRenderer.cpp" />

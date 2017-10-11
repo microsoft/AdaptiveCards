@@ -20,6 +20,7 @@ namespace AdaptiveCards { namespace Uwp
 
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Uwp::ActionType* actionType);
+        IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
         IFACEMETHODIMP put_Title(_In_ HSTRING title);
@@ -30,7 +31,9 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_DataJson(_Out_ ABI::Windows::Data::Json::IJsonObject** data);
         IFACEMETHODIMP put_DataJson(_In_ ABI::Windows::Data::Json::IJsonObject* data);
 
-        IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
+
     private:
         std::shared_ptr<AdaptiveCards::SubmitAction> m_sharedSubmitAction;
     };

@@ -41,6 +41,18 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveContainer::get_SelectAction(IAdaptiveActionElement** action)
+    {
+        return GenerateActionProjection(m_sharedContainer->GetSelectAction(), action);
+    }
+
+    _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveContainer::put_SelectAction(IAdaptiveActionElement* action)
+    {
+        return E_NOTIMPL;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveContainer::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::Container;

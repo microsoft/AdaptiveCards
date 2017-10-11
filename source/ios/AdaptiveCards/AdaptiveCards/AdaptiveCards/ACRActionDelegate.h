@@ -9,7 +9,7 @@
 
 @protocol ACRActionDelegate
 
-- (void)didFetchUserResponses:(NSDictionary *)userResponses;
+- (void)didFetchUserResponses:(NSData *)json error:(NSError *)error;
 
 - (void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
 @end
