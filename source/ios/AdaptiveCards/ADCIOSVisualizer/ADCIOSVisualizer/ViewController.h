@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property (strong, nonatomic) UITextView *editView;
+@property (strong, nonatomic) UIStackView *buttonLayout;
 @property (strong, nonatomic) UIButton *tryButton;
 @property (strong, nonatomic) UIButton *applyButton;
 @property (strong, nonatomic) NSString *editableStr;
