@@ -57,7 +57,7 @@ var CardElement = /** @class */ (function () {
         this._isVisibile = true;
         this._renderedElement = null;
         this._separatorElement = null;
-        this.horizontalAlignment = Enums.HorizontalAlignment.Left;
+        this.horizontalAlignment = null;
         this.spacing = Enums.Spacing.Default;
         this.separator = false;
         this.height = "auto";
@@ -178,7 +178,7 @@ var CardElement = /** @class */ (function () {
         raiseParseElementEvent(this, json);
         this.id = json["id"];
         this.speak = json["speak"];
-        this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], Enums.HorizontalAlignment.Left);
+        this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
         this.spacing = Utils.getEnumValueOrDefault(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
         this.separator = json["separator"];
         var jsonSeparation = json["separation"];
@@ -1791,33 +1791,63 @@ var ActionCollection = /** @class */ (function () {
             buttonStrip.style.display = "flex";
             if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
-                switch (this._owner.hostConfig.actions.actionAlignment) {
-                    case Enums.ActionAlignment.Center:
-                        buttonStrip.style.justifyContent = "center";
-                        break;
-                    case Enums.ActionAlignment.Right:
-                        buttonStrip.style.justifyContent = "flex-end";
-                        break;
-                    default:
-                        buttonStrip.style.justifyContent = "flex-start";
-                        break;
+                if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                    switch (this._owner.horizontalAlignment) {
+                        case Enums.HorizontalAlignment.Center:
+                            buttonStrip.style.justifyContent = "center";
+                            break;
+                        case Enums.HorizontalAlignment.Right:
+                            buttonStrip.style.justifyContent = "flex-end";
+                            break;
+                        default:
+                            buttonStrip.style.justifyContent = "flex-start";
+                            break;
+                    }
+                }
+                else {
+                    switch (this._owner.hostConfig.actions.actionAlignment) {
+                        case Enums.ActionAlignment.Center:
+                            buttonStrip.style.justifyContent = "center";
+                            break;
+                        case Enums.ActionAlignment.Right:
+                            buttonStrip.style.justifyContent = "flex-end";
+                            break;
+                        default:
+                            buttonStrip.style.justifyContent = "flex-start";
+                            break;
+                    }
                 }
             }
             else {
                 buttonStrip.style.flexDirection = "column";
-                switch (this._owner.hostConfig.actions.actionAlignment) {
-                    case Enums.ActionAlignment.Center:
-                        buttonStrip.style.alignItems = "center";
-                        break;
-                    case Enums.ActionAlignment.Right:
-                        buttonStrip.style.alignItems = "flex-end";
-                        break;
-                    case Enums.ActionAlignment.Stretch:
-                        buttonStrip.style.alignItems = "stretch";
-                        break;
-                    default:
-                        buttonStrip.style.alignItems = "flex-start";
-                        break;
+                if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                    switch (this._owner.horizontalAlignment) {
+                        case Enums.HorizontalAlignment.Center:
+                            buttonStrip.style.alignItems = "center";
+                            break;
+                        case Enums.HorizontalAlignment.Right:
+                            buttonStrip.style.alignItems = "flex-end";
+                            break;
+                        default:
+                            buttonStrip.style.alignItems = "flex-start";
+                            break;
+                    }
+                }
+                else {
+                    switch (this._owner.hostConfig.actions.actionAlignment) {
+                        case Enums.ActionAlignment.Center:
+                            buttonStrip.style.alignItems = "center";
+                            break;
+                        case Enums.ActionAlignment.Right:
+                            buttonStrip.style.alignItems = "flex-end";
+                            break;
+                        case Enums.ActionAlignment.Stretch:
+                            buttonStrip.style.alignItems = "stretch";
+                            break;
+                        default:
+                            buttonStrip.style.alignItems = "flex-start";
+                            break;
+                    }
                 }
             }
             for (var i = 0; i < this.items.length; i++) {
@@ -2010,7 +2040,6 @@ var Container = /** @class */ (function (_super) {
     });
     Container.prototype.showBottomSpacer = function (requestingElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
-            // this.renderedElement.style.paddingBottom = this.hostConfig.paddingToSpacingDefinition(this.internalPadding).bottom + "px";
             this.applyPadding();
             _super.prototype.showBottomSpacer.call(this, requestingElement);
         }

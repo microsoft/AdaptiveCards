@@ -66,6 +66,13 @@ var TextColorDefinition = /** @class */ (function () {
 exports.TextColorDefinition = TextColorDefinition;
 var ContainerStyleDefinition = /** @class */ (function () {
     function ContainerStyleDefinition(obj) {
+        this.fontColors = {
+            default: new TextColorDefinition(),
+            accent: new TextColorDefinition(),
+            good: new TextColorDefinition(),
+            warning: new TextColorDefinition(),
+            attention: new TextColorDefinition()
+        };
         if (obj) {
             this.backgroundColor = obj["backgroundColor"];
             this.fontColors = {
@@ -250,7 +257,36 @@ var HostConfig = /** @class */ (function () {
     function HostConfig(obj) {
         this.supportsInteractivity = true;
         this.fontFamily = "Segoe UI";
+        this.fontSizes = {
+            small: 8,
+            default: 10,
+            medium: 12,
+            large: 14,
+            extraLarge: 16
+        };
+        this.fontWeights = {
+            lighter: 200,
+            default: 400,
+            bolder: 600
+        };
+        this.imageSizes = {
+            small: 40,
+            medium: 80,
+            large: 160
+        };
         this.containerStyles = new ContainerStyleSet();
+        this.spacing = {
+            small: 3,
+            default: 8,
+            medium: 20,
+            large: 30,
+            extraLarge: 40,
+            padding: 20
+        };
+        this.separator = {
+            lineThickness: 1,
+            lineColor: "#EEEEEE"
+        };
         this.actions = new ActionsConfig();
         this.adaptiveCard = new AdaptiveCardConfig();
         this.image = new ImageConfig();

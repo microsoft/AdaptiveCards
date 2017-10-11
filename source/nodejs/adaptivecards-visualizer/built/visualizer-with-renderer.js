@@ -371,11 +371,7 @@ __export(__webpack_require__(9));
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var adaptivecards_1 = __webpack_require__(1);
-<<<<<<< HEAD
-var vkbeautify = __webpack_require__(40);
-=======
 var vkbeautify = __webpack_require__(41);
->>>>>>> master
 var HostContainer = /** @class */ (function () {
     function HostContainer(styleSheet) {
         this.supportsActionBar = false;
@@ -1465,6 +1461,13 @@ var TextColorDefinition = /** @class */ (function () {
 exports.TextColorDefinition = TextColorDefinition;
 var ContainerStyleDefinition = /** @class */ (function () {
     function ContainerStyleDefinition(obj) {
+        this.fontColors = {
+            default: new TextColorDefinition(),
+            accent: new TextColorDefinition(),
+            good: new TextColorDefinition(),
+            warning: new TextColorDefinition(),
+            attention: new TextColorDefinition()
+        };
         if (obj) {
             this.backgroundColor = obj["backgroundColor"];
             this.fontColors = {
@@ -1649,7 +1652,36 @@ var HostConfig = /** @class */ (function () {
     function HostConfig(obj) {
         this.supportsInteractivity = true;
         this.fontFamily = "Segoe UI";
+        this.fontSizes = {
+            small: 8,
+            default: 10,
+            medium: 12,
+            large: 14,
+            extraLarge: 16
+        };
+        this.fontWeights = {
+            lighter: 200,
+            default: 400,
+            bolder: 600
+        };
+        this.imageSizes = {
+            small: 40,
+            medium: 80,
+            large: 160
+        };
         this.containerStyles = new ContainerStyleSet();
+        this.spacing = {
+            small: 3,
+            default: 8,
+            medium: 20,
+            large: 30,
+            extraLarge: 40,
+            padding: 20
+        };
+        this.separator = {
+            lineThickness: 1,
+            lineColor: "#EEEEEE"
+        };
         this.actions = new ActionsConfig();
         this.adaptiveCard = new AdaptiveCardConfig();
         this.image = new ImageConfig();
@@ -27695,7 +27727,7 @@ var CardElement = /** @class */ (function () {
         this._isVisibile = true;
         this._renderedElement = null;
         this._separatorElement = null;
-        this.horizontalAlignment = Enums.HorizontalAlignment.Left;
+        this.horizontalAlignment = null;
         this.spacing = Enums.Spacing.Default;
         this.separator = false;
         this.height = "auto";
@@ -27816,7 +27848,7 @@ var CardElement = /** @class */ (function () {
         raiseParseElementEvent(this, json);
         this.id = json["id"];
         this.speak = json["speak"];
-        this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], Enums.HorizontalAlignment.Left);
+        this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
         this.spacing = Utils.getEnumValueOrDefault(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
         this.separator = json["separator"];
         var jsonSeparation = json["separation"];
@@ -29429,33 +29461,63 @@ var ActionCollection = /** @class */ (function () {
             buttonStrip.style.display = "flex";
             if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
-                switch (this._owner.hostConfig.actions.actionAlignment) {
-                    case Enums.ActionAlignment.Center:
-                        buttonStrip.style.justifyContent = "center";
-                        break;
-                    case Enums.ActionAlignment.Right:
-                        buttonStrip.style.justifyContent = "flex-end";
-                        break;
-                    default:
-                        buttonStrip.style.justifyContent = "flex-start";
-                        break;
+                if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                    switch (this._owner.horizontalAlignment) {
+                        case Enums.HorizontalAlignment.Center:
+                            buttonStrip.style.justifyContent = "center";
+                            break;
+                        case Enums.HorizontalAlignment.Right:
+                            buttonStrip.style.justifyContent = "flex-end";
+                            break;
+                        default:
+                            buttonStrip.style.justifyContent = "flex-start";
+                            break;
+                    }
+                }
+                else {
+                    switch (this._owner.hostConfig.actions.actionAlignment) {
+                        case Enums.ActionAlignment.Center:
+                            buttonStrip.style.justifyContent = "center";
+                            break;
+                        case Enums.ActionAlignment.Right:
+                            buttonStrip.style.justifyContent = "flex-end";
+                            break;
+                        default:
+                            buttonStrip.style.justifyContent = "flex-start";
+                            break;
+                    }
                 }
             }
             else {
                 buttonStrip.style.flexDirection = "column";
-                switch (this._owner.hostConfig.actions.actionAlignment) {
-                    case Enums.ActionAlignment.Center:
-                        buttonStrip.style.alignItems = "center";
-                        break;
-                    case Enums.ActionAlignment.Right:
-                        buttonStrip.style.alignItems = "flex-end";
-                        break;
-                    case Enums.ActionAlignment.Stretch:
-                        buttonStrip.style.alignItems = "stretch";
-                        break;
-                    default:
-                        buttonStrip.style.alignItems = "flex-start";
-                        break;
+                if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                    switch (this._owner.horizontalAlignment) {
+                        case Enums.HorizontalAlignment.Center:
+                            buttonStrip.style.alignItems = "center";
+                            break;
+                        case Enums.HorizontalAlignment.Right:
+                            buttonStrip.style.alignItems = "flex-end";
+                            break;
+                        default:
+                            buttonStrip.style.alignItems = "flex-start";
+                            break;
+                    }
+                }
+                else {
+                    switch (this._owner.hostConfig.actions.actionAlignment) {
+                        case Enums.ActionAlignment.Center:
+                            buttonStrip.style.alignItems = "center";
+                            break;
+                        case Enums.ActionAlignment.Right:
+                            buttonStrip.style.alignItems = "flex-end";
+                            break;
+                        case Enums.ActionAlignment.Stretch:
+                            buttonStrip.style.alignItems = "stretch";
+                            break;
+                        default:
+                            buttonStrip.style.alignItems = "flex-start";
+                            break;
+                    }
                 }
             }
             for (var i = 0; i < this.items.length; i++) {
@@ -29648,7 +29710,6 @@ var Container = /** @class */ (function (_super) {
     });
     Container.prototype.showBottomSpacer = function (requestingElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
-            // this.renderedElement.style.paddingBottom = this.hostConfig.paddingToSpacingDefinition(this.internalPadding).bottom + "px";
             this.applyPadding();
             _super.prototype.showBottomSpacer.call(this, requestingElement);
         }
