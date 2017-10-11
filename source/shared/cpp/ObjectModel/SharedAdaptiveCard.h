@@ -49,20 +49,33 @@ public:
 
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__
-    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string& jsonFile) throw(AdaptiveCards::AdaptiveCardParseException);
-    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException);
-    static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException);
+    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string& jsonFile,
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json,
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+    static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString,
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
 #else
-    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string& jsonFile);
-    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json);
-    static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(
+        const std::string& jsonFile, 
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
+
+    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json,
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
+
+    static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString,
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 #endif // __ANDROID__
     Json::Value SerializeToJsonValue();
     std::string Serialize();
 
 private:
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
-    static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
     std::string m_version;
     std::string m_minVersion;
     std::string m_fallbackText;

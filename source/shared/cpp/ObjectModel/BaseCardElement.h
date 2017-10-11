@@ -41,8 +41,12 @@ public:
 
     virtual Json::Value SerializeToJsonValue();
 
+    static std::shared_ptr<BaseActionElement> DeserializeSelectAction(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        const Json::Value& json, AdaptiveCardSchemaKey key);
+
 protected:
-    static std::shared_ptr<BaseActionElement> DeserializeSelectAction(const Json::Value& json, AdaptiveCardSchemaKey key);
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
 
 private:
