@@ -114,34 +114,34 @@ export declare class HostConfig {
     supportsInteractivity: boolean;
     fontFamily?: string;
     readonly fontSizes: {
-        small: 8;
-        default: 10;
-        medium: 12;
-        large: 14;
-        extraLarge: 16;
+        small: number;
+        default: number;
+        medium: number;
+        large: number;
+        extraLarge: number;
     };
     readonly fontWeights: {
-        lighter: 200;
-        default: 400;
-        bolder: 600;
+        lighter: number;
+        default: number;
+        bolder: number;
     };
     readonly imageSizes: {
-        small: 40;
-        medium: 80;
-        large: 160;
+        small: number;
+        medium: number;
+        large: number;
     };
     readonly containerStyles: ContainerStyleSet;
     readonly spacing: {
-        small: 3;
-        default: 8;
-        medium: 20;
-        large: 30;
-        extraLarge: 40;
-        padding: 20;
+        small: number;
+        default: number;
+        medium: number;
+        large: number;
+        extraLarge: number;
+        padding: number;
     };
     readonly separator: {
-        lineThickness: 1;
-        lineColor: "#EEEEEE";
+        lineThickness: number;
+        lineColor: string;
     };
     readonly actions: ActionsConfig;
     readonly adaptiveCard: AdaptiveCardConfig;

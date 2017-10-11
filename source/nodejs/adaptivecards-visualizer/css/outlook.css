@@ -34,11 +34,19 @@ a.ac-anchor:visited:active {
 }
 
 .ac-container.ac-selectable:hover, .ac-columnSet.ac-selectable:hover {
+<<<<<<< HEAD
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ac-container.ac-selectable:active, .ac-columnSet.ac-selectable:active {
+  background-color: rgba(0, 0, 0, 0.15);
+=======
   background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 .ac-container.ac-selectable:active, .ac-columnSet.ac-selectable:active {
   background-color: rgba(0, 0, 0, 0.15) !important;
+>>>>>>> master
 }
 
 .ac-pushButton {
