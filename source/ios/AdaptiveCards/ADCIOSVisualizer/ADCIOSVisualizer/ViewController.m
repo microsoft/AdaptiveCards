@@ -12,10 +12,22 @@
 @end
 
 @implementation ViewController
++ (void)applyConstraints:(NSArray<NSString *> *)formats variables:(NSDictionary *)variables
+{
+    NSArray<NSLayoutConstraint *> *constraints = nil;
+
+    for(NSString *format in formats)
+    {
+        constraints = [NSLayoutConstraint constraintsWithVisualFormat:format
+                                                              options:0
+                                                              metrics:nil
+                                                                views:variables]; 
+        [NSLayoutConstraint activateConstraints:constraints];
+    }
+}
+
 - (IBAction)editText:(id)sender
 {
-    self.ACVTabVC.tableView.hidden = true;
-    self.editView.hidden = false;
     NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:self.editableStr];
     
@@ -27,13 +39,33 @@
     UIFontDescriptor *dec = self.editView.font.fontDescriptor;
     self.editView.font = [UIFont fontWithDescriptor:dec size:8];
     self.editView.layer.borderWidth = 1.25;
+
+    UITextView *editView = self.editView;
+    [self.view addSubview:editView];
+    editView.translatesAutoresizingMaskIntoConstraints = NO;
+    UIStackView *buttonLayout = self.buttonLayout;
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(editView, buttonLayout);
+    [self.ACVTabVC.tableView removeFromSuperview];
+
+    NSArray<NSString *> *formats = 
+        [NSArray arrayWithObjects:@"H:|-[editView]-|",   
+                              @"V:|-40-[editView(>=150,<=200)]-[buttonLayout]", nil];
+    [ViewController applyConstraints:formats variables:viewMap];
 }
 
 - (IBAction)applyText:(id)sender
 {
-    self.ACVTabVC.tableView.hidden = false;
-    self.editView.hidden = true;
+    UITableView *ACVTabView = self.ACVTabVC.tableView;
     [self update:self.editView.text];
+    [self.view addSubview: ACVTabView];
+    [self.editView removeFromSuperview];
+
+    UIStackView *buttonLayout = self.buttonLayout;
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout);
+    NSArray<NSString *> *formats = 
+        [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
+                              @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]", nil];
+    [ViewController applyConstraints:formats variables:viewMap];
 }
 
 - (void)viewDidLoad {
@@ -53,13 +85,13 @@
     [self.view addSubview:ACVTabView];
     ACVTabView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    /* disabled for current commits -jwoo
-    //self.editView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) textContainer: nil];
+    self.editView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) textContainer: nil];
     self.editView.directionalLockEnabled = NO;
-    self.editView.hidden = true;
-     */
+    [self.view addSubview:self.editView];
 
     UIStackView *buttonLayout = [[UIStackView alloc] init];
+    self.buttonLayout = buttonLayout;
+
     // try button
     buttonLayout.axis = UILayoutConstraintAxisHorizontal;
     self.tryButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -100,23 +132,10 @@
 
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, view, scrollview, buttonLayout);
     NSArray<NSString *> *formats = 
-        [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|", 
+        [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
                               @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]-[scrollview(>=100)]-|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", @"H:|-10-[view(<=scrollview)]-10-|", @"V:|-[view(>=scrollview)]",nil];
-    NSArray<NSLayoutConstraint *> *constraints = nil;
-    
-    
-    for(NSString *format in formats)
-    {
-        constraints = [NSLayoutConstraint constraintsWithVisualFormat:format
-                                                              options:0
-                                                              metrics:nil
-                                                                views:viewMap];
-        for(NSLayoutConstraint *con in constraints)
-        {
-            con.active = YES;
-        }
-    }
+    [ViewController applyConstraints:formats variables:viewMap];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -164,17 +183,7 @@
         NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
         NSArray<NSString *> *formats =
         [NSArray arrayWithObjects:@"H:|-10-[view(<=scrollview)]-10-|", @"V:|-[view(>=scrollview)]-|",nil];
-        NSArray<NSLayoutConstraint *> *constraints = nil;
-        
-        
-        for(NSString *format in formats)
-        {
-            constraints = [NSLayoutConstraint constraintsWithVisualFormat:format
-                                                                  options:0
-                                                                  metrics:nil
-                                                                    views:viewMap]; 
-            [NSLayoutConstraint activateConstraints:constraints];
-        }
+        [ViewController applyConstraints:formats variables:viewMap];
     }
 }
 
