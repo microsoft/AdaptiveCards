@@ -1,0 +1,16 @@
+﻿<Application
+    x:Class="AdaptiveCardTestApp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdaptiveCardTestApp"
+    RequestedTheme="Light">
+
+    <Application.Resources>
+
+        <Style x:Key="FullWidthListViewItem" TargetType="ListViewItem">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+    </Application.Resources>
+
+</Application>

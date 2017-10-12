@@ -28,50 +28,50 @@
   "containerStyles": {
     "default": {
       "backgroundColor": "#00000000",
-      "fontColors": {
+      "foregroundColors": {
         "default": {
-          "normal": "#333333",
+          "default": "#FF333333",
           "subtle": "#EE333333"
         },
         "accent": {
-          "normal": "#2E89FC",
+          "default": "#FF2E89FC",
           "subtle": "#882E89FC"
         },
         "attention": {
-          "normal": "#cc3300",
+          "default": "#FFcc3300",
           "subtle": "#DDcc3300"
         },
         "good": {
-          "normal": "#54a254",
+          "default": "#FF54a254",
           "subtle": "#DD54a254"
         },
         "warning": {
-          "normal": "#e69500",
+          "default": "#FFe69500",
           "subtle": "#DDe69500"
         }
       }
     },
     "emphasis": {
       "backgroundColor": "#08000000",
-      "fontColors": {
+      "foregroundColors": {
         "default": {
-          "normal": "#333333",
+          "default": "#FF333333",
           "subtle": "#EE333333"
         },
         "accent": {
-          "normal": "#2E89FC",
+          "default": "#FF2E89FC",
           "subtle": "#882E89FC"
         },
         "attention": {
-          "normal": "#cc3300",
+          "default": "#FFcc3300",
           "subtle": "#DDcc3300"
         },
         "good": {
-          "normal": "#54a254",
+          "default": "#FF54a254",
           "subtle": "#DD54a254"
         },
         "warning": {
-          "normal": "#e69500",
+          "default": "#FFe69500",
           "subtle": "#DDe69500"
         }
       }

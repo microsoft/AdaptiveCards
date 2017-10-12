@@ -66,6 +66,7 @@
           },
           {
             "type": "Input.Text",
+            "id": "OtherRequests",
             "isMultiline": true,
             "placeholder": "Any other preparation requestes?"
           }
@@ -104,6 +105,7 @@
           },
           {
             "type": "Input.Text",
+            "id": "OtherRequests",
             "isMultiline": true,
             "placeholder": "Any other preparation requestes?"
           }
@@ -133,17 +135,18 @@
             "id": "Vegetarian",
             "title": "Please prepare it vegan",
             "valueOn": "vegan",
-            "valueOff": "notVegan"            
+            "valueOff": "notVegan"
           },
           {
             "type": "Input.Text",
+            "id": "OtherRequests",
             "isMultiline": true,
             "placeholder": "Any other preparation requestes?"
           }
         ],
         "actions": [
           {
-            "type": "Action.Http",
+            "type": "Action.Submit",
             "title": "OK"
           }
         ]

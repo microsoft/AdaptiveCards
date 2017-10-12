@@ -1,145 +1,80 @@
 {
-  "actions": {
-    "actionsOrientation": "vertical",
-    "actionAlignment": "center",
-    "backgroundColor": "#FFC7EDFC",
-    "buttonSpacing": 20,
-    "maxActions": 5,
-    "separation": {
-      "spacing": 20,
-      "lineThickness": 0
-    },
-    "showCard": {
-      "actionMode": "popup",
-      "backgroundColor": "#AEEAEAEA",
-      "inlineTopMargin": 8,
-      "padding": {
-        "left": 16,
-        "top": 16,
-        "right": 16,
-        "bottom": 16
-      }
-    },
-    "stretch": true,
-    "padding": {
-      "left": 12,
-      "top": 4,
-      "right": 12,
-      "bottom": 4
-    },
-    "borderColor": "#FF000000",
-    "textColor": "#FF000000",
-    "borderThickness": 0,
-    "fontWeight": 400,
-    "fontSize": 16
+  "spacing": {
+    "small": 3,
+    "default": 8,
+    "medium": 20,
+    "large": 30,
+    "extraLarge": 40,
+    "padding": 10
   },
-  "adaptiveCard": {
-    "padding": {
-      "left": 20,
-      "top": 20,
-      "right": 20,
-      "bottom": 20
-    },
-    "backgroundColor": "#FFF0F4F8"
+  "separator": {
+    "lineThickness": 1,
+    "lineColor": "#FF444444"
   },
-  "choiceSet": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
+  "supportsInteractivity": true,
+  "fontFamily": "Segoe UI",
+  "fontSizes": {
+    "small": 12,
+    "default": 14,
+    "medium": 17,
+    "large": 21,
+    "extraLarge": 26
   },
-  "colors": {
+  "fontWeights": {
+    "lighter": 200,
+    "default": 400,
+    "bolder": 600
+  },
+  "containerStyles": {
     "default": {
-      "normal": "#FF000000",
-      "subtle": "#b2000000"
-    },
-    "accent": {
-      "normal": "#2E89FC",
-      "subtle": "#882E89FC"
-    },
-    "dark": {
-      "normal": "#333333",
-      "subtle": "#EE333333"
-    },
-    "light": {
-      "normal": "#FFFFFF",
-      "subtle": "#88FFFFFF"
-    },
-    "good": {
-      "normal": "#00FF00",
-      "subtle": "#DD00FF00"
-    },
-    "warning": {
-      "normal": "#FF0000",
-      "subtle": "#DDFF0000"
-    },
-    "attention": {
-      "normal": "#FFD800",
-      "subtle": "#DDFFD800"
-    }
-  },
-  "column": {
-    "separation": {
-      "spacing": 20,
-      "lineThickness": 0
-    }
-  },
-  "columnSet": {
-    "separation": {
-      "spacing": 20,
-      "lineThickness": 0
-    }
-  },
-  "container": {
-    "normal": {
-      "separation": {
-        "spacing": 10,
-        "lineThickness": 0
-      },
-      "backgroundColor": "#00FFFFFF",
-      "padding": {
-        "left": 0,
-        "top": 0,
-        "right": 0,
-        "bottom": 0
-      },
-      "borderColor": "#00FFFFFF",
-      "borderThickness": {
-        "left": 0,
-        "top": 0,
-        "right": 0,
-        "bottom": 0
+      "backgroundColor": "#FFEAEAEA",
+      "foregroundColors": {
+        "default": {
+          "default": "#FF333333",
+          "subtle": "#EE333333"
+        },
+        "accent": {
+          "default": "#FF2E89FC",
+          "subtle": "#882E89FC"
+        },
+        "attention": {
+          "default": "#FFFF0000",
+          "subtle": "#DDFF0000"
+        },
+        "good": {
+          "default": "#FF54a254",
+          "subtle": "#DD54a254"
+        },
+        "warning": {
+          "default": "#FFc3ab23",
+          "subtle": "#DDc3ab23"
+        }
       }
     },
     "emphasis": {
-      "separation": {
-        "spacing": 10,
-        "lineThickness": 0
-      },
-      "backgroundColor": "#EEEEEE",
-      "padding": {
-        "left": 10,
-        "top": 10,
-        "right": 10,
-        "bottom": 10
-      },
-      "borderColor": "#AAAAAA",
-      "borderThickness": {
-        "left": 1,
-        "top": 1,
-        "right": 1,
-        "bottom": 1
+      "backgroundColor": "#08000000",
+      "foregroundColors": {
+        "default": {
+          "default": "#FF333333",
+          "subtle": "#EE333333"
+        },
+        "accent": {
+          "default": "#FF2E89FC",
+          "subtle": "#882E89FC"
+        },
+        "attention": {
+          "default": "#FFFF0000",
+          "subtle": "#DDFF0000"
+        },
+        "good": {
+          "default": "#FF54a254",
+          "subtle": "#DD54a254"
+        },
+        "warning": {
+          "default": "#FFc3ab23",
+          "subtle": "#DDc3ab23"
+        }
       }
-    },
-    "separation": {
-      "spacing": 20,
-      "lineThickness": 0
-    }
-  },
-  "dateInput": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
     }
   },
   "imageSizes": {
@@ -147,95 +82,43 @@
     "medium": 80,
     "large": 160
   },
+  "actions": {
+    "maxActions": 5,
+    "spacing": "default",
+    "buttonSpacing": 10,
+    "showCard": {
+      "actionMode": "popup",
+      "inlineTopMargin": 16
+    },
+    "actionsOrientation": "vertical",
+    "actionAlignment": "stretch"
+  },
+  "adaptiveCard": {
+    "allowCustomStyle": false
+  },
   "image": {
-    "separation": {
-      "spacing": 20,
-      "lineThickness": 0
-    }
+    "size": "medium"
   },
   "imageSet": {
     "imageSize": "medium",
-    "separation": {
-      "spacing": 20,
-      "lineThickness": 0
-    }
+    "maxImageHeight": 100
   },
   "factSet": {
     "title": {
+      "color": "default",
+      "size": "default",
+      "isSubtle": false,
       "weight": "bolder",
-      "color": "dark",
-      "wrap": false
+      "wrap": true,
+      "maxWidth": 150
     },
     "value": {
-      "color": "dark",
-      "wrap": false
+      "color": "default",
+      "size": "default",
+      "isSubtle": false,
+      "weight": "default",
+      "wrap": true
     },
-    "spacing": 10,
-    "separation": {
-      "spacing": 20,
-      "lineThickness": 0
-    }
-  },
-  "fontFamily": "Segoe UI",
-  "fontSizes": {
-    "small": 12,
-    "normal": 14,
-    "medium": 17,
-    "large": 21,
-    "extraLarge": 26
-  },
-  "numberInput": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
-  },
-  "strongSeparation": {
-    "spacing": 40,
-    "lineThickness": 1,
-    "lineColor": "#EEEEEE"
-  },
-  "supportsInteractivity": true,
-  "textBlock": {
-    "seperations": {
-      "small": {
-        "spacing": 10,
-        "lineThickness": 0
-      },
-      "normal": {
-        "spacing": 10,
-        "lineThickness": 0
-      },
-      "medium": {
-        "spacing": 10,
-        "lineThickness": 0
-      },
-      "large": {
-        "spacing": 10,
-        "lineThickness": 0
-      },
-      "extraLarge": {
-        "spacing": 10,
-        "lineThickness": 0
-      }
-    }
-  },
-  "textInput": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
-  },
-  "timeInput": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
-  },
-  "toggleInput": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
+    "spacing": 5
   }
 }

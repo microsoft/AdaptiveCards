@@ -1,170 +1,124 @@
 {
-    "supportsInteractivity": true,
-    "strongSeparation": {
-        "spacing": 40,
-        "lineThickness": 1,
-        "lineColor": "#EEEEEE"
-    },
-    "fontFamily": "Segoe UI",
-    "fontSizes": {
-        "small": 12,
-        "normal": 14,
-        "medium": 17,
-        "large": 21,
-        "extraLarge": 26
-    },
-    "fontWeights": {
-        "lighter": 200,
-        "normal": 400,
-        "bolder": 600
-    },
-    "colors": {
-        "dark": {
-            "normal": "#333333",
-            "subtle": "#EE333333"
-        },
-        "light": {
-            "normal": "#FFFFFF",
-            "subtle": "#88FFFFFF"
+  "spacing": {
+    "small": 3,
+    "default": 8,
+    "medium": 20,
+    "large": 30,
+    "extraLarge": 40,
+    "padding": 20
+  },
+  "separator": {
+    "lineThickness": 1,
+    "lineColor": "#FFEEEEEE"
+  },
+  "supportsInteractivity": true,
+  "fontFamily": "Segoe UI",
+  "fontSizes": {
+    "small": 12,
+    "default": 14,
+    "medium": 17,
+    "large": 21,
+    "extraLarge": 26
+  },
+  "fontWeights": {
+    "lighter": 200,
+    "default": 400,
+    "bolder": 600
+  },
+  "containerStyles": {
+    "default": {
+      "backgroundColor": "#FFFFFFFF",
+      "foregroundColors": {
+        "default": {
+          "default": "#FF333333",
+          "subtle": "#EE333333"
         },
         "accent": {
-            "normal": "#2E89FC",
-            "subtle": "#882E89FC" 
+          "default": "#FF2E89FC",
+          "subtle": "#882E89FC"
         },
         "attention": {
-            "normal": "#FFD800",
-            "subtle": "#DDFFD800"
+          "default": "#FFcc3300",
+          "subtle": "#DDcc3300"
         },
         "good": {
-            "normal": "#00FF00",
-            "subtle": "#DD00FF00"
+          "default": "#FF54a254",
+          "subtle": "#DD54a254"
         },
         "warning": {
-            "normal": "#FF0000",
-            "subtle": "#DDFF0000"
+          "default": "#FFe69500",
+          "subtle": "#DDe69500"
         }
+      }
     },
-    "imageSizes": {
-        "small": 40,
-        "medium": 80,
-        "large": 160
-    },
-    "actions": {
-        "maxActions": 5,
-        "separation": {
-            "spacing": 20
+    "emphasis": {
+      "backgroundColor": "#08000000",
+      "foregroundColors": {
+        "default": {
+          "default": "#FF333333",
+          "subtle": "#EE333333"
         },
-        "buttonSpacing": 20,
-        "stretch": false,
-        "showCard": {
-            "actionMode": "InlineEdgeToEdge",
-            "inlineCardSpacing": 16,
-            "backgroundColor": "#08000000",
-            "padding": {
-                "top": 16,
-                "right": 16,
-                "bottom": 16,
-                "left": 16
-            }
+        "accent": {
+          "default": "#FF2E89FC",
+          "subtle": "#882E89FC"
         },
-        "actionsOrientation": "Horizontal",
-        "actionAlignment": "Left"
-    },
-    "adaptiveCard": {
-        "backgroundColor": "#FFFFFFFF",
-        "padding": {
-            "left": 20,
-            "top": 20,
-            "right": 20,
-            "bottom": 20
-        }
-    },
-    "container": {
-        "separation": {
-            "spacing": 20
+        "attention": {
+          "default": "#FFcc3300",
+          "subtle": "#DDcc3300"
         },
-        "normal": {
+        "good": {
+          "default": "#FF54a254",
+          "subtle": "#DD54a254"
         },
-        "emphasis": {
-            "backgroundColor": "#EEEEEE",
-            "borderColor": "#AAAAAA",
-            "borderThickness": {
-                "top": 1,
-                "right": 1,
-                "bottom": 1,
-                "left": 1
-            },
-            "padding": {
-                "top": 10,
-                "right": 10,
-                "bottom": 10,
-                "left": 10
-            }
+        "warning": {
+          "default": "#FFe69500",
+          "subtle": "#DDe69500"
         }
-    },
-    "textBlock": {
-        "color": "Dark",
-        "separations": {
-            "small": {
-                "spacing": 20
-            },
-            "normal": {
-                "spacing": 20
-            },
-            "medium": {
-                "spacing": 20
-            },
-            "large": {
-                "spacing": 20
-            },
-            "extraLarge": {
-                "spacing": 20
-            }
-        }
-    },
-    "image": {
-        "size": "Medium",
-        "separation": {
-            "spacing": 20
-        }
-    },
-    "imageSet": {
-        "imageSize": "Medium",
-        "separation": {
-            "spacing": 20
-        }
-    },
-    "factSet": {
-        "separation": {
-            "spacing": 20
-        },
-        "title": {
-            "color": "Dark",
-            "size": "Normal",
-            "isSubtle": false,
-            "weight": "Bolder"
-        },
-        "value": {
-            "color": "Dark",
-            "size": "Normal",
-            "isSubtle": false,
-            "weight": "Normal"
-        },
-        "spacing": 10
-    },
-    "input": {
-        "separation": {
-            "spacing": 20
-        }
-    },
-    "columnSet": {
-        "separation": {
-            "spacing": 20
-        }
-    },
-    "column": {
-        "separation": {
-            "spacing": 20
-        }
+      }
     }
+  },
+  "imageSizes": {
+    "small": 40,
+    "medium": 80,
+    "large": 160
+  },
+  "actions": {
+    "maxActions": 5,
+    "spacing": "default",
+    "buttonSpacing": 10,
+    "showCard": {
+      "actionMode": "inline",
+      "inlineTopMargin": 16
+    },
+    "actionsOrientation": "horizontal",
+    "actionAlignment": "left"
+  },
+  "adaptiveCard": {
+    "allowCustomStyle": false
+  },
+  "image": {
+    "size": "medium"
+  },
+  "imageSet": {
+    "imageSize": "medium",
+    "maxImageHeight": 100
+  },
+  "factSet": {
+    "title": {
+      "color": "default",
+      "size": "default",
+      "isSubtle": false,
+      "weight": "bolder",
+      "wrap": true,
+      "maxWidth": 150
+    },
+    "value": {
+      "color": "default",
+      "size": "default",
+      "isSubtle": false,
+      "weight": "default",
+      "wrap": true
+    },
+    "spacing": 10
+  }
 }
