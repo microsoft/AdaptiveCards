@@ -14,49 +14,52 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveFontWeightsConfig::RuntimeClassInitialize(FontWeightsConfig fontWeightsConfig) noexcept
     {
-        m_sharedFontWeightsConfig = fontWeightsConfig;
+        m_default = fontWeightsConfig.defaultWeight;
+        m_lighter = fontWeightsConfig.lighterWeight;
+        m_bolder = fontWeightsConfig.bolderWeight;
+
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFontWeightsConfig::get_Lighter(UINT16* lighter)
     {
-        *lighter = m_sharedFontWeightsConfig.lighterWeight;
+        *lighter = m_lighter;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFontWeightsConfig::put_Lighter(UINT16 lighter)
     {
-        m_sharedFontWeightsConfig.lighterWeight = lighter;
+        m_lighter = lighter;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFontWeightsConfig::get_Default(UINT16* default)
     {
-        *default = m_sharedFontWeightsConfig.defaultWeight;
+        *default = m_default;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFontWeightsConfig::put_Default(UINT16 default)
     {
-        m_sharedFontWeightsConfig.defaultWeight = default;
+        m_default = default;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFontWeightsConfig::get_Bolder(UINT16* bolder)
     {
-        *bolder = m_sharedFontWeightsConfig.bolderWeight;
+        *bolder = m_bolder;
         return S_OK;
     }
 
     _Use_decl_annotations_
         HRESULT AdaptiveFontWeightsConfig::put_Bolder(UINT16 bolder)
     {
-        m_sharedFontWeightsConfig.bolderWeight = bolder;
+        m_bolder = bolder;
         return S_OK;
     }
 }

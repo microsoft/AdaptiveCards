@@ -36,7 +36,13 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::Uwp::Spacing value);
 
     private:
-        AdaptiveCards::ActionsConfig m_sharedActionsConfig;
+        ABI::AdaptiveCards::Uwp::ActionAlignment m_actionAlignment;
+        ABI::AdaptiveCards::Uwp::ActionsOrientation m_actionsOrientation;
+        UINT m_buttonSpacing;
+        UINT m_maxActions;
+        ABI::AdaptiveCards::Uwp::Spacing m_spacing;
+
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveShowCardActionConfig> m_showCardActionConfig;
     };
 
     ActivatableClass(AdaptiveActionsConfig);

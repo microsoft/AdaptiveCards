@@ -27,7 +27,9 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Spacing(_In_ UINT32 value);
 
     private:
-        FactSetConfig m_sharedFactSetConfig;
+        UINT m_spacing;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig> m_title;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig> m_value;
     };
 
     ActivatableClass(AdaptiveFactSetConfig);

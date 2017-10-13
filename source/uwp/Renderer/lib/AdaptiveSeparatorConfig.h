@@ -24,7 +24,8 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_LineColor(_In_ ABI::Windows::UI::Color value);
 
     private:
-        SeparatorConfig m_sharedSeparatorConfig;
+        ABI::Windows::UI::Color m_lineColor;
+        UINT32 m_lineThickness;
     };
 
     ActivatableClass(AdaptiveSeparatorConfig);

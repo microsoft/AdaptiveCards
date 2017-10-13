@@ -64,9 +64,20 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize(const HostConfig& sharedHostConfig)
     {
         RETURN_IF_FAILED(RuntimeClassInitialize());
-        m_sharedHostConfig = sharedHostConfig;
 
-        //TODO: Generate projections for HostConfig
+        m_supportsInteractivity = sharedHostConfig.supportsInteractivity;
+        RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.fontFamily, m_fontFamily.GetAddressOf()));
+
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontSizesConfig>(m_fontSizes.GetAddressOf(), sharedHostConfig.fontSizes));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(), sharedHostConfig.fontWeights));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveContainerStylesDefinition>(m_containerStyles.GetAddressOf(), sharedHostConfig.containerStyles));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSizesConfig>(m_imageSizes.GetAddressOf(), sharedHostConfig.imageSizes));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSpacingConfig>(m_spacing.GetAddressOf(), sharedHostConfig.spacing));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSeparatorConfig>(m_separator.GetAddressOf(), sharedHostConfig.separator));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardConfig>(m_adaptiveCard.GetAddressOf(), sharedHostConfig.adaptiveCard));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSetConfig>(m_imageSet.GetAddressOf(), sharedHostConfig.imageSet));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFactSetConfig>(m_factSet.GetAddressOf(), sharedHostConfig.factSet));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_actions.GetAddressOf(), sharedHostConfig.actions));
 
         return S_OK;
     }
@@ -74,161 +85,191 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FontFamily(HSTRING* text)
     {
-        return UTF8ToHString(m_sharedHostConfig.fontFamily, text);
+        return m_fontFamily.CopyTo(text);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::put_FontFamily(HSTRING text)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(text, out));
-        m_sharedHostConfig.fontFamily = out;
-        return S_OK;
+        return m_fontFamily.Set(text);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FontSizes(IAdaptiveFontSizesConfig** fontSizesConfig)
     {
-        return MakeAndInitialize<AdaptiveFontSizesConfig>(fontSizesConfig, m_sharedHostConfig.fontSizes);
+        ComPtr<IAdaptiveFontSizesConfig> localFontSizes = m_fontSizes;
+        *fontSizesConfig = localFontSizes.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_FontSizes(IAdaptiveFontSizesConfig*)
+    HRESULT AdaptiveHostConfig::put_FontSizes(IAdaptiveFontSizesConfig* fontSizes)
     {
-        return E_NOTIMPL;
+        m_fontSizes = fontSizes;
+        return S_OK;
     }
 
     _Use_decl_annotations_
      HRESULT AdaptiveHostConfig::get_FontWeights(IAdaptiveFontWeightsConfig** fontWeightsConfig)
     {
-        return MakeAndInitialize<AdaptiveFontWeightsConfig>(fontWeightsConfig, m_sharedHostConfig.fontWeights);
+        ComPtr<IAdaptiveFontWeightsConfig> localFontWeights = m_fontWeights;
+        *fontWeightsConfig = localFontWeights.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_FontWeights(IAdaptiveFontWeightsConfig*)
+    HRESULT AdaptiveHostConfig::put_FontWeights(IAdaptiveFontWeightsConfig* fontWeights)
     {
-        return E_NOTIMPL;
+        m_fontWeights = fontWeights;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supporsInteractivity)
     {
-        *supporsInteractivity = m_sharedHostConfig.supportsInteractivity;
+        *supporsInteractivity = m_supportsInteractivity;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::put_SupportsInteractivity(boolean supportsInteractivity)
     {
-        m_sharedHostConfig.supportsInteractivity = Boolify(supportsInteractivity);
+        m_supportsInteractivity = supportsInteractivity;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition** value)
     {
-        return MakeAndInitialize<AdaptiveContainerStylesDefinition>(value, m_sharedHostConfig.containerStyles);
+        ComPtr<IAdaptiveContainerStylesDefinition> styleDefinition = m_containerStyles;
+        *value = styleDefinition.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition* value)
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
     {
-        return E_NOTIMPL;
+        m_containerStyles = containerStylesDefinition;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_ImageSizes(IAdaptiveImageSizesConfig** imageSizes)
     {
-        return MakeAndInitialize<AdaptiveImageSizesConfig>(imageSizes, m_sharedHostConfig.imageSizes);
+        ComPtr<IAdaptiveImageSizesConfig> localImageSizes = m_imageSizes;
+        *imageSizes = localImageSizes.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ImageSizes(IAdaptiveImageSizesConfig* )
+    HRESULT AdaptiveHostConfig::put_ImageSizes(IAdaptiveImageSizesConfig* imageSizes)
     {
-        return E_NOTIMPL;
+        m_imageSizes = imageSizes;
+        return S_OK;
     }
 
     _Use_decl_annotations_ 
     HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig** spacingConfig)
     {
-        return MakeAndInitialize<AdaptiveSpacingConfig>(spacingConfig, m_sharedHostConfig.spacing);
+        ComPtr<IAdaptiveSpacingConfig> localSpacing = m_spacing;
+        *spacingConfig = localSpacing.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_ 
     HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig* spacingConfig)
     {
-        return E_NOTIMPL;
+        m_spacing = spacingConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_ 
     HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::Uwp::IAdaptiveSeparatorConfig** separatorConfig)
     {
-        return MakeAndInitialize<AdaptiveSeparatorConfig>(separatorConfig, m_sharedHostConfig.separator);
+        ComPtr<IAdaptiveSeparatorConfig> localSeparator = m_separator;
+        *separatorConfig = localSeparator.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_ 
     HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveCards::Uwp::IAdaptiveSeparatorConfig* separatorConfig)
     {
-        return E_NOTIMPL;
+        m_separator = separatorConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_AdaptiveCard(IAdaptiveCardConfig** adaptiveCardConfig)
     {
-        return MakeAndInitialize<AdaptiveCardConfig>(adaptiveCardConfig, m_sharedHostConfig.adaptiveCard);
+        ComPtr<IAdaptiveCardConfig> localAdaptiveCard = m_adaptiveCard;
+        *adaptiveCardConfig = localAdaptiveCard.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_AdaptiveCard(IAdaptiveCardConfig* )
+    HRESULT AdaptiveHostConfig::put_AdaptiveCard(IAdaptiveCardConfig* adaptiveCardConfig)
     {
-        return E_NOTIMPL;
+        m_adaptiveCard = adaptiveCardConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_ImageSet(IAdaptiveImageSetConfig** imageSetConfig)
     {
-        return MakeAndInitialize<AdaptiveImageSetConfig>(imageSetConfig, m_sharedHostConfig.imageSet);
+        ComPtr<IAdaptiveImageSetConfig> localImageSet = m_imageSet;
+        *imageSetConfig = localImageSet.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ImageSet(IAdaptiveImageSetConfig* )
+    HRESULT AdaptiveHostConfig::put_ImageSet(IAdaptiveImageSetConfig* imageSetConfig)
     {
-        return E_NOTIMPL;
+        m_imageSet = imageSetConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_Image(IAdaptiveImageConfig** imageConfig)
     {
-        return MakeAndInitialize<AdaptiveImageConfig>(imageConfig, m_sharedHostConfig.image);
+        ComPtr<IAdaptiveImageConfig> localImage = m_image;
+        *imageConfig = localImage.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_Image(IAdaptiveImageConfig*)
+    HRESULT AdaptiveHostConfig::put_Image(IAdaptiveImageConfig* imageConfig)
     {
-        return E_NOTIMPL;
+        m_image = imageConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FactSet(IAdaptiveFactSetConfig** factSetConfig)
     {
-        return MakeAndInitialize<AdaptiveFactSetConfig>(factSetConfig, m_sharedHostConfig.factSet);
+        ComPtr<IAdaptiveFactSetConfig> localFactSet = m_factSet;
+        *factSetConfig = localFactSet.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_FactSet(IAdaptiveFactSetConfig* )
+    HRESULT AdaptiveHostConfig::put_FactSet(IAdaptiveFactSetConfig* factSetConfig)
     {
-        return E_NOTIMPL;
+        m_factSet = factSetConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_Actions(IAdaptiveActionsConfig** actionsConfig)
     {
-        return MakeAndInitialize<AdaptiveActionsConfig>(actionsConfig, m_sharedHostConfig.actions);
+        ComPtr<IAdaptiveActionsConfig> localActions = m_actions;
+        *actionsConfig = localActions.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_Actions(IAdaptiveActionsConfig* )
+    HRESULT AdaptiveHostConfig::put_Actions(IAdaptiveActionsConfig* actionsConfig)
     {
-        return E_NOTIMPL;
+        m_actions = actionsConfig;
+        return S_OK;
     }
 }}

@@ -16,32 +16,37 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize(ColorConfig colorConfig) noexcept
     {
-        m_sharedColorConfig = colorConfig;
+        RETURN_IF_FAILED(GetColorFromString(colorConfig.defaultColor, &m_defaultColor));
+        RETURN_IF_FAILED(GetColorFromString(colorConfig.subtleColor, &m_subtleColor));
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColorConfig::get_Default(ABI::Windows::UI::Color* value)
     {
-        return GetColorFromString(m_sharedColorConfig.defaultColor, value);
+        *value = m_defaultColor;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Default(ABI::Windows::UI::Color /*value*/)
+    HRESULT AdaptiveColorConfig::put_Default(ABI::Windows::UI::Color color)
     {
-        return E_NOTIMPL;
+        m_defaultColor = color;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColorConfig::get_Subtle(ABI::Windows::UI::Color* value)
     {
-        return GetColorFromString(m_sharedColorConfig.subtleColor, value);
+        *value = m_subtleColor;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Subtle(ABI::Windows::UI::Color /*value*/)
+    HRESULT AdaptiveColorConfig::put_Subtle(ABI::Windows::UI::Color color)
     {
-        return E_NOTIMPL;
+        m_subtleColor = color;
+        return S_OK;
     }
 }
 }

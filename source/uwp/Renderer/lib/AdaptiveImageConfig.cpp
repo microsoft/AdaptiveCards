@@ -12,23 +12,23 @@ namespace AdaptiveCards { namespace Uwp
     } CATCH_RETURN;
 
 
-    HRESULT AdaptiveImageConfig::RuntimeClassInitialize(ImageConfig ImageConfig) noexcept
+    HRESULT AdaptiveImageConfig::RuntimeClassInitialize(ImageConfig sharedImageConfig) noexcept
     {
-        m_sharedImageConfig = ImageConfig;
+        m_imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(sharedImageConfig.imageSize);
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageConfig::get_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
     {
-        *imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(m_sharedImageConfig.imageSize);
+        *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
     {
-        m_sharedImageConfig.imageSize = static_cast<AdaptiveCards::ImageSize>(imageSize);
+        m_imageSize = imageSize;
         return S_OK;
     }
 }

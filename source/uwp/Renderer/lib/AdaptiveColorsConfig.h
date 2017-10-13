@@ -39,7 +39,13 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Attention(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig* value);
 
     private:
-        ColorsConfig m_sharedColorsConfig;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> m_default;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> m_accent;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> m_dark;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> m_light;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> m_good;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> m_warning;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> m_attention;
     };
 
     ActivatableClass(AdaptiveColorsConfig);

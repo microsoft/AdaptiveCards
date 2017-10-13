@@ -15,32 +15,40 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize(ContainerStylesDefinition stylesDefinition) noexcept
     {
-        m_sharedContainerStylesDefinition = stylesDefinition;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveContainerStyleDefinition>(m_default.GetAddressOf(), stylesDefinition.defaultPalette));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveContainerStyleDefinition>(m_emphasis.GetAddressOf(), stylesDefinition.defaultPalette));
+
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition ** value)
     {
-        return MakeAndInitialize<AdaptiveContainerStyleDefinition>(value, m_sharedContainerStylesDefinition.defaultPalette);
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition> defaultContainerStyle = m_default;
+        *value = defaultContainerStyle.Detach(); 
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT  AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition * value)
     {
-        return E_NOTIMPL;
+        m_default = value;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition ** value)
     {
-        return MakeAndInitialize<AdaptiveContainerStyleDefinition>(value, m_sharedContainerStylesDefinition.emphasisPalette);
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition> emphasisContainerStyle = m_emphasis;
+        *value = emphasisContainerStyle.Detach();
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT  AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition * value)
     {
-        return E_NOTIMPL;
+        m_emphasis = value;
+        return S_OK;
     }
 }
 }

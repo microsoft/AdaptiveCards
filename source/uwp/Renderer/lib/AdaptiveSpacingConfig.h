@@ -36,7 +36,12 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Padding(_In_ UINT32 value);
 
     private:
-        SpacingConfig m_sharedSpacingConfig;
+        UINT32 m_small;
+        UINT32 m_default;
+        UINT32 m_medium;
+        UINT32 m_large;
+        UINT32 m_extraLarge;
+        UINT32 m_padding;
     };
 
     ActivatableClass(AdaptiveSpacingConfig);
