@@ -1,6 +1,5 @@
 #pragma once
 
-#include "json/json.h"
 #include "AdaptiveCards.Uwp.h"
 
 namespace AdaptiveCards { namespace Uwp
@@ -15,16 +14,19 @@ namespace AdaptiveCards { namespace Uwp
             m_uiInputElement(uiInputElement)
         {}
 
-        void Serialize(Json::Value& jsonValue) const;
+        std::string Serialize() const;
+        std::string GetIdString() const;
+        HSTRING GetId() const;
+
 
     private:
-        void SerializeChoiceSetInput(Json::Value& jsonValue, const char* idString) const;
-        void SerializeDateInput(Json::Value& jsonValue, const char* idString) const;
-        void SerializeTextInput(Json::Value& jsonValue, const char* idString) const;
-        void SerializeTimeInput(Json::Value& jsonValue, const char* idString) const;
-        void SerializeToggleInput(Json::Value& jsonValue, const char* idString) const;
+        std::string SerializeChoiceSetInput(const char* idString) const;
+        std::string SerializeDateInput(const char* idString) const;
+        std::string SerializeTextInput(const char* idString) const;
+        std::string SerializeTimeInput(const char* idString) const;
+        std::string SerializeToggleInput(const char* idString) const;
 
-        void GetChoiceValue(ABI::AdaptiveCards::Uwp::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex, std::string& choiceValue) const;
+        std::string GetChoiceValue(ABI::AdaptiveCards::Uwp::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveInputElement> m_adaptiveInputElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_uiInputElement;
