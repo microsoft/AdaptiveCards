@@ -1326,12 +1326,14 @@ namespace AdaptiveCards { namespace Uwp
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
+
+        ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
+        THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
+
         bool hasExplicitContainerStyle = true;
         if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
-            ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
-            THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
             containerStyle = parentContainerStyle;
         }
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
@@ -1352,6 +1354,19 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(GetBackgroundColorFromStyle(containerStyle, m_hostConfig.Get(), &backgroundColor));
             ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
             THROW_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+
+            // If the container style doesn't match it's parent, apply padding.
+            if (containerStyle != parentContainerStyle)
+            {
+                ComPtr<IAdaptiveSpacingConfig> spacingConfig;
+                THROW_IF_FAILED(m_hostConfig->get_Spacing(&spacingConfig));
+
+                UINT32 padding;
+                THROW_IF_FAILED(spacingConfig->get_Padding(&padding));
+
+                Thickness paddingThickness = {padding, padding, padding, padding};
+                THROW_IF_FAILED(containerBorder->put_Padding(paddingThickness));
+            }
         }
 
         ComPtr<IUIElement> stackPanelAsUIElement;
