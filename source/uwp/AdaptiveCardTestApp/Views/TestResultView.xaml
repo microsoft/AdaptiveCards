@@ -18,9 +18,9 @@
 
         <StackPanel>
             <TextBlock
-                Text="{Binding CardName}"/>
-            <TextBlock
                 Text="{Binding HostConfigName}"/>
+            <TextBlock
+                Text="{Binding CardName}"/>
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -31,10 +31,20 @@
             </Grid.ColumnDefinitions>
 
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Text="Expected"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Margin="0,6,0,6"/>
                 <Image
+                    Grid.Row="1"
                     x:Name="ExpectedImageResult"
                     Stretch="Uniform"/>
                 <TextBlock
+                    Grid.Row="1"
                     x:Name="ExpectedTextBlockError"
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Foreground="Red"
@@ -42,12 +52,22 @@
             </Grid>
 
             <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Text="Actual"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Margin="0,6,0,6"/>
                 <Image
+                    Grid.Row="1"
                     x:Name="ImageResult"
                     Stretch="Uniform"
                     ImageFailed="ImageResult_ImageFailed"
                     ImageOpened="ImageResult_ImageOpened"/>
                 <TextBlock
+                    Grid.Row="1"
                     x:Name="TextBlockError"
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Foreground="Red"

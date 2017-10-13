@@ -185,6 +185,7 @@ namespace AdaptiveCardTestApp.ViewModels
 
                             CurrentCardVisual = xaml;
 
+                            NormalizeTimePickers(xaml);
                             await WaitOnAllImagesAsync(xaml);
 
                             rtb = new RenderTargetBitmap();
@@ -220,6 +221,23 @@ namespace AdaptiveCardTestApp.ViewModels
             }
 
             return file;
+        }
+
+        /// <summary>
+        /// This method ensures that any time pickers that didn't have a specific assigned value end up with the same time
+        /// as previous tests, to ensure that the fact that the time is different on a machine doesn't make the test fail
+        /// </summary>
+        /// <param name="el"></param>
+        private static void NormalizeTimePickers(UIElement el)
+        {
+            foreach (var timePicker in GetAllDescendants(el).OfType<TimePicker>())
+            {
+                // If didn't have a value from the Card payload
+                if ((DateTime.Now.TimeOfDay - timePicker.Time).TotalMinutes <= 1)
+                {
+                    timePicker.Time = new TimeSpan(9, 0, 0);
+                }
+            }
         }
 
         private static async Task WaitOnAllImagesAsync(UIElement el)

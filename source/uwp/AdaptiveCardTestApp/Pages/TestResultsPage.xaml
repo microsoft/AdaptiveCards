@@ -29,6 +29,8 @@
                 <Button
                     x:Name="ButtonAcceptAll"
                     Content="Accept all"
+                    Style="{ThemeResource AccentButtonStyle}"
+                    HorizontalAlignment="Stretch"
                     Click="ButtonAcceptAll_Click"/>
             </ListView.Header>
             <ListView.ItemTemplate>

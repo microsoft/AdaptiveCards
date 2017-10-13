@@ -22,18 +22,18 @@
             </Grid.ColumnDefinitions>
 
             <ListView
-                x:Name="ListViewCards"
-                Header="Cards"
-                SelectionMode="Multiple"
-                ItemsSource="{Binding Cards}"
-                DisplayMemberPath="Name"/>
-
-            <ListView
                 x:Name="ListViewHostConfigs"
-                Grid.Column="2"
                 Header="Host configs"
                 SelectionMode="Multiple"
                 ItemsSource="{Binding HostConfigs}"
+                DisplayMemberPath="Name"/>
+
+            <ListView
+                x:Name="ListViewCards"
+                Grid.Column="2"
+                Header="Cards"
+                SelectionMode="Multiple"
+                ItemsSource="{Binding Cards}"
                 DisplayMemberPath="Name"/>
 
         </Grid>

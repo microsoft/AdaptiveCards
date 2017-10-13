@@ -66,11 +66,13 @@ namespace AdaptiveCardTestApp.Pages
         private void ListViewCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var model = DataContext as TestResultsViewModel;
+            ButtonAcceptAll.Visibility = Visibility.Visible;
 
             switch (ListViewCategories.SelectedIndex)
             {
                 case 0:
                     ListViewResults.ItemsSource = model.Passed;
+                    ButtonAcceptAll.Visibility = Visibility.Collapsed;
                     break;
 
                 case 1:

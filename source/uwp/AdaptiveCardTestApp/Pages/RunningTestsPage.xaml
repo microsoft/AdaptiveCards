@@ -21,21 +21,13 @@
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Margin="0,24,0,0"/>
                     <TextBlock
-                        Text="{Binding CurrentCard}"/>
-                    <TextBlock
                         Text="{Binding CurrentHostConfig}"/>
+                    <TextBlock
+                        Text="{Binding CurrentCard}"/>
                     <Border
                         Child="{Binding CurrentCardVisual}"
                         Width="{Binding CurrentCardVisualWidth}"/>
                 </StackPanel>
-
-                <ListView
-                    Header="Remaining cards"
-                    Margin="12,0,0,0"
-                    Width="300"
-                    SelectionMode="None"
-                    ItemsSource="{Binding RemainingCards}"
-                    DisplayMemberPath="Name"/>
 
                 <ListView
                     Margin="12,0,0,0"
@@ -43,6 +35,14 @@
                     Header="Remaining host configs"
                     SelectionMode="None"
                     ItemsSource="{Binding RemainingHostConfigs}"
+                    DisplayMemberPath="Name"/>
+
+                <ListView
+                    Header="Remaining cards"
+                    Margin="12,0,0,0"
+                    Width="300"
+                    SelectionMode="None"
+                    ItemsSource="{Binding RemainingCards}"
                     DisplayMemberPath="Name"/>
 
             </StackPanel>
