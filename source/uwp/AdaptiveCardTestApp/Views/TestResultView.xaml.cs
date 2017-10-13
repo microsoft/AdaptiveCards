@@ -60,12 +60,12 @@ namespace AdaptiveCardTestApp.Views
                     }
                 }
 
-                if (model.Status != TestStatus.New && model.OldFile != null)
+                if (model.Status != TestStatus.New && model.ExpectedImageFile != null)
                 {
                     var bmpExpected = new BitmapImage();
                     bmpExpected.ImageOpened += ExpectedImageResult_ImageOpened;
                     bmpExpected.ImageFailed += ExpectedImageResult_ImageFailed;
-                    bmpExpected.SetSource(await model.OldFile.OpenAsync(FileAccessMode.Read));
+                    bmpExpected.SetSource(await model.ExpectedImageFile.OpenAsync(FileAccessMode.Read));
                     ExpectedImageResult.Source = bmpExpected;
                 }
                 else
@@ -76,7 +76,7 @@ namespace AdaptiveCardTestApp.Views
                 var bmp = new BitmapImage();
                 bmp.ImageOpened += ImageResult_ImageOpened;
                 bmp.ImageFailed += ImageResult_ImageFailed;
-                bmp.SetSource(await model.NewFile.OpenAsync(FileAccessMode.Read));
+                bmp.SetSource(await model.ActualImageFile.OpenAsync(FileAccessMode.Read));
                 ImageResult.Source = bmp;
             }
         }
@@ -90,7 +90,7 @@ namespace AdaptiveCardTestApp.Views
                 TextBlockError.Visibility = Visibility.Visible;
                 try
                 {
-                    TextBlockError.Text = await FileIO.ReadTextAsync(_currModel.NewFile);
+                    TextBlockError.Text = await FileIO.ReadTextAsync(_currModel.ActualImageFile);
                 }
                 catch { }
             }
@@ -111,7 +111,7 @@ namespace AdaptiveCardTestApp.Views
                 ExpectedTextBlockError.Visibility = Visibility.Visible;
                 try
                 {
-                    ExpectedTextBlockError.Text = await FileIO.ReadTextAsync(_currModel.NewFile);
+                    ExpectedTextBlockError.Text = await FileIO.ReadTextAsync(_currModel.ActualImageFile);
                 }
                 catch { }
             }

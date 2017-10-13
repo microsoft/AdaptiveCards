@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdaptiveCardTestApp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -14,8 +15,10 @@ namespace AdaptiveCardTestApp.ViewModels
     public class TestResultViewModel : BaseViewModel
     {
         public string CardName { get; set; }
+        public FileViewModel CardFile { get; set; }
 
         public string HostConfigName { get; set; }
+        public FileViewModel HostConfigFile { get; set; }
 
         private TestStatus _status;
         public TestStatus Status
@@ -24,30 +27,51 @@ namespace AdaptiveCardTestApp.ViewModels
             set { SetProperty(ref _status, value); }
         }
 
-        public StorageFile NewFile { get; set; }
+        public string ExpectedError { get; set; }
 
-        public StorageFile OldFile { get; set; }
+        public string ActualError { get; set; }
+
+        public StorageFile ActualImageFile { get; set; }
+
+        public StorageFile ExpectedImageFile { get; set; }
 
         private StorageFolder _expectedFolder;
-        private string _expectedFileName;
+        private string _expectedFileNameWithoutExtension;
 
-        public static async Task<TestResultViewModel> CreateAsync(FileViewModel cardFile, FileViewModel hostConfigFile, StorageFile newFile, StorageFolder expectedFolder)
+        public static async Task<TestResultViewModel> CreateAsync(FileViewModel cardFile, FileViewModel hostConfigFile, string actualError, StorageFile actualImageFile, StorageFolder expectedFolder)
         {
             var answer = new TestResultViewModel()
             {
                 CardName = cardFile.Name,
                 HostConfigName = hostConfigFile.Name,
-                NewFile = newFile,
+                ActualError = actualError,
+                ActualImageFile = actualImageFile,
                 _expectedFolder = expectedFolder,
-                _expectedFileName = GetStrippedFileName(hostConfigFile) + "." + GetStrippedFileName(cardFile) + ".jxr"
+                _expectedFileNameWithoutExtension = GetStrippedFileName(hostConfigFile) + "." + GetStrippedFileName(cardFile)
             };
 
             try
             {
-                answer.OldFile = await expectedFolder.GetFileAsync(answer._expectedFileName);
+                var storedInfo = await StoredTestResultInfo.DeserializeFromFileAsync(expectedFolder, answer._expectedFileNameWithoutExtension);
+                if (storedInfo == null)
+                {
+                    answer.Status = TestStatus.New;
+                }
+                else
+                {
+                    if (storedInfo.Error != null)
+                    {
+                        answer.Status = TestStatus.Failed;
+                        answer.ExpectedError = storedInfo.Error;
+                    }
+                    else
+                    {
+                        answer.ExpectedImageFile = await expectedFolder.GetFileAsync(answer._expectedFileNameWithoutExtension + ".jxr");
+                    }
+                }
 
-                byte[] oldBytes = await GetPixelDataBytesAsync(answer.OldFile);
-                byte[] newBytes = await GetPixelDataBytesAsync(answer.NewFile);
+                byte[] oldBytes = await GetPixelDataBytesAsync(answer.ExpectedImageFile);
+                byte[] newBytes = await GetPixelDataBytesAsync(answer.ActualImageFile);
 
                 if (CompareBytes(oldBytes, newBytes))
                 {
@@ -125,8 +149,8 @@ namespace AdaptiveCardTestApp.ViewModels
         {
             try
             {
-                var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileName, CreationCollisionOption.ReplaceExisting);
-                await NewFile.CopyAndReplaceAsync(expectedFile);
+                var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".jxr", CreationCollisionOption.ReplaceExisting);
+                await ActualImageFile.CopyAndReplaceAsync(expectedFile);
                 Status = TestStatus.Passed;
             }
             catch (Exception ex)

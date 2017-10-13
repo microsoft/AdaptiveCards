@@ -121,14 +121,20 @@ namespace AdaptiveCardTestApp.ViewModels
 
         private async Task<TestResultViewModel> TestCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
-            StorageFile newFile = await RenderCard(cardFile, hostConfigFile);
+            var renderResult = await RenderCard(cardFile, hostConfigFile);
 
-            var result = await TestResultViewModel.CreateAsync(cardFile, hostConfigFile, newFile, _expectedFolder);
+            var result = await TestResultViewModel.CreateAsync(
+                cardFile: cardFile,
+                hostConfigFile: hostConfigFile,
+                actualError: renderResult.Item1,
+                actualImageFile: renderResult.Item2,
+                expectedFolder: _expectedFolder);
+
             OnSingleTestCompleted?.Invoke(this, result.Status);
             return result;
         }
 
-        private async Task<StorageFile> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
+        private async Task<Tuple<string, StorageFile>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
             string error = null;
             RenderTargetBitmap rtb = null;
@@ -199,14 +205,12 @@ namespace AdaptiveCardTestApp.ViewModels
                 error = ex.ToString();
             }
 
-            var file = await _tempResultsFolder.CreateFileAsync("Result.jxr", CreationCollisionOption.GenerateUniqueName);
+            StorageFile file = null;
 
-            if (error != null)
+            if (error == null)
             {
-                await FileIO.WriteTextAsync(file, "Error: " + error);
-            }
-            else
-            {
+                file = await _tempResultsFolder.CreateFileAsync("Result.jxr", CreationCollisionOption.GenerateUniqueName);
+
                 // https://basquang.wordpress.com/2013/09/26/windows-store-8-1-save-visual-element-to-bitmap-image-file/
                 var buffer = await rtb.GetPixelsAsync();
 
@@ -220,7 +224,7 @@ namespace AdaptiveCardTestApp.ViewModels
                 }
             }
 
-            return file;
+            return new Tuple<string, StorageFile>(error, file);
         }
 
         /// <summary>
