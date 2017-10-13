@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.Storage.Pickers;
+using Windows.Graphics.Display;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -50,10 +51,16 @@ namespace AdaptiveCardTestApp.Pages
 
         private async void ButtonStartTest_Click(object sender, RoutedEventArgs e)
         {
+            if (DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel != 1)
+            {
+                var dontWait = new MessageDialog($"You must run these tests on a monitor that is using 100% scale factor (yours appears to be {DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel * 100}%). Otherwise the XAML and images are rendered at a higher resolution and will not match the current Expected image results.").ShowAsync();
+                return;
+            }
+
             MakeSelectedLike(ViewModel.SelectedCards, ListViewCards);
             MakeSelectedLike(ViewModel.SelectedHostConfigs, ListViewHostConfigs);
 
-            var dialog = new MessageDialog("Please select the folder that contains the Expected render results (located in the project folder)");
+            var dialog = new MessageDialog("Please select the folder that contains the Expected render results (located in the project folder). ");
             dialog.Commands.Add(new UICommand("Pick Expected folder"));
             dialog.Commands.Add(new UICommand("Cancel"));
             dialog.DefaultCommandIndex = 0;

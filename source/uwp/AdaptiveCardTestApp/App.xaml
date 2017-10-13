@@ -7,6 +7,9 @@
 
     <Application.Resources>
 
+        <!--Override the accent color so that when other people use the test app, their checkboxes don't appear as different color since their machine might be using a different accent color-->
+        <Color x:Key="SystemAccentColor">#419FFE</Color>
+
         <Style x:Key="FullWidthListViewItem" TargetType="ListViewItem">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

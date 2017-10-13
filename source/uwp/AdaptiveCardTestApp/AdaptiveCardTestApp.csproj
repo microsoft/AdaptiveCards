@@ -96,7 +96,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BindableBase.cs" />
-    <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Pages\RunningTestsPage.xaml.cs">
       <DependentUpon>RunningTestsPage.xaml</DependentUpon>
