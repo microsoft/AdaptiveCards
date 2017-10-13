@@ -178,8 +178,13 @@ std::string InputItem::SerializeChoiceSetInput(
                 if (checkedValue)
                 {
                     std::string choiceValue = GetChoiceValue(choiceInput.Get(), i);
-                    multiSelectValues += (i == 0) ? choiceValue : "," + choiceValue;
+                    multiSelectValues += choiceValue + ",";
                 }
+            }
+
+            if (!multiSelectValues.empty())
+            {
+                multiSelectValues = multiSelectValues.substr(0, (multiSelectValues.size() - 1));
             }
             return multiSelectValues;
         }
