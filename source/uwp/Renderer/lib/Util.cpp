@@ -412,12 +412,17 @@ HRESULT GetBackgroundColorFromStyle(
 
 HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 {
+    HSTRING asHstring;
+    RETURN_IF_FAILED(UTF8ToHString(inputString, &asHstring));
+    return HStringToJsonObject(asHstring, result);
+}
+
+HRESULT HStringToJsonObject(const HSTRING& inputHString, IJsonObject** result)
+{
     ComPtr<IJsonObjectStatics> jObjectStatics;
     RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
-    HSTRING inputsHString;
-    RETURN_IF_FAILED(UTF8ToHString(inputString, &inputsHString));
     ComPtr<IJsonObject> jObject;
-    HRESULT hr = jObjectStatics->Parse(inputsHString, &jObject);
+    HRESULT hr = jObjectStatics->Parse(inputHString, &jObject);
     if (FAILED(hr))
     {
         RETURN_IF_FAILED(ActivateInstance(
