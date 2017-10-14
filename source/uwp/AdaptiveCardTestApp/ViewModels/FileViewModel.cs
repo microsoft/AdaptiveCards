@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Security.Cryptography;
+using Windows.Security.Cryptography.Core;
 using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace AdaptiveCardTestApp.ViewModels
 {
     public class FileViewModel
     {
         public string Name { get; set; }
+
+        /// <summary>
+        /// 7 characters of the SHA 1 hash of Contents
+        /// </summary>
+        public string Hash { get; set; }
 
         public string Contents { get; set; }
 
@@ -33,8 +41,27 @@ namespace AdaptiveCardTestApp.ViewModels
             }
 
             answer.Contents = await FileIO.ReadTextAsync(file);
+            answer.Hash = ToSha1(answer.Contents).Substring(0, 7);
 
             return answer;
+        }
+
+        private static string ToSha1(string contents)
+        {
+            IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(contents, BinaryStringEncoding.Utf8);
+
+            // Grab the algoritm
+            HashAlgorithmProvider algorithm = HashAlgorithmProvider.OpenAlgorithm("SHA1");
+
+            // Hash the data
+            IBuffer buffHash = algorithm.HashData(buffer);
+
+            // Verify that hash succeeded
+            if (buffHash.Length != algorithm.HashLength)
+                throw new Exception("There was an error creating the hash.");
+
+            // Convert to string
+            return CryptographicBuffer.EncodeToHexString(buffHash);
         }
     }
 }

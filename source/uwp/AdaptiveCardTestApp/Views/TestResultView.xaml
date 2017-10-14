@@ -7,9 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    xmlns:converters="using:AdaptiveCardTestApp.Converters">
 
-    <Grid >
+    <UserControl.Resources>
+        <converters:StorageFileToImageSourceConverter x:Key="StorageFileToImageSourceConverter"/>
+    </UserControl.Resources>
+    
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -42,10 +47,12 @@
                 <Image
                     Grid.Row="1"
                     x:Name="ExpectedImageResult"
+                    Source="{Binding ExpectedImageFile, Converter={StaticResource StorageFileToImageSourceConverter}}"
                     Stretch="Uniform"/>
                 <TextBlock
                     Grid.Row="1"
                     x:Name="ExpectedTextBlockError"
+                    Text="{Binding ExpectedError, Mode=OneTime}"
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Foreground="Red"
                     MaxHeight="150"/>
@@ -63,12 +70,12 @@
                 <Image
                     Grid.Row="1"
                     x:Name="ImageResult"
-                    Stretch="Uniform"
-                    ImageFailed="ImageResult_ImageFailed"
-                    ImageOpened="ImageResult_ImageOpened"/>
+                    Source="{Binding ActualImageFile, Converter={StaticResource StorageFileToImageSourceConverter}}"
+                    Stretch="Uniform"/>
                 <TextBlock
                     Grid.Row="1"
                     x:Name="TextBlockError"
+                    Text="{Binding ActualError, Mode=OneTime}"
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Foreground="Red"
                     MaxHeight="150"/>
@@ -78,6 +85,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
             <Button
                 x:Name="ButtonSaveAsExpected"
+                Margin="0,12,0,0"
                 Content="Set as expected"
                 Style="{ThemeResource AccentButtonStyle}"
                 Click="ButtonSaveAsExpected_Click"/>

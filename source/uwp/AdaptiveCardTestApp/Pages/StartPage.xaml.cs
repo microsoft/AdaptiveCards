@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.Storage.Pickers;
 using Windows.Graphics.Display;
+using Windows.Storage.AccessCache;
+using Windows.Storage;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -60,26 +62,41 @@ namespace AdaptiveCardTestApp.Pages
             MakeSelectedLike(ViewModel.SelectedCards, ListViewCards);
             MakeSelectedLike(ViewModel.SelectedHostConfigs, ListViewHostConfigs);
 
-            var dialog = new MessageDialog("Please select the folder that contains the Expected render results (located in the project folder). ");
-            dialog.Commands.Add(new UICommand("Pick Expected folder"));
-            dialog.Commands.Add(new UICommand("Cancel"));
-            dialog.DefaultCommandIndex = 0;
-            dialog.CancelCommandIndex = 1;
-
-            var cmd = await dialog.ShowAsync();
-            if (cmd == dialog.Commands[0])
+            StorageFolder folder = null;
+            try
             {
-                FolderPicker folderPicker = new FolderPicker();
-                folderPicker.FileTypeFilter.Add("*");
-                folderPicker.CommitButtonText = "Pick folder";
-                folderPicker.ViewMode = PickerViewMode.List;
+                folder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync("Expected");
+            }
+            catch { }
 
-                var folder = await folderPicker.PickSingleFolderAsync();
-                if (folder != null)
+            if (folder == null)
+            {
+                var dialog = new MessageDialog("Please select the folder that contains the Expected render results (located in the project folder). ");
+                dialog.Commands.Add(new UICommand("Pick Expected folder"));
+                dialog.Commands.Add(new UICommand("Cancel"));
+                dialog.DefaultCommandIndex = 0;
+                dialog.CancelCommandIndex = 1;
+
+                var cmd = await dialog.ShowAsync();
+                if (cmd == dialog.Commands[0])
                 {
-                    ViewModel.ExpectedFolder = folder;
-                    Frame.Navigate(typeof(RunningTestsPage), ViewModel);
+                    FolderPicker folderPicker = new FolderPicker();
+                    folderPicker.FileTypeFilter.Add("*");
+                    folderPicker.CommitButtonText = "Pick folder";
+                    folderPicker.ViewMode = PickerViewMode.List;
+
+                    folder = await folderPicker.PickSingleFolderAsync();
+                    if (folder != null)
+                    {
+                        StorageApplicationPermissions.FutureAccessList.AddOrReplace("Expected", folder);
+                    }
                 }
+            }
+
+            if (folder != null)
+            {
+                ViewModel.ExpectedFolder = folder;
+                Frame.Navigate(typeof(RunningTestsPage), ViewModel);
             }
         }
 

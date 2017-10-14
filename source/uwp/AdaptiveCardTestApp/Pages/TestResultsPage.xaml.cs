@@ -40,24 +40,32 @@ namespace AdaptiveCardTestApp.Pages
             var model = new TestResultsViewModel(runningTestsViewModel.Results);
             DataContext = model;
 
-            ListViewCategories.ItemsSource = new string[]
+            ListViewCategories.ItemsSource = new TestResultsCategoryViewModel[]
             {
-                "Passed",
-                "Failed",
-                "New"
+                model.Passed,
+                model.Failed,
+                model.FailedButSourceWasChanged,
+                model.New
             };
 
-            if (model.Failed.Count > 0)
+            if (model.Failed.Results.Count > 0)
             {
-                ListViewCategories.SelectedIndex = 1;
+                ListViewCategories.SelectedItem = model.Failed;
             }
-            else if (model.New.Count > 0)
+
+            else if (model.FailedButSourceWasChanged.Results.Count > 0)
             {
-                ListViewCategories.SelectedIndex = 2;
+                ListViewCategories.SelectedItem = model.FailedButSourceWasChanged;
             }
+
+            else if (model.New.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.New;
+            }
+
             else
             {
-                ListViewCategories.SelectedIndex = 0;
+                ListViewCategories.SelectedItem = model.Passed;
             }
 
             base.OnNavigatedTo(e);
@@ -68,21 +76,10 @@ namespace AdaptiveCardTestApp.Pages
             var model = DataContext as TestResultsViewModel;
             ButtonAcceptAll.Visibility = Visibility.Visible;
 
-            switch (ListViewCategories.SelectedIndex)
-            {
-                case 0:
-                    ListViewResults.ItemsSource = model.Passed;
-                    ButtonAcceptAll.Visibility = Visibility.Collapsed;
-                    break;
+            var category = ListViewCategories.SelectedItem as TestResultsCategoryViewModel;
 
-                case 1:
-                    ListViewResults.ItemsSource = model.Failed;
-                    break;
-
-                case 2:
-                    ListViewResults.ItemsSource = model.New;
-                    break;
-            }
+            ListViewResults.ItemsSource = category?.Results;
+            ButtonAcceptAll.Visibility = (category == model.Passed) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private async void ButtonAcceptAll_Click(object sender, RoutedEventArgs e)

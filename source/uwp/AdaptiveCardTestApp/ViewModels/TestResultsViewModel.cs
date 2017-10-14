@@ -9,21 +9,17 @@ namespace AdaptiveCardTestApp.ViewModels
 {
     public class TestResultsViewModel
     {
-        public ObservableCollection<TestResultViewModel> Passed { get; }
-
-        public ObservableCollection<TestResultViewModel> Failed { get; }
-
-        public ObservableCollection<TestResultViewModel> New { get; }
-
-        public TestResultViewModel[] Results { get; }
+        public TestResultsCategoryViewModel Passed { get; }
+        public TestResultsCategoryViewModel Failed { get; }
+        public TestResultsCategoryViewModel FailedButSourceWasChanged { get; }
+        public TestResultsCategoryViewModel New { get; }
 
         public TestResultsViewModel(IEnumerable<TestResultViewModel> results)
         {
-            Passed = new ObservableCollection<TestResultViewModel>(results.Where(i => i.Status == TestStatus.Passed));
-            Failed = new ObservableCollection<TestResultViewModel>(results.Where(i => i.Status == TestStatus.Failed));
-            New = new ObservableCollection<TestResultViewModel>(results.Where(i => i.Status == TestStatus.New));
-
-            Results = results.ToArray();
+            Passed = new TestResultsCategoryViewModel("Passed", results.Where(i => i.Status == TestStatus.Passed));
+            Failed = new TestResultsCategoryViewModel("Failed", results.Where(i => i.Status == TestStatus.Failed));
+            FailedButSourceWasChanged = new TestResultsCategoryViewModel("Failed/source changed", results.Where(i => i.Status == TestStatus.FailedButSourceWasChanged));
+            New = new TestResultsCategoryViewModel("New", results.Where(i => i.Status == TestStatus.New));
 
             foreach (var r in results)
             {
@@ -37,14 +33,14 @@ namespace AdaptiveCardTestApp.ViewModels
 
             if (e.PropertyName == nameof(TestResultViewModel.Status))
             {
-                Passed.Remove(item);
-                Failed.Remove(item);
-                New.Remove(item);
+                Passed.Results.Remove(item);
+                Failed.Results.Remove(item);
+                New.Results.Remove(item);
 
                 switch (item.Status)
                 {
                     case TestStatus.Passed:
-                        Passed.Add(item);
+                        Passed.Results.Add(item);
                         break;
                 }
             }

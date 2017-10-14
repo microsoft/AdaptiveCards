@@ -74,7 +74,7 @@ namespace AdaptiveCardTestApp.Pages
                     break;
 
                 case TestStatus.New:
-                    indicatorColor = Colors.AliceBlue;
+                    indicatorColor = Color.FromArgb(255, 65, 159, 254); // A nice blue color
                     symbol = Symbol.Add;
                     break;
 

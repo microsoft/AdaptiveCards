@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\StorageFileToImageSourceConverter.cs" />
     <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Model\StoredTestResultInfo.cs" />
     <Compile Include="Pages\BasePage.cs" />
@@ -110,6 +111,7 @@
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\TestResultsViewModel.cs" />
+    <Compile Include="ViewModels\TestResultsCategoryViewModel.cs" />
     <Compile Include="ViewModels\TestResultViewModel.cs" />
     <Compile Include="ViewModels\FileViewModel.cs" />
     <Compile Include="ViewModels\RunningTestsViewModel.cs" />

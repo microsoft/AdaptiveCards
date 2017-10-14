@@ -20,7 +20,11 @@ namespace AdaptiveCardTestApp.Helpers
             }
 
             storage = value;
+            NotifyPropertyChanged(propertyName);
+        }
 
+        protected void NotifyPropertyChanged(string propertyName)
+        {
             if (propertyName != null)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

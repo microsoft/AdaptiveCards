@@ -29,11 +29,11 @@ namespace AdaptiveCardTestApp.ViewModels
 
         public string ExpectedError { get; set; }
 
+        public StorageFile ExpectedImageFile { get; set; }
+
         public string ActualError { get; set; }
 
         public StorageFile ActualImageFile { get; set; }
-
-        public StorageFile ExpectedImageFile { get; set; }
 
         private StorageFolder _expectedFolder;
         private string _expectedFileNameWithoutExtension;
@@ -43,7 +43,9 @@ namespace AdaptiveCardTestApp.ViewModels
             var answer = new TestResultViewModel()
             {
                 CardName = cardFile.Name,
+                CardFile = cardFile,
                 HostConfigName = hostConfigFile.Name,
+                HostConfigFile = hostConfigFile,
                 ActualError = actualError,
                 ActualImageFile = actualImageFile,
                 _expectedFolder = expectedFolder,
@@ -61,7 +63,6 @@ namespace AdaptiveCardTestApp.ViewModels
                 {
                     if (storedInfo.Error != null)
                     {
-                        answer.Status = TestStatus.Failed;
                         answer.ExpectedError = storedInfo.Error;
                     }
                     else
@@ -70,20 +71,56 @@ namespace AdaptiveCardTestApp.ViewModels
                     }
                 }
 
-                byte[] oldBytes = await GetPixelDataBytesAsync(answer.ExpectedImageFile);
-                byte[] newBytes = await GetPixelDataBytesAsync(answer.ActualImageFile);
-
-                if (CompareBytes(oldBytes, newBytes))
+                // If both had error, compare via the error
+                if (answer.ExpectedError != null && answer.ActualError != null)
                 {
-                    answer.Status = TestStatus.Passed;
+                    if (answer.ExpectedError == answer.ActualError)
+                    {
+                        answer.Status = TestStatus.Passed;
+                    }
+                    else
+                    {
+                        answer.Status = TestStatus.Failed;
+                    }
                 }
+
+                // If neither had error, compare via the image
+                else if (answer.ExpectedImageFile != null && answer.ActualImageFile != null)
+                {
+                    byte[] oldBytes = await GetPixelDataBytesAsync(answer.ExpectedImageFile);
+                    byte[] newBytes = await GetPixelDataBytesAsync(answer.ActualImageFile);
+
+                    if (ImageBytesAreTheSame(oldBytes, newBytes))
+                    {
+                        answer.Status = TestStatus.Passed;
+                    }
+                    else
+                    {
+                        answer.Status = TestStatus.Failed;
+                    }
+                }
+
+                // Otherwise one had image and one had error, so fail
                 else
                 {
                     answer.Status = TestStatus.Failed;
                 }
+
+                // See if we should promote to FailedButSourceChanged
+                if (answer.Status == TestStatus.Failed)
+                {
+                    // If the hashes have changed since the stored info
+                    if (storedInfo.HostConfigHash != hostConfigFile.Hash
+                        || storedInfo.CardHash != cardFile.Hash)
+                    {
+                        answer.Status = TestStatus.FailedButSourceWasChanged;
+                    }
+                }
             }
             catch
             {
+                // Any exceptions being thrown get reported as "New", typically this results from file
+                // not found of an expected file, which means it genuinely is new
                 answer.Status = TestStatus.New;
             }
 
@@ -104,7 +141,7 @@ namespace AdaptiveCardTestApp.ViewModels
         }
 
         private const byte TOLERANCE = 12;
-        private static bool CompareBytes(byte[] oldBytes, byte[] newBytes)
+        private static bool ImageBytesAreTheSame(byte[] oldBytes, byte[] newBytes)
         {
             if (oldBytes.Length != newBytes.Length)
             {
@@ -149,8 +186,33 @@ namespace AdaptiveCardTestApp.ViewModels
         {
             try
             {
-                var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".jxr", CreationCollisionOption.ReplaceExisting);
-                await ActualImageFile.CopyAndReplaceAsync(expectedFile);
+                // If actual has error and existing did NOT have error, delete existing image
+                if (ActualError != null && ExpectedImageFile != null)
+                {
+                    try
+                    {
+                        await ExpectedImageFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                    }
+                    catch { }
+                }
+
+                // Save the updated info
+                await new StoredTestResultInfo()
+                {
+                    HostConfigHash = HostConfigFile.Hash,
+                    CardHash = CardFile.Hash,
+                    Error = ActualError
+                }.SaveToFileAsync(_expectedFolder, _expectedFileNameWithoutExtension);
+
+                if (ActualError != null)
+                {
+                    var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".jxr", CreationCollisionOption.ReplaceExisting);
+                    await ActualImageFile.CopyAndReplaceAsync(expectedFile);
+                }
+
+                // Update the status
+                ExpectedError = ActualError;
+                ExpectedImageFile = ActualImageFile;
                 Status = TestStatus.Passed;
             }
             catch (Exception ex)

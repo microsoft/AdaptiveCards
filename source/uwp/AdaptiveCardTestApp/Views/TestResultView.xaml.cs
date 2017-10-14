@@ -30,14 +30,12 @@ namespace AdaptiveCardTestApp.Views
         }
 
         private TestResultViewModel _currModel;
-        private async void TestResultView_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private void TestResultView_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             TestResultViewModel model = DataContext as TestResultViewModel;
             if (model != null)
             {
                 _currModel = model;
-                TextBlockError.Visibility = Visibility.Collapsed;
-                ImageResult.Visibility = Visibility.Visible;
 
                 if (model.Status == TestStatus.Passed)
                 {
@@ -59,68 +57,7 @@ namespace AdaptiveCardTestApp.Views
                             break;
                     }
                 }
-
-                if (model.Status != TestStatus.New && model.ExpectedImageFile != null)
-                {
-                    var bmpExpected = new BitmapImage();
-                    bmpExpected.ImageOpened += ExpectedImageResult_ImageOpened;
-                    bmpExpected.ImageFailed += ExpectedImageResult_ImageFailed;
-                    bmpExpected.SetSource(await model.ExpectedImageFile.OpenAsync(FileAccessMode.Read));
-                    ExpectedImageResult.Source = bmpExpected;
-                }
-                else
-                {
-                    ExpectedImageResult.Source = null;
-                }
-
-                var bmp = new BitmapImage();
-                bmp.ImageOpened += ImageResult_ImageOpened;
-                bmp.ImageFailed += ImageResult_ImageFailed;
-                bmp.SetSource(await model.ActualImageFile.OpenAsync(FileAccessMode.Read));
-                ImageResult.Source = bmp;
             }
-        }
-
-        private async void ImageResult_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            if (_currModel == DataContext)
-            {
-                ImageResult.Visibility = Visibility.Collapsed;
-                TextBlockError.Text = "";
-                TextBlockError.Visibility = Visibility.Visible;
-                try
-                {
-                    TextBlockError.Text = await FileIO.ReadTextAsync(_currModel.ActualImageFile);
-                }
-                catch { }
-            }
-        }
-
-        private void ExpectedImageResult_ImageOpened(object sender, RoutedEventArgs e)
-        {
-            ExpectedTextBlockError.Visibility = Visibility.Collapsed;
-            ExpectedImageResult.Visibility = Visibility.Visible;
-        }
-
-        private async void ExpectedImageResult_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            if (_currModel == DataContext)
-            {
-                ExpectedImageResult.Visibility = Visibility.Collapsed;
-                ExpectedTextBlockError.Text = "";
-                ExpectedTextBlockError.Visibility = Visibility.Visible;
-                try
-                {
-                    ExpectedTextBlockError.Text = await FileIO.ReadTextAsync(_currModel.ActualImageFile);
-                }
-                catch { }
-            }
-        }
-
-        private void ImageResult_ImageOpened(object sender, RoutedEventArgs e)
-        {
-            TextBlockError.Visibility = Visibility.Collapsed;
-            ImageResult.Visibility = Visibility.Visible;
         }
 
         private async void ButtonSaveAsExpected_Click(object sender, RoutedEventArgs e)

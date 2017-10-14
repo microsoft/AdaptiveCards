@@ -11,14 +11,15 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <ListView
             x:Name="ListViewCategories"
             SelectionMode="Single"
-            SelectionChanged="ListViewCategories_SelectionChanged"/>
+            SelectionChanged="ListViewCategories_SelectionChanged"
+            DisplayMemberPath="DisplayNameWithCount"/>
 
         <ListView
             x:Name="ListViewResults"
