@@ -2,23 +2,23 @@
 
   <PropertyGroup>
     <TargetFrameworks>net4.5.2;netstandard1.3</TargetFrameworks>
-    <PackageId>Microsoft.AdaptiveCards</PackageId>
-    <VersionPrefix>1.0.14</VersionPrefix>
+    <PackageId>AdaptiveCards</PackageId>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Microsoft</Authors>
-    <summary>Adaptive Card object model for .NET</summary>
-    <Description>This library implements classes for building and serializing adaptive card objects</Description>
+    <Owners>microsoft</Owners>
+    <summary>Adaptive Card library for .NET C# developers, including UWP C# developers.</summary>
+    <Description>This library exposes the Adaptive Card object model for authoring Adaptive Cards. Built for .NET C#, including UWP C#.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>adaptivecards</PackageTags>
-    <PackageProjectUrl>http://adaptivecards.io</PackageProjectUrl>
-    <PacakgeIconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</PacakgeIconUrl>
+    <PackageTags>Adaptive Cards</PackageTags>
+    <PackageProjectUrl>https://github.com/Microsoft/AdaptiveCards</PackageProjectUrl>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageIconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
-    <AssemblyVersion>0.5.1.0</AssemblyVersion>
-    <Version>0.5.1</Version>
-    <FileVersion>0.5.1.0</FileVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <Version>1.0.0-beta1</Version>
+    <FileVersion>1.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net4.5.2|AnyCPU'">
