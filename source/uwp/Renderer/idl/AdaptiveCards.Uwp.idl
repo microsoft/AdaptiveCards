@@ -57,7 +57,6 @@ namespace AdaptiveCards
 
         runtimeclass AdaptiveElementParserRegistration;
         runtimeclass AdaptiveActionParserRegistration;
-        runtimeclass AdaptiveActionRendererRegistration;
         runtimeclass AdaptiveCardRenderer;
         runtimeclass AdaptiveChoiceSetInputRenderer;
         runtimeclass AdaptiveColumnRenderer;
@@ -69,10 +68,9 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageRenderer;
         runtimeclass AdaptiveImageSetRenderer;
         runtimeclass AdaptiveNumberInputRenderer;
-        runtimeclass AdaptiveOpenUrlActionRenderer;
         runtimeclass AdaptiveRenderContext;
-        runtimeclass AdaptiveShowCardActionRenderer;
-        runtimeclass AdaptiveSubmitActionRenderer;
+        runtimeclass AdaptiveRenderArgs;
+        runtimeclass AdaptiveActionInvoker;
         runtimeclass AdaptiveTextBlockRenderer;
         runtimeclass AdaptiveTextInputRenderer;
         runtimeclass AdaptiveTimeInputRenderer;
@@ -131,11 +129,11 @@ namespace AdaptiveCards
         interface IAdaptiveElementParser;
         interface IAdaptiveActionParser;
 
-        interface IAdaptiveActionRenderer;
-        interface IAdaptiveActionRendererRegistration;
         interface IAdaptiveElementRenderer;
         interface IAdaptiveElementRendererRegistration;
         interface IAdaptiveRenderContext;
+        interface IAdaptiveRenderArgs;
+        interface IAdaptiveActionInvoker;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -747,6 +745,9 @@ namespace AdaptiveCards
             [propput] HRESULT Style([in] ContainerStyle value);
 
             [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+
+            [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+            [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
         };
 
         [
@@ -792,6 +793,9 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet : IInspectable
         {
             [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveColumn*>** value);
+
+            [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+            [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
         };
 
         [
@@ -849,15 +853,6 @@ namespace AdaptiveCards
             interface IAdaptiveCardElement;
         };
 
-        [flags]
-        [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum RenderOptions
-        {
-            None = 0x0,
-            SupportsActionBar = 0x1,
-            SupportsInlineActions = 0x2,
-        }RenderOptions;
-
         [
             uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022),
             version(NTDDI_WIN10_RS1),
@@ -874,16 +869,13 @@ namespace AdaptiveCards
             HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
             HRESULT ResetFixedDimensions();
 
-            HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
             HRESULT RenderAdaptiveCard([in] AdaptiveCard* adaptiveCard, [out, retval] RenderedAdaptiveCard** result);
 
-            HRESULT RenderAdaptiveJsonAsXamlAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
             HRESULT RenderAdaptiveCardFromJsonString([in] HSTRING adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
 
             HRESULT RenderAdaptiveCardFromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
 
             [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** result);
-            [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** result);
         };
 
         [
@@ -903,7 +895,7 @@ namespace AdaptiveCards
         interface IAdaptiveActionEventArgs : IInspectable
         {
             [propget] HRESULT Action([out, retval] IAdaptiveActionElement** action);
-            [propget] HRESULT Inputs([out, retval] Windows.Data.Json.JsonObject** value);
+            [propget] HRESULT Inputs([out, retval] AdaptiveInputs** value);
         }
 
         [
@@ -1442,6 +1434,7 @@ namespace AdaptiveCards
         interface IAdaptiveActionElement : IInspectable
         {
             [propget] HRESULT ActionType([out, retval] ActionType* value);
+            [propget] HRESULT ActionTypeString([out, retval] HSTRING* value);
 
             [propget] HRESULT Title([out, retval] HSTRING* value);
             [propput] HRESULT Title([in] HSTRING value);
@@ -1449,7 +1442,8 @@ namespace AdaptiveCards
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
 
-            [propget] HRESULT ActionTypeString([out, retval] HSTRING* value);
+            [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
+            [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
         };
 
         [
@@ -1607,6 +1601,7 @@ namespace AdaptiveCards
         interface IAdaptiveInputs : IInspectable
         {
             HRESULT AsJson([in] InputValueMode inputMode, [out, retval] Windows.Data.Json.JsonObject** value);
+            HRESULT AsValueSet([out, retval] Windows.Foundation.Collections.ValueSet** value);
         };
 
         [
@@ -1720,24 +1715,22 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(ca06924a-9c41-4831-9cc7-caa182a1d087),
+            uuid(c7435e94-1028-4543-b52e-54126fcb411f),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveActionRendererRegistration)
+            exclusiveto(AdaptiveActionInvoker)
         ]
-        interface IAdaptiveActionRendererRegistration : IInspectable
+        interface IAdaptiveActionInvoker : IInspectable
         {
-            HRESULT Set([in] HSTRING type, [in] IAdaptiveActionRenderer* renderer);
-            HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveActionRenderer** result);
-            HRESULT Remove([in] HSTRING type);
+            HRESULT SendActionEvent([in] IAdaptiveActionElement* actionElement);
         };
 
         [
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveActionRendererRegistration
+        runtimeclass AdaptiveActionInvoker
         {
-            [default] interface IAdaptiveActionRendererRegistration;
+            [default] interface IAdaptiveActionInvoker;
         };
 
         [
@@ -1751,8 +1744,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** value);
 
-            [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
+            [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
 
+            HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
         };
 
         [
@@ -1770,7 +1764,7 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveElementRenderer : IInspectable
         {
-            HRESULT Render([in] IAdaptiveCardElement* element, [in] AdaptiveRenderContext* context, [out, retval] Windows.UI.Xaml.UIElement** result);
+            HRESULT Render([in] IAdaptiveCardElement* element, [in] AdaptiveRenderContext* context, [in] AdaptiveRenderArgs* renderArgs, [out, retval] Windows.UI.Xaml.UIElement** result);
         };
 
         [
@@ -1900,39 +1894,22 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(296143e3-0c4f-41fd-bb52-e8e57878b19b),
+            uuid(8615baba-2695-46d2-a764-9ab473c65bb9),
             version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveRenderArgs)
         ]
-        interface IAdaptiveActionRenderer : IInspectable
+        interface IAdaptiveRenderArgs : IInspectable
         {
-            HRESULT Render([in] IAdaptiveActionElement* element, [in] AdaptiveRenderContext* context, [out, retval] Windows.UI.Xaml.UIElement** result);
+            [propget] HRESULT ContainerStyle([out, retval] ContainerStyle* value);
         };
 
         [
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveSubmitActionRenderer
+        runtimeclass AdaptiveRenderArgs
         {
-            [default] interface IAdaptiveActionRenderer;
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveOpenUrlActionRenderer
-        {
-            [default] interface IAdaptiveActionRenderer;
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveShowCardActionRenderer
-        {
-            [default] interface IAdaptiveActionRenderer;
+            [default] interface IAdaptiveRenderArgs;
         };
 
     }

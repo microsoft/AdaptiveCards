@@ -48,7 +48,6 @@
     <ClCompile Include="lib\AdaptiveSeparatorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveActionParserRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveElementParserRegistration.cpp" />
-    <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveColumnRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveCardGetResourceStreamArgs.cpp" />
@@ -65,11 +64,12 @@
     <ClCompile Include="lib\AdaptiveTextInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTimeInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveToggleInputRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveOpenUrlActionRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveShowCardActionRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveSubmitActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveCardParseResult.cpp" />
     <ClCompile Include="lib\AdaptiveHostConfigParseResult.cpp" />
+    <ClCompile Include="lib\AdaptiveColumnSetRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveContainerRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveRenderArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -130,7 +130,6 @@
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveElementParserRegistration.h" />
-    <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnSetRenderer.h" />
@@ -146,11 +145,10 @@
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleInputRenderer.h" />
-    <ClInclude Include="lib\AdaptiveOpenUrlActionRenderer.h" />
-    <ClInclude Include="lib\AdaptiveShowCardActionRenderer.h" />
-    <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
+    <ClInclude Include="lib\AdaptiveRenderArgs.h" />
+    <ClInclude Include="lib\AdaptiveActionInvoker.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Uwp.idl" />

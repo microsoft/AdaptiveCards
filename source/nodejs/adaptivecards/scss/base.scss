@@ -5,16 +5,16 @@ $font-family: 'Segoe UI', sans-serif;
     $selectable-hover-background: rgba(0, 0, 0, 0.1),
     $selectable-active-background: rgba(0, 0, 0, 0.15)
 ) {
-    .ac-container {
+    .ac-container, .ac-columnSet {
         &.ac-selectable {
             padding: $selectable-padding;
 
             &:hover {
-                background-color: $selectable-hover-background;
+                background-color: $selectable-hover-background !important;
             }
 
             &:active {
-                background-color: $selectable-active-background;
+                background-color: $selectable-active-background !important;
             }
         }
     }

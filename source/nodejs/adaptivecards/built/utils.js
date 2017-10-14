@@ -97,7 +97,7 @@ function stringToCssColor(color) {
     }
 }
 exports.stringToCssColor = stringToCssColor;
-var StringWithSubstitutions = (function () {
+var StringWithSubstitutions = /** @class */ (function () {
     function StringWithSubstitutions() {
         this._isProcessed = false;
         this._original = null;

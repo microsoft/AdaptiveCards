@@ -22,14 +22,13 @@
     enum DesiredIdx { eDefaultViewIdx = 2 };
     if(cnt >= eDefaultViewIdx)
     {
-        [_delegate source:self userconfig:[NSString stringWithContentsOfFile:[main pathForResource:@"hostconfig" ofType:@"json"]
+        [_delegate source:self userconfig:[NSString stringWithContentsOfFile:[main pathForResource:@"sample" ofType:@"json"]
                                                                     encoding:NSUTF8StringEncoding
                                                                        error:nil]];
-        [_delegate fromACVTable:self userSelectedJson:
-         [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - eDefaultViewIdx]
-                                   encoding:NSUTF8StringEncoding
-                                      error:nil]];
-        
+        self.userSelectedJSon =
+        [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - eDefaultViewIdx]
+                                  encoding:NSUTF8StringEncoding
+                                     error:nil];
     }
 }
 
@@ -54,10 +53,11 @@
 
 - (void)tableView:(UITableView* )tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    [_delegate fromACVTable:self userSelectedJson:
-     [NSString stringWithContentsOfFile:pathsToFiles[indexPath.row]
-                               encoding:NSUTF8StringEncoding
-                                  error:nil]];
+    self.userSelectedJSon =
+    [NSString stringWithContentsOfFile:pathsToFiles[indexPath.row]
+                              encoding:NSUTF8StringEncoding
+                                 error:nil];
+    [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
 }
 
 @end

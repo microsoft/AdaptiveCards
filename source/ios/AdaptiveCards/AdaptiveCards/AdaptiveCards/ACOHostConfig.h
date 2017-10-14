@@ -6,11 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ACOParseResult.h"
+#import "ACOHostConfigParseResult.h"
 
 @interface ACOHostConfig:NSObject
 
 - (instancetype)init;
 
-+ (ACOParseResult *)fromJson:(NSString *)payload;
++ (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 @end    

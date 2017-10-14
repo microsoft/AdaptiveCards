@@ -52,6 +52,10 @@ HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
 
+HRESULT GenerateActionProjection(
+    const std::shared_ptr<AdaptiveCards::BaseActionElement> action,
+    ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** projectedAction) noexcept;
+
 HRESULT GenerateColumnsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveColumn*>* projectedParentContainer) noexcept;
@@ -77,8 +81,12 @@ HRESULT GenerateSharedSeparator(
     std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut)noexcept;
 
 HRESULT StringToJsonObject(const std::string inputString, ABI::Windows::Data::Json::IJsonObject** result);
+HRESULT HStringToJsonObject(const HSTRING& inputHString, ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT JsonObjectToHString(ABI::Windows::Data::Json::IJsonObject* inputJson, HSTRING* result);
 HRESULT JsonObjectToString(ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
+
+HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, ABI::Windows::Data::Json::IJsonObject** result);
+HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject* jsonObject, Json::Value* jsonCppValue);
 
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Uwp::ActionType projectedActionType, HSTRING* result);
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Uwp::ElementType projectedElementType, HSTRING* result);

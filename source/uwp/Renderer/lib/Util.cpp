@@ -144,26 +144,42 @@ HRESULT GenerateActionsProjection(
     for (auto& containedAction : containedActions)
     {
         ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement> projectedContainedAction;
-        switch (containedAction->GetElementType())
-        {
-            case ActionType::OpenUrl:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveOpenUrlAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(containedAction)));
-                break;
-            case ActionType::ShowCard:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveShowCardAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::ShowCardAction>(containedAction)));
-                break;
-            case ActionType::Submit:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveSubmitAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::SubmitAction>(containedAction)));
-                break;
-            default:
-                return E_UNEXPECTED;
-                break;
-        }
+        RETURN_IF_FAILED(GenerateActionProjection(containedAction, &projectedContainedAction));
+
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedAction.Detach()));
     }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateActionProjection(
+    const std::shared_ptr<AdaptiveCards::BaseActionElement> action,
+    ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** projectedAction) noexcept try
+{
+    if (action == nullptr)
+    {
+        *projectedAction = nullptr;
+        return S_OK;
+    }
+
+    switch (action->GetElementType())
+    {
+        case ActionType::OpenUrl:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveOpenUrlAction>(projectedAction,
+                std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(action)));
+            break;
+        case ActionType::ShowCard:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveShowCardAction>(projectedAction,
+                std::static_pointer_cast<AdaptiveCards::ShowCardAction>(action)));
+            break;
+        case ActionType::Submit:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveSubmitAction>(projectedAction,
+                std::static_pointer_cast<AdaptiveCards::SubmitAction>(action)));
+            break;
+        default:
+            return E_UNEXPECTED;
+            break;
+    }
+
     return S_OK;
 } CATCH_RETURN;
 
@@ -396,12 +412,17 @@ HRESULT GetBackgroundColorFromStyle(
 
 HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 {
+    HSTRING asHstring;
+    RETURN_IF_FAILED(UTF8ToHString(inputString, &asHstring));
+    return HStringToJsonObject(asHstring, result);
+}
+
+HRESULT HStringToJsonObject(const HSTRING& inputHString, IJsonObject** result)
+{
     ComPtr<IJsonObjectStatics> jObjectStatics;
     RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
-    HSTRING inputsHString;
-    RETURN_IF_FAILED(UTF8ToHString(inputString, &inputsHString));
     ComPtr<IJsonObject> jObject;
-    HRESULT hr = jObjectStatics->Parse(inputsHString, &jObject);
+    HRESULT hr = jObjectStatics->Parse(inputHString, &jObject);
     if (FAILED(hr))
     {
         RETURN_IF_FAILED(ActivateInstance(
@@ -429,6 +450,24 @@ HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
     ComPtr<IJsonValue> asJsonValue;
     RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
     return(asJsonValue->Stringify(result));
+}
+
+HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, IJsonObject** result)
+{
+    Json::FastWriter fastWriter;
+    std::string jsonString = fastWriter.write(jsonCppValue);
+    return StringToJsonObject(jsonString, result);
+}
+
+HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject * jsonObject, Json::Value * jsonCppValue)
+{
+    std::string jsonString;
+    RETURN_IF_FAILED(JsonObjectToString(jsonObject, jsonString));
+
+    Json::Value value = ParseUtil::GetJsonValueFromString(jsonString);
+    *jsonCppValue = value;
+
+    return S_OK;
 }
 
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Uwp::ActionType projectedActionType, HSTRING* result)

@@ -1,93 +1,137 @@
 import * as Enums from "./enums";
-export interface ISpacingDefinition {
+export declare class SpacingDefinition {
     left: number;
     top: number;
     right: number;
     bottom: number;
+    constructor(obj?: any);
 }
-export interface IPaddingDefinition {
+export declare class PaddingDefinition {
     top: Enums.Padding;
     right: Enums.Padding;
     bottom: Enums.Padding;
     left: Enums.Padding;
-}
-export interface ITextColorDefinition {
-    normal: string;
-    subtle: string;
-}
-export interface IContainerStyleDefinition {
-    backgroundColor?: string;
-    fontColors: {
-        default: ITextColorDefinition;
-        accent: ITextColorDefinition;
-        good: ITextColorDefinition;
-        warning: ITextColorDefinition;
-        attention: ITextColorDefinition;
+    constructor(obj?: any);
+    toJSON(): {
+        top: string;
+        right: string;
+        bottom: string;
+        left: string;
     };
 }
-export interface IAdaptiveCardConfig {
+export declare class TextColorDefinition {
+    normal: string;
+    subtle: string;
+    constructor(obj?: any);
+}
+export declare class ContainerStyleDefinition {
+    backgroundColor?: string;
+    readonly fontColors: {
+        default: TextColorDefinition;
+        accent: TextColorDefinition;
+        good: TextColorDefinition;
+        warning: TextColorDefinition;
+        attention: TextColorDefinition;
+    };
+    constructor(obj?: any);
+}
+export declare class AdaptiveCardConfig {
     allowCustomStyle: boolean;
+    constructor(obj?: any);
 }
-export interface IImageConfig {
+export declare class ImageConfig {
     size: Enums.Size;
+    constructor(obj?: any);
+    toJSON(): {
+        size: string;
+    };
 }
-export interface IImageSetConfig {
+export declare class ImageSetConfig {
     imageSize: Enums.Size;
     maxImageHeight: number;
+    constructor(obj?: any);
+    toJSON(): {
+        imageSize: string;
+        maxImageHeight: number;
+    };
 }
-export interface IFactTextDefinition {
+export declare class FactTextDefinition {
     size: Enums.TextSize;
     color: Enums.TextColor;
     isSubtle: boolean;
     weight: Enums.TextWeight;
     wrap: boolean;
+    constructor(obj?: any);
+    toJSON(): any;
 }
-export interface IFactTitleDefinition extends IFactTextDefinition {
+export declare class FactTitleDefinition extends FactTextDefinition {
     maxWidth?: number;
+    weight: Enums.TextWeight;
+    constructor(obj?: any);
 }
-export interface IFactSetConfig {
-    title: IFactTitleDefinition;
-    value: IFactTextDefinition;
+export declare class FactSetConfig {
+    readonly title: FactTitleDefinition;
+    readonly value: FactTextDefinition;
     spacing: number;
+    constructor(obj?: any);
 }
-export interface IShowCardActionConfig {
+export declare class ShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode;
     inlineTopMargin: number;
     style?: Enums.ContainerStyle;
+    constructor(obj?: any);
+    toJSON(): {
+        actionMode: string;
+        inlineTopMargin: number;
+        style: string;
+    };
 }
-export interface IActionsConfig {
+export declare class ActionsConfig {
     maxActions: number;
     spacing: Enums.Spacing;
     buttonSpacing: number;
-    showCard: IShowCardActionConfig;
+    readonly showCard: ShowCardActionConfig;
+    preExpandSingleShowCardAction?: boolean;
     actionsOrientation: Enums.Orientation;
     actionAlignment: Enums.ActionAlignment;
+    constructor(obj?: any);
+    toJSON(): {
+        maxActions: number;
+        spacing: string;
+        buttonSpacing: number;
+        showCard: ShowCardActionConfig;
+        preExpandSingleShowCardAction: boolean;
+        actionsOrientation: string;
+        actionAlignment: string;
+    };
 }
-export interface IHostConfig {
+export declare class ContainerStyleSet {
+    readonly default: ContainerStyleDefinition;
+    readonly emphasis: ContainerStyleDefinition;
+    constructor(obj?: any);
+}
+export declare class HostConfig {
     supportsInteractivity: boolean;
     fontFamily?: string;
-    fontSizes: {
+    readonly fontSizes: {
         small: number;
         default: number;
         medium: number;
         large: number;
         extraLarge: number;
     };
-    fontWeights: {
+    readonly fontWeights: {
         lighter: number;
         default: number;
         bolder: number;
     };
-    imageSizes: {
+    readonly imageSizes: {
         small: number;
         medium: number;
         large: number;
     };
-    containerStyles: {
-        default: IContainerStyleDefinition;
-        emphasis: IContainerStyleDefinition;
-    };
-    spacing: {
+    readonly containerStyles: ContainerStyleSet;
+    readonly spacing: {
         small: number;
         default: number;
         medium: number;
@@ -95,14 +139,18 @@ export interface IHostConfig {
         extraLarge: number;
         padding: number;
     };
-    separator: {
+    readonly separator: {
         lineThickness: number;
         lineColor: string;
     };
-    actions: IActionsConfig;
-    adaptiveCard: IAdaptiveCardConfig;
-    image: IImageConfig;
-    imageSet: IImageSetConfig;
-    factSet: IFactSetConfig;
+    readonly actions: ActionsConfig;
+    readonly adaptiveCard: AdaptiveCardConfig;
+    readonly image: ImageConfig;
+    readonly imageSet: ImageSetConfig;
+    readonly factSet: FactSetConfig;
+    constructor(obj?: any);
+    getEffectiveSpacing(spacing: Enums.Spacing): number;
+    getEffectivePadding(padding: Enums.Padding): number;
+    paddingToSpacingDefinition(padding: PaddingDefinition): SpacingDefinition;
+    getContainerStyleDefinition(containerStyle: Enums.ContainerStyle): ContainerStyleDefinition;
 }
-export declare function parseHostConfig(serializedConfiguration: string): IHostConfig;

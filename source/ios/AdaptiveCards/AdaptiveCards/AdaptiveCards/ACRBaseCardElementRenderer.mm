@@ -27,8 +27,23 @@
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const&)config
-{ 
+{
    return viewGroup;
+}
+
++ (void)applyLayoutStyle:(NSString *)styleFormat viewsMap:(NSDictionary *)viewsMap
+{
+    NSArray<NSLayoutConstraint *> *constraints;
+
+    for(NSString *key in viewsMap)
+    {
+        NSString *formatString = [[NSString alloc] initWithFormat:styleFormat, key];
+        constraints = [NSLayoutConstraint constraintsWithVisualFormat:formatString
+                                                              options:0
+                                                              metrics:nil
+                                                                views:viewsMap];
+        [NSLayoutConstraint activateConstraints:constraints];
+    }
 }
 
 @end

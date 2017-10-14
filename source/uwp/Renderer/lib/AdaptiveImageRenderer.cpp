@@ -11,6 +11,15 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Uwp
 {
+    AdaptiveImageRenderer::AdaptiveImageRenderer()
+    {
+    }
+
+    AdaptiveImageRenderer::AdaptiveImageRenderer(const std::shared_ptr<XamlBuilder> xamlBuilder) :
+        m_xamlBuilder(xamlBuilder)
+    {
+    }
+
     HRESULT AdaptiveImageRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -20,8 +29,10 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveImageRenderer::Render(
         IAdaptiveCardElement* cardElement,
         IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
+        m_xamlBuilder->BuildImage(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 }}

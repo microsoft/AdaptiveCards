@@ -54,6 +54,9 @@ using namespace AdaptiveCards;
         [ACRRenderer render:verticalView inputs:inputs withCardElems:body andHostConfig:config];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+
+        [ACRSeparator renderActionsSeparator:verticalView hostConfig:config];
+
         UIView<ACRIContentHoldingView> *actionChildView = [ACRRenderer renderButton:vc inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
         [verticalView addArrangedSubview:actionChildView];
     }
@@ -96,9 +99,9 @@ using namespace AdaptiveCards;
                                       baseActionElement:elem
                                           andHostConfig:config];
         [childview addArrangedSubview:button];
-        ACRSeparator *buttonSeparation = [[ACRSeparator alloc] initWithFrame:CGRectMake(0,0,config->actions.buttonSpacing, config->actions.buttonSpacing)
-                                                               withSuperview:childview toAxis:axis];
-        [childview addArrangedSubview:buttonSeparation];
+
+        [ACRSeparator renderSeparationWithFrame:CGRectMake(0,0,config->actions.buttonSpacing, config->actions.buttonSpacing)
+                                      superview:childview axis:axis];
     }
 
     [childview adjustHuggingForLastElement];

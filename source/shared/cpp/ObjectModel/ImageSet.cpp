@@ -6,7 +6,7 @@ using namespace AdaptiveCards;
 
 ImageSet::ImageSet() : 
     BaseCardElement(CardElementType::ImageSet),
-    m_imageSize(ImageSize::Auto)
+    m_imageSize(ImageSize::None)
 {
 }
 
@@ -24,7 +24,7 @@ ImageSet::ImageSet(
     Spacing spacing, 
     bool separation) :
     BaseCardElement(CardElementType::ImageSet, spacing, separation),
-    m_imageSize(ImageSize::Auto)
+    m_imageSize(ImageSize::None)
 {
 }
 

@@ -1,0 +1,124 @@
+{
+	"spacing": {
+		"small": 4,
+		"default": 12,
+		"medium": 20,
+		"large": 30,
+		"extraLarge": 40,
+		"padding": 15
+	},
+	"separator": {
+		"lineThickness": 1,
+		"lineColor": "#EEEEEE"
+	},
+	"supportsInteractivity": false,
+	"fontFamily": "Segoe UI",
+	"fontSizes": {
+		"small": 12,
+		"default": 14,
+		"medium": 20,
+		"large": 20,
+		"extraLarge": 26
+	},
+	"fontWeights": {
+		"lighter": 200,
+		"default": 400,
+		"bolder": 700
+	},
+	"containerStyles": {
+		"default": {
+			"backgroundColor": "#535454",
+			"fontColors": {
+				"default": {
+					"normal": "#FFFFFF",
+					"subtle": "#9C9E9F"
+				},
+				"accent": {
+					"normal": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"normal": "#FF0000",
+					"subtle": "#DDFF0000"
+				},
+				"good": {
+					"normal": "#00FF00",
+					"subtle": "#DD00FF00"
+				},
+				"warning": {
+					"normal": "#FFD800",
+					"subtle": "#DDFFD800"
+				}
+			}
+		},
+		"emphasis": {
+			"backgroundColor": "#33000000",
+			"fontColors": {
+				"default": {
+					"normal": "#FFFFFF",
+					"subtle": "#9C9E9F"
+				},
+				"accent": {
+					"normal": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"normal": "#FF0000",
+					"subtle": "#DDFF0000"
+				},
+				"good": {
+					"normal": "#00FF00",
+					"subtle": "#DD00FF00"
+				},
+				"warning": {
+					"normal": "#FFD800",
+					"subtle": "#DDFFD800"
+				}
+			}
+		}
+	},
+	"imageSizes": {
+		"small": 40,
+		"medium": 80,
+		"large": 120
+	},
+	"actions": {
+		"maxActions": 5,
+		"spacing": 2,
+		"buttonSpacing": 20,
+		"showCard": {
+			"actionMode": 0,
+			"inlineTopMargin": 16
+		},
+		"actionsOrientation": 0,
+		"actionAlignment": 0
+	},
+	"adaptiveCard": {
+		"allowCustomStyle": false
+	},
+	"image": {
+		"size": 3
+	},
+	"imageSet": {
+		"imageSize": 3,
+		"maxImageHeight": 100
+	},
+	"factSet": {
+		"title": {
+			"color": 0,
+			"size": 1,
+			"isSubtle": false,
+			"weight": 2,
+			"wrap": false,
+			"maxWidth": 150
+		},
+		"value": {
+			"color": 0,
+			"size": 1,
+			"isSubtle": false,
+			"weight": 1,
+			"wrap": true
+		},
+		"spacing": 10
+	}
+}

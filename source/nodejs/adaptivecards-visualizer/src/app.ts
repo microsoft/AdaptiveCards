@@ -45,7 +45,7 @@ function renderCard(): HTMLElement {
     var adaptiveCard = new Adaptive.AdaptiveCard();
 
     
-    adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
+    adaptiveCard.hostConfig = new Adaptive.HostConfig(currentConfigPayload);
    
     
     adaptiveCard.parse(json);
@@ -237,7 +237,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Windows Timeline",
-            new TimelineContainer(320, 180, "css/timeline.css")));
+            new TimelineContainer(320, 176, "css/timeline.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(

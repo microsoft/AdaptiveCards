@@ -13,7 +13,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(IAdaptiveActionElement* action, IJsonObject* inputs)
+    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(IAdaptiveActionElement* action, IAdaptiveInputs* inputs)
     {
         m_action = action;
         m_inputs = inputs;
@@ -23,15 +23,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveActionEventArgs::get_Action(IAdaptiveActionElement** action)
     {
-        ComPtr<IAdaptiveActionElement> localAction(m_action);
-        *action = localAction.Detach();
-        return S_OK;
+        return m_action.CopyTo(action);
     }
 
-    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(IJsonObject** inputs)
+    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(IAdaptiveInputs** inputs)
     {
-        ComPtr<IJsonObject> localInputs(m_inputs);
-        *inputs = localInputs.Detach();
-        return S_OK;
+        return m_inputs.CopyTo(inputs);
     }
 }}

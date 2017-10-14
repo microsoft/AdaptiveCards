@@ -47,7 +47,12 @@
             [input getInput:dictionary];
         }
     }
-    [((ACRViewController *)_vc).acrActionDelegate didFetchUserResponses:dictionary];
+
+    err = nil;
+    
+    NSData *json = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:&err];
+
+    [((ACRViewController *)_vc).acrActionDelegate didFetchUserResponses:json error:err];
 }
 
 @end
