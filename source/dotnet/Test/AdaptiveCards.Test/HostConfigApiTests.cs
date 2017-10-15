@@ -1,6 +1,6 @@
 ﻿using System;
+using AdaptiveCards.Rendering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AdaptiveCards.Rendering.Config;
 
 namespace AdaptiveCards.Test
 {

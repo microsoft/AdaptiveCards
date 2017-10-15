@@ -231,9 +231,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\AdaptiveCards.Html\AdaptiveCards.Html.csproj">
-      <Project>{13f4f606-87aa-4543-a37e-7118fd72c39b}</Project>
-      <Name>AdaptiveCards.Html</Name>
+    <ProjectReference Include="..\..\Library\AdaptiveCards.Rendering.Html\AdaptiveCards.Rendering.Html.csproj">
+      <Project>{edc08cb3-95f6-43bd-8265-41d5cf3e14d0}</Project>
+      <Name>AdaptiveCards.Rendering.Html</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\AdaptiveCards\AdaptiveCards.csproj">
       <Project>{fc4a3527-05a2-4297-98d3-cb1cb512ffda}</Project>

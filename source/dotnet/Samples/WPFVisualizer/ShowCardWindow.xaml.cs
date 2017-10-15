@@ -5,7 +5,7 @@ using AdaptiveCards;
 using Newtonsoft.Json;
 using AC = AdaptiveCards;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Config;
+using AdaptiveCards.Rendering.Wpf;
 
 namespace WpfVisualizer
 {
@@ -29,7 +29,7 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var renderer = new XamlRendererExtended(new HostConfig())
+            var renderer = new AdaptiveCardRenderer(new HostConfig())
             {
                 Resources = this._resources
             };

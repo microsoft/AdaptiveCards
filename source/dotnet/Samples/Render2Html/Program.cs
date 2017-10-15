@@ -1,6 +1,4 @@
 ﻿using AdaptiveCards;
-using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Config;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Html;
 
 namespace Render2Html
 {
@@ -37,7 +37,7 @@ namespace Render2Html
             Console.WriteLine(@"</head>");
             Console.WriteLine(@"<body>");
             List<string> files = new List<string>();
-            if (File.Exists(args[0]))
+            if (args.Length > 0 && File.Exists(args[0]))
                 files.Add(args[0]);
             else
                 files = Directory.GetFiles(args[0]).ToList();
@@ -63,9 +63,9 @@ namespace Render2Html
 
                         RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
 
-                        if (renderedCard.HtmlTag != null)
+                        if (renderedCard.Html != null)
                         {
-                            Console.WriteLine($"<div class='cardcontainer'>{renderedCard.HtmlTag.ToString()}</div>");
+                            Console.WriteLine($"<div class='cardcontainer'>{renderedCard.Html.ToString()}</div>");
                         }
                         else
                         {

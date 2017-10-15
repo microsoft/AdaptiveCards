@@ -1,5 +1,4 @@
 ﻿using AdaptiveCards;
-using AdaptiveCards.Rendering.Config;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -41,10 +40,10 @@ namespace WpfVisualizer
 //        /// </summary>
 //        public string[] SupportedActionTypes { get; set; } = new string[]
 //        {
-//            OpenUrlAction.TYPE,
-//            SubmitAction.TYPE,
-//            HttpAction.TYPE,
-//            ShowCardAction.TYPE
+//            OpenUrlAction.TypeName,
+//            SubmitAction.TypeName,
+//            HttpAction.TypeName,
+//            ShowCardAction.TypeName
 //        };
 
 //        [ExpandableObject]
