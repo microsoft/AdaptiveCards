@@ -8,11 +8,11 @@ namespace AdaptiveCards
     /// </summary>
     public class TimeInput : Input
     {
-        public const string TYPE = "Input.Time";
+        public const string TypeName = "Input.Time";
 
         public TimeInput()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>

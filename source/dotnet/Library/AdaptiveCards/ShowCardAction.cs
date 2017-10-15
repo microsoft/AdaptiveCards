@@ -8,11 +8,11 @@ namespace AdaptiveCards
     /// </summary>
     public class ShowCardAction : ActionBase
     {
-        public const string TYPE = "Action.ShowCard";
+        public const string TypeName = "Action.ShowCard";
 
         public ShowCardAction()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>

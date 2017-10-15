@@ -8,11 +8,11 @@ namespace AdaptiveCards
     /// </summary>
     public class NumberInput : Input
     {
-        public const string TYPE = "Input.Number";
+        public const string TypeName = "Input.Number";
 
         public NumberInput()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>

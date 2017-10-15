@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using AdaptiveCards.Rendering;
 
-namespace AdaptiveCards.Rendering.Config
+namespace AdaptiveCards.Rendering
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class HostConfig

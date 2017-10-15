@@ -21,27 +21,24 @@ namespace AdaptiveCards
 #endif
         public string Type { get; set; }
 
-        protected EnumT? GetEnum<EnumT>(string value)
-            where EnumT : struct
+        protected TENum? GetEnum<TENum>(string value)
+            where TENum : struct
         {
-            EnumT val;
-            if (Enum.TryParse(value, out val))
+            if (Enum.TryParse(value, out TENum val))
                 return val;
             return null;
         }
 
         protected int? GetInt(string value)
         {
-            int val;
-            if (int.TryParse(value, out val))
+            if (int.TryParse(value, out var val))
                 return val;
             return null;
         }
 
         protected bool? GetBool(string value)
         {
-            bool val;
-            if (bool.TryParse(value, out val))
+            if (bool.TryParse(value, out var val))
                 return val;
             return null;
         }

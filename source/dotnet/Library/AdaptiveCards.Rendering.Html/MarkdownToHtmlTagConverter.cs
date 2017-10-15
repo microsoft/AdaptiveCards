@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using HtmlTags;
 using Microsoft.MarkedNet;
-using System;
 
-namespace AdaptiveCards.Html
+namespace AdaptiveCards.Rendering.Html
 {
     public static class MarkdownToHtmlTagConverter
     {

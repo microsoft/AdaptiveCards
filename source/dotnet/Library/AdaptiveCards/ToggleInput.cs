@@ -8,11 +8,11 @@ namespace AdaptiveCards
     /// </summary>
     public class ToggleInput : Input
     {
-        public const string TYPE = "Input.Toggle";
+        public const string TypeName = "Input.Toggle";
 
         public ToggleInput()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>

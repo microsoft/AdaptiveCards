@@ -9,11 +9,11 @@ namespace AdaptiveCards
     /// </summary>
     public class TextBlock : CardElement
     {
-        public const string TYPE = "TextBlock";
+        public const string TypeName = "TextBlock";
 
         public TextBlock()
         {
-            Type = TYPE;
+            Type = TypeName;
             Text = "";
         }
 

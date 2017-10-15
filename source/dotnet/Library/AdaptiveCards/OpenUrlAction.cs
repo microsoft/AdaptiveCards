@@ -9,11 +9,11 @@ namespace AdaptiveCards
     /// </summary>
     public class OpenUrlAction : ActionBase
     {
-        public const string TYPE = "Action.OpenUrl";
+        public const string TypeName = "Action.OpenUrl";
 
         public OpenUrlAction()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>

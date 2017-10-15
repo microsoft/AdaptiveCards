@@ -4,13 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-using HtmlTags;
 using Microsoft.MarkedNet;
-using AdaptiveCards.Html;
-using AdaptiveCards.Rendering.Config;
 using System.Xml.Linq;
 
-namespace AdaptiveCards.Rendering
+namespace AdaptiveCards.Rendering.Html
 {
     /// <summary>
     ///     Render as texthtml suitable for server side generation
@@ -246,7 +243,7 @@ namespace AdaptiveCards.Rendering
                     var uiAction = context.Render(actions[i]);
                     if (uiAction != null)
                     {
-                        if (actions[i].Type == ShowCardAction.TYPE)
+                        if (actions[i].Type == ShowCardAction.TypeName)
                         {
                             // add button-card mapping for clients to implement showcard action
                             var cardId = "ac-showCard" + i;

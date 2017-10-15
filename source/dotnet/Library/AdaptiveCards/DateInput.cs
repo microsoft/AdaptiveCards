@@ -8,11 +8,11 @@ namespace AdaptiveCards
     /// </summary>
     public class DateInput : Input
     {
-        public const string TYPE = "Input.Date";
+        public const string TypeName = "Input.Date";
 
         public DateInput()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>

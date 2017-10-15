@@ -1,12 +1,4 @@
-﻿using AdaptiveCards.Rendering;
-using HtmlTags;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AdaptiveCards.Rendering
+﻿namespace AdaptiveCards.Rendering.Html
 {
     /// <summary>
     /// The rendered Adaptive Card result.
@@ -16,12 +8,12 @@ namespace AdaptiveCards.Rendering
         public RenderedAdaptiveCard(HtmlTag htmlTag, AdaptiveCard originatingCard)
             : base(originatingCard: originatingCard)
         {
-            HtmlTag = htmlTag;
+            Html = htmlTag;
         }
 
         /// <summary>
         /// The rendered result. If there were errors present, this will be null.
         /// </summary>
-        public HtmlTag HtmlTag { get; private set; }
+        public HtmlTag Html { get; private set; }
     }
 }

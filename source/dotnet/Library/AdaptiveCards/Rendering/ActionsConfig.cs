@@ -1,13 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AdaptiveCards.Rendering.Config
+namespace AdaptiveCards.Rendering
 {
     /// <summary>
     /// Properties which control rendering of actions

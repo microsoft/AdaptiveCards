@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-
-namespace AdaptiveCards.Rendering.Config
+namespace AdaptiveCards.Rendering
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ContainerStyleConfig

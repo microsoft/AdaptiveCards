@@ -2,23 +2,18 @@
 
   <PropertyGroup>
     <TargetFrameworks>net4.5.2;netstandard1.3</TargetFrameworks>
-    <PackageId>Microsoft.AdaptiveCards</PackageId>
-    <VersionPrefix>1.0.14</VersionPrefix>
-    <Authors>Microsoft</Authors>
+    <PackageId>AdaptiveCards</PackageId>
+    <Authors>AdaptiveCards</Authors>
     <summary>Adaptive Card object model for .NET</summary>
     <Description>This library implements classes for building and serializing adaptive card objects</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>adaptivecards</PackageTags>
+    <PackageTags>adaptivecards;adaptive-cards</PackageTags>
     <PackageProjectUrl>http://adaptivecards.io</PackageProjectUrl>
-    <PacakgeIconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</PacakgeIconUrl>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageIconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
-    <RepositoryType></RepositoryType>
+    <RepositoryType>git</RepositoryType>
     <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
-    <AssemblyVersion>0.5.1.0</AssemblyVersion>
-    <Version>0.5.1</Version>
-    <FileVersion>0.5.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net4.5.2|AnyCPU'">

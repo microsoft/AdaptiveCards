@@ -10,11 +10,11 @@ namespace AdaptiveCards
     /// </summary>
     public class Container : CardElement
     {
-        public const string TYPE = "Container";
+        public const string TypeName = "Container";
 
         public Container()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>
@@ -28,12 +28,12 @@ namespace AdaptiveCards
         [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
-        [XmlElement(typeof(TextInput), ElementName = TextInput.TYPE)]
-        [XmlElement(typeof(DateInput), ElementName = DateInput.TYPE)]
-        [XmlElement(typeof(TimeInput), ElementName = TimeInput.TYPE)]
-        [XmlElement(typeof(NumberInput), ElementName = NumberInput.TYPE)]
-        [XmlElement(typeof(ToggleInput), ElementName = ToggleInput.TYPE)]
-        [XmlElement(typeof(ChoiceSet), ElementName = ChoiceSet.TYPE)]
+        [XmlElement(typeof(TextInput), ElementName = TextInput.TypeName)]
+        [XmlElement(typeof(DateInput), ElementName = DateInput.TypeName)]
+        [XmlElement(typeof(TimeInput), ElementName = TimeInput.TypeName)]
+        [XmlElement(typeof(NumberInput), ElementName = NumberInput.TypeName)]
+        [XmlElement(typeof(ToggleInput), ElementName = ToggleInput.TypeName)]
+        [XmlElement(typeof(ChoiceSet), ElementName = ChoiceSet.TypeName)]
 
 #endif
         public List<CardElement> Items { get; set; } = new List<CardElement>();

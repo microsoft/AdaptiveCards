@@ -19,23 +19,23 @@ namespace AdaptiveCards
         private static Lazy<Dictionary<string, Type>> g_typedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
         {
             Dictionary<string, Type> types = new Dictionary<string, Type>();
-            types[AdaptiveCard.TYPE] = typeof(AdaptiveCard);
-            types[TextBlock.TYPE] = typeof(TextBlock);
-            types[Image.TYPE] = typeof(Image);
-            types[Container.TYPE] = typeof(Container);
-            types[Column.TYPE] = typeof(Column);
-            types[ColumnSet.TYPE] = typeof(ColumnSet);
-            types[FactSet.TYPE] = typeof(FactSet);
-            types[ImageSet.TYPE] = typeof(ImageSet);
-            types[TextInput.TYPE] = typeof(TextInput);
-            types[DateInput.TYPE] = typeof(DateInput);
-            types[TimeInput.TYPE] = typeof(TimeInput);
-            types[ChoiceSet.TYPE] = typeof(ChoiceSet);
-            types[NumberInput.TYPE] = typeof(NumberInput);
-            types[ToggleInput.TYPE] = typeof(ToggleInput);
-            types[SubmitAction.TYPE] = typeof(SubmitAction);
-            types[OpenUrlAction.TYPE] = typeof(OpenUrlAction);
-            types[ShowCardAction.TYPE] = typeof(ShowCardAction);
+            types[AdaptiveCard.TypeName] = typeof(AdaptiveCard);
+            types[TextBlock.TypeName] = typeof(TextBlock);
+            types[Image.TypeName] = typeof(Image);
+            types[Container.TypeName] = typeof(Container);
+            types[Column.TypeName] = typeof(Column);
+            types[ColumnSet.TypeName] = typeof(ColumnSet);
+            types[FactSet.TypeName] = typeof(FactSet);
+            types[ImageSet.TypeName] = typeof(ImageSet);
+            types[TextInput.TypeName] = typeof(TextInput);
+            types[DateInput.TypeName] = typeof(DateInput);
+            types[TimeInput.TypeName] = typeof(TimeInput);
+            types[ChoiceSet.TypeName] = typeof(ChoiceSet);
+            types[NumberInput.TypeName] = typeof(NumberInput);
+            types[ToggleInput.TypeName] = typeof(ToggleInput);
+            types[SubmitAction.TypeName] = typeof(SubmitAction);
+            types[OpenUrlAction.TypeName] = typeof(OpenUrlAction);
+            types[ShowCardAction.TypeName] = typeof(ShowCardAction);
             return types;
         });
 

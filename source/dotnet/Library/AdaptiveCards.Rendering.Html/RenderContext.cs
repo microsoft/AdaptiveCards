@@ -1,14 +1,7 @@
-﻿using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Config;
-using HtmlTags;
+﻿using System;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AdaptiveCards.Rendering
+namespace AdaptiveCards.Rendering.Html
 {
     public class RenderContext
     {

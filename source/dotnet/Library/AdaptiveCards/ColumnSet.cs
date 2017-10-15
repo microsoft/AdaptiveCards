@@ -9,11 +9,11 @@ namespace AdaptiveCards
     /// </summary>
     public class ColumnSet : CardElement
     {
-        public const string TYPE = "ColumnSet";
+        public const string TypeName = "ColumnSet";
 
         public ColumnSet()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>

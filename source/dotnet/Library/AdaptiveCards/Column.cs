@@ -10,11 +10,11 @@ namespace AdaptiveCards
     /// </summary>
     public class Column : Container
     {
-        public new const string TYPE = "Column";
+        public new const string TypeName = "Column";
 
         public Column()
         {
-            Type = TYPE;
+            Type = TypeName;
         }
 
         /// <summary>
