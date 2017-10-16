@@ -25,6 +25,8 @@ namespace AdaptiveCardTestApp.ViewModels
         public event EventHandler<TestStatus> OnSingleTestCompleted;
 
         private StorageFolder _expectedFolder;
+        private StorageFolder _sourceHostConfigsFolder;
+        private StorageFolder _sourceCardsFolder;
         private string _currentCard;
         public string CurrentCard
         {
@@ -82,6 +84,8 @@ namespace AdaptiveCardTestApp.ViewModels
             if (_tempResultsFolder == null)
             {
                 _tempResultsFolder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("Results", CreationCollisionOption.OpenIfExists);
+                _sourceHostConfigsFolder = await _expectedFolder.CreateFolderAsync("SourceHostConfigs", CreationCollisionOption.OpenIfExists);
+                _sourceCardsFolder = await _expectedFolder.CreateFolderAsync("SourceCards", CreationCollisionOption.OpenIfExists);
             }
 
             // If no cards left
@@ -128,7 +132,9 @@ namespace AdaptiveCardTestApp.ViewModels
                 hostConfigFile: hostConfigFile,
                 actualError: renderResult.Item1,
                 actualImageFile: renderResult.Item2,
-                expectedFolder: _expectedFolder);
+                expectedFolder: _expectedFolder,
+                sourceHostConfigsFolder: _sourceHostConfigsFolder,
+                sourceCardsFolder: _sourceCardsFolder);
 
             OnSingleTestCompleted?.Invoke(this, result.Status);
             return result;
@@ -176,7 +182,8 @@ namespace AdaptiveCardTestApp.ViewModels
                             xaml = new Border()
                             {
                                 Background = new SolidColorBrush(Colors.White),
-                                Child = xaml
+                                Child = xaml,
+                                IsHitTestVisible = false // Disable HitTest so that mouse pointer can't accidently hover over a button
                             };
 
                             // The theme is important to set since it'll ensure buttons/inputs appear correctly

@@ -36,9 +36,18 @@ namespace AdaptiveCardTestApp.ViewModels
         public StorageFile ActualImageFile { get; set; }
 
         private StorageFolder _expectedFolder;
+        private StorageFolder _sourceHostConfigsFolder;
+        private StorageFolder _sourceCardsFolder;
         private string _expectedFileNameWithoutExtension;
 
-        public static async Task<TestResultViewModel> CreateAsync(FileViewModel cardFile, FileViewModel hostConfigFile, string actualError, StorageFile actualImageFile, StorageFolder expectedFolder)
+        public static async Task<TestResultViewModel> CreateAsync(
+            FileViewModel cardFile,
+            FileViewModel hostConfigFile,
+            string actualError,
+            StorageFile actualImageFile,
+            StorageFolder expectedFolder,
+            StorageFolder sourceHostConfigsFolder,
+            StorageFolder sourceCardsFolder)
         {
             var answer = new TestResultViewModel()
             {
@@ -49,6 +58,8 @@ namespace AdaptiveCardTestApp.ViewModels
                 ActualError = actualError,
                 ActualImageFile = actualImageFile,
                 _expectedFolder = expectedFolder,
+                _sourceHostConfigsFolder = sourceHostConfigsFolder,
+                _sourceCardsFolder = sourceCardsFolder,
                 _expectedFileNameWithoutExtension = GetStrippedFileName(hostConfigFile) + "." + GetStrippedFileName(cardFile)
             };
 
@@ -204,6 +215,21 @@ namespace AdaptiveCardTestApp.ViewModels
                     Error = ActualError
                 }.SaveToFileAsync(_expectedFolder, _expectedFileNameWithoutExtension);
 
+                // Make sure the source files are saved (we use FailIfExists and try/catch since if file already exists no need to update it)
+                try
+                {
+                    var sourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync($"{GetStrippedFileName(HostConfigFile)}.{HostConfigFile.Hash}.json", CreationCollisionOption.FailIfExists);
+                    await FileIO.WriteTextAsync(sourceHostConfigFile, HostConfigFile.Contents);
+                }
+                catch { }
+                try
+                {
+                    var sourceCardFile = await _sourceCardsFolder.CreateFileAsync($"{GetStrippedFileName(CardFile)}.{CardFile.Hash}.json", CreationCollisionOption.FailIfExists);
+                    await FileIO.WriteTextAsync(sourceCardFile, CardFile.Contents);
+                }
+                catch { }
+
+                // If no error, update the image file
                 if (ActualError != null)
                 {
                     var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".jxr", CreationCollisionOption.ReplaceExisting);
