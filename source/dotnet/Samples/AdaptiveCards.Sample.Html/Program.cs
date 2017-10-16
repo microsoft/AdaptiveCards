@@ -1,20 +1,39 @@
-﻿using AdaptiveCards;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Html;
 
-namespace Render2Html
+namespace AdaptiveCards.Sample.Html
 {
     class Program
     {
         static void Main(string[] args)
         {
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Please specify a path with Adaptive Card payloads");
+                return;
+            }
+
+            var files = new List<string>();
+
+            try
+            {
+                if (File.Exists(args[0]))
+                    files.Add(args[0]);
+                else
+                    files = Directory.GetFiles(args[0]).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return;
+            }
+
+
+
             bool supportsInteractivity = false;
 
             const string supportsInteractivityFlag = "/supportsInteractivity";
@@ -38,11 +57,6 @@ namespace Render2Html
             Console.WriteLine(@"</style>");
             Console.WriteLine(@"</head>");
             Console.WriteLine(@"<body>");
-            List<string> files = new List<string>();
-            if (args.Length > 0 && File.Exists(args[0]))
-                files.Add(args[0]);
-            else
-                files = Directory.GetFiles(args[0]).ToList();
 
             foreach (var file in files)
             {
@@ -67,7 +81,7 @@ namespace Render2Html
 
                         if (renderedCard.Html != null)
                         {
-                            Console.WriteLine($"<div class='cardcontainer'>{renderedCard.Html.ToString()}</div>");
+                            Console.WriteLine($"<div class='cardcontainer'>{renderedCard.Html}</div>");
                         }
                         else
                         {
