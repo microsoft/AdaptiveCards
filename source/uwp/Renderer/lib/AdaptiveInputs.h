@@ -18,6 +18,7 @@ namespace AdaptiveCards { namespace Uwp
 
         // IAdaptiveInputs
         IFACEMETHODIMP AsJson(_In_ ABI::AdaptiveCards::Uwp::InputValueMode inputMode, _Out_ ABI::Windows::Data::Json::IJsonObject** value);
+        IFACEMETHODIMP AsValueSet(_COM_Outptr_ ABI::Windows::Foundation::Collections::IPropertySet** value);
 
         std::shared_ptr<std::vector<InputItem>> GetInputItems();
 

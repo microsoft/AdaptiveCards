@@ -1443,6 +1443,7 @@ namespace AdaptiveCards
             [propput] HRESULT Id([in] HSTRING value);
 
             [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
+            [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
         };
 
         [
@@ -1600,6 +1601,7 @@ namespace AdaptiveCards
         interface IAdaptiveInputs : IInspectable
         {
             HRESULT AsJson([in] InputValueMode inputMode, [out, retval] Windows.Data.Json.JsonObject** value);
+            HRESULT AsValueSet([out, retval] Windows.Foundation.Collections.ValueSet** value);
         };
 
         [

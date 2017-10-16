@@ -29,6 +29,7 @@ public:
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
     Json::Value GetAdditionalProperties();
+    void SetAdditionalProperties(Json::Value additionalProperties);
 
 private:
     ActionType m_type;

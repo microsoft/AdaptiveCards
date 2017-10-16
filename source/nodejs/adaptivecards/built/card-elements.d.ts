@@ -27,7 +27,7 @@ export declare abstract class CardElement {
     protected readonly separatorOrientation: Enums.Orientation;
     id: string;
     speak: string;
-    horizontalAlignment: Enums.HorizontalAlignment;
+    horizontalAlignment?: Enums.HorizontalAlignment;
     spacing: Enums.Spacing;
     separator: boolean;
     height: "auto" | "stretch";

@@ -37,24 +37,20 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
-                withSuperview:(UIView<ACRIContentHoldingView> *)superview
-                       toAxis:(UILayoutConstraintAxis)huggingAxis
-
++ (void)renderSeparationWithFrame:(CGRect)frame
+                        superview:(UIView<ACRIContentHoldingView> *)superview
+                             axis:(UILayoutConstraintAxis)huggingAxis
 {
-    self = [self initWithFrame:frame];
-    if(self && superview)
+    ACRSeparator *separator = [[ACRSeparator alloc] initWithFrame:frame];
+    if(separator && superview)
     {
-        axis = [superview getAxis];
+        separator->axis = [superview getAxis];
         NSLayoutConstraint *constraints =
-            [self configAutoLayout:superview havingAxis:axis toAxis:huggingAxis];
-        [superview addArrangedSubview: self];
+            [separator configAutoLayout:superview havingAxis:separator->axis toAxis:huggingAxis];
+        [superview addArrangedSubview:separator];
 
         if(constraints) [superview addConstraint:constraints];
     }
-    else return nil;
-
-    return self;
 }
 
 - (NSLayoutConstraint *)configAutoLayout:(UIView *)superview

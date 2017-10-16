@@ -214,5 +214,7 @@ namespace AdaptiveCards { namespace Uwp
             _In_ ABI::Windows::UI::Xaml::Controls::IButton* button,
             _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
             _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
+
+        HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
     };
 }}

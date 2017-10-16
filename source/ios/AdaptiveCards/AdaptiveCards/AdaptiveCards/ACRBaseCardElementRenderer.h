@@ -13,4 +13,6 @@
             //SeparationConfig strongSeparationConfig,
             //(Boolean) horizontalLine)
 
++ (void)applyLayoutStyle:(NSString *)styleFormat viewsMap:(NSDictionary *)viewsMap;
+
 @end
