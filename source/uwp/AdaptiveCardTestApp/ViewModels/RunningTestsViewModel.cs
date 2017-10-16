@@ -216,14 +216,14 @@ namespace AdaptiveCardTestApp.ViewModels
 
             if (error == null)
             {
-                file = await _tempResultsFolder.CreateFileAsync("Result.jxr", CreationCollisionOption.GenerateUniqueName);
+                file = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
 
                 // https://basquang.wordpress.com/2013/09/26/windows-store-8-1-save-visual-element-to-bitmap-image-file/
                 var buffer = await rtb.GetPixelsAsync();
 
                 using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
-                    var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegXREncoderId, stream);
+                    var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
 
                     encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight, (uint)rtb.PixelWidth, (uint)rtb.PixelHeight, 96, 96, buffer.ToArray());
 

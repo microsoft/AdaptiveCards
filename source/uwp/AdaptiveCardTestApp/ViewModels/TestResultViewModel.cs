@@ -86,7 +86,7 @@ namespace AdaptiveCardTestApp.ViewModels
                     }
                     else
                     {
-                        answer.ExpectedImageFile = await expectedFolder.GetFileAsync(answer._expectedFileNameWithoutExtension + ".jxr");
+                        answer.ExpectedImageFile = await expectedFolder.GetFileAsync(answer._expectedFileNameWithoutExtension + ".png");
                     }
                 }
 
@@ -270,7 +270,7 @@ namespace AdaptiveCardTestApp.ViewModels
                 // If no error, update the image file
                 if (ActualError == null)
                 {
-                    var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".jxr", CreationCollisionOption.ReplaceExisting);
+                    var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".png", CreationCollisionOption.ReplaceExisting);
                     await ActualImageFile.CopyAndReplaceAsync(expectedFile);
                 }
 
