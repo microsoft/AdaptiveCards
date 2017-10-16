@@ -310,8 +310,7 @@ namespace AdaptiveCards.Rendering.Html
                         .Style("margin-top", $"{spacing}px")
                         .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
                         .Style("border-top-width", $"{sep.LineThickness}px")
-                        .Style("border-top-style", "solid")
-                    ;
+                        .Style("border-top-style", "solid");
                 uiContainer.Children.Add(uiSep);
             }
             else
@@ -839,7 +838,7 @@ namespace AdaptiveCards.Rendering.Html
             HtmlTag uiTextInput;
             if (input.IsMultiline)
             {
-                uiTextInput = new HtmlTag("textarea");
+                uiTextInput = new HtmlTag("textarea", false);
 
                 if (!string.IsNullOrEmpty(input.Value))
                 {

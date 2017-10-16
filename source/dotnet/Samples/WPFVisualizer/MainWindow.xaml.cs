@@ -194,24 +194,23 @@ namespace WpfVisualizer
 
         private void _onAction(object sender, AdaptiveActionEventArgs e)
         {
-            if (e.Action is AC.OpenUrlAction)
+            
+            if (e.Action is AC.OpenUrlAction openUrlAction)
             {
-                var action = (AC.OpenUrlAction)e.Action;
-                Process.Start(action.Url);
+                Process.Start(openUrlAction.Url);
             }
-            else if (e.Action is AC.ShowCardAction)
+            else if (e.Action is AC.ShowCardAction showCardAction)
             {
-                var action = (AC.ShowCardAction)e.Action;
                 if (HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
                 {
-                    var dialog = new ShowCardWindow(action.Title, action, Resources);
+                    var dialog = new ShowCardWindow(showCardAction.Title, showCardAction, Resources);
                     dialog.Owner = this;
                     dialog.ShowDialog();
                 }
             }
-            else if (e.Action is AC.SubmitAction)
+            else if (e.Action is AC.SubmitAction submitAction)
             {
-                var action = (AC.SubmitAction)e.Action;
+                // TODO: Shouldn't e.Data be on the SubmitAction?
                 MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Formatting.Indented), "SubmitAction");
             }
         }
@@ -293,8 +292,7 @@ namespace WpfVisualizer
 
         private void hostConfigs_Selected(object sender, RoutedEventArgs e)
         {
-            var parseResult =
-                AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
+            var parseResult = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
             if (parseResult.HostConfig != null)
                 HostConfig = parseResult.HostConfig;
             _dirty = true;

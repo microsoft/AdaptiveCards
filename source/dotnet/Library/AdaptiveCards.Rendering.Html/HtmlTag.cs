@@ -8,8 +8,11 @@ namespace AdaptiveCards.Rendering.Html
 {
     public class HtmlTag
     {
-        public HtmlTag(string element)
+        private readonly bool _allowSelfClose;
+
+        public HtmlTag(string element, bool allowSelfClose = true)
         {
+            _allowSelfClose = allowSelfClose;
             this.Element = element;
         }
 
@@ -81,7 +84,7 @@ namespace AdaptiveCards.Rendering.Html
                 sb.Append($" style='{String.Join(";", this.Styles.Select(kv => $"{WebUtility.HtmlEncode(kv.Key)}: {WebUtility.HtmlEncode(kv.Value)}"))};'");
             }
 
-            if (this.Children.Any() || !String.IsNullOrEmpty(this.Text))
+            if (this.Children.Any() || !String.IsNullOrEmpty(this.Text) || !_allowSelfClose)
             {
                 sb.Append(">");
 
@@ -107,7 +110,7 @@ namespace AdaptiveCards.Rendering.Html
 
     public class DivTag : HtmlTag
     {
-        public DivTag() : base("div")
+        public DivTag() : base("div", false)
         {
         }
     }

@@ -24,8 +24,10 @@ namespace Render2Html
                 args = args.Except(new string[] { supportsInteractivityFlag }).ToArray();
             }
 
+            Console.WriteLine(@"<!DOCTYPE html>");
             Console.WriteLine(@"<html><head>");
-            Console.WriteLine(@"<style>");
+            Console.WriteLine(@"<title>Adaptive Cards HTML Renderer Test Bed</title>");
+            Console.WriteLine(@"<style type='text/css'>");
             Console.WriteLine(@".cardcontainer { ");
             Console.WriteLine(@"  width: 400px;");
             Console.WriteLine(@"  border-width: 1px;");
@@ -47,7 +49,7 @@ namespace Render2Html
                 try
                 {
                     Console.WriteLine("<hr/>");
-                    Console.WriteLine($"<h1>{file}</h1>");
+                    Console.WriteLine($"<h2>{file}</h2>");
 
                     AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(File.ReadAllText(file));
                     if (parseResult.Card != null)
@@ -78,6 +80,9 @@ namespace Render2Html
                     Console.WriteLine($"{file} failed: {err.Message}<br/>");
                 }
             }
+
+            Console.WriteLine("</body>");
+            Console.WriteLine("</html>");
 
 #if DEBUG
             // Leave the console up while debugging
