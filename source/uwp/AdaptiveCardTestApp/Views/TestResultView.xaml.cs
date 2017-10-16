@@ -57,6 +57,9 @@ namespace AdaptiveCardTestApp.Views
                             break;
                     }
                 }
+
+                ButtonCompareCard.Visibility = model.DidCardPayloadChange ? Visibility.Visible : Visibility.Collapsed;
+                ButtonCompareHostConfig.Visibility = model.DidHostConfigChange ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -65,6 +68,38 @@ namespace AdaptiveCardTestApp.Views
             base.IsEnabled = false;
             await (DataContext as TestResultViewModel).SaveAsNewExpectedAsync();
             base.IsEnabled = true;
+        }
+
+        private async void ButtonCompareCard_Click(object sender, RoutedEventArgs e)
+        {
+            TestResultViewModel model = DataContext as TestResultViewModel;
+            if (model != null)
+            {
+                ShowComparison(await model.GetOldCardContentsAsync(), model.CardFile.Contents);
+            }
+        }
+
+        private async void ButtonCompareHostConfig_Click(object sender, RoutedEventArgs e)
+        {
+            TestResultViewModel model = DataContext as TestResultViewModel;
+            if (model != null)
+            {
+                ShowComparison(await model.GetOldHostConfigContentsAsync(), model.HostConfigFile.Contents);
+            }
+        }
+
+        private void ShowComparison(string oldText, string newText)
+        {
+            var diffView = new DiffView();
+            diffView.ShowDiff(oldText, newText);
+
+            var dontWait = new ContentDialog()
+            {
+                Content = diffView,
+                CloseButtonText = "Close",
+                MinWidth = this.ActualWidth,
+                MaxWidth = this.ActualWidth
+            }.ShowAsync();
         }
     }
 }

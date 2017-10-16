@@ -48,7 +48,8 @@
                     Grid.Row="1"
                     x:Name="ExpectedImageResult"
                     Source="{Binding ExpectedImageFile, Converter={StaticResource StorageFileToImageSourceConverter}}"
-                    Stretch="Uniform"/>
+                    Stretch="Uniform"
+                    VerticalAlignment="Top"/>
                 <TextBlock
                     Grid.Row="1"
                     x:Name="ExpectedTextBlockError"
@@ -71,7 +72,8 @@
                     Grid.Row="1"
                     x:Name="ImageResult"
                     Source="{Binding ActualImageFile, Converter={StaticResource StorageFileToImageSourceConverter}}"
-                    Stretch="Uniform"/>
+                    Stretch="Uniform"
+                    VerticalAlignment="Top"/>
                 <TextBlock
                     Grid.Row="1"
                     x:Name="TextBlockError"
@@ -83,6 +85,16 @@
         </Grid>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+            <Button
+                x:Name="ButtonCompareCard"
+                Margin="0,12,6,0"
+                Content="Compare card payload"
+                Click="ButtonCompareCard_Click"/>
+            <Button
+                x:Name="ButtonCompareHostConfig"
+                Margin="0,12,6,0"
+                Content="Compare host config"
+                Click="ButtonCompareHostConfig_Click"/>
             <Button
                 x:Name="ButtonSaveAsExpected"
                 Margin="0,12,0,0"

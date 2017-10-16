@@ -35,10 +35,15 @@ namespace AdaptiveCardTestApp.ViewModels
 
         public StorageFile ActualImageFile { get; set; }
 
+        public bool DidHostConfigChange => _oldHostConfigHash != null && _oldHostConfigHash != HostConfigFile.Hash;
+        public bool DidCardPayloadChange => _oldCardHash != null && _oldCardHash != CardFile.Hash;
+
         private StorageFolder _expectedFolder;
         private StorageFolder _sourceHostConfigsFolder;
         private StorageFolder _sourceCardsFolder;
         private string _expectedFileNameWithoutExtension;
+        private string _oldHostConfigHash;
+        private string _oldCardHash;
 
         public static async Task<TestResultViewModel> CreateAsync(
             FileViewModel cardFile,
@@ -72,6 +77,9 @@ namespace AdaptiveCardTestApp.ViewModels
                 }
                 else
                 {
+                    answer._oldHostConfigHash = storedInfo.HostConfigHash;
+                    answer._oldCardHash = storedInfo.CardHash;
+
                     if (storedInfo.Error != null)
                     {
                         answer.ExpectedError = storedInfo.Error;
@@ -187,10 +195,40 @@ namespace AdaptiveCardTestApp.ViewModels
             return true;
         }
 
+        public Task<string> GetOldHostConfigContentsAsync()
+        {
+            return GetOldContentsAsync(_sourceHostConfigsFolder, HostConfigFile.Name, _oldHostConfigHash);
+        }
+
+        public Task<string> GetOldCardContentsAsync()
+        {
+            return GetOldContentsAsync(_sourceCardsFolder, CardFile.Name, _oldCardHash);
+        }
+
+        private static async Task<string> GetOldContentsAsync(StorageFolder folder, string name, string hash)
+        {
+            try
+            {
+                if (hash != null)
+                {
+                    var oldFile = await folder.GetFileAsync(GetStoredSourceFileName(name, hash));
+                    return await FileIO.ReadTextAsync(oldFile);
+                }
+            }
+            catch { }
+
+            return "";
+        }
+
         private static string GetStrippedFileName(FileViewModel file)
         {
+            return GetStrippedFileName(file.Name);
+        }
+
+        private static string GetStrippedFileName(string name)
+        {
             // Turn folder slashes into periods
-            return file.Name.Replace('\\', '.');
+            return name.Replace('\\', '.');
         }
 
         public async Task SaveAsNewExpectedAsync()
@@ -218,13 +256,13 @@ namespace AdaptiveCardTestApp.ViewModels
                 // Make sure the source files are saved (we use FailIfExists and try/catch since if file already exists no need to update it)
                 try
                 {
-                    var sourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync($"{GetStrippedFileName(HostConfigFile)}.{HostConfigFile.Hash}.json", CreationCollisionOption.FailIfExists);
+                    var sourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, HostConfigFile.Hash), CreationCollisionOption.FailIfExists);
                     await FileIO.WriteTextAsync(sourceHostConfigFile, HostConfigFile.Contents);
                 }
                 catch { }
                 try
                 {
-                    var sourceCardFile = await _sourceCardsFolder.CreateFileAsync($"{GetStrippedFileName(CardFile)}.{CardFile.Hash}.json", CreationCollisionOption.FailIfExists);
+                    var sourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, CardFile.Hash), CreationCollisionOption.FailIfExists);
                     await FileIO.WriteTextAsync(sourceCardFile, CardFile.Contents);
                 }
                 catch { }
@@ -239,12 +277,19 @@ namespace AdaptiveCardTestApp.ViewModels
                 // Update the status
                 ExpectedError = ActualError;
                 ExpectedImageFile = ActualImageFile;
+                _oldHostConfigHash = HostConfigFile.Hash;
+                _oldCardHash = CardFile.Hash;
                 Status = TestStatus.Passed;
             }
             catch (Exception ex)
             {
                 var dontWait = new MessageDialog(ex.ToString()).ShowAsync();
             }
+        }
+
+        private static string GetStoredSourceFileName(string name, string hash)
+        {
+            return $"{GetStrippedFileName(name)}.{hash}.json";
         }
     }
 
