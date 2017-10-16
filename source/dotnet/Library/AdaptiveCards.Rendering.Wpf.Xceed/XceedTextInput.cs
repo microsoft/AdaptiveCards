@@ -6,7 +6,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XceedTextInput
     {
-        public static FrameworkElement Render(TextInput input, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTextInput input, AdaptiveRenderContext context)
         {
             if (context.Config.SupportsInteractivity)
             {
@@ -28,7 +28,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else
             {
-                var textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                var textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 return context.Render(textBlock);
             }

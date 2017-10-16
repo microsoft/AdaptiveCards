@@ -7,7 +7,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
     public static class XceedDateInput
     {
-        public static FrameworkElement Render(DateInput input, RenderContext context)
+        public static FrameworkElement Render(AdaptiveDateInput input, AdaptiveRenderContext context)
         {
             if (context.Config.SupportsInteractivity)
             {
@@ -29,7 +29,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else
             {
-                var textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                var textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 return context.Render(textBlock);
             }

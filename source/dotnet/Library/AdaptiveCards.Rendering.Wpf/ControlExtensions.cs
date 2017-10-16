@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -30,27 +31,33 @@ namespace AdaptiveCards.Rendering.Wpf
             control.Items.Add(element);
         }
 
-        public static void SetColor(this System.Windows.Controls.TextBlock textBlock, string color, RenderContext context)
+        public static void SetColor(this TextBlock textBlock, string color, AdaptiveRenderContext context)
         {
             textBlock.Foreground = context.GetColorBrush(color);
         }
 
-        public static void SetBackgroundColor(this System.Windows.Controls.Panel panel, string color, RenderContext context)
+        public static void SetHorizontalAlignment(this Image image, AdaptiveHorizontalAlignment alignment)
+        {
+            if (Enum.TryParse(alignment.ToString(), out HorizontalAlignment a))
+                image.HorizontalAlignment = a;
+        }
+
+        public static void SetBackgroundColor(this Panel panel, string color, AdaptiveRenderContext context)
         {
             panel.Background = context.GetColorBrush(color);
         }
         
-        public static void SetHeight(this System.Windows.FrameworkElement element, double height)
+        public static void SetHeight(this FrameworkElement element, double height)
         {
             element.Height = height;
         }
 
-        public static void SetBackgroundColor(this Button panel, string color, RenderContext context)
+        public static void SetBackgroundColor(this Button panel, string color, AdaptiveRenderContext context)
         {
             panel.Background = context.GetColorBrush(color);
         }
 
-        public static void SetBorderColor(this Button view, string color, RenderContext context)
+        public static void SetBorderColor(this Button view, string color, AdaptiveRenderContext context)
         {
             view.BorderBrush = context.GetColorBrush(color);
         }

@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlImage
     {
-        public static FrameworkElement Render(Image image, RenderContext context)
+        public static FrameworkElement Render(AdaptiveImage image, RenderContext context)
         {
             var uiImage = new UI.Image();
             uiImage.SetSource(image.Url,context);
@@ -22,7 +22,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
 
             string style = $"Adaptive.{image.Type}";
-            if (image.Style == ImageStyle.Person)
+            if (image.Style == AdaptiveImageStyle.Person)
             {
                 style += $".{image.Style}";
 #if WPF

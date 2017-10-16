@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlImageSet
     {
-        public static FrameworkElement Render(ImageSet imageSet, RenderContext context)
+        public static FrameworkElement Render(AdaptiveImageSet imageSet, RenderContext context)
         {
 #if WPF
             var uiImageSet = new ListBox();
@@ -29,8 +29,8 @@ namespace AdaptiveCards.Rendering.Wpf
             uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
             foreach (var image in imageSet.Images)
             {
-                if (image.Size == ImageSize.Auto)
-                    if (imageSet.ImageSize != ImageSize.Auto)
+                if (image.Size == AdaptiveImageSize.Auto)
+                    if (imageSet.ImageSize != AdaptiveImageSize.Auto)
                         image.Size = imageSet.ImageSize;
                     else
                         image.Size = context.Config.ImageSet.ImageSize;

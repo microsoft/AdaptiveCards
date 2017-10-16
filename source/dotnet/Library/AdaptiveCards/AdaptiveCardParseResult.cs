@@ -8,7 +8,7 @@ namespace AdaptiveCards
 {
     public class AdaptiveCardParseResult
     {
-        public AdaptiveCard Card { get; private set; }
+        public AdaptiveCard Card { get; }
 
         internal AdaptiveCardParseResult(AdaptiveCard card)
         {

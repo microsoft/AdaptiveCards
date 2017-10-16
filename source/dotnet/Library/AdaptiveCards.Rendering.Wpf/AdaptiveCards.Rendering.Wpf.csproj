@@ -31,6 +31,4 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
 
-  <Import Project="..\AdaptiveCards.Rendering.XamlShared\AdaptiveCards.Rendering.XamlShared.projitems" Label="Shared" />
-
 </Project>

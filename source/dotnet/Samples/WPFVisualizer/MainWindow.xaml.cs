@@ -32,8 +32,8 @@ namespace WpfVisualizer
 
         public MainWindow()
         {
-            foreach (var type in typeof(HostConfig).Assembly.GetExportedTypes()
-                .Where(t => t.Namespace == typeof(HostConfig).Namespace))
+            foreach (var type in typeof(AdaptiveHostConfig).Assembly.GetExportedTypes()
+                .Where(t => t.Namespace == typeof(AdaptiveHostConfig).Namespace))
                 TypeDescriptor.AddAttributes(type, new ExpandableObjectAttribute());
 
             InitializeComponent();
@@ -45,7 +45,7 @@ namespace WpfVisualizer
             timer.Tick += _timer_Tick;
             timer.Start();
 
-            var hostConfig = new HostConfig();
+            var hostConfig = new AdaptiveHostConfig();
 
             hostConfig.ContainerStyles.Default.BackgroundColor = Colors.WhiteSmoke.ToString();
             Renderer = new AdaptiveCardRenderer(hostConfig) { Resources = Resources };
@@ -64,9 +64,9 @@ namespace WpfVisualizer
 
         public AdaptiveCardRenderer Renderer { get; set; }
 
-        public HostConfig HostConfig
+        public AdaptiveHostConfig HostConfig
         {
-            get => (HostConfig)hostConfigEditor.SelectedObject;
+            get => (AdaptiveHostConfig)hostConfigEditor.SelectedObject;
             set => hostConfigEditor.SelectedObject = value;
         }
 
@@ -87,7 +87,7 @@ namespace WpfVisualizer
                     if (textBox.Text.Trim().StartsWith("<"))
                     {
                         var types = Assembly.GetAssembly(typeof(AC.AdaptiveCard)).ExportedTypes
-                            .Where(t => t.IsAssignableFrom(typeof(AC.TypedElement))).ToArray();
+                            .Where(t => t.IsAssignableFrom(typeof(AC.AdaptiveTypedElement))).ToArray();
                         var ser = new XmlSerializer(typeof(AC.AdaptiveCard), types);
                         _card = (AC.AdaptiveCard)ser.Deserialize(new StringReader(textBox.Text));
                     }
@@ -106,7 +106,6 @@ namespace WpfVisualizer
                         {
                             // Wire up click handler
                             renderedAdaptiveCard.OnAction += _onAction;
-
 
                             renderedAdaptiveCard.FrameworkElement.Effect = new DropShadowEffect
                             {
@@ -193,7 +192,7 @@ namespace WpfVisualizer
             CommandManager.RegisterClassCommandBinding(typeof(Window), binding);
         }
 
-        private void _onAction(object sender, ActionEventArgs e)
+        private void _onAction(object sender, AdaptiveActionEventArgs e)
         {
             if (e.Action is AC.OpenUrlAction)
             {
@@ -234,7 +233,7 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var renderer = new AdaptiveCardRenderer(new HostConfig());
+            var renderer = new AdaptiveCardRenderer(new AdaptiveHostConfig());
             renderer.Resources = Resources;
             var imageStream = renderer.RenderToImage(_card, 480);
             var path = Path.GetRandomFileName() + ".png";
@@ -295,7 +294,7 @@ namespace WpfVisualizer
         private void hostConfigs_Selected(object sender, RoutedEventArgs e)
         {
             var parseResult =
-                HostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
+                AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
             if (parseResult.HostConfig != null)
                 HostConfig = parseResult.HostConfig;
             _dirty = true;
@@ -311,7 +310,7 @@ namespace WpfVisualizer
             {
                 var json = File.ReadAllText(dlg.FileName);
 
-                var parseResult = HostConfig.FromJson(json);
+                var parseResult = AdaptiveHostConfig.FromJson(json);
                 if (parseResult.HostConfig != null)
                     HostConfig = parseResult.HostConfig;
 

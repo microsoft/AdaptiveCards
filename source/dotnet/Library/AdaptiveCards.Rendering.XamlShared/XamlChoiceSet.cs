@@ -14,9 +14,9 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlChoiceSet
     {
-        public static FrameworkElement Render(ChoiceSet choiceSet, RenderContext context)
+        public static FrameworkElement Render(AdaptiveChoiceSetInput adaptiveChoiceSetInput, RenderContext context)
         {
-            var chosen = choiceSet.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
+            var chosen = adaptiveChoiceSetInput.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 #if WPF
             if (context.Config.SupportsInteractivity)
             {
@@ -25,8 +25,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
 
                 var uiComboBox = new ComboBox();
-                uiComboBox.Style = context.GetStyle("Adaptive.Input.ChoiceSet.ComboBox");
-                uiComboBox.DataContext = choiceSet;
+                uiComboBox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.ComboBox");
+                uiComboBox.DataContext = adaptiveChoiceSetInput;
 
                 var uiChoices = new ListBox();
                 ScrollViewer.SetHorizontalScrollBarVisibility(uiChoices, ScrollBarVisibility.Disabled);
@@ -34,26 +34,26 @@ namespace AdaptiveCards.Rendering.Wpf
                 var factory = new FrameworkElementFactory(typeof(WrapPanel));
                 itemsPanelTemplate.VisualTree = factory;
                 uiChoices.ItemsPanel = itemsPanelTemplate;
-                uiChoices.DataContext = choiceSet;
-                uiChoices.Style = context.GetStyle("Adaptive.Input.ChoiceSet");
+                uiChoices.DataContext = adaptiveChoiceSetInput;
+                uiChoices.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput");
 
-                foreach (var choice in choiceSet.Choices)
+                foreach (var choice in adaptiveChoiceSetInput.Choices)
                 {
-                    if (choiceSet.IsMultiSelect == true)
+                    if (adaptiveChoiceSetInput.IsMultiSelect == true)
                     {
                         var uiCheckbox = new CheckBox();
                         uiCheckbox.Content = choice.Title;
                         uiCheckbox.IsChecked = chosen.Contains(choice.Value);
                         uiCheckbox.DataContext = choice;
-                        uiCheckbox.Style = context.GetStyle("Adaptive.Input.ChoiceSet.CheckBox");
+                        uiCheckbox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.CheckBox");
                         uiChoices.Items.Add(uiCheckbox);
                     }
                     else
                     {
-                        if (choiceSet.Style == ChoiceInputStyle.Compact)
+                        if (adaptiveChoiceSetInput.Style == AdaptiveChoiceInputStyle.Compact)
                         {
                             var uiComboItem = new ComboBoxItem();
-                            uiComboItem.Style = context.GetStyle("Adaptive.Input.ChoiceSet.ComboBoxItem");
+                            uiComboItem.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.ComboBoxItem");
                             uiComboItem.Content = choice.Title;
                             uiComboItem.DataContext = choice;
                             uiComboBox.Items.Add(uiComboItem);
@@ -65,36 +65,36 @@ namespace AdaptiveCards.Rendering.Wpf
                             var uiRadio = new RadioButton();
                             uiRadio.Content = choice.Title;
                             uiRadio.IsChecked = chosen.Contains(choice.Value);
-                            uiRadio.GroupName = choiceSet.Id;
+                            uiRadio.GroupName = adaptiveChoiceSetInput.Id;
                             uiRadio.DataContext = choice;
-                            uiRadio.Style = context.GetStyle("Adaptive.Input.ChoiceSet.Radio");
+                            uiRadio.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.Radio");
                             uiChoices.Items.Add(uiRadio);
                         }
                     }
                 }
-                context.InputBindings.Add(choiceSet.Id, () =>
+                context.InputBindings.Add(adaptiveChoiceSetInput.Id, () =>
                 {
-                    if (choiceSet.IsMultiSelect == true)
+                    if (adaptiveChoiceSetInput.IsMultiSelect == true)
                     {
                         string values = string.Empty;
                         foreach (var item in uiChoices.Items)
                         {
                             CheckBox checkBox = (CheckBox)item;
-                            Choice choice = checkBox.DataContext as Choice;
+                            AdaptiveChoice adaptiveChoice = checkBox.DataContext as AdaptiveChoice;
                             if (checkBox.IsChecked == true)
-                                values += (values == string.Empty ? "" : ",") + choice.Value;
+                                values += (values == string.Empty ? "" : ",") + adaptiveChoice.Value;
                         }
                         return values;
                     }
                     else
                     {
-                        if (choiceSet.Style == ChoiceInputStyle.Compact)
+                        if (adaptiveChoiceSetInput.Style == AdaptiveChoiceInputStyle.Compact)
                         {
                             ComboBoxItem item = uiComboBox.SelectedItem as ComboBoxItem;
                             if (item != null)
                             {
-                                Choice choice = item.DataContext as Choice;
-                                return choice.Value;
+                                AdaptiveChoice adaptiveChoice = item.DataContext as AdaptiveChoice;
+                                return adaptiveChoice.Value;
                             }
                             return null;
                         }
@@ -103,15 +103,15 @@ namespace AdaptiveCards.Rendering.Wpf
                             foreach (var item in uiChoices.Items)
                             {
                                 RadioButton radioBox = (RadioButton)item;
-                                Choice choice = radioBox.DataContext as Choice;
+                                AdaptiveChoice adaptiveChoice = radioBox.DataContext as AdaptiveChoice;
                                 if (radioBox.IsChecked == true)
-                                    return choice.Value;
+                                    return adaptiveChoice.Value;
                             }
                             return null;
                         }
                     }
                 });
-                if (choiceSet.Style == ChoiceInputStyle.Compact)
+                if (adaptiveChoiceSetInput.Style == AdaptiveChoiceInputStyle.Compact)
                 {
                     Grid.SetRow(uiComboBox, 1);
                     uiGrid.Children.Add(uiComboBox);
@@ -127,13 +127,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
 #endif
 
-            string choiceText = XamlUtilities.GetFallbackText(choiceSet);
+            string choiceText = XamlUtilities.GetFallbackText(adaptiveChoiceSetInput);
             if (choiceText == null)
             {
-                List<string> choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
-                if (choiceSet.Style == ChoiceInputStyle.Compact)
+                List<string> choices = adaptiveChoiceSetInput.Choices.Select(choice => choice.Title).ToList();
+                if (adaptiveChoiceSetInput.Style == AdaptiveChoiceInputStyle.Compact)
                 {
-                    if (choiceSet.IsMultiSelect)
+                    if (adaptiveChoiceSetInput.IsMultiSelect)
                     {
                         choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " and ")}";
                     }
@@ -142,21 +142,21 @@ namespace AdaptiveCards.Rendering.Wpf
                         choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " or ")}";
                     }
                 }
-                else // if (choiceSet.Style == ChoiceInputStyle.Expanded)
+                else // if (adaptiveChoiceSetInput.Style == ChoiceInputStyle.Expanded)
                 {
                     choiceText = $"* {RendererUtilities.JoinString(choices, "\n* ", "\n* ")}";
                 }
             }
-            Container container = TypedElementConverter.CreateElement<Container>();
-            container.Separation = choiceSet.Separation;
-            TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+            AdaptiveContainer container = AdaptiveTypedElementConverter.CreateElement<AdaptiveContainer>();
+            container.Separation = adaptiveChoiceSetInput.Separation;
+            AdaptiveTextBlock textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
             textBlock.Text = choiceText;
             textBlock.Wrap = true;
             container.Items.Add(textBlock);
 
-            textBlock = TypedElementConverter.CreateElement<TextBlock>();
-            textBlock.Text = RendererUtilities.JoinString(choiceSet.Choices.Where(c => chosen.Contains(c.Value)).Select(c => c.Title).ToList(), ", ", " and ");
-            textBlock.Color = TextColor.Accent;
+            textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
+            textBlock.Text = RendererUtilities.JoinString(adaptiveChoiceSetInput.Choices.Where(c => chosen.Contains(c.Value)).Select(c => c.Title).ToList(), ", ", " and ");
+            textBlock.Color = AdaptiveTextColor.Accent;
             textBlock.Wrap = true;
             container.Items.Add(textBlock);
             return context.Render(container);

@@ -25,16 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Test", "Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.Html", "Library\AdaptiveCards.Rendering.Html\AdaptiveCards.Rendering.Html.csproj", "{EDC08CB3-95F6-43BD-8265-41D5CF3E14D0}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AdaptiveCards.Rendering.XamlShared", "Library\AdaptiveCards.Rendering.XamlShared\AdaptiveCards.Rendering.XamlShared.shproj", "{D4E691C8-F685-4E48-83D8-A063868E5E51}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.Wpf", "Library\AdaptiveCards.Rendering.Wpf\AdaptiveCards.Rendering.Wpf.csproj", "{385BFAAD-07E0-4DBF-844D-9EE12EFC0799}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.Wpf.Xceed", "Library\AdaptiveCards.Rendering.Wpf.Xceed\AdaptiveCards.Rendering.Wpf.Xceed.csproj", "{4741ABEC-33B0-424F-B5F1-464EC31AEEBD}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Library\AdaptiveCards.Rendering.XamlShared\AdaptiveCards.Rendering.XamlShared.projitems*{d4e691c8-f685-4e48-83d8-a063868e5e51}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
 		Ad-Hoc|ARM = Ad-Hoc|ARM
@@ -507,7 +502,6 @@ Global
 		{9B454519-D567-47E4-ADEF-2DF0D60F69B6} = {57CE90F5-EDC6-4CA5-9680-4A106621B4AF}
 		{0BE59E25-5BFA-4406-A7A8-78656C27E9B9} = {57CE90F5-EDC6-4CA5-9680-4A106621B4AF}
 		{EDC08CB3-95F6-43BD-8265-41D5CF3E14D0} = {C7727147-4AD9-4005-A8D0-EEEED82347D3}
-		{D4E691C8-F685-4E48-83D8-A063868E5E51} = {C7727147-4AD9-4005-A8D0-EEEED82347D3}
 		{385BFAAD-07E0-4DBF-844D-9EE12EFC0799} = {C7727147-4AD9-4005-A8D0-EEEED82347D3}
 		{4741ABEC-33B0-424F-B5F1-464EC31AEEBD} = {C7727147-4AD9-4005-A8D0-EEEED82347D3}
 	EndGlobalSection

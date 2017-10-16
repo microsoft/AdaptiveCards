@@ -29,9 +29,9 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <summary>
         /// Event handler for when user invokes an action.
         /// </summary>
-        public event EventHandler<ActionEventArgs> OnAction;
+        public event EventHandler<AdaptiveActionEventArgs> OnAction;
 
-        internal void InvokeOnAction(ActionEventArgs args)
+        internal void InvokeOnAction(AdaptiveActionEventArgs args)
         {
             OnAction?.Invoke(this, args);
         }

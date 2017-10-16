@@ -14,19 +14,19 @@ namespace AdaptiveCards.Rendering
         ///  The size of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextSize Size { get; set; } = TextSize.Default;
+        public AdaptiveTextSize Size { get; set; } = AdaptiveTextSize.Default;
 
         /// <summary>
         ///  The weight of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextWeight Weight { get; set; } = TextWeight.Default;
+        public AdaptiveTextWeight Weight { get; set; } = AdaptiveTextWeight.Default;
 
         /// <summary>
         ///  The color of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextColor Color { get; set; } = TextColor.Default;
+        public AdaptiveTextColor Color { get; set; } = AdaptiveTextColor.Default;
 
         /// <summary>
         ///   Should it be subtle?
@@ -41,18 +41,18 @@ namespace AdaptiveCards.Rendering
 
         public bool ShouldSerializeSize()
         {
-            return Size != TextSize.Default;
+            return Size != AdaptiveTextSize.Default;
         }
 
         public bool ShouldSerializeColor()
         {
-            return Color != TextColor.Default;
+            return Color != AdaptiveTextColor.Default;
         }
 
 
         public bool ShouldSerializeWeight()
         {
-            return Weight != TextWeight.Default;
+            return Weight != AdaptiveTextWeight.Default;
         }
 
         public bool ShouldSerializeIsSubtle()

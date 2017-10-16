@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         private Func<string, MemoryStream> _imageResolver = null;
 
-        public RenderContext(Action<object, ActionEventArgs> actionCallback,
+        public RenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
             Action<object, MissingInputEventArgs> missingDataCallback,
             Func<string, MemoryStream> imageResolver = null)
         {
@@ -60,7 +60,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <summary>
         /// Event fires when action is invoked
         /// </summary>
-        public delegate void ActionEventHandler(object sender, ActionEventArgs e);
+        public delegate void ActionEventHandler(object sender, AdaptiveActionEventArgs e);
 
         public event ActionEventHandler OnAction;
 
@@ -71,12 +71,12 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public event MissingInputEventHandler OnMissingInput;
 
-        public void Action(FrameworkElement ui, ActionEventArgs args)
+        public void Action(FrameworkElement ui, AdaptiveActionEventArgs args)
         {
             this.OnAction?.Invoke(ui, args);
         }
 
-        public void MissingInput(ActionBase sender, MissingInputEventArgs args)
+        public void MissingInput(AdaptiveActionBase sender, MissingInputEventArgs args)
         {
             this.OnMissingInput?.Invoke(sender, args);
         }
@@ -142,7 +142,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public FrameworkElement Render(TypedElement element)
+        public FrameworkElement Render(AdaptiveTypedElement element)
         {
             return this.ElementRenderers.Get(element.GetType())(element, this);
         }
@@ -151,16 +151,16 @@ namespace AdaptiveCards.Rendering.Wpf
     }
 
 
-    public class ActionEventArgs : EventArgs
+    public class AdaptiveActionEventArgs : EventArgs
     {
-        public ActionEventArgs()
+        public AdaptiveActionEventArgs()
         {
         }
 
         /// <summary>
         /// The action that fired
         /// </summary>
-        public ActionBase Action { get; set; }
+        public AdaptiveActionBase Action { get; set; }
 
         /// <summary>
         /// Data for Input controls (if appropriate)
@@ -170,29 +170,29 @@ namespace AdaptiveCards.Rendering.Wpf
 
     public class MissingInputEventArgs : EventArgs
     {
-        public MissingInputEventArgs(Input input, FrameworkElement frameworkElement)
+        public MissingInputEventArgs(AdaptiveInput input, FrameworkElement frameworkElement)
         {
             this.FrameworkElement = frameworkElement;
-            this.Input = input;
+            this.AdaptiveInput = input;
         }
 
         public FrameworkElement FrameworkElement { get; private set; }
 
-        public Input Input { get; private set; }
+        public AdaptiveInput AdaptiveInput { get; private set; }
     }
 
 
     public class MissingInputException : Exception
     {
-        public MissingInputException(string message, Input input, FrameworkElement frameworkElement)
+        public MissingInputException(string message, AdaptiveInput input, FrameworkElement frameworkElement)
             : base(message)
         {
             this.FrameworkElement = frameworkElement;
-            this.Input = input;
+            this.AdaptiveInput = input;
         }
 
         public FrameworkElement FrameworkElement { get; set; }
 
-        public Input Input { get; set; }
+        public AdaptiveInput AdaptiveInput { get; set; }
     }
 }

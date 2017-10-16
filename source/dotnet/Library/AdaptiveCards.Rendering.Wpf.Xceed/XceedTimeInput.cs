@@ -6,7 +6,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XceedTimeInput
     {
-        public static FrameworkElement Render(TimeInput input, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTimeInput input, AdaptiveRenderContext context)
         {
             if (context.Config.SupportsInteractivity)
             {
@@ -28,7 +28,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else
             {
-                var textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                var textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 return context.Render(textBlock);
             }

@@ -4,10 +4,10 @@
     {
         public static void UseXceedElementRenderers(this AdaptiveCardRenderer renderer)
         {
-            renderer.ElementRenderers.Set<TextInput>(XceedTextInput.Render);
-            renderer.ElementRenderers.Set<NumberInput>(XceedNumberInput.Render);
-            renderer.ElementRenderers.Set<DateInput>(XceedDateInput.Render);
-            renderer.ElementRenderers.Set<TimeInput>(XceedTimeInput.Render);
+            renderer.ElementRenderers.Set<AdaptiveTextInput>(XceedTextInput.Render);
+            renderer.ElementRenderers.Set<AdaptiveCards.AdaptiveNumberInput>(XceedNumberInput.Render);
+            renderer.ElementRenderers.Set<AdaptiveDateInput>(XceedDateInput.Render);
+            renderer.ElementRenderers.Set<AdaptiveTimeInput>(XceedTimeInput.Render);
         }
     }
 }

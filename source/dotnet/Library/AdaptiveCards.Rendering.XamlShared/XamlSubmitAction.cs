@@ -26,11 +26,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
                         dynamic data = (action.Data != null) ? ((JToken)action.Data).DeepClone() : new JObject();
                         data = context.MergeInputData(data);
-                        context.Action(uiButton, new ActionEventArgs() { Action = action, Data = data });
+                        context.Action(uiButton, new AdaptiveActionEventArgs() { Action = action, Data = data });
                     }
                     catch (MissingInputException err)
                     {
-                        context.MissingInput(action, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                        context.MissingInput(action, new MissingInputEventArgs(err.AdaptiveInput, err.FrameworkElement));
                     }
                 };
                 return uiButton;

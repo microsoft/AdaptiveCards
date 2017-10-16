@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering
     {
         public ImageSetConfig() { }
 
-        public ImageSize ImageSize { get; set; } = ImageSize.Medium;
+        public AdaptiveImageSize ImageSize { get; set; } = AdaptiveImageSize.Medium;
     }
 
 }

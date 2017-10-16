@@ -7,7 +7,7 @@ namespace AdaptiveCards
     ///     When ActionOpenUrl is invoked it will show the given url, either by launching it to an external web browser or
     ///     showing in-situ with embedded web browser.
     /// </summary>
-    public class OpenUrlAction : ActionBase
+    public class OpenUrlAction : AdaptiveActionBase
     {
         public const string TypeName = "Action.OpenUrl";
 
@@ -20,9 +20,6 @@ namespace AdaptiveCards
         ///     Url to open using default operating system browser
         /// </summary>
         [JsonRequired]
-#if NET45
-        [XmlAttribute]
-#endif
         public string Url { get; set; }
     }
 }

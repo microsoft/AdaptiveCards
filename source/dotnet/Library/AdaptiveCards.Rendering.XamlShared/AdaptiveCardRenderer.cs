@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return new AdaptiveSchemaVersion(1, 0);
         }
 
-        protected Action<object, ActionEventArgs> actionCallback;
+        protected Action<object, AdaptiveActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
         protected HostConfig _defaultCardStyling;
 
@@ -35,21 +35,21 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             this.ElementRenderers.Set<AdaptiveCard>(XamlAdaptiveCard.Render);
 
-            this.ElementRenderers.Set<TextBlock>(XamlTextBlock.Render);
-            this.ElementRenderers.Set<Image>(XamlImage.Render);
+            this.ElementRenderers.Set<AdaptiveTextBlock>(XamlTextBlock.Render);
+            this.ElementRenderers.Set<AdaptiveImage>(XamlImage.Render);
 
-            this.ElementRenderers.Set<Container>(XamlContainer.Render);
-            this.ElementRenderers.Set<Column>(XamlColumn.Render);
-            this.ElementRenderers.Set<ColumnSet>(XamlColumnSet.Render);
-            this.ElementRenderers.Set<FactSet>(XamlFactSet.Render);
-            this.ElementRenderers.Set<ImageSet>(XamlImageSet.Render);
+            this.ElementRenderers.Set<AdaptiveContainer>(XamlContainer.Render);
+            this.ElementRenderers.Set<AdaptiveColumn>(XamlColumn.Render);
+            this.ElementRenderers.Set<AdaptiveColumnSet>(XamlColumnSet.Render);
+            this.ElementRenderers.Set<AdaptiveFactSet>(XamlFactSet.Render);
+            this.ElementRenderers.Set<AdaptiveImageSet>(XamlImageSet.Render);
 
-            this.ElementRenderers.Set<ChoiceSet>(XamlChoiceSet.Render);
-            this.ElementRenderers.Set<TextInput>(XamlTextInput.Render);
-            this.ElementRenderers.Set<NumberInput>(XamlNumberInput.Render);
-            this.ElementRenderers.Set<DateInput>(XamlDateInput.Render);
-            this.ElementRenderers.Set<TimeInput>(XamlTimeInput.Render);
-            this.ElementRenderers.Set<ToggleInput>(XamlToggleInput.Render);
+            this.ElementRenderers.Set<AdaptiveChoiceSetInput>(XamlChoiceSet.Render);
+            this.ElementRenderers.Set<AdaptiveTextInput>(XamlTextInput.Render);
+            this.ElementRenderers.Set<AdaptiveNumberInput>(XamlNumberInput.Render);
+            this.ElementRenderers.Set<AdaptiveDateInput>(XamlDateInput.Render);
+            this.ElementRenderers.Set<AdaptiveTimeInput>(XamlTimeInput.Render);
+            this.ElementRenderers.Set<AdaptiveToggleInput>(XamlToggleInput.Render);
 
             this.ElementRenderers.Set<SubmitAction>(XamlSubmitAction.Render);
             this.ElementRenderers.Set<OpenUrlAction>(XamlOpenUrlAction.Render);
@@ -113,7 +113,7 @@ namespace AdaptiveCards.Rendering.Wpf
             RenderedAdaptiveCard answer = null;
 
 
-            Action<object, ActionEventArgs> actionCallback = (sender, args) =>
+            Action<object, AdaptiveActionEventArgs> actionCallback = (sender, args) =>
             {
                 answer?.InvokeOnAction(args);
             };

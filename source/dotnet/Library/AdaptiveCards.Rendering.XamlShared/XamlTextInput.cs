@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlTextInput
     {
-        public static FrameworkElement Render(TextInput input, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTextInput input, RenderContext context)
         {
             if (context.Config.SupportsInteractivity)
             {
@@ -41,16 +41,16 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else
             {
-                Container container = TypedElementConverter.CreateElement<Container>();
+                AdaptiveContainer container = AdaptiveTypedElementConverter.CreateElement<AdaptiveContainer>();
                 container.Separation = input.Separation;
-                TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                AdaptiveTextBlock textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 container.Items.Add(textBlock);
                 if (input.Value != null)
                 {
-                    textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                    textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                     textBlock.Text = input.Value;
-                    textBlock.Color = TextColor.Accent;
+                    textBlock.Color = AdaptiveTextColor.Accent;
                     textBlock.Wrap = true;
                     container.Items.Add(textBlock);
                 }

@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 Button uiButton = XamlUtilities.CreateActionButton(action, context); // content);
                 uiButton.Click += (sender, e) =>
                 {
-                    context.Action(uiButton, new ActionEventArgs() { Action = action});
+                    context.Action(uiButton, new AdaptiveActionEventArgs() { Action = action});
                 };
                 return uiButton;
             }

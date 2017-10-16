@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// should they be aligned Left, Center or Right
         /// </summary>
-        public HorizontalAlignment ActionAlignment { get; set; } = HorizontalAlignment.Center;
+        public AdaptiveHorizontalAlignment ActionAlignment { get; set; } = AdaptiveHorizontalAlignment.Center;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundColor { get; set; } = "#FF5098FF";

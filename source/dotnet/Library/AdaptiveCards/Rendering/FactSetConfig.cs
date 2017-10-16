@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering
         /// TextBlock to use for Titles in factsets
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextBlockConfig Title { get; set; } = new TextBlockConfig() { Size = TextSize.Default, Color = TextColor.Default, IsSubtle = false, Weight = TextWeight.Bolder };
+        public TextBlockConfig Title { get; set; } = new TextBlockConfig() { Size = AdaptiveTextSize.Default, Color = AdaptiveTextColor.Default, IsSubtle = false, Weight = AdaptiveTextWeight.Bolder };
 
         /// <summary>
         /// TextBlock to use for Values in fact sets

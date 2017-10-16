@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlFactSet
     {
-        public static FrameworkElement Render(FactSet factSet, RenderContext context)
+        public static FrameworkElement Render(AdaptiveFactSet factSet, RenderContext context)
         {
             var uiFactSet = new Grid();
             // grid.Margin = factSet.Theme.FactSetMargins;
@@ -24,7 +24,7 @@ namespace AdaptiveCards.Rendering.Wpf
             int iRow = 0;
             foreach (var fact in factSet.Facts)
             {
-                var uiTitle = context.Render(new TextBlock()
+                var uiTitle = context.Render(new AdaptiveTextBlock()
                 {
                     Size = context.Config.FactSet.Title.Size,
                     Color = context.Config.FactSet.Title.Color,
@@ -40,7 +40,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 //TODO
 #endif
 
-                var uiValue = context.Render(new TextBlock()
+                var uiValue = context.Render(new AdaptiveTextBlock()
                 {
                     Size = context.Config.FactSet.Value.Size,
                     Color = context.Config.FactSet.Value.Color,

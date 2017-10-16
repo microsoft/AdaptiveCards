@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering.Wpf
     public class XamlUtilities
     {
 
-        public static Button CreateActionButton(ActionBase action, RenderContext context)
+        public static Button CreateActionButton(AdaptiveActionBase action, RenderContext context)
         {
             ActionsConfig styling = context.Config.Actions;
             var uiButton = new Button()
@@ -50,14 +50,14 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string GetFallbackText(CardElement cardElement)
+        public static string GetFallbackText(AdaptiveElement adaptiveElement)
         {
 #if WPF
 #pragma warning disable CS0618 // Type or member is obsolete
-            if (!string.IsNullOrEmpty(cardElement.Speak))
+            if (!string.IsNullOrEmpty(adaptiveElement.Speak))
             {
                 var doc = new System.Xml.XmlDocument();
-                var xml = cardElement.Speak;
+                var xml = adaptiveElement.Speak;
                 if (!xml.Trim().StartsWith("<"))
                     xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Speak>{xml}</Speak>";
                 else if (!xml.StartsWith("<?xml "))

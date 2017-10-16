@@ -16,32 +16,32 @@ namespace AdaptiveCards.Rendering.Wpf
 
     public static partial class XamlTextBlock
     {
-        public static FrameworkElement Render(TextBlock textBlock, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTextBlock textBlock, RenderContext context)
         {
             var uiTextBlock = Wpf.XamlTextBlock.CreateControl(textBlock, context);
 
             FontColorConfig colorOption;
             switch (textBlock.Color)
             {
-                case TextColor.Accent:
+                case AdaptiveTextColor.Accent:
                     colorOption = context.Config.ContainerStyles.Default.FontColors.Accent;
                     break;
-                case TextColor.Attention:
+                case AdaptiveTextColor.Attention:
                     colorOption = context.Config.ContainerStyles.Default.FontColors.Attention;
                     break;
-                case TextColor.Dark:
+                case AdaptiveTextColor.Dark:
                     colorOption = context.Config.ContainerStyles.Default.FontColors.Dark;
                     break;
-                case TextColor.Good:
+                case AdaptiveTextColor.Good:
                     colorOption = context.Config.ContainerStyles.Default.FontColors.Good;
                     break;
-                case TextColor.Light:
+                case AdaptiveTextColor.Light:
                     colorOption = context.Config.ContainerStyles.Default.FontColors.Light;
                     break;
-                case TextColor.Warning:
+                case AdaptiveTextColor.Warning:
                     colorOption = context.Config.ContainerStyles.Default.FontColors.Warning;
                     break;
-                case TextColor.Default:
+                case AdaptiveTextColor.Default:
                 default:
                     colorOption = context.Config.ContainerStyles.Default.FontColors.Default;
                     break;
@@ -54,19 +54,19 @@ namespace AdaptiveCards.Rendering.Wpf
 
             switch (textBlock.Size)
             {
-                case TextSize.Small:
+                case AdaptiveTextSize.Small:
                     uiTextBlock.FontSize = context.Config.FontSizes.Small;
                     break;
-                case TextSize.Medium:
+                case AdaptiveTextSize.Medium:
                     uiTextBlock.FontSize = context.Config.FontSizes.Medium;
                     break;
-                case TextSize.Large:
+                case AdaptiveTextSize.Large:
                     uiTextBlock.FontSize = context.Config.FontSizes.Large;
                     break;
-                case TextSize.ExtraLarge:
+                case AdaptiveTextSize.ExtraLarge:
                     uiTextBlock.FontSize = context.Config.FontSizes.ExtraLarge;
                     break;
-                case TextSize.Default:
+                case AdaptiveTextSize.Default:
                 default:
                     uiTextBlock.FontSize = context.Config.FontSizes.Default;
                     break;

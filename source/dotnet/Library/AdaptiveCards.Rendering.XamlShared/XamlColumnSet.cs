@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlColumnSet 
     {
-        public static FrameworkElement Render(ColumnSet columnSet, RenderContext context)
+        public static FrameworkElement Render(AdaptiveColumnSet columnSet, RenderContext context)
         {
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
@@ -25,7 +25,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 // Add vertical Seperator
                 if (uiColumnSet.ColumnDefinitions.Count > 0)
                 {
-                    if (column.Separator || column.Spacing != Spacing.None)
+                    if (column.Separator || column.Spacing != AdaptiveSpacing.None)
                     {
 
                         var uiSep = new Grid();
@@ -59,9 +59,9 @@ namespace AdaptiveCards.Rendering.Wpf
 #pragma warning disable CS0618 // Type or member is obsolete
                     width = column.Size?.ToLower();
 #pragma warning restore CS0618 // Type or member is obsolete
-                if (width == null || width == ColumnWidth.Stretch.ToLower())
+                if (width == null || width == AdaptiveColumnWidth.Stretch.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                else if (width == ColumnWidth.Auto.ToLower())
+                else if (width == AdaptiveColumnWidth.Auto.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 else
                 {

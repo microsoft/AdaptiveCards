@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlContainer
     {
-        public static FrameworkElement Render(Container container, RenderContext context)
+        public static FrameworkElement Render(AdaptiveContainer container, RenderContext context)
         {
             var containerStyle = context.Config.ContainerStyles.Default;
             var uiContainer = new Grid();
@@ -46,7 +46,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #endif 
         }
 
-        public static void AddContainerElements(Grid uiContainer, List<CardElement> elements, RenderContext context)
+        public static void AddContainerElements(Grid uiContainer, List<AdaptiveElement> elements, RenderContext context)
         {
             foreach (var cardElement in elements)
             {
@@ -65,9 +65,9 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static void AddSeperator(RenderContext context, CardElement element, Grid uiContainer)
+        public static void AddSeperator(RenderContext context, AdaptiveElement element, Grid uiContainer)
         {
-            if (element.Spacing == Spacing.None && !element.Separator)
+            if (element.Spacing == AdaptiveSpacing.None && !element.Separator)
                 return;
 
             var uiSep = new Grid();

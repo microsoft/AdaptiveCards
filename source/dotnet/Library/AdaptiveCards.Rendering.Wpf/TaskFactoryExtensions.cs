@@ -8,7 +8,7 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         private static readonly TaskScheduler _staScheduler = new StaTaskScheduler(numberOfThreads: Environment.ProcessorCount);
 
-        public static Task<TResult> StartNewSta<TResult>(this TaskFactory factory, Func<TResult> action)
+        public static Task<T> StartNewSta<T>(this TaskFactory factory, Func<T> action)
         {
             return factory.StartNew(action, CancellationToken.None, TaskCreationOptions.None, _staScheduler);
         }

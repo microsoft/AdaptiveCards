@@ -13,16 +13,16 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlColumn
     {
-        public static FrameworkElement Render(Column column, RenderContext context)
+        public static FrameworkElement Render(AdaptiveColumn adaptiveColumn, RenderContext context)
         {
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Column");
 
-            XamlContainer.AddContainerElements(uiContainer, column.Items, context);
+            XamlContainer.AddContainerElements(uiContainer, adaptiveColumn.Items, context);
 
-            if (column.SelectAction != null)
+            if (adaptiveColumn.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(column.SelectAction);//, new RenderContext(this.actionCallback, this.missingDataCallback));
+                var uiButton = (Button)context.Render(adaptiveColumn.SelectAction);//, new RenderContext(this.actionCallback, this.missingDataCallback));
                 if (uiButton != null)
                 {
                     uiButton.Content = uiContainer;

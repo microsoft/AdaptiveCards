@@ -22,14 +22,14 @@ namespace AdaptiveCards.Test
   ]
 }").Card;
 
-            TextBlock tb = card.Body[0] as TextBlock;
+            AdaptiveTextBlock tb = card.Body[0] as AdaptiveTextBlock;
 
-            Assert.AreEqual(Spacing.Large, tb.Spacing);
+            Assert.AreEqual(AdaptiveSpacing.Large, tb.Spacing);
             Assert.AreEqual(true, tb.Separator);
 
             // Assert legacy prop
 #pragma warning disable 612, 618
-            Assert.AreEqual(SeparationStyle.Strong, tb.Separation);
+            Assert.AreEqual(AdaptiveSeparationStyle.Strong, tb.Separation);
 #pragma warning restore 612, 618
 
             string json = card.ToJson();
@@ -51,9 +51,9 @@ namespace AdaptiveCards.Test
   ]
 }").Card;
 
-            TextBlock tb = card.Body[0] as TextBlock;
+            AdaptiveTextBlock tb = card.Body[0] as AdaptiveTextBlock;
 
-            Assert.AreEqual(Spacing.Default, tb.Spacing);
+            Assert.AreEqual(AdaptiveSpacing.Default, tb.Spacing);
             Assert.AreEqual(false, tb.Separator);
 
             string json = card.ToJson();
@@ -93,16 +93,16 @@ namespace AdaptiveCards.Test
 }").Card;
 
 #pragma warning disable 612, 618
-            Assert.AreEqual(SeparationStyle.None, card.Body[0].Separation);
-            Assert.AreEqual(SeparationStyle.Default, card.Body[1].Separation);
-            Assert.AreEqual(SeparationStyle.Default, card.Body[2].Separation);
-            Assert.AreEqual(SeparationStyle.Strong, card.Body[3].Separation);
+            Assert.AreEqual(AdaptiveSeparationStyle.None, card.Body[0].Separation);
+            Assert.AreEqual(AdaptiveSeparationStyle.Default, card.Body[1].Separation);
+            Assert.AreEqual(AdaptiveSeparationStyle.Default, card.Body[2].Separation);
+            Assert.AreEqual(AdaptiveSeparationStyle.Strong, card.Body[3].Separation);
 #pragma warning restore 612, 618
 
-            Assert.AreEqual(Spacing.None, card.Body[0].Spacing);
-            Assert.AreEqual(Spacing.Default, card.Body[1].Spacing);
-            Assert.AreEqual(Spacing.Default, card.Body[2].Spacing);
-            Assert.AreEqual(Spacing.Large, card.Body[3].Spacing);
+            Assert.AreEqual(AdaptiveSpacing.None, card.Body[0].Spacing);
+            Assert.AreEqual(AdaptiveSpacing.Default, card.Body[1].Spacing);
+            Assert.AreEqual(AdaptiveSpacing.Default, card.Body[2].Spacing);
+            Assert.AreEqual(AdaptiveSpacing.Large, card.Body[3].Spacing);
 
             Assert.AreEqual(false, card.Body[0].Separator);
             Assert.AreEqual(false, card.Body[1].Separator);
@@ -111,18 +111,18 @@ namespace AdaptiveCards.Test
 
             // Make sure assigning via object model works correctly too
 #pragma warning disable 612, 618
-            card.Body[0].Separation = SeparationStyle.Strong;
-            card.Body[1].Separation = SeparationStyle.Default;
-            card.Body[2].Separation = SeparationStyle.None;
+            card.Body[0].Separation = AdaptiveSeparationStyle.Strong;
+            card.Body[1].Separation = AdaptiveSeparationStyle.Default;
+            card.Body[2].Separation = AdaptiveSeparationStyle.None;
 
-            Assert.AreEqual(SeparationStyle.Strong, card.Body[0].Separation);
-            Assert.AreEqual(SeparationStyle.Default, card.Body[1].Separation);
-            Assert.AreEqual(SeparationStyle.None, card.Body[2].Separation);
+            Assert.AreEqual(AdaptiveSeparationStyle.Strong, card.Body[0].Separation);
+            Assert.AreEqual(AdaptiveSeparationStyle.Default, card.Body[1].Separation);
+            Assert.AreEqual(AdaptiveSeparationStyle.None, card.Body[2].Separation);
 #pragma warning restore 612, 618
 
-            Assert.AreEqual(Spacing.Large, card.Body[0].Spacing);
-            Assert.AreEqual(Spacing.Default, card.Body[1].Spacing);
-            Assert.AreEqual(Spacing.None, card.Body[2].Spacing);
+            Assert.AreEqual(AdaptiveSpacing.Large, card.Body[0].Spacing);
+            Assert.AreEqual(AdaptiveSpacing.Default, card.Body[1].Spacing);
+            Assert.AreEqual(AdaptiveSpacing.None, card.Body[2].Spacing);
 
             Assert.AreEqual(true, card.Body[0].Separator);
             Assert.AreEqual(false, card.Body[1].Separator);
@@ -132,15 +132,15 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestAllSpacingValues()
         {
-            TestSpacing(Spacing.Small, "small");
-            TestSpacing(Spacing.Default, "default");
-            TestSpacing(Spacing.Medium, "medium");
-            TestSpacing(Spacing.Large, "large");
-            TestSpacing(Spacing.ExtraLarge, "extraLarge");
-            TestSpacing(Spacing.Padding, "padding");
+            TestSpacing(AdaptiveSpacing.Small, "small");
+            TestSpacing(AdaptiveSpacing.Default, "default");
+            TestSpacing(AdaptiveSpacing.Medium, "medium");
+            TestSpacing(AdaptiveSpacing.Large, "large");
+            TestSpacing(AdaptiveSpacing.ExtraLarge, "extraLarge");
+            TestSpacing(AdaptiveSpacing.Padding, "padding");
         }
 
-        private void TestSpacing(Spacing expected, string spacingString)
+        private void TestSpacing(AdaptiveSpacing expected, string spacingString)
         {
             AdaptiveCard card = AdaptiveCard.FromJson(@"{
   ""type"": ""AdaptiveCard"",
@@ -154,13 +154,13 @@ namespace AdaptiveCards.Test
   ]
 }").Card;
 
-            TextBlock tb = card.Body[0] as TextBlock;
+            AdaptiveTextBlock tb = card.Body[0] as AdaptiveTextBlock;
             Assert.AreEqual(expected, tb.Spacing);
 
             string json = card.ToJson();
             string str = $@"""spacing"":""{spacingString}""";
 
-            if (expected == Spacing.Default)
+            if (expected == AdaptiveSpacing.Default)
             {
                 Assert.IsFalse(json.Contains(str));
             }

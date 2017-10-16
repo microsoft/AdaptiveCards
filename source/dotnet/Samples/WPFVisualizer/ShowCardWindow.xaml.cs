@@ -29,7 +29,7 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var renderer = new AdaptiveCardRenderer(new HostConfig())
+            var renderer = new AdaptiveCardRenderer(new AdaptiveHostConfig())
             {
                 Resources = this._resources
             };
@@ -44,7 +44,7 @@ namespace WpfVisualizer
             }
         }
 
-        private void OnAction(object sender, ActionEventArgs e)
+        private void OnAction(object sender, AdaptiveActionEventArgs e)
         {
             if (e.Action is AC.OpenUrlAction)
             {

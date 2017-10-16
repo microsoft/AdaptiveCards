@@ -12,11 +12,11 @@ namespace AdaptiveCards.Html.Test
         [TestMethod]
         public void TextBlockRender_ParagraphElementStylesAdded()
         {
-            var renderContext = new RenderContext(
-                new HostConfig(),
-                new ElementRenderers<HtmlTag, RenderContext>());
+            var renderContext = new AdaptiveRendererContext(
+                new AdaptiveHostConfig(),
+                new AdaptiveElementRenderers<HtmlTag, AdaptiveRendererContext>());
 
-            var textBlock = new TextBlock
+            var textBlock = new AdaptiveTextBlock
             {
                 Text = "first line\n\nsecond line",
             };
@@ -31,12 +31,12 @@ namespace AdaptiveCards.Html.Test
 
         private class TestHtmlRenderer : AdaptiveCardRenderer
         {
-            public TestHtmlRenderer(HostConfig config)
+            public TestHtmlRenderer(AdaptiveHostConfig config)
                 : base(config)
             {
             }
 
-            public static HtmlTag CallTextBlockRender(TextBlock element, RenderContext context)
+            public static HtmlTag CallTextBlockRender(AdaptiveTextBlock element, AdaptiveRendererContext context)
             {
                 return TextBlockRender(element, context);
             }

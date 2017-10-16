@@ -7,9 +7,9 @@ using System.Windows.Controls.Primitives;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
-    public static partial class XamlActionSet
+    public static class AdaptiveActionSetRenderer
     {
-        public static void AddActions(Grid uiContainer, List<ActionBase> actions, RenderContext context)
+        public static void AddActions(Grid uiContainer, List<AdaptiveActionBase> actions, AdaptiveRenderContext context)
         {
             var maxActions = context.Config.Actions.MaxActions;
             var actionsToProcess = actions
@@ -30,7 +30,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 if (uiContainer.RowDefinitions.Count > 0)
                 {
-                    XamlContainer.AddSeperator(context, new Container(), uiContainer);
+                    AdaptiveContainerRenderer.AddSeperator(context, new AdaptiveContainer(), uiContainer);
                 }
                 uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);

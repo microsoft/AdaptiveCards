@@ -54,7 +54,7 @@ namespace Render2Html
                     {
                         AdaptiveCard card = parseResult.Card;
 
-                        AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(new HostConfig()
+                        AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(new AdaptiveHostConfig()
                         {
                             SupportsInteractivity = supportsInteractivity
                         });

@@ -126,9 +126,10 @@ namespace AdaptiveCards.Test
         public void TestChoiceSetExpanded()
         {
             var card = new AdaptiveCard();
-            card.Body.Add(new ChoiceSet()
+            card.Body.Add(new AdaptiveChoiceSetInput()
             {
-                Style = ChoiceInputStyle.Expanded
+                Id = "choiceTest",
+                Style = AdaptiveChoiceInputStyle.Expanded
             });
 
             var expected = @"""style"":""expanded""";
