@@ -268,7 +268,7 @@ namespace AdaptiveCardTestApp.ViewModels
                 catch { }
 
                 // If no error, update the image file
-                if (ActualError != null)
+                if (ActualError == null)
                 {
                     var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".jxr", CreationCollisionOption.ReplaceExisting);
                     await ActualImageFile.CopyAndReplaceAsync(expectedFile);
