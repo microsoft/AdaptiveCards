@@ -30,7 +30,8 @@ namespace AdaptiveCards.Rendering.Wpf
             else
             {
                 AdaptiveContainer container = AdaptiveTypedElementConverter.CreateElement<AdaptiveContainer>();
-                container.Separation = input.Separation;
+                container.Spacing = input.Spacing;
+                container.Separator = input.Separator;
                 AdaptiveTextBlock textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 container.Items.Add(textBlock);

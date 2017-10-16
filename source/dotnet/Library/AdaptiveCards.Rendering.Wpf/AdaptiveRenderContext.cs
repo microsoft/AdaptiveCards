@@ -112,7 +112,6 @@ namespace AdaptiveCards.Rendering.Wpf
             foreach (var id in this.InputBindings.Keys)
             {
                 var value = this.InputBindings[id]();
-                bool hasValue = false;
                 if (value != null)
                 {
                     data[id] = JToken.FromObject(value);
