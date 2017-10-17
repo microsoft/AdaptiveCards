@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Xml.Serialization;
+
 
 namespace AdaptiveCards
 {

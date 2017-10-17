@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
-using System.Xml.Serialization;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using ICSharpCode.AvalonEdit.Document;
@@ -84,19 +83,10 @@ namespace WpfVisualizer
                 {
                     cardError.Children.Clear();
 
-                    if (textBox.Text.Trim().StartsWith("<"))
-                    {
-                        var types = Assembly.GetAssembly(typeof(AC.AdaptiveCard)).ExportedTypes
-                            .Where(t => t.IsAssignableFrom(typeof(AC.AdaptiveTypedElement))).ToArray();
-                        var ser = new XmlSerializer(typeof(AC.AdaptiveCard), types);
-                        _card = (AC.AdaptiveCard)ser.Deserialize(new StringReader(textBox.Text));
-                    }
-                    else
-                    {
-                        var result = AC.AdaptiveCard.FromJson(textBox.Text);
-                        if (result.Card != null)
-                            _card = result.Card;
-                    }
+                    var result = AC.AdaptiveCard.FromJson(textBox.Text);
+                    if (result.Card != null)
+                        _card = result.Card;
+                    
 
                     cardGrid.Children.Clear();
                     if (_card != null)

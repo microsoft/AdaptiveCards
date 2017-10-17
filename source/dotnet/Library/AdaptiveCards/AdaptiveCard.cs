@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -9,6 +8,9 @@ namespace AdaptiveCards
     ///     Adaptive card which has flexible container
     /// </summary>
     public class AdaptiveCard : AdaptiveTypedElement
+#if WINDOWS_UWP
+        , Windows.UI.Shell.IAdaptiveCard
+#endif
     {
         public const string TypeName = "AdaptiveCard";
 
@@ -32,7 +34,11 @@ namespace AdaptiveCards
                     card = null;
                 }
             }
-            catch { }
+
+            catch
+            {
+                // TODO: Return errors here
+            }
 
             return new AdaptiveCardParseResult(card);
         }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Xml.Serialization;
+
 using System.Collections.Generic;
 
 namespace AdaptiveCards

@@ -1,7 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -16,9 +15,6 @@ namespace AdaptiveCards
 
         [JsonProperty(Order = -2, Required = Required.Always)]
         [JsonRequired]
-#if NET452
-        [XmlIgnore]
-#endif
         public string Type { get; set; }
 
         protected TENum? GetEnum<TENum>(string value)

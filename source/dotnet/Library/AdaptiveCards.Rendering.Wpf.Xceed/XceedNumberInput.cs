@@ -6,7 +6,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XceedNumberInput
     {
-        public static FrameworkElement Render(AdaptiveCards.AdaptiveNumberInput input, AdaptiveRenderContext context)
+        public static FrameworkElement Render(AdaptiveNumberInput input, AdaptiveRenderContext context)
         {
             if (context.Config.SupportsInteractivity)
             {
