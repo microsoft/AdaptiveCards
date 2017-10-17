@@ -3,7 +3,7 @@
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
-	"backgroundImage": "https://picsum.photos/500?image=943",
+	"backgroundImage": "https://picsum.photos/1000?image=943",
 	"body": [
 		{
 			"type": "ColumnSet",

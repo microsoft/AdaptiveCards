@@ -35,6 +35,7 @@ namespace AdaptiveCardTestApp.ViewModels
             {
                 Passed.Results.Remove(item);
                 Failed.Results.Remove(item);
+                FailedButSourceWasChanged.Results.Remove(item);
                 New.Results.Remove(item);
 
                 switch (item.Status)
