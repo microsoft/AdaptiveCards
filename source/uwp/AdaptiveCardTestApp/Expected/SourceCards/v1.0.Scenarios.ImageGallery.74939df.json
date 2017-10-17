@@ -20,6 +20,10 @@
             "images": [
                 {
                     "type": "Image",
+                    "url": "https://picsum.photos/300/200?image=0"
+                },
+                {
+                    "type": "Image",
                     "url": "https://picsum.photos/200/200?image=100"
                 },
                 {
@@ -49,10 +53,6 @@
                 {
                     "type": "Image",
                     "url": "https://picsum.photos/300/200?image=800"
-                },
-                {
-                    "type": "Image",
-                    "url": "https://picsum.photos/300/200?image=900"
                 }
             ]
         }
