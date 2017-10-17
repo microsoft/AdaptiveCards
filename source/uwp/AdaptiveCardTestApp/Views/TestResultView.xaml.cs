@@ -96,7 +96,7 @@ namespace AdaptiveCardTestApp.Views
             var dontWait = new ContentDialog()
             {
                 Content = diffView,
-                CloseButtonText = "Close",
+                PrimaryButtonText = "Close",
                 MinWidth = this.ActualWidth,
                 MaxWidth = this.ActualWidth
             }.ShowAsync();
