@@ -31,56 +31,56 @@ namespace AdaptiveCardTestApp.Views
 
         public void ShowDiff(string previous, string newContent)
         {
-            SideBySideDiffModel model = new SideBySideDiffBuilder(new Differ()).BuildDiffModel(previous, newContent);
+            //SideBySideDiffModel model = new SideBySideDiffBuilder(new Differ()).BuildDiffModel(previous, newContent);
 
-            DisplayInto(StackPanelOldLines, model.OldText);
-            DisplayInto(StackPanelNewLines, model.NewText);
+            //DisplayInto(StackPanelOldLines, model.OldText);
+            //DisplayInto(StackPanelNewLines, model.NewText);
 
-            NoDifferenceView.Visibility = model.NewText.Lines.All(i => i.Type == ChangeType.Unchanged) ? Visibility.Visible : Visibility.Collapsed;
-            if (NoDifferenceView.Visibility == Visibility.Visible)
-            {
-                TextBlockNoDifference.Text = previous == newContent ? "No difference" : "Only whitespace changed";
-            }
+            //NoDifferenceView.Visibility = model.NewText.Lines.All(i => i.Type == ChangeType.Unchanged) ? Visibility.Visible : Visibility.Collapsed;
+            //if (NoDifferenceView.Visibility == Visibility.Visible)
+            //{
+            //    TextBlockNoDifference.Text = previous == newContent ? "No difference" : "Only whitespace changed";
+            //}
         }
 
-        private void DisplayInto(StackPanel sp, DiffPaneModel model)
-        {
-            sp.Children.Clear();
+        //private void DisplayInto(StackPanel sp, DiffPaneModel model)
+        //{
+        //    sp.Children.Clear();
 
-            foreach (var line in model.Lines)
-            {
-                sp.Children.Add(new Border()
-                {
-                    Background = GetBackgroundBrush(line.Type),
-                    Child = new TextBlock()
-                    {
-                        Text = line.Text ?? ""
-                    }
-                });
-            }
-        }
+        //    foreach (var line in model.Lines)
+        //    {
+        //        sp.Children.Add(new Border()
+        //        {
+        //            Background = GetBackgroundBrush(line.Type),
+        //            Child = new TextBlock()
+        //            {
+        //                Text = line.Text ?? ""
+        //            }
+        //        });
+        //    }
+        //}
 
-        private static Brush GetBackgroundBrush(ChangeType changeType)
-        {
-            switch (changeType)
-            {
-                case ChangeType.Deleted:
-                    return new SolidColorBrush(Colors.LightPink);
+        //private static Brush GetBackgroundBrush(ChangeType changeType)
+        //{
+        //    switch (changeType)
+        //    {
+        //        case ChangeType.Deleted:
+        //            return new SolidColorBrush(Colors.LightPink);
 
-                case ChangeType.Imaginary:
-                    return new SolidColorBrush(Colors.LightGray);
+        //        case ChangeType.Imaginary:
+        //            return new SolidColorBrush(Colors.LightGray);
 
-                case ChangeType.Inserted:
-                    return new SolidColorBrush(Colors.LightGreen);
+        //        case ChangeType.Inserted:
+        //            return new SolidColorBrush(Colors.LightGreen);
 
-                case ChangeType.Modified:
-                    return new SolidColorBrush(Colors.Yellow);
+        //        case ChangeType.Modified:
+        //            return new SolidColorBrush(Colors.Yellow);
 
-                case ChangeType.Unchanged:
-                default:
-                    return null;
-            }
-        }
+        //        case ChangeType.Unchanged:
+        //        default:
+        //            return null;
+        //    }
+        //}
 
         private void ScrollViewerOld_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
