@@ -34,7 +34,7 @@ function setContent(element) {
     contentContainer.appendChild(element);
 }
 
-function renderCard(): HTMLElement {
+function renderCard(target: HTMLElement) {
     document.getElementById("errorContainer").hidden = true;
     lastValidationErrors = [];
 
@@ -54,23 +54,21 @@ function renderCard(): HTMLElement {
 
     showValidationErrors();
 
-    return hostContainer.render(adaptiveCard.render(), adaptiveCard.renderSpeech());
+    hostContainer.render(adaptiveCard, target);
 }
 
 function tryRenderCard() {
-    var renderedCard: HTMLElement;
-
-    try {
-        renderedCard = renderCard();
-    }
-    catch (ex) {
-        renderedCard = document.createElement("div");
-        renderedCard.innerText = ex.message;
-    }
-
     var contentContainer = document.getElementById("content");
     contentContainer.innerHTML = '';
-    contentContainer.appendChild(renderedCard);
+
+    try {
+        renderCard(contentContainer);
+    }
+    catch (ex) {
+        var renderedCard = document.createElement("div");
+        renderedCard.innerText = ex.message;
+        contentContainer.appendChild(renderedCard);
+    }
 
     try {
         sessionStorage.setItem("AdaptivePayload", currentCardPayload);
@@ -411,15 +409,14 @@ function showPopupCard(action: Adaptive.ShowCardAction) {
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
 
-    cardContainer.appendChild(hostContainer.render(action.card.render(), action.card.renderSpeech()));
-
-    overlayElement.appendChild(cardContainer);
-
-    document.body.appendChild(overlayElement);
-
     var cardContainerBounds = cardContainer.getBoundingClientRect();
     cardContainer.style.left = (window.innerWidth - cardContainerBounds.width) / 2 + "px";
     cardContainer.style.top = (window.innerHeight - cardContainerBounds.height) / 2 + "px";
+
+    overlayElement.appendChild(cardContainer);
+    document.body.appendChild(overlayElement);
+
+    hostContainer.render(action.card, cardContainer);
 }
 
 function showValidationErrors() {

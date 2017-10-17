@@ -61,6 +61,11 @@ export abstract class CardElement {
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
 
+    // Array of functions that will execute after this element is rendered
+    // The functions should take no args and return void (use arrow functions
+    // to preserve local and instance variables)
+    private _renderCallbacks: Array<() => void> = [];
+
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
             {
@@ -126,6 +131,10 @@ export abstract class CardElement {
 
     protected setParent(value: CardElement) {
         this._parent = value;
+    }
+
+    protected addRenderCallback(fn: () => void) {
+        this._renderCallbacks.push(fn);
     }
 
     protected get useDefaultSizing(): boolean {
@@ -236,7 +245,7 @@ export abstract class CardElement {
         return [];
     }
 
-    render(): HTMLElement {
+    renderElement(): HTMLElement {
         this._renderedElement = this.internalRender();
         this._separatorElement = this.internalRenderSeparator();
 
@@ -249,6 +258,12 @@ export abstract class CardElement {
         }
 
         return this._renderedElement;
+    }
+
+    onRender() {
+        for (let fn of this._renderCallbacks) {
+            fn();
+        }
     }
 
     updateLayout(processChildren: boolean = true) {
@@ -375,6 +390,18 @@ export abstract class CardElement {
 
     get separatorElement(): HTMLElement {
         return this._separatorElement;
+    }
+}
+
+export abstract class CardElementWithChildren extends CardElement {
+    protected abstract get children(): Array<CardElement>;
+
+    onRender() {
+        for (let child of this.children) {
+            child.onRender();
+        }
+
+        super.onRender();
     }
 }
 
@@ -642,7 +669,7 @@ export class FactSet extends CardElement {
                 textBlock.wrap = this.hostConfig.factSet.title.wrap;
                 textBlock.spacing = Enums.Spacing.None;
 
-                Utils.appendChild(tdElement, textBlock.render());
+                Utils.appendChild(tdElement, textBlock.renderElement());
                 Utils.appendChild(trElement, tdElement);
 
                 tdElement = document.createElement("td");
@@ -659,7 +686,7 @@ export class FactSet extends CardElement {
                 textBlock.wrap = this.hostConfig.factSet.value.wrap;
                 textBlock.spacing = Enums.Spacing.None;
 
-                Utils.appendChild(tdElement, textBlock.render());
+                Utils.appendChild(tdElement, textBlock.renderElement());
                 Utils.appendChild(trElement, tdElement);
                 Utils.appendChild(element, trElement);
             }
@@ -895,8 +922,12 @@ export class Image extends CardElement {
     }
 }
 
-export class ImageSet extends CardElement {
+export class ImageSet extends CardElementWithChildren {
     private _images: Array<Image> = [];
+
+    protected get children(): Array<Image> {
+        return this._images;
+    }
 
     protected internalRender(): HTMLElement {
         let element: HTMLElement = null;
@@ -907,7 +938,7 @@ export class ImageSet extends CardElement {
             element.style.flexWrap = "wrap";
 
             for (var i = 0; i < this._images.length; i++) {
-                let renderedImage = this._images[i].render();
+                let renderedImage = this._images[i].renderElement();
 
                 renderedImage.style.display = "inline-flex";
                 renderedImage.style.margin = "0px";
@@ -1122,7 +1153,7 @@ export class ToggleInput extends Input {
         label.hostConfig = this.hostConfig;
         label.text = this.title;
 
-        var labelElement = label.render();
+        var labelElement = label.renderElement();
         labelElement.style.display = "inline-block";
         labelElement.style.marginLeft = "6px";
         labelElement.style.verticalAlign = "middle";
@@ -1234,7 +1265,7 @@ export class ChoiceSetInput extends Input {
                     label.hostConfig = this.hostConfig;
                     label.text = this.choices[i].title;
 
-                    var labelElement = label.render();
+                    var labelElement = label.renderElement();
                     labelElement.style.display = "inline-block";
                     labelElement.style.marginLeft = "6px";
                     labelElement.style.verticalAlign = "middle";
@@ -1283,7 +1314,7 @@ export class ChoiceSetInput extends Input {
                 label.hostConfig = this.hostConfig;
                 label.text = this.choices[i].title;
 
-                var labelElement = label.render();
+                var labelElement = label.renderElement();
                 labelElement.style.display = "inline-block";
                 labelElement.style.marginLeft = "6px";
                 labelElement.style.verticalAlign = "middle";
@@ -1848,7 +1879,7 @@ class ActionCollection {
 
     showStatusCard(status: AdaptiveCard) {
         invokeSetParent(status, this._owner);
-        this._statusCard = status.render();
+        this._statusCard = status.renderElement();
 
         this.refreshContainer();
     }
@@ -1916,7 +1947,7 @@ class ActionCollection {
     private showActionCard(action: ShowCardAction) {
         if (action.card == null) return;
 
-        var renderedCard = action.card.render();
+        var renderedCard = action.card.renderElement();
 
         this._actionCard = renderedCard;
         this._expandedAction = action;
@@ -2294,7 +2325,7 @@ export class BackgroundImage {
     }
 }
 
-export class Container extends CardElement {
+export class Container extends CardElementWithChildren {
     private _selectAction: Action;
 
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
@@ -2318,6 +2349,10 @@ export class Container extends CardElement {
 
     private get hasExplicitStyle(): boolean {
         return this._style != null;
+    }
+
+    protected get children(): Array<CardElement> {
+        return this._items;
     }
 
     protected showBottomSpacer(requestingElement: CardElement) {
@@ -2515,7 +2550,7 @@ export class Container extends CardElement {
             var renderedElementCount: number = 0;
 
             for (var i = 0; i < this._items.length; i++) {
-                var renderedElement = this.isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].render() : null;
+                var renderedElement = this.isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].renderElement() : null;
 
                 if (renderedElement) {
                     if (renderedElementCount > 0 && this._items[i].separatorElement) {
@@ -2863,10 +2898,13 @@ export class Column extends Container {
     }
 }
 
-export class ColumnSet extends CardElement {
+export class ColumnSet extends CardElementWithChildren {
     private _columns: Array<Column> = [];
     private _selectAction: Action;
-    
+
+    protected get children(): Array<Column> {
+        return this._columns;
+    }
     
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
@@ -2913,7 +2951,7 @@ export class ColumnSet extends CardElement {
                     this._columns[i]["_computedWeight"] = computedWeight;
                 }
 
-                var renderedColumn = this._columns[i].render();
+                var renderedColumn = this._columns[i].renderElement();
 
                 if (renderedColumn) {
                     if (renderedColumnCount > 0 && this._columns[i].separatorElement) {
@@ -3389,7 +3427,7 @@ export class AdaptiveCard extends ContainerWithActions {
         super.parse(json, "body");
     }
 
-    render(): HTMLElement {
+    renderElement(): HTMLElement {
         var renderedCard: HTMLElement;
 
         if (!this.isVersionSupported()) {
@@ -3397,7 +3435,7 @@ export class AdaptiveCard extends ContainerWithActions {
             renderedCard.innerHTML = this.fallbackText ? this.fallbackText : "The specified card version is not supported.";
         }
         else {
-            renderedCard = super.render();
+            renderedCard = super.renderElement();
 
             if (renderedCard) {
                 renderedCard.tabIndex = 0;
@@ -3409,6 +3447,13 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedCard;
+    }
+
+    render(targetContainer: HTMLElement): HTMLElement {
+        var element = this.renderElement();
+        targetContainer.appendChild(element);
+        this.onRender();
+        return element;
     }
 
     canContentBleed(): boolean {
@@ -3435,8 +3480,8 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return this.hostConfig.actions.showCard.style ? this.hostConfig.actions.showCard.style : Enums.ContainerStyle.Emphasis;
     }
 
-    render() {
-        var renderedCard = super.render();
+    renderElement() {
+        var renderedCard = super.renderElement();
         renderedCard.setAttribute("aria-live", "polite");
         renderedCard.removeAttribute("tabindex");
         return renderedCard;

@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -22,17 +23,15 @@ export class BingContainer extends HostContainer {
         this._width = width;
     }
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement)  {
         var element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.backgroundColor = BingContainer.backgroundColor;
         element.style.overflow = "hidden";
+        target.appendChild(element);
 
+        var renderedCard = adaptiveCard.render(element);
         renderedCard.style.height = "100%";
-
-        element.appendChild(renderedCard);
-
-        return element;
     }
 
     public getHostConfig(): HostConfig {

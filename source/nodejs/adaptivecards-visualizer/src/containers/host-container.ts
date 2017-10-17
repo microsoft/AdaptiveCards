@@ -1,4 +1,5 @@
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -223,9 +224,7 @@ export abstract class HostContainer {
         });
     }
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
-        return null;
-    }
+    protected abstract renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement);
 
     protected renderSpeech(speechString: string, showXml: boolean = false): HTMLElement {
         if (!speechString) {
@@ -290,22 +289,18 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
     }
 
-    render(renderedCard: HTMLElement, speechString: string, showSpeechXml: boolean = false): HTMLElement {
+    render(adaptiveCard: AdaptiveCard, target: HTMLElement, showSpeechXml: boolean = false) {
         var element = document.createElement("div");
+        target.appendChild(element);
 
-        if (renderedCard) {
-            var renderedContainer = this.renderContainer(renderedCard);
+        if (adaptiveCard) {
+            this.renderContainer(adaptiveCard, element);
 
-            if (renderedContainer) {
-                element.appendChild(renderedContainer);
+            var separator = document.createElement("div");
+            separator.style.height = "20px";
+            element.appendChild(separator);
 
-                var separator = document.createElement("div");
-                separator.style.height = "20px";
-
-                element.appendChild(separator);
-            }
-
-            var renderedSpeech = this.renderSpeech(speechString);
+            var renderedSpeech = this.renderSpeech(adaptiveCard.renderSpeech());
 
             if (renderedSpeech) {
                 element.appendChild(renderedSpeech);
@@ -314,8 +309,6 @@ export abstract class HostContainer {
         else {
             element.innerText = "The card is empty."
         }
-
-        return element;
     }
 }
 
