@@ -165,12 +165,6 @@ namespace AdaptiveCardTestApp.ViewModels
 
                     else
                     {
-                        // Replace background image with solid color, since otherwise we run into with pixels not comparing correctly
-                        if (card.BackgroundImage != null)
-                        {
-                            card.BackgroundImage = new Uri("https://lh3.googleusercontent.com/ccPAXz7Y9lQJqF9MaGc_koCjkvKvjD3XH4s8u9e5QZKUjh5BmX6cM7GKGnq-3aVwRw=w300");
-                        }
-
                         var renderer = new AdaptiveCardRenderer()
                         {
                             HostConfig = hostConfig

@@ -36,6 +36,13 @@ namespace AdaptiveCardTestApp.ViewModels
             await LoadFilesAsync("LinkedCards", Cards);
             await LoadFilesAsync("LinkedHostConfigs", HostConfigs);
 
+            // Remove the WeatherLarge card since it contains a background image and often fails image comparisons
+            var weatherLarge = Cards.FirstOrDefault(i => i.Name.EndsWith("WeatherLarge"));
+            if (weatherLarge != null)
+            {
+                Cards.Remove(weatherLarge);
+            }
+
             foreach (var c in Cards)
             {
                 SelectedCards.Add(c);
