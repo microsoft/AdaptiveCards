@@ -13,6 +13,11 @@
     <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
+  
+  <PropertyGroup Condition="'$(WindowsSDKVersion)' == '10.0.16299.0\'">
+    <TargetFrameworks>$(TargetFrameworks);uap10.0</TargetFrameworks>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <NugetTargetMoniker>UAP,Version=v10.0</NugetTargetMoniker>
