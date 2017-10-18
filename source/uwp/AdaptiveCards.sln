@@ -75,8 +75,6 @@ Global
 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|ARM.ActiveCfg = Release|ARM
 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|x64.ActiveCfg = Release|x64
 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|x86.ActiveCfg = Release|x86
-		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|x86.Build.0 = Release|x86
-		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
