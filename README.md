@@ -1,6 +1,6 @@
 
 # Adaptive Cards
-Adaptive Cards are a new way for developers to exchange card content in a common and consistent way.
+Adaptive Cards are a new way for developers to exchange card content in a common and consistent way!
 
 ![adaptive-cards](http://adaptivecards.io/content/overview.jpg)
 
