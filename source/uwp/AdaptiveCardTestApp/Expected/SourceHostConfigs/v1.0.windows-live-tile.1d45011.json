@@ -1,17 +1,17 @@
 {
-  "supportsInteractivity": true,
   "spacing": {
-    "small": 8,
-    "default": 15,
+    "small": 3,
+    "default": 8,
     "medium": 20,
-    "large": 24,
-    "extraLarge": 34,
-    "padding": 12
+    "large": 30,
+    "extraLarge": 40,
+    "padding": 10
   },
   "separator": {
     "lineThickness": 1,
-    "lineColor": "#66FFFFFF"
+    "lineColor": "#FFEEEEEE"
   },
+  "supportsInteractivity": false,
   "fontFamily": "Segoe UI",
   "fontSizes": {
     "small": 12,
@@ -21,13 +21,13 @@
     "extraLarge": 34
   },
   "fontWeights": {
-    "lighter": 400,
-    "default": 500,
-    "bolder": 700
+    "lighter": 200,
+    "default": 400,
+    "bolder": 600
   },
   "containerStyles": {
     "default": {
-      "backgroundColor": "#FF1F1F1F",
+      "backgroundColor": "#FF0078D7",
       "foregroundColors": {
         "default": {
           "default": "#FFFFFFFF",
@@ -60,7 +60,7 @@
       }
     },
     "emphasis": {
-      "backgroundColor": "#11FFFFFF",
+      "backgroundColor": "08000000",
       "foregroundColors": {
         "default": {
           "default": "#FFFFFFFF",
@@ -94,31 +94,21 @@
     }
   },
   "imageSizes": {
-    "small": 32,
-    "medium": 50,
-    "large": 150
+    "small": 40,
+    "medium": 80,
+    "large": 120
   },
-  "actions": {
-    "maxActions": 5,
-    "spacing": "default",
-    "buttonSpacing": 4,
-    "showCard": {
-      "actionMode": "inline",
-      "inlineTopMargin": 12
-    },
-    "actionsOrientation": "horizontal",
-    "actionAlignment": "stretch"
-  },
-  "image": {
-    "size": "medium"
+  "adaptiveCard": {
+    "allowCustomStyle": false
   },
   "imageSet": {
-    "imageSize": "medium"
+    "imageSize": "medium",
+    "maxImageHeight": 100
   },
   "factSet": {
     "title": {
       "color": "default",
-      "size": "normal",
+      "size": "default",
       "isSubtle": false,
       "weight": "bolder",
       "wrap": true,
@@ -126,7 +116,7 @@
     },
     "value": {
       "color": "default",
-      "size": "normal",
+      "size": "default",
       "isSubtle": false,
       "weight": "default",
       "wrap": true

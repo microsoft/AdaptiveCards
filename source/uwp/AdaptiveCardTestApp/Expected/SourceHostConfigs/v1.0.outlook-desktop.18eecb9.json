@@ -5,11 +5,11 @@
     "medium": 20,
     "large": 30,
     "extraLarge": 40,
-    "padding": 10
+    "padding": 20
   },
   "separator": {
     "lineThickness": 1,
-    "lineColor": "#FF444444"
+    "lineColor": "#FFEEEEEE"
   },
   "supportsInteractivity": true,
   "fontFamily": "Segoe UI",
@@ -27,7 +27,7 @@
   },
   "containerStyles": {
     "default": {
-      "backgroundColor": "#FFEAEAEA",
+      "backgroundColor": "#FFFFFFFF",
       "foregroundColors": {
         "default": {
           "default": "#FF333333",
@@ -38,16 +38,16 @@
           "subtle": "#882E89FC"
         },
         "attention": {
-          "default": "#FFFF0000",
-          "subtle": "#DDFF0000"
+          "default": "#FFcc3300",
+          "subtle": "#DDcc3300"
         },
         "good": {
           "default": "#FF54a254",
           "subtle": "#DD54a254"
         },
         "warning": {
-          "default": "#FFc3ab23",
-          "subtle": "#DDc3ab23"
+          "default": "#FFe69500",
+          "subtle": "#DDe69500"
         }
       }
     },
@@ -63,16 +63,16 @@
           "subtle": "#882E89FC"
         },
         "attention": {
-          "default": "#FFFF0000",
-          "subtle": "#DDFF0000"
+          "default": "#FFcc3300",
+          "subtle": "#DDcc3300"
         },
         "good": {
           "default": "#FF54a254",
           "subtle": "#DD54a254"
         },
         "warning": {
-          "default": "#FFc3ab23",
-          "subtle": "#DDc3ab23"
+          "default": "#FFe69500",
+          "subtle": "#DDe69500"
         }
       }
     }
@@ -87,17 +87,14 @@
     "spacing": "default",
     "buttonSpacing": 10,
     "showCard": {
-      "actionMode": "popup",
+      "actionMode": "inline",
       "inlineTopMargin": 16
     },
-    "actionsOrientation": "vertical",
-    "actionAlignment": "stretch"
+    "actionsOrientation": "horizontal",
+    "actionAlignment": "left"
   },
   "adaptiveCard": {
     "allowCustomStyle": false
-  },
-  "image": {
-    "size": "medium"
   },
   "imageSet": {
     "imageSize": "medium",
@@ -119,6 +116,6 @@
       "weight": "default",
       "wrap": true
     },
-    "spacing": 5
+    "spacing": 10
   }
 }

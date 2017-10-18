@@ -9,16 +9,16 @@
   },
   "separator": {
     "lineThickness": 1,
-    "lineColor": "#FFEEEEEE"
+    "lineColor": "#EEEEEE"
   },
-  "supportsInteractivity": true,
-  "fontFamily": "Segoe UI",
-  "fontSizes": {
-    "small": 12,
-    "default": 14,
-    "medium": 17,
-    "large": 21,
-    "extraLarge": 26
+"supportsInteractivity": true,
+"fontFamily": "Segoe UI",
+"fontSizes": {
+   "small": 12,
+   "default": 14,
+   "medium": 17,
+   "large": 21,
+   "extraLarge": 26
   },
   "fontWeights": {
     "lighter": 200,
@@ -95,9 +95,6 @@
   },
   "adaptiveCard": {
     "allowCustomStyle": false
-  },
-  "image": {
-    "size": "medium"
   },
   "imageSet": {
     "imageSize": "medium",

@@ -101,9 +101,6 @@
   "adaptiveCard": {
     "allowCustomStyle": false
   },
-  "image": {
-    "size": "medium"
-  },
   "imageSet": {
     "imageSize": "medium",
     "maxImageHeight": 100
