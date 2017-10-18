@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
     public static class XamlOpenUrlAction
     {
-        public static FrameworkElement Render(OpenUrlAction action, AdaptiveRenderContext context)
+        public static FrameworkElement Render(AdaptiveOpenUrlAction action, AdaptiveRenderContext context)
         {
             if (context.Config.SupportsInteractivity)
             {

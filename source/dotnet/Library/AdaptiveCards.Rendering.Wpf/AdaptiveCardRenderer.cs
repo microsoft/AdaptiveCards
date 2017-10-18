@@ -45,9 +45,9 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveTimeInput>(AdaptiveTimeInputRenderer.Render);
             ElementRenderers.Set<AdaptiveToggleInput>(AdaptiveToggleInputRenderer.Render);
 
-            ElementRenderers.Set<SubmitAction>(XamlSubmitAction.Render);
-            ElementRenderers.Set<OpenUrlAction>(XamlOpenUrlAction.Render);
-            ElementRenderers.Set<ShowCardAction>(XamlShowCardAction.Render);
+            ElementRenderers.Set<AdaptiveSubmitAction>(XamlSubmitAction.Render);
+            ElementRenderers.Set<AdaptiveOpenUrlAction>(XamlOpenUrlAction.Render);
+            ElementRenderers.Set<AdaptiveShowCardAction>(XamlShowCardAction.Render);
         }
 
         /// <summary>

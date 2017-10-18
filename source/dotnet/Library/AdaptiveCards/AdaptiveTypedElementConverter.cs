@@ -33,9 +33,9 @@ namespace AdaptiveCards
             types[AdaptiveChoiceSetInput.TypeName] = typeof(AdaptiveChoiceSetInput);
             types[AdaptiveNumberInput.TypeName] = typeof(AdaptiveNumberInput);
             types[AdaptiveToggleInput.TypeName] = typeof(AdaptiveToggleInput);
-            types[SubmitAction.TypeName] = typeof(SubmitAction);
-            types[OpenUrlAction.TypeName] = typeof(OpenUrlAction);
-            types[ShowCardAction.TypeName] = typeof(ShowCardAction);
+            types[AdaptiveSubmitAction.TypeName] = typeof(AdaptiveSubmitAction);
+            types[AdaptiveOpenUrlAction.TypeName] = typeof(AdaptiveOpenUrlAction);
+            types[AdaptiveShowCardAction.TypeName] = typeof(AdaptiveShowCardAction);
             return types;
         });
 

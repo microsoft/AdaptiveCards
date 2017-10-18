@@ -13,16 +13,16 @@
     <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
-  
-  <PropertyGroup Condition="'$(WindowsSDKVersion)' == '10.0.16299.0\'">
+  <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output --> 
+  <PropertyGroup Condition="$(PATH.Contains('Windows Kits\10'))">
     <TargetFrameworks>$(TargetFrameworks);uap10.0</TargetFrameworks>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+
+  <PropertyGroup Condition="$(TargetFramework) == 'uap10.0' ">
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <NugetTargetMoniker>UAP,Version=v10.0</NugetTargetMoniker>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.16290.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
@@ -31,33 +31,24 @@
     <LanguageTargets>$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
   </PropertyGroup>
 
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0' ">
+  <ItemGroup Condition="$(TargetFramework) == 'uap10.0'">
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
-
-  </ItemGroup>
-  
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
-  </ItemGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net4.5.2|AnyCPU'">
+
+  <PropertyGroup Condition="$(Configuration) == 'Debug'">
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
   </ItemGroup>
 
 </Project>

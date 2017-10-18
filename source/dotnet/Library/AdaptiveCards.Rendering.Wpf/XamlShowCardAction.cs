@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlShowCardAction
     {
-        public static FrameworkElement Render(ShowCardAction action, AdaptiveRenderContext context)
+        public static FrameworkElement Render(AdaptiveShowCardAction action, AdaptiveRenderContext context)
         {
             if (context.Config.SupportsInteractivity)
             {

@@ -84,13 +84,13 @@ namespace AdaptiveCards.Rendering.Html
             this.ElementRenderers.Set<AdaptiveTimeInput>(TimeInputRender);
             this.ElementRenderers.Set<AdaptiveToggleInput>(ToggleInputRender); ;
 
-            this.ElementRenderers.Set<SubmitAction>(SubmitActionRender);
-            this.ElementRenderers.Set<OpenUrlAction>(OpenUrlActionRender);
-            this.ElementRenderers.Set<ShowCardAction>(ShowCardActionRender);
+            this.ElementRenderers.Set<AdaptiveSubmitAction>(SubmitActionRender);
+            this.ElementRenderers.Set<AdaptiveOpenUrlAction>(OpenUrlActionRender);
+            this.ElementRenderers.Set<AdaptiveShowCardAction>(ShowCardActionRender);
         }
 
 
-        protected static HtmlTag OpenUrlActionRender(OpenUrlAction action, AdaptiveRendererContext context)
+        protected static HtmlTag OpenUrlActionRender(AdaptiveOpenUrlAction action, AdaptiveRendererContext context)
         {
             if (!context.Config.SupportsInteractivity)
             {
@@ -111,7 +111,7 @@ namespace AdaptiveCards.Rendering.Html
             return buttonElement;
         }
 
-        protected static HtmlTag ShowCardActionRender(ShowCardAction action, AdaptiveRendererContext context)
+        protected static HtmlTag ShowCardActionRender(AdaptiveShowCardAction action, AdaptiveRendererContext context)
         {
             if (!context.Config.SupportsInteractivity)
             {
@@ -131,7 +131,7 @@ namespace AdaptiveCards.Rendering.Html
             return buttonElement;
         }
 
-        protected static HtmlTag SubmitActionRender(SubmitAction action, AdaptiveRendererContext context)
+        protected static HtmlTag SubmitActionRender(AdaptiveSubmitAction action, AdaptiveRendererContext context)
         {
             if (!context.Config.SupportsInteractivity)
             {
@@ -243,13 +243,13 @@ namespace AdaptiveCards.Rendering.Html
                     var uiAction = context.Render(actions[i]);
                     if (uiAction != null)
                     {
-                        if (actions[i].Type == ShowCardAction.TypeName)
+                        if (actions[i].Type == AdaptiveShowCardAction.TypeName)
                         {
                             // add button-card mapping for clients to implement showcard action
                             var cardId = "ac-showCard" + i;
                             uiAction.Attr("ac-cardId", cardId);
 
-                            var uiCard = context.Render(((ShowCardAction)actions[i]).Card);
+                            var uiCard = context.Render(((AdaptiveShowCardAction)actions[i]).Card);
                             if (uiCard != null)
                             {
                                 uiCard.Attr(cardId, string.Empty)

@@ -185,7 +185,7 @@ namespace WpfVisualizer
         private void _onAction(object sender, AdaptiveActionEventArgs e)
         {
             
-            if (e.Action is AC.OpenUrlAction openUrlAction)
+            if (e.Action is AC.AdaptiveOpenUrlAction openUrlAction)
             {
                 Process.Start(openUrlAction.Url);
             }
@@ -198,7 +198,7 @@ namespace WpfVisualizer
                     dialog.ShowDialog();
                 }
             }
-            else if (e.Action is AC.SubmitAction submitAction)
+            else if (e.Action is AC.AdaptiveSubmitAction submitAction)
             {
                 // TODO: Shouldn't e.Data be on the SubmitAction?
                 MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Formatting.Indented), "SubmitAction");

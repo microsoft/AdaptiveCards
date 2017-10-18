@@ -116,23 +116,23 @@ namespace AdaptiveCards.Rendering
 
         public virtual void Visit(AdaptiveActionBase action)
         {
-            if (action is OpenUrlAction)
-                Visit((OpenUrlAction) action);
-            if (action is SubmitAction)
-                Visit((SubmitAction) action);
-            if (action is ShowCardAction)
-                Visit((ShowCardAction) action);
+            if (action is AdaptiveOpenUrlAction)
+                Visit((AdaptiveOpenUrlAction) action);
+            if (action is AdaptiveSubmitAction)
+                Visit((AdaptiveSubmitAction) action);
+            if (action is AdaptiveShowCardAction)
+                Visit((AdaptiveShowCardAction) action);
         }
 
-        public virtual void Visit(SubmitAction action)
+        public virtual void Visit(AdaptiveSubmitAction action)
         {
         }
 
-        public virtual void Visit(OpenUrlAction action)
+        public virtual void Visit(AdaptiveOpenUrlAction action)
         {
         }
 
-        public virtual void Visit(ShowCardAction action)
+        public virtual void Visit(AdaptiveShowCardAction action)
         {
             Visit(action.Card);
         }

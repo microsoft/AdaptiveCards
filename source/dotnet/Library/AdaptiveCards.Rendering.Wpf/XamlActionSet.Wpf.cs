@@ -39,7 +39,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 bool isInline = (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline);
 
                 if (isInline &&
-                    actionsToProcess.Where(a => a is ShowCardAction).Any())
+                    actionsToProcess.Where(a => a is AdaptiveShowCardAction).Any())
                 {
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 }
@@ -65,21 +65,21 @@ namespace AdaptiveCards.Rendering.Wpf
 
                         uiActionBar.Children.Add(uiAction);
 
-                        if (action is ShowCardAction)
+                        if (action is AdaptiveShowCardAction)
                         {
-                            ShowCardAction showCardAction = (ShowCardAction)action;
+                            AdaptiveShowCardAction adaptiveShowCardAction = (AdaptiveShowCardAction)action;
                             if (isInline)
                             {
                                 Grid uiShowCardContainer = new Grid();
                                 uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
-                                uiShowCardContainer.DataContext = showCardAction;
+                                uiShowCardContainer.DataContext = adaptiveShowCardAction;
                                 uiShowCardContainer.Margin = new Thickness(0, context.Config.Actions.ShowCard.InlineTopMargin, 0, 0);
                                 uiShowCardContainer.Visibility = Visibility.Collapsed;
 
                                 // render the card
-                                var uiShowCard = context.Render(showCardAction.Card);
+                                var uiShowCard = context.Render(adaptiveShowCardAction.Card);
                                 ((Grid)uiShowCard).Background = context.GetColorBrush("Transparent");
-                                uiShowCard.DataContext = showCardAction;
+                                uiShowCard.DataContext = adaptiveShowCardAction;
                                 uiShowCardContainer.Children.Add(uiShowCard);
 
                                 actionBarCards.Add(uiShowCardContainer);

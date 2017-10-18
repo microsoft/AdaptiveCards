@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XamlSubmitAction
     {
-        public static FrameworkElement Render(SubmitAction action, AdaptiveRenderContext context)
+        public static FrameworkElement Render(AdaptiveSubmitAction action, AdaptiveRenderContext context)
         {
             if (context.Config.SupportsInteractivity)
             {
