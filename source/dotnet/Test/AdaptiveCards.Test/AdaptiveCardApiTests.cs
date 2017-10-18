@@ -143,7 +143,7 @@ namespace AdaptiveCards.Test
             };
 
 
-            var expected = @"""style"":""expanded""";
+            var expected = @"""style"": ""expanded""";
 
             StringAssert.Contains(card.ToJson(), expected);
         }

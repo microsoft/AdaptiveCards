@@ -34,7 +34,7 @@ namespace AdaptiveCards.Test
 
             string json = card.ToJson();
 
-            Assert.IsFalse(json.Contains(@"""separator"": true"));
+            Assert.IsTrue(json.Contains(@"""separator"": true"));
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(expected, tb.Spacing);
 
             string json = card.ToJson();
-            string str = $@"""spacing"":""{spacingString}""";
+            string str = $@"""spacing"": ""{spacingString}""";
 
             if (expected == AdaptiveSpacing.Default)
             {

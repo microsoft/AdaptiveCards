@@ -1,5 +1,10 @@
-﻿namespace AdaptiveCards
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
+namespace AdaptiveCards
 {
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+    [JsonConverter(typeof(ToStringJsonConverter))]
     public class AdaptiveSchemaVersion
     {
         public int Major { get; private set; }

@@ -13,7 +13,7 @@ namespace AdaptiveCards
             Type = GetType().Name;
         }
 
-        [JsonProperty(Order = -2, Required = Required.Always)]
+        [JsonProperty(Order = -10, Required = Required.Always)]
         [JsonRequired]
         public string Type { get; set; }
 
