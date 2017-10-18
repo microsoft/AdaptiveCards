@@ -3,14 +3,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
@@ -18,13 +15,13 @@ using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using AC = AdaptiveCards;
+using AdaptiveCards;
 
 namespace WpfVisualizer
 {
     public partial class MainWindow : Window
     {
-        private AC.AdaptiveCard _card;
+        private AdaptiveCard _card;
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
@@ -44,30 +41,24 @@ namespace WpfVisualizer
             timer.Tick += _timer_Tick;
             timer.Start();
 
-            var hostConfig = new AdaptiveHostConfig();
-
-            hostConfig.ContainerStyles.Default.BackgroundColor = Colors.WhiteSmoke.ToString();
-            Renderer = new AdaptiveCardRenderer(hostConfig) { Resources = Resources };
-            Renderer.UseXceedElementRenderers();
-            hostConfigEditor.SelectedObject = hostConfig;
-
-            foreach (var style in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))
+            foreach (var config in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))
             {
                 hostConfigs.Items.Add(new ComboBoxItem
                 {
-                    Content = Path.GetFileNameWithoutExtension(style),
-                    Tag = style
+                    Content = Path.GetFileNameWithoutExtension(config),
+                    Tag = config
                 });
             }
+
+            Renderer = new AdaptiveCardRenderer()
+            {
+                Resources = Resources
+            };
+            Renderer.UseXceedElementRenderers();
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
 
-        public AdaptiveHostConfig HostConfig
-        {
-            get => (AdaptiveHostConfig)hostConfigEditor.SelectedObject;
-            set => hostConfigEditor.SelectedObject = value;
-        }
 
         private void Config_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -83,7 +74,7 @@ namespace WpfVisualizer
                 {
                     cardError.Children.Clear();
 
-                    var result = AC.AdaptiveCard.FromJson(textBox.Text);
+                    var result = AdaptiveCard.FromJson(textBox.Text);
                     if (result.Card != null)
                         _card = result.Card;
                     
@@ -96,14 +87,6 @@ namespace WpfVisualizer
                         {
                             // Wire up click handler
                             renderedAdaptiveCard.OnAction += _onAction;
-
-                            renderedAdaptiveCard.FrameworkElement.Effect = new DropShadowEffect
-                            {
-                                BlurRadius = 15,
-                                Direction = -90,
-                                RenderingBias = RenderingBias.Quality,
-                                ShadowDepth = 2
-                            };
 
                             cardGrid.Children.Add(renderedAdaptiveCard.FrameworkElement);
                         }
@@ -185,20 +168,20 @@ namespace WpfVisualizer
         private void _onAction(object sender, AdaptiveActionEventArgs e)
         {
             
-            if (e.Action is AC.AdaptiveOpenUrlAction openUrlAction)
+            if (e.Action is AdaptiveOpenUrlAction openUrlAction)
             {
                 Process.Start(openUrlAction.Url);
             }
-            else if (e.Action is AC.AdaptiveShowCardAction showCardAction)
+            else if (e.Action is AdaptiveShowCardAction showCardAction)
             {
-                if (HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
+                if (Renderer.HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
                 {
                     var dialog = new ShowCardWindow(showCardAction.Title, showCardAction, Resources);
                     dialog.Owner = this;
                     dialog.ShowDialog();
                 }
             }
-            else if (e.Action is AC.AdaptiveSubmitAction submitAction)
+            else if (e.Action is AdaptiveSubmitAction submitAction)
             {
                 // TODO: Shouldn't e.Data be on the SubmitAction?
                 MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Formatting.Indented), "SubmitAction");
@@ -222,9 +205,12 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var renderer = new AdaptiveCardRenderer(new AdaptiveHostConfig());
-            renderer.Resources = Resources;
-            var imageStream = renderer.RenderToImage(_card, 480);
+            // Disable interactivity to remove inputs and actions from the image
+            var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
+            Renderer.HostConfig.SupportsInteractivity = false;
+            var imageStream = Renderer.RenderToImage(_card, 480);
+            Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
+            
             var path = Path.GetRandomFileName() + ".png";
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
@@ -235,7 +221,7 @@ namespace WpfVisualizer
 
         private void speak_Click(object sender, RoutedEventArgs e)
         {
-            var result = AC.AdaptiveCard.FromJson(textBox.Text);
+            var result = AdaptiveCard.FromJson(textBox.Text);
             if (result.Card != null)
             {
                 var card = result.Card;
@@ -284,7 +270,7 @@ namespace WpfVisualizer
         {
             var parseResult = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
             if (parseResult.HostConfig != null)
-                HostConfig = parseResult.HostConfig;
+                Renderer.HostConfig = parseResult.HostConfig;
             _dirty = true;
         }
 
@@ -300,7 +286,7 @@ namespace WpfVisualizer
 
                 var parseResult = AdaptiveHostConfig.FromJson(json);
                 if (parseResult.HostConfig != null)
-                    HostConfig = parseResult.HostConfig;
+                    Renderer.HostConfig = parseResult.HostConfig;
 
                 _dirty = true;
             }
@@ -314,7 +300,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var json = JsonConvert.SerializeObject(HostConfig, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(Renderer.HostConfig, Formatting.Indented);
                 File.WriteAllText(dlg.FileName, json);
             }
         }

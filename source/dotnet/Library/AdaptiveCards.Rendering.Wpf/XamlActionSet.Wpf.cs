@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering.Wpf
             var actionsToProcess = actions
                 .Take(maxActions).ToList();
 
-            if (actionsToProcess.Any() == true)
+            if (actionsToProcess.Any())
             {
                 var uiActionBar = new UniformGrid();
 
@@ -28,18 +28,18 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
                 uiActionBar.Style = context.GetStyle("Adaptive.Actions");
 
-                if (uiContainer.RowDefinitions.Count > 0)
-                {
-                    AdaptiveContainerRenderer.AddSeperator(context, new AdaptiveContainer(), uiContainer);
-                }
+                //if (uiContainer.RowDefinitions.Count > 0)
+                //{
+                //    AdaptiveContainerRenderer.AddSeperator(context, new AdaptiveContainer(), uiContainer);
+                //}
+
                 uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);
                 uiContainer.Children.Add(uiActionBar);
 
                 bool isInline = (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline);
 
-                if (isInline &&
-                    actionsToProcess.Where(a => a is AdaptiveShowCardAction).Any())
+                if (isInline && actionsToProcess.Any(a => a is AdaptiveShowCardAction))
                 {
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 }

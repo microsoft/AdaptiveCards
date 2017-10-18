@@ -86,7 +86,12 @@
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
         <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
-            <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10"  />
+            <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
+                </Grid.Effect>
+
+            </Grid>
         </Grid>
 
         <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>

@@ -119,7 +119,6 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <summary>
         /// Renders an adaptive card.
         /// </summary>
-        /// <param name="context"></param>
         /// <returns></returns>
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
@@ -134,7 +133,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             AdaptiveRenderContext context = new AdaptiveRenderContext(actionCallback, null)
             {
-                Config = this.HostConfig,
+                Config = this.HostConfig ?? new AdaptiveHostConfig(),
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };

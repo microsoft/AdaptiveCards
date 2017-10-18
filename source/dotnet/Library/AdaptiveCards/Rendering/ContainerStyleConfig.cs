@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering
         /// The background color to use for this container
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundColor { get; set; } = "#00FFFFFF";
+        public string BackgroundColor { get; set; } = "#FFFFFFFF";
 
         /// <summary>
         /// The font colors to use for this container
