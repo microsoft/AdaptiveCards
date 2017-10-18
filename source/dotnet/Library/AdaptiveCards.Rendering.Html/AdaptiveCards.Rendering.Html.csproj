@@ -10,7 +10,7 @@
     <PackageProjectUrl>http://adaptivecards.io</PackageProjectUrl>
     <PackageIconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
-    <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
