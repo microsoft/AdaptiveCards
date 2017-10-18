@@ -14,9 +14,9 @@
   </PropertyGroup>
 
   <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output --> 
-  <PropertyGroup Condition="$(PATH.Contains('Windows Kits\10'))">
+  <!--<PropertyGroup Condition="$(PATH.Contains('Windows Kits\10'))">
     <TargetFrameworks>$(TargetFrameworks);uap10.0</TargetFrameworks>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
   <PropertyGroup Condition="$(TargetFramework) == 'uap10.0' ">
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
