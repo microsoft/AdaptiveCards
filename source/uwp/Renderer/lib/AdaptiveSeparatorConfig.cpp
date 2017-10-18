@@ -8,9 +8,9 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        SeparatorConfig separatorConfig;
+        return RuntimeClassInitialize(separatorConfig);
     } CATCH_RETURN;
-
 
     HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize(SeparatorConfig sharedSeparatorConfig) noexcept try
     {

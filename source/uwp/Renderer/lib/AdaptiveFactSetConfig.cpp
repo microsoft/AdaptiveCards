@@ -9,9 +9,9 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        FactSetConfig factSetConfig;
+        return RuntimeClassInitialize(factSetConfig);
     } CATCH_RETURN;
-
 
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize(FactSetConfig factSetConfig) noexcept
     {

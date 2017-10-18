@@ -9,7 +9,8 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        TextConfig textConfig;
+        return RuntimeClassInitialize(textConfig);
     } CATCH_RETURN;
 
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize(TextConfig textConfig) noexcept

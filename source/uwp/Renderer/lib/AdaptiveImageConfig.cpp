@@ -8,9 +8,9 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        ImageConfig imageConfig;
+        return RuntimeClassInitialize(imageConfig);
     } CATCH_RETURN;
-
 
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize(ImageConfig sharedImageConfig) noexcept
     {

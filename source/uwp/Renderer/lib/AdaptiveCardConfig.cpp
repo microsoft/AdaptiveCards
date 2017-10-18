@@ -10,7 +10,8 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        AdaptiveCards::AdaptiveCardConfig cardConfig;
+        return RuntimeClassInitialize(cardConfig);
     } CATCH_RETURN;
 
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize(AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig) noexcept

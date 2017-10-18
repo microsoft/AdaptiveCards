@@ -9,9 +9,9 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        ContainerStylesDefinition stylesDefinition;
+        return RuntimeClassInitialize(stylesDefinition);
     } CATCH_RETURN;
-
 
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize(ContainerStylesDefinition stylesDefinition) noexcept
     {

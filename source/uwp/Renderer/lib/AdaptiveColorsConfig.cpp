@@ -9,9 +9,9 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveColorsConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        ColorsConfig colorsConfig;
+        return RuntimeClassInitialize(colorsConfig);
     } CATCH_RETURN;
-
 
     HRESULT AdaptiveColorsConfig::RuntimeClassInitialize(ColorsConfig colorsConfig) noexcept
     {

@@ -8,9 +8,9 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        SpacingConfig spacingConfig;
+        return RuntimeClassInitialize(spacingConfig);
     } CATCH_RETURN;
-
 
     HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize(SpacingConfig spacingConfig) noexcept try
     {

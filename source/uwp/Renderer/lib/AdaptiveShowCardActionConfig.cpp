@@ -10,7 +10,8 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        ShowCardActionConfig showCardActionConfig;
+        return RuntimeClassInitialize(showCardActionConfig);
     } CATCH_RETURN;
 
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept

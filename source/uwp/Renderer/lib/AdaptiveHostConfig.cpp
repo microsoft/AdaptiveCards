@@ -57,14 +57,13 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        HostConfig sharedHostConfig;
+        return RuntimeClassInitialize(sharedHostConfig);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize(const HostConfig& sharedHostConfig)
     {
-        RETURN_IF_FAILED(RuntimeClassInitialize());
-
         m_supportsInteractivity = sharedHostConfig.supportsInteractivity;
         RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.fontFamily, m_fontFamily.GetAddressOf()));
 

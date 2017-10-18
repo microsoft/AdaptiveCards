@@ -8,9 +8,9 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        FontSizesConfig fontSizesConfig;
+        return RuntimeClassInitialize(fontSizesConfig);
     } CATCH_RETURN;
-
 
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize(FontSizesConfig fontSizesConfig) noexcept
     {
