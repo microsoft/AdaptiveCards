@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -32,8 +33,7 @@ namespace AdaptiveCardTestApp.Model
             {
                 var file = await expectedFolder.GetFileAsync(fileNameWithoutExtension + ".json");
 
-                //return JsonConvert.DeserializeObject<StoredTestResultInfo>(await FileIO.ReadTextAsync(file));
-                return null;
+                return JsonConvert.DeserializeObject<StoredTestResultInfo>(await FileIO.ReadTextAsync(file));
             }
             catch { return null; }
         }
@@ -42,9 +42,9 @@ namespace AdaptiveCardTestApp.Model
         {
             var file = await expectedFolder.CreateFileAsync(fileNameWithoutExtension + ".json", CreationCollisionOption.ReplaceExisting);
 
-            //string json = JsonConvert.SerializeObject(this);
+            string json = JsonConvert.SerializeObject(this);
 
-            //await FileIO.WriteTextAsync(file, json);
+            await FileIO.WriteTextAsync(file, json);
         }
     }
 }
