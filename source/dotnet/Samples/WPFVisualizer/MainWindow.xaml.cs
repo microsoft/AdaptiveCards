@@ -189,7 +189,7 @@ namespace WpfVisualizer
             {
                 Process.Start(openUrlAction.Url);
             }
-            else if (e.Action is AC.ShowCardAction showCardAction)
+            else if (e.Action is AC.AdaptiveShowCardAction showCardAction)
             {
                 if (HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
                 {
