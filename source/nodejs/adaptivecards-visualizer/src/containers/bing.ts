@@ -23,7 +23,7 @@ export class BingContainer extends HostContainer {
         this._width = width;
     }
 
-    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement)  {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement) {
         var element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.backgroundColor = BingContainer.backgroundColor;
