@@ -9,7 +9,8 @@ namespace AdaptiveCards
     /// </summary>
     public class AdaptiveCard : AdaptiveTypedElement
 #if WINDOWS_UWP
-        , Windows.UI.Shell.IAdaptiveCard
+      // TODO: uncomment when I figure out the 
+       //   , Windows.UI.Shell.IAdaptiveCard
 #endif
     {
         public const string TypeName = "AdaptiveCard";
