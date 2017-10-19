@@ -12,6 +12,6 @@
 
 @interface CustomActionOpenURLRenderer:ACRBaseActionElementRenderer
 
-//+ (CustomActionOpenURLRenderer *)getInstance;
++ (CustomActionOpenURLRenderer *)getInstance;
 
 @end

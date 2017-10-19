@@ -8,12 +8,12 @@
 #import "CustomActionOpenURLRenderer.h"
 
 @implementation CustomActionOpenURLRenderer
-/*
+
 + (CustomActionOpenURLRenderer *)getInstance
 {
     static CustomActionOpenURLRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
-}*/
+}
 
 - (UIButton* )renderButton:(UIViewController *)vc
                     inputs:(NSMutableArray *)inputs

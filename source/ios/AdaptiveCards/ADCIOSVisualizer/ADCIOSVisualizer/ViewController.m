@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+#import "CustomActionOpenURLRenderer.h"
 
 @interface ViewController ()
 
@@ -157,8 +158,8 @@
     
     if(renderResult.succeeded)
     {
-        //ACRRegistration *registration = [ACRRegistration getInstance];
-        //[registration setActionRenderer:<#(ACRBaseActionElementRenderer *)#> cardElementType:<#(NSNumber *)#>]
+        ACRRegistration *registration = [ACRRegistration getInstance];
+        [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
         ACRViewController *adcVc = renderResult.viewcontroller;
         adcVc.acrActionDelegate = self;
         if(self.curView)
