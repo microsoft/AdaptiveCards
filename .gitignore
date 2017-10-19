@@ -271,3 +271,4 @@ product.pbxproj
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.Uwp.h
+*.binlog

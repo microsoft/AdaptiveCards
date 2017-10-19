@@ -1,6 +1,6 @@
 ﻿using System;
+using AdaptiveCards.Rendering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AdaptiveCards.Rendering.Config;
 
 namespace AdaptiveCards.Test
 {
@@ -10,7 +10,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestParsingHostConfig()
         {
-            var result = HostConfig.FromJson(@"{
+            var result = AdaptiveHostConfig.FromJson(@"{
     ""fontSizes"": {
         ""small"": 25,
         ""default"": 26,
@@ -32,7 +32,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestParsingInvalidHostConfig()
         {
-            var result = HostConfig.FromJson("not json");
+            var result = AdaptiveHostConfig.FromJson("not json");
 
             Assert.IsNull(result.HostConfig);
         }
@@ -40,7 +40,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestParsingFullHostConfig()
         {
-            var result = HostConfig.FromJson(@"{
+            var result = AdaptiveHostConfig.FromJson(@"{
   ""spacing"": {
     ""small"": 3,
     ""default"": 4,
@@ -214,14 +214,14 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(ShowCardActionMode.Inline, hostConfig.Actions.ShowCard.ActionMode);
             Assert.AreEqual(16, hostConfig.Actions.ShowCard.InlineTopMargin);
             Assert.AreEqual(ActionsOrientation.Vertical, hostConfig.Actions.ActionsOrientation);
-            Assert.AreEqual(HorizontalAlignment.Stretch, hostConfig.Actions.ActionAlignment);
+            Assert.AreEqual(AdaptiveHorizontalAlignment.Stretch, hostConfig.Actions.ActionAlignment);
 
             // TODO: Image property not supported (I assume this is where you can set the default image size?)
 
-            Assert.AreEqual(ImageSize.Small, hostConfig.ImageSet.ImageSize);
+            Assert.AreEqual(AdaptiveImageSize.Small, hostConfig.ImageSet.ImageSize);
             // TODO: MaxImageHeight property not supported
 
-            Assert.AreEqual(TextColor.Accent, hostConfig.FactSet.Title.Color);
+            Assert.AreEqual(AdaptiveTextColor.Accent, hostConfig.FactSet.Title.Color);
             Assert.AreEqual(false, hostConfig.FactSet.Title.IsSubtle);
             Assert.AreEqual(10, hostConfig.FactSet.Spacing);
         }

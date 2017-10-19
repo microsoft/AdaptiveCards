@@ -5,7 +5,7 @@ using AdaptiveCards;
 using Newtonsoft.Json;
 using AC = AdaptiveCards;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Config;
+using AdaptiveCards.Rendering.Wpf;
 
 namespace WpfVisualizer
 {
@@ -14,13 +14,13 @@ namespace WpfVisualizer
     /// </summary>
     public partial class ShowCardWindow : Window
     {
-        private ShowCardAction _card;
+        private AdaptiveShowCardAction _card;
         private ResourceDictionary _resources;
 
-        public ShowCardWindow(string title, ShowCardAction showCardAction, ResourceDictionary resources)
+        public ShowCardWindow(string title, AdaptiveShowCardAction action, ResourceDictionary resources)
         {
             _resources = resources;
-            _card = showCardAction;
+            _card = action;
 
             InitializeComponent();
 
@@ -29,7 +29,7 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var renderer = new XamlRendererExtended(new HostConfig())
+            var renderer = new AdaptiveCardRenderer(new AdaptiveHostConfig())
             {
                 Resources = this._resources
             };
@@ -44,20 +44,20 @@ namespace WpfVisualizer
             }
         }
 
-        private void OnAction(object sender, ActionEventArgs e)
+        private void OnAction(object sender, AdaptiveActionEventArgs e)
         {
-            if (e.Action is AC.OpenUrlAction)
+            if (e.Action is AC.AdaptiveOpenUrlAction)
             {
-                AC.OpenUrlAction action = (AC.OpenUrlAction)e.Action;
+                AC.AdaptiveOpenUrlAction action = (AC.AdaptiveOpenUrlAction)e.Action;
                 Process.Start(action.Url);
             }
-            else if (e.Action is AC.ShowCardAction)
+            else if (e.Action is AC.AdaptiveShowCardAction)
             {
                 MessageBox.Show("Action.ShowCard is not alloed from within a sub-card");
             }
-            else if (e.Action is AC.SubmitAction)
+            else if (e.Action is AC.AdaptiveSubmitAction)
             {
-                AC.SubmitAction action = (AC.SubmitAction)e.Action;
+                AC.AdaptiveSubmitAction action = (AC.AdaptiveSubmitAction)e.Action;
                 System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), "SubmitAction");
                 this.Close();
             }

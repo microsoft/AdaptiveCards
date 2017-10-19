@@ -130,9 +130,6 @@ export class ToastContainer extends HostContainer {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: Size.Medium,
-            },
             imageSet: {
                 imageSize: Size.Medium,
                 maxImageHeight: 100

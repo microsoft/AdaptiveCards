@@ -88,22 +88,6 @@ export class AdaptiveCardConfig {
     }
 }
 
-export class ImageConfig {
-    size: Enums.Size = Enums.Size.Medium;
-
-    constructor(obj?: any) {
-        if (obj) {
-            this.size = obj["size"] || this.size;
-        }
-    }
-
-    toJSON() {
-        return {
-            size: Enums.Size[this.size]
-        }
-    }
-}
-
 export class ImageSetConfig {
     imageSize: Enums.Size = Enums.Size.Medium;
     maxImageHeight: number = 100;
@@ -282,7 +266,6 @@ export class HostConfig {
     }
     readonly actions: ActionsConfig = new ActionsConfig();
     readonly adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
-    readonly image: ImageConfig = new ImageConfig();
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
 
@@ -331,7 +314,6 @@ export class HostConfig {
 
             this.actions = new ActionsConfig(obj["actions"]);
             this.adaptiveCard = new AdaptiveCardConfig(obj["adaptiveCard"]);
-            this.image = new ImageConfig(obj["image"]);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
             this.factSet = new FactSetConfig(obj["factSet"])
         }

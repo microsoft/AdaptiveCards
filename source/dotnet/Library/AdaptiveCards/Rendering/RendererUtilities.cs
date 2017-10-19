@@ -53,6 +53,9 @@ namespace AdaptiveCards.Rendering
             return text ?? String.Empty;
         }
 
+
+#if !WINDOWS_UWP
+
         /// <summary>
         ///     This function will parse text for {{binding}} statements and replace with appropriate values from the data object
         ///     passed in
@@ -63,17 +66,19 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         public static string BindData(dynamic data, string text, bool url = false)
         {
-            foreach (Match match in _regexBinding.Matches(text))
-            {
-                var key = match.Value.Trim('{', '}');
-                var val = data[key]?.ToString() ?? string.Empty;
-                if (url)
-                    val = Uri.EscapeDataString(val);
-                text = text.Replace(match.Value, val);
-            }
+            
+            //foreach (Match match in _regexBinding.Matches(text))
+            //{
+            //    var key = match.Value.Trim('{', '}');
+            //    var val = data[key]?.ToString() ?? string.Empty;
+            //    if (url)
+            //        val = Uri.EscapeDataString(val);
+            //    text = text.Replace(match.Value, val);
+            //}
 
             return text;
         }
+#endif
 
         private enum Functions
         {

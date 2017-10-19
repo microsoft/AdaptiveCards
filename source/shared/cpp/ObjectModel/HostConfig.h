@@ -91,7 +91,7 @@ struct ImageSizesConfig
 
 struct ImageSetConfig
 {
-    ImageSize imageSize = ImageSize::Medium;
+    ImageSize imageSize = ImageSize::Auto;
     unsigned int maxImageHeight = 100;
 
     static ImageSetConfig Deserialize(const Json::Value& json, const ImageSetConfig& defaultValue);
@@ -99,7 +99,7 @@ struct ImageSetConfig
 
 struct ImageConfig
 {
-    ImageSize imageSize = ImageSize::Medium;
+    ImageSize imageSize = ImageSize::Auto;
 
     static ImageConfig Deserialize(const Json::Value& json, const ImageConfig& defaultValue);
 };

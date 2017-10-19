@@ -70,8 +70,6 @@
             <Button Name="loadButton" Click="loadButton_Click" Content="Load Card..." Margin="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
             <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
-            <Button Name="toJson" Content="To JSON" Margin="4" Click="toJson_Click"/>
-            <Button Name="toXml" Content="To XML" Margin="4" Click="toXml_Click"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
             <Label>HostConfig:</Label>
@@ -88,7 +86,12 @@
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
         <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
-            <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10"  />
+            <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
+                </Grid.Effect>
+
+            </Grid>
         </Grid>
 
         <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>

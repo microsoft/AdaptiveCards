@@ -49,8 +49,7 @@ namespace AdaptiveCards { namespace Uwp
         typename typedef ComPtr<T> type;
         static ComPtr<T> MakeWrap(T* t)
         {
-            ComPtr<T> ptr;
-            ptr.Attach(t);
+            ComPtr<T> ptr(t);
             return ptr;
         }
         static T* Unwrap(ComPtr<T> t)
