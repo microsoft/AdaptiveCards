@@ -25,6 +25,11 @@ swig -c++ -java -package com.microsoft.adaptivecards.objectmodel -outdir main/ja
 2. Select folder "<github directory>\AdaptiveCards\source\android"
 3. Build->"Rebuild Project"
 
+## Build failure "UnsupportedClassVersionError 52.0"
+
+If you get a build failure similar to "UnsupportedClassVersionError 52.0" then from Android Studio go to: **File** -> **Other Settings** --> **Default project structure...** --> Check **Use Embedded JDK**
+
+
 # To generate APK:
 1. Follow "To compile" section
 2. Build->"Build APK" or "Generate Signed APK..."
