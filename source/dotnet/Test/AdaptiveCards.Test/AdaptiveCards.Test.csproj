@@ -53,6 +53,7 @@
     <Compile Include="AdaptiveCardApiTests.cs" />
     <Compile Include="HostConfigApiTests.cs" />
     <Compile Include="AdaptiveCardSeparatorSpacingTests.cs" />
+    <Compile Include="SerializationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

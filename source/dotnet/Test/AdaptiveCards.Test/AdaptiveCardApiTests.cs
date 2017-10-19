@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AdaptiveCards.Test
@@ -119,6 +120,32 @@ namespace AdaptiveCards.Test
             AdaptiveCardParseResult result = AdaptiveCard.FromJson(cardPayload);
 
             Assert.IsNull(result.Card);
+        }
+
+        [TestMethod]
+        public void TestChoiceSetExpanded()
+        {
+            var card = new AdaptiveCard
+            {
+                Body = new List<AdaptiveElement>()
+                {
+                    new AdaptiveTextBlock()
+                    {
+                        Text = "Hello",
+                        Weight = AdaptiveTextWeight.Bolder
+                    },
+                    new AdaptiveChoiceSetInput()
+                    {
+                        Id = "choiceTest",
+                        Style = AdaptiveChoiceInputStyle.Expanded
+                    }
+                }
+            };
+
+
+            var expected = @"""style"": ""expanded""";
+
+            StringAssert.Contains(card.ToJson(), expected);
         }
     }
 }
