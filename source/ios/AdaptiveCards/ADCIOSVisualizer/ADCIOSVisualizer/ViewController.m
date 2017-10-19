@@ -157,6 +157,8 @@
     
     if(renderResult.succeeded)
     {
+        //ACRRegistration *registration = [ACRRegistration getInstance];
+        //[registration setActionRenderer:<#(ACRBaseActionElementRenderer *)#> cardElementType:<#(NSNumber *)#>]
         ACRViewController *adcVc = renderResult.viewcontroller;
         adcVc.acrActionDelegate = self;
         if(self.curView)

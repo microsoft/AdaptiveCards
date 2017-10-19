@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import "ACRIContentHoldingView.h"
 #import "ACOHostConfig.h"
 #import "ACOBaseActionElement.h"
 
@@ -15,7 +14,7 @@
 
 - (UIButton* )renderButton:(UIViewController *)vc
                     inputs:(NSMutableArray *)inputs
-                 superview:(UIView<ACRIContentHoldingView> *)superview
+                 superview:(UIView *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 @end

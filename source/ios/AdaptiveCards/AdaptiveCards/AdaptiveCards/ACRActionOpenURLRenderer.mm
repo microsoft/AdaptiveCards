@@ -12,7 +12,7 @@
 #import "OpenUrlAction.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
-
+#import "ACRIContentHoldingView.h"
 @implementation ACRActionOpenURLRenderer
 
 + (ACRActionOpenURLRenderer *)getInstance

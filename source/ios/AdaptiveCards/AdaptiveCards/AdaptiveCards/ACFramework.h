@@ -35,6 +35,8 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
 #import <AdaptiveCards/ACRBaseActionElementRenderer.h>
 
+#import <AdaptiveCards/ACRActionOpenURLRenderer.h>
 
+#import <AdaptiveCards/ACRActionShowCardRenderer.h>
 
-
+#import <AdaptiveCards/ACRActionSubmitRenderer.h>
