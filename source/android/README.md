@@ -2,7 +2,7 @@
 2. Open tools->Android->SDK Manager
 3. From SDK Platforms, select Android 4.0(IceCreamSandwich) and Android 7.1.1(Nougat)
 4. From SDK Tools, select NDK, CMake, LLDB and install
-5. Download Swig: http://www.swig.org
+5. Download Swig: http://www.swig.org (Mac `brew install swig`)
 
 # To auto-gen, from adaptivecards\src directory:
 
