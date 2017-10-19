@@ -22,6 +22,7 @@
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
     ACRActionOpenURLRenderer *defaultRenderer = [ACRActionOpenURLRenderer getInstance];
+
     UIButton *button = [defaultRenderer renderButton:vc
                                                 inputs:inputs
                                              superview:superview
