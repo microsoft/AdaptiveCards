@@ -5,6 +5,7 @@ using Android.Views;
 using Com.Microsoft.Adaptivecards.Objectmodel;
 using Android.Support.V4.App;
 using Com.Microsoft.Adaptivecards.Renderer;
+using Com.Microsoft.Adaptivecards.Renderer.Registration;
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
@@ -46,7 +47,6 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
                 renderAdaptiveCard(card, true);
             };
 
-
         }
 
         private void renderAdaptiveCard(string jsonText, bool showErrorToast)
@@ -58,8 +58,8 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
                 //LinearLayout layout = (LinearLayout)FindViewById(R.id.visualAdaptiveCardLayout);
                 //layout.RemoveAllViews();
 
-
-                AdaptiveCardRenderer.Instance.Render(Application.Context, FragmentManager, adaptiveCard, this, this, new HostConfig());
+                // HALP, Render method not appearing...
+                //AdaptiveCardRenderer.Instance.Render(Application.Context, FragmentManager, adaptiveCard, this, this, new HostConfig());
                 //layout.AddView();
             }
             catch (Java.IO.IOException ex)
