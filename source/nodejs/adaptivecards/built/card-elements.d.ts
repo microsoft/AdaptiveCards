@@ -249,6 +249,7 @@ export declare class ShowCardAction extends Action {
 export declare class ActionSet extends CardElement {
     private _actionCollection;
     protected internalRender(): HTMLElement;
+    orientation: Enums.Orientation;
     constructor();
     getJsonTypeName(): string;
     validate(): Array<IValidationError>;

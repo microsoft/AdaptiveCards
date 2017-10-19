@@ -1964,6 +1964,7 @@ class ActionCollection {
     }
 
     items: Array<Action> = [];
+    // orientation: Enums.Orientation = Enums.Orientation.Horizontal;
     onHideActionCardPane: () => void = null;
     onShowActionCardPane: (action: ShowCardAction) => void = null;
 
@@ -2022,7 +2023,7 @@ class ActionCollection {
         return result;
     }
 
-    render(): HTMLElement {
+    render(orientation: Enums.Orientation): HTMLElement {
         if (!this._owner.hostConfig.supportsInteractivity) {
             return null;
         }
@@ -2045,7 +2046,8 @@ class ActionCollection {
             var buttonStrip = document.createElement("div");
             buttonStrip.style.display = "flex";
 
-            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+            // if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+            if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
 
                 if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
@@ -2130,7 +2132,8 @@ class ActionCollection {
                     else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
 
-                        if (this._owner.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+                        // if (this._owner.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+                        if (orientation === Enums.Orientation.Horizontal) {
                             spacer.style.flex = "0 0 auto";
                             spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
                         }
@@ -2188,8 +2191,10 @@ export class ActionSet extends CardElement {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
-        return this._actionCollection.render();
+        return this._actionCollection.render(this.orientation);
     }
+
+    orientation: Enums.Orientation = Enums.Orientation.Horizontal;
 
     constructor() {
         super();
@@ -2209,6 +2214,8 @@ export class ActionSet extends CardElement {
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
+
+        this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, json["orientation"], this.orientation);
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
@@ -3189,7 +3196,7 @@ export abstract class ContainerWithActions extends Container {
     protected internalRender(): HTMLElement {
         var element = super.internalRender();
 
-        var renderedActions = this._actionCollection.render();
+        var renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation);
 
         if (renderedActions) {
             Utils.appendChild(

@@ -29315,6 +29315,7 @@ var ActionCollection = /** @class */ (function () {
         this._statusCard = null;
         this._actionCard = null;
         this.items = [];
+        // orientation: Enums.Orientation = Enums.Orientation.Horizontal;
         this.onHideActionCardPane = null;
         this.onShowActionCardPane = null;
         this._owner = owner;
@@ -29442,7 +29443,7 @@ var ActionCollection = /** @class */ (function () {
         }
         return result;
     };
-    ActionCollection.prototype.render = function () {
+    ActionCollection.prototype.render = function (orientation) {
         var _this = this;
         if (!this._owner.hostConfig.supportsInteractivity) {
             return null;
@@ -29459,7 +29460,8 @@ var ActionCollection = /** @class */ (function () {
         else {
             var buttonStrip = document.createElement("div");
             buttonStrip.style.display = "flex";
-            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+            // if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+            if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
                 if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
@@ -29536,7 +29538,8 @@ var ActionCollection = /** @class */ (function () {
                     }
                     else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
-                        if (this._owner.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+                        // if (this._owner.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+                        if (orientation === Enums.Orientation.Horizontal) {
                             spacer.style.flex = "0 0 auto";
                             spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
                         }
@@ -29582,13 +29585,14 @@ var ActionSet = /** @class */ (function (_super) {
     __extends(ActionSet, _super);
     function ActionSet() {
         var _this = _super.call(this) || this;
+        _this.orientation = Enums.Orientation.Horizontal;
         _this._actionCollection = new ActionCollection(_this);
         _this._actionCollection.onHideActionCardPane = function () { _this.showBottomSpacer(_this); };
         _this._actionCollection.onShowActionCardPane = function (action) { _this.hideBottomSpacer(_this); };
         return _this;
     }
     ActionSet.prototype.internalRender = function () {
-        return this._actionCollection.render();
+        return this._actionCollection.render(this.orientation);
     };
     ActionSet.prototype.getJsonTypeName = function () {
         return "ActionSet";
@@ -29599,6 +29603,7 @@ var ActionSet = /** @class */ (function (_super) {
     ActionSet.prototype.parse = function (json, itemsCollectionPropertyName) {
         if (itemsCollectionPropertyName === void 0) { itemsCollectionPropertyName = "items"; }
         _super.prototype.parse.call(this, json);
+        this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, json["orientation"], this.orientation);
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"];
             for (var i = 0; i < jsonActions.length; i++) {
@@ -30436,7 +30441,7 @@ var ContainerWithActions = /** @class */ (function (_super) {
     }
     ContainerWithActions.prototype.internalRender = function () {
         var element = _super.prototype.internalRender.call(this);
-        var renderedActions = this._actionCollection.render();
+        var renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation);
         if (renderedActions) {
             Utils.appendChild(element, Utils.renderSeparation({
                 spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing),
