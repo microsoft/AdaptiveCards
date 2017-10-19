@@ -2021,6 +2021,7 @@ var Container = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this._items = [];
         _this._style = null;
+        _this.verticalContentAlignment = Enums.VerticalAlignment.Top;
         return _this;
     }
     Container.prototype.isElementAllowed = function (element, forbiddenElementTypes) {
@@ -2171,6 +2172,17 @@ var Container = /** @class */ (function (_super) {
         element.className = "ac-container";
         element.style.display = "flex";
         element.style.flexDirection = "column";
+        switch (this.verticalContentAlignment) {
+            case Enums.VerticalAlignment.Center:
+                element.style.justifyContent = "center";
+                break;
+            case Enums.VerticalAlignment.Bottom:
+                element.style.justifyContent = "flex-end";
+                break;
+            default:
+                element.style.justifyContent = "flex-start";
+                break;
+        }
         if (this.hasBackground) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
@@ -2303,6 +2315,7 @@ var Container = /** @class */ (function (_super) {
                 this.backgroundImage.parse(json["backgroundImage"]);
             }
         }
+        this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
         this._style = Utils.getEnumValueOrDefault(Enums.ContainerStyle, json["style"], null);
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName];
