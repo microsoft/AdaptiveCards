@@ -1,17 +1,19 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using Android.Views;
 using Com.Microsoft.Adaptivecards.Objectmodel;
-using Android.Support.V4.App;
+using Com.Microsoft.Adaptivecards.Renderer.Actionhandler;
 using Com.Microsoft.Adaptivecards.Renderer;
-using Com.Microsoft.Adaptivecards.Renderer.Registration;
+using Android.Support.V4.App;
+using System.Collections.Generic;
+using System.Net.Http;
+using System;
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
     
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : Activity
+    public class MainActivity : FragmentActivity, IShowCardActionHandler, ISubmitActionHandler
     {
         public MainActivity()
         {
@@ -38,15 +40,19 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            // Get our button from the layout resource,
-            // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.myButton);
+            button.Click += buttonClick;
+        }
 
-            button.Click += delegate
+        private async void buttonClick(object sender, EventArgs e)
+        {
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync("https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/samples/v1.0/Scenarios/FlightUpdate.json");
+            if (response.IsSuccessStatusCode)
             {
-                renderAdaptiveCard(card, true);
-            };
-
+                var content = await response.Content.ReadAsStringAsync();
+                renderAdaptiveCard(content, true);
+            }
         }
 
         private void renderAdaptiveCard(string jsonText, bool showErrorToast)
@@ -55,12 +61,11 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             {
                 AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
                 Toast.MakeText(this, adaptiveCard.Body.Capacity().ToString(), ToastLength.Short).Show();
-                //LinearLayout layout = (LinearLayout)FindViewById(R.id.visualAdaptiveCardLayout);
-                //layout.RemoveAllViews();
+                LinearLayout layout = (LinearLayout)FindViewById(Resource.Id.visualAdaptiveCardLayout);
+                layout.RemoveAllViews();
 
-                // HALP, Render method not appearing...
-                //AdaptiveCardRenderer.Instance.Render(Application.Context, FragmentManager, adaptiveCard, this, this, new HostConfig());
-                //layout.AddView();
+                var view = AdaptiveCardRenderer.Instance.Render(Application.Context, SupportFragmentManager, adaptiveCard, this, this, new HostConfig());
+                layout.AddView(view);
             }
             catch (Java.IO.IOException ex)
             {
@@ -69,6 +74,16 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
                     Toast.MakeText(this, ex.Message, ToastLength.Short).Show();
                 }
             }
+        }
+
+        public void OnShowCard(ShowCardAction p0, AdaptiveCard p1)
+        {
+            
+        }
+
+        public void OnSubmit(SubmitAction p0, IDictionary<string, string> p1)
+        {
+            
         }
     }
 }
