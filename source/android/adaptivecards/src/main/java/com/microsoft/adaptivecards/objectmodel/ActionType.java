@@ -13,6 +13,7 @@ public final class ActionType {
   public final static ActionType ShowCard = new ActionType("ShowCard");
   public final static ActionType Submit = new ActionType("Submit");
   public final static ActionType OpenUrl = new ActionType("OpenUrl");
+  public final static ActionType Custom = new ActionType("Custom");
 
   public final int swigValue() {
     return swigValue;
@@ -48,7 +49,7 @@ public final class ActionType {
     swigNext = this.swigValue+1;
   }
 
-  private static ActionType[] swigValues = { Unsupported, ShowCard, Submit, OpenUrl };
+  private static ActionType[] swigValues = { Unsupported, ShowCard, Submit, OpenUrl, Custom };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;
