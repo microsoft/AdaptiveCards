@@ -278,9 +278,6 @@ var HostContainer = /** @class */ (function () {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -20063,9 +20060,6 @@ var BingContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -20229,9 +20223,6 @@ var FacebookContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -20394,9 +20385,6 @@ var GroupMeContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false,
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100,
@@ -20558,9 +20546,6 @@ var KikContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -20728,9 +20713,6 @@ var LiveTileContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -20891,9 +20873,6 @@ var OutlookContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -21066,9 +21045,6 @@ var SkypeContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -21230,9 +21206,6 @@ var SlackContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -21396,9 +21369,6 @@ var SMSContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -21559,9 +21529,6 @@ var TeamsContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -21724,9 +21691,6 @@ var TelegramContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -21894,9 +21858,6 @@ var TimelineContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -22058,9 +22019,6 @@ var ToastContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -22237,9 +22195,6 @@ var WebChatContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,

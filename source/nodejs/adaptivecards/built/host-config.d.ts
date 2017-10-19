@@ -39,13 +39,6 @@ export declare class AdaptiveCardConfig {
     allowCustomStyle: boolean;
     constructor(obj?: any);
 }
-export declare class ImageConfig {
-    size: Enums.Size;
-    constructor(obj?: any);
-    toJSON(): {
-        size: string;
-    };
-}
 export declare class ImageSetConfig {
     imageSize: Enums.Size;
     maxImageHeight: number;
@@ -145,7 +138,6 @@ export declare class HostConfig {
     };
     readonly actions: ActionsConfig;
     readonly adaptiveCard: AdaptiveCardConfig;
-    readonly image: ImageConfig;
     readonly imageSet: ImageSetConfig;
     readonly factSet: FactSetConfig;
     constructor(obj?: any);

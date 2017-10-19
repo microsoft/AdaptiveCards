@@ -569,9 +569,6 @@ var HostContainer = /** @class */ (function () {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -1492,21 +1489,6 @@ var AdaptiveCardConfig = /** @class */ (function () {
     return AdaptiveCardConfig;
 }());
 exports.AdaptiveCardConfig = AdaptiveCardConfig;
-var ImageConfig = /** @class */ (function () {
-    function ImageConfig(obj) {
-        this.size = Enums.Size.Medium;
-        if (obj) {
-            this.size = obj["size"] || this.size;
-        }
-    }
-    ImageConfig.prototype.toJSON = function () {
-        return {
-            size: Enums.Size[this.size]
-        };
-    };
-    return ImageConfig;
-}());
-exports.ImageConfig = ImageConfig;
 var ImageSetConfig = /** @class */ (function () {
     function ImageSetConfig(obj) {
         this.imageSize = Enums.Size.Medium;
@@ -1684,7 +1666,6 @@ var HostConfig = /** @class */ (function () {
         };
         this.actions = new ActionsConfig();
         this.adaptiveCard = new AdaptiveCardConfig();
-        this.image = new ImageConfig();
         this.imageSet = new ImageSetConfig();
         this.factSet = new FactSetConfig();
         if (obj) {
@@ -1725,7 +1706,6 @@ var HostConfig = /** @class */ (function () {
             };
             this.actions = new ActionsConfig(obj["actions"]);
             this.adaptiveCard = new AdaptiveCardConfig(obj["adaptiveCard"]);
-            this.image = new ImageConfig(obj["image"]);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
             this.factSet = new FactSetConfig(obj["factSet"]);
         }
@@ -21939,9 +21919,6 @@ var BingContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -22105,9 +22082,6 @@ var FacebookContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -22270,9 +22244,6 @@ var GroupMeContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false,
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100,
@@ -22434,9 +22405,6 @@ var KikContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -22604,9 +22572,6 @@ var LiveTileContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -22767,9 +22732,6 @@ var OutlookContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -22942,9 +22904,6 @@ var SkypeContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -23106,9 +23065,6 @@ var SlackContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -23272,9 +23228,6 @@ var SMSContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -23435,9 +23388,6 @@ var TeamsContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -23600,9 +23550,6 @@ var TelegramContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -23770,9 +23717,6 @@ var TimelineContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -23934,9 +23878,6 @@ var ToastContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -24113,9 +24054,6 @@ var WebChatContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
