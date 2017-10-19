@@ -2188,10 +2188,10 @@ export class ActionSet extends CardElement {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
-        return this._actionCollection.render(this.orientation);
+        return this._actionCollection.render(this.orientation ? this.orientation : this.hostConfig.actions.actionsOrientation);
     }
 
-    orientation: Enums.Orientation = Enums.Orientation.Horizontal;
+    orientation?: Enums.Orientation = null;
 
     constructor() {
         super();
@@ -2212,7 +2212,11 @@ export class ActionSet extends CardElement {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
 
-        this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, json["orientation"], this.orientation);
+        var jsonOrientation = json["orientation"];
+
+        if (jsonOrientation) {
+            this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, jsonOrientation, Enums.Orientation.Horizontal);
+        }
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
