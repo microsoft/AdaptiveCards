@@ -1964,7 +1964,6 @@ class ActionCollection {
     }
 
     items: Array<Action> = [];
-    // orientation: Enums.Orientation = Enums.Orientation.Horizontal;
     onHideActionCardPane: () => void = null;
     onShowActionCardPane: (action: ShowCardAction) => void = null;
 
@@ -2046,7 +2045,6 @@ class ActionCollection {
             var buttonStrip = document.createElement("div");
             buttonStrip.style.display = "flex";
 
-            // if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
             if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
 
@@ -2132,7 +2130,6 @@ class ActionCollection {
                     else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
 
-                        // if (this._owner.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
                         if (orientation === Enums.Orientation.Horizontal) {
                             spacer.style.flex = "0 0 auto";
                             spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
