@@ -2484,6 +2484,18 @@ export class Container extends CardElement {
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
+        switch (this.verticalContentAlignment) {
+            case Enums.VerticalAlignment.Center:
+                element.style.justifyContent = "center";
+                break;
+            case Enums.VerticalAlignment.Bottom:
+                element.style.justifyContent = "flex-end";
+                break;
+            default:
+                element.style.justifyContent = "flex-start";
+                break;
+        }
+
         if (this.hasBackground) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
@@ -2557,6 +2569,7 @@ export class Container extends CardElement {
     }
 
     backgroundImage: BackgroundImage;
+    verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 
     get style(): Enums.ContainerStyle {
         if (this.allowCustomStyle) {
@@ -2634,6 +2647,8 @@ export class Container extends CardElement {
                 this.backgroundImage.parse(json["backgroundImage"]);
             }
         }
+
+        this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
 
         this._style = Utils.getEnumValueOrDefault(Enums.ContainerStyle, json["style"], null);
 

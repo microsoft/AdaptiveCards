@@ -281,6 +281,7 @@ export declare class Container extends CardElement {
     protected readonly defaultStyle: Enums.ContainerStyle;
     protected readonly allowCustomStyle: boolean;
     backgroundImage: BackgroundImage;
+    verticalContentAlignment: Enums.VerticalAlignment;
     readonly style: Enums.ContainerStyle;
     getJsonTypeName(): string;
     isFirstElement(element: CardElement): boolean;
