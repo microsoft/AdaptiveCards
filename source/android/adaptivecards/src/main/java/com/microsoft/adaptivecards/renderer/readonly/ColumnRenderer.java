@@ -39,7 +39,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(
+    public View render(
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,

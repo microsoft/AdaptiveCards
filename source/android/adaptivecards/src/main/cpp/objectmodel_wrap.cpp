@@ -2649,6 +2649,46 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
+  Json::Value result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (arg1)->GetAdditionalProperties();
+  *(Json::Value **)&jresult = new Json::Value((const Json::Value &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
+  Json::Value arg2 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
+  Json::Value *argp2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
+  argp2 = *(Json::Value **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null Json::Value");
+    return ;
+  }
+  arg2 = *argp2; 
+  (arg1)->SetAdditionalProperties(arg2);
+}
+
+
 SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1GetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::BaseInputElement *arg1 = (AdaptiveCards::BaseInputElement *) 0 ;
@@ -4581,6 +4621,43 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   result = AdaptiveCards::ColumnSet::DeserializeFromString((std::string const &)*arg1);
   *(std::shared_ptr< AdaptiveCards::ColumnSet > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::ColumnSet >(result) : 0; 
   return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::ColumnSet *arg1 = (AdaptiveCards::ColumnSet *) 0 ;
+  std::shared_ptr< AdaptiveCards::ColumnSet const > *smartarg1 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::ColumnSet > **)&jarg1;
+  arg1 = (AdaptiveCards::ColumnSet *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::ColumnSet const *)arg1)->GetSelectAction();
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColumnSet *arg1 = (AdaptiveCards::ColumnSet *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > arg2 ;
+  std::shared_ptr< AdaptiveCards::ColumnSet > *smartarg1 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > const *argp2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::ColumnSet > **)&jarg1;
+  arg1 = (AdaptiveCards::ColumnSet *)(smartarg1 ? smartarg1->get() : 0); 
+  argp2 = *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jarg2; 
+  if (argp2) arg2 = *argp2; 
+  (arg1)->SetSelectAction(arg2);
 }
 
 
