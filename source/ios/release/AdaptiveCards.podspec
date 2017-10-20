@@ -16,5 +16,5 @@ Pod::Spec.new do |spec|
  
   spec.vendored_frameworks = 'AdaptiveCards.framework'
   
-  spec.platform         = :ios, '10.3'
+  spec.platform         = :ios, '11.0'
 end
