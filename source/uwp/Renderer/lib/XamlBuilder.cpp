@@ -1369,12 +1369,13 @@ namespace AdaptiveCards { namespace Uwp
             if (containerStyle != parentContainerStyle)
             {
                 ComPtr<IAdaptiveSpacingConfig> spacingConfig;
-                THROW_IF_FAILED(m_hostConfig->get_Spacing(&spacingConfig));
+                THROW_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
 
                 UINT32 padding;
                 THROW_IF_FAILED(spacingConfig->get_Padding(&padding));
+                DOUBLE paddingAsDouble = static_cast<DOUBLE>(padding);
 
-                Thickness paddingThickness = {padding, padding, padding, padding};
+                Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
                 THROW_IF_FAILED(containerBorder->put_Padding(paddingThickness));
             }
         }
