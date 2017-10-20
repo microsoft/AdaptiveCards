@@ -19,6 +19,7 @@
 #include "AdaptiveRenderArgs.h"
 #include "json/json.h"
 
+//test
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Uwp;
