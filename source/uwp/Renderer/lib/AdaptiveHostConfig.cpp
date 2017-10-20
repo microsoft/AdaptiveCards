@@ -15,6 +15,8 @@
 #include "AdaptiveSpacingConfig.h"
 #include "AdaptiveSeparatorConfig.h"
 
+//Test
+
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Data::Json;
