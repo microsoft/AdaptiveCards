@@ -372,13 +372,17 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
         adaptiveImage->put_Url(url);
-        adaptiveImage->put_Size(ABI::AdaptiveCards::Uwp::ImageSize::Auto);
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
         ComPtr<IUIElement> backgroundImage;
         BuildImage(adaptiveCardElement.Get(), renderContext, nullptr, &backgroundImage);
         XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
+
+        // All background images should be stretched to fill the whole card.
+        ComPtr<IImage> xamlImage;
+        THROW_IF_FAILED(backgroundImage.As(&xamlImage));
+        THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
 
         // The overlay applied to the background image is determined by a resouce, so create
         // the overlay if that resources exists
@@ -1243,9 +1247,6 @@ namespace AdaptiveCards { namespace Uwp
             {
                 case ABI::AdaptiveCards::Uwp::ImageSize::Auto:
                 case ABI::AdaptiveCards::Uwp::ImageSize::None:
-                    THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
-                    break;
-
                 case ABI::AdaptiveCards::Uwp::ImageSize::Stretch:
                     THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_Uniform));
                     break;
