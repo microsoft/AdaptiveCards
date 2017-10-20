@@ -38,9 +38,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT  AdaptiveContainerStyleDefinition::get_ForegroundColors(ABI::AdaptiveCards::Uwp::IAdaptiveColorsConfig** colorsConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorsConfig> localForegroundColors = m_foregroundColors;
-        *colorsConfig = localForegroundColors.Detach();
-        return S_OK;
+        return m_foregroundColors.CopyTo(colorsConfig);
     }
 
     _Use_decl_annotations_

@@ -31,9 +31,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveActionsConfig::get_ShowCard(IAdaptiveShowCardActionConfig** showCardActionConfig)
     {
-        ComPtr<IAdaptiveShowCardActionConfig> localShowCardActionConfig = m_showCardActionConfig;
-        *showCardActionConfig = localShowCardActionConfig.Detach();
-        return S_OK;
+        return m_showCardActionConfig.CopyTo(showCardActionConfig);
     }
 
     _Use_decl_annotations_

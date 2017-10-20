@@ -24,9 +24,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition ** value)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition> defaultContainerStyle = m_default;
-        *value = defaultContainerStyle.Detach(); 
-        return S_OK;
+        return m_default.CopyTo(value);
     }
 
     _Use_decl_annotations_
@@ -39,9 +37,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition ** value)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition> emphasisContainerStyle = m_emphasis;
-        *value = emphasisContainerStyle.Detach();
-        return S_OK;
+        return m_emphasis.CopyTo(value);
     }
 
     _Use_decl_annotations_

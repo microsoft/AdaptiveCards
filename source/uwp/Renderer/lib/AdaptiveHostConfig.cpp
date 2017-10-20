@@ -96,9 +96,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FontSizes(IAdaptiveFontSizesConfig** fontSizesConfig)
     {
-        ComPtr<IAdaptiveFontSizesConfig> localFontSizes = m_fontSizes;
-        *fontSizesConfig = localFontSizes.Detach();
-        return S_OK;
+        return m_fontSizes.CopyTo(fontSizesConfig);
     }
 
     _Use_decl_annotations_
@@ -111,9 +109,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
      HRESULT AdaptiveHostConfig::get_FontWeights(IAdaptiveFontWeightsConfig** fontWeightsConfig)
     {
-        ComPtr<IAdaptiveFontWeightsConfig> localFontWeights = m_fontWeights;
-        *fontWeightsConfig = localFontWeights.Detach();
-        return S_OK;
+        return m_fontWeights.CopyTo(fontWeightsConfig);
     }
 
     _Use_decl_annotations_
@@ -140,9 +136,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition** value)
     {
-        ComPtr<IAdaptiveContainerStylesDefinition> styleDefinition = m_containerStyles;
-        *value = styleDefinition.Detach();
-        return S_OK;
+        return m_containerStyles.CopyTo(value);
     }
 
     _Use_decl_annotations_
@@ -155,9 +149,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_ImageSizes(IAdaptiveImageSizesConfig** imageSizes)
     {
-        ComPtr<IAdaptiveImageSizesConfig> localImageSizes = m_imageSizes;
-        *imageSizes = localImageSizes.Detach();
-        return S_OK;
+        return m_imageSizes.CopyTo(imageSizes);
     }
 
     _Use_decl_annotations_
@@ -170,9 +162,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_ 
     HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig** spacingConfig)
     {
-        ComPtr<IAdaptiveSpacingConfig> localSpacing = m_spacing;
-        *spacingConfig = localSpacing.Detach();
-        return S_OK;
+        return m_spacing.CopyTo(spacingConfig);
     }
 
     _Use_decl_annotations_ 
@@ -185,9 +175,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_ 
     HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::Uwp::IAdaptiveSeparatorConfig** separatorConfig)
     {
-        ComPtr<IAdaptiveSeparatorConfig> localSeparator = m_separator;
-        *separatorConfig = localSeparator.Detach();
-        return S_OK;
+        return m_separator.CopyTo(separatorConfig);
     }
 
     _Use_decl_annotations_ 
@@ -200,9 +188,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_AdaptiveCard(IAdaptiveCardConfig** adaptiveCardConfig)
     {
-        ComPtr<IAdaptiveCardConfig> localAdaptiveCard = m_adaptiveCard;
-        *adaptiveCardConfig = localAdaptiveCard.Detach();
-        return S_OK;
+        return m_adaptiveCard.CopyTo(adaptiveCardConfig);
     }
 
     _Use_decl_annotations_
@@ -215,9 +201,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_ImageSet(IAdaptiveImageSetConfig** imageSetConfig)
     {
-        ComPtr<IAdaptiveImageSetConfig> localImageSet = m_imageSet;
-        *imageSetConfig = localImageSet.Detach();
-        return S_OK;
+        return m_imageSet.CopyTo(imageSetConfig);
     }
 
     _Use_decl_annotations_
@@ -230,9 +214,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_Image(IAdaptiveImageConfig** imageConfig)
     {
-        ComPtr<IAdaptiveImageConfig> localImage = m_image;
-        *imageConfig = localImage.Detach();
-        return S_OK;
+        return m_image.CopyTo(imageConfig);
     }
 
     _Use_decl_annotations_
@@ -245,9 +227,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FactSet(IAdaptiveFactSetConfig** factSetConfig)
     {
-        ComPtr<IAdaptiveFactSetConfig> localFactSet = m_factSet;
-        *factSetConfig = localFactSet.Detach();
-        return S_OK;
+        return m_factSet.CopyTo(factSetConfig);
     }
 
     _Use_decl_annotations_
@@ -260,9 +240,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_Actions(IAdaptiveActionsConfig** actionsConfig)
     {
-        ComPtr<IAdaptiveActionsConfig> localActions = m_actions;
-        *actionsConfig = localActions.Detach();
-        return S_OK;
+        return m_actions.CopyTo(actionsConfig);
     }
 
     _Use_decl_annotations_

@@ -25,9 +25,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig** titleTextConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig> localTitleTextConfig = m_title;
-        *titleTextConfig = localTitleTextConfig.Detach();
-        return S_OK;
+        return m_title.CopyTo(titleTextConfig);
     }
 
     _Use_decl_annotations_
@@ -40,9 +38,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig** valueTextConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig> localValueTextConfig = m_value;
-        *valueTextConfig = localValueTextConfig.Detach();
-        return S_OK;
+        return m_value.CopyTo(valueTextConfig);
     }
 
     _Use_decl_annotations_

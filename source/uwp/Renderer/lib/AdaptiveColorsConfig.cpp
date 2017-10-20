@@ -29,9 +29,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColorsConfig::get_Default(ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig** defaultColorConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> localDefaultColorConfig = m_default;
-        *defaultColorConfig = localDefaultColorConfig.Detach();
-        return S_OK;
+        return m_default.CopyTo(defaultColorConfig);
     }
 
     _Use_decl_annotations_
@@ -44,9 +42,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColorsConfig::get_Accent(ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig** accentColorConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> localAccentColorConfig = m_accent;
-        *accentColorConfig = localAccentColorConfig.Detach();
-        return S_OK;
+        return m_accent.CopyTo(accentColorConfig);
     }
 
     _Use_decl_annotations_
@@ -59,9 +55,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColorsConfig::get_Dark(ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig** darkColorConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> localDarkColorConfig = m_dark;
-        *darkColorConfig = localDarkColorConfig.Detach();
-        return S_OK;
+        return m_dark.CopyTo(darkColorConfig);
     }
 
     _Use_decl_annotations_
@@ -74,9 +68,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColorsConfig::get_Light(ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig** lightColorConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> localLightColorConfig = m_light;
-        *lightColorConfig = localLightColorConfig.Detach();
-        return S_OK;
+        return m_light.CopyTo(lightColorConfig);
     }
 
     _Use_decl_annotations_
@@ -89,9 +81,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColorsConfig::get_Good(ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig** goodColorConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> localGoodColorConfig = m_good;
-        *goodColorConfig = localGoodColorConfig.Detach();
-        return S_OK;
+        return m_good.CopyTo(goodColorConfig);
     }
 
     _Use_decl_annotations_
@@ -103,9 +93,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColorsConfig::get_Warning(ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig** warningColorConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> localWarningColorConfig = m_warning;
-        *warningColorConfig = localWarningColorConfig.Detach();
-        return S_OK;
+        return m_warning.CopyTo(warningColorConfig);
     }
 
     _Use_decl_annotations_
@@ -118,9 +106,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColorsConfig::get_Attention(ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig** attentionColorConfig)
     {
-        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorConfig> localAttentionColorConfig = m_attention;
-        *attentionColorConfig = localAttentionColorConfig.Detach();
-        return S_OK;
+        return m_attention.CopyTo(attentionColorConfig);
     }
 
     _Use_decl_annotations_
