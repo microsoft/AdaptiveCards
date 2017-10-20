@@ -24,7 +24,8 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_ForegroundColors(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveColorsConfig* colorsConfig);
 
     private:
-        ContainerStyleDefinition m_sharedContainerStyleDefinition;
+        ABI::Windows::UI::Color m_backgroundColor;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveColorsConfig> m_foregroundColors;
     };
 
     ActivatableClass(AdaptiveContainerStyleDefinition);

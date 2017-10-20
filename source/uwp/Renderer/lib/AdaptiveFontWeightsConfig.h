@@ -27,7 +27,9 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Bolder(_In_ UINT16 value);
 
     private:
-        FontWeightsConfig m_sharedFontWeightsConfig;
+        UINT16 m_default;
+        UINT16 m_lighter;
+        UINT16 m_bolder;
     };
 
     ActivatableClass(AdaptiveFontWeightsConfig);

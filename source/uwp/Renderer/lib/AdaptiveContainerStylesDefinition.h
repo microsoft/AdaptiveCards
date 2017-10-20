@@ -24,7 +24,8 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Emphasis(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition* value);
 
     private:
-        ContainerStylesDefinition m_sharedContainerStylesDefinition;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition> m_default;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition> m_emphasis;
     };
 
     ActivatableClass(AdaptiveContainerStylesDefinition);

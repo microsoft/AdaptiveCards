@@ -27,7 +27,9 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_InlineTopMargin(_In_ UINT32 value);
 
     private:
-        AdaptiveCards::ShowCardActionConfig m_sharedShowCardActionConfig;
+        ABI::AdaptiveCards::Uwp::ActionMode m_actionMode;
+        ABI::AdaptiveCards::Uwp::ContainerStyle m_containerStyle;
+        UINT32 m_inlineTopMargin;
     };
 
     ActivatableClass(AdaptiveShowCardActionConfig);

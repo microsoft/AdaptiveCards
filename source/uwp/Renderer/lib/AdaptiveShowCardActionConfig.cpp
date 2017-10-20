@@ -10,54 +10,57 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        ShowCardActionConfig showCardActionConfig;
+        return RuntimeClassInitialize(showCardActionConfig);
     } CATCH_RETURN;
 
-    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig ShowCardActionConfig) noexcept
+    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {
-        m_sharedShowCardActionConfig = ShowCardActionConfig;
+        m_actionMode = static_cast<ABI::AdaptiveCards::Uwp::ActionMode>(sharedShowCardActionConfig.actionMode);
+        m_containerStyle = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(sharedShowCardActionConfig.style);
+        m_inlineTopMargin = sharedShowCardActionConfig.inlineTopMargin;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveCards::Uwp::ActionMode* value)
     {
-        *value = static_cast<ABI::AdaptiveCards::Uwp::ActionMode>(m_sharedShowCardActionConfig.actionMode);
+        *value = m_actionMode;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Uwp::ActionMode value)
     {
-        m_sharedShowCardActionConfig.actionMode = static_cast<AdaptiveCards::ActionMode>(value);
+        m_actionMode = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
         HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
     {
-        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedShowCardActionConfig.style);
+        *style = m_containerStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
         HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
     {
-        m_sharedShowCardActionConfig.style = static_cast<AdaptiveCards::ContainerStyle>(style);
+        m_containerStyle = style;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardActionConfig::get_InlineTopMargin(UINT32* inlineTopMargin)
     {
-        *inlineTopMargin = m_sharedShowCardActionConfig.inlineTopMargin;
+        *inlineTopMargin = m_inlineTopMargin;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardActionConfig::put_InlineTopMargin(UINT32 inlineTopMargin)
     {
-        m_sharedShowCardActionConfig.inlineTopMargin = inlineTopMargin;
+        m_inlineTopMargin = inlineTopMargin;
         return S_OK;
     }
 }}

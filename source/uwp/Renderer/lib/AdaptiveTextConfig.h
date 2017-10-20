@@ -36,7 +36,12 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_MaxWidth(_In_ UINT32 maxWidth);
 
     private:
-        TextConfig m_sharedTextConfig;
+        ABI::AdaptiveCards::Uwp::TextWeight m_textWeight;
+        ABI::AdaptiveCards::Uwp::TextSize m_textSize;
+        ABI::AdaptiveCards::Uwp::ForegroundColor m_textColor;
+        boolean m_isSubtle;
+        boolean m_wrap;
+        UINT32 m_maxWidth;
     };
 
     ActivatableClass(AdaptiveTextConfig);
