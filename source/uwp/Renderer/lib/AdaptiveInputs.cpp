@@ -1,12 +1,6 @@
 #include "pch.h"
 #include "AdaptiveInputs.h"
 
-#include "AdaptiveCard.h"
-#include "AsyncOperations.h"
-#include <windows.foundation.collections.h>
-#include <Windows.UI.Xaml.h>
-#include "XamlHelpers.h"
-
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
