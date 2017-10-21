@@ -24,7 +24,8 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Subtle(_In_ ABI::Windows::UI::Color value);
 
     private:
-        ColorConfig m_sharedColorConfig;
+        ABI::Windows::UI::Color m_defaultColor;
+        ABI::Windows::UI::Color m_subtleColor;
     };
 
     ActivatableClass(AdaptiveColorConfig);

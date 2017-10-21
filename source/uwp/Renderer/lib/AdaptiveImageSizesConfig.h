@@ -27,7 +27,9 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Large(_In_ UINT32 value);
 
     private:
-        ImageSizesConfig m_sharedImageSizesConfig;
+        UINT32 m_small;
+        UINT32 m_medium;
+        UINT32 m_large;
     };
 
     ActivatableClass(AdaptiveImageSizesConfig);

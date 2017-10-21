@@ -1,12 +1,9 @@
 ﻿#pragma once
 
 #include "AdaptiveCards.Uwp.h"
-#include "XamlBuilder.h"
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class XamlBuilder;
-
     // This class is effectively a singleton, and stays around between subsequent renders.
     class AdaptiveCardRenderer :
         public Microsoft::WRL::RuntimeClass<
@@ -17,7 +14,6 @@ namespace AdaptiveCards { namespace Uwp
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveCardRenderer, BaseTrust)
 
     public:
-        AdaptiveCardRenderer();
         HRESULT RuntimeClassInitialize();
 
         // IAdaptiveCardRenderer
@@ -55,7 +51,6 @@ namespace AdaptiveCards { namespace Uwp
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
 
-        std::shared_ptr<AdaptiveCards::Uwp::XamlBuilder> m_xamlBuilder;
         HRESULT RegisterDefaultElementRenderers();
 
         bool m_explicitDimensions = false;

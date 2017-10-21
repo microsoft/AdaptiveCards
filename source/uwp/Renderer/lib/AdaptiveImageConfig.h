@@ -21,7 +21,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveCards::Uwp::ImageSize imageSize);
 
     private:
-        ImageConfig m_sharedImageConfig;
+        ABI::AdaptiveCards::Uwp::ImageSize m_imageSize;
     };
 
     ActivatableClass(AdaptiveImageConfig);
