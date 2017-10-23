@@ -37,7 +37,7 @@
 		F401A87F1F1045CA006D7AF2 /* ACRContentHoldingUIView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A87D1F1045CA006D7AF2 /* ACRContentHoldingUIView.h */; };
 		F401A8801F1045CA006D7AF2 /* ACRContentHoldingUIView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A87E1F1045CA006D7AF2 /* ACRContentHoldingUIView.mm */; };
 		F423C0BF1EE1FBAA00905679 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F423C0B51EE1FBA900905679 /* AdaptiveCards.framework */; };
-		F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C0B81EE1FBAA00905679 /* ACFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F423C0C61EE1FBAA00905679 /* AdaptiveCards.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C0B81EE1FBAA00905679 /* AdaptiveCards.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F423C14C1EE1FFF100905679 /* ACRViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C1481EE1FFF100905679 /* ACRViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F423C14D1EE1FFF100905679 /* ACRViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C1491EE1FFF100905679 /* ACRViewController.mm */; };
 		F42741071EF8624F00399FBB /* ACRIBaseCardElementRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F42741061EF8624F00399FBB /* ACRIBaseCardElementRenderer.h */; };
@@ -211,7 +211,7 @@
 		F401A87D1F1045CA006D7AF2 /* ACRContentHoldingUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIView.h; sourceTree = "<group>"; };
 		F401A87E1F1045CA006D7AF2 /* ACRContentHoldingUIView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIView.mm; sourceTree = "<group>"; };
 		F423C0B51EE1FBA900905679 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F423C0B81EE1FBAA00905679 /* ACFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACFramework.h; sourceTree = "<group>"; };
+		F423C0B81EE1FBAA00905679 /* AdaptiveCards.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdaptiveCards.h; sourceTree = "<group>"; };
 		F423C0B91EE1FBAA00905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F423C0BE1EE1FBAA00905679 /* AdaptiveCardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdaptiveCardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C1481EE1FFF100905679 /* ACRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRViewController.h; sourceTree = "<group>"; };
@@ -410,7 +410,8 @@
 				F42979321F30074900E89914 /* Inputs */,
 				F42979341F3007C500E89914 /* ReadOnlyObjects */,
 				F42979351F3007DF00E89914 /* Layouts */,
-				F423C0B81EE1FBAA00905679 /* ACFramework.h */,
+				F423C0B81EE1FBAA00905679 /* AdaptiveCards.h */,
+				F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */,
 				F423C1481EE1FFF100905679 /* ACRViewController.h */,
 				F4CAE77F1F75AB9000545555 /* ACOAdaptiveCard.h */,
 				F4CAE7801F75AB9000545555 /* ACOAdaptiveCard.mm */,
@@ -707,7 +708,7 @@
 				F44873241EE2261F00FCAFAE /* TextBlock.h in Headers */,
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
 				6B6840F41F25A5F7008A933F /* ACRInputControlTableView.h in Headers */,
-				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
+				F423C0C61EE1FBAA00905679 /* AdaptiveCards.h in Headers */,
 				F44873041EE2261F00FCAFAE /* ColumnSet.h in Headers */,
 				F4C1F6001F2C23FD0018CB78 /* ACRActionShowCardRenderer.h in Headers */,
 				F44873191EE2261F00FCAFAE /* NumberInput.h in Headers */,
