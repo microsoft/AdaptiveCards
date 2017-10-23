@@ -5,7 +5,7 @@ using Foundation;
 using ObjCRuntime;
 using CoreGraphics;
 
-namespace Xamarin.AdaptiveCards.iOS
+namespace AdaptiveCards.Rendering.Xamarin.iOS
 {
 	// @protocol ACRActionDelegate
 	[Protocol, Model]

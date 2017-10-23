@@ -6,8 +6,8 @@
     <ProjectGuid>{1879973A-CE87-44AF-978A-11A31DCF2A4E}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>XamarinAC</RootNamespace>
-    <AssemblyName>XamarinAC</AssemblyName>
+    <RootNamespace>AdaptiveCards.Rendering.Xamarin.iOS.Sample</RootNamespace>
+    <AssemblyName>AdaptiveCards.Rendering.Xamarin.iOS.Sample</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -104,7 +104,7 @@
     <Compile Include="DemoViewController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xamarin.AdaptiveCards.iOS\Xamarin.AdaptiveCards.iOS.csproj">
+    <ProjectReference Include="..\AdaptiveCards.Rendering.Xamarin.iOS\AdaptiveCards.Rendering.Xamarin.iOS.csproj">
       <Project>{DC69056C-24E0-4AD1-82A6-6F1DEB2AE70E}</Project>
       <Name>AdaptiveCards.Rendering.Xamarin.iOS</Name>
     </ProjectReference>

@@ -1,5 +1,5 @@
 ﻿using System;
 
-namespace Xamarin.AdaptiveCards.iOS
+namespace AdaptiveCards.Rendering.Xamarin.iOS
 {
 }
