@@ -11,7 +11,7 @@ using namespace AdaptiveCards;
 
 @interface ACOBaseActionElement()
 
-- (std::shared_ptr<BaseActionElement> const &)getElem;
+- (std::shared_ptr<BaseActionElement>)getElem;
 - (void)setElem:(std::shared_ptr<BaseActionElement> const &)elem;
 
 @end    

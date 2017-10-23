@@ -21,7 +21,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (std::shared_ptr<BaseActionElement> const &)getElem
+- (shared_ptr<BaseActionElement>)getElem
 {
     return _elem;
 }
