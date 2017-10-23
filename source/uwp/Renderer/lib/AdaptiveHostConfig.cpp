@@ -77,6 +77,7 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSetConfig>(m_imageSet.GetAddressOf(), sharedHostConfig.imageSet));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFactSetConfig>(m_factSet.GetAddressOf(), sharedHostConfig.factSet));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_actions.GetAddressOf(), sharedHostConfig.actions));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_image.GetAddressOf(), sharedHostConfig.image));
 
         return S_OK;
     }
