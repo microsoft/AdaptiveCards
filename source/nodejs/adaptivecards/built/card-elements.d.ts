@@ -304,6 +304,7 @@ export declare class Column extends Container {
     protected adjustRenderedElementSize(renderedElement: HTMLElement): void;
     protected readonly separatorOrientation: Enums.Orientation;
     width: number | "auto" | "stretch";
+    pixelWidth: number;
     getJsonTypeName(): string;
     parse(json: any): void;
     readonly isStandalone: boolean;

@@ -2812,14 +2812,19 @@ export class Column extends Container {
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         renderedElement.style.minWidth = "0";
 
-        if (typeof this.width === "number") {
-            renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
-        }
-        else if (this.width === "auto") {
-            renderedElement.style.flex = "0 1 auto";
+        if (this.pixelWidth > 0) {
+            renderedElement.style.flex = "0 0 " + this.pixelWidth + "px";
         }
         else {
-            renderedElement.style.flex = "1 1 50px";
+            if (typeof this.width === "number") {
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
+            }
+            else if (this.width === "auto") {
+                renderedElement.style.flex = "0 1 auto";
+            }
+            else {
+                renderedElement.style.flex = "1 1 50px";
+            }
         }
     }
 
@@ -2828,6 +2833,7 @@ export class Column extends Container {
     }
 
     width: number | "auto" | "stretch" = "auto";
+    pixelWidth: number = 0;
 
     getJsonTypeName(): string {
         return "Column";

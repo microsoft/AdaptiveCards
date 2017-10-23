@@ -10,7 +10,8 @@ import {
     Orientation,
     ActionAlignment,
     CardElement,
-    Image
+    Image,
+    Column
 } from "adaptivecards";
 
 export class OutlookContainer extends HostContainer {
@@ -33,6 +34,10 @@ export class OutlookContainer extends HostContainer {
 
         if (element instanceof Image) {
             (<Image>element).backgroundColor = json["backgroundColor"];
+        }
+
+        if (element instanceof Column) {
+            (<Column>element).pixelWidth = json["pixelWidth"];
         }
     }
 
