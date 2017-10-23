@@ -47,6 +47,8 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
+#include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
+#include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseCardElement)
@@ -71,6 +73,8 @@ namespace std {
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
+%shared_ptr(AdaptiveCards::ElementParserRegistration)
+%shared_ptr(AdaptiveCards::ActionParserRegistration)
 
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
@@ -380,3 +384,5 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"
+%include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
