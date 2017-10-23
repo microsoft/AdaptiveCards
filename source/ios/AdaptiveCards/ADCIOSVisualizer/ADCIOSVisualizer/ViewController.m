@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+#import "CustomActionOpenURLRenderer.h"
 
 @interface ViewController ()
 
@@ -157,6 +158,9 @@
     
     if(renderResult.succeeded)
     {
+        ACRRegistration *registration = [ACRRegistration getInstance];
+        // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809 
+        [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
         ACRViewController *adcVc = renderResult.viewcontroller;
         adcVc.acrActionDelegate = self;
         if(self.curView)

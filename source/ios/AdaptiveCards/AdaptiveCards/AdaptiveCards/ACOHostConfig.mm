@@ -43,9 +43,14 @@ using namespace AdaptiveCards;
     return result;
 }
 
-- (std::shared_ptr<HostConfig> const &)getHostConfig
+- (std::shared_ptr<HostConfig>)getHostConfig
 {
     return _config;
+}
+
+- (void)setHostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    _config = config;
 }
 
 @end

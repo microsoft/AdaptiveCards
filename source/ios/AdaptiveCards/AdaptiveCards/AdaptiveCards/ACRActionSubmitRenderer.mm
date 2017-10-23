@@ -7,6 +7,8 @@
 
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRActionSubmitRenderer.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRButton.h"
 #import "ACRSubmitTarget.h"
 #import "SubmitAction.h"
@@ -22,11 +24,13 @@
 - (UIButton* )renderButton:(UIViewController *)vc
                     inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
-         baseActionElement:(std::shared_ptr<BaseActionElement> const &)elem
-             andHostConfig:(std::shared_ptr<HostConfig> const &)config;
+         baseActionElement:(ACOBaseActionElement *)acoElem
+                hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseActionElement> elem = [acoElem getElem];
     std::shared_ptr<SubmitAction> action = std::dynamic_pointer_cast<SubmitAction>(elem);
-    
+
     NSString *title = [NSString stringWithCString:action->GetTitle().c_str()
                                         encoding:NSUTF8StringEncoding];
     UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
@@ -36,13 +40,13 @@
     ACRSubmitTarget *target = [[ACRSubmitTarget alloc] initWithDataString:data
                                                                    inputs:inputs
                                                                        vc:vc];
-                               
+
     [button addTarget:target action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [superview addTarget:target];
 
     [superview addArrangedSubview:button];
-    
+
     return button;
 }
 @end
