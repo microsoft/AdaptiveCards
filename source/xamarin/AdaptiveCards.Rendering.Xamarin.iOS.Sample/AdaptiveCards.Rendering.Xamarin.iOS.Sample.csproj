@@ -106,7 +106,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Xamarin.AdaptiveCards.iOS\Xamarin.AdaptiveCards.iOS.csproj">
       <Project>{DC69056C-24E0-4AD1-82A6-6F1DEB2AE70E}</Project>
-      <Name>Xamarin.AdaptiveCards.iOS</Name>
+      <Name>AdaptiveCards.Rendering.Xamarin.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

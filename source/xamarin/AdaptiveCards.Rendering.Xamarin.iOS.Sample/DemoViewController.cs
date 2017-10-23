@@ -1,7 +1,7 @@
 ﻿using System;
 using UIKit;
 using System.Net.Http;
-using Xamarin.AdaptiveCards.iOS;
+using AdaptiveCards.Rendering.Xamarin.iOS;
 
 namespace XamarinAC
 {
