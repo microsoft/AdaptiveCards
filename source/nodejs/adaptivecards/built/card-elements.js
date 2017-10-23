@@ -720,6 +720,9 @@ var Image = /** @class */ (function (_super) {
                 imageElement.style.backgroundPosition = "50% 50%";
                 imageElement.style.backgroundRepeat = "no-repeat";
             }
+            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+                imageElement.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
+            }
             imageElement.src = this.url;
             imageElement.alt = this.altText;
             element.appendChild(imageElement);

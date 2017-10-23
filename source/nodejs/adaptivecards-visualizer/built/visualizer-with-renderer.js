@@ -470,6 +470,13 @@ var HostContainer = /** @class */ (function () {
             }
         }
     };
+    HostContainer.prototype.parseElement = function (element, json) {
+        // Do nothing in base implementation
+    };
+    HostContainer.prototype.anchorClicked = function (anchor) {
+        // Not handled by the host container by default
+        return false;
+    };
     HostContainer.prototype.getHostConfig = function () {
         return new adaptivecards_1.HostConfig({
             spacing: {
@@ -22634,6 +22641,23 @@ var OutlookContainer = /** @class */ (function (_super) {
         element.appendChild(renderedCard);
         return element;
     };
+    OutlookContainer.prototype.parseElement = function (element, json) {
+        if (typeof json["isVisible"] === "boolean") {
+            element.isVisible = json["isVisible"];
+        }
+        if (element instanceof adaptivecards_1.Image) {
+            element.backgroundColor = json["backgroundColor"];
+        }
+    };
+    OutlookContainer.prototype.anchorClicked = function (anchor) {
+        if (anchor.href.toLowerCase().startsWith("action:")) {
+            alert("Executing inline action...");
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
     OutlookContainer.prototype.getHostConfig = function () {
         return new adaptivecards_1.HostConfig({
             spacing: {
@@ -26802,6 +26826,9 @@ var editor;
 var hostContainerOptions = [];
 var hostContainerPicker;
 var lastValidationErrors = [];
+function getSelectedHostContainer() {
+    return hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+}
 function setContent(element) {
     var contentContainer = document.getElementById("content");
     contentContainer.innerHTML = '';
@@ -26810,7 +26837,7 @@ function setContent(element) {
 function renderCard() {
     document.getElementById("errorContainer").hidden = true;
     lastValidationErrors = [];
-    var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var hostContainer = getSelectedHostContainer();
     var json = JSON.parse(currentCardPayload);
     var adaptiveCard = new Adaptive.AdaptiveCard();
     adaptiveCard.hostConfig = new Adaptive.HostConfig(currentConfigPayload);
@@ -26868,7 +26895,7 @@ function loadStyleSheetAndConfig() {
     }
     styleSheetLinkElement.rel = "stylesheet";
     styleSheetLinkElement.type = "text/css";
-    var selectedHostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var selectedHostContainer = getSelectedHostContainer();
     styleSheetLinkElement.href = selectedHostContainer.styleSheet;
     currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), null, '\t');
     if (!isCardEditor) {
@@ -27058,7 +27085,7 @@ function showPopupCard(action) {
     var cardContainer = document.createElement("div");
     cardContainer.className = "popupCardContainer";
     cardContainer.onclick = function (e) { e.stopPropagation(); };
-    var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var hostContainer = getSelectedHostContainer();
     cardContainer.appendChild(hostContainer.render(action.card.render(), action.card.renderSpeech()));
     overlayElement.appendChild(cardContainer);
     document.body.appendChild(overlayElement);
@@ -27129,23 +27156,33 @@ exports.ToggleVisibilityAction = ToggleVisibilityAction;
 var betaFeaturesEnabled = false;
 window.onload = function () {
     betaFeaturesEnabled = location.search.indexOf("beta=true") >= 0;
+    Adaptive.AdaptiveCard.onParseElement = function (element, json) {
+        getSelectedHostContainer().parseElement(element, json);
+    };
+    Adaptive.AdaptiveCard.onAnchorClicked = function (anchor) {
+        return getSelectedHostContainer().anchorClicked(anchor);
+    };
     if (betaFeaturesEnabled) {
         Adaptive.AdaptiveCard.useAutoPadding = true;
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", function () { return new ToggleVisibilityAction(); });
-        Adaptive.AdaptiveCard.onParseElement = function (element, json) {
+        /*
+        Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
             if (typeof json["isVisible"] === "boolean") {
                 element.isVisible = json["isVisible"];
             }
-        };
-        Adaptive.AdaptiveCard.onAnchorClicked = function (anchor) {
+        }
+
+        Adaptive.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
             if (anchor.href.startsWith("executeaction:")) {
                 alert("Executing inline action...");
+
                 return true;
             }
             else {
                 return false;
             }
-        };
+        }
+        */
     }
     currentConfigPayload = Constants.defaultConfigPayload;
     document.getElementById("editCard").onclick = function (e) {
@@ -28327,6 +28364,9 @@ var Image = /** @class */ (function (_super) {
                 imageElement.style.borderRadius = "50%";
                 imageElement.style.backgroundPosition = "50% 50%";
                 imageElement.style.backgroundRepeat = "no-repeat";
+            }
+            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+                imageElement.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
             }
             imageElement.src = this.url;
             imageElement.alt = this.altText;

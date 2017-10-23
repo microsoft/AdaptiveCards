@@ -94,6 +94,7 @@ export declare class Image extends CardElement {
     protected readonly useDefaultSizing: boolean;
     protected internalRender(): HTMLElement;
     style: Enums.ImageStyle;
+    backgroundColor: string;
     url: string;
     size: Enums.Size;
     pixelWidth?: number;

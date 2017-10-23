@@ -805,6 +805,10 @@ export class Image extends CardElement {
                 imageElement.style.backgroundRepeat = "no-repeat";
             }
 
+            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+                imageElement.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
+            }
+
             imageElement.src = this.url;
             imageElement.alt = this.altText;
 
@@ -815,6 +819,7 @@ export class Image extends CardElement {
     }
 
     style: Enums.ImageStyle = Enums.ImageStyle.Default;
+    backgroundColor: string;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
     pixelWidth?: number = null;
@@ -839,7 +844,6 @@ export class Image extends CardElement {
         super.parse(json);
 
         this.url = json["url"];
-
 
         var styleString = json["style"];
 
@@ -3439,7 +3443,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 }
 
-// This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
+// This call acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
 
 class InlineAdaptiveCard extends AdaptiveCard {
