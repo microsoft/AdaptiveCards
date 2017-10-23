@@ -18,6 +18,7 @@
 #include "XamlStyleKeyGenerators.h"
 #include "AdaptiveRenderArgs.h"
 #include "json/json.h"
+#include "WholeItemsPanel.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -342,7 +343,12 @@ namespace AdaptiveCards { namespace Uwp
 
         // Now create the inner stack panel to serve as the root host for all the 
         // body elements and apply padding from host configuration
-        ComPtr<IStackPanel> bodyElementHost = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<WholeItemsPanel> bodyElementHost;
+        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
+        bodyElementHost->SetMainPanel(TRUE);
+        bodyElementHost->SetFirstGroup(TRUE);
+        bodyElementHost->SetAdaptiveHeight(TRUE);
+
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get());
@@ -1419,8 +1425,9 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveColumn> adaptiveColumn;
         THROW_IF_FAILED(cardElement.As(&adaptiveColumn));
 
-        ComPtr<IStackPanel> xamlStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        xamlStackPanel->put_Orientation(Orientation::Orientation_Vertical);
+        ComPtr<WholeItemsPanel> columnPanel;
+        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&columnPanel));
+        columnPanel->SetFirstGroup(TRUE);
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveColumn->get_Style(&containerStyle));
@@ -1442,19 +1449,19 @@ namespace AdaptiveCards { namespace Uwp
         if (hasExplicitContainerStyle && SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor)))
         {
             ComPtr<IPanel> columnAsPanel;
-            THROW_IF_FAILED(xamlStackPanel.As(&columnAsPanel));
+            THROW_IF_FAILED(columnPanel.As(&columnAsPanel));
 
             ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
             THROW_IF_FAILED(columnAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
         ComPtr<IPanel> stackPanelAsPanel;
-        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
+        THROW_IF_FAILED(columnPanel.As(&stackPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
         BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
-        THROW_IF_FAILED(xamlStackPanel.CopyTo(ColumnControl));
+        THROW_IF_FAILED(columnPanel.CopyTo(ColumnControl));
     }
 
     _Use_decl_annotations_
