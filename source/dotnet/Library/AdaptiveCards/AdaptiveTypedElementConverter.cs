@@ -19,6 +19,7 @@ namespace AdaptiveCards
         /// </summary>
         private static readonly Lazy<Dictionary<string, Type>> TypedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
         {
+            // TODO: Should this be a static? It makes it impossible to have diff renderers support different elements
             var types = new Dictionary<string, Type>
             {
                 [AdaptiveCard.TypeName] = typeof(AdaptiveCard),

@@ -20,6 +20,7 @@ namespace AdaptiveCards.Test
             Assert.IsFalse(v10.Equals(v11));
             Assert.IsTrue(v11 > v10);
             Assert.IsTrue(v10 < v11);
+            Assert.IsTrue(v11 >= v10);
         }
 
 
