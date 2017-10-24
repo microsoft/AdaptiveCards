@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
 
@@ -7,20 +8,47 @@ namespace AdaptiveCards
     /// <summary>
     ///     Adaptive card which has flexible container
     /// </summary>
+    [JsonConverter(typeof(AdaptiveCardConverter))]
     public class AdaptiveCard : AdaptiveTypedElement
 #if WINDOWS_UWP
-      // TODO: uncomment when I figure out the 
+      // TODO: uncomment when I figure out the Windows build
        //   , Windows.UI.Shell.IAdaptiveCard
 #endif
     {
         public const string TypeName = "AdaptiveCard";
 
-        public AdaptiveCard()
+        /// <summary>
+        /// The latest known schema version supported by this library
+        /// </summary>
+        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 0);
+
+        /// <summary>
+        /// Creates an AdaptiveCard using a specific schema version
+        /// </summary>
+        /// <param name="schemaVersion">The schema version to use</param>
+        public AdaptiveCard(AdaptiveSchemaVersion schemaVersion)
         {
             Type = TypeName;
-            Version = new AdaptiveSchemaVersion(1, 0);
+            Version = schemaVersion;
         }
 
+
+        /// <inheritdoc />
+        /// <param name="schemaVersion">The schema version to use</param>
+        public AdaptiveCard(string schemaVersion) : this(new AdaptiveSchemaVersion(schemaVersion)) { }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Creates an AdaptiveCard using the <see cref="F:AdaptiveCards.AdaptiveCard.KnownSchemaVersion" /> of this library
+        /// </summary>
+        public AdaptiveCard() : this(KnownSchemaVersion) { }
+
+
+        /// <summary>
+        /// Parse an AdaptiveCard from a JSON string
+        /// </summary>
+        /// <param name="json">A JSON-serialized Adaptive Card</param>
+        /// <returns></returns>
         public static AdaptiveCardParseResult FromJson(string json)
         {
             AdaptiveCard card = null;
@@ -28,16 +56,11 @@ namespace AdaptiveCards
             try
             {
                 card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
-
-                // Version must be specified
-                if (card.Version == null)
-                {
-                    card = null;
-                }
             }
 
             catch
             {
+                Debugger.Break();
                 // TODO: Return errors here
             }
 
@@ -46,11 +69,14 @@ namespace AdaptiveCards
 
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
+        /// <summary>
+        /// The Body elements for this card
+        /// </summary>
         [JsonProperty(Order = -3)]
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
         /// <summary>
-        ///     Actions for this container
+        ///     Actions for the card
         /// </summary>
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         public List<AdaptiveActionBase> Actions { get; set; } = new List<AdaptiveActionBase>();
@@ -71,13 +97,12 @@ namespace AdaptiveCards
         ///     Background image for card
         /// </summary>
         [JsonProperty(Order = -4, NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundImage { get; set; }
+        public string BackgroundImage { get; set; } // TODO: Should this be Uri?
 
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
-        [JsonProperty(Order = -9, Required = Required.Always)]
-        [JsonRequired]
+        [JsonProperty(Order = -9)]
         public AdaptiveSchemaVersion Version { get; set; }
 
         /// <summary>
@@ -93,11 +118,10 @@ namespace AdaptiveCards
         [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
         public string FallbackText { get; set; }
 
-        public bool ShouldSerializeActions()
-        {
-            return Actions.Any();
-        }
-
+        /// <summary>
+        ///  Serialize this Adaptive Card to JSON
+        /// </summary>
+        /// <returns></returns>
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);

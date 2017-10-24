@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace AdaptiveCards.Test
 {
     [TestClass]
-    public class AdaptiveCardSeparatorSpacingTests
+    public class SeparatorSpacingTests
     {
         [TestMethod]
         public void TestSpacingAndSeparator()

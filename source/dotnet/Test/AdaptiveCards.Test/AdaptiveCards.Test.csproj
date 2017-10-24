@@ -48,10 +48,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdaptiveSchemaVersionTests.cs" />
+    <Compile Include="ChoiceSetInputTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AdaptiveCardApiTests.cs" />
     <Compile Include="HostConfigApiTests.cs" />
-    <Compile Include="AdaptiveCardSeparatorSpacingTests.cs" />
+    <Compile Include="SeparatorSpacingTests.cs" />
     <Compile Include="SerializationTests.cs" />
   </ItemGroup>
   <ItemGroup>

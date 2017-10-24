@@ -7,12 +7,12 @@ This library exercises the .NET HTML Renderer (`AdaptiveCards.Rendering.Html`)
 If you cloned this repo, run the following command to generate HTML from the Scenario samples.
 
 ```console
-dotnet run  ..\..\..\..\samples\v1.0\Scenarios
+dotnet run
 ```
 
 To pipe the output to a file
 
 ```console
-dotnet run  ..\..\..\..\samples\v1.0\Scenarios > samples.html
-open ./samples.html
+dotnet run > samples.html
+start ./samples.html
 ```
