@@ -11,6 +11,7 @@ import {
     ActionAlignment,
     CardElement,
     Image,
+    Container,
     Column
 } from "adaptivecards";
 
@@ -38,6 +39,10 @@ export class OutlookContainer extends HostContainer {
 
         if (element instanceof Column) {
             (<Column>element).pixelWidth = json["pixelWidth"];
+        }
+
+        if (element instanceof Container) {
+            (<Container>element).bleed = json["bleed"];
         }
     }
 

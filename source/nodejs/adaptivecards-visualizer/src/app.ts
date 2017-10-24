@@ -510,8 +510,6 @@ window.onload = () => {
     }
 
     if (betaFeaturesEnabled) {
-        Adaptive.AdaptiveCard.useAutoPadding = true;
-
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });        
     }
 
