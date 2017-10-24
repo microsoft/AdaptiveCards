@@ -89,22 +89,25 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void Test_MissingTypeSkipsElement()
         {
+            // TODO: we can actually pull this payload from ~/samples/Tests/TypeIsRequired.json
+            // Should we also do this for the other Tests payloads in the samples folder?
+
             var json = @"{
   ""type"": ""AdaptiveCard"",
   ""version"": ""1.0"",
   ""body"": [
     {
       ""type"": ""TextBlock"",
-      ""text"": ""Hello""
+      ""text"": ""This payload should fail to parse""
     },
     {
-      ""text"": ""Hello""
+      ""text"": ""What am I?""
     }
   ]
 }";
 
             var result = AdaptiveCard.FromJson(json);
-            Assert.AreEqual(1, result.Card.Body.Count);
+            Assert.IsNull(result.Card);
         }
 
         [TestMethod]

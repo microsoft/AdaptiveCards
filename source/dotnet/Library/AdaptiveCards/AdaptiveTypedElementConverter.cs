@@ -73,8 +73,7 @@ namespace AdaptiveCards
             var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
-                // TODO: log warning, missing type name
-                return null;
+                throw new JsonException("AdaptiveCard elements must contain a 'type' property");
             }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))

@@ -19,6 +19,12 @@ namespace AdaptiveCards.Rendering.Html
             return new AdaptiveSchemaVersion(1, 0);
         }
 
+        /// <summary>
+        /// Generate a random matching 'id' for the HTML &lt;label&gt; and &lt;input&gt; radio's and checkboxes
+        /// </summary>
+        public static Func<string> GenerateRandomLabelInputId => () => "ac-" + Guid.NewGuid().ToString().Substring(0, 8);
+
+
         // ---------------- INTERNAL METHODS -----------------------------
 
         //        private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
@@ -153,7 +159,7 @@ namespace AdaptiveCards.Rendering.Html
 
             return buttonElement;
         }
-        
+
         protected static HtmlTag AdaptiveCardRender(AdaptiveCard card, AdaptiveRendererContext context)
         {
             var uiCard = new DivTag()
@@ -368,7 +374,7 @@ namespace AdaptiveCards.Rendering.Html
                     return val;
                 return 0;
             }).Sum());
-            
+
             foreach (var column in columnSet.Columns)
             {
                 var uiColumn = context.Render(column);
@@ -688,7 +694,7 @@ namespace AdaptiveCards.Rendering.Html
                         .Attr("name", adaptiveChoiceSetInput.Id)
                         .AddClass("ac-input")
                         .AddClass("ac-multichoiceInput")
-                        .Style("width", "100%"); 
+                        .Style("width", "100%");
 
                     foreach (var choice in adaptiveChoiceSetInput.Choices)
                     {
@@ -713,8 +719,7 @@ namespace AdaptiveCards.Rendering.Html
 
                     foreach (var choice in adaptiveChoiceSetInput.Choices)
                     {
-                        // generate a random ID to link the <label> and <input> elements together
-                        var htmlLabelId = Guid.NewGuid().ToString().Substring(0, 6);
+                        var htmlLabelId = GenerateRandomLabelInputId();
 
                         var uiRadioInput = new HtmlTag("input")
                             .Attr("id", htmlLabelId)
@@ -732,7 +737,7 @@ namespace AdaptiveCards.Rendering.Html
 
                         var uiLabel = new HtmlTag("label")
                             .Attr("for", htmlLabelId).Append(
-                                context.Render(new AdaptiveTextBlock() {Text = choice.Title})
+                                context.Render(new AdaptiveTextBlock() { Text = choice.Title })
                                     .Style("display", "inline-block")
                                     .Style("margin-left", "6px")
                                     .Style("vertical-align", "middle")
@@ -760,8 +765,7 @@ namespace AdaptiveCards.Rendering.Html
 
                 foreach (var choice in adaptiveChoiceSetInput.Choices)
                 {
-                    // generate a random ID to link the <label> and <input> elements together
-                    var htmlLabelId = Guid.NewGuid().ToString().Substring(0, 6);
+                    var htmlLabelId = GenerateRandomLabelInputId();
 
                     var uiCheckboxInput = new HtmlTag("input")
                         .Attr("id", htmlLabelId)
@@ -919,8 +923,7 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag ToggleInputRender(AdaptiveToggleInput toggleInput, AdaptiveRendererContext context)
         {
-            // generate a random ID to link the <label> and <input> elements together
-            var htmlLabelId = Guid.NewGuid().ToString().Substring(0, 6);
+            var htmlLabelId = GenerateRandomLabelInputId();
 
             var uiElement = new HtmlTag("div")
                 .AddClass("ac-input")
@@ -942,7 +945,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiLabel = new HtmlTag("label")
                 .Attr("for", htmlLabelId)
                 .Append(
-                    context.Render(new AdaptiveTextBlock {Text = toggleInput.Title})
+                    context.Render(new AdaptiveTextBlock { Text = toggleInput.Title })
                         .Style("display", "inline-block")
                         .Style("margin-left", "6px")
                         .Style("vertical-align", "middle"));
