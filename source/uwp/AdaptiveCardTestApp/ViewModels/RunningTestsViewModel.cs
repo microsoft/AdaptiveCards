@@ -170,6 +170,21 @@ namespace AdaptiveCardTestApp.ViewModels
                             HostConfig = hostConfig
                         };
 
+                        if (hostConfigFile.Name.Contains("windows-timeline"))
+                        {
+                            renderer.SetFixedDimensions(320, 180);
+                            CurrentCardVisualWidth = 320;
+                        }
+                        else if (hostConfigFile.Name.Contains("windows-live-tile"))
+                        {
+                            renderer.SetFixedDimensions(310, 310);
+                            CurrentCardVisualWidth = 310;
+                        }
+                        else
+                        {
+                            CurrentCardVisualWidth = 400;
+                        }
+
                         FrameworkElement xaml = renderer.RenderAdaptiveCard(card).FrameworkElement as FrameworkElement;
 
                         if (xaml == null)
