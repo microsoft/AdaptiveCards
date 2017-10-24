@@ -720,6 +720,9 @@ var Image = /** @class */ (function (_super) {
                 imageElement.style.backgroundPosition = "50% 50%";
                 imageElement.style.backgroundRepeat = "no-repeat";
             }
+            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+                imageElement.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
+            }
             imageElement.src = this.url;
             imageElement.alt = this.altText;
             element.appendChild(imageElement);
@@ -1772,7 +1775,7 @@ var ActionCollection = /** @class */ (function () {
         }
         return result;
     };
-    ActionCollection.prototype.render = function () {
+    ActionCollection.prototype.render = function (orientation) {
         var _this = this;
         if (!this._owner.hostConfig.supportsInteractivity) {
             return null;
@@ -1789,7 +1792,7 @@ var ActionCollection = /** @class */ (function () {
         else {
             var buttonStrip = document.createElement("div");
             buttonStrip.style.display = "flex";
-            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+            if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
                 if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
@@ -1866,7 +1869,7 @@ var ActionCollection = /** @class */ (function () {
                     }
                     else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
-                        if (this._owner.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+                        if (orientation === Enums.Orientation.Horizontal) {
                             spacer.style.flex = "0 0 auto";
                             spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
                         }
@@ -1912,13 +1915,14 @@ var ActionSet = /** @class */ (function (_super) {
     __extends(ActionSet, _super);
     function ActionSet() {
         var _this = _super.call(this) || this;
+        _this.orientation = null;
         _this._actionCollection = new ActionCollection(_this);
         _this._actionCollection.onHideActionCardPane = function () { _this.showBottomSpacer(_this); };
         _this._actionCollection.onShowActionCardPane = function (action) { _this.hideBottomSpacer(_this); };
         return _this;
     }
     ActionSet.prototype.internalRender = function () {
-        return this._actionCollection.render();
+        return this._actionCollection.render(this.orientation ? this.orientation : this.hostConfig.actions.actionsOrientation);
     };
     ActionSet.prototype.getJsonTypeName = function () {
         return "ActionSet";
@@ -1929,6 +1933,10 @@ var ActionSet = /** @class */ (function (_super) {
     ActionSet.prototype.parse = function (json, itemsCollectionPropertyName) {
         if (itemsCollectionPropertyName === void 0) { itemsCollectionPropertyName = "items"; }
         _super.prototype.parse.call(this, json);
+        var jsonOrientation = json["orientation"];
+        if (jsonOrientation) {
+            this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, jsonOrientation, Enums.Orientation.Horizontal);
+        }
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"];
             for (var i = 0; i < jsonActions.length; i++) {
@@ -2016,6 +2024,7 @@ var Container = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this._items = [];
         _this._style = null;
+        _this.verticalContentAlignment = Enums.VerticalAlignment.Top;
         return _this;
     }
     Container.prototype.isElementAllowed = function (element, forbiddenElementTypes) {
@@ -2166,6 +2175,17 @@ var Container = /** @class */ (function (_super) {
         element.className = "ac-container";
         element.style.display = "flex";
         element.style.flexDirection = "column";
+        switch (this.verticalContentAlignment) {
+            case Enums.VerticalAlignment.Center:
+                element.style.justifyContent = "center";
+                break;
+            case Enums.VerticalAlignment.Bottom:
+                element.style.justifyContent = "flex-end";
+                break;
+            default:
+                element.style.justifyContent = "flex-start";
+                break;
+        }
         if (this.hasBackground) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
@@ -2298,6 +2318,7 @@ var Container = /** @class */ (function (_super) {
                 this.backgroundImage.parse(json["backgroundImage"]);
             }
         }
+        this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
         this._style = Utils.getEnumValueOrDefault(Enums.ContainerStyle, json["style"], null);
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName];
@@ -2426,18 +2447,24 @@ var Column = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this._computedWeight = 0;
         _this.width = "auto";
+        _this.pixelWidth = 0;
         return _this;
     }
     Column.prototype.adjustRenderedElementSize = function (renderedElement) {
         renderedElement.style.minWidth = "0";
-        if (typeof this.width === "number") {
-            renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
-        }
-        else if (this.width === "auto") {
-            renderedElement.style.flex = "0 1 auto";
+        if (this.pixelWidth > 0) {
+            renderedElement.style.flex = "0 0 " + this.pixelWidth + "px";
         }
         else {
-            renderedElement.style.flex = "1 1 50px";
+            if (typeof this.width === "number") {
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
+            }
+            else if (this.width === "auto") {
+                renderedElement.style.flex = "0 1 auto";
+            }
+            else {
+                renderedElement.style.flex = "1 1 50px";
+            }
         }
     };
     Object.defineProperty(Column.prototype, "separatorOrientation", {
@@ -2766,7 +2793,7 @@ var ContainerWithActions = /** @class */ (function (_super) {
     }
     ContainerWithActions.prototype.internalRender = function () {
         var element = _super.prototype.internalRender.call(this);
-        var renderedActions = this._actionCollection.render();
+        var renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation);
         if (renderedActions) {
             Utils.appendChild(element, Utils.renderSeparation({
                 spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing),
@@ -2955,7 +2982,7 @@ var AdaptiveCard = /** @class */ (function (_super) {
     return AdaptiveCard;
 }(ContainerWithActions));
 exports.AdaptiveCard = AdaptiveCard;
-// This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
+// This call acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
 var InlineAdaptiveCard = /** @class */ (function (_super) {
     __extends(InlineAdaptiveCard, _super);

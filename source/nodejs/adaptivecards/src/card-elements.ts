@@ -805,6 +805,10 @@ export class Image extends CardElement {
                 imageElement.style.backgroundRepeat = "no-repeat";
             }
 
+            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+                imageElement.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
+            }
+
             imageElement.src = this.url;
             imageElement.alt = this.altText;
 
@@ -815,6 +819,7 @@ export class Image extends CardElement {
     }
 
     style: Enums.ImageStyle = Enums.ImageStyle.Default;
+    backgroundColor: string;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
     pixelWidth?: number = null;
@@ -839,7 +844,6 @@ export class Image extends CardElement {
         super.parse(json);
 
         this.url = json["url"];
-
 
         var styleString = json["style"];
 
@@ -2022,7 +2026,7 @@ class ActionCollection {
         return result;
     }
 
-    render(): HTMLElement {
+    render(orientation: Enums.Orientation): HTMLElement {
         if (!this._owner.hostConfig.supportsInteractivity) {
             return null;
         }
@@ -2045,7 +2049,7 @@ class ActionCollection {
             var buttonStrip = document.createElement("div");
             buttonStrip.style.display = "flex";
 
-            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+            if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
 
                 if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
@@ -2130,7 +2134,7 @@ class ActionCollection {
                     else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
 
-                        if (this._owner.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+                        if (orientation === Enums.Orientation.Horizontal) {
                             spacer.style.flex = "0 0 auto";
                             spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
                         }
@@ -2188,8 +2192,10 @@ export class ActionSet extends CardElement {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
-        return this._actionCollection.render();
+        return this._actionCollection.render(this.orientation ? this.orientation : this.hostConfig.actions.actionsOrientation);
     }
+
+    orientation?: Enums.Orientation = null;
 
     constructor() {
         super();
@@ -2209,6 +2215,12 @@ export class ActionSet extends CardElement {
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
+
+        var jsonOrientation = json["orientation"];
+
+        if (jsonOrientation) {
+            this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, jsonOrientation, Enums.Orientation.Horizontal);
+        }
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
@@ -2476,6 +2488,18 @@ export class Container extends CardElement {
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
+        switch (this.verticalContentAlignment) {
+            case Enums.VerticalAlignment.Center:
+                element.style.justifyContent = "center";
+                break;
+            case Enums.VerticalAlignment.Bottom:
+                element.style.justifyContent = "flex-end";
+                break;
+            default:
+                element.style.justifyContent = "flex-start";
+                break;
+        }
+
         if (this.hasBackground) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
@@ -2549,6 +2573,7 @@ export class Container extends CardElement {
     }
 
     backgroundImage: BackgroundImage;
+    verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 
     get style(): Enums.ContainerStyle {
         if (this.allowCustomStyle) {
@@ -2626,6 +2651,8 @@ export class Container extends CardElement {
                 this.backgroundImage.parse(json["backgroundImage"]);
             }
         }
+
+        this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
 
         this._style = Utils.getEnumValueOrDefault(Enums.ContainerStyle, json["style"], null);
 
@@ -2785,14 +2812,19 @@ export class Column extends Container {
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         renderedElement.style.minWidth = "0";
 
-        if (typeof this.width === "number") {
-            renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
-        }
-        else if (this.width === "auto") {
-            renderedElement.style.flex = "0 1 auto";
+        if (this.pixelWidth > 0) {
+            renderedElement.style.flex = "0 0 " + this.pixelWidth + "px";
         }
         else {
-            renderedElement.style.flex = "1 1 50px";
+            if (typeof this.width === "number") {
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
+            }
+            else if (this.width === "auto") {
+                renderedElement.style.flex = "0 1 auto";
+            }
+            else {
+                renderedElement.style.flex = "1 1 50px";
+            }
         }
     }
 
@@ -2801,6 +2833,7 @@ export class Column extends Container {
     }
 
     width: number | "auto" | "stretch" = "auto";
+    pixelWidth: number = 0;
 
     getJsonTypeName(): string {
         return "Column";
@@ -3189,7 +3222,7 @@ export abstract class ContainerWithActions extends Container {
     protected internalRender(): HTMLElement {
         var element = super.internalRender();
 
-        var renderedActions = this._actionCollection.render();
+        var renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation);
 
         if (renderedActions) {
             Utils.appendChild(
@@ -3416,7 +3449,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 }
 
-// This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
+// This call acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
 
 class InlineAdaptiveCard extends AdaptiveCard {

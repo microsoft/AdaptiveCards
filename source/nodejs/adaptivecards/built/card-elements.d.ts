@@ -94,6 +94,7 @@ export declare class Image extends CardElement {
     protected readonly useDefaultSizing: boolean;
     protected internalRender(): HTMLElement;
     style: Enums.ImageStyle;
+    backgroundColor: string;
     url: string;
     size: Enums.Size;
     pixelWidth?: number;
@@ -249,6 +250,7 @@ export declare class ShowCardAction extends Action {
 export declare class ActionSet extends CardElement {
     private _actionCollection;
     protected internalRender(): HTMLElement;
+    orientation?: Enums.Orientation;
     constructor();
     getJsonTypeName(): string;
     validate(): Array<IValidationError>;
@@ -280,6 +282,7 @@ export declare class Container extends CardElement {
     protected readonly defaultStyle: Enums.ContainerStyle;
     protected readonly allowCustomStyle: boolean;
     backgroundImage: BackgroundImage;
+    verticalContentAlignment: Enums.VerticalAlignment;
     readonly style: Enums.ContainerStyle;
     getJsonTypeName(): string;
     isFirstElement(element: CardElement): boolean;
@@ -301,6 +304,7 @@ export declare class Column extends Container {
     protected adjustRenderedElementSize(renderedElement: HTMLElement): void;
     protected readonly separatorOrientation: Enums.Orientation;
     width: number | "auto" | "stretch";
+    pixelWidth: number;
     getJsonTypeName(): string;
     parse(json: any): void;
     readonly isStandalone: boolean;

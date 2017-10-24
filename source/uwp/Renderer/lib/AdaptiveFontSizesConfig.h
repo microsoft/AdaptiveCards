@@ -33,7 +33,12 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_ExtraLarge(_In_ UINT32 value);
 
     private:
-        FontSizesConfig m_sharedFontSizesConfig;
+        UINT32 m_default;
+        UINT32 m_small;
+        UINT32 m_medium;
+        UINT32 m_large;
+        UINT32 m_extraLarge;
+
     };
 
     ActivatableClass(AdaptiveFontSizesConfig);

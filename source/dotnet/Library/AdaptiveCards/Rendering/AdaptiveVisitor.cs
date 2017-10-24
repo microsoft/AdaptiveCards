@@ -5,44 +5,44 @@ namespace AdaptiveCards.Rendering
     /// </summary>
     public class AdaptiveVisitor
     {
-        public virtual void Visit(CardElement cardElement)
+        public virtual void Visit(AdaptiveElement adaptiveElement)
         {
-            if (cardElement is Image)
-                Visit((Image) cardElement);
+            if (adaptiveElement is AdaptiveImage)
+                Visit((AdaptiveImage) adaptiveElement);
 
-            if (cardElement is TextBlock)
-                Visit((TextBlock) cardElement);
+            if (adaptiveElement is AdaptiveTextBlock)
+                Visit((AdaptiveTextBlock) adaptiveElement);
 
             // includes Column
-            if (cardElement is Container)
-                Visit((Container)cardElement);
+            if (adaptiveElement is AdaptiveContainer)
+                Visit((AdaptiveContainer)adaptiveElement);
             
-            if (cardElement is ColumnSet)
-                Visit((ColumnSet) cardElement);
+            if (adaptiveElement is AdaptiveColumnSet)
+                Visit((AdaptiveColumnSet) adaptiveElement);
 
-            if (cardElement is ImageSet)
-                Visit((ImageSet) cardElement);
+            if (adaptiveElement is AdaptiveImageSet)
+                Visit((AdaptiveImageSet) adaptiveElement);
 
-            if (cardElement is FactSet)
-                Visit((FactSet) cardElement);
+            if (adaptiveElement is AdaptiveFactSet)
+                Visit((AdaptiveFactSet) adaptiveElement);
 
-            if (cardElement is ChoiceSet)
-                Visit((ChoiceSet) cardElement);
+            if (adaptiveElement is AdaptiveChoiceSetInput)
+                Visit((AdaptiveChoiceSetInput) adaptiveElement);
 
-            if (cardElement is TextInput)
-                Visit((TextInput) cardElement);
+            if (adaptiveElement is AdaptiveTextInput)
+                Visit((AdaptiveTextInput) adaptiveElement);
 
-            if (cardElement is NumberInput)
-                Visit((NumberInput) cardElement);
+            if (adaptiveElement is AdaptiveNumberInput)
+                Visit((AdaptiveNumberInput) adaptiveElement);
 
-            if (cardElement is DateInput)
-                Visit((DateInput) cardElement);
+            if (adaptiveElement is AdaptiveDateInput)
+                Visit((AdaptiveDateInput) adaptiveElement);
 
-            if (cardElement is TimeInput)
-                Visit((TimeInput) cardElement);
+            if (adaptiveElement is AdaptiveTimeInput)
+                Visit((AdaptiveTimeInput) adaptiveElement);
 
-            if (cardElement is ToggleInput)
-                Visit((ToggleInput) cardElement);
+            if (adaptiveElement is AdaptiveToggleInput)
+                Visit((AdaptiveToggleInput) adaptiveElement);
         }
 
         public virtual void Visit(AdaptiveCard card)
@@ -54,85 +54,85 @@ namespace AdaptiveCards.Rendering
                 Visit(action);
         }
 
-        public virtual void Visit(Container container)
+        public virtual void Visit(AdaptiveContainer container)
         {
             foreach (var item in container.Items)
                 Visit(item);
         }
 
-        public virtual void Visit(ColumnSet columnSet)
+        public virtual void Visit(AdaptiveColumnSet columnSet)
         {
             foreach (var column in columnSet.Columns)
                 Visit(column);
         }
 
-        public virtual void Visit(FactSet factSet)
+        public virtual void Visit(AdaptiveFactSet factSet)
         {
             foreach (var fact in factSet.Facts)
                 Visit(fact);
         }
 
-        public virtual void Visit(ImageSet imageSet)
+        public virtual void Visit(AdaptiveImageSet imageSet)
         {
             foreach (var image in imageSet.Images)
                 Visit(image);
         }
 
-        public virtual void Visit(TextBlock textBlock)
+        public virtual void Visit(AdaptiveTextBlock textBlock)
         {
         }
 
-        public virtual void Visit(Image image)
+        public virtual void Visit(AdaptiveImage image)
         {
         }
 
-        public virtual void Visit(Fact fact)
+        public virtual void Visit(AdaptiveFact fact)
         {
         }
 
-        public virtual void Visit(TextInput inputText)
+        public virtual void Visit(AdaptiveTextInput inputText)
         {
         }
 
-        public virtual void Visit(DateInput inputDate)
+        public virtual void Visit(AdaptiveDateInput inputDate)
         {
         }
 
-        public virtual void Visit(NumberInput inputNumber)
+        public virtual void Visit(AdaptiveNumberInput inputNumber)
         {
         }
 
-        public virtual void Visit(TimeInput inputTime)
+        public virtual void Visit(AdaptiveTimeInput inputTime)
         {
         }
 
-        public virtual void Visit(ToggleInput inputToggle)
+        public virtual void Visit(AdaptiveToggleInput inputToggle)
         {
         }
 
-        public virtual void Visit(ChoiceSet choiceSet)
+        public virtual void Visit(AdaptiveChoiceSetInput adaptiveChoiceSetInput)
         {
         }
 
-        public virtual void Visit(ActionBase action)
+        public virtual void Visit(AdaptiveActionBase action)
         {
-            if (action is OpenUrlAction)
-                Visit((OpenUrlAction) action);
-            if (action is SubmitAction)
-                Visit((SubmitAction) action);
-            if (action is ShowCardAction)
-                Visit((ShowCardAction) action);
+            if (action is AdaptiveOpenUrlAction)
+                Visit((AdaptiveOpenUrlAction) action);
+            if (action is AdaptiveSubmitAction)
+                Visit((AdaptiveSubmitAction) action);
+            if (action is AdaptiveShowCardAction)
+                Visit((AdaptiveShowCardAction) action);
         }
 
-        public virtual void Visit(SubmitAction action)
-        {
-        }
-
-        public virtual void Visit(OpenUrlAction action)
+        public virtual void Visit(AdaptiveSubmitAction action)
         {
         }
 
-        public virtual void Visit(ShowCardAction action)
+        public virtual void Visit(AdaptiveOpenUrlAction action)
+        {
+        }
+
+        public virtual void Visit(AdaptiveShowCardAction action)
         {
             Visit(action.Card);
         }

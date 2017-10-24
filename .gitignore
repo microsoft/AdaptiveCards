@@ -271,3 +271,8 @@ product.pbxproj
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.Uwp.h
+*.binlog
+source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
+source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
+source/nodejs/adaptivecards/built/card-elements.js
+source/nodejs/adaptivecards/built/card-elements.js.map

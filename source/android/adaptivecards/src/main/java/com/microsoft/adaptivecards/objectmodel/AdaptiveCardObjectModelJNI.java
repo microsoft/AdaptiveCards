@@ -151,6 +151,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
   public final static native String BaseActionElement_Serialize(long jarg1, BaseActionElement jarg1_);
   public final static native long BaseActionElement_SerializeToJsonValue(long jarg1, BaseActionElement jarg1_);
+  public final static native long BaseActionElement_GetAdditionalProperties(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetAdditionalProperties(long jarg1, BaseActionElement jarg1_, long jarg2);
   public final static native String BaseInputElement_GetId(long jarg1, BaseInputElement jarg1_);
   public final static native void BaseInputElement_SetId(long jarg1, BaseInputElement jarg1_, String jarg2);
   public final static native boolean BaseInputElement_GetIsRequired(long jarg1, BaseInputElement jarg1_);
@@ -252,6 +254,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ColumnSet_GetColumns__SWIG_0(long jarg1, ColumnSet jarg1_);
   public final static native long ColumnSet_Deserialize(long jarg1);
   public final static native long ColumnSet_DeserializeFromString(String jarg1);
+  public final static native long ColumnSet_GetSelectAction(long jarg1, ColumnSet jarg1_);
+  public final static native void ColumnSet_SetSelectAction(long jarg1, ColumnSet jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long ColumnSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_ColumnSet(long jarg1);
   public final static native long new_Fact__SWIG_0();

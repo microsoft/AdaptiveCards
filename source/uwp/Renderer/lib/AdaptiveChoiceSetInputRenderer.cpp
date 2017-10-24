@@ -11,15 +11,6 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Uwp
 {
-    AdaptiveChoiceSetInputRenderer::AdaptiveChoiceSetInputRenderer()
-    {
-    }
-
-    AdaptiveChoiceSetInputRenderer::AdaptiveChoiceSetInputRenderer(const std::shared_ptr<XamlBuilder> xamlBuilder) :
-        m_xamlBuilder(xamlBuilder)
-    {
-    }
-
     HRESULT AdaptiveChoiceSetInputRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -32,7 +23,7 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder->BuildChoiceSetInput(cardElement, renderContext, renderArgs, result);
+        m_xamlBuilder.BuildChoiceSetInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 }}

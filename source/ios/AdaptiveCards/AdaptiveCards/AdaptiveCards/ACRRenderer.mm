@@ -5,6 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 #import "ACOAdaptiveCardPrivate.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRBaseCardElementRenderer.h"
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRColumnSetView.h"
@@ -82,6 +84,9 @@ using namespace AdaptiveCards;
         childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
     }
 
+    ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
+    ACOHostConfig *acoConfig = [[ACOHostConfig alloc] init];
+
     for(const auto &elem:elems)
     {
         ACRBaseActionElementRenderer *actionRenderer =
@@ -93,11 +98,14 @@ using namespace AdaptiveCards;
             continue;
         }
 
+        [acoElem setElem:elem];
+        [acoConfig setHostConfig:config];
+
         UIButton* button = [actionRenderer renderButton:vc
                                                  inputs:inputs
                                               superview:superview
-                                      baseActionElement:elem
-                                          andHostConfig:config];
+                                      baseActionElement:acoElem
+                                             hostConfig:acoConfig];
         [childview addArrangedSubview:button];
 
         [ACRSeparator renderSeparationWithFrame:CGRectMake(0,0,config->actions.buttonSpacing, config->actions.buttonSpacing)

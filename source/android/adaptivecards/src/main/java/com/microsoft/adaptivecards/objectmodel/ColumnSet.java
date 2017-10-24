@@ -67,6 +67,15 @@ public class ColumnSet extends BaseCardElement {
     return (cPtr == 0) ? null : new ColumnSet(cPtr, true);
   }
 
+  public BaseActionElement GetSelectAction() {
+    long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_GetSelectAction(swigCPtr, this);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public void SetSelectAction(BaseActionElement action) {
+    AdaptiveCardObjectModelJNI.ColumnSet_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
+  }
+
   public static ColumnSet dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new ColumnSet(cPtr, true);

@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\AdaptiveCards.Xaml.Wpf\AdaptiveCards.Xaml.Wpf.csproj">
-      <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
-      <Name>AdaptiveCards.Xaml.Wpf</Name>
+    <ProjectReference Include="..\..\Library\AdaptiveCards.Rendering.Wpf\AdaptiveCards.Rendering.Wpf.csproj">
+      <Project>{385bfaad-07e0-4dbf-844d-9ee12efc0799}</Project>
+      <Name>AdaptiveCards.Rendering.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\AdaptiveCards\AdaptiveCards.csproj">
       <Project>{fc4a3527-05a2-4297-98d3-cb1cb512ffda}</Project>

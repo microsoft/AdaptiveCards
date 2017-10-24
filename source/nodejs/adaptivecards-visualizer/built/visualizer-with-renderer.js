@@ -470,6 +470,13 @@ var HostContainer = /** @class */ (function () {
             }
         }
     };
+    HostContainer.prototype.parseElement = function (element, json) {
+        // Do nothing in base implementation
+    };
+    HostContainer.prototype.anchorClicked = function (anchor) {
+        // Not handled by the host container by default
+        return false;
+    };
     HostContainer.prototype.getHostConfig = function () {
         return new adaptivecards_1.HostConfig({
             spacing: {
@@ -568,9 +575,6 @@ var HostContainer = /** @class */ (function () {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -1492,21 +1496,6 @@ var AdaptiveCardConfig = /** @class */ (function () {
     return AdaptiveCardConfig;
 }());
 exports.AdaptiveCardConfig = AdaptiveCardConfig;
-var ImageConfig = /** @class */ (function () {
-    function ImageConfig(obj) {
-        this.size = Enums.Size.Medium;
-        if (obj) {
-            this.size = obj["size"] || this.size;
-        }
-    }
-    ImageConfig.prototype.toJSON = function () {
-        return {
-            size: Enums.Size[this.size]
-        };
-    };
-    return ImageConfig;
-}());
-exports.ImageConfig = ImageConfig;
 var ImageSetConfig = /** @class */ (function () {
     function ImageSetConfig(obj) {
         this.imageSize = Enums.Size.Medium;
@@ -1684,7 +1673,6 @@ var HostConfig = /** @class */ (function () {
         };
         this.actions = new ActionsConfig();
         this.adaptiveCard = new AdaptiveCardConfig();
-        this.image = new ImageConfig();
         this.imageSet = new ImageSetConfig();
         this.factSet = new FactSetConfig();
         if (obj) {
@@ -1725,7 +1713,6 @@ var HostConfig = /** @class */ (function () {
             };
             this.actions = new ActionsConfig(obj["actions"]);
             this.adaptiveCard = new AdaptiveCardConfig(obj["adaptiveCard"]);
-            this.image = new ImageConfig(obj["image"]);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
             this.factSet = new FactSetConfig(obj["factSet"]);
         }
@@ -21939,9 +21926,6 @@ var BingContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -22105,9 +22089,6 @@ var FacebookContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -22270,9 +22251,6 @@ var GroupMeContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false,
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100,
@@ -22434,9 +22412,6 @@ var KikContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -22604,9 +22579,6 @@ var LiveTileContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -22668,6 +22640,26 @@ var OutlookContainer = /** @class */ (function (_super) {
         element.style.border = "1px solid #F1F1F1";
         element.appendChild(renderedCard);
         return element;
+    };
+    OutlookContainer.prototype.parseElement = function (element, json) {
+        if (typeof json["isVisible"] === "boolean") {
+            element.isVisible = json["isVisible"];
+        }
+        if (element instanceof adaptivecards_1.Image) {
+            element.backgroundColor = json["backgroundColor"];
+        }
+        if (element instanceof adaptivecards_1.Column) {
+            element.pixelWidth = json["pixelWidth"];
+        }
+    };
+    OutlookContainer.prototype.anchorClicked = function (anchor) {
+        if (anchor.href.toLowerCase().startsWith("action:")) {
+            alert("Executing inline action...");
+            return true;
+        }
+        else {
+            return false;
+        }
     };
     OutlookContainer.prototype.getHostConfig = function () {
         return new adaptivecards_1.HostConfig({
@@ -22767,9 +22759,6 @@ var OutlookContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -22942,9 +22931,6 @@ var SkypeContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -23106,9 +23092,6 @@ var SlackContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -23272,9 +23255,6 @@ var SMSContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -23435,9 +23415,6 @@ var TeamsContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -23600,9 +23577,6 @@ var TelegramContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -23770,9 +23744,6 @@ var TimelineContainer = /** @class */ (function (_super) {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            image: {
-                size: adaptivecards_1.Size.Medium,
-            },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
                 maxImageHeight: 100
@@ -23934,9 +23905,6 @@ var ToastContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -24113,9 +24081,6 @@ var WebChatContainer = /** @class */ (function (_super) {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: adaptivecards_1.Size.Medium,
             },
             imageSet: {
                 imageSize: adaptivecards_1.Size.Medium,
@@ -26864,6 +26829,9 @@ var editor;
 var hostContainerOptions = [];
 var hostContainerPicker;
 var lastValidationErrors = [];
+function getSelectedHostContainer() {
+    return hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+}
 function setContent(element) {
     var contentContainer = document.getElementById("content");
     contentContainer.innerHTML = '';
@@ -26872,7 +26840,7 @@ function setContent(element) {
 function renderCard() {
     document.getElementById("errorContainer").hidden = true;
     lastValidationErrors = [];
-    var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var hostContainer = getSelectedHostContainer();
     var json = JSON.parse(currentCardPayload);
     var adaptiveCard = new Adaptive.AdaptiveCard();
     adaptiveCard.hostConfig = new Adaptive.HostConfig(currentConfigPayload);
@@ -26930,7 +26898,7 @@ function loadStyleSheetAndConfig() {
     }
     styleSheetLinkElement.rel = "stylesheet";
     styleSheetLinkElement.type = "text/css";
-    var selectedHostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var selectedHostContainer = getSelectedHostContainer();
     styleSheetLinkElement.href = selectedHostContainer.styleSheet;
     currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), null, '\t');
     if (!isCardEditor) {
@@ -27120,7 +27088,7 @@ function showPopupCard(action) {
     var cardContainer = document.createElement("div");
     cardContainer.className = "popupCardContainer";
     cardContainer.onclick = function (e) { e.stopPropagation(); };
-    var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var hostContainer = getSelectedHostContainer();
     cardContainer.appendChild(hostContainer.render(action.card.render(), action.card.renderSpeech()));
     overlayElement.appendChild(cardContainer);
     document.body.appendChild(overlayElement);
@@ -27191,23 +27159,15 @@ exports.ToggleVisibilityAction = ToggleVisibilityAction;
 var betaFeaturesEnabled = false;
 window.onload = function () {
     betaFeaturesEnabled = location.search.indexOf("beta=true") >= 0;
+    Adaptive.AdaptiveCard.onParseElement = function (element, json) {
+        getSelectedHostContainer().parseElement(element, json);
+    };
+    Adaptive.AdaptiveCard.onAnchorClicked = function (anchor) {
+        return getSelectedHostContainer().anchorClicked(anchor);
+    };
     if (betaFeaturesEnabled) {
         Adaptive.AdaptiveCard.useAutoPadding = true;
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", function () { return new ToggleVisibilityAction(); });
-        Adaptive.AdaptiveCard.onParseElement = function (element, json) {
-            if (typeof json["isVisible"] === "boolean") {
-                element.isVisible = json["isVisible"];
-            }
-        };
-        Adaptive.AdaptiveCard.onAnchorClicked = function (anchor) {
-            if (anchor.href.startsWith("executeaction:")) {
-                alert("Executing inline action...");
-                return true;
-            }
-            else {
-                return false;
-            }
-        };
     }
     currentConfigPayload = Constants.defaultConfigPayload;
     document.getElementById("editCard").onclick = function (e) {
@@ -28390,6 +28350,9 @@ var Image = /** @class */ (function (_super) {
                 imageElement.style.backgroundPosition = "50% 50%";
                 imageElement.style.backgroundRepeat = "no-repeat";
             }
+            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+                imageElement.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
+            }
             imageElement.src = this.url;
             imageElement.alt = this.altText;
             element.appendChild(imageElement);
@@ -29442,7 +29405,7 @@ var ActionCollection = /** @class */ (function () {
         }
         return result;
     };
-    ActionCollection.prototype.render = function () {
+    ActionCollection.prototype.render = function (orientation) {
         var _this = this;
         if (!this._owner.hostConfig.supportsInteractivity) {
             return null;
@@ -29459,7 +29422,7 @@ var ActionCollection = /** @class */ (function () {
         else {
             var buttonStrip = document.createElement("div");
             buttonStrip.style.display = "flex";
-            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+            if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
                 if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
@@ -29536,7 +29499,7 @@ var ActionCollection = /** @class */ (function () {
                     }
                     else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
-                        if (this._owner.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+                        if (orientation === Enums.Orientation.Horizontal) {
                             spacer.style.flex = "0 0 auto";
                             spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
                         }
@@ -29582,13 +29545,14 @@ var ActionSet = /** @class */ (function (_super) {
     __extends(ActionSet, _super);
     function ActionSet() {
         var _this = _super.call(this) || this;
+        _this.orientation = null;
         _this._actionCollection = new ActionCollection(_this);
         _this._actionCollection.onHideActionCardPane = function () { _this.showBottomSpacer(_this); };
         _this._actionCollection.onShowActionCardPane = function (action) { _this.hideBottomSpacer(_this); };
         return _this;
     }
     ActionSet.prototype.internalRender = function () {
-        return this._actionCollection.render();
+        return this._actionCollection.render(this.orientation ? this.orientation : this.hostConfig.actions.actionsOrientation);
     };
     ActionSet.prototype.getJsonTypeName = function () {
         return "ActionSet";
@@ -29599,6 +29563,10 @@ var ActionSet = /** @class */ (function (_super) {
     ActionSet.prototype.parse = function (json, itemsCollectionPropertyName) {
         if (itemsCollectionPropertyName === void 0) { itemsCollectionPropertyName = "items"; }
         _super.prototype.parse.call(this, json);
+        var jsonOrientation = json["orientation"];
+        if (jsonOrientation) {
+            this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, jsonOrientation, Enums.Orientation.Horizontal);
+        }
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"];
             for (var i = 0; i < jsonActions.length; i++) {
@@ -29686,6 +29654,7 @@ var Container = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this._items = [];
         _this._style = null;
+        _this.verticalContentAlignment = Enums.VerticalAlignment.Top;
         return _this;
     }
     Container.prototype.isElementAllowed = function (element, forbiddenElementTypes) {
@@ -29836,6 +29805,17 @@ var Container = /** @class */ (function (_super) {
         element.className = "ac-container";
         element.style.display = "flex";
         element.style.flexDirection = "column";
+        switch (this.verticalContentAlignment) {
+            case Enums.VerticalAlignment.Center:
+                element.style.justifyContent = "center";
+                break;
+            case Enums.VerticalAlignment.Bottom:
+                element.style.justifyContent = "flex-end";
+                break;
+            default:
+                element.style.justifyContent = "flex-start";
+                break;
+        }
         if (this.hasBackground) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
@@ -29968,6 +29948,7 @@ var Container = /** @class */ (function (_super) {
                 this.backgroundImage.parse(json["backgroundImage"]);
             }
         }
+        this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
         this._style = Utils.getEnumValueOrDefault(Enums.ContainerStyle, json["style"], null);
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName];
@@ -30096,18 +30077,24 @@ var Column = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this._computedWeight = 0;
         _this.width = "auto";
+        _this.pixelWidth = 0;
         return _this;
     }
     Column.prototype.adjustRenderedElementSize = function (renderedElement) {
         renderedElement.style.minWidth = "0";
-        if (typeof this.width === "number") {
-            renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
-        }
-        else if (this.width === "auto") {
-            renderedElement.style.flex = "0 1 auto";
+        if (this.pixelWidth > 0) {
+            renderedElement.style.flex = "0 0 " + this.pixelWidth + "px";
         }
         else {
-            renderedElement.style.flex = "1 1 50px";
+            if (typeof this.width === "number") {
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
+            }
+            else if (this.width === "auto") {
+                renderedElement.style.flex = "0 1 auto";
+            }
+            else {
+                renderedElement.style.flex = "1 1 50px";
+            }
         }
     };
     Object.defineProperty(Column.prototype, "separatorOrientation", {
@@ -30436,7 +30423,7 @@ var ContainerWithActions = /** @class */ (function (_super) {
     }
     ContainerWithActions.prototype.internalRender = function () {
         var element = _super.prototype.internalRender.call(this);
-        var renderedActions = this._actionCollection.render();
+        var renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation);
         if (renderedActions) {
             Utils.appendChild(element, Utils.renderSeparation({
                 spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing),
@@ -30625,7 +30612,7 @@ var AdaptiveCard = /** @class */ (function (_super) {
     return AdaptiveCard;
 }(ContainerWithActions));
 exports.AdaptiveCard = AdaptiveCard;
-// This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
+// This call acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
 var InlineAdaptiveCard = /** @class */ (function (_super) {
     __extends(InlineAdaptiveCard, _super);

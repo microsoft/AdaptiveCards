@@ -8,40 +8,43 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        SeparatorConfig separatorConfig;
+        return RuntimeClassInitialize(separatorConfig);
     } CATCH_RETURN;
 
-
-    HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize(SeparatorConfig SeparatorConfig) noexcept try
+    HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize(SeparatorConfig sharedSeparatorConfig) noexcept try
     {
-        m_sharedSeparatorConfig = SeparatorConfig;
+        RETURN_IF_FAILED(GetColorFromString(sharedSeparatorConfig.lineColor, &m_lineColor));
+        m_lineThickness = sharedSeparatorConfig.lineThickness;
         return S_OK;
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveSeparatorConfig::get_LineThickness(UINT32* lineThickness)
     {
-        *lineThickness = m_sharedSeparatorConfig.lineThickness;
+        *lineThickness = m_lineThickness;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveSeparatorConfig::put_LineThickness(UINT32 lineThickness)
     {
-        m_sharedSeparatorConfig.lineThickness = lineThickness;
+        m_lineThickness = lineThickness;
         return S_OK;
     }
 
     _Use_decl_annotations_
         HRESULT AdaptiveSeparatorConfig::get_LineColor(ABI::Windows::UI::Color* value)
     {
-        return GetColorFromString(m_sharedSeparatorConfig.lineColor, value);
+        *value = m_lineColor;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveSeparatorConfig::put_LineColor(ABI::Windows::UI::Color /*value*/)
+        HRESULT AdaptiveSeparatorConfig::put_LineColor(ABI::Windows::UI::Color color)
     {
-        return E_NOTIMPL;
+        m_lineColor = color;
+        return S_OK;
     }
 }
 }

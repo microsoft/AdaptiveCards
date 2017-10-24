@@ -19,12 +19,14 @@ public final class CardElementType {
   public final static CardElementType FactSet = new CardElementType("FactSet");
   public final static CardElementType Fact = new CardElementType("Fact");
   public final static CardElementType ImageSet = new CardElementType("ImageSet");
+  public final static CardElementType ChoiceInput = new CardElementType("ChoiceInput");
+  public final static CardElementType ChoiceSetInput = new CardElementType("ChoiceSetInput");
   public final static CardElementType DateInput = new CardElementType("DateInput");
   public final static CardElementType NumberInput = new CardElementType("NumberInput");
   public final static CardElementType TextInput = new CardElementType("TextInput");
   public final static CardElementType TimeInput = new CardElementType("TimeInput");
   public final static CardElementType ToggleInput = new CardElementType("ToggleInput");
-  public final static CardElementType ChoiceSetInput = new CardElementType("ChoiceSetInput");
+  public final static CardElementType Custom = new CardElementType("Custom");
 
   public final int swigValue() {
     return swigValue;
@@ -60,7 +62,7 @@ public final class CardElementType {
     swigNext = this.swigValue+1;
   }
 
-  private static CardElementType[] swigValues = { Unsupported, AdaptiveCard, TextBlock, Image, Container, Column, ColumnSet, FactSet, Fact, ImageSet, DateInput, NumberInput, TextInput, TimeInput, ToggleInput, ChoiceSetInput };
+  private static CardElementType[] swigValues = { Unsupported, AdaptiveCard, TextBlock, Image, Container, Column, ColumnSet, FactSet, Fact, ImageSet, ChoiceInput, ChoiceSetInput, DateInput, NumberInput, TextInput, TimeInput, ToggleInput, Custom };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

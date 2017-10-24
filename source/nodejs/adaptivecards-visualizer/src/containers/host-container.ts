@@ -8,6 +8,7 @@ import {
     ShowCardActionMode,
     Orientation,
     ActionAlignment,
+    CardElement
 } from "adaptivecards";
 import * as vkbeautify from "vkbeautify";
 
@@ -94,6 +95,15 @@ export abstract class HostContainer {
                 output.push(node.nodeValue);
             }
         }
+    }
+
+    public parseElement(element: CardElement, json: any) {
+        // Do nothing in base implementation
+    }
+
+    public anchorClicked(anchor: HTMLAnchorElement): boolean {
+        // Not handled by the host container by default
+        return false;
     }
 
     public getHostConfig(): HostConfig {
@@ -194,9 +204,6 @@ export abstract class HostContainer {
             },
             adaptiveCard: {
                 allowCustomStyle: false
-            },
-            image: {
-                size: Size.Medium,
             },
             imageSet: {
                 imageSize: Size.Medium,

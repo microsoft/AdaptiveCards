@@ -1744,6 +1744,8 @@ namespace AdaptiveCards
 
             [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** value);
 
+            [propget] HRESULT ResourceResolvers([out, retval] AdaptiveCardResourceResolvers** value);
+
             [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
 
             HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);

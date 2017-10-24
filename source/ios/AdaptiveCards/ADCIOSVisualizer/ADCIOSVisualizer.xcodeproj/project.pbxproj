@@ -70,6 +70,7 @@
 		F49CECC11F62412E00D7FB55 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D33E851F04705800941E44 /* ACVTableViewController.m */; };
 		F4D402161F7DB0BF00D0356B /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D402151F7DB0BF00D0356B /* sample.json */; };
+		F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,6 +176,8 @@
 		F4D33E841F04705800941E44 /* ACVTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACVTableViewController.h; sourceTree = "<group>"; };
 		F4D33E851F04705800941E44 /* ACVTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACVTableViewController.m; sourceTree = "<group>"; };
 		F4D402151F7DB0BF00D0356B /* sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sample.json; path = resources/sample.json; sourceTree = "<group>"; };
+		F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionOpenURLRenderer.mm; sourceTree = "<group>"; };
+		F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionOpenURLRenderer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +231,8 @@
 		F423C0741EE1FB6100905679 /* ADCIOSVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */,
+				F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */,
 				F4D33E841F04705800941E44 /* ACVTableViewController.h */,
 				F4D33E851F04705800941E44 /* ACVTableViewController.m */,
 				F423C0781EE1FB6100905679 /* AppDelegate.h */,
@@ -516,6 +521,7 @@
 				F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */,
 				F423C07D1EE1FB6100905679 /* ViewController.m in Sources */,
 				F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */,
+				F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */,
 				F423C0831EE1FB6100905679 /* ADCIOSVisualizer.xcdatamodeld in Sources */,
 				F423C0771EE1FB6100905679 /* main.m in Sources */,
 			);
