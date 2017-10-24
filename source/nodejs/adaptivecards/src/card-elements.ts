@@ -805,6 +805,10 @@ export class Image extends CardElement {
                 imageElement.style.backgroundRepeat = "no-repeat";
             }
 
+            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+                imageElement.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
+            }
+
             imageElement.src = this.url;
             imageElement.alt = this.altText;
 
@@ -815,6 +819,7 @@ export class Image extends CardElement {
     }
 
     style: Enums.ImageStyle = Enums.ImageStyle.Default;
+    backgroundColor: string;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
     pixelWidth?: number = null;
@@ -839,7 +844,6 @@ export class Image extends CardElement {
         super.parse(json);
 
         this.url = json["url"];
-
 
         var styleString = json["style"];
 
@@ -2808,14 +2812,19 @@ export class Column extends Container {
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         renderedElement.style.minWidth = "0";
 
-        if (typeof this.width === "number") {
-            renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
-        }
-        else if (this.width === "auto") {
-            renderedElement.style.flex = "0 1 auto";
+        if (this.pixelWidth > 0) {
+            renderedElement.style.flex = "0 0 " + this.pixelWidth + "px";
         }
         else {
-            renderedElement.style.flex = "1 1 50px";
+            if (typeof this.width === "number") {
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
+            }
+            else if (this.width === "auto") {
+                renderedElement.style.flex = "0 1 auto";
+            }
+            else {
+                renderedElement.style.flex = "1 1 50px";
+            }
         }
     }
 
@@ -2824,6 +2833,7 @@ export class Column extends Container {
     }
 
     width: number | "auto" | "stretch" = "auto";
+    pixelWidth: number = 0;
 
     getJsonTypeName(): string {
         return "Column";
@@ -3439,7 +3449,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 }
 
-// This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
+// This call acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
 
 class InlineAdaptiveCard extends AdaptiveCard {

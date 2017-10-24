@@ -9,6 +9,9 @@ import {
     ShowCardActionMode,
     Orientation,
     ActionAlignment,
+    CardElement,
+    Image,
+    Column
 } from "adaptivecards";
 
 export class OutlookContainer extends HostContainer {
@@ -22,6 +25,31 @@ export class OutlookContainer extends HostContainer {
         element.appendChild(renderedCard);
 
         return element;
+    }
+
+    public parseElement(element: CardElement, json: any) {
+        if (typeof json["isVisible"] === "boolean") {
+            element.isVisible = json["isVisible"];
+        }
+
+        if (element instanceof Image) {
+            (<Image>element).backgroundColor = json["backgroundColor"];
+        }
+
+        if (element instanceof Column) {
+            (<Column>element).pixelWidth = json["pixelWidth"];
+        }
+    }
+
+    public anchorClicked(anchor: HTMLAnchorElement): boolean {
+        if (anchor.href.toLowerCase().startsWith("action:")) {
+            alert("Executing inline action...");
+
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public getHostConfig(): HostConfig {

@@ -94,6 +94,7 @@ export declare class Image extends CardElement {
     protected readonly useDefaultSizing: boolean;
     protected internalRender(): HTMLElement;
     style: Enums.ImageStyle;
+    backgroundColor: string;
     url: string;
     size: Enums.Size;
     pixelWidth?: number;
@@ -303,6 +304,7 @@ export declare class Column extends Container {
     protected adjustRenderedElementSize(renderedElement: HTMLElement): void;
     protected readonly separatorOrientation: Enums.Orientation;
     width: number | "auto" | "stretch";
+    pixelWidth: number;
     getJsonTypeName(): string;
     parse(json: any): void;
     readonly isStandalone: boolean;
