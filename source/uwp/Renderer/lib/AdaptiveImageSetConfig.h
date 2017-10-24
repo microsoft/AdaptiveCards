@@ -24,7 +24,8 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_MaxImageHeight(_In_ UINT32 maxImageHeight);
 
     private:
-        ImageSetConfig m_sharedImageSetConfig;
+        ABI::AdaptiveCards::Uwp::ImageSize m_imageSize;
+        UINT32 m_maxImageHeight;
     };
 
     ActivatableClass(AdaptiveImageSetConfig);

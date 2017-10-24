@@ -21,7 +21,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_AllowCustomStyle(_In_ boolean allowCustomStyle);
 
     private:
-        AdaptiveCards::AdaptiveCardConfig m_sharedAdaptiveCardConfig;
+        boolean m_allowCustomStyle;
     };
 
     ActivatableClass(AdaptiveCardConfig);

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using System;
 
 namespace AdaptiveCards
 {
@@ -31,27 +30,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The style in which the image is displayed.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveContainerStyle Style { get; set; }
-    }
-
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveContainerStyle>), true)]
-    public enum AdaptiveContainerStyle
-    {
-        /// <summary>
-        /// The container is a default container
-        /// </summary>
-        Default = 0,
-
-        /// <summary>
-        /// The container is a normal container
-        /// </summary>
-        [Obsolete("ContainerStyle.Normal has been deprecated.  Use ContainerStyle.Default", false)]
-        Normal = 0,
-
-        /// <summary>
-        /// The container should be emphasized as a grouping of elements
-        /// </summary>
-        Emphasis = 1
     }
 }

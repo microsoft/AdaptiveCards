@@ -63,4 +63,12 @@ public class BaseActionElement {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.BaseActionElement_SerializeToJsonValue(swigCPtr, this), true);
   }
 
+  public SWIGTYPE_p_Json__Value GetAdditionalProperties() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.BaseActionElement_GetAdditionalProperties(swigCPtr, this), true);
+  }
+
+  public void SetAdditionalProperties(SWIGTYPE_p_Json__Value additionalProperties) {
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetAdditionalProperties(swigCPtr, this, SWIGTYPE_p_Json__Value.getCPtr(additionalProperties));
+  }
+
 }

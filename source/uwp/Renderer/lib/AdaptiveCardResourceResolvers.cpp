@@ -27,8 +27,6 @@ namespace AdaptiveCards { namespace Uwp
         std::string schemeString;
         RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
         ComPtr<IAdaptiveCardResourceResolver> resolverPtr = m_resourceResolvers[schemeString];
-        ComPtr<IAdaptiveCardResourceResolver> localResolver(resolverPtr);
-        *resolver = localResolver.Detach();
-        return S_OK;
+        return resolverPtr.CopyTo(resolver);
     }
 }}

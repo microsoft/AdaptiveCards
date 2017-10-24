@@ -10,26 +10,27 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        AdaptiveCards::AdaptiveCardConfig cardConfig;
+        return RuntimeClassInitialize(cardConfig);
     } CATCH_RETURN;
 
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize(AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig) noexcept
     {
-        m_sharedAdaptiveCardConfig = adaptiveCardConfig;
+        m_allowCustomStyle = adaptiveCardConfig.allowCustomStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardConfig::get_AllowCustomStyle(boolean* allowCustomStyle)
     {
-        *allowCustomStyle = m_sharedAdaptiveCardConfig.allowCustomStyle;
+        *allowCustomStyle = m_allowCustomStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardConfig::put_AllowCustomStyle(boolean allowCustomStyle)
     {
-        m_sharedAdaptiveCardConfig.allowCustomStyle = allowCustomStyle;
+        m_allowCustomStyle = allowCustomStyle;
         return S_OK;
     }
 }}

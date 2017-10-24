@@ -9,92 +9,99 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        TextConfig textConfig;
+        return RuntimeClassInitialize(textConfig);
     } CATCH_RETURN;
 
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize(TextConfig textConfig) noexcept
     {
-        m_sharedTextConfig = textConfig;
+        m_textWeight = static_cast<ABI::AdaptiveCards::Uwp::TextWeight>(textConfig.weight);
+        m_textSize = static_cast<ABI::AdaptiveCards::Uwp::TextSize>(textConfig.size);
+        m_textColor = static_cast<ABI::AdaptiveCards::Uwp::ForegroundColor>(textConfig.color);
+        m_isSubtle = textConfig.isSubtle;
+        m_wrap = textConfig.wrap;
+        m_maxWidth = textConfig.maxWidth;
+
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::get_Size(ABI::AdaptiveCards::Uwp::TextSize* textSize)
     {
-        *textSize = static_cast<ABI::AdaptiveCards::Uwp::TextSize>(m_sharedTextConfig.size);
+        *textSize = m_textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::put_Size(ABI::AdaptiveCards::Uwp::TextSize textSize)
     {
-        m_sharedTextConfig.size = static_cast<AdaptiveCards::TextSize>(textSize);
+        m_textSize = textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::get_Weight(ABI::AdaptiveCards::Uwp::TextWeight* textWeight)
     {
-        *textWeight = static_cast<ABI::AdaptiveCards::Uwp::TextWeight>(m_sharedTextConfig.weight);
+        *textWeight = m_textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::put_Weight(ABI::AdaptiveCards::Uwp::TextWeight textWeight)
     {
-        m_sharedTextConfig.weight = static_cast<AdaptiveCards::TextWeight>(textWeight);
+        m_textWeight = textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::get_Color(ABI::AdaptiveCards::Uwp::ForegroundColor* textColor)
     {
-        *textColor = static_cast<ABI::AdaptiveCards::Uwp::ForegroundColor>(m_sharedTextConfig.color);
+        *textColor = m_textColor;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveCards::Uwp::ForegroundColor textColor)
     {
-        m_sharedTextConfig.color = static_cast<AdaptiveCards::ForegroundColor>(textColor);
+        m_textColor = textColor;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::get_IsSubtle(boolean* isSubtle)
     {
-        *isSubtle = m_sharedTextConfig.isSubtle;
+        *isSubtle = m_isSubtle;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::put_IsSubtle(boolean isSubtle)
     {
-        m_sharedTextConfig.isSubtle = Boolify(isSubtle);
+        m_isSubtle = isSubtle;
         return S_OK;
     }
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::get_Wrap(boolean* wrap)
     {
-        *wrap = m_sharedTextConfig.wrap;
+        *wrap = m_wrap;
         return S_OK;
     }
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::put_Wrap(boolean wrap)
     {
-        m_sharedTextConfig.wrap = Boolify(wrap);
+        m_wrap = wrap;
         return S_OK;
     }
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::get_MaxWidth(UINT32* maxWidth)
     {
-        *maxWidth = m_sharedTextConfig.maxWidth;
+        *maxWidth = m_maxWidth;
         return S_OK;
     }
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::put_MaxWidth(UINT32 maxWidth)
     {
-        m_sharedTextConfig.maxWidth = maxWidth;
+        m_maxWidth = maxWidth;
         return S_OK;
     }
 }

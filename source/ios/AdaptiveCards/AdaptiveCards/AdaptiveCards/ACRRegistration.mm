@@ -34,7 +34,7 @@ using namespace AdaptiveCards;
 @implementation ACRRegistration
 {
     NSDictionary *typeToRendererDict;
-    NSDictionary *actionRendererDict;
+    NSMutableDictionary *actionRendererDict;
 }
 
 - (instancetype) init
@@ -58,9 +58,9 @@ using namespace AdaptiveCards;
              [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],
              [ACRColumnRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRColumnRenderer elemType]],
              nil];
-        actionRendererDict = 
-            [[NSDictionary alloc] initWithObjectsAndKeys:
-             [ACRActionOpenURLRenderer  getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl], 
+        actionRendererDict =
+            [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+             [ACRActionOpenURLRenderer  getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl],
              [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
              [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
              nil];
@@ -84,6 +84,11 @@ using namespace AdaptiveCards;
 - (ACRBaseActionElementRenderer *) getActionRenderer:(NSNumber *)cardElementType
 {
     return [actionRendererDict objectForKey:cardElementType];
+}
+
+- (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
+{
+    [actionRendererDict setObject:renderer forKey:cardElementType];
 }
 
 @end

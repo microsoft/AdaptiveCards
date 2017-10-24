@@ -58,7 +58,21 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Actions(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionsConfig* actionsOptionConfig);
 
     private:
-        HostConfig m_sharedHostConfig;
+
+        Microsoft::WRL::Wrappers::HString m_fontFamily;
+        boolean m_supportsInteractivity;
+
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveFontSizesConfig> m_fontSizes;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveFontWeightsConfig> m_fontWeights;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition> m_containerStyles;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveImageSizesConfig> m_imageSizes;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig> m_spacing;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveSeparatorConfig> m_separator;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardConfig> m_adaptiveCard;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveImageSetConfig> m_imageSet;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveImageConfig> m_image;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveFactSetConfig> m_factSet;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionsConfig> m_actions;
     };
 
     class AdaptiveHostConfigStaticsImpl WrlFinal
