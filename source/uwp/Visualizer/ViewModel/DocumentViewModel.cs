@@ -170,6 +170,10 @@ namespace AdaptiveCardVisualizer.ViewModel
                 if (hostConfig != null)
                 {
                     _renderer.HostConfig = hostConfig;
+                }
+
+                if (Settings.UseFixedDimensions)
+                {
                     _renderer.SetFixedDimensions(320, 180);
                 }
 

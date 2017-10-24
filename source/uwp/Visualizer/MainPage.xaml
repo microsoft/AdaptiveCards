@@ -52,7 +52,7 @@
             <CommandBar.SecondaryCommands>
                 <AppBarToggleButton
                     Label="Use Async Render Method"
-                    IsChecked="{Binding UseAsyncRenderMethod, Mode=TwoWay}"/>
+                    IsChecked="{Binding UseFixedDimensions, Mode=TwoWay}"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
 
