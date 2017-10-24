@@ -51,7 +51,7 @@
             </CommandBar.Content>
             <CommandBar.SecondaryCommands>
                 <AppBarToggleButton
-                    Label="Use Async Render Method"
+                    Label="Use fixed dimensions"
                     IsChecked="{Binding UseFixedDimensions, Mode=TwoWay}"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
