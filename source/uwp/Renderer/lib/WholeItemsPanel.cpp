@@ -37,6 +37,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         unsigned int count = 0;
         float currentHeight = 0;
+        float maxDesiredWidth = 0;
         bool visible = true;
 
         ComPtr<IVector<UIElement*>> spChildren;
@@ -193,6 +194,7 @@ namespace AdaptiveCards { namespace Uwp
 
                         m_visibleCount = i + 1;
                         currentHeight = currentHeight + childSize.Height;
+                        maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
                     }
                     else
                     {
@@ -203,10 +205,21 @@ namespace AdaptiveCards { namespace Uwp
                     continue;
                 }
                 currentHeight = newHeight;
+                maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
             }
         }
 
-        *returnValue = { availableSize.Width, currentHeight };
+        // If inside an infinity/auto width container
+        if (availableSize.Width == numeric_limits<float>::infinity())
+        {
+            // We use the calculated max desired width of children
+            *returnValue = { maxDesiredWidth, currentHeight };
+        }
+        else
+        {
+            // Otherwise we match the fixed width of the container
+            *returnValue = { availableSize.Width, currentHeight };
+        }
         return S_OK;
     }
 
