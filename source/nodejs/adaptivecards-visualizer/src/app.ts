@@ -27,6 +27,10 @@ var hostContainerOptions: Array<HostContainerOption> = [];
 var hostContainerPicker: HTMLSelectElement;
 var lastValidationErrors: Array<Adaptive.IValidationError> = [];
 
+function getSelectedHostContainer(): HostContainer {
+    return hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+}
+
 function setContent(element) {
     var contentContainer = document.getElementById("content");
 
@@ -38,16 +42,14 @@ function renderCard(): HTMLElement {
     document.getElementById("errorContainer").hidden = true;
     lastValidationErrors = [];
 
-    var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var hostContainer = getSelectedHostContainer();
 
     var json = JSON.parse(currentCardPayload);
 
     var adaptiveCard = new Adaptive.AdaptiveCard();
 
-    
     adaptiveCard.hostConfig = new Adaptive.HostConfig(currentConfigPayload);
-   
-    
+       
     adaptiveCard.parse(json);
     
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
@@ -121,7 +123,7 @@ function loadStyleSheetAndConfig() {
     styleSheetLinkElement.rel = "stylesheet";
     styleSheetLinkElement.type = "text/css";
 
-    var selectedHostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var selectedHostContainer = getSelectedHostContainer();
 
     styleSheetLinkElement.href = selectedHostContainer.styleSheet;
 
@@ -409,7 +411,7 @@ function showPopupCard(action: Adaptive.ShowCardAction) {
     cardContainer.className = "popupCardContainer";
     cardContainer.onclick = (e) => { e.stopPropagation() };
 
-    var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    var hostContainer = getSelectedHostContainer();
 
     cardContainer.appendChild(hostContainer.render(action.card.render(), action.card.renderSpeech()));
 
@@ -499,27 +501,18 @@ var betaFeaturesEnabled: boolean = false;
 window.onload = () => {
     betaFeaturesEnabled = location.search.indexOf("beta=true") >= 0;
 
+    Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
+        getSelectedHostContainer().parseElement(element, json);
+    }
+
+    Adaptive.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
+        return getSelectedHostContainer().anchorClicked(anchor);
+    }
+
     if (betaFeaturesEnabled) {
         Adaptive.AdaptiveCard.useAutoPadding = true;
 
-        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
-        
-        Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
-            if (typeof json["isVisible"] === "boolean") {
-                element.isVisible = json["isVisible"];
-            }        
-        }
-
-        Adaptive.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
-            if (anchor.href.startsWith("executeaction:")) {
-                alert("Executing inline action...");
-
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
+        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });        
     }
 
     currentConfigPayload = Constants.defaultConfigPayload;

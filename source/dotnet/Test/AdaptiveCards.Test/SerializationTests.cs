@@ -107,7 +107,6 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(1, result.Card.Body.Count);
         }
 
-
         [TestMethod]
         public void TestSerializingTextBlock()
         {
@@ -130,6 +129,7 @@ namespace AdaptiveCards.Test
             // Ensure there's a text element
             Assert.AreEqual(1, card.Body.Count);
             Assert.IsInstanceOfType(card.Body[0], typeof(AdaptiveTextBlock));
+
             Assert.AreEqual("Hello world", ((AdaptiveTextBlock) card.Body[0]).Text);
         }
     }

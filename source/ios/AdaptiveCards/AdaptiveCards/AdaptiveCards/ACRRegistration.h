@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 //
+@class ACRBaseCardElementRenderer;
 
-#import "ACRBaseCardElementRenderer.h"
 #import "ACRBaseActionElementRenderer.h"
 
 @interface ACRRegistration:NSObject 
@@ -16,5 +16,7 @@
 - (ACRBaseCardElementRenderer *)getRenderer:(NSNumber *) cardElementType;
 
 - (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *) cardElementType;
+
+- (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
 
 @end
