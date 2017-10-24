@@ -277,7 +277,10 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IUIElement> spThisAsIUIElement;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
-        RETURN_IF_FAILED(spClip->put_Rect( { 0, static_cast<float>(- margin.Top), finalSize.Width, static_cast<float>(currentHeight + margin.Top) }));
+        // We don't want clipping on left/right, since otherwise full-width hit targets get clipped,
+        // so we increase clip region by a ridiculous 1,000 on each side
+        // (assuming a card host will never set their card padding to more than 1,000 pixels)
+        RETURN_IF_FAILED(spClip->put_Rect( { -1000, static_cast<float>(- margin.Top), finalSize.Width + 2000, static_cast<float>(currentHeight + margin.Top) }));
 
     
     *returnValue = { finalSize.Width, currentHeight };
