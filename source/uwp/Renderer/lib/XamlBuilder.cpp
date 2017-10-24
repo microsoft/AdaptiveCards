@@ -353,6 +353,10 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get());
 
+        // Assign vertical alignment to the top so that on fixed height cards, the content
+        // still renders at the top even if the content is shorter than the full card
+        THROW_IF_FAILED(bodyElementHostAsElement->put_VerticalAlignment(VerticalAlignment_Top));
+
         XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get());
         THROW_IF_FAILED(bodyElementHost.CopyTo(childElementContainer));
 
@@ -1460,6 +1464,12 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
         BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
+
+        // Assign vertical alignment to the top so that on fixed height cards, the content
+        // still renders at the top even if the content is shorter than the full card
+        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
+        THROW_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
+        THROW_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
 
         THROW_IF_FAILED(columnPanel.CopyTo(ColumnControl));
     }
