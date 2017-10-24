@@ -25,7 +25,7 @@ namespace AdaptiveCards.Rendering.Html
         //        {
         //#if NET452
         //            var assembly = Assembly.GetExecutingAssembly();
-        //            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.Rendering.AdaptiveCard.css"))
+        //            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.css"))
         //            using (var reader = new StreamReader(stream))
         //            {
         //                return reader.ReadToEnd();
@@ -59,7 +59,10 @@ namespace AdaptiveCards.Rendering.Html
                 var context = new AdaptiveRendererContext(this.HostConfig, this.ElementRenderers);
                 tag = context.Render(card);
             }
-            catch { }
+            catch
+            {
+                return new RenderedAdaptiveCard(null, card);
+            }
 
             return new RenderedAdaptiveCard(tag, card);
         }
@@ -685,7 +688,7 @@ namespace AdaptiveCards.Rendering.Html
                         .Attr("name", adaptiveChoiceSetInput.Id)
                         .AddClass("ac-input")
                         .AddClass("ac-multichoiceInput")
-                        .Style("width", "100%");
+                        .Style("width", "100%"); 
 
                     foreach (var choice in adaptiveChoiceSetInput.Choices)
                     {
@@ -710,7 +713,11 @@ namespace AdaptiveCards.Rendering.Html
 
                     foreach (var choice in adaptiveChoiceSetInput.Choices)
                     {
+                        // generate a random ID to link the <label> and <input> elements together
+                        var htmlLabelId = Guid.NewGuid().ToString().Substring(0, 6);
+
                         var uiRadioInput = new HtmlTag("input")
+                            .Attr("id", htmlLabelId)
                             .Attr("type", "radio")
                             .Attr("name", adaptiveChoiceSetInput.Id)
                             .Attr("value", choice.Value)
@@ -723,10 +730,13 @@ namespace AdaptiveCards.Rendering.Html
                             uiRadioInput.Attr("checked", string.Empty);
                         }
 
-                        var uiLabel = context.Render(new AdaptiveTextBlock() { Text = choice.Title })
-                            .Style("display", "inline-block")
-                            .Style("margin-left", "6px")
-                            .Style("vertical-align", "middle");
+                        var uiLabel = new HtmlTag("label")
+                            .Attr("for", htmlLabelId).Append(
+                                context.Render(new AdaptiveTextBlock() {Text = choice.Title})
+                                    .Style("display", "inline-block")
+                                    .Style("margin-left", "6px")
+                                    .Style("vertical-align", "middle")
+                            );
 
                         var compoundInputElement = new HtmlTag("div")
                             .Append(uiRadioInput)
@@ -750,7 +760,11 @@ namespace AdaptiveCards.Rendering.Html
 
                 foreach (var choice in adaptiveChoiceSetInput.Choices)
                 {
+                    // generate a random ID to link the <label> and <input> elements together
+                    var htmlLabelId = Guid.NewGuid().ToString().Substring(0, 6);
+
                     var uiCheckboxInput = new HtmlTag("input")
+                        .Attr("id", htmlLabelId)
                         .Attr("type", "checkbox")
                         .Attr("name", adaptiveChoiceSetInput.Id)
                         .Attr("value", choice.Value)
@@ -763,10 +777,12 @@ namespace AdaptiveCards.Rendering.Html
                         uiCheckboxInput.Attr("checked", string.Empty);
                     }
 
-                    var uiLabel = context.Render(new AdaptiveTextBlock() { Text = choice.Title })
-                        .Style("display", "inline-block")
-                        .Style("margin-left", "6px")
-                        .Style("vertical-align", "middle");
+                    var uiLabel = new HtmlTag("label")
+                        .Attr("for", htmlLabelId).Append(
+                            context.Render(new AdaptiveTextBlock() { Text = choice.Title })
+                            .Style("display", "inline-block")
+                            .Style("margin-left", "6px")
+                            .Style("vertical-align", "middle"));
 
                     var compoundInputElement = new HtmlTag("div")
                         .Append(uiCheckboxInput)
@@ -903,11 +919,15 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag ToggleInputRender(AdaptiveToggleInput toggleInput, AdaptiveRendererContext context)
         {
+            // generate a random ID to link the <label> and <input> elements together
+            var htmlLabelId = Guid.NewGuid().ToString().Substring(0, 6);
+
             var uiElement = new HtmlTag("div")
                 .AddClass("ac-input")
                 .Style("width", "100%");
 
             var uiCheckboxInput = new HtmlTag("input")
+                .Attr("id", htmlLabelId)
                 .Attr("type", "checkbox")
                 .Attr("name", toggleInput.Id)
                 .Style("display", "inline-block")
@@ -919,10 +939,13 @@ namespace AdaptiveCards.Rendering.Html
                 uiCheckboxInput.Attr("checked", string.Empty);
             }
 
-            var uiLabel = context.Render(new AdaptiveTextBlock { Text = toggleInput.Title })
-                .Style("display", "inline-block")
-                .Style("margin-left", "6px")
-                .Style("vertical-align", "middle");
+            var uiLabel = new HtmlTag("label")
+                .Attr("for", htmlLabelId)
+                .Append(
+                    context.Render(new AdaptiveTextBlock {Text = toggleInput.Title})
+                        .Style("display", "inline-block")
+                        .Style("margin-left", "6px")
+                        .Style("vertical-align", "middle"));
 
             return uiElement.Append(uiCheckboxInput).Append(uiLabel);
         }

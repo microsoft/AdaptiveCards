@@ -6,7 +6,7 @@ namespace AdaptiveCards
 {
     [JsonConverter(typeof(AdaptiveTypedElementConverter))]
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class AdaptiveTypedElement
+    public abstract class AdaptiveTypedElement
     {
         protected AdaptiveTypedElement()
         {
