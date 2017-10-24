@@ -39,11 +39,5 @@ namespace AdaptiveCards
         /// </summary>
         [JsonRequired]
         public List<AdaptiveChoice> Choices { get; set; } = new List<AdaptiveChoice>();
-
-
-        public bool ShouldSerializeIsMultiSelect()
-        {
-            return IsMultiSelect;
-        }
     }
 }

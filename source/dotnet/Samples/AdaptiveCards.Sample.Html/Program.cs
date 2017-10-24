@@ -13,8 +13,8 @@ namespace AdaptiveCards.Sample.Html
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("Please specify a path with Adaptive Card payloads");
-                return;
+                args = new[] {"..\\..\\..\\..\\samples\\v1.0\\Scenarios"};
+                Console.WriteLine($"No path specified as first arg, trying '{args[0]}'");
             }
 
             var files = new List<string>();
@@ -87,6 +87,10 @@ namespace AdaptiveCards.Sample.Html
                         {
                             Console.WriteLine($"<p>Rendering failed</p>");
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"<p>Failed to parse card: {file}</p>");
                     }
                 }
                 catch (Exception err)
