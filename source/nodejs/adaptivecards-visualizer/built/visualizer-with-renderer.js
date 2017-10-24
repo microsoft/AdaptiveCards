@@ -470,6 +470,10 @@ var HostContainer = /** @class */ (function () {
             }
         }
     };
+    HostContainer.prototype.initialize = function () {
+        adaptivecards_1.AdaptiveCard.elementTypeRegistry.reset();
+        adaptivecards_1.AdaptiveCard.actionTypeRegistry.reset();
+    };
     HostContainer.prototype.parseElement = function (element, json) {
         // Do nothing in base implementation
     };
@@ -22641,6 +22645,12 @@ var OutlookContainer = /** @class */ (function (_super) {
         element.appendChild(renderedCard);
         return element;
     };
+    OutlookContainer.prototype.initialize = function () {
+        _super.prototype.initialize.call(this);
+        adaptivecards_1.AdaptiveCard.elementTypeRegistry.registerType("ActionSet", function () { return new adaptivecards_1.ActionSet(); });
+        adaptivecards_1.AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
+        adaptivecards_1.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", function () { return new adaptivecards_1.HttpAction(); });
+    };
     OutlookContainer.prototype.parseElement = function (element, json) {
         if (typeof json["isVisible"] === "boolean") {
             element.isVisible = json["isVisible"];
@@ -22650,6 +22660,9 @@ var OutlookContainer = /** @class */ (function (_super) {
         }
         if (element instanceof adaptivecards_1.Column) {
             element.pixelWidth = json["pixelWidth"];
+        }
+        if (element instanceof adaptivecards_1.Container) {
+            element.bleed = json["bleed"];
         }
     };
     OutlookContainer.prototype.anchorClicked = function (anchor) {
@@ -26899,6 +26912,7 @@ function loadStyleSheetAndConfig() {
     styleSheetLinkElement.rel = "stylesheet";
     styleSheetLinkElement.type = "text/css";
     var selectedHostContainer = getSelectedHostContainer();
+    selectedHostContainer.initialize();
     styleSheetLinkElement.href = selectedHostContainer.styleSheet;
     currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), null, '\t');
     if (!isCardEditor) {
@@ -27166,7 +27180,6 @@ window.onload = function () {
         return getSelectedHostContainer().anchorClicked(anchor);
     };
     if (betaFeaturesEnabled) {
-        Adaptive.AdaptiveCard.useAutoPadding = true;
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", function () { return new ToggleVisibilityAction(); });
     }
     currentConfigPayload = Constants.defaultConfigPayload;
@@ -29654,6 +29667,7 @@ var Container = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this._items = [];
         _this._style = null;
+        _this.bleed = false;
         _this.verticalContentAlignment = Enums.VerticalAlignment.Top;
         return _this;
     }
@@ -29693,7 +29707,7 @@ var Container = /** @class */ (function (_super) {
         if (this.hasBackground) {
             var physicalMargin = new HostConfig.SpacingDefinition();
             var physicalPadding = new HostConfig.SpacingDefinition();
-            var useAutoPadding = AdaptiveCard.useAutoPadding && (this.parent ? this.parent.canContentBleed() : false);
+            var useAutoPadding = (this.parent ? this.parent.canContentBleed() : false) && this.bleed;
             if (useAutoPadding) {
                 var effectivePadding = this.getNonZeroPadding();
                 var effectiveMargin = new HostConfig.PaddingDefinition({
@@ -30369,49 +30383,6 @@ function raiseParseError(error) {
         AdaptiveCard.onParseError(error);
     }
 }
-var TypeRegistry = /** @class */ (function () {
-    function TypeRegistry() {
-        this._items = [];
-    }
-    TypeRegistry.prototype.findTypeRegistration = function (typeName) {
-        for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {
-                return this._items[i];
-            }
-        }
-        return null;
-    };
-    TypeRegistry.prototype.clear = function () {
-        this._items = [];
-    };
-    TypeRegistry.prototype.registerType = function (typeName, createInstance) {
-        var registrationInfo = this.findTypeRegistration(typeName);
-        if (registrationInfo != null) {
-            registrationInfo.createInstance = createInstance;
-        }
-        else {
-            registrationInfo = {
-                typeName: typeName,
-                createInstance: createInstance
-            };
-            this._items.push(registrationInfo);
-        }
-    };
-    TypeRegistry.prototype.unregisterType = function (typeName) {
-        for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {
-                this._items.splice(i, 1);
-                return;
-            }
-        }
-    };
-    TypeRegistry.prototype.createInstance = function (typeName) {
-        var registrationInfo = this.findTypeRegistration(typeName);
-        return registrationInfo ? registrationInfo.createInstance() : null;
-    };
-    return TypeRegistry;
-}());
-exports.TypeRegistry = TypeRegistry;
 var ContainerWithActions = /** @class */ (function (_super) {
     __extends(ContainerWithActions, _super);
     function ContainerWithActions() {
@@ -30474,6 +30445,87 @@ var ContainerWithActions = /** @class */ (function (_super) {
     return ContainerWithActions;
 }(Container));
 exports.ContainerWithActions = ContainerWithActions;
+var TypeRegistry = /** @class */ (function () {
+    function TypeRegistry() {
+        this._items = [];
+        this.reset();
+    }
+    TypeRegistry.prototype.findTypeRegistration = function (typeName) {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].typeName === typeName) {
+                return this._items[i];
+            }
+        }
+        return null;
+    };
+    TypeRegistry.prototype.clear = function () {
+        this._items = [];
+    };
+    TypeRegistry.prototype.registerType = function (typeName, createInstance) {
+        var registrationInfo = this.findTypeRegistration(typeName);
+        if (registrationInfo != null) {
+            registrationInfo.createInstance = createInstance;
+        }
+        else {
+            registrationInfo = {
+                typeName: typeName,
+                createInstance: createInstance
+            };
+            this._items.push(registrationInfo);
+        }
+    };
+    TypeRegistry.prototype.unregisterType = function (typeName) {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].typeName === typeName) {
+                this._items.splice(i, 1);
+                return;
+            }
+        }
+    };
+    TypeRegistry.prototype.createInstance = function (typeName) {
+        var registrationInfo = this.findTypeRegistration(typeName);
+        return registrationInfo ? registrationInfo.createInstance() : null;
+    };
+    return TypeRegistry;
+}());
+exports.TypeRegistry = TypeRegistry;
+var ElementTypeRegistry = /** @class */ (function (_super) {
+    __extends(ElementTypeRegistry, _super);
+    function ElementTypeRegistry() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ElementTypeRegistry.prototype.reset = function () {
+        this.clear();
+        this.registerType("Container", function () { return new Container(); });
+        this.registerType("TextBlock", function () { return new TextBlock(); });
+        this.registerType("Image", function () { return new Image(); });
+        this.registerType("ImageSet", function () { return new ImageSet(); });
+        this.registerType("FactSet", function () { return new FactSet(); });
+        this.registerType("ColumnSet", function () { return new ColumnSet(); });
+        this.registerType("Input.Text", function () { return new TextInput(); });
+        this.registerType("Input.Date", function () { return new DateInput(); });
+        this.registerType("Input.Time", function () { return new TimeInput(); });
+        this.registerType("Input.Number", function () { return new NumberInput(); });
+        this.registerType("Input.ChoiceSet", function () { return new ChoiceSetInput(); });
+        this.registerType("Input.Toggle", function () { return new ToggleInput(); });
+    };
+    return ElementTypeRegistry;
+}(TypeRegistry));
+exports.ElementTypeRegistry = ElementTypeRegistry;
+var ActionTypeRegistry = /** @class */ (function (_super) {
+    __extends(ActionTypeRegistry, _super);
+    function ActionTypeRegistry() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ActionTypeRegistry.prototype.reset = function () {
+        this.clear();
+        this.registerType("Action.OpenUrl", function () { return new OpenUrlAction(); });
+        this.registerType("Action.Submit", function () { return new SubmitAction(); });
+        this.registerType("Action.ShowCard", function () { return new ShowCardAction(); });
+    };
+    return ActionTypeRegistry;
+}(TypeRegistry));
+exports.ActionTypeRegistry = ActionTypeRegistry;
 var AdaptiveCard = /** @class */ (function (_super) {
     __extends(AdaptiveCard, _super);
     function AdaptiveCard() {
@@ -30481,27 +30533,32 @@ var AdaptiveCard = /** @class */ (function (_super) {
         _this.minVersion = { major: 1, minor: 0 };
         return _this;
     }
-    AdaptiveCard.initialize = function () {
+    /*
+    static initialize() {
         AdaptiveCard.elementTypeRegistry.clear();
-        AdaptiveCard.elementTypeRegistry.registerType("Container", function () { return new Container(); });
-        AdaptiveCard.elementTypeRegistry.registerType("TextBlock", function () { return new TextBlock(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Image", function () { return new Image(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ImageSet", function () { return new ImageSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("FactSet", function () { return new FactSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ColumnSet", function () { return new ColumnSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ActionSet", function () { return new ActionSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Text", function () { return new TextInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Date", function () { return new DateInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Time", function () { return new TimeInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Number", function () { return new NumberInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.ChoiceSet", function () { return new ChoiceSetInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Toggle", function () { return new ToggleInput(); });
+
+        AdaptiveCard.elementTypeRegistry.registerType("Container", () => { return new Container(); });
+        AdaptiveCard.elementTypeRegistry.registerType("TextBlock", () => { return new TextBlock(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Image", () => { return new Image(); });
+        AdaptiveCard.elementTypeRegistry.registerType("ImageSet", () => { return new ImageSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("FactSet", () => { return new FactSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("ColumnSet", () => { return new ColumnSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new ActionSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Text", () => { return new TextInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Date", () => { return new DateInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Time", () => { return new TimeInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Number", () => { return new NumberInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Toggle", () => { return new ToggleInput(); });
+
         AdaptiveCard.actionTypeRegistry.clear();
-        AdaptiveCard.actionTypeRegistry.registerType("Action.Http", function () { return new HttpAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", function () { return new OpenUrlAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", function () { return new SubmitAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", function () { return new ShowCardAction(); });
-    };
+
+        AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", () => { return new SubmitAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
+    }
+    */
     AdaptiveCard.prototype.isVersionSupported = function () {
         var unsupportedVersion = (AdaptiveCard.currentVersion.major < this.minVersion.major) ||
             (AdaptiveCard.currentVersion.major == this.minVersion.major && AdaptiveCard.currentVersion.minor < this.minVersion.minor);
@@ -30599,10 +30656,13 @@ var AdaptiveCard = /** @class */ (function (_super) {
         return true;
     };
     AdaptiveCard.currentVersion = { major: 1, minor: 0 };
-    AdaptiveCard.useAutoPadding = false;
     AdaptiveCard.preExpandSingleShowCardAction = false;
-    AdaptiveCard.elementTypeRegistry = new TypeRegistry();
-    AdaptiveCard.actionTypeRegistry = new TypeRegistry();
+    /*
+    static elementTypeRegistry = new TypeRegistry<CardElement>();
+    static actionTypeRegistry = new TypeRegistry<Action>();
+    */
+    AdaptiveCard.elementTypeRegistry = new ElementTypeRegistry();
+    AdaptiveCard.actionTypeRegistry = new ActionTypeRegistry();
     AdaptiveCard.onAnchorClicked = null;
     AdaptiveCard.onExecuteAction = null;
     AdaptiveCard.onElementVisibilityChanged = null;
@@ -30613,7 +30673,7 @@ var AdaptiveCard = /** @class */ (function (_super) {
 }(ContainerWithActions));
 exports.AdaptiveCard = AdaptiveCard;
 // This call acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
-AdaptiveCard.initialize();
+// AdaptiveCard.initialize();
 var InlineAdaptiveCard = /** @class */ (function (_super) {
     __extends(InlineAdaptiveCard, _super);
     function InlineAdaptiveCard() {

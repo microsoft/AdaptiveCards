@@ -1,4 +1,5 @@
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -95,6 +96,11 @@ export abstract class HostContainer {
                 output.push(node.nodeValue);
             }
         }
+    }
+
+    public initialize() {
+        AdaptiveCard.elementTypeRegistry.reset();
+        AdaptiveCard.actionTypeRegistry.reset();
     }
 
     public parseElement(element: CardElement, json: any) {

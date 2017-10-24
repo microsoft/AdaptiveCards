@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -12,7 +13,9 @@ import {
     CardElement,
     Image,
     Container,
-    Column
+    Column,
+    ActionSet,
+    HttpAction
 } from "adaptivecards";
 
 export class OutlookContainer extends HostContainer {
@@ -26,6 +29,15 @@ export class OutlookContainer extends HostContainer {
         element.appendChild(renderedCard);
 
         return element;
+    }
+
+    public initialize() {
+        super.initialize();
+
+        AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new ActionSet(); });
+
+        AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
+        AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
     }
 
     public parseElement(element: CardElement, json: any) {

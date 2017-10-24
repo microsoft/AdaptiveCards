@@ -282,6 +282,7 @@ export declare class Container extends CardElement {
     protected readonly defaultStyle: Enums.ContainerStyle;
     protected readonly allowCustomStyle: boolean;
     backgroundImage: BackgroundImage;
+    bleed: boolean;
     verticalContentAlignment: Enums.VerticalAlignment;
     readonly style: Enums.ContainerStyle;
     getJsonTypeName(): string;
@@ -330,14 +331,6 @@ export interface IVersion {
     major: number;
     minor: number;
 }
-export declare class TypeRegistry<T> {
-    private _items;
-    private findTypeRegistration(typeName);
-    clear(): void;
-    registerType(typeName: string, createInstance: () => T): void;
-    unregisterType(typeName: string): void;
-    createInstance(typeName: string): T;
-}
 export declare abstract class ContainerWithActions extends Container {
     private _actionCollection;
     protected internalRender(): HTMLElement;
@@ -350,19 +343,33 @@ export declare abstract class ContainerWithActions extends Container {
     getAllInputs(): Array<Input>;
     readonly isStandalone: boolean;
 }
+export declare abstract class TypeRegistry<T> {
+    private _items;
+    private findTypeRegistration(typeName);
+    constructor();
+    clear(): void;
+    abstract reset(): any;
+    registerType(typeName: string, createInstance: () => T): void;
+    unregisterType(typeName: string): void;
+    createInstance(typeName: string): T;
+}
+export declare class ElementTypeRegistry extends TypeRegistry<CardElement> {
+    reset(): void;
+}
+export declare class ActionTypeRegistry extends TypeRegistry<Action> {
+    reset(): void;
+}
 export declare class AdaptiveCard extends ContainerWithActions {
     private static currentVersion;
-    static useAutoPadding: boolean;
     static preExpandSingleShowCardAction: boolean;
-    static elementTypeRegistry: TypeRegistry<CardElement>;
-    static actionTypeRegistry: TypeRegistry<Action>;
+    static readonly elementTypeRegistry: ElementTypeRegistry;
+    static readonly actionTypeRegistry: ActionTypeRegistry;
     static onAnchorClicked: (anchor: HTMLAnchorElement) => boolean;
     static onExecuteAction: (action: Action) => void;
     static onElementVisibilityChanged: (element: CardElement) => void;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void;
     static onParseElement: (element: CardElement, json: any) => void;
     static onParseError: (error: IValidationError) => void;
-    static initialize(): void;
     private isVersionSupported();
     private _cardTypeName;
     protected applyPadding(): void;

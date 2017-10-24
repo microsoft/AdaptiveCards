@@ -3167,56 +3167,6 @@ interface ITypeRegistration<T> {
     createInstance: () => T;
 }
 
-export class TypeRegistry<T> {
-    private _items: Array<ITypeRegistration<T>> = [];
-
-    private findTypeRegistration(typeName: string): ITypeRegistration<T> {
-        for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {
-                return this._items[i];
-            }
-        }
-
-        return null;
-    }
-
-    clear() {
-        this._items = [];
-    }
-
-    registerType(typeName: string, createInstance: () => T) {
-        var registrationInfo = this.findTypeRegistration(typeName);
-
-        if (registrationInfo != null) {
-            registrationInfo.createInstance = createInstance;
-        }
-        else {
-            registrationInfo = {
-                typeName: typeName,
-                createInstance: createInstance
-            }
-
-            this._items.push(registrationInfo);
-        }
-    }
-
-    unregisterType(typeName: string) {
-        for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {
-                this._items.splice(i, 1);
-
-                return;
-            }
-        }
-    }
-
-    createInstance(typeName: string): T {
-        var registrationInfo = this.findTypeRegistration(typeName);
-
-        return registrationInfo ? registrationInfo.createInstance() : null;
-    }
-}
-
 export abstract class ContainerWithActions extends Container {
     private _actionCollection: ActionCollection;
 
@@ -3294,13 +3244,98 @@ export abstract class ContainerWithActions extends Container {
     }
 }
 
+export abstract class TypeRegistry<T> {
+    private _items: Array<ITypeRegistration<T>> = [];
+
+    private findTypeRegistration(typeName: string): ITypeRegistration<T> {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].typeName === typeName) {
+                return this._items[i];
+            }
+        }
+
+        return null;
+    }
+
+    constructor() {
+        this.reset();
+    }
+
+    clear() {
+        this._items = [];
+    }
+
+    abstract reset();
+
+    registerType(typeName: string, createInstance: () => T) {
+        var registrationInfo = this.findTypeRegistration(typeName);
+
+        if (registrationInfo != null) {
+            registrationInfo.createInstance = createInstance;
+        }
+        else {
+            registrationInfo = {
+                typeName: typeName,
+                createInstance: createInstance
+            }
+
+            this._items.push(registrationInfo);
+        }
+    }
+
+    unregisterType(typeName: string) {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].typeName === typeName) {
+                this._items.splice(i, 1);
+
+                return;
+            }
+        }
+    }
+
+    createInstance(typeName: string): T {
+        var registrationInfo = this.findTypeRegistration(typeName);
+
+        return registrationInfo ? registrationInfo.createInstance() : null;
+    }
+}
+
+export class ElementTypeRegistry extends TypeRegistry<CardElement> {
+    reset() {
+        this.clear();
+        
+        this.registerType("Container", () => { return new Container(); });
+        this.registerType("TextBlock", () => { return new TextBlock(); });
+        this.registerType("Image", () => { return new Image(); });
+        this.registerType("ImageSet", () => { return new ImageSet(); });
+        this.registerType("FactSet", () => { return new FactSet(); });
+        this.registerType("ColumnSet", () => { return new ColumnSet(); });
+        this.registerType("Input.Text", () => { return new TextInput(); });
+        this.registerType("Input.Date", () => { return new DateInput(); });
+        this.registerType("Input.Time", () => { return new TimeInput(); });
+        this.registerType("Input.Number", () => { return new NumberInput(); });
+        this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
+        this.registerType("Input.Toggle", () => { return new ToggleInput(); });        
+    }
+}
+
+export class ActionTypeRegistry extends TypeRegistry<Action> {
+    reset() {
+        this.clear();
+        
+        this.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
+        this.registerType("Action.Submit", () => { return new SubmitAction(); });
+        this.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
+    }    
+}
+
 export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
     static preExpandSingleShowCardAction: boolean = false;
 
-    static elementTypeRegistry = new TypeRegistry<CardElement>();
-    static actionTypeRegistry = new TypeRegistry<Action>();
+    static readonly elementTypeRegistry = new ElementTypeRegistry();
+    static readonly actionTypeRegistry = new ActionTypeRegistry();
 
     static onAnchorClicked: (anchor: HTMLAnchorElement) => boolean = null;
     static onExecuteAction: (action: Action) => void = null;
@@ -3308,31 +3343,6 @@ export class AdaptiveCard extends ContainerWithActions {
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
-
-    static initialize() {
-        AdaptiveCard.elementTypeRegistry.clear();
-
-        AdaptiveCard.elementTypeRegistry.registerType("Container", () => { return new Container(); });
-        AdaptiveCard.elementTypeRegistry.registerType("TextBlock", () => { return new TextBlock(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Image", () => { return new Image(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ImageSet", () => { return new ImageSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("FactSet", () => { return new FactSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ColumnSet", () => { return new ColumnSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new ActionSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Text", () => { return new TextInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Date", () => { return new DateInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Time", () => { return new TimeInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Number", () => { return new NumberInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Toggle", () => { return new ToggleInput(); });
-
-        AdaptiveCard.actionTypeRegistry.clear();
-
-        AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", () => { return new SubmitAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
-    }
 
     private isVersionSupported(): boolean {
         var unsupportedVersion: boolean =
@@ -3448,9 +3458,6 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 }
-
-// This call acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
-AdaptiveCard.initialize();
 
 class InlineAdaptiveCard extends AdaptiveCard {
     protected get defaultPadding(): HostConfig.PaddingDefinition {

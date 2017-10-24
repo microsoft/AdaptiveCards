@@ -124,6 +124,7 @@ function loadStyleSheetAndConfig() {
     styleSheetLinkElement.type = "text/css";
 
     var selectedHostContainer = getSelectedHostContainer();
+    selectedHostContainer.initialize();
 
     styleSheetLinkElement.href = selectedHostContainer.styleSheet;
 
