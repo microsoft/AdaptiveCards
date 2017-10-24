@@ -370,14 +370,16 @@ namespace AdaptiveCards { namespace Uwp
             ComPtr<IWholeItemsPanel> spWholeItemPanel;
             boolean isChildTruncated = false;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
-            // Subgroups are all implemented with WholeItemsPanel
-            RETURN_IF_FAILED(spChild.As(&spWholeItemPanel));
-            RETURN_IF_FAILED(spWholeItemPanel->IsTruncated(&isChildTruncated));
-            if (isChildTruncated)
+            // Subgroups (columns) are implemented with WholeItemsPanel
+            if (SUCCEEDED(spChild.As(&spWholeItemPanel)))
             {
-                // No need to continue the iteration
-                *childTruncated = true;
-                return S_OK;
+                RETURN_IF_FAILED(spWholeItemPanel->IsTruncated(&isChildTruncated));
+                if (isChildTruncated)
+                {
+                    // No need to continue the iteration
+                    *childTruncated = true;
+                    return S_OK;
+                }
             }
         }
         return S_OK;
