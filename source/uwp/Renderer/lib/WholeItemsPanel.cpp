@@ -66,7 +66,7 @@ namespace AdaptiveCards { namespace Uwp
                 {
                     const double availableHeightForItem = availableSize.Height - currentHeight;
                     bool keepItem = (i == 0); // by default, we keep items only if they are the first ones
-                
+
                                               // Item does not fit
                     // 1. We keep the item anyway if it is the first child
                     // 2. Then we mark the current panel as truncated
