@@ -131,7 +131,7 @@ HRESULT GenerateContainedElementsProjection(
                 std::dynamic_pointer_cast<AdaptiveCards::ToggleInput>(containedElement)));
             break;
         case CardElementType::Custom:
-            RETURN_IF_FAILED(std::dynamic_pointer_cast<CustomElementWrapper> (containedElement)->GetWrappedElement(&projectedContainedElement));
+            RETURN_IF_FAILED(std::dynamic_pointer_cast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));
             break;
         default:
             return E_UNEXPECTED;

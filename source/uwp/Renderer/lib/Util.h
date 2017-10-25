@@ -112,7 +112,7 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
 
     if (r && SUCCEEDED(r->QueryInterface(__uuidof(ITypePeek), &peeker)))
     {
-        inner = reinterpret_cast<T *>(peeker->PeekAt(__uuidof(T)));
+        inner = reinterpret_cast<T*>(peeker->PeekAt(__uuidof(T)));
     }
     return inner;
 }
