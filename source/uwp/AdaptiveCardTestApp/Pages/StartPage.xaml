@@ -1,0 +1,52 @@
+﻿<local:BasePage
+    x:Class="AdaptiveCardTestApp.Pages.StartPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdaptiveCardTestApp.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="24,24,24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView
+                x:Name="ListViewHostConfigs"
+                Header="Host configs"
+                SelectionMode="Multiple"
+                ItemsSource="{Binding HostConfigs}"
+                DisplayMemberPath="Name"/>
+
+            <ListView
+                x:Name="ListViewCards"
+                Grid.Column="2"
+                Header="Cards"
+                SelectionMode="Multiple"
+                ItemsSource="{Binding Cards}"
+                DisplayMemberPath="Name"/>
+
+        </Grid>
+
+        <Button
+            Grid.Row="1"
+            x:Name="ButtonStartTest"
+            Content="Start test"
+            Style="{ThemeResource AccentButtonStyle}"
+            Click="ButtonStartTest_Click"
+            HorizontalAlignment="Stretch"
+            Height="50"
+            Margin="24"/>
+
+    </Grid>
+</local:BasePage>
