@@ -71,4 +71,9 @@ public class BaseCardElement {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.BaseCardElement_SerializeToJsonValue(swigCPtr, this), true);
   }
 
+  public static BaseActionElement DeserializeSelectAction(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value json, AdaptiveCardSchemaKey key) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_DeserializeSelectAction(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(json), key.swigValue());
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
 }

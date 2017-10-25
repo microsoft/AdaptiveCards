@@ -45,16 +45,6 @@ public class TextBlock extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(spacing.swigValue(), separator, text, textSize.swigValue(), textWeight.swigValue(), color.swigValue(), isSubtle, wrap, maxLines, hAlignment.swigValue()), true);
   }
 
-  public static TextBlock Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.TextBlock_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new TextBlock(cPtr, true);
-  }
-
-  public static TextBlock DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.TextBlock_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new TextBlock(cPtr, true);
-  }
-
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.TextBlock_Serialize(swigCPtr, this);
   }

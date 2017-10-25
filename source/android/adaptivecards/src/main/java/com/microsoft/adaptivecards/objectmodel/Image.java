@@ -45,21 +45,6 @@ public class Image extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Image__SWIG_1(spacing.swigValue(), separator, uri, imageStyle.swigValue(), imageSize.swigValue(), altText, hAlignment.swigValue()), true);
   }
 
-  public static Image Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.Image_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new Image(cPtr, true);
-  }
-
-  public static Image DeserializeWithoutCheckingType(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.Image_DeserializeWithoutCheckingType(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new Image(cPtr, true);
-  }
-
-  public static Image DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.Image_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new Image(cPtr, true);
-  }
-
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.Image_Serialize(swigCPtr, this);
   }

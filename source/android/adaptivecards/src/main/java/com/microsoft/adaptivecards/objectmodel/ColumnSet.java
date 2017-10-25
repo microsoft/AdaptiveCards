@@ -57,16 +57,6 @@ public class ColumnSet extends BaseCardElement {
     return new ColumnVector(AdaptiveCardObjectModelJNI.ColumnSet_GetColumns__SWIG_0(swigCPtr, this), false);
   }
 
-  public static ColumnSet Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new ColumnSet(cPtr, true);
-  }
-
-  public static ColumnSet DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new ColumnSet(cPtr, true);
-  }
-
   public BaseActionElement GetSelectAction() {
     long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_GetSelectAction(swigCPtr, this);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);

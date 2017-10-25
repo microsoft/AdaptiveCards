@@ -40,9 +40,9 @@ public:
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
-    static std::shared_ptr<BaseActionElement> DeserializeSelectAction(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    static std::shared_ptr<AdaptiveCards::BaseActionElement> DeserializeSelectAction(
+        std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration, 
         const Json::Value& json, AdaptiveCardSchemaKey key);
 
 protected:
