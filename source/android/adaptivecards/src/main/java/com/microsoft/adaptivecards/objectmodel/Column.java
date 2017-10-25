@@ -57,13 +57,13 @@ public class Column extends BaseCardElement {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.Column_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public static Column Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
+  public static Column Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value root) {
+    long cPtr = AdaptiveCardObjectModelJNI.Column_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(root));
     return (cPtr == 0) ? null : new Column(cPtr, true);
   }
 
-  public static Column DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_DeserializeFromString(jsonString);
+  public static Column DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.Column_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, jsonString);
     return (cPtr == 0) ? null : new Column(cPtr, true);
   }
 

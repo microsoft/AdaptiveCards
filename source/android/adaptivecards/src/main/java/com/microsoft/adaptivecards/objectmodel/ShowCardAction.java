@@ -41,16 +41,6 @@ public class ShowCardAction extends BaseActionElement {
     this(AdaptiveCardObjectModelJNI.new_ShowCardAction(), true);
   }
 
-  public static ShowCardAction Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ShowCardAction_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new ShowCardAction(cPtr, true);
-  }
-
-  public static ShowCardAction DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ShowCardAction_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new ShowCardAction(cPtr, true);
-  }
-
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.ShowCardAction_Serialize(swigCPtr, this);
   }

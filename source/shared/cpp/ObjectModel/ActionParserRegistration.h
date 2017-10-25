@@ -25,12 +25,12 @@ namespace AdaptiveCards
 
         ActionParserRegistration();
 
-        void AddParser(std::string elementType, std::shared_ptr<IActionElementParser> parser);
+        void AddParser(std::string elementType, std::shared_ptr<AdaptiveCards::IActionElementParser> parser);
         void RemoveParser(std::string elementType);
-        std::shared_ptr<IActionElementParser> GetParser(std::string elementType);
+        std::shared_ptr<AdaptiveCards::IActionElementParser> GetParser(std::string elementType);
 
     private:
         std::unordered_set<std::string> m_knownElements;
-        std::unordered_map<std::string, std::shared_ptr<IActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
+        std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::IActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
     };
 }

@@ -71,13 +71,13 @@ public class ChoiceInput {
     AdaptiveCardObjectModelJNI.ChoiceInput_SetIsSelected(swigCPtr, this, value);
   }
 
-  public static ChoiceInput Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
+  public static ChoiceInput Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value root) {
+    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(root));
     return (cPtr == 0) ? null : new ChoiceInput(cPtr, true);
   }
 
-  public static ChoiceInput DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_DeserializeFromString(jsonString);
+  public static ChoiceInput DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, jsonString);
     return (cPtr == 0) ? null : new ChoiceInput(cPtr, true);
   }
 

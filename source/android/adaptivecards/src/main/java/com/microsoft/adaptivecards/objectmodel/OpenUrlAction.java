@@ -41,16 +41,6 @@ public class OpenUrlAction extends BaseActionElement {
     this(AdaptiveCardObjectModelJNI.new_OpenUrlAction(), true);
   }
 
-  public static OpenUrlAction Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.OpenUrlAction_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new OpenUrlAction(cPtr, true);
-  }
-
-  public static OpenUrlAction DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.OpenUrlAction_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new OpenUrlAction(cPtr, true);
-  }
-
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.OpenUrlAction_Serialize(swigCPtr, this);
   }

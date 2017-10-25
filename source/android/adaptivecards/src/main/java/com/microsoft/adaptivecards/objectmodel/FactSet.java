@@ -61,16 +61,6 @@ public class FactSet extends BaseCardElement {
     return new FactVector(AdaptiveCardObjectModelJNI.FactSet_GetFacts__SWIG_0(swigCPtr, this), false);
   }
 
-  public static FactSet Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.FactSet_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new FactSet(cPtr, true);
-  }
-
-  public static FactSet DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.FactSet_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new FactSet(cPtr, true);
-  }
-
   public static FactSet dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.FactSet_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new FactSet(cPtr, true);
