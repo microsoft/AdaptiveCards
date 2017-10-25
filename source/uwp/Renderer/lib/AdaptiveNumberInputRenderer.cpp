@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "AdaptiveElementParserRegistration.h"
+#include "AdaptiveNumberInput.h"
 #include "AdaptiveNumberInputRenderer.h"
 #include "enums.h"
 #include "Util.h"
@@ -25,5 +27,14 @@ namespace AdaptiveCards { namespace Uwp
     {
         m_xamlBuilder.BuildNumberInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
+    }
+
+    HRESULT AdaptiveNumberInputRenderer::FromJson(
+        ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)
+    {
+        return AdaptiveCards::Uwp::FromJson<AdaptiveCards::Uwp::AdaptiveNumberInput, AdaptiveCards::NumberInput, AdaptiveCards::NumberInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
 }}

@@ -1639,7 +1639,11 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveElementParser : IInspectable
         {
-            HRESULT FromJson([in] Windows.Data.Json.JsonObject* inputJson, [out, retval] IAdaptiveCardElement** result);
+            HRESULT FromJson(
+                [in] Windows.Data.Json.JsonObject* inputJson, 
+                [in] AdaptiveElementParserRegistration* elementParsers, 
+                [in] AdaptiveActionParserRegistration* actionParsers, 
+                [out, retval] IAdaptiveCardElement** result);
         };
 
         [
@@ -1690,7 +1694,11 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveActionParser : IInspectable
         {
-            HRESULT FromJson([in] Windows.Data.Json.JsonObject* inputJson, [out, retval] IAdaptiveActionElement** result);
+            HRESULT FromJson(
+                [in] Windows.Data.Json.JsonObject* inputJson,
+                [in] AdaptiveElementParserRegistration* elementParsers,
+                [in] AdaptiveActionParserRegistration* actionParsers,
+                [out, retval] IAdaptiveActionElement** result);
         };
 
         [
@@ -1776,6 +1784,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextBlockRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1785,6 +1794,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1794,6 +1804,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageSetRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1803,6 +1814,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveContainerRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1812,6 +1824,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumnRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1821,6 +1834,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumnSetRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1830,6 +1844,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveFactRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1839,6 +1854,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveChoiceSetInputRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1848,6 +1864,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveDateInputRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1857,6 +1874,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveNumberInputRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1866,6 +1884,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextInputRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1875,6 +1894,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTimeInputRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1884,6 +1904,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveToggleInputRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [
@@ -1893,6 +1914,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveFactSetRenderer
         {
             [default] interface IAdaptiveElementRenderer;
+            interface IAdaptiveElementParser;
         };
 
         [

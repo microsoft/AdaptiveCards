@@ -1,6 +1,8 @@
 #include "pch.h"
 
+#include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveChoiceSetInputRenderer.h"
+#include "AdaptiveElementParserRegistration.h"
 #include "enums.h"
 #include "Util.h"
 
@@ -25,5 +27,14 @@ namespace AdaptiveCards { namespace Uwp
     {
         m_xamlBuilder.BuildChoiceSetInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
+    }
+
+    HRESULT AdaptiveChoiceSetInputRenderer::FromJson(
+        ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)
+    {
+        return AdaptiveCards::Uwp::FromJson<AdaptiveCards::Uwp::AdaptiveChoiceSetInput, AdaptiveCards::ChoiceSetInput, AdaptiveCards::ChoiceSetInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
 }}

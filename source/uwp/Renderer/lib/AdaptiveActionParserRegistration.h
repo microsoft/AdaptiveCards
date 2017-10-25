@@ -23,6 +23,7 @@ namespace AdaptiveCards { namespace Uwp
     public:
         AdaptiveActionParserRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveActionParserRegistration
         IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionParser* Parser);
