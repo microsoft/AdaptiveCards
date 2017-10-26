@@ -52,6 +52,9 @@ public:
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
+	std::string scanForDateAndTime(const std::string text);
+    std::vector<std::string> localizeDate(std::string::const_iterator begin, std::string::const_iterator end);
+
 private:
     std::string m_text;
     TextSize m_textSize;

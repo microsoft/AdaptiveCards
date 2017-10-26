@@ -1,5 +1,6 @@
 #include "TextBlock.h"
 #include "ParseUtil.h"
+#include <time.h>
 
 using namespace AdaptiveCards;
 
@@ -165,3 +166,76 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
+std::string TextBlock::scanForDateAndTime(const std::string text)
+{
+	std::string::const_iterator begin, end = text.end();
+
+    for(auto itr = text.begin(); itr != text.end(); itr++)
+    {
+		if (*itr == '{')
+		{
+			itr++;
+			if (itr != text.end() && *itr++ == '{')
+			{
+				if (itr != text.end() && (*itr == 'D' || *itr == 'T'))
+				{
+					begin = itr;
+					while (itr != text.end() && *itr != ')')
+					{
+						itr++;
+					}
+
+					if (itr != text.end())
+					{
+						return text.substr(begin - text.begin(), itr - begin + 1);
+					}
+					else
+					{
+						return "";
+					}
+				}
+			}
+		}
+	}
+
+	return "";
+}
+std::vector<std::string> TextBlock::localizeDate(std::string::const_iterator begin, std::string::const_iterator end)
+{
+	std::vector<std::string> tempValueHolders(4);
+    unsigned int idxMap[] ={4, 2, 2}; 
+    unsigned int idx = 0;
+	const std::vector<std::string> days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+	const std::vector<std::string> months = {"January", "Feburary", "March", "April", "May", "June", "July", "August", 
+											 "September", "October", "November", "December"};
+    while(begin != end && *begin != 'T')
+    { 
+        if(isdigit(*begin) && idx < 4)
+        {
+            tempValueHolders[idx] += *begin;
+
+            if(--idxMap[idx] == 0)
+            {
+                idx++;
+            }
+        }
+        begin++;
+    }
+
+	struct tm parsedTm = { 0 }, localTm = { 0 };
+
+	parsedTm.tm_year = std::stoi(tempValueHolders[0]) - 1900;
+	parsedTm.tm_mon  = std::stoi(tempValueHolders[1]) - 1;
+	parsedTm.tm_mday = std::stoi(tempValueHolders[2]) - 1;
+	time_t convertedTime = mktime(&parsedTm);
+	if (convertedTime != -1)
+	{
+        std::vector<std::string> outputs;
+        localtime_s(&localTm, &convertedTime);
+        std::ostringstream strstream, longstream;
+        strstream << localTm.tm_mon + 1 << "/" << localTm.tm_mday + 1 << "/" << localTm.tm_year + 1900;
+        output.push_back(strstream.str()); 
+        longstream << days[localTm.tm_mday] <<", " << months[localTm.tm_mon] << 
+	}
+    return "";
+}
