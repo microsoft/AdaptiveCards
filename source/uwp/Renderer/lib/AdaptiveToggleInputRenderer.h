@@ -28,7 +28,7 @@ namespace AdaptiveCards { namespace Uwp
             ABI::Windows::Data::Json::IJsonObject *,
             ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParsers,
             ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParsers,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement **);
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element);
 
     private:
         AdaptiveCards::Uwp::XamlBuilder m_xamlBuilder;

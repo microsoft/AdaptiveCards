@@ -82,12 +82,20 @@ namespace AdaptiveCards { namespace Uwp
         {
             sharedModelElementParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
         }
+        else
+        {
+            sharedModelElementParserRegistration = std::make_shared<AdaptiveCards::ElementParserRegistration>();
+        }
 
         std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedModelActionParserRegistration;
         ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl = PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
         if (actionParserRegistrationImpl != nullptr)
         {
             sharedModelActionParserRegistration = actionParserRegistrationImpl->GetSharedParserRegistration();
+        }
+        else
+        {
+            sharedModelActionParserRegistration = std::make_shared<AdaptiveCards::ActionParserRegistration>();
         }
 
         std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
