@@ -347,7 +347,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
         bodyElementHost->SetMainPanel(TRUE);
         bodyElementHost->SetFirstGroup(TRUE);
-        bodyElementHost->SetAdaptiveHeight(TRUE);
+        //bodyElementHost->SetAdaptiveHeight(TRUE);
 
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
@@ -1428,7 +1428,6 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<WholeItemsPanel> columnPanel;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&columnPanel));
-        columnPanel->SetFirstGroup(TRUE);
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveColumn->get_Style(&containerStyle));
@@ -1456,17 +1455,17 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(columnAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
-        ComPtr<IPanel> stackPanelAsPanel;
-        THROW_IF_FAILED(columnPanel.As(&stackPanelAsPanel));
+        ComPtr<IPanel> columnPanelAsPanel;
+        THROW_IF_FAILED(columnPanel.As(&columnPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
+        BuildPanelChildren(childItems.Get(), columnPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
         ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
         THROW_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
-        THROW_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
+        THROW_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         THROW_IF_FAILED(columnPanel.CopyTo(ColumnControl));
     }
