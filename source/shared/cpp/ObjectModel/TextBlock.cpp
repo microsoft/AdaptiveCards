@@ -1,6 +1,5 @@
 #include "TextBlock.h"
 #include "ParseUtil.h"
-#include <time.h>
 
 using namespace AdaptiveCards;
 
@@ -200,42 +199,83 @@ std::string TextBlock::scanForDateAndTime(const std::string text)
 
 	return "";
 }
-std::vector<std::string> TextBlock::localizeDate(std::string::const_iterator begin, std::string::const_iterator end)
+bool TextBlock::stringToLocalTm(std::string::const_iterator begin, std::string::const_iterator end, struct tm* result)
 {
-	std::vector<std::string> tempValueHolders(4);
-    unsigned int idxMap[] ={4, 2, 2}; 
-    unsigned int idx = 0;
-	const std::vector<std::string> days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
-	const std::vector<std::string> months = {"January", "Feburary", "March", "April", "May", "June", "July", "August", 
-											 "September", "October", "November", "December"};
-    while(begin != end && *begin != 'T')
-    { 
-        if(isdigit(*begin) && idx < 4)
-        {
-            tempValueHolders[idx] += *begin;
+	std::vector<std::string> tempValueHolders(8);
+	unsigned int idxMap[] = { 4, 2, 2, 2, 2, 2, 2, 2 };
+	unsigned int idx = 0;
+	int factor = -1;
+	time_t offset = 0;
+	const std::vector<std::string> days = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+	const std::vector<std::string> months = { "January", "Feburary", "March", "April", "May", "June", "July", "August",
+											 "September", "October", "November", "December" };
+	while (begin != end && idx < tempValueHolders.size())
+	{
+		if (isdigit(*begin))
+		{
+			tempValueHolders[idx] += *begin;
 
-            if(--idxMap[idx] == 0)
-            {
-                idx++;
-            }
-        }
-        begin++;
-    }
+			if (--idxMap[idx] == 0)
+			{
+				idx++;
+			}
+		}
 
-	struct tm parsedTm = { 0 }, localTm = { 0 };
+		if (*begin == 'Z')
+		{
+			factor = 0;
+		}
+
+		if (*begin == '+')
+		{
+			factor = 1;
+		}
+		begin++;
+	}
+
+	struct tm parsedTm = { 0 }, localTm = { 0 }, offsetTm = { 0 }, gmTm = { 0 };
 
 	parsedTm.tm_year = std::stoi(tempValueHolders[0]) - 1900;
-	parsedTm.tm_mon  = std::stoi(tempValueHolders[1]) - 1;
+	parsedTm.tm_mon = std::stoi(tempValueHolders[1]) + 7;
 	parsedTm.tm_mday = std::stoi(tempValueHolders[2]) - 1;
-	time_t convertedTime = mktime(&parsedTm);
+	parsedTm.tm_hour = std::stoi(tempValueHolders[3]);
+	parsedTm.tm_min = std::stoi(tempValueHolders[4]);
+	parsedTm.tm_sec = std::stoi(tempValueHolders[5]);
+
+	if (factor)
+	{
+		if (tempValueHolders[6] != "")
+		{
+			offset += std::stoi(tempValueHolders[6]) * 3600;
+		}
+		if (tempValueHolders[7] != "")
+		{
+			offset += std::stoi(tempValueHolders[7]) * 60;
+		}
+		offset *= factor;
+	}
+
+	time_t t, z;
+    t = time(nullptr);
+	z = mktime(&parsedTm);
+	localtime_s(&localTm, &t);
+	localtime_s(&parsedTm, &z);
+	char buffer[100] = { 0 };
+	strftime(buffer, 100, "%D, %T, %z", &parsedTm);
+	std::string localTimeZoneOffsetStr(buffer);
+	int rawoffset = std::stoi(localTimeZoneOffsetStr);
+	offset = (rawoffset / 100) * 3600 + (rawoffset % 100) * 60;
+	//parsedTm.tm_isdst = localTm.tm_isdst;
+
+	time_t convertedTime = mktime(&parsedTm) + offset;// +t - z + 3600;
+
 	if (convertedTime != -1)
 	{
-        std::vector<std::string> outputs;
-        localtime_s(&localTm, &convertedTime);
-        std::ostringstream strstream, longstream;
-        strstream << localTm.tm_mon + 1 << "/" << localTm.tm_mday + 1 << "/" << localTm.tm_year + 1900;
-        output.push_back(strstream.str()); 
-        longstream << days[localTm.tm_mday] <<", " << months[localTm.tm_mon] << 
+        if(!localtime_s(result, &convertedTime))
+        {
+            return true;
+        }
 	}
-    return "";
+
+    return false;
 }

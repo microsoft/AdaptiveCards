@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
+#include <time.h>
 
 namespace AdaptiveCards
 {
@@ -53,7 +54,8 @@ public:
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
 	std::string scanForDateAndTime(const std::string text);
-    std::vector<std::string> localizeDate(std::string::const_iterator begin, std::string::const_iterator end);
+    bool stringToLocalTm(std::string::const_iterator begin, 
+            std::string::const_iterator end, struct tm* result);
 
 private:
     std::string m_text;
