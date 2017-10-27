@@ -1,6 +1,8 @@
 #include "pch.h"
 
+#include "AdaptiveContainer.h"
 #include "AdaptiveContainerRenderer.h"
+#include "AdaptiveElementParserRegistration.h"
 #include "enums.h"
 #include "Util.h"
 
@@ -27,4 +29,12 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
+    HRESULT AdaptiveContainerRenderer::FromJson(
+        ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)
+    {
+        return AdaptiveCards::Uwp::FromJson<AdaptiveCards::Uwp::AdaptiveContainer, AdaptiveCards::Container, AdaptiveCards::ContainerParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
+    }
 }}

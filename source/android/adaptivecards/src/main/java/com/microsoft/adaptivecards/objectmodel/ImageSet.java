@@ -69,16 +69,6 @@ public class ImageSet extends BaseCardElement {
     return new ImageVector(AdaptiveCardObjectModelJNI.ImageSet_GetImages__SWIG_0(swigCPtr, this), false);
   }
 
-  public static ImageSet Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageSet_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new ImageSet(cPtr, true);
-  }
-
-  public static ImageSet DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageSet_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new ImageSet(cPtr, true);
-  }
-
   public static ImageSet dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.ImageSet_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new ImageSet(cPtr, true);

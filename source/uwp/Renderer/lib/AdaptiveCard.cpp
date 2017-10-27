@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "AdaptiveCard.h"
 #include "AdaptiveCardParseResult.h"
+#include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveElementParserRegistration.h"
 
 #include <json.h>
 #include "Util.h"
@@ -20,29 +22,73 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {
+        return FromJsonStringWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(
+        HSTRING adaptiveJson, 
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration,
+        IAdaptiveCardParseResult** parseResult) noexcept try
+    {
         *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
-        return FromJsonString(adaptiveJsonString, parseResult);
+        return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        return FromJsonWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJsonWithParserRegistration(
+        IJsonObject* adaptiveJson, 
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration,
+        IAdaptiveCardParseResult** parseResult) noexcept try
     {
         *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
 
-        return FromJsonString(adaptiveJsonString, parseResult);
+        return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveCardParseResult** parseResult)
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(
+        const std::string jsonString, 
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration, 
+        IAdaptiveCardParseResult** parseResult)
     {
-        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString);
+        std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
+        if (elementParserRegistration != nullptr)
+        {
+            ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl = PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
+            if (elementParserRegistrationImpl != nullptr)
+            {
+                sharedModelElementParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
+            }
+        }
+
+        std::shared_ptr<ActionParserRegistration> sharedModelActionParserRegistration;
+        if (actionParserRegistration != nullptr)
+        {
+            ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl = PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
+            if (actionParserRegistrationImpl != nullptr)
+            {
+                sharedModelActionParserRegistration = actionParserRegistrationImpl->GetSharedParserRegistration();
+            }
+        }
+
+        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
 
         ComPtr<IAdaptiveCard> adaptiveCard;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));

@@ -17,6 +17,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction)
     {
+        if (sharedShowCardAction == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedShowCardAction = sharedShowCardAction;
         return S_OK;
     }

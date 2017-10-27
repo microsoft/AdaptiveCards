@@ -1,45 +1,7 @@
 #include "SharedAdaptiveCard.h"
-#include "ChoiceSetInput.h"
-#include "ColumnSet.h"
-#include "Container.h"
-#include "DateInput.h"
-#include "FactSet.h"
-#include "Image.h"
-#include "ImageSet.h"
-#include "NumberInput.h"
-#include "OpenUrlAction.h"
 #include "ParseUtil.h"
-#include "ShowCardAction.h"
-#include "SubmitAction.h"
-#include "TextBlock.h"
-#include "TextInput.h"
-#include "TimeInput.h"
-#include "ToggleInput.h"
 
 using namespace AdaptiveCards;
-
-const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> AdaptiveCard::CardElementParsers =
-{
-    { CardElementType::Container, Container::Deserialize },
-    { CardElementType::ColumnSet, ColumnSet::Deserialize },
-    { CardElementType::FactSet, FactSet::Deserialize },
-    { CardElementType::Image, Image::Deserialize },
-    { CardElementType::ImageSet, ImageSet::Deserialize },
-    { CardElementType::TextBlock, TextBlock::Deserialize },
-    { CardElementType::ChoiceSetInput, ChoiceSetInput::Deserialize },
-    { CardElementType::DateInput, DateInput::Deserialize },
-    { CardElementType::NumberInput, NumberInput::Deserialize },
-    { CardElementType::TextInput, TextInput::Deserialize },
-    { CardElementType::TimeInput, TimeInput::Deserialize },
-    { CardElementType::ToggleInput, ToggleInput::Deserialize },
-};
-
-const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> AdaptiveCard::ActionParsers =
-{
-    { ActionType::OpenUrl, OpenUrlAction::Deserialize },
-    { ActionType::ShowCard, ShowCardAction::Deserialize },
-    { ActionType::Submit, SubmitAction::Deserialize },
-};
 
 AdaptiveCard::AdaptiveCard()
 {
@@ -79,9 +41,15 @@ AdaptiveCard::AdaptiveCard(std::string version,
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile) throw(AdaptiveCards::AdaptiveCardParseException)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(
+    const std::string& jsonFile,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(
+    const std::string& jsonFile,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
 {
     std::ifstream jsonFileStream(jsonFile);
@@ -89,13 +57,19 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::strin
     Json::Value root;
     jsonFileStream >> root;
 
-    return AdaptiveCard::Deserialize(root);
+    return AdaptiveCard::Deserialize(root, elementParserRegistration, actionParserRegistration);
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
+    const Json::Value& json,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
-std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
+    const Json::Value& json,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
 {
     ParseUtil::ThrowIfNotJsonObject(json);
@@ -112,23 +86,38 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
 
+    if (elementParserRegistration == nullptr)
+    {
+        elementParserRegistration.reset(new ElementParserRegistration());
+    }
+    if (actionParserRegistration == nullptr)
+    {
+        actionParserRegistration.reset(new ActionParserRegistration());
+    }
+
     // Parse body
-    auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers, false);
+    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false);
 
     // Parse actions if present
-    auto actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::ActionParsers);
+    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions);
 
     auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, body, actions);
     return result;
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(
+    const std::string& jsonString,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(
+    const std::string& jsonString,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
 {
-    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString), elementParserRegistration, actionParserRegistration);
 }
 
 Json::Value AdaptiveCard::SerializeToJsonValue()

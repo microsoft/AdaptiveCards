@@ -23,26 +23,29 @@ public:
     void SetSeparator(const std::shared_ptr<Separator> value);
     */
 
-    bool GetSeparator() const;
-    void SetSeparator(const bool value);
+    virtual bool GetSeparator() const;
+    virtual void SetSeparator(const bool value);
 
-    Spacing GetSpacing() const;
-    void SetSpacing(const Spacing value);
+    virtual Spacing GetSpacing() const;
+    virtual void SetSpacing(const Spacing value);
 
-    std::string GetId() const;
-    void SetId(const std::string value);
+    virtual std::string GetId() const;
+    virtual void SetId(const std::string value);
 
-    const CardElementType GetElementType() const;
+    virtual const CardElementType GetElementType() const;
 
     virtual std::string Serialize() = 0;
+    virtual Json::Value SerializeToJsonValue();
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
-    virtual Json::Value SerializeToJsonValue();
+    static std::shared_ptr<AdaptiveCards::BaseActionElement> DeserializeSelectAction(
+        std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration, 
+        const Json::Value& json, AdaptiveCardSchemaKey key);
 
 protected:
-    static std::shared_ptr<BaseActionElement> DeserializeSelectAction(const Json::Value& json, AdaptiveCardSchemaKey key);
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
 
 private:

@@ -10,35 +10,6 @@ ToggleInput::ToggleInput() :
 {
 }
 
-std::shared_ptr<ToggleInput> ToggleInput::Deserialize(const Json::Value& json)
-{
-    ParseUtil::ExpectTypeString(json, CardElementType::ToggleInput);
-
-    std::shared_ptr<ToggleInput> toggleInput = BaseInputElement::Deserialize<ToggleInput>(json);
-
-    toggleInput->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
-    toggleInput->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
-
-    std::string valueOff = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOff);
-    if (valueOff != "")
-    {
-        toggleInput->SetValueOff(valueOff);
-    }
-
-    std::string valueOn = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOn);
-    if (valueOn != "")
-    {
-        toggleInput->SetValueOn(valueOn);
-    }
-
-    return toggleInput;
-}
-
-std::shared_ptr<ToggleInput> ToggleInput::DeserializeFromString(const std::string& jsonString)
-{
-    return ToggleInput::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
-}
-
 std::string ToggleInput::Serialize()
 {
     Json::FastWriter writer;
@@ -94,4 +65,39 @@ std::string ToggleInput::GetValueOn() const
 void ToggleInput::SetValueOn(const std::string valueOn)
 {
     m_valueOn = valueOn;
+}
+
+std::shared_ptr<BaseCardElement> ToggleInputParser::Deserialize(
+    std::shared_ptr<ElementParserRegistration>,
+    std::shared_ptr<ActionParserRegistration>,
+    const Json::Value& json)
+{
+    ParseUtil::ExpectTypeString(json, CardElementType::ToggleInput);
+
+    std::shared_ptr<ToggleInput> toggleInput = BaseInputElement::Deserialize<ToggleInput>(json);
+
+    toggleInput->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
+    toggleInput->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
+
+    std::string valueOff = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOff);
+    if (valueOff != "")
+    {
+        toggleInput->SetValueOff(valueOff);
+    }
+
+    std::string valueOn = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOn);
+    if (valueOn != "")
+    {
+        toggleInput->SetValueOn(valueOn);
+    }
+
+    return toggleInput;
+}
+
+std::shared_ptr<BaseCardElement> ToggleInputParser::DeserializeFromString(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const std::string& jsonString)
+{
+    return ToggleInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }

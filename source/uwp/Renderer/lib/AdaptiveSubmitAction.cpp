@@ -17,6 +17,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction)
     {
+        if (sharedSubmitAction == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedSubmitAction = sharedSubmitAction;
         return S_OK;
     }

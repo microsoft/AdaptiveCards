@@ -23,6 +23,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::NumberInput>& sharedNumberInput)
     {
+        if (sharedNumberInput == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedNumberInput = sharedNumberInput;
         return S_OK;
     }

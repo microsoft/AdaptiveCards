@@ -6,13 +6,6 @@
 
 using namespace AdaptiveCards;
 
-const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> BaseCardElement::ActionParsers =
-{
-    { ActionType::OpenUrl, OpenUrlAction::Deserialize },
-    { ActionType::ShowCard, ShowCardAction::Deserialize },
-    { ActionType::Submit, SubmitAction::Deserialize },
-};
-
 BaseCardElement::BaseCardElement(
     CardElementType type,
     Spacing spacing,
@@ -86,12 +79,16 @@ Json::Value BaseCardElement::SerializeToJsonValue()
     return root;
 }
 
-std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(const Json::Value & json, AdaptiveCardSchemaKey key)
+std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& json, 
+    AdaptiveCardSchemaKey key)
 {
     Json::Value selectActionValue = ParseUtil::ExtractJsonValue(json, key, false);
     if (!selectActionValue.empty())
     {
-        return ParseUtil::GetActionFromJsonValue<BaseActionElement>(selectActionValue, BaseCardElement::ActionParsers);
+        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, selectActionValue);
     }
     return nullptr;
 }

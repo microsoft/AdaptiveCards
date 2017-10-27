@@ -1,34 +1,6 @@
-#include "ChoiceSetInput.h"
-#include "ColumnSet.h"
 #include "Container.h"
-#include "FactSet.h"
-#include "Image.h"
-#include "ImageSet.h"
-#include "DateInput.h"
-#include "NumberInput.h"
-#include "ParseUtil.h"
-#include "TextBlock.h"
-#include "TextInput.h"
-#include "TimeInput.h"
-#include "ToggleInput.h"
 
 using namespace AdaptiveCards;
-
-const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> Container::CardElementParsers =
-{
-    { CardElementType::ChoiceSetInput, ChoiceSetInput::Deserialize },
-    { CardElementType::Container, Container::Deserialize },
-    { CardElementType::ColumnSet, ColumnSet::Deserialize },
-    { CardElementType::FactSet, FactSet::Deserialize },
-    { CardElementType::Image, Image::Deserialize },
-    { CardElementType::ImageSet, ImageSet::Deserialize },
-    { CardElementType::TextBlock, TextBlock::Deserialize },
-    { CardElementType::DateInput, DateInput::Deserialize },
-    { CardElementType::NumberInput, NumberInput::Deserialize },
-    { CardElementType::TextInput, TextInput::Deserialize },
-    { CardElementType::TimeInput, TimeInput::Deserialize },
-    { CardElementType::ToggleInput, ToggleInput::Deserialize },
-};
 
 Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None)
 {
@@ -108,7 +80,10 @@ Json::Value Container::SerializeToJsonValue()
     return root;
 }
 
-std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
+std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
@@ -118,15 +93,18 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
         ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers, true);
+    auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Items, true);
     container->m_items = std::move(cardElements);
 
-    container->SetSelectAction(BaseCardElement::DeserializeSelectAction(value, AdaptiveCardSchemaKey::SelectAction));
+    container->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction));
 
     return container;
 }
 
-std::shared_ptr<Container> Container::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const std::string& jsonString)
 {
-    return Container::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+    return ContainerParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }

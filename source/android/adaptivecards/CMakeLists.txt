@@ -48,6 +48,8 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp
              ../../shared/cpp/ObjectModel/SubmitAction.cpp
              ../../shared/cpp/ObjectModel/HostConfig.cpp
+             ../../shared/cpp/ObjectModel/ActionParserRegistration.cpp
+             ../../shared/cpp/ObjectModel/ElementParserRegistration.cpp
              src/main/cpp/objectmodel_wrap.cpp
              )
 

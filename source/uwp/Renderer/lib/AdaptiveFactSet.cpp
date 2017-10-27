@@ -29,6 +29,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::FactSet>& sharedFactSet)
     {
+        if (sharedFactSet == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedFactSet = sharedFactSet;
         GenerateFactsProjection(m_sharedFactSet->GetFacts(), m_facts.Get());
         return S_OK;

@@ -41,16 +41,6 @@ public class DateInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_DateInput(), true);
   }
 
-  public static DateInput Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.DateInput_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new DateInput(cPtr, true);
-  }
-
-  public static DateInput DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.DateInput_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new DateInput(cPtr, true);
-  }
-
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.DateInput_Serialize(swigCPtr, this);
   }

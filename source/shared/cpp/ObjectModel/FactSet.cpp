@@ -54,20 +54,26 @@ Json::Value FactSet::SerializeToJsonValue()
     return root;
 }
 
-std::shared_ptr<FactSet> FactSet::Deserialize(const Json::Value& value)
+std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::FactSet);
 
     auto factSet = BaseCardElement::Deserialize<FactSet>(value);
 
     // Parse Facts
-    auto facts = ParseUtil::GetElementCollectionOfSingleType<Fact>(value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, true);
+    auto facts = ParseUtil::GetElementCollectionOfSingleType<Fact>(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, true);
     factSet->m_facts = std::move(facts);
 
     return factSet;
 }
 
-std::shared_ptr<FactSet> FactSet::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<BaseCardElement> FactSetParser::DeserializeFromString(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    const std::string& jsonString)
 {
-    return FactSet::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+    return FactSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }

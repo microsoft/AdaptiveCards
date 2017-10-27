@@ -41,16 +41,6 @@ public class TimeInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_TimeInput(), true);
   }
 
-  public static TimeInput Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.TimeInput_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new TimeInput(cPtr, true);
-  }
-
-  public static TimeInput DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.TimeInput_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new TimeInput(cPtr, true);
-  }
-
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.TimeInput_Serialize(swigCPtr, this);
   }

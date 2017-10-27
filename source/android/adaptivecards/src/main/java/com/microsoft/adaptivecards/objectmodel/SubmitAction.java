@@ -49,16 +49,6 @@ public class SubmitAction extends BaseActionElement {
     AdaptiveCardObjectModelJNI.SubmitAction_SetDataJson(swigCPtr, this, value);
   }
 
-  public static SubmitAction Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.SubmitAction_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new SubmitAction(cPtr, true);
-  }
-
-  public static SubmitAction DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.SubmitAction_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new SubmitAction(cPtr, true);
-  }
-
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.SubmitAction_Serialize(swigCPtr, this);
   }

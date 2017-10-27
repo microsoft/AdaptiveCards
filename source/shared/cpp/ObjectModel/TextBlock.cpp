@@ -38,29 +38,6 @@ TextBlock::TextBlock(
 {
 }
 
-std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
-{
-    ParseUtil::ExpectTypeString(json, CardElementType::TextBlock);
-
-    std::shared_ptr<TextBlock> textBlock = BaseCardElement::Deserialize<TextBlock>(json);
-
-    textBlock->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
-    textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));
-    textBlock->SetTextColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
-    textBlock->SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));
-    textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
-    textBlock->SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
-    textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
-    textBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
-
-    return textBlock;
-}
-
-std::shared_ptr<TextBlock> TextBlock::DeserializeFromString(const std::string& jsonString)
-{
-    return TextBlock::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
-}
-
 std::string TextBlock::Serialize()
 {
     Json::FastWriter writer;
@@ -165,3 +142,31 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
+std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(
+    std::shared_ptr<ElementParserRegistration>,
+    std::shared_ptr<ActionParserRegistration>,
+    const Json::Value& json)
+{
+    ParseUtil::ExpectTypeString(json, CardElementType::TextBlock);
+
+    std::shared_ptr<TextBlock> textBlock = BaseCardElement::Deserialize<TextBlock>(json);
+
+    textBlock->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
+    textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));
+    textBlock->SetTextColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
+    textBlock->SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));
+    textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
+    textBlock->SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
+    textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
+    textBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+
+    return textBlock;
+}
+
+std::shared_ptr<BaseCardElement> TextBlockParser::DeserializeFromString(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const std::string& jsonString)
+{
+    return TextBlockParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
