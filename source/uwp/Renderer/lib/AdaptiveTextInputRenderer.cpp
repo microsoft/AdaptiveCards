@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "AdaptiveElementParserRegistration.h"
+#include "AdaptiveTextInput.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "enums.h"
 #include "Util.h"
@@ -25,5 +27,14 @@ namespace AdaptiveCards { namespace Uwp
     {
         m_xamlBuilder.BuildTextInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
+    }
+
+    HRESULT AdaptiveTextInputRenderer::FromJson(
+        ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)
+    {
+        return AdaptiveCards::Uwp::FromJson<AdaptiveCards::Uwp::AdaptiveTextInput, AdaptiveCards::TextInput, AdaptiveCards::TextInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
 }}

@@ -2,6 +2,7 @@
 
 #include "AdaptiveCards.Uwp.h"
 #include "Util.h"
+#include "AdaptiveActionParserRegistration.h"
 
 namespace AdaptiveCards { namespace Uwp
 {
@@ -23,6 +24,7 @@ namespace AdaptiveCards { namespace Uwp
     public:
         AdaptiveElementParserRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ElementParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveElementParserRegistration
         IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Uwp::IAdaptiveElementParser* Parser);
@@ -60,4 +62,47 @@ namespace AdaptiveCards { namespace Uwp
     private:
         Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::AdaptiveElementParserRegistration> m_parserRegistration;
     };
+
+    template<
+        typename TAdaptiveCardElement,
+        typename TSharedModelElement,
+        typename TSharedModelParser>
+        HRESULT FromJson(
+            ABI::Windows::Data::Json::IJsonObject* jsonObject,
+            ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)
+    {
+        std::string jsonString;
+        JsonObjectToString(jsonObject, jsonString);
+
+        std::shared_ptr<AdaptiveCards::ElementParserRegistration> sharedModelElementParserRegistration;
+        ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl = PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
+        if (elementParserRegistrationImpl != nullptr)
+        {
+            sharedModelElementParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
+        }
+        else
+        {
+            sharedModelElementParserRegistration = std::make_shared<AdaptiveCards::ElementParserRegistration>();
+        }
+
+        std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedModelActionParserRegistration;
+        ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl = PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
+        if (actionParserRegistrationImpl != nullptr)
+        {
+            sharedModelActionParserRegistration = actionParserRegistrationImpl->GetSharedParserRegistration();
+        }
+        else
+        {
+            sharedModelActionParserRegistration = std::make_shared<AdaptiveCards::ActionParserRegistration>();
+        }
+
+        std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
+        std::shared_ptr<BaseCardElement> baseCardElement = parser->DeserializeFromString(sharedModelElementParserRegistration, sharedModelActionParserRegistration, jsonString);
+
+        THROW_IF_FAILED(MakeAndInitialize<TAdaptiveCardElement>(element, std::dynamic_pointer_cast<TSharedModelElement>(baseCardElement)));
+
+        return S_OK;
+    }
 }}

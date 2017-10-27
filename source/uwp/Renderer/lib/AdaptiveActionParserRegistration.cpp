@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveElementParserRegistration.h"
 #include "CustomActionWrapper.h"
 #include "Util.h"
 
@@ -17,6 +18,16 @@ namespace AdaptiveCards { namespace Uwp
     {
         m_sharedParserRegistration = std::make_shared<ActionParserRegistration>();
         m_registration = std::make_shared<RegistrationMap>();
+
+        return S_OK;
+    } CATCH_RETURN;
+
+
+    HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize(
+        std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept try
+    {
+        m_registration = std::make_shared<RegistrationMap>();
+        m_sharedParserRegistration = sharedParserRegistration;
 
         return S_OK;
     } CATCH_RETURN;
@@ -63,8 +74,8 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(
-        std::shared_ptr<AdaptiveCards::ElementParserRegistration>,
-        std::shared_ptr<AdaptiveCards::ActionParserRegistration>,
+        std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
         const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
@@ -78,8 +89,14 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<ABI::Windows::Data::Json::IJsonObject>jsonObject;
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
+        ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
+        MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
+
+        ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
+        MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
+
         ComPtr<IAdaptiveActionElement> actionElement;
-        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), &actionElement));
+        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), &actionElement));
 
         std::shared_ptr<CustomActionWrapper> actionWrapper = std::make_shared<CustomActionWrapper>(actionElement.Get());
         return actionWrapper;
