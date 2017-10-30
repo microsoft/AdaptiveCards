@@ -41,10 +41,6 @@ public class TimeInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_TimeInput(), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.TimeInput_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.TimeInput_SerializeToJsonValue(swigCPtr, this), true);
   }

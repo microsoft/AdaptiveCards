@@ -33,12 +33,6 @@ void ColumnSet::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-std::string ColumnSet::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value ColumnSet::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();

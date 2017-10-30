@@ -45,10 +45,6 @@ public class ColumnSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_1(ColumnVector.getCPtr(columns), columns), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.ColumnSet_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ColumnSet_SerializeToJsonValue(swigCPtr, this), true);
   }

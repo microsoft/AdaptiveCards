@@ -139,5 +139,11 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(get_ElementType(&typeEnum));
         return ProjectedElementTypeToHString(typeEnum, type);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveContainer::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedContainer->Serialize(), result);
+    }
 }
 }

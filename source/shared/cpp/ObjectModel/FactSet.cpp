@@ -34,12 +34,6 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
     return m_facts;
 }
 
-std::string FactSet::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value FactSet::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();

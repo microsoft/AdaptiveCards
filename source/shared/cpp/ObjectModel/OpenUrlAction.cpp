@@ -8,12 +8,6 @@ OpenUrlAction::OpenUrlAction() : BaseActionElement(ActionType::OpenUrl)
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url));
 }
 
-std::string OpenUrlAction::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value OpenUrlAction::SerializeToJsonValue()
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();

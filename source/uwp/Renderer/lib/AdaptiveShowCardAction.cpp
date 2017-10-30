@@ -95,4 +95,10 @@ namespace AdaptiveCards { namespace Uwp
         m_sharedShowCardAction->SetAdditionalProperties(jsonCpp);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedShowCardAction->Serialize(), result);
+    }
 }}

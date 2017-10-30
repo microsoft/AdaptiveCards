@@ -41,10 +41,6 @@ public class NumberInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_NumberInput(), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.NumberInput_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.NumberInput_SerializeToJsonValue(swigCPtr, this), true);
   }

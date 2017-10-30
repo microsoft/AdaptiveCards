@@ -10,12 +10,6 @@ ToggleInput::ToggleInput() :
 {
 }
 
-std::string ToggleInput::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value ToggleInput::SerializeToJsonValue()
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();

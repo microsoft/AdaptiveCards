@@ -40,6 +40,12 @@ const ActionType AdaptiveCards::BaseActionElement::GetElementType() const
     return m_type;
 }
 
+std::string BaseActionElement::Serialize()
+{
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
 Json::Value BaseActionElement::SerializeToJsonValue()
 {
     Json::Value root;

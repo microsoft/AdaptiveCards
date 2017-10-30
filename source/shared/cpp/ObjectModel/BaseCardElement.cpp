@@ -60,6 +60,12 @@ const CardElementType AdaptiveCards::BaseCardElement::GetElementType() const
     return m_type;
 }
 
+std::string BaseCardElement::Serialize()
+{
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
 Json::Value BaseCardElement::SerializeToJsonValue()
  {
     Json::Value root;

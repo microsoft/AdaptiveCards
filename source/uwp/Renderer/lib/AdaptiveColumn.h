@@ -43,6 +43,8 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
     private:
 
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.

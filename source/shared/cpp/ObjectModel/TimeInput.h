@@ -12,8 +12,7 @@ class TimeInput : public BaseInputElement
 public:
     TimeInput();
 
-    virtual std::string Serialize();
-    Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetMax() const;
     void SetMax(const std::string value);

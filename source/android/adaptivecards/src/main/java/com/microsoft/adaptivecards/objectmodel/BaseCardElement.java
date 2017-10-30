@@ -35,6 +35,14 @@ public class BaseCardElement {
     }
   }
 
+  public BaseCardElement(CardElementType type, Spacing spacing, boolean separator) {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_0(type.swigValue(), spacing.swigValue(), separator), true);
+  }
+
+  public BaseCardElement(CardElementType type) {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_1(type.swigValue()), true);
+  }
+
   public boolean GetSeparator() {
     return AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparator(swigCPtr, this);
   }

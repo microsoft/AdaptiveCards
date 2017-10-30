@@ -35,6 +35,10 @@ public class BaseActionElement {
     }
   }
 
+  public BaseActionElement(ActionType type) {
+    this(AdaptiveCardObjectModelJNI.new_BaseActionElement(type.swigValue()), true);
+  }
+
   public String GetTitle() {
     return AdaptiveCardObjectModelJNI.BaseActionElement_GetTitle(swigCPtr, this);
   }

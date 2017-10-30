@@ -15,8 +15,7 @@ public:
     std::string GetDataJson() const;
     void SetDataJson(const std::string value);
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
 private:
     std::string m_dataJson;

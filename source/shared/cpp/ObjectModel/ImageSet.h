@@ -16,8 +16,7 @@ public:
     ImageSet(Spacing spacing, bool separation);
     ImageSet(Spacing spacing, bool separation, std::vector<std::shared_ptr<Image>>& images);
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     ImageSize GetImageSize() const;
     void SetImageSize(const ImageSize value);

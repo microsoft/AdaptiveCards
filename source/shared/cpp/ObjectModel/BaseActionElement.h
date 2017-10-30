@@ -22,7 +22,7 @@ public:
 
     virtual const ActionType GetElementType() const;
 
-    virtual std::string Serialize() = 0;
+    std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
 
     template <typename T>

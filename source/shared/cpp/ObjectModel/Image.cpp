@@ -28,12 +28,6 @@ Image::Image(
 {
 }
 
-std::string Image::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value Image::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();

@@ -317,6 +317,8 @@ namespace AdaptiveCards
 
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
+
+            HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
         };
 
         [
@@ -1464,6 +1466,8 @@ namespace AdaptiveCards
 
             [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
             [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
+
+            HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
         };
 
         [

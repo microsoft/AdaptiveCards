@@ -8,12 +8,6 @@ TimeInput::TimeInput() :
 {
 }
 
-std::string TimeInput::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value TimeInput::SerializeToJsonValue()
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();

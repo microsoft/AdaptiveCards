@@ -34,12 +34,6 @@ std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices()
     return m_choices;
 }
 
-std::string ChoiceSetInput::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value ChoiceSetInput::SerializeToJsonValue()
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
