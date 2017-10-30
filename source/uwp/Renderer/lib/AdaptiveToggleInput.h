@@ -6,12 +6,13 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveToggleInput :
+    class DECLSPEC_UUID("502edea9-72fd-4856-a89e-54565181bed8") AdaptiveToggleInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveToggleInput,
             ABI::AdaptiveCards::Uwp::IAdaptiveInputElement,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveToggleInput, BaseTrust)
 
@@ -51,6 +52,14 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ToggleInput>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::ToggleInput> m_sharedToggleInput;

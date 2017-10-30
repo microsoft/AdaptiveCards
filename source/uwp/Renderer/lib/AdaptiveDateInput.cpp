@@ -179,4 +179,11 @@ namespace AdaptiveCards { namespace Uwp
     {
         return StringToJsonObject(m_sharedDateInput->Serialize(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::DateInput>& sharedModel)
+    {
+        sharedModel = m_sharedDateInput;
+        return S_OK;
+    }
 }}

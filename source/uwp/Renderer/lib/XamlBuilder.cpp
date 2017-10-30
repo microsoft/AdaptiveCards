@@ -324,7 +324,8 @@ namespace AdaptiveCards { namespace Uwp
         }
 
         ComPtr<IUriRuntimeClass> backgroundImageUrl;
-        if (SUCCEEDED(adaptiveCard->get_BackgroundImage(&backgroundImageUrl)))
+        THROW_IF_FAILED(adaptiveCard->get_BackgroundImage(&backgroundImageUrl));
+        if (backgroundImageUrl != nullptr)
         {
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get(), renderContext, renderArgs);
         }

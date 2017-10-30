@@ -106,4 +106,11 @@ namespace AdaptiveCards { namespace Uwp
     {
         return StringToJsonObject(m_sharedSubmitAction->Serialize(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveCards::SubmitAction>& sharedModel)
+    {
+        sharedModel = m_sharedSubmitAction;
+        return S_OK;
+    }
 }}

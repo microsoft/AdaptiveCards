@@ -6,11 +6,12 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveOpenUrlAction :
+    class DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveOpenUrlAction,
-            ABI::AdaptiveCards::Uwp::IAdaptiveActionElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveActionElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveOpenUrlAction, BaseTrust)
 
@@ -36,6 +37,14 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::OpenUrlAction> m_sharedOpenUrlAction;

@@ -127,4 +127,11 @@ namespace AdaptiveCards { namespace Uwp
     {
         return StringToJsonObject(m_sharedOpenUrlAction->Serialize(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedModel)
+    {
+        sharedModel = m_sharedOpenUrlAction;
+        return S_OK;
+    }
 }}

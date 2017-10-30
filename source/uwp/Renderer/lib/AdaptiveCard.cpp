@@ -98,8 +98,13 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
-        m_sharedAdaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
-       
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+        return RuntimeClassInitialize(adaptiveCard);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
+    {
         m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_body == nullptr)
         {
@@ -111,19 +116,28 @@ namespace AdaptiveCards { namespace Uwp
         {
             return E_FAIL;
         }        
-        
-        return S_OK;
-    }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
-    {
-        RETURN_IF_FAILED(RuntimeClassInitialize());
-        m_sharedAdaptiveCard = sharedAdaptiveCard;
+        RETURN_IF_FAILED(GenerateContainedElementsProjection(sharedAdaptiveCard->GetBody(), m_body.Get()));
+        RETURN_IF_FAILED(GenerateActionsProjection(sharedAdaptiveCard->GetActions(), m_actions.Get()));
 
-        RETURN_IF_FAILED(GenerateContainedElementsProjection(m_sharedAdaptiveCard->GetBody(), m_body.Get()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetVersion(), m_version.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetMinVersion(), m_minVersion.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
 
-        RETURN_IF_FAILED(GenerateActionsProjection(m_sharedAdaptiveCard->GetActions(), m_actions.Get()));
+        m_style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        HSTRING imageUri;
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), &imageUri));
+        if (imageUri != nullptr)
+        {
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, m_backgroundImage.GetAddressOf()));
+        }
 
         return S_OK;
     }
@@ -131,46 +145,37 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Version(HSTRING* version)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->GetVersion(), version);
+        return m_version.CopyTo(version);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_Version(HSTRING version)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(version, out));
-        m_sharedAdaptiveCard->SetVersion(out);
-        return S_OK;
+        return m_version.Set(version);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_MinVersion(HSTRING* minVersion)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->GetMinVersion(), minVersion);
+        return m_minVersion.CopyTo(minVersion);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_MinVersion(HSTRING minVersion)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(minVersion, out));
-        m_sharedAdaptiveCard->SetMinVersion(out);
-        return S_OK;
+        return m_minVersion.Set(minVersion);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_FallbackText(HSTRING* fallbackText)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->GetFallbackText(), fallbackText);
+        return m_fallbackText.CopyTo(fallbackText);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_FallbackText(HSTRING fallbackText)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(fallbackText, out));
-        m_sharedAdaptiveCard->SetFallbackText(out);
-        return S_OK;
+        return m_fallbackText.Set(fallbackText);
     }
 
     _Use_decl_annotations_
@@ -195,68 +200,76 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_BackgroundImage(IUriRuntimeClass** url)
     {
-        *url = nullptr;
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-
-        HSTRING imageUri;
-        RETURN_IF_FAILED(UTF8ToHString(m_sharedAdaptiveCard->GetBackgroundImage(), &imageUri));
-        RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, url));
-        return S_OK;
+        return m_backgroundImage.CopyTo(url);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_BackgroundImage(IUriRuntimeClass* url) try
     {
-        if (url == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        HString urlTemp;
-        url->get_AbsoluteUri(urlTemp.GetAddressOf());
-
-        std::string urlString;
-        RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-        m_sharedAdaptiveCard->SetBackgroundImage(urlString);
-
+        m_backgroundImage = url;
         return S_OK;
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
     {
-        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedAdaptiveCard->GetStyle());
+        *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
     {
-        m_sharedAdaptiveCard->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
+        m_style = style;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Speak(HSTRING* speak)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->GetSpeak(), speak);
+        return m_speak.CopyTo(speak);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_Speak(HSTRING speak)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedAdaptiveCard->SetSpeak(out);
-        return S_OK;
+        return m_speak.Set(speak);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::ToJson(IJsonObject** result)
     {
-        return StringToJsonObject(m_sharedAdaptiveCard->Serialize(), result);
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::GetSharedModel(std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+
+        adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
+        adaptiveCard->SetMinVersion(HStringToUTF8(m_minVersion.Get()));
+        adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
+        adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
+
+        if (m_backgroundImage != nullptr)
+        {
+            HString urlTemp;
+            m_backgroundImage->get_AbsoluteUri(urlTemp.GetAddressOf());
+            std::string urlString;
+            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
+            adaptiveCard->SetBackgroundImage(urlString);
+        }
+
+        adaptiveCard->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+
+        GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
+        GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
+
+        sharedModel = adaptiveCard;
+        return S_OK;
     }
 }}

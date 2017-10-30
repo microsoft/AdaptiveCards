@@ -22,8 +22,8 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveContainer::RuntimeClassInitialize() noexcept try
     {
-        m_sharedContainer = std::make_shared<Container>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
+        return RuntimeClassInitialize(container);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
@@ -34,8 +34,14 @@ namespace AdaptiveCards { namespace Uwp
             return E_INVALIDARG;
         }
 
-        m_sharedContainer = sharedContainer;
-        GenerateContainedElementsProjection(m_sharedContainer->GetItems(), m_items.Get());
+        GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
+        GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
+        m_style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(sharedContainer->GetStyle());
+        
+        m_spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(sharedContainer->GetSpacing());
+        m_separator = sharedContainer->GetSeparator();
+        RETURN_IF_FAILED(UTF8ToHString(sharedContainer->GetId(), m_id.GetAddressOf()));
+
         return S_OK;
     }
 
@@ -48,13 +54,14 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveContainer::get_SelectAction(IAdaptiveActionElement** action)
     {
-        return GenerateActionProjection(m_sharedContainer->GetSelectAction(), action);
+        return m_selectAction.CopyTo(action);
     }
 
     _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveContainer::put_SelectAction(IAdaptiveActionElement* action)
     {
-        return E_NOTIMPL;
+        m_selectAction = action;
+        return S_OK;
     }
 
     _Use_decl_annotations_
@@ -67,35 +74,35 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
     {
-        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedContainer->GetStyle());
+        *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
     {
-        m_sharedContainer->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
+        m_style = style;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedContainer->GetSpacing());
+        *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedContainer->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        m_spacing = spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::get_Separator(boolean* separator)
     {
-        *separator = m_sharedContainer->GetSeparator();
+        *separator = m_separator;
         return S_OK;
 
         //Issue #629 to make separator an object
@@ -105,7 +112,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::put_Separator(boolean separator)
     {
-        m_sharedContainer->SetSeparator(separator);
+        m_separator = separator;
 
         /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
@@ -120,16 +127,13 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedContainer->GetId(), id);
+        return m_id.CopyTo(id);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::put_Id(HSTRING id)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedContainer->SetId(out);
-        return S_OK;
+        return m_id.Set(id);
     }
 
     _Use_decl_annotations_
@@ -143,7 +147,32 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        return StringToJsonObject(m_sharedContainer->Serialize(), result);
+        std::shared_ptr<AdaptiveCards::Container> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveCards::Container>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(container)));
+
+        if (m_selectAction != nullptr)
+        {
+            std::shared_ptr<BaseActionElement> sharedAction;
+            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
+            container->SetSelectAction(sharedAction);
+        }
+
+        container->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+
+        GenerateSharedElements(m_items.Get(), container->GetItems());
+
+        sharedModel = container;
+        return S_OK;
     }
 }
 }

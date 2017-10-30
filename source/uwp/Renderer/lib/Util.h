@@ -44,6 +44,34 @@ HRESULT GetSpacingSizeFromSpacing(
     ABI::AdaptiveCards::Uwp::Spacing spacing,
     UINT* spacingSize) noexcept;
 
+HRESULT SetSharedElementProperties(
+    ABI::AdaptiveCards::Uwp::IAdaptiveCardElement * adaptiveCardElement,
+    std::shared_ptr<AdaptiveCards::BaseCardElement> sharedCardElement);
+
+HRESULT GenerateSharedElements(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement*>* items,
+    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
+
+HRESULT GenerateSharedAction(
+    ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
+    std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction); 
+
+HRESULT GenerateSharedActions(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement*>* items,
+    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
+
+HRESULT GenerateSharedImages(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveImage*>* items,
+    std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements);
+
+HRESULT GenerateSharedFacts(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFact*>* items,
+    std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements);
+
+HRESULT GenerateSharedChoices(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput*>* items,
+    std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements);
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
@@ -94,7 +122,7 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Uwp::ElementType proje
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*, ABI::AdaptiveCards::Uwp::AdaptiveActionEventArgs*>> ActionEventSource;
 
 // Peek interface to help get implementation types from winrt interfaces
-struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IUnknown
+struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
 {
     virtual void *PeekAt(REFIID riid) = 0;
     template<typename Q> void *PeekHelper(REFIID riid, Q *pQ)
