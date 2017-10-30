@@ -41,10 +41,6 @@ public class OpenUrlAction extends BaseActionElement {
     this(AdaptiveCardObjectModelJNI.new_OpenUrlAction(), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.OpenUrlAction_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.OpenUrlAction_SerializeToJsonValue(swigCPtr, this), true);
   }

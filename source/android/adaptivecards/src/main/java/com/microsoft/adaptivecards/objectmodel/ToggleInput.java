@@ -41,10 +41,6 @@ public class ToggleInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_ToggleInput(), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.ToggleInput_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ToggleInput_SerializeToJsonValue(swigCPtr, this), true);
   }
