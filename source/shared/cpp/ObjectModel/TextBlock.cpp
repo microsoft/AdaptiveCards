@@ -200,7 +200,8 @@ std::string TextBlock::scanForDateAndTime(const std::string text)
 	return "";
 }
 
-bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::const_iterator &end, bool &isDate)
+bool TextBlock::scanForISO8601(std::string::const_iterator &itr, 
+        std::string::const_iterator &end, bool &isDate, std::ostringstream &ostr)
 {
     enum  ParsingState
     {
@@ -213,8 +214,9 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::co
     const int cnts = 3;
     int idx = 0, gateKeeper = NoneParsed;
     const char* patterns[] = {"IME", "ATE"}; 
-    while(itr != end && gateKeeper != DoneCheck)
+    for(; itr != end && gateKeeper != DoneCheck; itr++)
     {
+        ostr << *itr;
 		if (*itr == '{')
 		{
             gateKeeper <<= 1;
@@ -233,7 +235,7 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::co
 
         if(gateKeeper & DateAndTimeDetected) 
         {
-            if(idx < cnts && patterns[(int) isDate][idx++] == *itr)
+            if(idx < cnts && patterns[(int) isDate][idx++] == toupper(*itr))
             {
                 if(idx == cnts)
                 {
@@ -252,13 +254,13 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::co
         gateKeeper = NoneParsed;
         isDate = false;
         idx = 0;
-        itr++;
 	}
 
     return gateKeeper == DoneCheck;
 }
 
-bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, std::string::const_iterator &end, struct tm* result)
+bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, 
+        std::string::const_iterator &end, struct tm* result, std::ostringstream &ostr)
 {
 	std::vector<std::string> tempValueHolders(8);
 	unsigned int idxMap[] = { 4, 2, 2, 2, 2, 2, 2, 2 };
@@ -272,6 +274,8 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, std::string::con
 
 	while (begin != end && idx < tempValueHolders.size())
 	{
+        ostr << *begin;
+
 		if (isdigit(*begin))
 		{
 			tempValueHolders[idx] += *begin;
@@ -336,7 +340,8 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, std::string::con
     return false;
 }
 
-bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string::const_iterator &end, bool &isShort) 
+bool TextBlock::completeParsing(std::string::const_iterator &begin, 
+        std::string::const_iterator &end, bool &isShort, std::ostringstream &ostr) 
 {
     enum  ParsingState
     {
@@ -346,12 +351,17 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string:
         FirstBracketCheck = 0x8,
         SecondBracketCheck = 0x10,
         DoneCheck = 0x20,
+        FailedCheck = 0x40,
     };
+
     unsigned int idx = 0; 
     int gateKeeper = NoneParsed;
     const std::vector<std::string> patterns = {"ONG", "HORT"}; 
-    for(; begin != end && gateKeeper != DoneCheck; begin++)
+
+    for(; begin != end && !(gateKeeper & (DoneCheck | FailedCheck)); begin++)
     {
+        ostr << *begin;
+
         if(gateKeeper & NoneParsed) 
         {
             if(toupper(*begin) == 'S' || toupper(*begin) =='L')
@@ -404,7 +414,6 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string:
                 continue;
             }
         }
-		break;
 	}
 
     return gateKeeper == DoneCheck;
@@ -423,38 +432,52 @@ std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::str
     };
 
     int state = NoneParsed;
-
 	struct tm result = {0};
+    std::ostringstream ostr, parsedostr;
+
     while(begin != end)
     {
-        if(state == NoneParsed && scanForISO8601(begin, end, isDate))
+        if(state == NoneParsed && scanForISO8601(begin, end, isDate, ostr))
         { 
             state = ISO8601Detected;
             continue;
         }
 
-        if(state == ISO8601Detected && ISO8601ToTm(begin, end, &result))
+        if(state == ISO8601Detected && ISO8601ToTm(begin, end, &result, ostr))
         {
             state = ISO8601Parsed;
             continue;
         }
 
-        if(state == ISO8601Parsed && completeParsing(begin, end, isShort))
+        if(state == ISO8601Parsed && completeParsing(begin, end, isShort, ostr))
         {
-            if(isShort)
+            if(isDate)
             {
-                strftime(tzOffsetBuff, 50, "%m/%d/%Y", &result);
+                if(isShort)
+                {
+                    strftime(tzOffsetBuff, 50, "%m/%d/%Y", &result);
+                }
+                else
+                {
+                    strftime(tzOffsetBuff, 50, "%A, %B %e, %Y", &result);
+                }
             }
             else
             {
-                strftime(tzOffsetBuff, 50, "%A, %B %e, %Y", &result);
+                strftime(tzOffsetBuff, 50, "%I:%M %p", &result);
             }
-            newText += std::string(tzOffsetBuff);
+
+            ostr.str("");
+            ostr.clear();
+            ostr << std::string(tzOffsetBuff);
 			result = {0};
         }
 
         state = NoneParsed;
+        parsedostr << ostr.str();
+        ostr.str("");
+        ostr.clear();
     }
 
-	return newText;
+	return parsedostr.str();
 }
