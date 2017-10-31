@@ -213,7 +213,7 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::co
     const int cnts = 3;
     int idx = 0, gateKeeper = NoneParsed;
     const char* patterns[] = {"IME", "ATE"}; 
-    for(; itr != end && gateKeeper != DoneCheck; itr++)
+    while(itr != end && gateKeeper != DoneCheck)
     {
 		if (*itr == '{')
 		{
@@ -246,12 +246,13 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::co
         if((gateKeeper & FinalCheck) && *itr == '(')
         {
             gateKeeper = DoneCheck;
-            break;
+            continue;
         }
 
         gateKeeper = NoneParsed;
         isDate = false;
         idx = 0;
+        itr++;
 	}
 
     return gateKeeper == DoneCheck;
@@ -294,8 +295,8 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, std::string::con
 
 		if (*begin == ',' || *begin == ')')
 		{
-			--begin;
-			break;
+            begin++;
+            break;
 		}
 
 		begin++;
@@ -347,23 +348,29 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string:
         DoneCheck = 0x20,
     };
     unsigned int idx = 0; 
-    int gateKeeper = (*begin == ')')? ParenthesisCheck: NoneParsed;
+    int gateKeeper = NoneParsed;
     const std::vector<std::string> patterns = {"ONG", "HORT"}; 
     for(; begin != end && gateKeeper != DoneCheck; begin++)
     {
-        if(gateKeeper & NoneParsed)
+        if(gateKeeper & NoneParsed) 
         {
-            if(isspace(*begin))
-            {
-                continue;
-            }
-
             if(toupper(*begin) == 'S' || toupper(*begin) =='L')
             {
                 isShort = (toupper(*begin) == 'S')? true : false;
                 gateKeeper <<= 1;
                 continue;
 
+            }
+
+            if(*begin == '}')
+            {
+                gateKeeper = SecondBracketCheck;
+                continue;
+            }
+
+            if(isspace(*begin))
+            {
+                continue;
             }
         }
 
@@ -373,7 +380,7 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string:
             {
                 if(++idx == patterns[(int) isShort].size())
                 {
-					gateKeeper <<=1;
+					gateKeeper <<= 1;
                 }
                 continue;
             }
@@ -389,15 +396,18 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string:
         {
 			if (gateKeeper & SecondBracketCheck)
 			{
-				return true;
+				gateKeeper = DoneCheck;
 			}
-            gateKeeper <<= 1;
-            continue;
+            else
+            {
+                gateKeeper <<= 1;
+                continue;
+            }
         }
 		break;
 	}
 
-    return false;
+    return gateKeeper == DoneCheck;
 }
 
 std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end)
@@ -415,7 +425,7 @@ std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::str
     int state = NoneParsed;
 
 	struct tm result = {0};
-    for(; begin != end; begin++)
+    while(begin != end)
     {
         if(state == NoneParsed && scanForISO8601(begin, end, isDate))
         { 

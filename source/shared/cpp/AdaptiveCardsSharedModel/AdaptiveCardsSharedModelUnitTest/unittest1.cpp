@@ -42,6 +42,17 @@ namespace AdaptiveCardsSharedModelUnitTest
 			Assert::AreEqual<string>("02/13/2017", blck->parseISO8601(begin, end));
 			delete blck;
 		}
+
+		TEST_METHOD(ISO8601TransformBadInputTest)
+		{
+			TextBlock* blck = new TextBlock();
+			Assert::IsNotNull(blck);
+			string testString = "{a{DATE(2017-02-13T20:46:30Z, Short)}}";
+            bool isDate = false;
+            string::const_iterator begin = testString.begin(), end = testString.end();
+			Assert::AreEqual<string>("{a{DATE(2017-02-13T20:46:30Z, Short)}}", blck->parseISO8601(begin, end));
+			delete blck;
+		}
 		TEST_METHOD(TestMethod1)
 		{
 			TextBlock* blck = new TextBlock();
