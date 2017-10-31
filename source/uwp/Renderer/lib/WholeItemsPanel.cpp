@@ -65,15 +65,14 @@ namespace AdaptiveCards { namespace Uwp
                 if (newHeight > availableSize.Height)
                 {
                     const double availableHeightForItem = availableSize.Height - currentHeight;
-                    bool keepItem = (i == 0); // by default, we keep items only if they are the first ones
+                    bool keepItem = m_isMainPanel && (i == 0); // by default, only keep the first item in the main panel.
 
                                               // Item does not fit
                     // 1. We mark the current panel as truncated
                     //    2.1 If the child is a panel: always
                     //    2.2 If the child is a text block: only if it cannot meet its minlines constraint (default is 1)
-                    //    2.3 If the child is a image:
-                    //            - stretched images of the first group might be resized
-                    //            - otherwise, the image will be removed
+                    //    2.3 If the child is a image or a shape (circular cropped image):
+                    //            - stretched images might be resized
                     ComPtr<IPanel> spChildAsPanel;
                     if (SUCCEEDED(spChild.As(&spChildAsPanel)))
                     {
@@ -91,98 +90,99 @@ namespace AdaptiveCards { namespace Uwp
                             m_isTruncated = keepItem;
                         }
                     }
-                    else
+                    ComPtr<ITextBlock> spTextBlock;
+                    if (SUCCEEDED(spChild.As(&spTextBlock)))
                     {
-                        ComPtr<ITextBlock> spTextBlock;
-                        if (SUCCEEDED(spChild.As(&spTextBlock)))
+                        TextWrapping currentWrap = TextWrapping::TextWrapping_Wrap;
+                        RETURN_IF_FAILED(spTextBlock->get_TextWrapping(&currentWrap));
+                        if (currentWrap == TextWrapping::TextWrapping_NoWrap)
                         {
-                            TextWrapping currentWrap = TextWrapping::TextWrapping_Wrap;
-                            RETURN_IF_FAILED(spTextBlock->get_TextWrapping(&currentWrap));
-                            if (currentWrap == TextWrapping::TextWrapping_NoWrap)
-                            {
-                                // If the text already does not wrap, it should not be displayed
-                                // Unless it is the first item of the group
-                                m_isTruncated = true;
-                            }
-                            else
-                            {
-                                // For wrapping TextBlocks, we have to check if the minlines property could be respected
-                                // In order to do this, we remove the wrapping:
-                                //   1. if the textblock has a min lines constraint, this will remain as it is implemented with MinHeight
-                                //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
-                                const Size noLimit{ numeric_limits<float>::infinity(), numeric_limits<float>::infinity() };
-                                RETURN_IF_FAILED(spTextBlock->put_TextWrapping(TextWrapping::TextWrapping_NoWrap));
-                                RETURN_IF_FAILED(spChild->Measure(noLimit));
-                                RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
-                                RETURN_IF_FAILED(spTextBlock->put_TextWrapping(currentWrap));
-
-                                // If the single line fits, let's keep the textblock
-                                // In any case, we keep the first item of the first group
-                                if (childSize.Height <= availableHeightForItem)
-                                {
-                                    keepItem = true;
-                                }
-                                else
-                                {
-                                    if (m_isFirstGroup && (i == 0))
-                                    {
-                                        keepItem = true;
-
-                                        // Text did not reach its minHeight property and we have to clear it otherwise
-                                        // ellipses won't be displayed correctly...
-                                        ComPtr<IFrameworkElementStatics> spFrameworkElementStatics;
-                                        ComPtr<IDependencyProperty> spMinHeightProperty;
-                                        ComPtr<IDependencyObject> spChildAsDO;
-                                        RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_FrameworkElement).Get(), &spFrameworkElementStatics));
-                                        RETURN_IF_FAILED(spFrameworkElementStatics->get_MinHeightProperty(spMinHeightProperty.GetAddressOf()));
-                                        RETURN_IF_FAILED(spChild.As(&spChildAsDO));
-                                        RETURN_IF_FAILED(spChildAsDO->ClearValue(spMinHeightProperty.Get()));
-                                    }
-                                    else
-                                    {
-                                        keepItem = false;
-                                        // we must measure it a last time as we have changed its properties
-                                        // if we keep it, it will be measured again with the exact remaining space
-                                        RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
-                                    }
-                                }
-                                m_isTruncated = !keepItem;
-                            }
+                            // If the text already does not wrap, it should not be displayed
+                            // Unless it is the first item of the group
+                            m_isTruncated = true;
                         }
                         else
                         {
-                            // Must be an inline image
-                            // If this is the first group AND the image is stretched, it might be adapted to the
-                            // available size
-                            ComPtr<IFrameworkElement> spChildFE;
-                            ABI::Windows::UI::Xaml::HorizontalAlignment hAlign;
-                            RETURN_IF_FAILED(spChild.As(&spChildFE));
-                            RETURN_IF_FAILED(spChildFE->get_HorizontalAlignment(&hAlign));
-                            if (hAlign == ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Stretch)
+                            // For wrapping TextBlocks, we have to check if the minlines property could be respected
+                            // In order to do this, we remove the wrapping:
+                            //   1. if the textblock has a min lines constraint, this will remain as it is implemented with MinHeight
+                            //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
+                            const Size noLimit{ numeric_limits<float>::infinity(), numeric_limits<float>::infinity() };
+                            RETURN_IF_FAILED(spTextBlock->put_TextWrapping(TextWrapping::TextWrapping_NoWrap));
+                            RETURN_IF_FAILED(spChild->Measure(noLimit));
+                            RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
+                            RETURN_IF_FAILED(spTextBlock->put_TextWrapping(currentWrap));
+
+                            // If the single line fits, let's keep the textblock
+                            // In any case, we keep the first item of the first group
+                            if (childSize.Height <= availableHeightForItem)
                             {
-                                // Stretched image: we keep it if we are at the top level or if its the first item of the first group
-                                // In which case, we will try to resize it
-                                keepItem = m_isMainPanel || (m_isFirstGroup && (i == 0));
-                                if (keepItem)
-                                {
-                                    ComPtr<IShape> spShape;
-                                    if (SUCCEEDED(spChild.As(&spShape)))
-                                    {
-                                        // In some cases such as (1) first group and (2) stretch image, we need to resize the image
-                                        RETURN_IF_FAILED(LayoutCroppedImage(spShape.Get(), availableSize.Width, availableSize.Height - currentHeight));
-                                    }
-                                }
-                                m_isTruncated = !keepItem;
+                                keepItem = true;
                             }
                             else
                             {
-                                // Not a stretched image: it is definitely truncated
-                                // And we keep it if this is the first item of the first group (top level or not)
-                                m_isTruncated = true;
-                                keepItem = (m_isFirstGroup && (i == 0));
+                                if (m_isMainPanel)
+                                {
+                                    keepItem = true;
+
+                                    // Text did not reach its minHeight property and we have to clear it otherwise
+                                    // ellipses won't be displayed correctly...
+                                    ComPtr<IFrameworkElementStatics> spFrameworkElementStatics;
+                                    ComPtr<IDependencyProperty> spMinHeightProperty;
+                                    ComPtr<IDependencyObject> spChildAsDO;
+                                    RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_FrameworkElement).Get(), &spFrameworkElementStatics));
+                                    RETURN_IF_FAILED(spFrameworkElementStatics->get_MinHeightProperty(spMinHeightProperty.GetAddressOf()));
+                                    RETURN_IF_FAILED(spChild.As(&spChildAsDO));
+                                    RETURN_IF_FAILED(spChildAsDO->ClearValue(spMinHeightProperty.Get()));
+                                }
+                                else
+                                {
+                                    keepItem = false;
+                                    // we must measure it a last time as we have changed its properties
+                                    // if we keep it, it will be measured again with the exact remaining space
+                                    RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
+                                }
                             }
+                            m_isTruncated = !keepItem;
                         }
                     }
+                    ComPtr<IImage> spImage;
+                    if (SUCCEEDED(spChild.As(&spImage)))
+                    {
+                        // it's an inline image
+                        // If the image is stretched, it might be adapted to the available size
+                        ComPtr<IFrameworkElement> spChildFE;
+                        RETURN_IF_FAILED(spChild.As(&spChildFE));
+                        if (!HasExplicitSize(spChildFE.Get()))
+                        {
+                            // Image has no explicit size: we will try to resize it uniformly
+                            RETURN_IF_FAILED(spImage->put_Stretch(ABI::Windows::UI::Xaml::Media::Stretch::Stretch_Uniform));
+                            keepItem = true;
+                            m_isTruncated = false;
+                        }
+                        else
+                        {
+                            // Image has host specified desired size, cannot stretch. It is definitely truncated
+                            m_isTruncated = true;
+                        }
+                    }
+                    ComPtr<IShape> spShape;
+                    if (SUCCEEDED(spChild.As(&spShape)))
+                    {
+                        ComPtr<IFrameworkElement> spChildFE;
+                        RETURN_IF_FAILED(spChild.As(&spChildFE));
+                        if (!HasExplicitSize(spChildFE.Get()))
+                        {
+                            RETURN_IF_FAILED(LayoutCroppedImage(spShape.Get(), availableSize.Width, availableSize.Height - currentHeight));
+                            keepItem = true;
+                            m_isTruncated = false;
+                        }
+                        else
+                        {
+                            m_isTruncated = true;
+                        }
+                    }
+
                     if (keepItem)
                     {
                         // Let's simply give the child the remaining space
@@ -202,6 +202,10 @@ namespace AdaptiveCards { namespace Uwp
                     }
                     visible = false;
                     continue;
+                }
+                else
+                {
+                    currentHeight = newHeight;
                 }
                 currentHeight = newHeight;
                 maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
@@ -342,11 +346,6 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-    void WholeItemsPanel::SetFirstGroup(_In_ bool value)
-    {
-        m_isFirstGroup = value;
-    }
-
     void WholeItemsPanel::SetAdaptiveHeight(_In_ bool value)
     {
         m_adaptiveHeight = value;
@@ -404,14 +403,12 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(spFrameworkElement->get_HorizontalAlignment(&halign));
         RETURN_IF_FAILED(spFrameworkElement->get_VerticalAlignment(&valign));
         RETURN_IF_FAILED(spFrameworkElement->get_Margin(&margins));
-        if ((halign == ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Stretch) && (valign == VerticalAlignment::VerticalAlignment_Stretch))
-        {
-            const double effectiveAvailableWidth = availableWidth - margins.Left - margins.Right;
-            const double effectiveAvailableHeight = availableHeight - margins.Top - margins.Bottom;
-            const double minSize = min(effectiveAvailableWidth, effectiveAvailableHeight);
-            RETURN_IF_FAILED(spFrameworkElement->put_Width(minSize));
-            RETURN_IF_FAILED(spFrameworkElement->put_Height(minSize));
-        }
+        const double effectiveAvailableWidth = availableWidth - margins.Left - margins.Right;
+        const double effectiveAvailableHeight = availableHeight - margins.Top - margins.Bottom;
+        const double minSize = min(effectiveAvailableWidth, effectiveAvailableHeight);
+        RETURN_IF_FAILED(spFrameworkElement->put_Width(minSize));
+        RETURN_IF_FAILED(spFrameworkElement->put_Height(minSize));
+
         return S_OK;
     }
 
@@ -512,6 +509,16 @@ namespace AdaptiveCards { namespace Uwp
         }
 
         return S_OK;
+    }
+
+    bool WholeItemsPanel::HasExplicitSize(_In_ IFrameworkElement *element)
+    {
+        DOUBLE definedImageHeight;
+        RETURN_IF_FAILED(element->get_Height(&definedImageHeight));
+        DOUBLE definedImageWidth;
+        RETURN_IF_FAILED(element->get_Height(&definedImageWidth));
+
+        return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
 }}
 

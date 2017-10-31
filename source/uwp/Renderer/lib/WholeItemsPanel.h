@@ -31,7 +31,6 @@ namespace AdaptiveCards { namespace Uwp
             _Check_return_ HRESULT AppendAltText(_Inout_ std::wstring& buffer);
 
             void SetMainPanel(_In_ bool value);
-            void SetFirstGroup(_In_ bool value);
             void SetAdaptiveHeight(_In_ bool value);
 
             virtual HRESULT STDMETHODCALLTYPE IsAllContentClippedOut(__RPC__out boolean* pResult);
@@ -46,11 +45,6 @@ namespace AdaptiveCards { namespace Uwp
         // This is set when generating the XAML Tree corresponding to the Tile's payload.
         bool m_isMainPanel = false;
 
-        // true if this represents the first group of a tile.
-        // If this is the case, we don't remove the first item as we don't want to end up with an empty tile
-        // This is set when generating the XAML Tree corresponding to the Tile's payload.
-        bool m_isFirstGroup = false;
-
         // true if the Panel has been truncated, i.e. if some items could not be displayed.
         // This is set by the panel during measure and read in case of nested panels
         bool m_isTruncated = false;
@@ -64,9 +58,11 @@ namespace AdaptiveCards { namespace Uwp
 
         static void AppendText(_In_ HSTRING hText, _Inout_ std::wstring& buffer);
 
-        static _Check_return_ HRESULT WholeItemsPanel::AppendAltTextToUIElement(_In_ ABI::Windows::UI::Xaml::IUIElement *pUIElement, _Inout_ std::wstring& buffer);
+        static _Check_return_ HRESULT AppendAltTextToUIElement(_In_ ABI::Windows::UI::Xaml::IUIElement *pUIElement, _Inout_ std::wstring& buffer);
 
-        static _Check_return_ HRESULT WholeItemsPanel::GetAltAsString(_In_ ABI::Windows::UI::Xaml::IUIElement *pElement, _Out_ HSTRING *pResult);
+        static _Check_return_ HRESULT GetAltAsString(_In_ ABI::Windows::UI::Xaml::IUIElement *pElement, _Out_ HSTRING *pResult);
+
+        static bool HasExplicitSize(_In_ ABI::Windows::UI::Xaml::IFrameworkElement *element);
     };
 
     ActivatableClass(WholeItemsPanel);

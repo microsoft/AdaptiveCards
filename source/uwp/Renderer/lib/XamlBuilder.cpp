@@ -346,8 +346,7 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<WholeItemsPanel> bodyElementHost;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
         bodyElementHost->SetMainPanel(TRUE);
-        bodyElementHost->SetFirstGroup(TRUE);
-        //bodyElementHost->SetAdaptiveHeight(TRUE);
+        bodyElementHost->SetAdaptiveHeight(TRUE);
 
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
@@ -1342,7 +1341,7 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<WholeItemsPanel> containerPanel;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&containerPanel));
-        containerPanel->SetFirstGroup(TRUE);
+
         ComPtr<IFrameworkElement> containerPanelAsFrameWorkElement;
         THROW_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
         // Assign vertical alignment to the top so that on fixed height cards, the content
