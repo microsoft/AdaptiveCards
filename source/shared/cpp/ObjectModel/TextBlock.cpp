@@ -292,8 +292,11 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, std::string::con
 			factor = -1;
 		}
 
-        if(*begin == ',' || *begin == ')')
-            break;
+		if (*begin == ',' || *begin == ')')
+		{
+			--begin;
+			break;
+		}
 
 		begin++;
 	}
@@ -344,7 +347,7 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string:
         DoneCheck = 0x20,
     };
     unsigned int idx = 0; 
-    int gateKeeper = NoneParsed;
+    int gateKeeper = (*begin == ')')? ParenthesisCheck: NoneParsed;
     const std::vector<std::string> patterns = {"ONG", "HORT"}; 
     for(; begin != end && gateKeeper != DoneCheck; begin++)
     {
@@ -376,9 +379,8 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string:
             }
         }
 
-        if((gateKeeper & (ParenthesisCheck | NoneParsed)) && *begin == ')')
+        if((gateKeeper & ParenthesisCheck) && *begin == ')')
         {
-			gateKeeper = ParenthesisCheck;
             gateKeeper <<= 1;
             continue;
         }
@@ -400,7 +402,7 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string:
 
 std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end)
 {
-    bool isDate = false, isShort = false;
+    bool isDate = false, isShort = true;
     std::string newText;
     static char tzOffsetBuff[50];
     enum TransformState
