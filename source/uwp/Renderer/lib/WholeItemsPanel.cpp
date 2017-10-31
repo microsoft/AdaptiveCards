@@ -68,8 +68,7 @@ namespace AdaptiveCards { namespace Uwp
                     bool keepItem = (i == 0); // by default, we keep items only if they are the first ones
 
                                               // Item does not fit
-                    // 1. We keep the item anyway if it is the first child
-                    // 2. Then we mark the current panel as truncated
+                    // 1. We mark the current panel as truncated
                     //    2.1 If the child is a panel: always
                     //    2.2 If the child is a text block: only if it cannot meet its minlines constraint (default is 1)
                     //    2.3 If the child is a image:
@@ -193,7 +192,7 @@ namespace AdaptiveCards { namespace Uwp
                         RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
 
                         m_visibleCount = i + 1;
-                        currentHeight = currentHeight + childSize.Height;
+                        currentHeight = max((currentHeight + childSize.Height), availableSize.Height);
                         maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
                     }
                     else
@@ -277,16 +276,17 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IUIElement> spThisAsIUIElement;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
-        // We don't want clipping on left/right, since otherwise full-width hit targets get clipped,
-        // so we increase clip region by a ridiculous 1,000 on each side
-        // (assuming a card host will never set their card padding to more than 1,000 pixels)
-        RETURN_IF_FAILED(spClip->put_Rect( { -1000, static_cast<float>(- margin.Top), finalSize.Width + 2000, static_cast<float>(currentHeight + margin.Top) }));
 
-    
-    *returnValue = { finalSize.Width, currentHeight };
+        float x0 = static_cast<float>(-margin.Left);
+        float y0 = static_cast<float>(-margin.Top);
+        float x1 = static_cast<float>(margin.Left + finalSize.Width + margin.Right);
+        float y1 = static_cast<float>(margin.Top + finalSize.Height + margin.Bottom);
+        RETURN_IF_FAILED(spClip->put_Rect( {x0, y0 ,x1, y1} ));
+
+        *returnValue = { finalSize.Width, finalSize.Height };
         return S_OK;
     }
-                        
+
     HRESULT WholeItemsPanel::OnApplyTemplate(void)
     {
         // Nothing special to do here
