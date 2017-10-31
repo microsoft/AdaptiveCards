@@ -54,8 +54,10 @@ public:
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
 	std::string scanForDateAndTime(const std::string text);
-    bool stringToLocalTm(std::string::const_iterator begin, 
-            std::string::const_iterator end, struct tm* result);
+    bool scanForISO8601(std::string::const_iterator &begin, std::string::const_iterator &end, bool& isDate);
+    bool ISO8601ToTm(std::string::const_iterator& begin, std::string::const_iterator& end, struct tm* result);
+    std::string parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end);
+    bool completeParsing(std::string::const_iterator &begin, std::string::const_iterator &end, bool &isShort);
 
 private:
     std::string m_text;

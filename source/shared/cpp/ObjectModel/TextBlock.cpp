@@ -199,16 +199,76 @@ std::string TextBlock::scanForDateAndTime(const std::string text)
 
 	return "";
 }
-bool TextBlock::stringToLocalTm(std::string::const_iterator begin, std::string::const_iterator end, struct tm* result)
+
+bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::const_iterator &end, bool &isDate)
+{
+    enum  ParsingState
+    {
+        NoneParsed = 0x1,
+        PassedBracketTest = 0x4,
+        DateAndTimeDetected = 0x8,
+        FinalCheck = 0x10,
+        DoneCheck = 0x20,
+    };
+    const int cnts = 3;
+    int idx = 0, gateKeeper = NoneParsed;
+    const char* patterns[] = {"IME", "ATE"}; 
+    for(; itr != end && gateKeeper != DoneCheck; itr++)
+    {
+		if (*itr == '{')
+		{
+            gateKeeper <<= 1;
+            continue;
+        }
+
+        if(gateKeeper & PassedBracketTest && (*itr == 'D' || *itr == 'T'))
+        {
+            if(*itr == 'D')
+            {
+                isDate = true;
+            }
+            gateKeeper <<= 1;
+            continue;
+        }
+
+        if(gateKeeper & DateAndTimeDetected) 
+        {
+            if(idx < cnts && patterns[(int) isDate][idx++] == *itr)
+            {
+                if(idx == cnts)
+                {
+					gateKeeper = FinalCheck;
+                }
+                continue;
+            }
+        }
+
+        if((gateKeeper & FinalCheck) && *itr == '(')
+        {
+            gateKeeper = DoneCheck;
+            break;
+        }
+
+        gateKeeper = NoneParsed;
+        isDate = false;
+        idx = 0;
+	}
+
+    return gateKeeper == DoneCheck;
+}
+
+bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, std::string::const_iterator &end, struct tm* result)
 {
 	std::vector<std::string> tempValueHolders(8);
 	unsigned int idxMap[] = { 4, 2, 2, 2, 2, 2, 2, 2 };
 	unsigned int idx = 0;
-	int factor = -1;
-	time_t offset = 0;
-	const std::vector<std::string> days = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
-	const std::vector<std::string> months = { "January", "Feburary", "March", "April", "May", "June", "July", "August",
-											 "September", "October", "November", "December" };
+	int factor = 1, hr = 0, mn = 0;
+	time_t offset = 0; 
+	struct tm parsedTm = { 0 };
+    int *addrs[]  = { &parsedTm.tm_year, &parsedTm.tm_mon, 
+        &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min, 
+        &parsedTm.tm_sec, &hr, &mn}; 
+
 	while (begin != end && idx < tempValueHolders.size())
 	{
 		if (isdigit(*begin))
@@ -217,7 +277,8 @@ bool TextBlock::stringToLocalTm(std::string::const_iterator begin, std::string::
 
 			if (--idxMap[idx] == 0)
 			{
-				idx++;
+                *addrs[idx] = stoi(tempValueHolders[idx]);
+				++idx;
 			}
 		}
 
@@ -228,54 +289,160 @@ bool TextBlock::stringToLocalTm(std::string::const_iterator begin, std::string::
 
 		if (*begin == '+')
 		{
-			factor = 1;
+			factor = -1;
 		}
+
+        if(*begin == ',' || *begin == ')')
+            break;
+
 		begin++;
 	}
 
-	struct tm parsedTm = { 0 }, localTm = { 0 }, offsetTm = { 0 }, gmTm = { 0 };
+	parsedTm.tm_year -= 1900;
+	parsedTm.tm_mon  -= 1;
+    hr *= 3600;
+    mn *= 60;
+    offset = (hr + mn) * factor;
 
-	parsedTm.tm_year = std::stoi(tempValueHolders[0]) - 1900;
-	parsedTm.tm_mon = std::stoi(tempValueHolders[1]) + 7;
-	parsedTm.tm_mday = std::stoi(tempValueHolders[2]) - 1;
-	parsedTm.tm_hour = std::stoi(tempValueHolders[3]);
-	parsedTm.tm_min = std::stoi(tempValueHolders[4]);
-	parsedTm.tm_sec = std::stoi(tempValueHolders[5]);
+	time_t utc;
+    // converts to ticks
+	utc = mktime(&parsedTm);
+    if(utc == -1)
+    {
+        return false;
+    }
 
-	if (factor)
+	char tzOffsetBuff[6] = { 0 };
+    // gets local time zone offset
+	strftime(tzOffsetBuff, 6, "%z", &parsedTm);
+	std::string localTimeZoneOffsetStr(tzOffsetBuff);
+	int nTzOffset = std::stoi(localTimeZoneOffsetStr);
+	offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
+    // add offset to utc
+	utc += offset;
+    // converts to local time from utc
+	if(!localtime_s(result, &utc))
 	{
-		if (tempValueHolders[6] != "")
-		{
-			offset += std::stoi(tempValueHolders[6]) * 3600;
-		}
-		if (tempValueHolders[7] != "")
-		{
-			offset += std::stoi(tempValueHolders[7]) * 60;
-		}
-		offset *= factor;
-	}
-
-	time_t t, z;
-    t = time(nullptr);
-	z = mktime(&parsedTm);
-	localtime_s(&localTm, &t);
-	localtime_s(&parsedTm, &z);
-	char buffer[100] = { 0 };
-	strftime(buffer, 100, "%D, %T, %z", &parsedTm);
-	std::string localTimeZoneOffsetStr(buffer);
-	int rawoffset = std::stoi(localTimeZoneOffsetStr);
-	offset = (rawoffset / 100) * 3600 + (rawoffset % 100) * 60;
-	//parsedTm.tm_isdst = localTm.tm_isdst;
-
-	time_t convertedTime = mktime(&parsedTm) + offset;// +t - z + 3600;
-
-	if (convertedTime != -1)
-	{
-        if(!localtime_s(result, &convertedTime))
-        {
-            return true;
-        }
+        // localtime_s double counts daylight saving time
+		if(result->tm_isdst == 1)
+			result->tm_hour -= 1;
+		return true;
 	}
 
     return false;
+}
+
+bool TextBlock::completeParsing(std::string::const_iterator &begin, std::string::const_iterator &end, bool &isShort) 
+{
+    enum  ParsingState
+    {
+        NoneParsed = 0x1,
+        ShortAndLongDetected = 0x2,
+        ParenthesisCheck = 0x4,
+        FirstBracketCheck = 0x8,
+        SecondBracketCheck = 0x10,
+        DoneCheck = 0x20,
+    };
+    unsigned int idx = 0; 
+    int gateKeeper = NoneParsed;
+    const std::vector<std::string> patterns = {"ONG", "HORT"}; 
+    for(; begin != end && gateKeeper != DoneCheck; begin++)
+    {
+        if(gateKeeper & NoneParsed)
+        {
+            if(isspace(*begin))
+            {
+                continue;
+            }
+
+            if(toupper(*begin) == 'S' || toupper(*begin) =='L')
+            {
+                isShort = (toupper(*begin) == 'S')? true : false;
+                gateKeeper <<= 1;
+                continue;
+
+            }
+        }
+
+        if(gateKeeper & ShortAndLongDetected) 
+        {
+            if(idx < patterns[(int) isShort].size() && patterns[(int) isShort][idx] == toupper(*begin))
+            {
+                if(++idx == patterns[(int) isShort].size())
+                {
+					gateKeeper <<=1;
+                }
+                continue;
+            }
+        }
+
+        if((gateKeeper & (ParenthesisCheck | NoneParsed)) && *begin == ')')
+        {
+			gateKeeper = ParenthesisCheck;
+            gateKeeper <<= 1;
+            continue;
+        }
+
+        if((gateKeeper & (FirstBracketCheck | SecondBracketCheck)) && (*begin == '}'))
+        {
+			if (gateKeeper & SecondBracketCheck)
+			{
+				return true;
+			}
+            gateKeeper <<= 1;
+            continue;
+        }
+		break;
+	}
+
+    return false;
+}
+
+std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end)
+{
+    bool isDate = false, isShort = false;
+    std::string newText;
+    static char tzOffsetBuff[50];
+    enum TransformState
+    { 
+        NoneParsed = 0x1,
+        ISO8601Detected = 0x2,
+        ISO8601Parsed = 0x4,
+    };
+
+    int state = NoneParsed;
+
+	struct tm result = {0};
+    for(; begin != end; begin++)
+    {
+        if(state == NoneParsed && scanForISO8601(begin, end, isDate))
+        { 
+            state = ISO8601Detected;
+            continue;
+        }
+
+        if(state == ISO8601Detected && ISO8601ToTm(begin, end, &result))
+        {
+            state = ISO8601Parsed;
+            continue;
+        }
+
+        if(state == ISO8601Parsed && completeParsing(begin, end, isShort))
+        {
+            if(isShort)
+            {
+                strftime(tzOffsetBuff, 50, "%m/%d/%Y", &result);
+            }
+            else
+            {
+                strftime(tzOffsetBuff, 50, "%A, %B %e, %Y", &result);
+            }
+            newText += std::string(tzOffsetBuff);
+			result = {0};
+        }
+
+        state = NoneParsed;
+    }
+
+	return newText;
 }
