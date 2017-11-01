@@ -29,7 +29,7 @@ public:
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
 
-    std::string GetText() const;
+    std::string GetText()const;
     void SetText(const std::string value);
 
     TextSize GetTextSize() const;
@@ -53,14 +53,7 @@ public:
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
-	std::string scanForDateAndTime(const std::string text);
-    bool scanForISO8601(std::string::const_iterator &begin, 
-            std::string::const_iterator &end, bool& isDate, std::ostringstream &ostr);
-    bool ISO8601ToTm(std::string::const_iterator& begin, 
-            std::string::const_iterator& end, struct tm* result, std::ostringstream &ostr);
-    bool completeParsing(std::string::const_iterator &begin,
-            std::string::const_iterator &end, bool &isShort, std::ostringstream &ostr);
-    std::string parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end);
+    std::string parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end) const;
 
 private:
     std::string m_text;
@@ -71,5 +64,11 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
+	bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::const_iterator &end,
+		bool &isDate, std::ostringstream &parsedostr, std::ostringstream &ostr) const;
+    bool ISO8601ToTm(std::string::const_iterator& begin, 
+            std::string::const_iterator& end, struct tm* result, std::ostringstream &ostr) const;
+    bool completeParsing(std::string::const_iterator &begin,
+            std::string::const_iterator &end, bool &isShort, std::ostringstream &ostr) const;
 };
 }

@@ -86,7 +86,7 @@ Json::Value TextBlock::SerializeToJsonValue()
 
 std::string TextBlock::GetText() const
 {
-    return m_text;
+	return parseISO8601(m_text.begin(), m_text.end());
 }
 
 void TextBlock::SetText(const std::string value)
@@ -165,45 +165,10 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
-std::string TextBlock::scanForDateAndTime(const std::string text)
+bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::const_iterator &end, 
+	bool &isDate, std::ostringstream &parsedostr, std::ostringstream &ostr) const
 {
-	std::string::const_iterator begin, end = text.end();
-
-    for(auto itr = text.begin(); itr != text.end(); itr++)
-    {
-		if (*itr == '{')
-		{
-			itr++;
-			if (itr != text.end() && *itr++ == '{')
-			{
-				if (itr != text.end() && (*itr == 'D' || *itr == 'T'))
-				{
-					begin = itr;
-					while (itr != text.end() && *itr != ')')
-					{
-						itr++;
-					}
-
-					if (itr != text.end())
-					{
-						return text.substr(begin - text.begin(), itr - begin + 1);
-					}
-					else
-					{
-						return "";
-					}
-				}
-			}
-		}
-	}
-
-	return "";
-}
-
-bool TextBlock::scanForISO8601(std::string::const_iterator &itr, 
-        std::string::const_iterator &end, bool &isDate, std::ostringstream &ostr)
-{
-    enum  ParsingState
+    enum ParsingState
     {
         NoneParsed = 0x1,
         PassedBracketTest = 0x4,
@@ -213,13 +178,13 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr,
     };
     const int cnts = 3;
     int idx = 0, gateKeeper = NoneParsed;
-    const char* patterns[] = {"IME", "ATE"}; 
+    const char *patterns[] = {"IME", "ATE"}; 
     for(; itr != end && gateKeeper != DoneCheck; itr++)
     {
-        ostr << *itr;
 		if (*itr == '{')
 		{
             gateKeeper <<= 1;
+			ostr << *itr;
             continue;
         }
 
@@ -230,6 +195,7 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr,
                 isDate = true;
             }
             gateKeeper <<= 1;
+			ostr << *itr;
             continue;
         }
 
@@ -241,6 +207,7 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr,
                 {
 					gateKeeper = FinalCheck;
                 }
+				ostr << *itr;
                 continue;
             }
         }
@@ -248,19 +215,23 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr,
         if((gateKeeper & FinalCheck) && *itr == '(')
         {
             gateKeeper = DoneCheck;
+			ostr << *itr;
             continue;
         }
 
         gateKeeper = NoneParsed;
         isDate = false;
         idx = 0;
+        parsedostr << ostr.str() << *itr;
+        ostr.str("");
+        ostr.clear();
 	}
 
     return gateKeeper == DoneCheck;
 }
 
 bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, 
-        std::string::const_iterator &end, struct tm* result, std::ostringstream &ostr)
+        std::string::const_iterator &end, struct tm* result, std::ostringstream &ostr) const
 {
 	std::vector<std::string> tempValueHolders(8);
 	unsigned int idxMap[] = { 4, 2, 2, 2, 2, 2, 2, 2 };
@@ -268,11 +239,25 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin,
 	int factor = 1, hr = 0, mn = 0;
 	time_t offset = 0; 
 	struct tm parsedTm = { 0 };
+	bool isDone = false, bPassedGate = false, isFailed = false;
     int *addrs[]  = { &parsedTm.tm_year, &parsedTm.tm_mon, 
         &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min, 
         &parsedTm.tm_sec, &hr, &mn}; 
 
-	while (begin != end && idx < tempValueHolders.size())
+    enum ParsingState
+    {
+        BeginParsing     = 0x000001,
+        DateParsing      = 0x0000FE,
+        TimeParsingBegin = 0x000100,
+        TimeParsing      = 0x003E00,
+        TZParsingBegin   = 0x004000,
+        TZParsing        = 0x380000,
+        DoneParsing      = 0x400000,
+    };
+
+    int curState = BeginParsing;
+
+	for(; begin != end && !isDone && !isFailed && idx < tempValueHolders.size(); begin++)
 	{
         ostr << *begin;
 
@@ -285,25 +270,51 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin,
                 *addrs[idx] = stoi(tempValueHolders[idx]);
 				++idx;
 			}
+			curState <<= 1;
+			continue;
 		}
 
-		if (*begin == 'Z')
+		if (((curState & DateParsing) && (*begin != '-')) ||
+            ((curState & TimeParsingBegin) && (*begin != 'T')) ||
+		    ((curState & (TimeParsing | TZParsing)) && (*begin != ':')) ||
+            ((curState & DoneParsing) && (*begin != ',' || *begin != ')')))
+        {
+            isFailed = true;
+			continue;
+		}
+
+		if (curState & TZParsingBegin) 
 		{
-			factor = 0;
-		}
+            switch(*begin)
+            {
+                case 'Z': case 'z':
+                {
+                    factor = 0;
+                    isDone = true;
+                    continue;
+                }
 
-		if (*begin == '+')
-		{
-			factor = -1;
-		}
+                case '+':
+                {
+                    factor = -1;
+                }
 
-		if (*begin == ',' || *begin == ')')
-		{
-            begin++;
-            break;
+                case '-':
+                {
+                    continue;
+                }
+                default:
+                {
+                    isFailed = true;
+                    continue;
+                }
+            }
 		}
+	}
 
-		begin++;
+	if (isFailed)
+	{ 
+		return false;
 	}
 
 	parsedTm.tm_year -= 1900;
@@ -341,7 +352,7 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin,
 }
 
 bool TextBlock::completeParsing(std::string::const_iterator &begin, 
-        std::string::const_iterator &end, bool &isShort, std::ostringstream &ostr) 
+        std::string::const_iterator &end, bool &isShort, std::ostringstream &ostr) const
 {
     enum  ParsingState
     {
@@ -419,7 +430,7 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin,
     return gateKeeper == DoneCheck;
 }
 
-std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end)
+std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end) const
 {
     bool isDate = false, isShort = true;
     std::string newText;
@@ -437,7 +448,7 @@ std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::str
 
     while(begin != end)
     {
-        if(state == NoneParsed && scanForISO8601(begin, end, isDate, ostr))
+        if(state == NoneParsed && scanForISO8601(begin, end, isDate, parsedostr, ostr))
         { 
             state = ISO8601Detected;
             continue;
