@@ -181,7 +181,7 @@ bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::co
     const char *patterns[] = {"IME", "ATE"}; 
     for(; itr != end && gateKeeper != DoneCheck; itr++)
     {
-		if (*itr == '{')
+		if(*itr == '{')
 		{
             gateKeeper <<= 1;
 			ostr << *itr;
@@ -261,11 +261,11 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin,
 	{
         ostr << *begin;
 
-		if (isdigit(*begin))
+		if(isdigit(*begin))
 		{
 			tempValueHolders[idx] += *begin;
 
-			if (--idxMap[idx] == 0)
+			if(--idxMap[idx] == 0)
 			{
                 *addrs[idx] = stoi(tempValueHolders[idx]);
 				++idx;
@@ -274,7 +274,7 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin,
 			continue;
 		}
 
-		if (((curState & DateParsing) && (*begin != '-')) ||
+		if(((curState & DateParsing) && (*begin != '-')) ||
             ((curState & TimeParsingBegin) && (*begin != 'T')) ||
 		    ((curState & (TimeParsing | TZParsing)) && (*begin != ':')) ||
             ((curState & DoneParsing) && (*begin != ',' || *begin != ')')))
@@ -283,7 +283,7 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin,
 			continue;
 		}
 
-		if (curState & TZParsingBegin) 
+		if(curState & TZParsingBegin) 
 		{
             switch(*begin)
             {
@@ -312,7 +312,7 @@ bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin,
 		}
 	}
 
-	if (isFailed)
+	if(isFailed)
 	{ 
 		return false;
 	}
@@ -415,7 +415,7 @@ bool TextBlock::completeParsing(std::string::const_iterator &begin,
 
         if((gateKeeper & (FirstBracketCheck | SecondBracketCheck)) && (*begin == '}'))
         {
-			if (gateKeeper & SecondBracketCheck)
+			if(gateKeeper & SecondBracketCheck)
 			{
 				gateKeeper = DoneCheck;
 			}
