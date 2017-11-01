@@ -15,14 +15,17 @@ namespace AdaptiveCards { namespace Uwp
         HRESULT RuntimeClassInitialize() noexcept;
 
         HRESULT RuntimeClassInitialize(
-            ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle) noexcept;
+            ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
+            ABI::Windows::UI::Xaml::IFrameworkElement* parentElement) noexcept;
 
         IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveCards::Uwp::ContainerStyle *value);
         IFACEMETHODIMP put_ContainerStyle(_In_ ABI::AdaptiveCards::Uwp::ContainerStyle value);
-
+        IFACEMETHODIMP get_ParentElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value);
+        IFACEMETHODIMP put_ParentElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
 
     private:
         ABI::AdaptiveCards::Uwp::ContainerStyle m_containerStyle;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_parentElement;
     };
 
     ActivatableClass(AdaptiveRenderArgs);
