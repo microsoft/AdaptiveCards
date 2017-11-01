@@ -29,7 +29,7 @@ public:
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
 
-    std::string GetText()const;
+    std::string GetText() const;
     void SetText(const std::string value);
 
     TextSize GetTextSize() const;
