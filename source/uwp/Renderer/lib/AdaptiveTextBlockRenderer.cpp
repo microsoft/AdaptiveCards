@@ -4,6 +4,7 @@
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveRenderContext.h"
 #include "Util.h"
+#include "XamlBuilder.h"
 #include "AdaptiveElementParserRegistration.h"
 
 using namespace Microsoft::WRL;
@@ -25,7 +26,7 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder.BuildTextBlock(cardElement, renderContext, renderArgs, result);
+        XamlBuilder::BuildTextBlock(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 

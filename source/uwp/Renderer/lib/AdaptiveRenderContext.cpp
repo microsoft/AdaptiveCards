@@ -21,12 +21,15 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveHostConfig* hostConfig,
         IAdaptiveElementRendererRegistration* elementRendererRegistration,
         IAdaptiveCardResourceResolvers* resourceResolvers,
+        IResourceDictionary* overrideDictionary,
         RenderedAdaptiveCard* renderResult) noexcept try
     {
         m_hostConfig = hostConfig;
         m_elementRendererRegistration = elementRendererRegistration;
         m_renderResult = renderResult;
         m_resourceResolvers = resourceResolvers;
+        m_overrideDictionary = overrideDictionary;
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &m_propertyValueStatics));
 
         return MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult);
     } CATCH_RETURN;
@@ -53,6 +56,12 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveRenderContext::get_ResourceResolvers(IAdaptiveCardResourceResolvers** value)
     {
         return m_resourceResolvers.CopyTo(value);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveRenderContext::get_OverrideStyles(_COM_Outptr_ IResourceDictionary** overrideDictionary)
+    {
+        return m_overrideDictionary.CopyTo(overrideDictionary);
     }
 
     _Use_decl_annotations_

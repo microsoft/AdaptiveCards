@@ -891,7 +891,9 @@ namespace AdaptiveCards
             [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** hostConfig);
             [propput] HRESULT HostConfig([in] AdaptiveHostConfig* hostConfig);
 
-            HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
+            [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
+            [propput] HRESULT OverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
+
             HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
             HRESULT ResetFixedDimensions();
 
@@ -1763,6 +1765,8 @@ namespace AdaptiveCards
             [propget] HRESULT ResourceResolvers([out, retval] AdaptiveCardResourceResolvers** value);
 
             [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
+
+            [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 
             HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
         };
