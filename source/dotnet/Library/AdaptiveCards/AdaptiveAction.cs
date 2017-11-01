@@ -6,12 +6,12 @@ namespace AdaptiveCards
     /// <summary>
     ///     Base of Action types
     /// </summary>
-    public abstract class AdaptiveActionBase : AdaptiveTypedElement
+    public abstract class AdaptiveAction : AdaptiveTypedElement
     {
         /// <summary>
         ///     Title of the action
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, Required = Required.Always)]
         public string Title { get; set; }
 
         /// <summary>

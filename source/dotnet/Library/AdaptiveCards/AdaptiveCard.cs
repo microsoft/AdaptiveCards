@@ -60,7 +60,7 @@ namespace AdaptiveCards
 
             catch
             {
-                Debugger.Break();
+                 Debugger.Break();
                 // TODO: Return errors here
             }
 
@@ -79,7 +79,7 @@ namespace AdaptiveCards
         ///     Actions for the card
         /// </summary>
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
-        public List<AdaptiveActionBase> Actions { get; set; } = new List<AdaptiveActionBase>();
+        public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
         /// <summary>
         ///     Speak annotation for the card
@@ -102,7 +102,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
-        [JsonProperty(Order = -9)]
+        [JsonProperty(Order = -9, NullValueHandling = NullValueHandling.Ignore)]
         public AdaptiveSchemaVersion Version { get; set; }
 
         /// <summary>

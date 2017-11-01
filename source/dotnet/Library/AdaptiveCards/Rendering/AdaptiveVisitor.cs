@@ -114,7 +114,7 @@ namespace AdaptiveCards.Rendering
         {
         }
 
-        public virtual void Visit(AdaptiveActionBase action)
+        public virtual void Visit(AdaptiveAction action)
         {
             if (action is AdaptiveOpenUrlAction)
                 Visit((AdaptiveOpenUrlAction) action);

@@ -178,7 +178,7 @@ namespace AdaptiveCards.Rendering.Html
             return uiCard;
         }
 
-        protected static void AddContainerElements(HtmlTag uiContainer, List<AdaptiveElement> elements, List<AdaptiveActionBase> actions, AdaptiveRendererContext context)
+        protected static void AddContainerElements(HtmlTag uiContainer, List<AdaptiveElement> elements, List<AdaptiveAction> actions, AdaptiveRendererContext context)
         {
             if (elements != null)
             {

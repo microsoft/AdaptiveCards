@@ -25,6 +25,6 @@ namespace AdaptiveCards
         ///     Action for this ColumnSet (this allows a default action at the column set level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveActionBase SelectAction { get; set; }
+        public AdaptiveAction SelectAction { get; set; }
     }
 }

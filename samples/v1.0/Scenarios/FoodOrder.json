@@ -74,7 +74,10 @@
         "actions": [
           {
             "type": "Action.Submit",
-            "title": "OK"
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Steak"
+            }
           }
         ]
       }
@@ -113,7 +116,10 @@
         "actions": [
           {
             "type": "Action.Submit",
-            "title": "OK"
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Chicken"
+            }
           }
         ]
       }
@@ -147,7 +153,10 @@
         "actions": [
           {
             "type": "Action.Submit",
-            "title": "OK"
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Vegetarian"
+            }
           }
         ]
       }

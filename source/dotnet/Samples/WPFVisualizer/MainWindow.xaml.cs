@@ -16,6 +16,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using AdaptiveCards;
+using Newtonsoft.Json.Linq;
 
 namespace WpfVisualizer
 {
@@ -55,6 +56,7 @@ namespace WpfVisualizer
                 Resources = Resources
             };
             Renderer.UseXceedElementRenderers();
+           // Renderer.ActionHandlers.Set<AdaptiveShowCardAction>()
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
@@ -167,7 +169,8 @@ namespace WpfVisualizer
 
         private void _onAction(object sender, AdaptiveActionEventArgs e)
         {
-            
+            var renderedCard = (RenderedAdaptiveCard) sender;
+
             if (e.Action is AdaptiveOpenUrlAction openUrlAction)
             {
                 Process.Start(openUrlAction.Url);
@@ -183,8 +186,9 @@ namespace WpfVisualizer
             }
             else if (e.Action is AdaptiveSubmitAction submitAction)
             {
-                // TODO: Shouldn't e.Data be on the SubmitAction?
-                MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Formatting.Indented), "SubmitAction");
+                var inputs = renderedCard.GetInputData();
+                inputs.Merge(submitAction.Data);
+                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
         }
 

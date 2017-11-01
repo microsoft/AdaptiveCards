@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 
 using System;
+using System.Reflection;
 
 namespace AdaptiveCards
 {

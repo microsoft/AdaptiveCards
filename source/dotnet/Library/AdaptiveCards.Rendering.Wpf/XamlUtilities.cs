@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering.Wpf
     public class XamlUtilities
     {
 
-        public static Button CreateActionButton(AdaptiveActionBase action, AdaptiveRenderContext context)
+        public static Button CreateActionButton(AdaptiveAction action, AdaptiveRenderContext context)
         {
             ActionsConfig styling = context.Config.Actions;
             var uiButton = new Button()
