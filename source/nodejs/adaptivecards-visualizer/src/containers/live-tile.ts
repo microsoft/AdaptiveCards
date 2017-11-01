@@ -94,7 +94,7 @@ export class LiveTileContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "08000000",
+                    backgroundColor: "#08000000",
                     fontColors: {
                         default: {
                             normal: "#FFFFFF",
