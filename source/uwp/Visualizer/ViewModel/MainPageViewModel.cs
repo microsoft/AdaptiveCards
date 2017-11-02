@@ -34,15 +34,17 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public HostConfigEditorViewModel HostConfigEditor { get; private set; }
 
-        public bool UseAsyncRenderMethod
+        public bool UseFixedDimensions
         {
-            get { return Settings.UseAsyncRenderMethod; }
+            get { return Settings.UseFixedDimensions; }
             set
             {
-                if (value != Settings.UseAsyncRenderMethod)
+                if (value != Settings.UseFixedDimensions)
                 {
-                    Settings.UseAsyncRenderMethod = value;
+                    Settings.UseFixedDimensions = value;
 
+                    // Need to re-initialize Renderer so it changes whether it uses fixed dimensions
+                    DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig);
                     ReRenderCards();
                 }
             }

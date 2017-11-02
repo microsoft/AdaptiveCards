@@ -172,6 +172,11 @@ namespace AdaptiveCardVisualizer.ViewModel
                     _renderer.HostConfig = hostConfig;
                 }
 
+                if (Settings.UseFixedDimensions)
+                {
+                    _renderer.SetFixedDimensions(320, 180);
+                }
+
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
             }

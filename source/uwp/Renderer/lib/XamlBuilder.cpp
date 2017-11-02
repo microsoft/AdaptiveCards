@@ -18,6 +18,7 @@
 #include "XamlStyleKeyGenerators.h"
 #include "AdaptiveRenderArgs.h"
 #include "json/json.h"
+#include "WholeItemsPanel.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -342,10 +343,18 @@ namespace AdaptiveCards { namespace Uwp
 
         // Now create the inner stack panel to serve as the root host for all the 
         // body elements and apply padding from host configuration
-        ComPtr<IStackPanel> bodyElementHost = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<WholeItemsPanel> bodyElementHost;
+        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
+        bodyElementHost->SetMainPanel(TRUE);
+        bodyElementHost->SetAdaptiveHeight(TRUE);
+
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get());
+
+        // Assign vertical alignment to the top so that on fixed height cards, the content
+        // still renders at the top even if the content is shorter than the full card
+        THROW_IF_FAILED(bodyElementHostAsElement->put_VerticalAlignment(VerticalAlignment_Top));
 
         XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get());
         THROW_IF_FAILED(bodyElementHost.CopyTo(childElementContainer));
@@ -1330,8 +1339,14 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveContainer> adaptiveContainer;
         THROW_IF_FAILED(cardElement.As(&adaptiveContainer));
 
-        ComPtr<IStackPanel> xamlStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        xamlStackPanel->put_Orientation(Orientation::Orientation_Vertical);
+        ComPtr<WholeItemsPanel> containerPanel;
+        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&containerPanel));
+
+        ComPtr<IFrameworkElement> containerPanelAsFrameWorkElement;
+        THROW_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
+        // Assign vertical alignment to the top so that on fixed height cards, the content
+        // still renders at the top even if the content is shorter than the full card
+        THROW_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(VerticalAlignment_Top));
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
@@ -1348,11 +1363,11 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle));
 
-        ComPtr<IPanel> stackPanelAsPanel;
-        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
+        ComPtr<IPanel> containerPanelAsPanel;
+        THROW_IF_FAILED(containerPanel.As(&containerPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveContainer->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
+        BuildPanelChildren(childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
         ComPtr<IBorder> containerBorder = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
@@ -1366,7 +1381,7 @@ namespace AdaptiveCards { namespace Uwp
             ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
             THROW_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
 
-            // If the container style doesn't match it's parent, apply padding.
+            // If the container style doesn't match its parent, apply padding.
             if (containerStyle != parentContainerStyle)
             {
                 ComPtr<IAdaptiveSpacingConfig> spacingConfig;
@@ -1381,18 +1396,9 @@ namespace AdaptiveCards { namespace Uwp
             }
         }
 
-        ComPtr<IUIElement> stackPanelAsUIElement;
-        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsUIElement));
-        THROW_IF_FAILED(containerBorder->put_Child(stackPanelAsUIElement.Get()));
-
-        ComPtr<IStyle> style;
-        std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForContainer(adaptiveContainer.Get());
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
-        {
-            ComPtr<IFrameworkElement> stackPanelAsFrameworkElement;
-            THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsFrameworkElement));
-            THROW_IF_FAILED(stackPanelAsFrameworkElement->put_Style(style.Get()));
-        }
+        ComPtr<IUIElement> containerPanelAsUIElement;
+        THROW_IF_FAILED(containerPanel.As(&containerPanelAsUIElement));
+        THROW_IF_FAILED(containerBorder->put_Child(containerPanelAsUIElement.Get()));
 
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveContainer->get_SelectAction(&selectAction));
@@ -1419,8 +1425,8 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveColumn> adaptiveColumn;
         THROW_IF_FAILED(cardElement.As(&adaptiveColumn));
 
-        ComPtr<IStackPanel> xamlStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        xamlStackPanel->put_Orientation(Orientation::Orientation_Vertical);
+        ComPtr<WholeItemsPanel> columnPanel;
+        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&columnPanel));
 
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveColumn->get_Style(&containerStyle));
@@ -1442,19 +1448,25 @@ namespace AdaptiveCards { namespace Uwp
         if (hasExplicitContainerStyle && SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor)))
         {
             ComPtr<IPanel> columnAsPanel;
-            THROW_IF_FAILED(xamlStackPanel.As(&columnAsPanel));
+            THROW_IF_FAILED(columnPanel.As(&columnAsPanel));
 
             ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
             THROW_IF_FAILED(columnAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
-        ComPtr<IPanel> stackPanelAsPanel;
-        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
+        ComPtr<IPanel> columnPanelAsPanel;
+        THROW_IF_FAILED(columnPanel.As(&columnPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
+        BuildPanelChildren(childItems.Get(), columnPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
-        THROW_IF_FAILED(xamlStackPanel.CopyTo(ColumnControl));
+        // Assign vertical alignment to the top so that on fixed height cards, the content
+        // still renders at the top even if the content is shorter than the full card
+        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
+        THROW_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
+        THROW_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
+
+        THROW_IF_FAILED(columnPanel.CopyTo(ColumnControl));
     }
 
     _Use_decl_annotations_
