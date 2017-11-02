@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,23 @@ namespace AdaptiveCards
 {
     public class AdaptiveCardParseResult
     {
-        public AdaptiveCard Card { get; }
+        public AdaptiveCard Card { get; set; }
 
-        internal AdaptiveCardParseResult(AdaptiveCard card)
+        public IList<AdaptiveViolation> Warnings { get; } = new List<AdaptiveViolation>();
+
+        public IList<AdaptiveViolation> Errors { get; } = new List<AdaptiveViolation>();
+    }
+
+    public class AdaptiveViolation
+    {
+        public AdaptiveViolation(int code, string message)
         {
-            Card = card;
+            Code = code;
+            Message = message;
         }
+
+        public int Code { get; set; }
+
+        public string Message { get; set; }
     }
 }

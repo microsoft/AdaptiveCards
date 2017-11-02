@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
@@ -8,7 +9,6 @@ namespace AdaptiveCards
     /// <summary>
     ///     Adaptive card which has flexible container
     /// </summary>
-    [JsonConverter(typeof(AdaptiveCardConverter))]
     public class AdaptiveCard : AdaptiveTypedElement
 #if WINDOWS_UWP
       // TODO: uncomment when I figure out the Windows build
@@ -51,20 +51,29 @@ namespace AdaptiveCards
         /// <returns></returns>
         public static AdaptiveCardParseResult FromJson(string json)
         {
-            AdaptiveCard card = null;
+            var parseResult = new AdaptiveCardParseResult();
 
             try
             {
-                card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
+                var settings = new JsonSerializerSettings
+                {
+                    Converters =
+                    {
+                        new AdaptiveCardConverter(parseResult),
+                        new AdaptiveTypedElementConverter(parseResult),
+                        new IgnoreEmptyItemsConverter<AdaptiveAction>(parseResult),
+                        new IgnoreEmptyItemsConverter<AdaptiveElement>(parseResult)
+                    }
+                };
+                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
             }
-
-            catch
+            catch(Exception ex)
             {
+                parseResult.Errors.Add(new AdaptiveViolation(ex.HResult, ex.Message));
                  //Debugger.Break();
-                // TODO: Return errors here
             }
 
-            return new AdaptiveCardParseResult(card);
+            return parseResult;
         }
 
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
@@ -78,7 +87,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Actions for the card
         /// </summary>
-        [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -2)]
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
         /// <summary>

@@ -14,6 +14,8 @@ namespace AdaptiveCards
     /// </summary>
     public class AdaptiveTypedElementConverter : JsonConverter
     {
+        private readonly AdaptiveCardParseResult _parseResult;
+
         /// <summary>
         /// Default types to support, register any new types to this list 
         /// </summary>
@@ -43,6 +45,16 @@ namespace AdaptiveCards
             return types;
         });
 
+        public AdaptiveTypedElementConverter() : this(new AdaptiveCardParseResult())
+        {
+
+        }
+
+        public AdaptiveTypedElementConverter(AdaptiveCardParseResult parseResult)
+        {
+            _parseResult = parseResult;
+        }
+
         public static void RegisterTypedElement<T>(string typeName = null)
             where T : AdaptiveTypedElement
         {
@@ -58,12 +70,12 @@ namespace AdaptiveCards
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo()) 
-                && TypedElementTypes.Value.ContainsValue(objectType);
+            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            throw new NotImplementedException();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -73,6 +85,8 @@ namespace AdaptiveCards
             var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
+                //_parseResult.Errors.Add(new AdaptiveViolation(2, "AdaptiveCard elements must contain a 'type' property"));
+                //return null;
                 throw new JsonException("AdaptiveCard elements must contain a 'type' property");
             }
 
@@ -82,8 +96,8 @@ namespace AdaptiveCards
                 serializer.Populate(jObject.CreateReader(), result);
                 return result;
             }
-            
-            // TODO: log unknown element type 
+
+            _parseResult.Warnings.Add(new AdaptiveViolation(5, $"Unknown element type {typeName}"));
             return null;
         }
 

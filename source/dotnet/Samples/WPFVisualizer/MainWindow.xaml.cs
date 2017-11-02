@@ -63,12 +63,6 @@ namespace WpfVisualizer
 
         public AdaptiveCardRenderer Renderer { get; set; }
 
-
-        private void Config_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _dirty = true;
-        }
-
         private void _timer_Tick(object sender, EventArgs e)
         {
             if (_dirty)
@@ -77,15 +71,13 @@ namespace WpfVisualizer
                 try
                 {
                     cardError.Children.Clear();
+                    cardGrid.Children.Clear();
 
                     var result = AdaptiveCard.FromJson(textBox.Text);
                     if (result.Card != null)
-                        _card = result.Card;
-                    
-
-                    cardGrid.Children.Clear();
-                    if (_card != null)
                     {
+                        _card = result.Card;
+
                         var renderedAdaptiveCard = Renderer.RenderCard(_card);
                         if (renderedAdaptiveCard.FrameworkElement != null)
                         {
@@ -94,6 +86,18 @@ namespace WpfVisualizer
 
                             cardGrid.Children.Add(renderedAdaptiveCard.FrameworkElement);
                         }
+                        foreach (var warning in result.Warnings)
+                        {
+                            HandleParseError(new Exception(warning.Message));
+                        }
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            HandleParseError(new Exception(error.Message));
+                        }
+          
                     }
                 }
                 catch (Exception err)
@@ -105,7 +109,7 @@ namespace WpfVisualizer
 
         private void _OnMissingInput(object sender, MissingInputEventArgs args)
         {
-            MessageBox.Show($"Required input is missing.");
+            MessageBox.Show("Required input is missing.");
             args.FrameworkElement.Focus();
         }
 
@@ -214,7 +218,7 @@ namespace WpfVisualizer
             Renderer.HostConfig.SupportsInteractivity = false;
             var imageStream = Renderer.RenderToImage(_card, 480);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
-            
+
             var path = Path.GetRandomFileName() + ".png";
             using (var fileStream = new FileStream(path, FileMode.Create))
             {

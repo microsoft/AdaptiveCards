@@ -7,6 +7,18 @@ namespace AdaptiveCards
 {
     public class AdaptiveCardConverter : JsonConverter
     {
+        private readonly AdaptiveCardParseResult _parseResult;
+
+        public AdaptiveCardConverter() : this(new AdaptiveCardParseResult())
+        {
+            
+        }
+
+        public AdaptiveCardConverter(AdaptiveCardParseResult parseResult)
+        {
+            _parseResult = parseResult;
+        }
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
@@ -29,11 +41,10 @@ namespace AdaptiveCards
             // If this is the root AdaptiveCard and missing a version we fail parsing. 
             // The depth checks that cards within a Action.ShowCard don't require the version
             if (reader.Depth == 0 && card.Version == null)
+            {
+                _parseResult.Errors.Add(new AdaptiveViolation(1, "Missing version"));
                 return null;
-
-            // When objects without a valid "type" are parsed they return null but still get added to the collections, this removes them
-            card.Actions.RemoveAll(item => item == null);
-            card.Body.RemoveAll(item => item == null);
+            }
 
             return card;
         }
