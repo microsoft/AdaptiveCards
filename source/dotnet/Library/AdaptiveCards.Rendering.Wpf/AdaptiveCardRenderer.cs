@@ -52,6 +52,8 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         public ResourceDictionary Resources { get; set; }
 
+        public AdaptiveActionHandlers ActionHandlers { get; } = new AdaptiveActionHandlers();
+
 
         public static FrameworkElement RenderAdaptiveCardWrapper(AdaptiveCard card, AdaptiveRenderContext context)
         {

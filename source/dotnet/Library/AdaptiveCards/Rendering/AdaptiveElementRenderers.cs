@@ -1,49 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdaptiveCards.Rendering
 {
-    public class AdaptiveActionHandlers
-    {
-        private readonly List<Type> _supportedActions = new List<Type>()
-        {
-            typeof(AdaptiveOpenUrlAction),
-            typeof(AdaptiveSubmitAction),
-            typeof(AdaptiveShowCardAction)
-        };
-
-        /// <summary>
-        /// Adds support for a given action type. Any action in a payload not specifed here will be dropped from the rendered card
-        /// </summary>
-        public void AddSupportedAction<TAction>()
-            where TAction : AdaptiveAction
-        {
-            _supportedActions.Add(typeof(TAction));
-        }
-
-        /// <summary>
-        /// Remove support for an action type. This will prevent these actions from appearing in the rendered card
-        /// </summary>
-        public void RemoveSupportedAction<TAction>()
-            where TAction : AdaptiveAction
-        {
-            _supportedActions.Remove(typeof(TAction));
-        }
-
-        /// <summary>
-        /// Whether or not the action is supported by the renderer
-        /// </summary>
-        /// <returns></returns>
-        public bool IsSupported(Type type)
-        {
-            return _supportedActions.Contains(type);
-        }
-    }
-
     public class AdaptiveElementRenderers<TUIElement, TContext>
         where TUIElement : class
         where TContext : class
@@ -70,11 +30,14 @@ namespace AdaptiveCards.Rendering
 
         public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Type type)
         {
-            // For AdaptiveActions we want to render the AdaptiveAction type
+            if (_dictionary.ContainsKey(type))
+                return _dictionary[type];
+
+            // For Actions we can render the base AdaptiveAction type
             if (typeof(AdaptiveAction).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
                 return _dictionary[typeof(AdaptiveAction)];
 
-            return _dictionary[type];
+            throw new ArgumentOutOfRangeException(nameof(type), $"Unable to locate renderer for {type}");
         }
     }
 }

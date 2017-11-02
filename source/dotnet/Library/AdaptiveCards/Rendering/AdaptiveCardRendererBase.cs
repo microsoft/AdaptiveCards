@@ -27,6 +27,5 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public AdaptiveElementRenderers<TUIElement, TContext> ElementRenderers { get; } = new AdaptiveElementRenderers<TUIElement, TContext>();
 
-        public AdaptiveActionHandlers ActionHandlers { get; } = new AdaptiveActionHandlers();
     }
 }

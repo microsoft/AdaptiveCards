@@ -56,7 +56,8 @@ namespace WpfVisualizer
                 Resources = Resources
             };
             Renderer.UseXceedElementRenderers();
-           // Renderer.ActionHandlers.Set<AdaptiveShowCardAction>()
+            //Renderer.ElementRenderers.Set<AdaptiveOpenUrlAction>((action, context) => context.Render(action));
+            //Renderer.ActionHandlers.AddSupportedAction<AdaptiveShowCardAction>()
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
@@ -186,7 +187,7 @@ namespace WpfVisualizer
             }
             else if (e.Action is AdaptiveSubmitAction submitAction)
             {
-                var inputs = renderedCard.GetInputData();
+                var inputs = renderedCard.GetUserInputs(InputValueMode.RawString).AsJson();
                 inputs.Merge(submitAction.Data);
                 MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
