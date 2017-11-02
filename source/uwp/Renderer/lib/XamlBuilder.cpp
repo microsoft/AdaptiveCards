@@ -4,10 +4,8 @@
 #include "AdaptiveColorConfig.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveImage.h"
-#include "DefaultResourceDictionary.h"
 #include <windows.foundation.collections.h>
 #include <windows.storage.h>
-#include <windows.ui.xaml.markup.h>
 #include <windows.ui.xaml.shapes.h>
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
@@ -33,7 +31,6 @@ using namespace ABI::Windows::UI::Text;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::UI::Xaml::Shapes;
@@ -52,9 +49,6 @@ namespace AdaptiveCards { namespace Uwp
         m_imageLoadTracker.AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
 
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_RandomAccessStream).Get(), &m_randomAccessStreamStatics));
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &m_propertyValueStatics));
-
-        InitializeDefaultResourceDictionary();
     }
 
     _Use_decl_annotations_
@@ -145,7 +139,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
         BuildPanelChildren(body.Get(), childElementContainer.Get(), renderContext, renderArgs.Get(), [](IUIElement*) {});
 
-        if (this->SupportsInteractivity(hostConfig.Get()))
+        if (SupportsInteractivity(hostConfig.Get()))
         {
             ComPtr<IVector<IAdaptiveActionElement*>> actions;
             THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
@@ -215,48 +209,29 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-    HRESULT XamlBuilder::SetOverrideDictionary(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) noexcept try
-    {
-        if (overrideDictionary != nullptr)
-        {
-            m_mergedResourceDictionary = overrideDictionary;
-            ComPtr<IVector<ResourceDictionary*>> mergedDictionaries;
-            m_mergedResourceDictionary->get_MergedDictionaries(&mergedDictionaries);
-            mergedDictionaries->Append(m_defaultResourceDictionary.Get());
-        }
-        return S_OK;
-    } CATCH_RETURN;
-
-    void XamlBuilder::InitializeDefaultResourceDictionary()
-    {
-        ComPtr<IXamlReaderStatics> xamlReaderStatics;
-        THROW_IF_FAILED(RoGetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Markup_XamlReader).Get(),
-            __uuidof(IXamlReaderStatics), reinterpret_cast<void**>(xamlReaderStatics.GetAddressOf())));
-
-        ComPtr<IInspectable> resourceDictionaryInspectable;
-        THROW_IF_FAILED(xamlReaderStatics->Load(HStringReference(c_defaultResourceDictionary).Get(), &resourceDictionaryInspectable));
-        ComPtr<IResourceDictionary> resourceDictionary;
-        THROW_IF_FAILED(resourceDictionaryInspectable.As(&resourceDictionary));
-
-        m_defaultResourceDictionary = resourceDictionary;
-        m_mergedResourceDictionary = resourceDictionary;
-    }
-
     _Use_decl_annotations_
     template<typename T>
-    HRESULT XamlBuilder::TryGetResoureFromResourceDictionaries(std::wstring resourceName, T** style)
+    HRESULT XamlBuilder::TryGetResourceFromResourceDictionaries(IResourceDictionary* resourceDictionary, std::wstring resourceName, T** style)
     {
+        if (resourceDictionary == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         *style = nullptr;
         try
         {
             // Get a resource key for the requested style that we can use for ResourceDistionary Lookups
+            ComPtr<IPropertyValueStatics> propertyValueStatics;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics));
             ComPtr<IInspectable> resourceKey;
-            THROW_IF_FAILED(m_propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(), resourceKey.GetAddressOf()));
+            THROW_IF_FAILED(propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(), resourceKey.GetAddressOf()));
 
             // Search for the named resource
+            ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
             ComPtr<IInspectable> dictionaryValue;
             ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
-            if (SUCCEEDED(m_mergedResourceDictionary.As(&resourceDictionaryMap)) &&
+            if (SUCCEEDED(strongDictionary.As(&resourceDictionaryMap)) &&
                 SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
             {
                 ComPtr<T> resourceToReturn;
@@ -275,19 +250,28 @@ namespace AdaptiveCards { namespace Uwp
 
     template<typename T>
     bool XamlBuilder::TryGetValueResourceFromResourceDictionaries(
+        _In_ IResourceDictionary* resourceDictionary,
         _In_ std::wstring styleName,
         _Out_ T* valueResource)
     {
+        if (resourceDictionary == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         try
         {
             // Get a resource key for the requested style that we can use for ResourceDictionary Lookups
+            ComPtr<IPropertyValueStatics> propertyValueStatics;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics));
             ComPtr<IInspectable> resourceKey;
-            THROW_IF_FAILED(m_propertyValueStatics->CreateString(HStringReference(styleName.c_str()).Get(), resourceKey.GetAddressOf()));
+            THROW_IF_FAILED(propertyValueStatics->CreateString(HStringReference(styleName.c_str()).Get(), resourceKey.GetAddressOf()));
 
             // Search for the named resource
+            ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
             ComPtr<IInspectable> dictionaryValue;
             ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
-            if (SUCCEEDED(m_mergedResourceDictionary.As(&resourceDictionaryMap)) &&
+            if (SUCCEEDED(strongDictionary.As(&resourceDictionaryMap)) &&
                 SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
             {
                 ComPtr<T> resourceToReturn;
@@ -303,7 +287,6 @@ namespace AdaptiveCards { namespace Uwp
         }
         return false;
     }
-
     _Use_decl_annotations_
     ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(
         IAdaptiveCard* adaptiveCard,
@@ -395,8 +378,10 @@ namespace AdaptiveCards { namespace Uwp
 
         // The overlay applied to the background image is determined by a resouce, so create
         // the overlay if that resources exists
+        ComPtr<IResourceDictionary> resourceDictionary;
+        THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
         ComPtr<IBrush> backgroundOverlayBrush;
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IBrush>(c_BackgroundImageOverlayBrushKey, &backgroundOverlayBrush)))
+        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IBrush>(resourceDictionary.Get(), c_BackgroundImageOverlayBrushKey, &backgroundOverlayBrush)))
         {
             ComPtr<IShape> overlayRectangle = XamlHelpers::CreateXamlClass<IShape>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
             THROW_IF_FAILED(overlayRectangle->put_Fill(backgroundOverlayBrush.Get()));
@@ -1138,8 +1123,10 @@ namespace AdaptiveCards { namespace Uwp
         // that value from the resource dictionary and set the Opacity
         if (isSubtle)
         {
+            ComPtr<IResourceDictionary> resourceDictionary;
+            THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
             ComPtr<IInspectable> subtleOpacityInspectable;
-            if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IInspectable>(c_TextBlockSubtleOpacityKey, &subtleOpacityInspectable)))
+            if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(), c_TextBlockSubtleOpacityKey, &subtleOpacityInspectable)))
             {
                 ComPtr<IReference<double>> subtleOpacityReference;
                 if (SUCCEEDED(subtleOpacityInspectable.As(&subtleOpacityReference)))
@@ -1318,9 +1305,11 @@ namespace AdaptiveCards { namespace Uwp
 
         // Generate the style name from the adaptive element and apply it to the xaml
         // element if it exists in the resource dictionaries
+        ComPtr<IResourceDictionary> resourceDictionary;
+        THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
         ComPtr<IStyle> style;
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForImage(hostConfig.Get(), adaptiveImage.Get());
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
+        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(), styleName, &style)))
         {
             THROW_IF_FAILED(frameworkElement->put_Style(style.Get()));
         }
@@ -1491,7 +1480,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
         ComPtr<IAdaptiveElementRenderer> columnRenderer;
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Column").Get(), &columnRenderer));
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [this, xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer](IAdaptiveColumn* column)
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer](IAdaptiveColumn* column)
         {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
@@ -1578,15 +1567,6 @@ namespace AdaptiveCards { namespace Uwp
             XamlHelpers::AppendXamlElementToPanel(xamlColumn.Get(), gridAsPanel.Get());
         });
 
-        ComPtr<IStyle> style;
-        std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForColumnSet(adaptiveColumnSet.Get());
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
-        {
-            ComPtr<IFrameworkElement> gridAsFrameworkElement;
-            THROW_IF_FAILED(xamlGrid.As(&gridAsFrameworkElement));
-            THROW_IF_FAILED(gridAsFrameworkElement->put_Style(style.Get()));
-        }
-
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
         if (selectAction != nullptr)
@@ -1631,7 +1611,7 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IVector<IAdaptiveFact*>> facts;
         THROW_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
         int currentFact = 0;
-        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [this, xamlGrid, gridStatics, factSetGridLength, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
+        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [xamlGrid, gridStatics, factSetGridLength, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
         {
             ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
             THROW_IF_FAILED(factRow->put_Height(factSetGridLength));
@@ -1734,7 +1714,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
         if (imageRenderer != nullptr)
         {
-            XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid, renderContext, renderArgs, imageRenderer](IAdaptiveImage* adaptiveImage)
+            XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [imageSize, xamlGrid, renderContext, renderArgs, imageRenderer](IAdaptiveImage* adaptiveImage)
             {
                 ComPtr<IUIElement> uiImage;
                 ComPtr<IAdaptiveImage> localAdaptiveImage(adaptiveImage);
@@ -1779,7 +1759,7 @@ namespace AdaptiveCards { namespace Uwp
 
         int currentIndex = 0;
         int selectedIndex = -1;
-        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [this, &currentIndex, &selectedIndex, itemsVector](IAdaptiveChoiceInput* adaptiveChoiceInput)
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [&currentIndex, &selectedIndex, itemsVector](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
             HString title;
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
@@ -1827,7 +1807,7 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IPanel> panel;
         THROW_IF_FAILED(stackPanel.As(&panel));
 
-        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [this, panel, isMultiSelect](IAdaptiveChoiceInput* adaptiveChoiceInput)
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [panel, isMultiSelect](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
             ComPtr<IUIElement> choiceItem;
             if (isMultiSelect)
@@ -1865,7 +1845,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!this->SupportsInteractivity(hostConfig.Get()))
+        if (!SupportsInteractivity(hostConfig.Get()))
         {
             return;
         }
@@ -1901,7 +1881,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!this->SupportsInteractivity(hostConfig.Get()))
+        if (!SupportsInteractivity(hostConfig.Get()))
         {
             return;
         }
@@ -1934,7 +1914,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!this->SupportsInteractivity(hostConfig.Get()))
+        if (!SupportsInteractivity(hostConfig.Get()))
         {
             return;
         }
@@ -1981,7 +1961,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!this->SupportsInteractivity(hostConfig.Get()))
+        if (!SupportsInteractivity(hostConfig.Get()))
         {
             return;
         }
@@ -2049,7 +2029,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!this->SupportsInteractivity(hostConfig.Get()))
+        if (!SupportsInteractivity(hostConfig.Get()))
         {
             return;
         }
@@ -2075,7 +2055,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!this->SupportsInteractivity(hostConfig.Get()))
+        if (!SupportsInteractivity(hostConfig.Get()))
         {
             return;
         }
@@ -2182,8 +2162,10 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, negativeTopBottomMargin, negativeCardMargin, negativeTopBottomMargin }));
 
         // Style the hit target button
+        ComPtr<IResourceDictionary> resourceDictionary;
+        THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
         ComPtr<IStyle> style;
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(L"SelectAction", &style)))
+        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(), L"SelectAction", &style)))
         {
             THROW_IF_FAILED(buttonAsFrameworkElement->put_Style(style.Get()));
         }
@@ -2210,7 +2192,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(localButton.As(&buttonBase));
 
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([this, strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
         {
             THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
             return S_OK;

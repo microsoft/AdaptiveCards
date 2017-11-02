@@ -3,7 +3,6 @@
 #include "AdaptiveCards.Uwp.h"
 #include "Enums.h"
 #include "ToggleInput.h"
-#include "XamlBuilder.h"
 
 namespace AdaptiveCards { namespace Uwp
 {
@@ -29,9 +28,6 @@ namespace AdaptiveCards { namespace Uwp
             ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParsers,
             ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParsers,
             ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element);
-
-    private:
-        AdaptiveCards::Uwp::XamlBuilder m_xamlBuilder;
     };
 
     ActivatableClass(AdaptiveToggleInputRenderer);

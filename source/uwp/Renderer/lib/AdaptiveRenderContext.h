@@ -20,6 +20,7 @@ namespace AdaptiveCards { namespace Uwp
             ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig,
             ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration* elementRendererRegistration,
             ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers* resourceResolvers,
+            ABI::Windows::UI::Xaml::IResourceDictionary* overrideStyles,
             AdaptiveCards::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
 
         IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig** value);
@@ -27,6 +28,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_ActionInvoker(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveActionInvoker** value);
         IFACEMETHODIMP AddInputItem(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* cardElement, _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers** value);
+        IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig> m_hostConfig;
@@ -34,6 +36,7 @@ namespace AdaptiveCards { namespace Uwp
         Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::RenderedAdaptiveCard> m_renderResult;
         Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::AdaptiveActionInvoker> m_actionInvoker;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
     };
 
     ActivatableClass(AdaptiveRenderContext);

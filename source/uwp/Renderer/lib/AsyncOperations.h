@@ -35,7 +35,6 @@ public:
         THROW_IF_FAILED(coreWindow->get_Dispatcher(&m_dispatcher));
 
         m_builder = Microsoft::WRL::Make<AdaptiveCards::Uwp::XamlBuilder>();
-        THROW_IF_FAILED(m_builder->SetOverrideDictionary(m_renderer->GetOverrideDictionary()));
         UINT32 width = 0;
         UINT32 height = 0;
         bool explicitDimensions = m_renderer->GetFixedDimensions(&width, &height);
@@ -94,6 +93,7 @@ protected:
                 THROW_IF_FAILED(m_renderer->get_ElementRenderers(&elementRenderers));
                 ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers> resourceResolvers;
                 THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resourceResolvers));
+                ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> overrideDictionary = m_renderer->GetMergedDictionary();
 
                 ComPtr<AdaptiveCards::Uwp::AdaptiveRenderContext> renderContext;
                 RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveRenderContext>(
@@ -101,6 +101,7 @@ protected:
                     m_renderer->GetHostConfig(),
                     elementRenderers.Get(),
                     resourceResolvers.Get(),
+                    overrideDictionary.Get(),
                     renderResult.Get()));
 
                 m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get(), renderContext.Get());
