@@ -11,8 +11,10 @@ namespace AdaptiveCards
         /// <summary>
         ///     Title of the action
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, Required = Required.Always)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
+
+        // TODO: Title should be required is NOT a selectAction
 
         /// <summary>
         ///     Speak phrase for this action
