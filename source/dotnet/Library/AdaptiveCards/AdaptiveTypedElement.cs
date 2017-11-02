@@ -4,11 +4,6 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
-    //[Serializable]
-    public delegate void TypedEventHandler<in TSender, in TEventArgs>(
-        TSender sender,
-        TEventArgs e
-    ) where TEventArgs : EventArgs;
 
     [JsonConverter(typeof(AdaptiveTypedElementConverter))]
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
