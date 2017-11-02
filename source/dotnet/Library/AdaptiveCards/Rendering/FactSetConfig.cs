@@ -6,7 +6,6 @@ namespace AdaptiveCards.Rendering
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FactSetConfig
     {
-        public FactSetConfig() { }
 
         /// <summary>
         /// TextBlock to use for Titles in factsets
@@ -23,6 +22,6 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Spacing between facts and values
         /// </summary>
-        public int Spacing { get; set; } = 20;
+        public int Spacing { get; set; } = 10;
     }
 }

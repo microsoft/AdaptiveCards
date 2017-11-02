@@ -60,7 +60,7 @@ namespace AdaptiveCards
 
             catch
             {
-                 Debugger.Break();
+                 //Debugger.Break();
                 // TODO: Return errors here
             }
 

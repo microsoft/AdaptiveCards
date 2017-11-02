@@ -5,14 +5,11 @@ namespace AdaptiveCards.Rendering
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ImageSizesConfig
-
     {
-        public ImageSizesConfig() { }
+        public int Small { get; set; } = 40;
 
-        public int Small { get; set; } = 60;
+        public int Medium { get; set; } = 80;
 
-        public int Medium { get; set; } = 120;
-
-        public int Large { get; set; } = 180;
+        public int Large { get; set; } = 160;
     }
 }

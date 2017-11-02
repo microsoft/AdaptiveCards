@@ -62,7 +62,7 @@ namespace AdaptiveCards.Rendering.Wpf
             view.BorderBrush = context.GetColorBrush(color);
         }
 
-        public static void SetThickness(this Button view, double thickness)
+        public static void SetBorderThickness(this Button view, double thickness)
         {
             view.BorderThickness = new Thickness(thickness);
         }

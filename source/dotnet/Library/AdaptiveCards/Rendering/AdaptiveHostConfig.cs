@@ -7,8 +7,6 @@ namespace AdaptiveCards.Rendering
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveHostConfig
     {
-        public AdaptiveHostConfig() { }
-
         public static AdaptiveHostConfigParseResult FromJson(string json)
         {
             AdaptiveHostConfig hostConfig = null;
@@ -41,7 +39,7 @@ namespace AdaptiveCards.Rendering
         public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string FontFamily { get; set; } = "Calibri";
+        public string FontFamily { get; set; } = "Segoe UI";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
@@ -61,28 +59,28 @@ namespace AdaptiveCards.Rendering
         {
             switch (spacing)
             {
-                case AdaptiveCards.AdaptiveSpacing.Small:
+                case AdaptiveSpacing.None:
+                    return 0;
+
+                case AdaptiveSpacing.Small:
                     return Spacing.Small;
 
-                case AdaptiveCards.AdaptiveSpacing.Default:
-                    return Spacing.Default;
-
-                case AdaptiveCards.AdaptiveSpacing.Medium:
+                case AdaptiveSpacing.Medium:
                     return Spacing.Medium;
 
-                case AdaptiveCards.AdaptiveSpacing.Large:
+                case AdaptiveSpacing.Large:
                     return Spacing.Large;
 
-                case AdaptiveCards.AdaptiveSpacing.ExtraLarge:
+                case AdaptiveSpacing.ExtraLarge:
                     return Spacing.ExtraLarge;
 
-                case AdaptiveCards.AdaptiveSpacing.Padding:
+                case AdaptiveSpacing.Padding:
                     return Spacing.Padding;
 
                 default:
-                    throw new NotImplementedException();
+                    return Spacing.Default;
             }
         }
-    }   
+    }
 }
 

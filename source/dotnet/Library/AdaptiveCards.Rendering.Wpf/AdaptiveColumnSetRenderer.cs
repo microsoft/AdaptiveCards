@@ -26,7 +26,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     uiSep.VerticalAlignment = VerticalAlignment.Stretch;
 
                         int spacing = context.Config.GetSpacing(column.Spacing);
-                        uiSep.Margin = new Thickness(spacing / 2.0, 0, spacing / 2.0, 0);
+                        uiSep.Margin = new Thickness(spacing / 2.0, 0, 0, 0);
 
                     uiSep.Width = context.Config.Separator.LineThickness;
                     if (column.Separator && context.Config.Separator.LineColor != null)

@@ -24,14 +24,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 else
                     uiActionBar.Rows = actionsToProcess.Count();
 
-                uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Config.Actions.ActionAlignment.ToString());
-                uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+                uiActionBar.HorizontalAlignment = (HorizontalAlignment)Enum.Parse(typeof(HorizontalAlignment), context.Config.Actions.ActionAlignment.ToString());
+                uiActionBar.VerticalAlignment = VerticalAlignment.Bottom;
                 uiActionBar.Style = context.GetStyle("Adaptive.Actions");
-
-                //if (uiContainer.RowDefinitions.Count > 0)
-                //{
-                //    AdaptiveContainerRenderer.AddSeperator(context, new AdaptiveContainer(), uiContainer);
-                //}
+                uiActionBar.Margin = new Thickness(0, context.Config.GetSpacing(AdaptiveSpacing.Default), 0, 0);
 
                 uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);

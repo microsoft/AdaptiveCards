@@ -18,15 +18,16 @@ namespace AdaptiveCards.Rendering.Wpf
             };
 
             uiButton.SetBackgroundColor(styling.BackgroundColor, context);
-            uiButton.SetBorderColor(styling.BackgroundColor, context);
-            uiButton.SetThickness(context.Config.Actions.BorderThickness);
+            uiButton.SetBorderColor(styling.BorderColor, context);
+            uiButton.SetBorderThickness(styling.BorderThickness);
             uiButton.Style = context.GetStyle($"Adaptive.{action.Type}");
 
             TextBlock uiTitle = new TextBlock()
             {
                 Text = action.Title,                
                 FontSize = styling.FontSize,
-                Margin = new Thickness(8, 8, 8, 8) ,
+                Margin = new Thickness(6)
+                // TODO: Should this be from HostConfig?
             };
             uiTitle.SetFontWeight(styling.FontWeight);
             uiTitle.SetColor(styling.TextColor, context);

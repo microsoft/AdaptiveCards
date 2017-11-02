@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// should they be aligned Left, Center or Right
         /// </summary>
-        public AdaptiveHorizontalAlignment ActionAlignment { get; set; } = AdaptiveHorizontalAlignment.Center;
+        public AdaptiveHorizontalAlignment ActionAlignment { get; set; } = AdaptiveHorizontalAlignment.Stretch;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundColor { get; set; } = "#FF5098FF";
@@ -29,7 +29,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Space between actions
         /// </summary>
-        public int ButtonSpacing { get; set; } = 8;
+        public int ButtonSpacing { get; set; } = 10;
 
         /// <summary>
         /// Max number of actions to support on your Cards(e.g., 3)
@@ -66,7 +66,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// If actionMode is inline this is the margin between the inline card and the actions
         /// </summary>
-        public int InlineTopMargin { get; set; } = 8;
+        public int InlineTopMargin { get; set; } = 16;
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]

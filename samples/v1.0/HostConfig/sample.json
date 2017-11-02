@@ -5,7 +5,7 @@
     "medium": 20,
     "large": 30,
     "extraLarge": 40,
-    "padding": 20
+    "padding": 15
   },
   "separator": {
     "lineThickness": 1,

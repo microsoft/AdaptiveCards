@@ -101,7 +101,7 @@
 
         <!--<avalon:TextEditor Grid.Row="1" Grid.Column="5" Name="options" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
                             ShowLineNumbers="true" TextChanged="options_TextChanged" Visibility="Collapsed"/>-->
-        <xctk:PropertyGrid Grid.Row="1" Grid.Column="5"  SelectedObject="{Binding}" Name="hostConfigEditor" PropertyChanged="options_PropertyChanged" Visibility="Collapsed" >
+        <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
         </xctk:PropertyGrid>
 
         <Grid Grid.Row="2" Name="cardError" />

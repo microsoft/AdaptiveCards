@@ -66,10 +66,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
-            grid.Margin = new Thickness(context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding);
+            grid.Margin = new Thickness(context.Config.Spacing.Padding);
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 

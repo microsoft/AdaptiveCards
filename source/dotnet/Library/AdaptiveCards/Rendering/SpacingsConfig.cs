@@ -19,6 +19,6 @@ namespace AdaptiveCards.Rendering
 
         public int ExtraLarge { get; set; } = 40;
 
-        public int Padding { get; set; } = 24;
+        public int Padding { get; set; } = 15;
     }
 }
