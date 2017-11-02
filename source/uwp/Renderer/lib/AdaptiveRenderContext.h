@@ -37,7 +37,6 @@ namespace AdaptiveCards { namespace Uwp
         Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::AdaptiveActionInvoker> m_actionInvoker;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IPropertyValueStatics> m_propertyValueStatics;
     };
 
     ActivatableClass(AdaptiveRenderContext);

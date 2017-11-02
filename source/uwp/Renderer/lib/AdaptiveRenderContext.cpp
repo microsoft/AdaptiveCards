@@ -29,7 +29,6 @@ namespace AdaptiveCards { namespace Uwp
         m_renderResult = renderResult;
         m_resourceResolvers = resourceResolvers;
         m_overrideDictionary = overrideDictionary;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &m_propertyValueStatics));
 
         return MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult);
     } CATCH_RETURN;
