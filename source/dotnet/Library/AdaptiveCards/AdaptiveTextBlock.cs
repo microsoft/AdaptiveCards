@@ -11,11 +11,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "TextBlock";
 
-        public AdaptiveTextBlock()
-        {
-            Type = TypeName;
-            Text = "";
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     The size of the text

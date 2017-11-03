@@ -10,10 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Container";
 
-        public AdaptiveContainer()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Elements of the container

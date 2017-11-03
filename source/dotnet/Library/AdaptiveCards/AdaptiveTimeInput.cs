@@ -10,10 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Input.Time";
 
-        public AdaptiveTimeInput()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Placeholder text for the input desired

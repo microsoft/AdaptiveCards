@@ -57,6 +57,8 @@ namespace WpfVisualizer
                 Resources = Resources
             };
             Renderer.UseXceedElementRenderers();
+            Renderer.ElementRenderers.Set<FakeRating>(FakeRatingRenderer.Render);
+
             //Renderer.ElementRenderers.Set<AdaptiveOpenUrlAction>((action, context) => context.Render(action));
             //Renderer.ActionHandlers.AddSupportedAction<AdaptiveShowCardAction>()
         }
@@ -97,7 +99,7 @@ namespace WpfVisualizer
                         {
                             HandleParseError(new Exception(error.Message));
                         }
-          
+
                     }
                 }
                 catch (Exception err)
@@ -267,11 +269,6 @@ namespace WpfVisualizer
         private void toggleOptions_Click(object sender, RoutedEventArgs e)
         {
             hostConfigEditor.Visibility = hostConfigEditor.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        private void options_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _dirty = true;
         }
 
         private void hostConfigs_Selected(object sender, RoutedEventArgs e)

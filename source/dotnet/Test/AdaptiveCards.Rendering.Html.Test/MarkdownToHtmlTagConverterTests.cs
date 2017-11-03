@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using AdaptiveCards.Rendering.Html;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AdaptiveCards.Html.Test
+namespace AdaptiveCards.Rendering.Html.Test
 {
     [TestClass]
     public class MarkdownToHtmlTagConverterTests

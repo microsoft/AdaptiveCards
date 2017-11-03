@@ -10,10 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Action.OpenUrl";
 
-        public AdaptiveOpenUrlAction()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Url to open using default operating system browser

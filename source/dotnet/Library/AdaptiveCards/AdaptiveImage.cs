@@ -10,10 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Image";
 
-        public AdaptiveImage()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Size for the Image

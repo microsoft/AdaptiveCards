@@ -17,6 +17,8 @@ namespace AdaptiveCards
     {
         public const string TypeName = "AdaptiveCard";
 
+        public override string Type => TypeName;
+
         /// <summary>
         /// The latest known schema version supported by this library
         /// </summary>
@@ -28,7 +30,6 @@ namespace AdaptiveCards
         /// <param name="schemaVersion">The schema version to use</param>
         public AdaptiveCard(AdaptiveSchemaVersion schemaVersion)
         {
-            Type = TypeName;
             Version = schemaVersion;
         }
 

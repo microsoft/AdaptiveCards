@@ -9,10 +9,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Action.ShowCard";
 
-        public AdaptiveShowCardAction()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Container card to show when the action is invoked

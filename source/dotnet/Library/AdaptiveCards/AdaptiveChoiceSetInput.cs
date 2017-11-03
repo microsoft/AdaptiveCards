@@ -11,10 +11,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Input.ChoiceSet";
 
-        public AdaptiveChoiceSetInput()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///      Comma separated string of selected Choice values

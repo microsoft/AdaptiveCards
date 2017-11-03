@@ -10,10 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Input.Text";
 
-        public AdaptiveTextInput()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Placeholder text for the input desired
