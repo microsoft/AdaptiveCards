@@ -170,7 +170,7 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
 
 std::string TextBlock::ParseISO8601UsingRegex() const
 {
-	std::regex pattern("\\{\\{(DATE|TIME)\\((\\d{4})-{0,1}(\\d{2})-{0,1}(\\d{2})T(\\d{2}):{0,1}(\\d{2}):{0,1}(\\d{2})(Z|([+-])(\\d{2}):{0,1}(\\d{2}))(\\)|, S[Hh][Oo][Rr][Tt]\\)|, L[Oo][Nn][Gg]\\))\\}\\}");
+	std::regex pattern("\\{\\{(DATE|TIME)\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|([+-])(\\d{2}):{1}(\\d{2}))(\\)|, S[Hh][Oo][Rr][Tt]\\)|, L[Oo][Nn][Gg]\\))\\}\\}");
     std::smatch matches;
     std::string text = m_text;
     std::ostringstream parsedostr;
