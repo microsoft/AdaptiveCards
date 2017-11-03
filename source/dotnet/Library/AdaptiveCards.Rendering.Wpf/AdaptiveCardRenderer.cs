@@ -84,6 +84,11 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <returns></returns>
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
+            if (card == null) throw new ArgumentNullException(nameof(card));
+
+            if(card.MinVersion > SupportedSchemaVersion)
+                throw new AdaptiveSchemaException($"Payload MinVersion ({card.MinVersion}) is greater than the renderer supported version ({SupportedSchemaVersion})");
+
             RenderedAdaptiveCard renderCard = null;
 
             void Callback(object sender, AdaptiveActionEventArgs args)
@@ -103,6 +108,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             renderCard = new RenderedAdaptiveCard(element, card);
             renderCard.InputBindings = context.InputBindings;
+            renderCard.Warnings = context.Warnings;
 
             return renderCard;
         }

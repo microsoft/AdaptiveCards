@@ -54,25 +54,17 @@ namespace AdaptiveCards
         {
             var parseResult = new AdaptiveCardParseResult();
 
-            try
+            var settings = new JsonSerializerSettings
             {
-                var settings = new JsonSerializerSettings
-                {
-                    Converters =
+                Converters =
                     {
                         new AdaptiveCardConverter(parseResult),
                         new AdaptiveTypedElementConverter(parseResult),
                         new IgnoreEmptyItemsConverter<AdaptiveAction>(),
                         new IgnoreEmptyItemsConverter<AdaptiveElement>()
                     }
-                };
-                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
-            }
-            catch(Exception ex)
-            {
-                parseResult.Errors.Add(new AdaptiveViolation(ex.HResult, ex.Message));
-                 //Debugger.Break();
-            }
+            };
+            parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
 
             return parseResult;
         }

@@ -25,7 +25,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
             }
 
-
             Grid uiOuterContainer = new Grid();
             uiOuterContainer.Background = context.GetColorBrush(containerStyle.BackgroundColor);
             uiOuterContainer.Children.Add(uiContainer);

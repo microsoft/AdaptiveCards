@@ -9,11 +9,15 @@ namespace AdaptiveCards
 {
     public class AdaptiveCardParseResult
     {
+        /// <summary>
+        /// The parsed card object
+        /// </summary>
         public AdaptiveCard Card { get; set; }
 
-        public IList<AdaptiveViolation> Warnings { get; } = new List<AdaptiveViolation>();
-
-        public IList<AdaptiveViolation> Errors { get; } = new List<AdaptiveViolation>();
+        /// <summary>
+        /// If any modifications were done to the parsed card they will be reported here
+        /// </summary>
+        public IList<AdaptiveViolation> Warnings { get; } = new List<AdaptiveViolation>();   
     }
 
     public class AdaptiveViolation

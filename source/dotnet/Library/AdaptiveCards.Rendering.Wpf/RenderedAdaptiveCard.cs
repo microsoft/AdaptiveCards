@@ -20,6 +20,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
         internal Dictionary<string, Func<object>> InputBindings { get; set; } = new Dictionary<string, Func<object>>();
 
+        /// <summary>
+        /// If any modifications were done to the rendered card they will be reported here
+        /// </summary>
+        public IList<AdaptiveViolation> Warnings { get; internal set; } = new List<AdaptiveViolation>();
+
 
         /// <summary>
         /// Event handler for when user invokes an action.

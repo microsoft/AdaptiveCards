@@ -87,7 +87,7 @@ namespace AdaptiveCards
             {
                 //_parseResult.Errors.Add(new AdaptiveViolation(2, "AdaptiveCard elements must contain a 'type' property"));
                 //return null;
-                throw new JsonException("AdaptiveCard elements must contain a 'type' property");
+                throw new JsonException("Missing required 'type' property on adaptive card element");
             }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
@@ -97,7 +97,7 @@ namespace AdaptiveCards
                 return result;
             }
 
-            _parseResult.Warnings.Add(new AdaptiveViolation(5, $"Unknown element type {typeName}"));
+            _parseResult.Warnings.Add(new AdaptiveViolation(5, $"Unknown element type '{typeName}'"));
             return null;
         }
 

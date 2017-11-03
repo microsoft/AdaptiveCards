@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -37,13 +38,11 @@ namespace AdaptiveCards
 
             serializer.Populate(jObject.CreateReader(), card);
 
-            // TODO: return parse result error that version must be specified
             // If this is the root AdaptiveCard and missing a version we fail parsing. 
             // The depth checks that cards within a Action.ShowCard don't require the version
             if (reader.Depth == 0 && card.Version == null)
             {
-                _parseResult.Errors.Add(new AdaptiveViolation(1, "Missing version"));
-                return null;
+                throw new AdaptiveSchemaException("Missing required property 'version' on AdaptiveCard");
             }
 
             return card;
@@ -52,6 +51,21 @@ namespace AdaptiveCards
         public override bool CanConvert(Type objectType)
         {
             return typeof(AdaptiveCard).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+        }
+    }
+
+    public class AdaptiveSchemaException : Exception
+    {
+        public AdaptiveSchemaException()
+        {
+        }
+
+        public AdaptiveSchemaException(string message) : base(message)
+        {
+        }
+
+        public AdaptiveSchemaException(string message, Exception innerException) : base(message, innerException)
+        {
         }
     }
 }

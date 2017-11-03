@@ -26,6 +26,5 @@ namespace AdaptiveCards.Rendering
         /// The dictionary of supported element types and their associated rendering functions
         /// </summary>
         public AdaptiveElementRenderers<TUIElement, TContext> ElementRenderers { get; } = new AdaptiveElementRenderers<TUIElement, TContext>();
-
     }
 }

@@ -11,6 +11,7 @@ namespace AdaptiveCards.Rendering.Wpf
     public class AdaptiveRenderContext
     {
         private readonly Func<string, MemoryStream> _imageResolver;
+        private readonly AdaptiveCardParseResult _parseResult;
 
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
             Action<object, MissingInputEventArgs> missingDataCallback,
@@ -26,6 +27,8 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         public AdaptiveHostConfig Config { get; set; } = new AdaptiveHostConfig();
+
+        public IList<AdaptiveViolation> Warnings { get; } = new List<AdaptiveViolation>();
 
         public AdaptiveElementRenderers<FrameworkElement, AdaptiveRenderContext> ElementRenderers { get; set; }
 
@@ -120,7 +123,16 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         public FrameworkElement Render(AdaptiveTypedElement element)
         {
-            return ElementRenderers.Get(element.GetType())(element, this);
+            var renderer = ElementRenderers.Get(element.GetType());
+            if (renderer != null)
+            {
+                return renderer.Invoke(element, this);
+            }
+            else
+            {
+                Warnings.Add(new AdaptiveViolation(-1, $"No renderer for element type '{element.Type}'"));
+                return null;
+            }
         }
 
         public Dictionary<string, Func<object>> InputBindings = new Dictionary<string, Func<object>>();

@@ -19,17 +19,25 @@ namespace AdaptiveCards
             if (versionString == null)
                 throw new ArgumentException(nameof(versionString));
 
-            var splits = versionString.Split('.');
-            var major = int.Parse(splits[0]);
-
-            var minor = 0;
-            if (splits.Length > 1)
+            try
             {
-                minor = int.Parse(splits[1]);
-            }
+                var splits = versionString.Split('.');
+                var major = int.Parse(splits[0]);
 
-            Major = major;
-            Minor = minor;
+                var minor = 0;
+                if (splits.Length > 1)
+                {
+                    minor = int.Parse(splits[1]);
+                }
+
+                Major = major;
+                Minor = minor;
+            }
+            catch (Exception ex)
+            {
+                throw new JsonReaderException($"'{versionString}' is not a valid version identifier", ex);
+            }
+    
         }
 
         public AdaptiveSchemaVersion(int major, int minor)

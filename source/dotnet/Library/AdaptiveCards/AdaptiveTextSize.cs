@@ -16,7 +16,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Default text size
         /// </summary>
-        [Obsolete("TextSize.Normal has been deprecated.  Use TextSize.Default", false)]
+        [Obsolete("TextSize.Normal has been deprecated.  Use Default", false)]
         Normal = 0,
 
         /// <summary>
