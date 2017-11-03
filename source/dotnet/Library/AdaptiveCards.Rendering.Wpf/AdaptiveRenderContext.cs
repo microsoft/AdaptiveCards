@@ -11,7 +11,6 @@ namespace AdaptiveCards.Rendering.Wpf
     public class AdaptiveRenderContext
     {
         private readonly Func<string, MemoryStream> _imageResolver;
-        private readonly AdaptiveCardParseResult _parseResult;
 
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
             Action<object, MissingInputEventArgs> missingDataCallback,

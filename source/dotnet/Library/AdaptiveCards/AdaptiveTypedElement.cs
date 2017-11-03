@@ -4,7 +4,6 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
-
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public abstract class AdaptiveTypedElement
     {
@@ -14,6 +13,13 @@ namespace AdaptiveCards
         [JsonProperty(Order = -10, Required = Required.Always)]
         [JsonRequired]
         public abstract string Type { get; }
+
+        /// <summary>
+        /// A unique ID associated with the element
+        /// </summary>
+        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Id { get; set; }
+
 
         /// <summary>
         /// A unique ID associated with the element

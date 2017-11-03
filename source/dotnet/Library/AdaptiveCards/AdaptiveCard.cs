@@ -66,7 +66,7 @@ namespace AdaptiveCards
             };
             parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
 
-            return parseResult;
+            return parseResult;            
         }
 
         public const string ContentType = "application/vnd.microsoft.card.adaptive";

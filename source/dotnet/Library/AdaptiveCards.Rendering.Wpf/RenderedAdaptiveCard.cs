@@ -25,7 +25,6 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         public IList<AdaptiveViolation> Warnings { get; internal set; } = new List<AdaptiveViolation>();
 
-
         /// <summary>
         /// Event handler for when user invokes an action.
         /// </summary>

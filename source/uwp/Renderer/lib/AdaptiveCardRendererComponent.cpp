@@ -20,12 +20,14 @@
 #include "AdaptiveTimeInputRenderer.h"
 #include "AdaptiveToggleInputRenderer.h"
 #include "AsyncOperations.h"
+#include "DefaultResourceDictionary.h"
 #include "InputItem.h"
 #include "RenderedAdaptiveCard.h"
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
 #include <windows.foundation.collections.h>
 #include <Windows.UI.Xaml.h>
+#include <windows.ui.xaml.markup.h>
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
@@ -39,6 +41,7 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Core;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
@@ -50,14 +53,21 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
         RETURN_IF_FAILED(RegisterDefaultElementRenderers());
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
+        InitializeDefaultResourceDictionary();
         return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardRenderer::SetOverrideStyles(ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
+    HRESULT AdaptiveCardRenderer::put_OverrideStyles(ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
     {
         m_overrideDictionary = overrideDictionary;
-        return S_OK;
+        return SetMergedDictionary();
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardRenderer::get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary)
+    {
+        return m_overrideDictionary.CopyTo(overrideDictionary);
     }
 
     _Use_decl_annotations_
@@ -106,11 +116,6 @@ namespace AdaptiveCards { namespace Uwp
         {
             ComPtr<IUIElement> xamlTreeRoot;
 
-            if (m_overrideDictionary != nullptr)
-            {
-                RETURN_IF_FAILED(xamlBuilder.SetOverrideDictionary(m_overrideDictionary.Get()));
-            }
-
             if (m_explicitDimensions)
             {
                 RETURN_IF_FAILED(xamlBuilder.SetFixedDimensions(m_desiredWidth, m_desiredHeight));
@@ -122,6 +127,7 @@ namespace AdaptiveCards { namespace Uwp
                 m_hostConfig.Get(),
                 m_elementRendererRegistration.Get(),
                 m_resourceResolvers.Get(),
+                m_mergedResourceDictionary.Get(),
                 renderedCard.Get()));
 
             // This path is used for synchronous Xaml card rendering, so we don't want
@@ -234,9 +240,9 @@ namespace AdaptiveCards { namespace Uwp
         return m_resourceResolvers.CopyTo(value);
     }
 
-    ABI::Windows::UI::Xaml::IResourceDictionary* AdaptiveCardRenderer::GetOverrideDictionary()
+    ComPtr<IResourceDictionary> AdaptiveCardRenderer::GetMergedDictionary()
     {
-        return m_overrideDictionary.Get();
+        return m_mergedResourceDictionary;
     }
 
     bool AdaptiveCardRenderer::GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height)
@@ -257,6 +263,33 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveCardRenderer::get_ElementRenderers(IAdaptiveElementRendererRegistration **value)
     {
         return m_elementRendererRegistration.CopyTo(value);
+    }
+
+    void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
+    {
+        ComPtr<IXamlReaderStatics> xamlReaderStatics;
+        THROW_IF_FAILED(RoGetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Markup_XamlReader).Get(),
+            __uuidof(IXamlReaderStatics), reinterpret_cast<void**>(xamlReaderStatics.GetAddressOf())));
+
+        ComPtr<IInspectable> resourceDictionaryInspectable;
+        THROW_IF_FAILED(xamlReaderStatics->Load(HStringReference(c_defaultResourceDictionary).Get(), &resourceDictionaryInspectable));
+        ComPtr<IResourceDictionary> resourceDictionary;
+        THROW_IF_FAILED(resourceDictionaryInspectable.As(&resourceDictionary));
+
+        m_mergedResourceDictionary = resourceDictionary;
+        m_defaultResourceDictionary = resourceDictionary;
+    }
+
+    HRESULT AdaptiveCardRenderer::SetMergedDictionary()
+    {
+        if (m_overrideDictionary != nullptr)
+        {
+            m_mergedResourceDictionary = m_overrideDictionary;
+            ComPtr<IVector<ResourceDictionary*>> mergedDictionaries;
+            RETURN_IF_FAILED(m_mergedResourceDictionary->get_MergedDictionaries(&mergedDictionaries));
+            RETURN_IF_FAILED(mergedDictionaries->Append(m_defaultResourceDictionary.Get()));
+        }
+        return S_OK;
     }
 
     _Use_decl_annotations_

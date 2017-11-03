@@ -5,6 +5,7 @@
 #include "AdaptiveTextInputRenderer.h"
 #include "enums.h"
 #include "Util.h"
+#include "XamlBuilder.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -25,7 +26,7 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder.BuildTextInput(cardElement, renderContext, renderArgs, result);
+        XamlBuilder::BuildTextInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
 

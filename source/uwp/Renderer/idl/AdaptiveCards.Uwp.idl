@@ -76,6 +76,8 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTimeInputRenderer;
         runtimeclass AdaptiveToggleInputRenderer;
 
+        runtimeclass WholeItemsPanel;
+
         interface IAdaptiveCardResourceResolvers;
         interface IAdaptiveCardResourceResolver;
         interface IAdaptiveCardGetResourceStreamArgs;
@@ -134,6 +136,8 @@ namespace AdaptiveCards
         interface IAdaptiveRenderContext;
         interface IAdaptiveRenderArgs;
         interface IAdaptiveActionInvoker;
+
+        interface IWholeItemsPanel;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -887,7 +891,9 @@ namespace AdaptiveCards
             [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** hostConfig);
             [propput] HRESULT HostConfig([in] AdaptiveHostConfig* hostConfig);
 
-            HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
+            [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
+            [propput] HRESULT OverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
+
             HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
             HRESULT ResetFixedDimensions();
 
@@ -1760,6 +1766,8 @@ namespace AdaptiveCards
 
             [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
 
+            [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
+
             HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
         };
 
@@ -1939,6 +1947,25 @@ namespace AdaptiveCards
         {
             [default] interface IAdaptiveRenderArgs;
         };
+
+        [uuid(cced6652-8ca5-4841-b650-851770ec6ecf)]
+        [exclusiveto(WholeItemsPanel)]
+        [version(NTDDI_WIN10_RS1)]
+        interface IWholeItemsPanel : IInspectable
+        {
+            HRESULT GetAltText([out, retval] HSTRING *pResult);
+            HRESULT IsAllContentClippedOut([out, retval] boolean* pResult);
+            HRESULT IsTruncated([out, retval] boolean* pResult);
+        }
+
+        [version(NTDDI_WIN10_RS1)]
+        [activatable(NTDDI_WIN10_RS1)]
+        [threading(both)]
+        [marshaling_behavior(agile)]
+        runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
+        {
+            [default] interface IWholeItemsPanel;
+        }
 
     }
 }
