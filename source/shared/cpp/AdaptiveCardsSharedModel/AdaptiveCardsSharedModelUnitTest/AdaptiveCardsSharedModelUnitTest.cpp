@@ -185,15 +185,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<string>("You have arrived in New York on 10/27/17 at 07:27:00 PM", blck.GetText());
         }
 
-        TEST_METHOD(LoacleDependentDateTest)
-        {
-            TextBlock blck;
-            // New York 
-            string testString = "You will arrived in Seattle on {{DATE(2017-10-27T22:27:00-04:00, SHORT)}} at {{TIME(2017-10-27T22:27:00-04:00, SHORT)}}";
-            blck.SetText(testString);
-            Assert::AreEqual<string>("You will arrived in Seattle on 10/27/17 at 07:27:00 PM", blck.GetText());
-        }
-
         TEST_METHOD(prefixStringISO8650sufixStringTest)
         {
             TextBlock blck;

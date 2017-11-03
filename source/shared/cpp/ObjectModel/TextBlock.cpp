@@ -197,7 +197,7 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         &parsedTm.tm_sec, &hr, &mn}; 
     std::vector<int> indexer = {YEAR, Month, Day, Hour, Min, Sec, TZHr, TZMn};
 
-    while(std::regex_search (text, matches, pattern))
+    while(std::regex_search(text, matches, pattern))
     {
 		parsedostr << matches.prefix().str();
 
@@ -267,7 +267,7 @@ std::string TextBlock::ParseISO8601UsingRegex() const
             {
                 if(isShort)
                 {
-                    parsedostr << std::put_time(&result, "%x");
+                    parsedostr << std::put_time(&result, "%Ex");
                 }
                 else
                 {
