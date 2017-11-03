@@ -137,7 +137,6 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IFrameworkElement> childElementContainerAsFE;
         THROW_IF_FAILED(rootElement.As(&childElementContainerAsFE));
 
-
         // Enumerate the child items of the card and build xaml for them
         ComPtr<IVector<IAdaptiveCardElement*>> body;
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
@@ -438,7 +437,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::SetImageOnUIElement(
         _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri,
         T* uiElement,
-        IAdaptiveCardResourceResolvers *resolvers)
+        IAdaptiveCardResourceResolvers* resolvers)
     {
         // Get the resource resolvers
         ComPtr<IAdaptiveCardResourceResolvers> localResolvers(resolvers);
@@ -1197,6 +1196,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(xamlTextBlock.CopyTo(textBlockControl));
     }
 
+    _Use_decl_annotations_
     HRESULT XamlBuilder::SetAutoImageSize(IFrameworkElement* imageControl, IInspectable* parentElement, IBitmapSource* imageSource)
     {
         INT32 pixelHeight;
@@ -1285,7 +1285,8 @@ namespace AdaptiveCards { namespace Uwp
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
             THROW_IF_FAILED(ellipse.As(&frameworkElement));
-            // Check if the image source fits in the parent container, if so, set the ellipse's size to match the original image.
+
+            // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
             if (size == ABI::AdaptiveCards::Uwp::ImageSize::Auto && parentElement != nullptr)
             {
                 ComPtr<IBrush> ellipseBrush;
@@ -1296,16 +1297,15 @@ namespace AdaptiveCards { namespace Uwp
                 ComPtr<IUIElement> ellipseAsUIElement;
                 THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
 
-                // Collapse the Image Control while the image loads, so that resizing is not noticeable
+                // Collapse the Ellipse while the image loads, so that resizing is not noticeable
                 ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed);
                 ComPtr<IImageSource> imageSource;
                 THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
                 ComPtr<IBitmapSource> imageSourceAsBitmap;
                 THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
 
-                EventRegistrationToken eventToken;
-
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                EventRegistrationToken eventToken;
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>(
                     [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
@@ -1339,11 +1339,11 @@ namespace AdaptiveCards { namespace Uwp
                 ComPtr<IUIElement> imageAsUIElement;
                 THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
 
-                //Collapse the Image Control while the image loads, so that resizing is not noticeable
+                //Collapse the Image control while the image loads, so that resizing is not noticeable
                 THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-                EventRegistrationToken eventToken;
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
                     [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
