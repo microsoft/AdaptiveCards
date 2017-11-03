@@ -1938,8 +1938,8 @@ namespace AdaptiveCards
         {
             [propget] HRESULT ContainerStyle([out, retval] ContainerStyle* value);
             [propput] HRESULT ContainerStyle([in] ContainerStyle value);
-            [propget] HRESULT ParentElement([out, retval] Windows.UI.Xaml.FrameworkElement** value);
-            [propput] HRESULT ParentElement([in] Windows.UI.Xaml.FrameworkElement* value);
+            [propget] HRESULT ParentElement([out, retval] IInspectable** value);
+            [propput] HRESULT ParentElement([in] IInspectable* value);
         };
 
         [

@@ -145,8 +145,7 @@ namespace AdaptiveCards { namespace Uwp
         void SetImageOnUIElement(
             _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
             T* uiElement,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers* resolvers,
-            ABI::Windows::UI::Xaml::IFrameworkElement* parentElement);
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers* resolvers);
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();
@@ -220,6 +219,11 @@ namespace AdaptiveCards { namespace Uwp
             _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
 
         static HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
+
+        static HRESULT SetAutoImageSize(
+            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
+            _In_ IInspectable* parentElement,
+            _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource);
 
     };
 }}

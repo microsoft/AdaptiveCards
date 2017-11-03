@@ -17,7 +17,7 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
-        ABI::Windows::UI::Xaml::IFrameworkElement *parentElement) noexcept try
+        IInspectable* parentElement) noexcept try
     {
         m_containerStyle = containerStyle;
         m_parentElement = parentElement;
@@ -39,13 +39,13 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderArgs::get_ParentElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value)
+    HRESULT AdaptiveRenderArgs::get_ParentElement(_COM_Outptr_ IInspectable** value)
     {
         return m_parentElement.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderArgs::put_ParentElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value)
+    HRESULT AdaptiveRenderArgs::put_ParentElement(_In_ IInspectable* value)
     {
         m_parentElement = value;
         return S_OK;

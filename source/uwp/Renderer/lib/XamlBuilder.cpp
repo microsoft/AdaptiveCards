@@ -438,8 +438,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::SetImageOnUIElement(
         _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri,
         T* uiElement,
-        IAdaptiveCardResourceResolvers *resolvers,
-        IFrameworkElement* parentElement)
+        IAdaptiveCardResourceResolvers *resolvers)
     {
         // Get the resource resolvers
         ComPtr<IAdaptiveCardResourceResolvers> localResolvers(resolvers);
@@ -1198,6 +1197,43 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(xamlTextBlock.CopyTo(textBlockControl));
     }
 
+    HRESULT XamlBuilder::SetAutoImageSize(IFrameworkElement* imageControl, IInspectable* parentElement, IBitmapSource* imageSource)
+    {
+        INT32 pixelHeight;
+        RETURN_IF_FAILED(imageSource->get_PixelHeight(&pixelHeight));
+        INT32 pixelWidth;
+        RETURN_IF_FAILED(imageSource->get_PixelWidth(&pixelWidth));
+        DOUBLE parentHeight;
+        DOUBLE parentWidth;
+        ComPtr<IInspectable> localParentElement(parentElement);
+        ComPtr<IFrameworkElement> localElement(imageControl);
+        ComPtr<IColumnDefinition> parentAsColumnDefinition;
+        ComPtr<IFrameworkElement> parentAsFrameworkElement;
+        if (SUCCEEDED(localParentElement.As(&parentAsColumnDefinition)))
+        {
+            RETURN_IF_FAILED(parentAsColumnDefinition->get_ActualWidth(&parentWidth));
+            if (pixelWidth <= parentWidth)
+            {
+                RETURN_IF_FAILED(localElement->put_Width(pixelWidth));
+            }
+        }
+        else if (SUCCEEDED(localParentElement.As(&parentAsFrameworkElement)))
+        {
+            RETURN_IF_FAILED(parentAsFrameworkElement->get_ActualWidth(&parentWidth));
+            RETURN_IF_FAILED(parentAsFrameworkElement->get_ActualHeight(&parentHeight));
+            if (pixelHeight <= parentHeight && pixelWidth <= parentWidth)
+            {
+                RETURN_IF_FAILED(localElement->put_Height(pixelHeight));
+                RETURN_IF_FAILED(localElement->put_Width(pixelWidth));
+            }
+        }
+
+        ComPtr<IUIElement> frameworkElementAsUIElement;
+        RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
+        RETURN_IF_FAILED(frameworkElementAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+        return S_OK;
+    }
+
     _Use_decl_annotations_
     void XamlBuilder::BuildImage(
         IAdaptiveCardElement* adaptiveCardElement,
@@ -1233,10 +1269,8 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
         {
-            ComPtr<IFrameworkElement> parentElement;
-            THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
             ComPtr<IEllipse> ellipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
-            SetImageOnUIElement(imageUri.Get(), ellipse.Get(), resourceResolvers.Get(), parentElement.Get());
+            SetImageOnUIElement(imageUri.Get(), ellipse.Get(), resourceResolvers.Get());
 
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
@@ -1248,6 +1282,8 @@ namespace AdaptiveCards { namespace Uwp
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(Stretch::Stretch_UniformToFill));
             }
 
+            ComPtr<IInspectable> parentElement;
+            THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
             THROW_IF_FAILED(ellipse.As(&frameworkElement));
             // Check if the image source fits in the parent container, if so, set the ellipse's size to match the original image.
             if (size == ABI::AdaptiveCards::Uwp::ImageSize::Auto && parentElement != nullptr)
@@ -1259,79 +1295,60 @@ namespace AdaptiveCards { namespace Uwp
 
                 ComPtr<IUIElement> ellipseAsUIElement;
                 THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
-                ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed);
-                EventRegistrationToken eventToken;
-                brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>([frameworkElement, parentElement, brushAsImageBrush, ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-                {
-                    ComPtr<IImageSource> imageSource;
-                    RETURN_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
-                    ComPtr<IBitmapSource> imageSourceAsBitmap;
-                    RETURN_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-                    INT32 pixelHeight;
-                    RETURN_IF_FAILED(imageSourceAsBitmap->get_PixelHeight(&pixelHeight));
-                    INT32 pixelWidth;
-                    RETURN_IF_FAILED(imageSourceAsBitmap->get_PixelWidth(&pixelWidth));
-                    DOUBLE parentHeight;
-                    RETURN_IF_FAILED(parentElement->get_ActualHeight(&parentHeight));
-                    DOUBLE parentWidth;
-                    RETURN_IF_FAILED(parentElement->get_ActualWidth(&parentWidth));
 
-                    if (pixelHeight <= parentHeight && pixelWidth <= parentWidth)
-                    {
-                        RETURN_IF_FAILED(frameworkElement->put_Height(pixelHeight));
-                        RETURN_IF_FAILED(frameworkElement->put_Width(pixelWidth));
-                    }
-                    ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible);
-                    return S_OK;
-                }).Get(), &eventToken);
+                // Collapse the Image Control while the image loads, so that resizing is not noticeable
+                ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed);
+                ComPtr<IImageSource> imageSource;
+                THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
+                ComPtr<IBitmapSource> imageSourceAsBitmap;
+                THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
+
+                EventRegistrationToken eventToken;
+
+                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>(
+                    [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                {
+                    return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                }).Get(), &eventToken));
             }
         }
         else
         {
-            ComPtr<IFrameworkElement> parentElement;
-            THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
             ComPtr<IImage> xamlImage = XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
-            SetImageOnUIElement(imageUri.Get(), xamlImage.Get(), resourceResolvers.Get(), parentElement.Get());
+            SetImageOnUIElement(imageUri.Get(), xamlImage.Get(), resourceResolvers.Get());
             THROW_IF_FAILED(xamlImage.As(&frameworkElement));
             switch (size)
             {
                 case ABI::AdaptiveCards::Uwp::ImageSize::None:
                 case ABI::AdaptiveCards::Uwp::ImageSize::Stretch:
+                case ABI::AdaptiveCards::Uwp::ImageSize::Auto:
                     THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_Uniform));
                     break;
-                case ABI::AdaptiveCards::Uwp::ImageSize::Auto:
-                    THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_None));
-                    ComPtr<IUIElement> imageAsUIElement;
-                    THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
-                    if (parentElement != nullptr)
-                    {
-                        imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed);
-                        EventRegistrationToken eventToken;
-                        // Subscribe to ImageOpened event so we can check the imageSource's size to determine if we should scale down by setting stretch to Uniform
-                        xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>([parentElement, xamlImage, imageAsUIElement, frameworkElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-                        {
-                            ComPtr<IImageSource> imageSource;
-                            RETURN_IF_FAILED(xamlImage->get_Source(&imageSource));
-                            ComPtr<IBitmapSource> imageSourceAsBitmap;
-                            RETURN_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-                            INT32 pixelHeight;
-                            RETURN_IF_FAILED(imageSourceAsBitmap->get_PixelHeight(&pixelHeight));
-                            INT32 pixelWidth;
-                            RETURN_IF_FAILED(imageSourceAsBitmap->get_PixelWidth(&pixelWidth));
-                            DOUBLE parentHeight;
-                            RETURN_IF_FAILED(parentElement->get_ActualHeight(&parentHeight));
-                            DOUBLE parentWidth;
-                            RETURN_IF_FAILED(parentElement->get_ActualWidth(&parentWidth));
+            }
 
-                            if (parentHeight < pixelHeight || parentWidth < pixelWidth)
-                            {
-                                RETURN_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_Uniform));
-                            }
-                            imageAsUIElement->put_Visibility(Visibility::Visibility_Visible);
-                            return S_OK;
-                        }).Get(), &eventToken);
-                    }
-                    break;
+            ComPtr<IInspectable> parentElement;
+            THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
+            if (parentElement != nullptr && size == ABI::AdaptiveCards::Uwp::ImageSize::Auto)
+            {
+                ComPtr<IImageSource> imageSource;
+                THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
+                ComPtr<IBitmapSource> imageSourceAsBitmap;
+                THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
+
+                ComPtr<IUIElement> imageAsUIElement;
+                THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
+
+                //Collapse the Image Control while the image loads, so that resizing is not noticeable
+                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                EventRegistrationToken eventToken;
+
+                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+                    [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                {
+                    return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                }).Get(), &eventToken));
             }
         }
 
@@ -1569,13 +1586,8 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
         ComPtr<IAdaptiveElementRenderer> columnRenderer;
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Column").Get(), &columnRenderer));
-        ComPtr<IAdaptiveRenderArgs> columnRenderArgs;
-        ABI::AdaptiveCards::Uwp::ContainerStyle style;
-        THROW_IF_FAILED(renderArgs->get_ContainerStyle(&style));
-        ComPtr<IFrameworkElement> gridAsFrameworkElement;
-        THROW_IF_FAILED(xamlGrid.As(&gridAsFrameworkElement));
-        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&columnRenderArgs, style, gridAsFrameworkElement.Get()));
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, columnRenderArgs, columnRenderer](IAdaptiveColumn* column)
+
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer](IAdaptiveColumn* column)
         {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
@@ -1648,6 +1660,11 @@ namespace AdaptiveCards { namespace Uwp
 
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
             THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
+
+            ComPtr<IAdaptiveRenderArgs> columnRenderArgs;
+            ABI::AdaptiveCards::Uwp::ContainerStyle style;
+            THROW_IF_FAILED(renderArgs->get_ContainerStyle(&style));
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&columnRenderArgs, style, columnDefinition.Get()));
 
             // Build the Column
             ComPtr<IUIElement> xamlColumn;

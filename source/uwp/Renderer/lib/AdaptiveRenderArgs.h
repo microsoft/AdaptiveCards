@@ -16,16 +16,16 @@ namespace AdaptiveCards { namespace Uwp
 
         HRESULT RuntimeClassInitialize(
             ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
-            ABI::Windows::UI::Xaml::IFrameworkElement* parentElement) noexcept;
+            IInspectable* parentElement) noexcept;
 
         IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveCards::Uwp::ContainerStyle *value);
         IFACEMETHODIMP put_ContainerStyle(_In_ ABI::AdaptiveCards::Uwp::ContainerStyle value);
-        IFACEMETHODIMP get_ParentElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value);
-        IFACEMETHODIMP put_ParentElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
+        IFACEMETHODIMP get_ParentElement(_COM_Outptr_ IInspectable** value);
+        IFACEMETHODIMP put_ParentElement(_In_ IInspectable* value);
 
     private:
         ABI::AdaptiveCards::Uwp::ContainerStyle m_containerStyle;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_parentElement;
+        Microsoft::WRL::ComPtr<IInspectable> m_parentElement;
     };
 
     ActivatableClass(AdaptiveRenderArgs);
