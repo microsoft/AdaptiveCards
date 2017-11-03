@@ -196,10 +196,8 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         Format,
     };
 
-	bool hasSucceded = false;
     while(std::regex_search (text, matches, pattern))
     {
-		bool hasSucceded = true;
 		parsedostr << matches.prefix().str();
 
         if(matches[IsDate].matched)
@@ -292,10 +290,7 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         isShort = true;
     }
 
-	if(!hasSucceded)
-	{
-		parsedostr << text;
-	}
+    parsedostr << text;
 
 	return parsedostr.str();
 }
