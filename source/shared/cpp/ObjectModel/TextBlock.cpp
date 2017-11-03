@@ -176,11 +176,6 @@ std::string TextBlock::ParseISO8601UsingRegex() const
     std::ostringstream parsedostr;
     time_t offset = 0; 
     bool isDate = false, isShort = true;
-    int factor = 1, hr = 0, mn = 0;
-    struct tm parsedTm = { 0 };
-    int *addrs[]  = { 0, 0, &parsedTm.tm_year, &parsedTm.tm_mon, 
-        &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min, 
-        &parsedTm.tm_sec}; 
     enum MatchIndex
     {
         IsDate = 1,
@@ -195,6 +190,12 @@ std::string TextBlock::ParseISO8601UsingRegex() const
 		TZMn,
         Format,
     };
+    int factor = 1, hr = 0, mn = 0;
+    struct tm parsedTm = { 0 };
+    int *addrs[]  = {&parsedTm.tm_year, &parsedTm.tm_mon, 
+        &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min, 
+        &parsedTm.tm_sec, &hr, &mn}; 
+    std::vector<int> indexer = {YEAR, Month, Day, Hour, Min, Sec, TZHr, TZMn};
 
     while(std::regex_search (text, matches, pattern))
     {
@@ -204,11 +205,12 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         {
             isDate = (matches[IsDate].str()[0] == 'D')? true : false;
         }
-        for(int idx = YEAR; idx < TimeZone; idx++)
+
+        for(int idx = 0; idx < indexer.size(); idx++) 
         { 
-            if(matches[idx].matched)
+            if(matches[indexer[idx]].matched)
             {
-                *addrs[idx] = stoi(matches[idx]);
+                *addrs[idx] = stoi(matches[indexer[idx]]);
             }
         }
 
@@ -227,11 +229,6 @@ std::string TextBlock::ParseISO8601UsingRegex() const
 
         parsedTm.tm_year -= 1900;
         parsedTm.tm_mon  -= 1;
-
-		if(matches[TZHr].matched)
-			hr = stoi(matches[TZHr]);
-		if(matches[TZMn].matched)
-			mn = stoi(matches[TZMn]);
 
         hr *= 3600;
         mn *= 60;
