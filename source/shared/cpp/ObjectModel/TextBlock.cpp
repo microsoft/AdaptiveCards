@@ -1,3 +1,6 @@
+#include <iomanip>
+#include <regex>
+#include <iostream>
 #include "TextBlock.h"
 #include "ParseUtil.h"
 
@@ -86,7 +89,7 @@ Json::Value TextBlock::SerializeToJsonValue()
 
 std::string TextBlock::GetText() const
 {
-	return parseISO8601(m_text.begin(), m_text.end());
+    return ParseISO8601UsingRegex();
 }
 
 void TextBlock::SetText(const std::string value)
@@ -165,330 +168,134 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
-bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::const_iterator &end, 
-	bool &isDate, std::ostringstream &parsedostr, std::ostringstream &ostr) const
+std::string TextBlock::ParseISO8601UsingRegex() const
 {
-    enum ParsingState
-    {
-        NoneParsed = 0x1,
-        PassedBracketTest = 0x4,
-        DateAndTimeDetected = 0x8,
-        FinalCheck = 0x10,
-        DoneCheck = 0x20,
-    };
-    const int cnts = 3;
-    int idx = 0, gateKeeper = NoneParsed;
-    const char *patterns[] = {"IME", "ATE"}; 
-    for(; itr != end && gateKeeper != DoneCheck; itr++)
-    {
-		if(*itr == '{')
-		{
-            gateKeeper <<= 1;
-			ostr << *itr;
-            continue;
-        }
-
-        if(gateKeeper & PassedBracketTest && (*itr == 'D' || *itr == 'T'))
-        {
-            if(*itr == 'D')
-            {
-                isDate = true;
-            }
-            gateKeeper <<= 1;
-			ostr << *itr;
-            continue;
-        }
-
-        if(gateKeeper & DateAndTimeDetected) 
-        {
-            if(idx < cnts && patterns[(int) isDate][idx++] == toupper(*itr))
-            {
-                if(idx == cnts)
-                {
-					gateKeeper = FinalCheck;
-                }
-				ostr << *itr;
-                continue;
-            }
-        }
-
-        if((gateKeeper & FinalCheck) && *itr == '(')
-        {
-            gateKeeper = DoneCheck;
-			ostr << *itr;
-            continue;
-        }
-
-        gateKeeper = NoneParsed;
-        isDate = false;
-        idx = 0;
-        parsedostr << ostr.str() << *itr;
-        ostr.str("");
-        ostr.clear();
-	}
-
-    return gateKeeper == DoneCheck;
-}
-
-bool TextBlock::ISO8601ToTm(std::string::const_iterator &begin, 
-        std::string::const_iterator &end, struct tm* result, std::ostringstream &ostr) const
-{
-	std::vector<std::string> tempValueHolders(8);
-	unsigned int idxMap[] = { 4, 2, 2, 2, 2, 2, 2, 2 };
-	unsigned int idx = 0;
-	int factor = 1, hr = 0, mn = 0;
-	time_t offset = 0; 
-	struct tm parsedTm = { 0 };
-	bool isDone = false, bPassedGate = false, isFailed = false;
-    int *addrs[]  = { &parsedTm.tm_year, &parsedTm.tm_mon, 
-        &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min, 
-        &parsedTm.tm_sec, &hr, &mn}; 
-
-    enum ParsingState
-    {
-        BeginParsing     = 0x000001,
-        DateParsing      = 0x0000FE,
-        TimeParsingBegin = 0x000100,
-        TimeParsing      = 0x003E00,
-        TZParsingBegin   = 0x004000,
-        TZParsing        = 0x380000,
-        DoneParsing      = 0x400000,
-    };
-
-    int curState = BeginParsing;
-
-	for(; begin != end && !isDone && !isFailed && idx < tempValueHolders.size(); begin++)
-	{
-        ostr << *begin;
-
-		if(isdigit(*begin))
-		{
-			tempValueHolders[idx] += *begin;
-
-			if(--idxMap[idx] == 0)
-			{
-                *addrs[idx] = stoi(tempValueHolders[idx]);
-				++idx;
-			}
-			curState <<= 1;
-			continue;
-		}
-
-		if(((curState & DateParsing) && (*begin != '-')) ||
-            ((curState & TimeParsingBegin) && (*begin != 'T')) ||
-		    ((curState & (TimeParsing | TZParsing)) && (*begin != ':')) ||
-            ((curState & DoneParsing) && (*begin != ',' || *begin != ')')))
-        {
-            isFailed = true;
-			continue;
-		}
-
-		if(curState & TZParsingBegin) 
-		{
-            switch(*begin)
-            {
-                case 'Z': case 'z':
-                {
-                    factor = 0;
-                    isDone = true;
-                    continue;
-                }
-
-                case '+':
-                {
-                    factor = -1;
-                }
-
-                case '-':
-                {
-                    continue;
-                }
-                default:
-                {
-                    isFailed = true;
-                    continue;
-                }
-            }
-		}
-	}
-
-	if(isFailed)
-	{ 
-		return false;
-	}
-
-	parsedTm.tm_year -= 1900;
-	parsedTm.tm_mon  -= 1;
-    hr *= 3600;
-    mn *= 60;
-    offset = (hr + mn) * factor;
-
-	time_t utc;
-    // converts to ticks
-	utc = mktime(&parsedTm);
-    if(utc == -1)
-    {
-        return false;
-    }
-
-	char tzOffsetBuff[6] = { 0 };
-    // gets local time zone offset
-	strftime(tzOffsetBuff, 6, "%z", &parsedTm);
-	std::string localTimeZoneOffsetStr(tzOffsetBuff);
-	int nTzOffset = std::stoi(localTimeZoneOffsetStr);
-	offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
-    // add offset to utc
-	utc += offset;
-    // converts to local time from utc
-	if(!localtime_s(result, &utc))
-	{
-        // localtime_s double counts daylight saving time
-		if(result->tm_isdst == 1)
-			result->tm_hour -= 1;
-		return true;
-	}
-
-    return false;
-}
-
-bool TextBlock::completeParsing(std::string::const_iterator &begin, 
-        std::string::const_iterator &end, bool &isShort, std::ostringstream &ostr) const
-{
-    enum  ParsingState
-    {
-        NoneParsed = 0x1,
-        ShortAndLongDetected = 0x2,
-        ParenthesisCheck = 0x4,
-        FirstBracketCheck = 0x8,
-        SecondBracketCheck = 0x10,
-        DoneCheck = 0x20,
-        FailedCheck = 0x40,
-    };
-
-    unsigned int idx = 0; 
-    int gateKeeper = NoneParsed;
-    const std::vector<std::string> patterns = {"ONG", "HORT"}; 
-
-    for(; begin != end && !(gateKeeper & (DoneCheck | FailedCheck)); begin++)
-    {
-        ostr << *begin;
-
-        if(gateKeeper & NoneParsed) 
-        {
-            if(toupper(*begin) == 'S' || toupper(*begin) =='L')
-            {
-                isShort = (toupper(*begin) == 'S')? true : false;
-                gateKeeper <<= 1;
-                continue;
-
-            }
-
-            if(*begin == '}')
-            {
-                gateKeeper = SecondBracketCheck;
-                continue;
-            }
-
-            if(isspace(*begin))
-            {
-                continue;
-            }
-        }
-
-        if(gateKeeper & ShortAndLongDetected) 
-        {
-            if(idx < patterns[(int) isShort].size() && patterns[(int) isShort][idx] == toupper(*begin))
-            {
-                if(++idx == patterns[(int) isShort].size())
-                {
-					gateKeeper <<= 1;
-                }
-                continue;
-            }
-        }
-
-        if((gateKeeper & ParenthesisCheck) && *begin == ')')
-        {
-            gateKeeper <<= 1;
-            continue;
-        }
-
-        if((gateKeeper & (FirstBracketCheck | SecondBracketCheck)) && (*begin == '}'))
-        {
-			if(gateKeeper & SecondBracketCheck)
-			{
-				gateKeeper = DoneCheck;
-			}
-            else
-            {
-                gateKeeper <<= 1;
-                continue;
-            }
-        }
-	}
-
-    return gateKeeper == DoneCheck;
-}
-
-std::string TextBlock::parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end) const
-{
+	std::regex pattern("\\{\\{(DATE|TIME)\\((\\d{4})-{0,1}(\\d{2})-{0,1}(\\d{2})T(\\d{2}):{0,1}(\\d{2}):{0,1}(\\d{2})(Z|([+-])(\\d{2}):{0,1}(\\d{2}))(\\)|, SHORT\\)|, LONG\\))\\}\\}");
+    std::smatch matches;
+    std::string text = m_text;
+    std::ostringstream parsedostr;
+    time_t offset = 0; 
     bool isDate = false, isShort = true;
-    std::string newText;
-    static char tzOffsetBuff[50];
-    enum TransformState
-    { 
-        NoneParsed = 0x1,
-        ISO8601Detected = 0x2,
-        ISO8601Parsed = 0x4,
+    int factor = 1, hr = 0, mn = 0;
+    struct tm parsedTm = { 0 };
+    int *addrs[]  = { 0, 0, &parsedTm.tm_year, &parsedTm.tm_mon, 
+        &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min, 
+        &parsedTm.tm_sec}; 
+    enum MatchIndex
+    {
+        IsDate = 1,
+        YEAR,
+        Month,
+        Day,
+        Hour,
+        Min,
+        Sec,
+        TimeZone,
+		TZHr = 10,
+		TZMn,
+        Format,
     };
 
-    int state = NoneParsed;
-	struct tm result = {0};
-    std::ostringstream ostr, parsedostr;
-
-    while(begin != end)
+	bool hasSucceded = false;
+    while(std::regex_search (text, matches, pattern))
     {
-        if(state == NoneParsed && scanForISO8601(begin, end, isDate, parsedostr, ostr))
+		bool hasSucceded = true;
+		parsedostr << matches.prefix().str();
+
+        if(matches[IsDate].matched)
+        {
+            isDate = (matches[IsDate].str()[0] == 'D')? true : false;
+        }
+        for(int idx = YEAR; idx < TimeZone; idx++)
         { 
-            state = ISO8601Detected;
-            continue;
+            if(matches[idx].matched)
+            {
+                *addrs[idx] = stoi(matches[idx]);
+            }
         }
 
-        if(state == ISO8601Detected && ISO8601ToTm(begin, end, &result, ostr))
+        if(matches[TimeZone].matched)
         {
-            state = ISO8601Parsed;
-            continue;
+			char zone = matches[TimeZone].str()[0];
+            if(zone == 'Z')
+            {
+                factor = 0;
+            }
+            else if(zone == '+')
+            {
+                factor = -1;
+            }
         }
 
-        if(state == ISO8601Parsed && completeParsing(begin, end, isShort, ostr))
+        parsedTm.tm_year -= 1900;
+        parsedTm.tm_mon  -= 1;
+
+		if(matches[TZHr].matched)
+			hr = stoi(matches[TZHr]);
+		if(matches[TZMn].matched)
+			mn = stoi(matches[TZMn]);
+
+        hr *= 3600;
+        mn *= 60;
+        offset = (hr + mn) * factor;
+
+        time_t utc;
+        // converts to ticks
+        utc = mktime(&parsedTm);
+        if(utc == -1)
         {
+            parsedostr << matches[0];
+        }
+
+        char tzOffsetBuff[6] = { 0 };
+        // gets local time zone offset
+        strftime(tzOffsetBuff, 6, "%z", &parsedTm);
+        std::string localTimeZoneOffsetStr(tzOffsetBuff);
+        int nTzOffset = std::stoi(localTimeZoneOffsetStr);
+        offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
+        // add offset to utc
+        utc += offset;
+		struct tm result = {0};
+        // converts to local time from utc
+        if(matches[Format].matched)
+        {
+		   char format = matches[Format].str()[0];
+           isShort = (format != ')' && matches[Format].str()[2] == 'L')? false : true;
+        }
+        if(!localtime_s(&result, &utc))
+        {
+            // localtime_s double counts daylight saving time
+            if(result.tm_isdst == 1)
+                result.tm_hour -= 1;
+
             if(isDate)
             {
                 if(isShort)
                 {
-                    strftime(tzOffsetBuff, 50, "%m/%d/%Y", &result);
+                    parsedostr << std::put_time(&result, "%x");
                 }
                 else
                 {
-                    strftime(tzOffsetBuff, 50, "%A, %B %e, %Y", &result);
+                    parsedostr << std::put_time(&result, "%A, %B %e, %Y");
                 }
             }
             else
             {
-                strftime(tzOffsetBuff, 50, "%I:%M %p", &result);
+                parsedostr << std::put_time(&result, "%I:%M %p");
             }
-
-            ostr.str("");
-            ostr.clear();
-            ostr << std::string(tzOffsetBuff);
-			result = {0};
         }
-
-        state = NoneParsed;
-        parsedostr << ostr.str();
-        ostr.str("");
-        ostr.clear();
+		text = matches.suffix().str();
+        parsedTm = {0};
+        factor = 1;
+        hr = mn = 0;
+        isDate = false;
+        isShort = true;
     }
+
+	if(!hasSucceded)
+	{
+		parsedostr << text;
+	}
 
 	return parsedostr.str();
 }

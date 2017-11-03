@@ -62,12 +62,6 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
-    std::string parseISO8601(std::string::const_iterator &begin, std::string::const_iterator &end) const;
-	bool TextBlock::scanForISO8601(std::string::const_iterator &itr, std::string::const_iterator &end,
-		bool &isDate, std::ostringstream &parsedostr, std::ostringstream &ostr) const;
-    bool ISO8601ToTm(std::string::const_iterator& begin, 
-            std::string::const_iterator& end, struct tm* result, std::ostringstream &ostr) const;
-    bool completeParsing(std::string::const_iterator &begin,
-            std::string::const_iterator &end, bool &isShort, std::ostringstream &ostr) const;
+    std::string ParseISO8601UsingRegex() const;
 };
 }
