@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -14,7 +12,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return new AdaptiveSchemaVersion(1, 0);
         }
 
-        protected Action<object, AdaptiveActionEventArgs> actionCallback;
+        protected Action<object, AdaptiveActionEventArgs> ActionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
         protected AdaptiveHostConfig _defaultCardStyling;
 
@@ -45,50 +43,17 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveTimeInput>(AdaptiveTimeInputRenderer.Render);
             ElementRenderers.Set<AdaptiveToggleInput>(AdaptiveToggleInputRenderer.Render);
 
-            ElementRenderers.Set<AdaptiveSubmitAction>(XamlSubmitAction.Render);
-            ElementRenderers.Set<AdaptiveOpenUrlAction>(XamlOpenUrlAction.Render);
-            ElementRenderers.Set<AdaptiveShowCardAction>(XamlShowCardAction.Render);
+            ElementRenderers.Set<AdaptiveAction>(AdaptiveActionRenderer.Render);
         }
+
 
         /// <summary>
         /// Resource dictionary to use when rendering
         /// </summary>
-        private ResourceDictionary _resources;
-        public ResourceDictionary Resources
-        {
-            get
-            {
-                if (_resources != null)
-                    return _resources;
+        public ResourceDictionary Resources { get; set; }
 
-                if (File.Exists(this.StylePath))
-                {
-                    using (var styleStream = File.OpenRead(this.StylePath))
-                    {
-                        _resources = (ResourceDictionary)XamlReader.Load(styleStream);
-                    }
-                }
-                else
-                    _resources = new ResourceDictionary();
+        public AdaptiveActionHandlers ActionHandlers { get; } = new AdaptiveActionHandlers();
 
-                return _resources;
-            }
-            set => _resources = value;
-        }
-
-        /// <summary>
-        /// Path to Xaml resource dictionary
-        /// </summary>
-        private string _stylePath;
-        public string StylePath
-        {
-            get => _stylePath;
-            set
-            {
-                this._stylePath = value;
-                this._resources = null;
-            }
-        }
 
         public static FrameworkElement RenderAdaptiveCardWrapper(AdaptiveCard card, AdaptiveRenderContext context)
         {
@@ -101,14 +66,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
-            grid.Margin = new Thickness(context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding);
+            grid.Margin = new Thickness(context.Config.Spacing.Padding);
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-            var inputControls = new List<FrameworkElement>();
+
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
@@ -122,26 +84,27 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <returns></returns>
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
-            FrameworkElement el = null;
-            RenderedAdaptiveCard answer = null;
+            RenderedAdaptiveCard renderCard = null;
 
-
-            Action<object, AdaptiveActionEventArgs> actionCallback = (sender, args) =>
+            void Callback(object sender, AdaptiveActionEventArgs args)
             {
-                answer?.InvokeOnAction(args);
+                renderCard?.InvokeOnAction(args);
+            }
+
+            var context = new AdaptiveRenderContext(Callback, null)
+            {
+                ActionHandlers = ActionHandlers,
+                Config = HostConfig ?? new AdaptiveHostConfig(),
+                Resources = Resources,
+                ElementRenderers = ElementRenderers
             };
 
-            AdaptiveRenderContext context = new AdaptiveRenderContext(actionCallback, null)
-            {
-                Config = this.HostConfig ?? new AdaptiveHostConfig(),
-                Resources = this.Resources,
-                ElementRenderers = this.ElementRenderers
-            };
+            var element = context.Render(card);
 
-            el = context.Render(card);
+            renderCard = new RenderedAdaptiveCard(element, card);
+            renderCard.InputBindings = context.InputBindings;
 
-            answer = new RenderedAdaptiveCard(el, card);
-            return answer;
+            return renderCard;
         }
     }
 }

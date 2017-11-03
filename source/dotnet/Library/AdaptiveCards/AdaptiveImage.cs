@@ -43,7 +43,7 @@ namespace AdaptiveCards
         ///     Action for this image (this allows a default action to happen when a click on an image happens)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveActionBase SelectAction { get; set; }
+        public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
         ///     Alternate text to display for this image

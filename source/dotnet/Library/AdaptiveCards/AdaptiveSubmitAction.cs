@@ -7,7 +7,7 @@ namespace AdaptiveCards
     ///     data to be submitted. It is up to the client to determine how that data is processed. For example: With
     ///     BotFramework bots the client would send an activity through the messaging medium to the bot.
     /// </summary>
-    public class AdaptiveSubmitAction : AdaptiveActionBase
+    public class AdaptiveSubmitAction : AdaptiveAction
     {
         public const string TypeName = "Action.Submit";
 

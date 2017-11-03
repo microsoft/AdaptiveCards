@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
-    public class RenderedAdaptiveCard : RenderedAdaptiveCardBase
+    public partial class RenderedAdaptiveCard : RenderedAdaptiveCardBase
     {
         public RenderedAdaptiveCard(FrameworkElement frameworkElement, AdaptiveCard originatingCard)
             : base(originatingCard)
@@ -13,18 +15,28 @@ namespace AdaptiveCards.Rendering.Wpf
 
         /// <summary>
         /// The rendered result. If there were errors present, this will be null.
-        /// </summary>
+        /// </summary
         public FrameworkElement FrameworkElement { get; }
+
+        internal Dictionary<string, Func<object>> InputBindings { get; set; } = new Dictionary<string, Func<object>>();
 
 
         /// <summary>
         /// Event handler for when user invokes an action.
         /// </summary>
-        public event EventHandler<AdaptiveActionEventArgs> OnAction;
+        public event TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs> OnAction;
 
         internal void InvokeOnAction(AdaptiveActionEventArgs args)
         {
             OnAction?.Invoke(this, args);
+        }
+
+        /// <summary>
+        /// Gather the current values from inputs on the card
+        /// </summary>
+        public RenderedAdaptiveCardInputs GetUserInputs(InputValueMode mode)
+        {
+            return new RenderedAdaptiveCardInputs(this, mode);
         }
     }
 }

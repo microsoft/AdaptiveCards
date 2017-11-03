@@ -19,13 +19,16 @@ namespace AdaptiveCards
             var jObject = JObject.Load(reader);
 
             var card = (AdaptiveCard) Activator.CreateInstance(objectType);
-            // Get the version from the payload
+
+            // AdaptiveCard ctor will specify the version by default, but we don't want that
             card.Version = null;
 
             serializer.Populate(jObject.CreateReader(), card);
 
             // TODO: return parse result error that version must be specified
-            if (card.Version == null)
+            // If this is the root AdaptiveCard and missing a version we fail parsing. 
+            // The depth checks that cards within a Action.ShowCard don't require the version
+            if (reader.Depth == 0 && card.Version == null)
                 return null;
 
             // When objects without a valid "type" are parsed they return null but still get added to the collections, this removes them

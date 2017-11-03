@@ -20,8 +20,8 @@ namespace AdaptiveCards.Test
             card.Speak = "Speak";
             card.Title = "My Title";
             card.BackgroundImage = "http://adaptivecards.io/content/cats/1.png";
-            card.Body.Add(new AdaptiveTextBlock { Text = "Hello"});
-            card.Actions.Add(new AdaptiveSubmitAction() { Title = "Action 1"});
+            card.Body.Add(new AdaptiveTextBlock { Text = "Hello" });
+            card.Actions.Add(new AdaptiveSubmitAction() { Title = "Action 1" });
 
             var expected = @"{
   ""type"": ""AdaptiveCard"",
@@ -45,7 +45,7 @@ namespace AdaptiveCards.Test
   ]
 }";
             Assert.AreEqual(expected, card.ToJson());
-            
+
         }
 
 
@@ -77,12 +77,36 @@ namespace AdaptiveCards.Test
     }
   ]
 }";
-            
+
             var result = AdaptiveCard.FromJson(json);
 
             Assert.IsNotNull(result.Card);
             Assert.AreEqual(1, result.Card.Body.Count);
             Assert.AreEqual(1, result.Card.Actions.Count);
+        }
+
+        [TestMethod]
+        public void TestStyleNullDeserialization()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [
+           {
+              ""type"": ""Column"",
+              ""style"": null
+           }
+       ]
+    }
+  ]
+}";
+
+            var result = AdaptiveCard.FromJson(json);
+
+            Assert.IsNotNull(result.Card);
         }
 
 
@@ -133,7 +157,50 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(1, card.Body.Count);
             Assert.IsInstanceOfType(card.Body[0], typeof(AdaptiveTextBlock));
 
-            Assert.AreEqual("Hello world", ((AdaptiveTextBlock) card.Body[0]).Text);
+            Assert.AreEqual("Hello world", ((AdaptiveTextBlock)card.Body[0]).Text);
+        }
+
+
+        [TestMethod]
+        public void TestShowCardActionSerialization()
+        {
+            var card = new AdaptiveCard()
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock()
+                    {
+                        Text = "Hello world"
+                    }
+                },
+                Actions =
+                {
+                    new AdaptiveShowCardAction
+                    {
+                        Title = "Show Card",
+                        Card = new AdaptiveCard
+                        {
+                            Version = null,
+                            Body =
+                            {
+                                new AdaptiveTextBlock
+                                {
+                                    Text = "Inside Show Card"
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            string json = card.ToJson();
+
+            // Re-parse the card
+            card = AdaptiveCard.FromJson(json).Card;
+
+            // Ensure there's a text element
+            Assert.AreEqual(1, card.Actions.Count);
+            Assert.IsNotNull(((AdaptiveShowCardAction)card.Actions[0]).Card);
         }
     }
 }

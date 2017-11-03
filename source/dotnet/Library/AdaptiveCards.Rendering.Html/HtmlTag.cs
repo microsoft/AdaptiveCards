@@ -50,6 +50,12 @@ namespace AdaptiveCards.Rendering.Html
             return this;
         }
 
+        public HtmlTag SetInnerText(string text)
+        {
+            Text = text;
+            return this;
+        }
+
         public HtmlTag Attr(string name, string value)
         {
             if (value == null)

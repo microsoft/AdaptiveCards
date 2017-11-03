@@ -9,9 +9,7 @@ namespace AdaptiveCards
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [JsonConverter(typeof(AdaptiveSchemaJsonConverter))]
     public class AdaptiveSchemaVersion : IComparable<AdaptiveSchemaVersion>
-    {
-      
-
+    {     
         public int Major { get; }
 
         public int Minor { get; }

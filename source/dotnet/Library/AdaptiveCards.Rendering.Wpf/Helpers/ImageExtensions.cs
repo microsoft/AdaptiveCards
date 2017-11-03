@@ -24,7 +24,7 @@ namespace AdaptiveCards.Rendering.Wpf
             switch (image.Size)
             {
                 case AdaptiveImageSize.Auto:
-                    imageview.Stretch = System.Windows.Media.Stretch.UniformToFill;
+                    imageview.Stretch = System.Windows.Media.Stretch.Uniform;
                     break;
                 case AdaptiveImageSize.Stretch:
                     imageview.Stretch = System.Windows.Media.Stretch.Uniform;

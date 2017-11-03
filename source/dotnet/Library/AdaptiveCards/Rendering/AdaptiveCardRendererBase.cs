@@ -2,7 +2,6 @@ using System;
 
 namespace AdaptiveCards.Rendering
 {
-
     public abstract class AdaptiveCardRendererBase<TUIElement, TContext>
         where TUIElement : class
         where TContext : class
@@ -18,8 +17,15 @@ namespace AdaptiveCards.Rendering
 
         public AdaptiveSchemaVersion SupportedSchemaVersion => _supportedSchemaVersion ?? (_supportedSchemaVersion = GetSupportedSchemaVersion());
 
+        /// <summary>
+        /// A Host Configuration object to determine base styling and behavior of the rendered card
+        /// </summary>
         public AdaptiveHostConfig HostConfig { get; set; }
 
+        /// <summary>
+        /// The dictionary of supported element types and their associated rendering functions
+        /// </summary>
         public AdaptiveElementRenderers<TUIElement, TContext> ElementRenderers { get; } = new AdaptiveElementRenderers<TUIElement, TContext>();
+
     }
 }

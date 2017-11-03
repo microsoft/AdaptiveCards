@@ -10,7 +10,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public class AdaptiveRenderContext
     {
-        private Func<string, MemoryStream> _imageResolver = null;
+        private readonly Func<string, MemoryStream> _imageResolver;
 
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
             Action<object, MissingInputEventArgs> missingDataCallback,
@@ -33,27 +33,20 @@ namespace AdaptiveCards.Rendering.Wpf
         public BitmapImage ResolveImageSource(string url)
         {
             BitmapImage source = null;
-            if (this._imageResolver != null)
+            // off screen rendering can pass already loaded image to us so we can render immediately
+            var stream = _imageResolver?.Invoke(url);
+            if (stream != null)
             {
-                // off screen rendering can pass already loaded image to us so we can render immediately
-                var stream = this._imageResolver(url);
-                if (stream != null)
-                {
-                    source = new BitmapImage();
-                    source.BeginInit();
-                    source.StreamSource = stream;
-                    source.EndInit();
-                }
+                source = new BitmapImage();
+                source.BeginInit();
+                source.StreamSource = stream;
+                source.EndInit();
             }
             return source ?? new BitmapImage(new Uri(url));
         }
 
-        /// <summary>
-        /// Event fires when action is invoked
-        /// </summary>
-        public delegate void ActionEventHandler(object sender, AdaptiveActionEventArgs e);
 
-        public event ActionEventHandler OnAction;
+        public event EventHandler<AdaptiveActionEventArgs> OnAction;
 
         /// <summary>
         /// Event fires when missing input for submit/http actions
@@ -62,31 +55,33 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public event MissingInputEventHandler OnMissingInput;
 
-        public void Action(FrameworkElement ui, AdaptiveActionEventArgs args)
+        public void InvokeAction(FrameworkElement ui, AdaptiveActionEventArgs args)
         {
-            this.OnAction?.Invoke(ui, args);
+            OnAction?.Invoke(ui, args);
         }
 
-        public void MissingInput(AdaptiveActionBase sender, MissingInputEventArgs args)
+        public void MissingInput(AdaptiveAction sender, MissingInputEventArgs args)
         {
-            this.OnMissingInput?.Invoke(sender, args);
+            OnMissingInput?.Invoke(sender, args);
         }
 
-        private Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
+        private readonly Dictionary<string, SolidColorBrush> _colors = new Dictionary<string, SolidColorBrush>();
 
         public SolidColorBrush GetColorBrush(string color)
         {
-            lock (colors)
+            lock (_colors)
             {
-                if (colors.TryGetValue(color, out var brush))
+                if (_colors.TryGetValue(color, out var brush))
                     return brush;
                 brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
-                colors[color] = brush;
+                _colors[color] = brush;
                 return brush;
             }
         }
 
         public ResourceDictionary Resources { get; set; }
+
+        public AdaptiveActionHandlers ActionHandlers { get; set; }
 
 
         public virtual Style GetStyle(string styleName)
@@ -109,9 +104,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public virtual dynamic MergeInputData(dynamic data)
         {
-            foreach (var id in this.InputBindings.Keys)
+            foreach (var id in InputBindings.Keys)
             {
-                var value = this.InputBindings[id]();
+                var value = InputBindings[id]();
                 if (value != null)
                 {
                     data[id] = JToken.FromObject(value);
@@ -123,8 +118,6 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <summary>
         /// Helper to deal with casting
         /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
         public FrameworkElement Render(AdaptiveTypedElement element)
         {
             return ElementRenderers.Get(element.GetType())(element, this);
@@ -133,23 +126,6 @@ namespace AdaptiveCards.Rendering.Wpf
         public Dictionary<string, Func<object>> InputBindings = new Dictionary<string, Func<object>>();
     }
 
-
-    public class AdaptiveActionEventArgs : EventArgs
-    {
-        public AdaptiveActionEventArgs()
-        {
-        }
-
-        /// <summary>
-        /// The action that fired
-        /// </summary>
-        public AdaptiveActionBase Action { get; set; }
-
-        /// <summary>
-        /// Data for Input controls (if appropriate)
-        /// </summary>
-        public object Data { get; set; }
-    }
 
     public class MissingInputEventArgs : EventArgs
     {

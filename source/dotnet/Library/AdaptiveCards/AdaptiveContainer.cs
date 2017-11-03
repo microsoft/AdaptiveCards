@@ -18,19 +18,19 @@ namespace AdaptiveCards
         /// <summary>
         ///     Elements of the container
         /// </summary>
-        [JsonRequired]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
         /// <summary>
         ///     Action for this container (this allows a default action at the container level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveActionBase SelectAction { get; set; }
+        public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
         ///     The style in which the image is displayed.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
         public AdaptiveContainerStyle Style { get; set; }
     }
 }

@@ -16,6 +16,8 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using AdaptiveCards;
+using Newtonsoft.Json.Linq;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace WpfVisualizer
 {
@@ -55,6 +57,8 @@ namespace WpfVisualizer
                 Resources = Resources
             };
             Renderer.UseXceedElementRenderers();
+            //Renderer.ElementRenderers.Set<AdaptiveOpenUrlAction>((action, context) => context.Render(action));
+            //Renderer.ActionHandlers.AddSupportedAction<AdaptiveShowCardAction>()
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
@@ -165,9 +169,8 @@ namespace WpfVisualizer
             CommandManager.RegisterClassCommandBinding(typeof(Window), binding);
         }
 
-        private void _onAction(object sender, AdaptiveActionEventArgs e)
+        private void _onAction(RenderedAdaptiveCard sender, AdaptiveActionEventArgs e)
         {
-            
             if (e.Action is AdaptiveOpenUrlAction openUrlAction)
             {
                 Process.Start(openUrlAction.Url);
@@ -183,8 +186,9 @@ namespace WpfVisualizer
             }
             else if (e.Action is AdaptiveSubmitAction submitAction)
             {
-                // TODO: Shouldn't e.Data be on the SubmitAction?
-                MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Formatting.Indented), "SubmitAction");
+                var inputs = sender.GetUserInputs(InputValueMode.RawString).AsJson();
+                inputs.Merge(submitAction.Data);
+                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
         }
 
@@ -270,7 +274,10 @@ namespace WpfVisualizer
         {
             var parseResult = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
             if (parseResult.HostConfig != null)
+            {
                 Renderer.HostConfig = parseResult.HostConfig;
+                hostConfigEditor.SelectedObject = Renderer.HostConfig;
+            }
             _dirty = true;
         }
 
@@ -303,6 +310,11 @@ namespace WpfVisualizer
                 var json = JsonConvert.SerializeObject(Renderer.HostConfig, Formatting.Indented);
                 File.WriteAllText(dlg.FileName, json);
             }
+        }
+
+        private void HostConfigEditor_OnPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
+        {
+            _dirty = true;
         }
     }
 }

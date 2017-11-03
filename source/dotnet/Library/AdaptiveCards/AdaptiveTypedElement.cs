@@ -4,6 +4,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
+
     [JsonConverter(typeof(AdaptiveTypedElementConverter))]
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public abstract class AdaptiveTypedElement
@@ -13,9 +14,19 @@ namespace AdaptiveCards
             Type = GetType().Name;
         }
 
+        /// <summary>
+        /// The type name of the element 
+        /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always)]
         [JsonRequired]
         public string Type { get; set; }
+
+        /// <summary>
+        /// A unique ID associated with the element
+        /// </summary>
+        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Id { get; set; }
+
 
         protected TENum? GetEnum<TENum>(string value)
             where TENum : struct
