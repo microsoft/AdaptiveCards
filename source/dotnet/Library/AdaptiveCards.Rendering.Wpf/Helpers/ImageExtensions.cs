@@ -16,7 +16,12 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             if (string.IsNullOrWhiteSpace(url))
                 return;
-            grid.Background = new ImageBrush(context.ResolveImageSource(url));
+            grid.Background = new ImageBrush(context.ResolveImageSource(url))
+            {
+                Stretch = Stretch.UniformToFill,
+                AlignmentX = AlignmentX.Left,
+                AlignmentY = AlignmentY.Top
+            };
         }
 
         public static void SetImageProperties(this Image imageview, AdaptiveImage image, AdaptiveRenderContext context)
