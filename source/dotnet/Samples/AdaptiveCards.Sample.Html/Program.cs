@@ -24,6 +24,7 @@ namespace AdaptiveCards.Sample.Html
             var optionOutput = app.Option("-o|--out", "The file to output the HTML to", CommandOptionType.SingleValue);
             var optionSupportsInteracitivty = app.Option("-i|--supports-interactivity", "Include actions and inputs in the output", CommandOptionType.NoValue);
 
+           
             app.OnExecute(() =>
             {
                 FileStream outputFile = null;
@@ -109,7 +110,7 @@ namespace AdaptiveCards.Sample.Html
                     catch (Exception err)
                     {
                         Debugger.Break();
-                        writer.WriteLine($"<p class='error'>ERROR: {Path.GetFileName(file)} failed: {err.Message}</p>");
+                        writer.WriteLine($"<p class='error'>ERROR: {err.Message}</p>");
                     }
                 }
 
