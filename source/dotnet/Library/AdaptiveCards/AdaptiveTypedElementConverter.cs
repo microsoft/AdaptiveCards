@@ -87,8 +87,8 @@ namespace AdaptiveCards
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
-                if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
-                    throw new AdaptiveSerializationException("Required property 'id' not found on Adaptive Input");
+                if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && jObject.Value<string>("id") == null)
+                    throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
 
                 var result = Activator.CreateInstance(type);
                 serializer.Populate(jObject.CreateReader(), result);

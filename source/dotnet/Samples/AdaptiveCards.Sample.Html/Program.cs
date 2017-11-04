@@ -104,7 +104,7 @@ namespace AdaptiveCards.Sample.Html
 
 #if DEBUG
             // Leave the console up while debugging
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (Debugger.IsAttached)
             {
                 Console.ReadLine();
             }
