@@ -885,6 +885,8 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("id", htmlLabelId)
                 .Attr("type", "checkbox")
                 .Attr("name", toggleInput.Id)
+                .Attr("data-ac-valueOn", toggleInput.ValueOn ?? bool.TrueString)
+                .Attr("data-ac-valueOff", toggleInput.ValueOff ?? bool.FalseString)
                 .Style("display", "inline-block")
                 .Style("vertical-align", "middle")
                 .Style("margin", "0px");
