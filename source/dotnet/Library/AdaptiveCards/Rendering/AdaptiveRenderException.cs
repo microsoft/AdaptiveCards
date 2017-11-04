@@ -2,8 +2,13 @@
 
 namespace AdaptiveCards.Rendering
 {
-    public class AdaptiveRenderException : Exception
+    public class AdaptiveRenderException : AdaptiveException
     {
+        public AdaptiveRenderException()
+        {
+            
+        }
+
         public AdaptiveRenderException(string message) : base(message)
         {
         }

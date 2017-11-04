@@ -95,7 +95,7 @@ namespace AdaptiveCards
                 return result;
             }
 
-            _parseResult.Warnings.Add(new AdaptiveViolation(5, $"Unknown element type '{typeName}'"));
+            _parseResult.Warnings.Add(new AdaptiveWarning(5, $"Unknown element type '{typeName}'"));
             return null;
         }
 

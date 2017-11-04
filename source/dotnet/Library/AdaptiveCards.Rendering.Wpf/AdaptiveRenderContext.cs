@@ -27,7 +27,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public AdaptiveHostConfig Config { get; set; } = new AdaptiveHostConfig();
 
-        public IList<AdaptiveViolation> Warnings { get; } = new List<AdaptiveViolation>();
+        public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
 
         public AdaptiveElementRenderers<FrameworkElement, AdaptiveRenderContext> ElementRenderers { get; set; }
 
@@ -129,7 +129,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else
             {
-                Warnings.Add(new AdaptiveViolation(-1, $"No renderer for element type '{element.Type}'"));
+                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element type '{element.Type}'"));
                 return null;
             }
         }

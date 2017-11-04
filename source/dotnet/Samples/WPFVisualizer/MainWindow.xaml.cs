@@ -99,10 +99,17 @@ namespace WpfVisualizer
                 {
                     ShowWarning(warning.Message);
                 }
-            }            
+            }
+            catch (AdaptiveRenderException ex)
+            {
+                var fallbackCard = new TextBlock
+                {
+                    Text = _card.OriginatingCard.FallbackText ?? "Sorry, we couldn't render the card"
+                };
+                cardGrid.Children.Add(fallbackCard);
+            }
             catch (Exception ex)
             {
-                // TODO: use fallback text in certain situations
                 ShowError(ex);
             }
         }

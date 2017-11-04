@@ -23,7 +23,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <summary>
         /// If any modifications were done to the rendered card they will be reported here
         /// </summary>
-        public IList<AdaptiveViolation> Warnings { get; internal set; } = new List<AdaptiveViolation>();
+        public IList<AdaptiveWarning> Warnings { get; internal set; } = new List<AdaptiveWarning>();
 
         /// <summary>
         /// Event handler for when user invokes an action.

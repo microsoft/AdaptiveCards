@@ -17,19 +17,6 @@ namespace AdaptiveCards
         /// <summary>
         /// If any modifications were done to the parsed card they will be reported here
         /// </summary>
-        public IList<AdaptiveViolation> Warnings { get; } = new List<AdaptiveViolation>();   
-    }
-
-    public class AdaptiveViolation
-    {
-        public AdaptiveViolation(int code, string message)
-        {
-            Code = code;
-            Message = message;
-        }
-
-        public int Code { get; set; }
-
-        public string Message { get; set; }
+        public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();   
     }
 }

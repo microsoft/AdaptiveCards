@@ -57,19 +57,4 @@ namespace AdaptiveCards
             return typeof(AdaptiveCard).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
     }
-
-    public class AdaptiveSerializationException : Exception
-    {
-        public AdaptiveSerializationException()
-        {
-        }
-
-        public AdaptiveSerializationException(string message) : base(message)
-        {
-        }
-
-        public AdaptiveSerializationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-    }
 }
