@@ -22,7 +22,6 @@ namespace WpfVisualizer
 {
     public partial class MainWindow : Window
     {
-        private RenderedAdaptiveCard _card;
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
@@ -86,26 +85,31 @@ namespace WpfVisualizer
 
             try
             {
-                var parseResult = AdaptiveCard.FromJson(textBox.Text);
-                _card = Renderer.RenderCard(parseResult.Card);
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
+
+                AdaptiveCard card = parseResult.Card;
+
+                RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
 
                 // Wire up click handler
-                _card.OnAction += OnAction;
+                renderedCard.OnAction += OnAction;
 
-                cardGrid.Children.Add(_card.FrameworkElement);
+                cardGrid.Children.Add(renderedCard.FrameworkElement);
 
                 // Report any warnings
-                foreach (var warning in parseResult.Warnings.Union(_card.Warnings))
+                var allWarnings = parseResult.Warnings.Union(renderedCard.Warnings);
+                foreach (var warning in allWarnings)
                 {
                     ShowWarning(warning.Message);
                 }
             }
-            catch (AdaptiveRenderException)
+            catch (AdaptiveRenderException ex)
             {
                 var fallbackCard = new TextBlock
                 {
-                    Text = _card.OriginatingCard.FallbackText ?? "Sorry, we couldn't render the card"
+                    Text = ex.CardFallbackText ?? "Sorry, we couldn't render the card"
                 };
+
                 cardGrid.Children.Add(fallbackCard);
             }
             catch (Exception ex)
@@ -131,7 +135,7 @@ namespace WpfVisualizer
             }
             else if (e.Action is AdaptiveSubmitAction submitAction)
             {
-                var inputs = sender.GetUserInputs(InputValueMode.RawString).AsJson();
+                var inputs = sender.UserInputs.AsJson();
                 inputs.Merge(submitAction.Data);
                 MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
@@ -142,7 +146,7 @@ namespace WpfVisualizer
         {
             var textBlock = new TextBlock
             {
-                Text = message,
+                Text = "WARNING: " + message,
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Warning"] as Style
             };
@@ -154,7 +158,7 @@ namespace WpfVisualizer
         {
             var textBlock = new TextBlock
             {
-                Text = err.Message,
+                Text = "ERROR: " + err.Message,
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Error"] as Style
             };
@@ -239,7 +243,7 @@ namespace WpfVisualizer
             // Disable interactivity to remove inputs and actions from the image
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
             Renderer.HostConfig.SupportsInteractivity = false;
-            var imageStream = Renderer.RenderToImage(_card.OriginatingCard, 480);
+            var imageStream = Renderer.RenderToImage(AdaptiveCard.FromJson(textBox.Text).Card, 480);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
 
             var path = Path.GetRandomFileName() + ".png";
@@ -259,15 +263,10 @@ namespace WpfVisualizer
 
                 _synth.SpeakAsyncCancelAll();
                 if (card.Speak != null)
+                {
                     _synth.SpeakSsmlAsync(FixSSML(card.Speak));
-                else
-                    foreach (var element in card.Body)
-                    {
-#pragma warning disable CS0618 // Type or member is obsolete
-                        if (element.Speak != null)
-                            _synth.SpeakSsmlAsync(FixSSML(element.Speak));
-#pragma warning restore CS0618 // Type or member is obsolete
-                    }
+                }
+
             }
         }
 

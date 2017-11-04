@@ -16,5 +16,10 @@ namespace AdaptiveCards.Rendering
         public AdaptiveRenderException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        /// <summary>
+        /// The fallback text associated with this card, if provided by the card author
+        /// </summary>
+        public string CardFallbackText { get; set; }
     }
 }

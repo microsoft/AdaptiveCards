@@ -84,7 +84,8 @@ namespace AdaptiveCards.Sample.Html
 
 
                 writer.WriteLine($"<h3>Renderer schema version: {renderer.SupportedSchemaVersion}</h3>");
-                writer.WriteLine($"<h4>Supports Interactivty Enabled: {hostConfig.SupportsInteractivity}</h4>");
+                writer.WriteLine($"<h4>Interactivty Enabled: {hostConfig.SupportsInteractivity}</h4>");
+                writer.WriteLine($"<h4>Generated at: {DateTime.Now:G}</h4>");
 
                 foreach (var file in files)
                 {

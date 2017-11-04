@@ -10,14 +10,11 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public class RenderedAdaptiveCardInputs : IReadOnlyDictionary<string, string>
         {
-            private readonly InputValueMode _valueMode;
             private readonly IReadOnlyDictionary<string, string> _dictionary;
 
-            public RenderedAdaptiveCardInputs(RenderedAdaptiveCard card, InputValueMode valueMode)
+            public RenderedAdaptiveCardInputs(RenderedAdaptiveCard card)
             {
                 if (card == null) throw new ArgumentNullException(nameof(card));
-
-                _valueMode = valueMode;
 
                 var dic = new Dictionary<string, string>();
                 foreach (var id in card.InputBindings.Keys)
