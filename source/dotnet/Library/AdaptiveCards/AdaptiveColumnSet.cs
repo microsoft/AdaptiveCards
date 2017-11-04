@@ -10,10 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "ColumnSet";
 
-        public AdaptiveColumnSet()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Columns that are part of this group

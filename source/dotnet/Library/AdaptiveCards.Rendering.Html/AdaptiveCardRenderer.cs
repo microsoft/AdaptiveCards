@@ -31,21 +31,7 @@ namespace AdaptiveCards.Rendering.Html
             return "ac-action-" + suffix.Replace(suffix[0], char.ToLower(suffix[0]));
         };
 
-        // ---------------- INTERNAL METHODS -----------------------------
 
-        //        private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
-        //        {
-        //#if NET452
-        //            var assembly = Assembly.GetExecutingAssembly();
-        //            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.css"))
-        //            using (var reader = new StreamReader(stream))
-        //            {
-        //                return reader.ReadToEnd();
-        //            }
-        //#else
-        //            return null;
-        //#endif
-        //        });
 
         public AdaptiveCardRenderer() : this(new AdaptiveHostConfig()) { }
 
@@ -54,25 +40,20 @@ namespace AdaptiveCards.Rendering.Html
             SetObjectTypes();
         }
 
-        ///// <summary>
-        /////     Stock CSS you can use with the generated html
-        ///// </summary>
-        //public static string StockCss
-        //{
-        //    get { return _stockCss.Value; }
-        //}
 
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
+            ValidateCard(card);
+
             try
             {
-                var context = new AdaptiveRendererContext(this.HostConfig, this.ElementRenderers);
+                var context = new AdaptiveRendererContext(HostConfig, ElementRenderers);
                 var tag = context.Render(card);
-                return new RenderedAdaptiveCard(tag, card);
+                return new RenderedAdaptiveCard(tag, card, context.Warnings);
             }
-            catch
+            catch(Exception ex)
             {
-                return new RenderedAdaptiveCard(null, card);
+                throw new AdaptiveRenderException("Failed to render card", ex);
             }            
         }
 

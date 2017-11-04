@@ -18,7 +18,6 @@ namespace AdaptiveCards.Test
             card.MinVersion = "1.0";
             card.FallbackText = "Fallback Text";
             card.Speak = "Speak";
-            card.Title = "My Title";
             card.BackgroundImage = "http://adaptivecards.io/content/cats/1.png";
             card.Body.Add(new AdaptiveTextBlock { Text = "Hello" });
             card.Actions.Add(new AdaptiveSubmitAction() { Title = "Action 1" });
@@ -29,7 +28,6 @@ namespace AdaptiveCards.Test
   ""minVersion"": ""1.0"",
   ""fallbackText"": ""Fallback Text"",
   ""speak"": ""Speak"",
-  ""title"": ""My Title"",
   ""backgroundImage"": ""http://adaptivecards.io/content/cats/1.png"",
   ""body"": [
     {
@@ -47,8 +45,6 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(expected, card.ToJson());
 
         }
-
-
 
         [TestMethod]
         public void TestSkippingUnknownElements()
@@ -130,8 +126,24 @@ namespace AdaptiveCards.Test
   ]
 }";
 
-            var result = AdaptiveCard.FromJson(json);
-            Assert.IsNull(result.Card);
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+        }
+
+        [TestMethod]
+        public void Test_AdaptiveCardTypeNameIsValid()
+        {
+            var json = @"{
+  ""type"": ""Hello"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""This payload should fail to parse""
+    }
+  ]
+}";
+
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
 
         [TestMethod]

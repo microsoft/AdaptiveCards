@@ -10,10 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "FactSet";
 
-        public AdaptiveFactSet()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     The facts to be displayed.

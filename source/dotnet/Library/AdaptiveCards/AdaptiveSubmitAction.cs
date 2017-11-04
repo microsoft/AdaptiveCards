@@ -11,10 +11,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Action.Submit";
 
-        public AdaptiveSubmitAction()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     initial data that input fields will be combined with. This is essentially 'hidden' properties, Example:

@@ -84,6 +84,10 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <returns></returns>
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
+            if (card == null) throw new ArgumentNullException(nameof(card));
+
+            ValidateCard(card);
+
             RenderedAdaptiveCard renderCard = null;
 
             void Callback(object sender, AdaptiveActionEventArgs args)
@@ -101,7 +105,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var element = context.Render(card);
 
-            renderCard = new RenderedAdaptiveCard(element, card);
+            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings);
             renderCard.InputBindings = context.InputBindings;
 
             return renderCard;

@@ -4,25 +4,18 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
-
-    [JsonConverter(typeof(AdaptiveTypedElementConverter))]
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public abstract class AdaptiveTypedElement
     {
-        protected AdaptiveTypedElement()
-        {
-            Type = GetType().Name;
-        }
-
         /// <summary>
         /// The type name of the element 
         /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always)]
         [JsonRequired]
-        public string Type { get; set; }
+        public abstract string Type { get; }
 
         /// <summary>
-        /// A unique ID associated with the element
+        /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Id { get; set; }

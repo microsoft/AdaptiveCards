@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Reflection;
 
 namespace AdaptiveCards
 {
@@ -23,4 +24,5 @@ namespace AdaptiveCards
         [Obsolete("ActionBase.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
     }
+
 }

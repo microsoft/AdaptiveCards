@@ -51,8 +51,10 @@ namespace AdaptiveCards.Test
   ]
 }";
 
-            var result = AdaptiveCard.FromJson(json);
-            Assert.IsNull(result.Card);
+            Assert.ThrowsException<AdaptiveSerializationException>(() =>
+            {
+                AdaptiveCard.FromJson(json);
+            });
         }
 
     }

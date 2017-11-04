@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     This handles using @type field to instantiate strongly typed object on deserialization
+    ///     This handles using type field to instantiate strongly typed object on deserialization
     /// </summary>
     public class AdaptiveTypedElementConverter : JsonConverter
     {
+        private readonly AdaptiveCardParseResult _parseResult;
+
         /// <summary>
         /// Default types to support, register any new types to this list 
         /// </summary>
@@ -43,6 +42,16 @@ namespace AdaptiveCards
             return types;
         });
 
+        public AdaptiveTypedElementConverter() : this(new AdaptiveCardParseResult())
+        {
+
+        }
+
+        public AdaptiveTypedElementConverter(AdaptiveCardParseResult parseResult)
+        {
+            _parseResult = parseResult;
+        }
+
         public static void RegisterTypedElement<T>(string typeName = null)
             where T : AdaptiveTypedElement
         {
@@ -58,32 +67,35 @@ namespace AdaptiveCards
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo()) 
-                && TypedElementTypes.Value.ContainsValue(objectType);
+            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            throw new NotImplementedException();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
-            // Create target object based on JObject
+
             var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
-                throw new JsonException("AdaptiveCard elements must contain a 'type' property");
+                throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
             }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
+                if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && jObject.Value<string>("id") == null)
+                    throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
+
                 var result = Activator.CreateInstance(type);
                 serializer.Populate(jObject.CreateReader(), result);
                 return result;
             }
-            
-            // TODO: log unknown element type 
+
+            _parseResult.Warnings.Add(new AdaptiveWarning(5, $"Unknown element type '{typeName}'"));
             return null;
         }
 

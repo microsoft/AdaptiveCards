@@ -1,4 +1,10 @@
-﻿using System;
+﻿using AdaptiveCards;
+using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Wpf;
+using ICSharpCode.AvalonEdit.Document;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -9,21 +15,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Wpf;
-using ICSharpCode.AvalonEdit.Document;
-using Microsoft.Win32;
-using Newtonsoft.Json;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using AdaptiveCards;
-using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace WpfVisualizer
 {
     public partial class MainWindow : Window
     {
-        private AdaptiveCard _card;
+        private RenderedAdaptiveCard _card;
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
@@ -40,7 +39,7 @@ namespace WpfVisualizer
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             _synth.SetOutputToDefaultAudioDevice();
             var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-            timer.Tick += _timer_Tick;
+            timer.Tick += Timer_Tick;
             timer.Start();
 
             foreach (var config in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))
@@ -52,64 +51,106 @@ namespace WpfVisualizer
                 });
             }
 
+
             Renderer = new AdaptiveCardRenderer()
             {
                 Resources = Resources
             };
+
+            // Use the Xceed rich input controls
             Renderer.UseXceedElementRenderers();
-            //Renderer.ElementRenderers.Set<AdaptiveOpenUrlAction>((action, context) => context.Render(action));
-            //Renderer.ActionHandlers.AddSupportedAction<AdaptiveShowCardAction>()
+
+            // Register custom elements and actions            
+            AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
+            AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();
+
+            Renderer.ElementRenderers.Set<MyCustomRating>(MyCustomRating.Render);
+            Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
 
-
-        private void Config_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _dirty = true;
-        }
-
-        private void _timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             if (_dirty)
             {
                 _dirty = false;
-                try
-                {
-                    cardError.Children.Clear();
-
-                    var result = AdaptiveCard.FromJson(textBox.Text);
-                    if (result.Card != null)
-                        _card = result.Card;
-                    
-
-                    cardGrid.Children.Clear();
-                    if (_card != null)
-                    {
-                        var renderedAdaptiveCard = Renderer.RenderCard(_card);
-                        if (renderedAdaptiveCard.FrameworkElement != null)
-                        {
-                            // Wire up click handler
-                            renderedAdaptiveCard.OnAction += _onAction;
-
-                            cardGrid.Children.Add(renderedAdaptiveCard.FrameworkElement);
-                        }
-                    }
-                }
-                catch (Exception err)
-                {
-                    HandleParseError(err);
-                }
+                RenderCard();
             }
         }
 
-        private void _OnMissingInput(object sender, MissingInputEventArgs args)
+        private void RenderCard()
         {
-            MessageBox.Show($"Required input is missing.");
-            args.FrameworkElement.Focus();
+            cardError.Children.Clear();
+            cardGrid.Children.Clear();
+
+            try
+            {
+                var parseResult = AdaptiveCard.FromJson(textBox.Text);
+                _card = Renderer.RenderCard(parseResult.Card);
+
+                // Wire up click handler
+                _card.OnAction += OnAction;
+
+                cardGrid.Children.Add(_card.FrameworkElement);
+
+                // Report any warnings
+                foreach (var warning in parseResult.Warnings.Union(_card.Warnings))
+                {
+                    ShowWarning(warning.Message);
+                }
+            }
+            catch (AdaptiveRenderException)
+            {
+                var fallbackCard = new TextBlock
+                {
+                    Text = _card.OriginatingCard.FallbackText ?? "Sorry, we couldn't render the card"
+                };
+                cardGrid.Children.Add(fallbackCard);
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex);
+            }
         }
 
-        private void HandleParseError(Exception err)
+        private void OnAction(RenderedAdaptiveCard sender, AdaptiveActionEventArgs e)
+        {
+            if (e.Action is AdaptiveOpenUrlAction openUrlAction)
+            {
+                Process.Start(openUrlAction.Url);
+            }
+            else if (e.Action is AdaptiveShowCardAction showCardAction)
+            {
+                if (Renderer.HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
+                {
+                    var dialog = new ShowCardWindow(showCardAction.Title, showCardAction, Resources);
+                    dialog.Owner = this;
+                    dialog.ShowDialog();
+                }
+            }
+            else if (e.Action is AdaptiveSubmitAction submitAction)
+            {
+                var inputs = sender.GetUserInputs(InputValueMode.RawString).AsJson();
+                inputs.Merge(submitAction.Data);
+                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
+            }
+        }
+
+
+        private void ShowWarning(string message)
+        {
+            var textBlock = new TextBlock
+            {
+                Text = message,
+                TextWrapping = TextWrapping.Wrap,
+                Style = Resources["Warning"] as Style
+            };
+            var button = new Button { Content = textBlock };
+            cardError.Children.Add(button);
+        }
+
+        private void ShowError(Exception err)
         {
             var textBlock = new TextBlock
             {
@@ -127,9 +168,10 @@ namespace WpfVisualizer
                 iPos += 5;
                 var iEnd = err.Message.IndexOf(",", iPos);
 
-                var line = 0;
+                var line = 1;
                 if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out line))
                 {
+                    if (line == 0) line = 1;
                     iPos = err.Message.IndexOf("position ");
                     if (iPos > 0)
                     {
@@ -142,6 +184,13 @@ namespace WpfVisualizer
                 }
             }
         }
+
+        private void _OnMissingInput(object sender, MissingInputEventArgs args)
+        {
+            MessageBox.Show("Required input is missing.");
+            args.FrameworkElement.Focus();
+        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -169,28 +218,6 @@ namespace WpfVisualizer
             CommandManager.RegisterClassCommandBinding(typeof(Window), binding);
         }
 
-        private void _onAction(RenderedAdaptiveCard sender, AdaptiveActionEventArgs e)
-        {
-            if (e.Action is AdaptiveOpenUrlAction openUrlAction)
-            {
-                Process.Start(openUrlAction.Url);
-            }
-            else if (e.Action is AdaptiveShowCardAction showCardAction)
-            {
-                if (Renderer.HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
-                {
-                    var dialog = new ShowCardWindow(showCardAction.Title, showCardAction, Resources);
-                    dialog.Owner = this;
-                    dialog.ShowDialog();
-                }
-            }
-            else if (e.Action is AdaptiveSubmitAction submitAction)
-            {
-                var inputs = sender.GetUserInputs(InputValueMode.RawString).AsJson();
-                inputs.Merge(submitAction.Data);
-                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
-            }
-        }
 
         private void GoToPage(object sender, ExecutedRoutedEventArgs e)
         {
@@ -212,9 +239,9 @@ namespace WpfVisualizer
             // Disable interactivity to remove inputs and actions from the image
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
             Renderer.HostConfig.SupportsInteractivity = false;
-            var imageStream = Renderer.RenderToImage(_card, 480);
+            var imageStream = Renderer.RenderToImage(_card.OriginatingCard, 480);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
-            
+
             var path = Path.GetRandomFileName() + ".png";
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
@@ -263,11 +290,6 @@ namespace WpfVisualizer
         private void toggleOptions_Click(object sender, RoutedEventArgs e)
         {
             hostConfigEditor.Visibility = hostConfigEditor.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        private void options_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _dirty = true;
         }
 
         private void hostConfigs_Selected(object sender, RoutedEventArgs e)

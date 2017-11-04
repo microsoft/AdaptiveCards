@@ -14,10 +14,16 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// The card that the visual was rendered from.
         /// </summary>
-        public AdaptiveCard OriginatingCard { get; private set; }
+        public AdaptiveCard OriginatingCard { get; }
 
-        protected RenderedAdaptiveCardBase(AdaptiveCard originatingCard)
+        /// <summary>
+        /// If any modifications were done to the rendered card they will be reported here
+        /// </summary>
+        public IList<AdaptiveWarning> Warnings { get; }
+        
+        protected RenderedAdaptiveCardBase(AdaptiveCard originatingCard, IList<AdaptiveWarning> warnings)
         {
+            Warnings = warnings ?? throw new ArgumentNullException(nameof(warnings));
             OriginatingCard = originatingCard ?? throw new ArgumentNullException(nameof(originatingCard));
         }
     }

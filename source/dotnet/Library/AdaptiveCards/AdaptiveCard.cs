@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
@@ -8,7 +9,6 @@ namespace AdaptiveCards
     /// <summary>
     ///     Adaptive card which has flexible container
     /// </summary>
-    [JsonConverter(typeof(AdaptiveCardConverter))]
     public class AdaptiveCard : AdaptiveTypedElement
 #if WINDOWS_UWP
       // TODO: uncomment when I figure out the Windows build
@@ -16,6 +16,8 @@ namespace AdaptiveCards
 #endif
     {
         public const string TypeName = "AdaptiveCard";
+
+        public override string Type => TypeName;
 
         /// <summary>
         /// The latest known schema version supported by this library
@@ -28,7 +30,6 @@ namespace AdaptiveCards
         /// <param name="schemaVersion">The schema version to use</param>
         public AdaptiveCard(AdaptiveSchemaVersion schemaVersion)
         {
-            Type = TypeName;
             Version = schemaVersion;
         }
 
@@ -51,20 +52,28 @@ namespace AdaptiveCards
         /// <returns></returns>
         public static AdaptiveCardParseResult FromJson(string json)
         {
-            AdaptiveCard card = null;
+            var parseResult = new AdaptiveCardParseResult();
 
+            var settings = new JsonSerializerSettings
+            {
+                Converters =
+                    {
+                        new AdaptiveCardConverter(parseResult),
+                        new AdaptiveTypedElementConverter(parseResult),
+                        new IgnoreEmptyItemsConverter<AdaptiveAction>(),
+                        new IgnoreEmptyItemsConverter<AdaptiveElement>()
+                    }
+            };
             try
             {
-                card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
+                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
             }
-
-            catch
+            catch (JsonException ex)
             {
-                 //Debugger.Break();
-                // TODO: Return errors here
+                throw new AdaptiveSerializationException(ex.Message, ex);
             }
 
-            return new AdaptiveCardParseResult(card);
+            return parseResult;            
         }
 
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
@@ -78,7 +87,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Actions for the card
         /// </summary>
-        [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -2)]
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
         /// <summary>
@@ -91,6 +100,7 @@ namespace AdaptiveCards
         ///     Title for the card (used when displayed in a dialog)
         /// </summary>
         [JsonProperty(Order = -5, NullValueHandling = NullValueHandling.Ignore)]
+        [Obsolete("The Title property is not officially supported right now and should not be used")]
         public string Title { get; set; }
 
         /// <summary>

@@ -27,5 +27,10 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public AdaptiveElementRenderers<TUIElement, TContext> ElementRenderers { get; } = new AdaptiveElementRenderers<TUIElement, TContext>();
 
+        protected virtual void ValidateCard(AdaptiveCard card)
+        {
+            if (card.MinVersion > SupportedSchemaVersion)
+                throw new AdaptiveRenderException($"Payload MinVersion ({card.MinVersion}) is greater than the renderer supported version ({SupportedSchemaVersion})");
+        }
     }
 }

@@ -10,11 +10,8 @@ namespace AdaptiveCards
     public class AdaptiveImageSet : AdaptiveElement
     {
         public const string TypeName = "ImageSet";
-
-        public AdaptiveImageSet()
-        {
-            Type = TypeName;
-        }
+    
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Collection of images to display together
