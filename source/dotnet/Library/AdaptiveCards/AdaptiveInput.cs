@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
@@ -8,19 +11,10 @@ namespace AdaptiveCards
     public abstract class AdaptiveInput : AdaptiveElement
     {
         /// <summary>
-        ///     Id for the value (will be used to identify collected input when SUBMIT is clicked)
-        /// </summary>
-        [JsonRequired]
-        public new string Id { get; set; }
-
-        /// <summary>
         ///     The input must have a value for it to be part of a Submit or Http action
         /// </summary>
+        [Obsolete("Ths IsRequired property is not supported in Adaptive Cards yet and will be ignored")]
         public bool IsRequired { get; set; }
-
-        public bool ShouldSerializeIsRequired()
-        {
-            return IsRequired;
-        }
     }
+
 }

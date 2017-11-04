@@ -11,17 +11,10 @@ namespace AdaptiveCards
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveFact
     {
-        public AdaptiveFact()
-        {
-        }
-
-        public AdaptiveFact(string title, string value, string speak = null)
+        public AdaptiveFact(string title, string value)
         {
             Title = title;
             Value = value;
-#pragma warning disable CS0618 // Type or member is obsolete
-            Speak = speak;
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>

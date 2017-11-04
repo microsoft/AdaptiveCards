@@ -130,8 +130,24 @@ namespace AdaptiveCards.Test
   ]
 }";
 
-            var result = AdaptiveCard.FromJson(json);
-            Assert.IsNull(result.Card);
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+        }
+
+        [TestMethod]
+        public void Test_AdaptiveCardTypeNameIsValid()
+        {
+            var json = @"{
+  ""type"": ""Hello"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""This payload should fail to parse""
+    }
+  ]
+}";
+
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
 
         [TestMethod]

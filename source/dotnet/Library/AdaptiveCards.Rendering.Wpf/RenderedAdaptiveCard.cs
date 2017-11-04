@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary
         public FrameworkElement FrameworkElement { get; }
 
-        internal Dictionary<string, Func<object>> InputBindings { get; set; } = new Dictionary<string, Func<object>>();
+        internal Dictionary<string, Func<string>> InputBindings { get; set; } = new Dictionary<string, Func<string>>();
 
         /// <summary>
         /// If any modifications were done to the rendered card they will be reported here

@@ -35,7 +35,7 @@ namespace AdaptiveCards
             }
             catch (Exception ex)
             {
-                throw new JsonReaderException($"'{versionString}' is not a valid version identifier", ex);
+                throw new AdaptiveSerializationException($"'{versionString}' is not a valid version identifier", ex);
             }
     
         }

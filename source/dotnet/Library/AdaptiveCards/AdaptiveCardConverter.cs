@@ -31,6 +31,10 @@ namespace AdaptiveCards
         {
             var jObject = JObject.Load(reader);
 
+            if(jObject.Value<string>("type") != AdaptiveCard.TypeName)
+                throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveCard.TypeName}'");
+
+
             var card = (AdaptiveCard) Activator.CreateInstance(objectType);
 
             // AdaptiveCard ctor will specify the version by default, but we don't want that
@@ -42,7 +46,7 @@ namespace AdaptiveCards
             // The depth checks that cards within a Action.ShowCard don't require the version
             if (reader.Depth == 0 && card.Version == null)
             {
-                throw new AdaptiveSchemaException("Missing required property 'version' on AdaptiveCard");
+                throw new AdaptiveSerializationException("Required property 'version' not found on AdaptiveCard");
             }
 
             return card;
@@ -54,17 +58,17 @@ namespace AdaptiveCards
         }
     }
 
-    public class AdaptiveSchemaException : Exception
+    public class AdaptiveSerializationException : Exception
     {
-        public AdaptiveSchemaException()
+        public AdaptiveSerializationException()
         {
         }
 
-        public AdaptiveSchemaException(string message) : base(message)
+        public AdaptiveSerializationException(string message) : base(message)
         {
         }
 
-        public AdaptiveSchemaException(string message, Exception innerException) : base(message, innerException)
+        public AdaptiveSerializationException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

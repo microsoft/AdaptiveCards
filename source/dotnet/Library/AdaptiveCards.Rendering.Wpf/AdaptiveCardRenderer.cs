@@ -87,7 +87,7 @@ namespace AdaptiveCards.Rendering.Wpf
             if (card == null) throw new ArgumentNullException(nameof(card));
 
             if(card.MinVersion > SupportedSchemaVersion)
-                throw new AdaptiveSchemaException($"Payload MinVersion ({card.MinVersion}) is greater than the renderer supported version ({SupportedSchemaVersion})");
+                throw new AdaptiveRenderException($"Payload MinVersion ({card.MinVersion}) is greater than the renderer supported version ({SupportedSchemaVersion})");
 
             RenderedAdaptiveCard renderCard = null;
 

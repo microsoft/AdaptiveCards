@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     This handles using @type field to instantiate strongly typed object on deserialization
+    ///     This handles using type field to instantiate strongly typed object on deserialization
     /// </summary>
     public class AdaptiveTypedElementConverter : JsonConverter
     {
@@ -81,17 +78,18 @@ namespace AdaptiveCards
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
-            // Create target object based on JObject
+
             var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
-                //_parseResult.Errors.Add(new AdaptiveViolation(2, "AdaptiveCard elements must contain a 'type' property"));
-                //return null;
-                throw new JsonException("Missing required 'type' property on adaptive card element");
+                throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
             }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
+                if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                    throw new AdaptiveSerializationException("Required property 'id' not found on Adaptive Input");
+
                 var result = Activator.CreateInstance(type);
                 serializer.Populate(jObject.CreateReader(), result);
                 return result;

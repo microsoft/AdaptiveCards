@@ -64,7 +64,14 @@ namespace AdaptiveCards
                         new IgnoreEmptyItemsConverter<AdaptiveElement>()
                     }
             };
-            parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
+            try
+            {
+                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
+            }
+            catch (JsonException ex)
+            {
+                throw new AdaptiveSerializationException(ex.Message, ex);
+            }
 
             return parseResult;            
         }

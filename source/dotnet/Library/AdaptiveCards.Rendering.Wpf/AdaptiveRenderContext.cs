@@ -134,7 +134,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public Dictionary<string, Func<object>> InputBindings = new Dictionary<string, Func<object>>();
+        public Dictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
     }
 
 

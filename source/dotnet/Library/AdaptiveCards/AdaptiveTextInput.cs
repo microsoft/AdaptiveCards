@@ -27,24 +27,19 @@ namespace AdaptiveCards
         /// <summary>
         ///     Hint of style of input, if client doesn't support the style it will become simple text input
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveTextInputStyle Style { get; set; }
 
         /// <summary>
         ///     true to collect multiple lines of text(default is false)
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool IsMultiline { get; set; }
 
         /// <summary>
         ///     hint of maximum length characters to collect(may be ignored by some clients)
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int MaxLength { get; set; }
-
-        public bool ShouldSerializeIsMultiline()
-        {
-            return IsMultiline;
-        }
     }
 }
