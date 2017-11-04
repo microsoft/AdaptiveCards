@@ -51,10 +51,13 @@ namespace AdaptiveCards.Rendering.Html
                 var tag = context.Render(card);
                 return new RenderedAdaptiveCard(tag, card, context.Warnings);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw new AdaptiveRenderException("Failed to render card", ex);
-            }            
+                throw new AdaptiveRenderException("Failed to render card", ex)
+                {
+                    CardFallbackText = card.FallbackText
+                };
+            }
         }
 
         private void SetObjectTypes()
@@ -77,7 +80,7 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveTimeInput>(TimeInputRender);
             ElementRenderers.Set<AdaptiveToggleInput>(ToggleInputRender);
 
-            ElementRenderers.Set<AdaptiveSubmitAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-submitData", WebUtility.HtmlEncode(JsonConvert.SerializeObject(action.Data, Formatting.None))));
+            ElementRenderers.Set<AdaptiveSubmitAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
 
             // TODO: implement default behavior to open the URL
             ElementRenderers.Set<AdaptiveOpenUrlAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-url", action.Url));
