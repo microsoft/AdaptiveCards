@@ -2,6 +2,14 @@
     box-sizing: border-box;
 }
 
+.cardcontainer {
+    width: 400px;
+    border-width: 1px;
+    border-color: #808080;
+    border-style: solid;
+    padding: 8px;
+}
+
 .NoSeparation {
     margin-top: 0px !important;
 }

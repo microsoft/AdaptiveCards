@@ -1,7 +1,8 @@
 {
   "profiles": {
     "AdaptiveCards.Sample.Html": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "-r -i -o PayloadOutput.html"
     }
   }
 }

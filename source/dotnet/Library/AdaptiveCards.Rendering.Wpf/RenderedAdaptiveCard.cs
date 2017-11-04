@@ -7,8 +7,8 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public partial class RenderedAdaptiveCard : RenderedAdaptiveCardBase
     {
-        public RenderedAdaptiveCard(FrameworkElement frameworkElement, AdaptiveCard originatingCard)
-            : base(originatingCard)
+        public RenderedAdaptiveCard(FrameworkElement frameworkElement, AdaptiveCard originatingCard, IList<AdaptiveWarning> warnings)
+            : base(originatingCard, warnings)
         {
             FrameworkElement = frameworkElement;
         }
@@ -19,11 +19,6 @@ namespace AdaptiveCards.Rendering.Wpf
         public FrameworkElement FrameworkElement { get; }
 
         internal Dictionary<string, Func<string>> InputBindings { get; set; } = new Dictionary<string, Func<string>>();
-
-        /// <summary>
-        /// If any modifications were done to the rendered card they will be reported here
-        /// </summary>
-        public IList<AdaptiveWarning> Warnings { get; internal set; } = new List<AdaptiveWarning>();
 
         /// <summary>
         /// Event handler for when user invokes an action.

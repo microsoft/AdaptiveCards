@@ -106,9 +106,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var element = context.Render(card);
 
-            renderCard = new RenderedAdaptiveCard(element, card);
+            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings);
             renderCard.InputBindings = context.InputBindings;
-            renderCard.Warnings = context.Warnings;
 
             return renderCard;
         }

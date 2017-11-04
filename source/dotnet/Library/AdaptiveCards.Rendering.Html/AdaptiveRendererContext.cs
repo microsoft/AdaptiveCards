@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards.Rendering.Html
@@ -8,22 +9,28 @@ namespace AdaptiveCards.Rendering.Html
         public AdaptiveRendererContext(AdaptiveHostConfig hostConfig, AdaptiveElementRenderers<HtmlTag, AdaptiveRendererContext> elementRenderers)
         {
             // clone it
-            this.Config = JsonConvert.DeserializeObject<AdaptiveHostConfig>(JsonConvert.SerializeObject(hostConfig));
-            this.ElementRenderers = elementRenderers;
+            Config = JsonConvert.DeserializeObject<AdaptiveHostConfig>(JsonConvert.SerializeObject(hostConfig));
+            ElementRenderers = elementRenderers;
         }
 
         public AdaptiveHostConfig Config { get; set; }
 
         public AdaptiveElementRenderers<HtmlTag, AdaptiveRendererContext> ElementRenderers { get; set; }
 
-        /// <summary>
-        /// Helper to deal with casting
-        /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
+        public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
+
         public HtmlTag Render(AdaptiveTypedElement element)
         {
-            return this.ElementRenderers.Get(element.GetType())(element, this);
+            var renderer = ElementRenderers.Get(element.GetType());
+            if (renderer != null)
+            {
+                return renderer.Invoke(element, this);
+            }
+            else
+            {
+                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element type '{element.Type}'"));
+                return null;
+            }
         }
 
 

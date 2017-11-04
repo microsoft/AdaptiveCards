@@ -100,7 +100,7 @@ namespace WpfVisualizer
                     ShowWarning(warning.Message);
                 }
             }
-            catch (AdaptiveRenderException ex)
+            catch (AdaptiveRenderException)
             {
                 var fallbackCard = new TextBlock
                 {
