@@ -15,7 +15,8 @@ namespace AdaptiveCards.Test
 
         private void TestPayloadsInDirectory(string path)
         {
-            var files = Directory.GetFiles(path).ToList();
+            var files = Directory.GetFiles(path, "*.json").ToList();
+            Assert.IsTrue(files.Count > 1);
             foreach (var file in files)
             {
                 try
@@ -31,6 +32,7 @@ namespace AdaptiveCards.Test
 
             }
         }
+
         [TestMethod]
         public void TestAllScenarios()
         {
