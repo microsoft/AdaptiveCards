@@ -61,7 +61,7 @@ namespace AdaptiveCards.Sample.Html
                 }
                 else
                 {
-                    Console.WriteLine($"{payloadPath} does not contain any JSON files");
+                    Console.WriteLine($"{payloadPath} does not contain any JSON files/. Nothing to do.");
                     return;
                 }
 

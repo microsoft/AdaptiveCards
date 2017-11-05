@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Windows;
@@ -294,8 +295,13 @@ namespace WpfVisualizer
             {
                 hostConfigerror.Children.Clear();
                 Renderer.HostConfig = value;
+                _dirty = true;
                 if (value != null)
                 {
+                    var props = value.GetType()
+                        .GetRuntimeProperties()
+                        .Where(p => typeof(AdaptiveConfigBase).IsAssignableFrom(p.PropertyType));
+
                     foreach (var x in value.AdditionalData)
                     {
                         var textBlock = new TextBlock
@@ -314,8 +320,6 @@ namespace WpfVisualizer
         {
             HostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
             hostConfigEditor.SelectedObject = Renderer.HostConfig;
-
-            _dirty = true;
         }
 
         private void loadConfig_Click(object sender, RoutedEventArgs e)
@@ -327,7 +331,6 @@ namespace WpfVisualizer
             if (result == true)
             {
                 HostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(dlg.FileName));
-                _dirty = true;
             }
         }
 
