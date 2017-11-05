@@ -33,7 +33,7 @@ namespace AdaptiveCards.Sample.Html
                 // Output to file instead of console
                 if (optionOutput.HasValue())
                 {
-                    outputFile = File.OpenWrite(optionOutput.Value());
+                    outputFile = File.Open(optionOutput.Value(), FileMode.Create);
                     writer = new StreamWriter(outputFile);
                 }
 
