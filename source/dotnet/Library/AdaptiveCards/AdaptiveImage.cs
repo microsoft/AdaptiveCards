@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 
 namespace AdaptiveCards
@@ -12,7 +13,12 @@ namespace AdaptiveCards
         {
             
         }
-        public AdaptiveImage(string url)
+
+        public AdaptiveImage(string url) : this(new Uri(url))
+        {
+        }
+
+        public AdaptiveImage(Uri url)
         {
             Url = url;
         }
@@ -37,7 +43,7 @@ namespace AdaptiveCards
         ///     A url pointing to an image to display
         /// </summary>
         [JsonRequired]
-        public string Url { get; set; }
+        public Uri Url { get; set; }
 
         /// <summary>
         ///     Horizontal alignment for element

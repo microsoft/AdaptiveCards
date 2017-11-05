@@ -10,12 +10,12 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public class AdaptiveRenderContext
     {
-        private readonly Func<string, MemoryStream> _imageResolver;
+        private readonly Func<Uri, MemoryStream> _imageResolver;
         private readonly Dictionary<string, SolidColorBrush> _colors = new Dictionary<string, SolidColorBrush>();
 
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
             Action<object, MissingInputEventArgs> missingDataCallback,
-            Func<string, MemoryStream> imageResolver = null)
+            Func<Uri, MemoryStream> imageResolver = null)
         {
             if (actionCallback != null)
                 OnAction += (obj, args) => actionCallback(obj, args);
@@ -33,7 +33,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public AdaptiveElementRenderers<FrameworkElement, AdaptiveRenderContext> ElementRenderers { get; set; }
 
 
-        public BitmapImage ResolveImageSource(string url)
+        public BitmapImage ResolveImageSource(Uri url)
         {
             BitmapImage source = null;
             // off screen rendering can pass already loaded image to us so we can render immediately
@@ -45,7 +45,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 source.StreamSource = stream;
                 source.EndInit();
             }
-            return source ?? new BitmapImage(new Uri(url));
+            return source ?? new BitmapImage(url);
         }
 
 

@@ -576,7 +576,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiImage = new HtmlTag("img")
                 .Style("width", "100%")
                 .Attr("alt", image.AltText ?? "card image")
-                .Attr("src", image.Url);
+                .Attr("src", image.Url.ToString());
 
             switch (image.Style)
             {

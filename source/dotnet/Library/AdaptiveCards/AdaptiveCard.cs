@@ -79,8 +79,8 @@ namespace AdaptiveCards
         /// <summary>
         ///     Background image for card
         /// </summary>
-        [JsonProperty(Order = -4, NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundImage { get; set; } // TODO: Should this be Uri?
+        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Uri BackgroundImage { get; set; } 
 
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.

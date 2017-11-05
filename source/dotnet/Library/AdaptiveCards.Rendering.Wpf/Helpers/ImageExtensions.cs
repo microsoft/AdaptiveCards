@@ -1,20 +1,21 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
     public static class ImageExtensions
     {
-        public static void SetSource(this Image image, string url, AdaptiveRenderContext context)
+        public static void SetSource(this Image image, Uri url, AdaptiveRenderContext context)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (url == null)
                 return;
             image.Source = context.ResolveImageSource(url);
         }
 
-        public static void SetBackgroundSource(this Grid grid, string url, AdaptiveRenderContext context)
+        public static void SetBackgroundSource(this Grid grid, Uri url, AdaptiveRenderContext context)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (url == null)
                 return;
             grid.Background = new ImageBrush(context.ResolveImageSource(url))
             {
