@@ -109,7 +109,7 @@ namespace AdaptiveCards.Sample.Html
                         // Report any warnings
                         foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
                         {
-                            writer.WriteLine($"<p class='warning'>WARNING: {warning.Message}</div>");
+                            writer.WriteLine($"<p class='warning'>WARNING: {warning.Message}</p>");
                         }
 
                         writer.WriteLine($"<div class='cardcontainer'>{renderedCard.Html}</div>");
@@ -126,6 +126,7 @@ namespace AdaptiveCards.Sample.Html
 
                 if (outputFile != null)
                 {
+                    writer.Flush();
                     outputFile.Flush();
                     outputFile.Dispose();
 
