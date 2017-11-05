@@ -83,7 +83,7 @@ namespace AdaptiveCards.Sample.Html
 
                 if (hostConfigOption.HasValue())
                 {
-                    hostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(hostConfigOption.Value())).HostConfig;
+                    hostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(hostConfigOption.Value()));
                 }
 
                 AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);

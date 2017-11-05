@@ -20,13 +20,13 @@ namespace AdaptiveCards.Test
     }
 }");
 
-            Assert.IsNotNull(result.HostConfig);
+            Assert.IsNotNull(result);
 
-            Assert.AreEqual(25, result.HostConfig.FontSizes.Small);
-            Assert.AreEqual(26, result.HostConfig.FontSizes.Default);
-            Assert.AreEqual(27, result.HostConfig.FontSizes.Medium);
-            Assert.AreEqual(28, result.HostConfig.FontSizes.Large);
-            Assert.AreEqual(29, result.HostConfig.FontSizes.ExtraLarge);
+            Assert.AreEqual(25, result.FontSizes.Small);
+            Assert.AreEqual(26, result.FontSizes.Default);
+            Assert.AreEqual(27, result.FontSizes.Medium);
+            Assert.AreEqual(28, result.FontSizes.Large);
+            Assert.AreEqual(29, result.FontSizes.ExtraLarge);
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestParsingFullHostConfig()
         {
-            var result = AdaptiveHostConfig.FromJson(@"{
+            var hostConfig = AdaptiveHostConfig.FromJson(@"{
   ""spacing"": {
     ""small"": 3,
     ""default"": 4,
@@ -163,7 +163,6 @@ namespace AdaptiveCards.Test
   }
 }");
 
-            var hostConfig = result.HostConfig;
             Assert.IsNotNull(hostConfig);
 
             Assert.AreEqual(3, hostConfig.Spacing.Small);

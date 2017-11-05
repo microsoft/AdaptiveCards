@@ -257,16 +257,12 @@ namespace WpfVisualizer
         private void speak_Click(object sender, RoutedEventArgs e)
         {
             var result = AdaptiveCard.FromJson(textBox.Text);
-            if (result.Card != null)
+            var card = result.Card;
+
+            _synth.SpeakAsyncCancelAll();
+            if (card.Speak != null)
             {
-                var card = result.Card;
-
-                _synth.SpeakAsyncCancelAll();
-                if (card.Speak != null)
-                {
-                    _synth.SpeakSsmlAsync(FixSSML(card.Speak));
-                }
-
+                _synth.SpeakSsmlAsync(FixSSML(card.Speak));
             }
         }
 
@@ -291,14 +287,34 @@ namespace WpfVisualizer
             hostConfigEditor.Visibility = hostConfigEditor.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
 
+        public AdaptiveHostConfig HostConfig
+        {
+            get => Renderer.HostConfig;
+            set
+            {
+                hostConfigerror.Children.Clear();
+                Renderer.HostConfig = value;
+                if (value != null)
+                {
+                    foreach (var x in value.AdditionalData)
+                    {
+                        var textBlock = new TextBlock
+                        {
+                            Text = $"Unkown property {x.Key}",
+                            TextWrapping = TextWrapping.Wrap,
+                            Style = Resources["Warning"] as Style
+                        };
+                        hostConfigerror.Children.Add(textBlock);
+                    }
+                }
+            }
+        }
+
         private void hostConfigs_Selected(object sender, RoutedEventArgs e)
         {
-            var parseResult = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
-            if (parseResult.HostConfig != null)
-            {
-                Renderer.HostConfig = parseResult.HostConfig;
-                hostConfigEditor.SelectedObject = Renderer.HostConfig;
-            }
+            HostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
+            hostConfigEditor.SelectedObject = Renderer.HostConfig;
+
             _dirty = true;
         }
 
@@ -310,12 +326,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var json = File.ReadAllText(dlg.FileName);
-
-                var parseResult = AdaptiveHostConfig.FromJson(json);
-                if (parseResult.HostConfig != null)
-                    Renderer.HostConfig = parseResult.HostConfig;
-
+                HostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(dlg.FileName));
                 _dirty = true;
             }
         }

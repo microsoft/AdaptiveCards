@@ -131,7 +131,7 @@ namespace AdaptiveCards.Rendering.Html
             return uiCard;
         }
 
-        protected static void AddContainerElements(HtmlTag uiContainer, List<AdaptiveElement> elements, List<AdaptiveAction> actions, AdaptiveRendererContext context)
+        protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, IList<AdaptiveAction> actions, AdaptiveRendererContext context)
         {
             if (elements != null)
             {
@@ -886,7 +886,6 @@ namespace AdaptiveCards.Rendering.Html
             if (!string.IsNullOrEmpty(adaptiveElement.Speak))
             {
 #if NET452
-                // TODO: Fix xamarin fallback
                 var doc = new System.Xml.XmlDocument();
                 var xml = adaptiveElement.Speak;
                 if (!xml.Trim().StartsWith("<"))

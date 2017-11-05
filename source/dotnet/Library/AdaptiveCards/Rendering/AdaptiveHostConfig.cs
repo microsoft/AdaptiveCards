@@ -1,25 +1,22 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class AdaptiveHostConfig
+    public class AdaptiveConfigBase
     {
-        public static AdaptiveHostConfigParseResult FromJson(string json)
-        {
-            try
-            {
-                var hostConfig = JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
-                return new AdaptiveHostConfigParseResult(hostConfig);
-            }
-            catch (JsonException ex)
-            {
-                throw new AdaptiveSerializationException(ex.Message, ex);
-            }
-        }
+        [JsonExtensionData]
+        public IDictionary<string, JToken> AdditionalData { get; set; } = new Dictionary<string, JToken>();
+    }
 
+
+    public class AdaptiveHostConfig : AdaptiveConfigBase
+    {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ActionsConfig Actions { get; set; } = new ActionsConfig();
 
@@ -77,6 +74,28 @@ namespace AdaptiveCards.Rendering
                 default:
                     return Spacing.Default;
             }
+        }
+
+
+        public static AdaptiveHostConfig FromJson(string json)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
+            }
+            catch (JsonException ex)
+            {
+                throw new AdaptiveSerializationException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        ///  Serialize this Host Config to JSON
+        /// </summary>
+        /// <returns></returns>
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
 }

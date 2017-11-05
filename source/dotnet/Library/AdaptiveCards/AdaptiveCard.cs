@@ -50,7 +50,7 @@ namespace AdaptiveCards
         /// The Body elements for this card
         /// </summary>
         [JsonProperty(Order = -3)]
-        public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
+        public IList<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
         public bool ShouldSerializeBody() => Body?.Count > 0;
 
@@ -59,7 +59,7 @@ namespace AdaptiveCards
         ///     Actions for the card
         /// </summary>
         [JsonProperty(Order = -2)]
-        public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
+        public IList<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
         public bool ShouldSerializeActions() => Actions?.Count > 0;
 
