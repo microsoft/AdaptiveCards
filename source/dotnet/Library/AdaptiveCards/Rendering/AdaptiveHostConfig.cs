@@ -9,8 +9,15 @@ namespace AdaptiveCards.Rendering
     {
         public static AdaptiveHostConfigParseResult FromJson(string json)
         {
-            var hostConfig = JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
-            return new AdaptiveHostConfigParseResult(hostConfig);
+            try
+            {
+                var hostConfig = JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
+                return new AdaptiveHostConfigParseResult(hostConfig);
+            }
+            catch (JsonException ex)
+            {
+                throw new AdaptiveSerializationException(ex.Message, ex);
+            }
         }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

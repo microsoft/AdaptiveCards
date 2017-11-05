@@ -8,6 +8,15 @@ namespace AdaptiveCards
     /// </summary>
     public class AdaptiveImage : AdaptiveElement
     {
+        public AdaptiveImage()
+        {
+            
+        }
+        public AdaptiveImage(string url)
+        {
+            Url = url;
+        }
+
         public const string TypeName = "Image";
 
         public override string Type => TypeName;
@@ -15,13 +24,13 @@ namespace AdaptiveCards
         /// <summary>
         ///     Size for the Image
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveImageSize Size { get; set; }
 
         /// <summary>
         ///     The style in which the image is displayed.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveImageStyle Style { get; set; }
 
         /// <summary>
@@ -33,13 +42,13 @@ namespace AdaptiveCards
         /// <summary>
         ///     Horizontal alignment for element
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         ///     Action for this image (this allows a default action to happen when a click on an image happens)
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
@@ -47,20 +56,5 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string AltText { get; set; }
-
-        public bool ShouldSerializeSize()
-        {
-            return Size != AdaptiveImageSize.Auto;
-        }
-
-        public bool ShouldSerializeStyle()
-        {
-            return Style != AdaptiveImageStyle.Default;
-        }
-
-        public bool ShouldSerializeHorizontalAlignment()
-        {
-            return HorizontalAlignment != AdaptiveHorizontalAlignment.Left;
-        }
     }
 }

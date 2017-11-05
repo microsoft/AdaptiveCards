@@ -32,9 +32,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestParsingInvalidHostConfig()
         {
-            var result = AdaptiveHostConfig.FromJson("not json");
-
-            Assert.IsNull(result.HostConfig);
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveHostConfig.FromJson("not json"));
         }
 
         [TestMethod]

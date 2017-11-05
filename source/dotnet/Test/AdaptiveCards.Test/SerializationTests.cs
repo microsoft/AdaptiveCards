@@ -81,6 +81,37 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(1, result.Card.Actions.Count);
         }
 
+
+
+        [TestMethod]
+        public void TestDefaultValuesAreNotSerialized()
+        {
+            var card = new AdaptiveCard
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock("Hello world"),
+                    new AdaptiveImage("http://adaptivecards.io/content/cats/1.png")
+                }
+            };
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Hello world""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/1.png""
+    }
+  ]
+}";
+            Assert.AreEqual(expected, card.ToJson());
+        }
+
         [TestMethod]
         public void TestStyleNullDeserialization()
         {

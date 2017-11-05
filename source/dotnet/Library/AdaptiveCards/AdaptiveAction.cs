@@ -15,7 +15,7 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
 
-        // TODO: Title should be required is NOT a selectAction
+        // TODO: Title should be required is NOT a selectAction? Or can we use it as a tooltip?
 
         /// <summary>
         ///     Speak phrase for this action
