@@ -1,18 +1,45 @@
 ﻿# AdaptiveCards HTML Sample
 
-This library exercises the .NET HTML Renderer (`AdaptiveCards.Rendering.Html`)
+This provides a CLI to exercise the .NET HTML Renderer (`AdaptiveCards.Rendering.Html`)
 
 ## Usage
 
-If you cloned this repo, run the following command to generate HTML from the Scenario samples.
+If you cloned this repo, run the following command to generate HTML from the Scenario samples. The tool scans a directory for .json files that contain Adaptive Card payloads.
 
 ```console
-dotnet run
+Usage: dotnet run [payload-path] [options]
 ```
 
-To pipe the output to a file
+```console
+$ dotnet run
+```
+
+Or output to a file 
 
 ```console
-dotnet run > samples.html
-start ./samples.html
+$ dotnet run -o ./scenarios.html
+$ start ./scenarios.html
+```
+
+
+### Arguments
+
+Name | Description
+---|---
+path | The path that contains JSON card payloads
+
+### Options
+
+Short | Long | Description
+---|---|---
+-h |--help | Show help information
+-r |--recursive | Recurse the directory for all JSON files
+-o |--out | The file to output the HTML to
+-i | --supports-interactivity  | Include actions and inputs in the output
+n/a | --host-config | Specify a host config file
+
+## Example to use Windows Notification host config
+
+```console
+dotnet run ../../../../samples -r -i -o ./samples.html --c ../../../../samples/v1.0/hostconfig/windows-notification.json
 ```

@@ -23,7 +23,7 @@ namespace AdaptiveCards.Sample.Html
             var optionRecurse = app.Option("-r|--recursive", "Recurse the directory for all JSON files", CommandOptionType.NoValue);
             var optionOutput = app.Option("-o|--out", "The file to output the HTML to", CommandOptionType.SingleValue);
             var optionSupportsInteracitivty = app.Option("-i|--supports-interactivity", "Include actions and inputs in the output", CommandOptionType.NoValue);
-
+            var hostConfigOption = app.Option("--host-config", "Specify a host config file", CommandOptionType.SingleValue);
            
             app.OnExecute(() =>
             {
@@ -75,10 +75,16 @@ namespace AdaptiveCards.Sample.Html
                 writer.WriteLine(@"</head>");
                 writer.WriteLine(@"<body>");
 
+                
                 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
                 {
                     SupportsInteractivity = optionSupportsInteracitivty.HasValue()
                 };
+
+                if (hostConfigOption.HasValue())
+                {
+                    hostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(hostConfigOption.Value())).HostConfig;
+                }
 
                 AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
 
