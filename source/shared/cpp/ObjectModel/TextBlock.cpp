@@ -1,3 +1,9 @@
+#if defined(__ANDROID__) || (__APPLE__)
+#define LOCALTIME(X,Y) (nullptr == localtime_r(Y, X))
+#else
+#define LOCALTIME(X,Y) localtime_s(X,Y)
+#endif
+
 #include <iomanip>
 #include <regex>
 #include <iostream>
@@ -77,7 +83,7 @@ Json::Value TextBlock::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(GetTextSize());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(GetTextColor());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(GetTextWeight());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = 
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
         HorizontalAlignmentToString(GetHorizontalAlignment());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines)] = GetMaxLines();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = GetIsSubtle();
@@ -89,7 +95,7 @@ Json::Value TextBlock::SerializeToJsonValue()
 
 std::string TextBlock::GetText() const
 {
-    return ParseISO8601UsingRegex();
+    return ParseISO8601();
 }
 
 void TextBlock::SetText(const std::string value)
@@ -168,70 +174,52 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
-std::string TextBlock::ParseISO8601UsingRegex() const
+std::string TextBlock::ParseISO8601() const
 {
-	std::regex pattern("\\{\\{(DATE|Date|TIME|Time)\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|([+-])(\\d{2}):{1}(\\d{2}))(\\)|,Short\\)|,SHORT\\)|,Long\\)|,LONG\\))\\}\\}");
+    std::regex pattern("\\{\\{(DATE|Date|TIME|Time)\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|([+-])(\\d{2}):{1}(\\d{2}))(\\)|,Short\\)|,SHORT\\)|,Long\\)|,LONG\\))\\}\\}");
     std::smatch matches;
     std::string text = m_text;
     std::ostringstream parsedostr;
-    time_t offset = 0; 
+    time_t offset = 0;
     bool isDate = false, isShort = true;
     enum MatchIndex
     {
         IsDate = 1,
-        YEAR,
+        Year,
         Month,
         Day,
         Hour,
         Min,
         Sec,
         TimeZone,
-        TZHr = 10,
-        TZMn,
+        TimeZoneOffsetHours = 10,
+        TimeZoneOffsetMinutes,
         Format,
     };
-    int factor = 1, hours = 0, minutes = 0;
+    int hours = 0, minutes = 0;
     struct tm parsedTm = { 0 };
-    int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon, 
-        &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min, 
-        &parsedTm.tm_sec, &hours, &minutes}; 
-    std::vector<int> indexer = {YEAR, Month, Day, Hour, Min, Sec, TZHr, TZMn};
+    int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
+        &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+        &parsedTm.tm_sec, &hours, &minutes};
+    std::vector<int> indexer = {Year, Month, Day, Hour, Min, Sec, TimeZoneOffsetHours , TimeZoneOffsetMinutes};
 
-    while(std::regex_search(text, matches, pattern))
+    while (std::regex_search(text, matches, pattern))
     {
         parsedostr << matches.prefix().str();
 
-        if(matches[IsDate].matched)
+        if (matches[IsDate].matched)
         {
             // Date is matched
-            isDate = (matches[IsDate].str()[0] == 'D')? true : false;
+            isDate = (matches[IsDate].str()[0] == 'D');
         }
 
-        for(unsigned int idx = 0; idx < indexer.size(); idx++) 
-        { 
-            if(matches[indexer[idx]].matched)
+        for (unsigned int idx = 0; idx < indexer.size(); idx++)
+        {
+            if (matches[indexer[idx]].matched)
             {
                 // get indexes for time attributes to index into conrresponding matches
                 // and covert it to string
                 *addrs[idx] = stoi(matches[indexer[idx]]);
-            }
-        }
-
-        // maches offset sign, 
-        // Z == UTC, 
-        // + == time added from UTC
-        // - == time subtracted from UTC
-        if(matches[TimeZone].matched)
-        {
-            
-            char zone = matches[TimeZone].str()[0];
-            if(zone == 'Z')
-            {
-                factor = 0;
-            }
-            else if(zone == '+')
-            {
-                factor = -1;
             }
         }
 
@@ -243,13 +231,29 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         hours *= 3600;
         minutes *= 60;
 
-        // time zone offset calculation
-        offset = (hours + minutes) * factor;
+        // maches offset sign,
+        // Z == UTC,
+        // + == time added from UTC
+        // - == time subtracted from UTC
+        if (matches[TimeZone].matched)
+        {
+
+            char zone = matches[TimeZone].str()[0];
+            if (zone == '-')
+            {
+                offset = (hours + minutes);
+            }
+            else if (zone == '+')
+            {
+                // time zone offset calculation
+                offset = (hours + minutes) * (-1);
+            }
+        }
 
         time_t utc;
         // converts to ticks in UTC
         utc = mktime(&parsedTm);
-        if(utc == -1)
+        if (utc == -1)
         {
             parsedostr << matches[0];
         }
@@ -265,22 +269,22 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         struct tm result = {0};
 
         // match for long/short
-        if(matches[Format].matched)
+        if (matches[Format].matched)
         {
            char format = matches[Format].str()[0];
-           isShort = (format != ')' && matches[Format].str()[1] == 'L')? false : true;
+           isShort = (format == ')' || matches[Format].str()[1] == 'S');
         }
 
         // converts to local time from utc
-        if(!localtime_s(&result, &utc))
+        if (!LOCALTIME(&result, &utc))
         {
             // localtime_s double counts daylight saving time
-            if(result.tm_isdst == 1)
+            if (result.tm_isdst == 1)
                 result.tm_hour -= 1;
 
-            if(isDate)
+            if (isDate)
             {
-                if(isShort)
+                if (isShort)
                 {
                     parsedostr << std::put_time(&result, "%Ex");
                 }
@@ -296,7 +300,7 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         }
         text = matches.suffix().str();
         parsedTm = {0};
-        factor = 1;
+        offset = 0;
         hours = minutes = 0;
         isDate = false;
         isShort = true;
