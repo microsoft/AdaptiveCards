@@ -14,9 +14,8 @@ namespace AdaptiveCards.Sample.ImageRender
 {
     class Program
     {
-
         [STAThread]
-        static int Main(string[] args)
+        static void Main(string[] args)
         {
 
             var app = new CommandLineApplication();
@@ -34,107 +33,105 @@ namespace AdaptiveCards.Sample.ImageRender
                 app.Option("--host-config", "Specify a host config file", CommandOptionType.SingleValue);
 
             var uri = new Uri("skype:play");
-            app.OnExecute(async () =>
+            app.OnExecute(() =>
             {
-                var outPath = optionOutput.HasValue()
-                    ? optionOutput.Value()
-                    : Environment.CurrentDirectory;
-
-                // Get payload search path
-                var payloadPath = pathArg.Value ?? "..\\..\\..\\..\\samples\\v1.0\\Scenarios";
-                if (pathArg.Value == null)
+                AsyncPump.Run(async () =>
                 {
-                    Console.WriteLine($"No path argument specified, trying {payloadPath}...");
-                }
 
-                var files = new List<string>();
+                    var outPath = optionOutput.HasValue()
+                        ? optionOutput.Value()
+                        : Environment.CurrentDirectory;
 
-                if (File.Exists(payloadPath))
-                {
-                    files.Add(payloadPath);
-                }
-                else if (Directory.Exists(payloadPath))
-                {
-                    var recurse = optionRecurse.HasValue()
-                        ? SearchOption.AllDirectories
-                        : SearchOption.TopDirectoryOnly;
+                    // Get payload search path
+                    var payloadPath = pathArg.Value ?? "..\\..\\..\\..\\samples\\v1.0\\Scenarios";
+                    if (pathArg.Value == null)
+                    {
+                        Console.WriteLine($"No path argument specified, trying {payloadPath}...");
+                    }
 
-                    files = Directory.GetFiles(payloadPath, "*.json", recurse).ToList();
-                    Console.WriteLine($"Found {files.Count} card payloads...");
-                }
-                else
-                {
-                    Console.WriteLine($"{payloadPath} does not contain any JSON files. Nothing to do.");
-                    return;
-                }
+                    var files = new List<string>();
 
-                AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
-                {
-                    SupportsInteractivity = optionSupportsInteracitivty.HasValue()
-                };
+                    if (File.Exists(payloadPath))
+                    {
+                        files.Add(payloadPath);
+                    }
+                    else if (Directory.Exists(payloadPath))
+                    {
+                        var recurse = optionRecurse.HasValue()
+                            ? SearchOption.AllDirectories
+                            : SearchOption.TopDirectoryOnly;
 
-                if (hostConfigOption.HasValue())
-                {
-                    hostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(hostConfigOption.Value()));
-                }
+                        files = Directory.GetFiles(payloadPath, "*.json", recurse).ToList();
+                        Console.WriteLine($"Found {files.Count} card payloads...");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{payloadPath} does not contain any JSON files. Nothing to do.");
+                        return;
+                    }
 
-                AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
-                renderer.ResourceResolvers.Add("ms-appx", assetUri => Task.FromResult(new MemoryStream()));
+                    AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
+                    {
+                        SupportsInteractivity = optionSupportsInteracitivty.HasValue()
+                    };
 
-                foreach (var file in files)
-                {
-                    Stopwatch watch = new Stopwatch();
-                    watch.Start();
-                 
-                         AsyncPump.Run(async () =>
-                         {
+                    if (hostConfigOption.HasValue())
+                    {
+                        hostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(hostConfigOption.Value()));
+                    }
 
-                             AdaptiveCardParseResult parseResult =
-                                 AdaptiveCard.FromJson(File.ReadAllText(file, Encoding.UTF8));
+                    AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
+                    renderer.ResourceResolvers.Add("ms-appx", assetUri => Task.FromResult(new MemoryStream()));
 
-                             AdaptiveCard card = parseResult.Card;
+                    foreach (var file in files)
+                    {
+                        var watch = new Stopwatch();
+                        watch.Start();
 
-                             //var assets = await renderer.LoadAssetsForCardAsync(card);
-                             RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
-                             var cts = new CancellationTokenSource();
+                        AdaptiveCardParseResult parseResult =
+                            AdaptiveCard.FromJson(File.ReadAllText(file, Encoding.UTF8));
 
-                             //await renderedCard.WaitForAssetsAsync(cts.Token);
-                             var imageStream = await renderedCard.ToImageAsync();
+                        AdaptiveCard card = parseResult.Card;
 
-                             // Report any warnings
-                             foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
-                             {
-                                 Console.WriteLine($"[{Path.GetFileName(file)}] WARNING: {warning.Message}");
-                             }
+                        //var assets = await renderer.LoadAssetsForCardAsync(card);
+                        RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
+                        var cts = new CancellationTokenSource();
 
+                        //await renderedCard.WaitForAssetsAsync(cts.Token);
+                        var imageStream = await renderedCard.ToImageAsync();
 
-                             // Write to a png file with the same name as the json file
-                             var outputFile = Path.Combine(outPath,
-                                  Path.ChangeExtension(Path.GetFileName(file), ".png"));
+                        // Report any warnings
+                        foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
+                        {
+                            Console.WriteLine($"[{Path.GetFileName(file)}] WARNING: {warning.Message}");
+                        }
 
-                             using (FileStream fileStream = new FileStream(outputFile, FileMode.Create))
-                             {
-                                 imageStream.CopyTo(fileStream);
-                                 Console.WriteLine($"[{watch.ElapsedMilliseconds}ms] Rendered {Path.GetFullPath(outputFile)}");
-                             }
-                         });
+                        // Write to a png file with the same name as the json file
+                        var outputFile = Path.Combine(outPath,
+                            Path.ChangeExtension(Path.GetFileName(file), ".png"));
 
-                
-                }
+                        using (FileStream fileStream = new FileStream(outputFile, FileMode.Create))
+                        {
+                            imageStream.CopyTo(fileStream);
+                            Console.WriteLine(
+                                $"[{watch.ElapsedMilliseconds}ms] Rendered {Path.GetFullPath(outputFile)}");
+                        }
+                    }
 
-                Console.WriteLine($"All cards were written to {Path.GetFullPath(outPath)}");
+                    Console.WriteLine($"All cards were written to {Path.GetFullPath(outPath)}");
 
+                });
+
+                //return Task.FromResult(new object());
             });
 
 
-            int code = app.Execute(args);
+            app.Execute(args);
             // if output, launch the file
             if (Debugger.IsAttached)
             {
                 Console.ReadLine();
             }
-            return code;
-
         }
     }
 }
