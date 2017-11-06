@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Net.Cache;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -54,6 +60,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public AdaptiveActionHandlers ActionHandlers { get; } = new AdaptiveActionHandlers();
 
+        public ResourceResolver ResourceResolvers { get; } = new ResourceResolver();
 
         public static FrameworkElement RenderAdaptiveCardWrapper(AdaptiveCard card, AdaptiveRenderContext context)
         {
@@ -78,11 +85,13 @@ namespace AdaptiveCards.Rendering.Wpf
             return outerGrid;
         }
 
+
         /// <summary>
         /// Renders an adaptive card.
         /// </summary>
-        /// <returns></returns>
-        public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
+        /// <param name="card">The card to render</param>
+        /// <param name="cardAssets">Any pre-fetched assets associated with the card</param>
+        public RenderedAdaptiveCard RenderCard(AdaptiveCard card, IDictionary<Uri, MemoryStream> cardAssets = null)
         {
             if (card == null) throw new ArgumentNullException(nameof(card));
 
@@ -97,6 +106,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var context = new AdaptiveRenderContext(Callback, null)
             {
+                ResourceResolvers = ResourceResolvers,
                 ActionHandlers = ActionHandlers,
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
@@ -105,10 +115,65 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var element = context.Render(card);
 
-            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings);
+            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.AssetTasks);
             renderCard.InputBindings = context.InputBindings;
 
             return renderCard;
+        }
+
+        public async Task<IDictionary<Uri, MemoryStream>> LoadAssetsForCardAsync(AdaptiveCard card)
+        {
+            var visitor = new PreFetchImageVisitor();
+            await visitor.GetAllImages(card).ConfigureAwait(false);
+            return visitor.LoadedImages;
+        }
+    }
+
+    public class ResourceResolver
+    {
+        private readonly Dictionary<string, Func<Uri, Task<MemoryStream>>> _internal = new Dictionary<string, Func<Uri, Task<MemoryStream>>>(StringComparer.OrdinalIgnoreCase);
+
+        // TODO: cache? or better yet find someone else who solved this
+        public ResourceResolver()
+        {
+            
+            Add("http", async (uri) =>
+            {
+                var webclient = new WebClient()
+                {
+                    CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable)
+                };
+                var bytes = await webclient.DownloadDataTaskAsync(uri);
+                return new MemoryStream(bytes);
+            });
+
+            Add("https", async (uri) =>
+            {
+                var webclient = new WebClient()
+                {
+                    CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable)
+                };
+                var bytes = await webclient.DownloadDataTaskAsync(uri);
+                return new MemoryStream(bytes);
+            });
+        }
+        public void Add(string uriScheme, Func<Uri, Task<MemoryStream>> loadAsset)
+        {
+            _internal.Add(uriScheme, loadAsset);
+        }
+
+        public Task<MemoryStream> LoadAssetAsync(Uri uri)
+        {
+            if (uri == null) throw new ArgumentNullException(nameof(uri));
+
+            if (_internal.ContainsKey(uri.Scheme))
+            {
+                var task = _internal[uri.Scheme].Invoke(uri);
+                return Task.Factory.StartNew(() => task.Result);
+            }
+
+            // TODO: Context warning, asset URI not found
+            return null;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <returns>PNG file</returns>
         public async Task<Stream> RenderToImageAsync(AdaptiveCard card, int width = 480)
         {
-            var visitor = new ImageVisitor();
+            var visitor = new PreFetchImageVisitor();
             
             // prefetch images
             await visitor.GetAllImages(card).ConfigureAwait(false);
@@ -39,6 +39,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 return _renderToImage(card, width, (url) => visitor.GetCachedImageStream(url));
             }).ConfigureAwait(false);
         }
+
+        //public Func<Uri, MemoryStream> ImageResolver { get; set; }
+
 
         protected Stream _renderToImage(AdaptiveCard card, int width, Func<Uri, MemoryStream> imageResolver = null)
         {
@@ -55,12 +58,13 @@ namespace AdaptiveCards.Rendering.Wpf
             return stream;
         }
 
+
+
         /// <summary>
         /// Render card to bitmap source (must be called on STA thread)
         /// </summary>
         protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<Uri, MemoryStream> imageResolver = null)
         {
-            // TODO: When ResourceResolver support is added, wire up the image resolver
             var result = RenderCard(card);
             if (result.FrameworkElement != null)
             {

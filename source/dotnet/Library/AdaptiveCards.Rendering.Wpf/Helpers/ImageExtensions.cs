@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -6,18 +7,18 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class ImageExtensions
     {
-        public static void SetSource(this Image image, Uri url, AdaptiveRenderContext context)
+        public static async void SetSource(this Image image, Uri url, AdaptiveRenderContext context)
         {
             if (url == null)
                 return;
-            image.Source = context.ResolveImageSource(url);
+            image.Source = await context.ResolveImageSource(url);
         }
 
-        public static void SetBackgroundSource(this Grid grid, Uri url, AdaptiveRenderContext context)
+        public static async void SetBackgroundSource(this Grid grid, Uri url, AdaptiveRenderContext context)
         {
             if (url == null)
                 return;
-            grid.Background = new ImageBrush(context.ResolveImageSource(url))
+            grid.Background = new ImageBrush(await context.ResolveImageSource(url))
             {
                 Stretch = Stretch.UniformToFill,
                 AlignmentX = AlignmentX.Left,

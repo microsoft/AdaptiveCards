@@ -1,29 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Net;
+using System.Net.Cache;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
     public class AdaptiveRenderContext
     {
-        private readonly Func<Uri, MemoryStream> _imageResolver;
         private readonly Dictionary<string, SolidColorBrush> _colors = new Dictionary<string, SolidColorBrush>();
 
+        public List<Task> AssetTasks { get; } = new List<Task>();
+
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
-            Action<object, MissingInputEventArgs> missingDataCallback,
-            Func<Uri, MemoryStream> imageResolver = null)
+            Action<object, MissingInputEventArgs> missingDataCallback)
         {
             if (actionCallback != null)
                 OnAction += (obj, args) => actionCallback(obj, args);
 
             if (missingDataCallback != null)
                 OnMissingInput += (obj, args) => missingDataCallback(obj, args);
-
-            _imageResolver = imageResolver;
         }
 
         public AdaptiveHostConfig Config { get; set; } = new AdaptiveHostConfig();
@@ -32,21 +37,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public AdaptiveElementRenderers<FrameworkElement, AdaptiveRenderContext> ElementRenderers { get; set; }
 
+        public ResourceDictionary Resources { get; set; }
 
-        public BitmapImage ResolveImageSource(Uri url)
-        {
-            BitmapImage source = null;
-            // off screen rendering can pass already loaded image to us so we can render immediately
-            var stream = _imageResolver?.Invoke(url);
-            if (stream != null)
-            {
-                source = new BitmapImage();
-                source.BeginInit();
-                source.StreamSource = stream;
-                source.EndInit();
-            }
-            return source ?? new BitmapImage(url);
-        }
+        public AdaptiveActionHandlers ActionHandlers { get; set; }
+        public ResourceResolver ResourceResolvers { get; set; }
+
+        public Dictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
+
 
 
         public event EventHandler<AdaptiveActionEventArgs> OnAction;
@@ -66,6 +63,33 @@ namespace AdaptiveCards.Rendering.Wpf
             OnMissingInput?.Invoke(sender, args);
         }
 
+        /// <summary>
+        /// All remote assets should be resolved through this method for tracking
+        /// </summary>
+        public async Task<BitmapImage> ResolveImageSource(Uri url)
+        {
+            var completeTask = new TaskCompletionSource<object>();
+            AssetTasks.Add(completeTask.Task);
+
+            var task = ResourceResolvers.LoadAssetAsync(url);
+            Debug.WriteLine($"ASSETS: Starting asset down task for {url}");
+            BitmapImage source = new BitmapImage();
+
+            var stream = await task;
+
+            source.BeginInit();
+            source.CacheOption = BitmapCacheOption.OnLoad;
+            source.StreamSource = stream;
+            source.EndInit();
+            Debug.WriteLine($"ASSETS: Finished loading asset for {url} ({task.Result.Length} bytes)");
+            completeTask.SetResult(new object());
+            return source;
+
+            // TODO: attach to parent
+        }
+
+
+
 
         public SolidColorBrush GetColorBrush(string color)
         {
@@ -79,9 +103,6 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public ResourceDictionary Resources { get; set; }
-
-        public AdaptiveActionHandlers ActionHandlers { get; set; }
 
         public virtual Style GetStyle(string styleName)
         {
@@ -117,6 +138,5 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public Dictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
     }
 }
