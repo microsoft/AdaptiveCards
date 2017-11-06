@@ -88,7 +88,7 @@ Json::Value BaseCardElement::SerializeToJsonValue()
 std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const Json::Value& json, 
+    const Json::Value& json,
     AdaptiveCardSchemaKey key)
 {
     Json::Value selectActionValue = ParseUtil::ExtractJsonValue(json, key, false);

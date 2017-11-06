@@ -207,7 +207,7 @@ namespace AdaptiveCards
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ActionType
         {
-            Unsupported = 0, 
+            Unsupported = 0,
             ShowCard,
             Submit,
             OpenUrl,
@@ -475,19 +475,19 @@ namespace AdaptiveCards
         {
             [overload("FromJson")]
             HRESULT FromJson(
-                [in] Windows.Data.Json.JsonObject* adaptiveJson, 
+                [in] Windows.Data.Json.JsonObject* adaptiveJson,
                 [out, retval] AdaptiveCardParseResult** card);
 
             [overload("FromJson")]
             HRESULT FromJsonWithParserRegistration(
-                [in] Windows.Data.Json.JsonObject* adaptiveJson, 
-                [in] AdaptiveElementParserRegistration* elementRegistration, 
-                [in] AdaptiveActionParserRegistration* actionRegistration, 
+                [in] Windows.Data.Json.JsonObject* adaptiveJson,
+                [in] AdaptiveElementParserRegistration* elementRegistration,
+                [in] AdaptiveActionParserRegistration* actionRegistration,
                 [out, retval] AdaptiveCardParseResult** card);
 
             [overload("FromJsonString")]
             HRESULT FromJsonString(
-                [in] HSTRING adaptiveJson, 
+                [in] HSTRING adaptiveJson,
                 [out, retval] AdaptiveCardParseResult** card);
 
             [overload("FromJsonString")]
@@ -1680,9 +1680,9 @@ namespace AdaptiveCards
         interface IAdaptiveElementParser : IInspectable
         {
             HRESULT FromJson(
-                [in] Windows.Data.Json.JsonObject* inputJson, 
-                [in] AdaptiveElementParserRegistration* elementParsers, 
-                [in] AdaptiveActionParserRegistration* actionParsers, 
+                [in] Windows.Data.Json.JsonObject* inputJson,
+                [in] AdaptiveElementParserRegistration* elementParsers,
+                [in] AdaptiveActionParserRegistration* actionParsers,
                 [out, retval] IAdaptiveCardElement** result);
         };
 

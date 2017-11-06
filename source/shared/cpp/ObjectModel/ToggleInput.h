@@ -38,7 +38,7 @@ class ToggleInputParser : public IBaseCardElementParser
 public:
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& root);
 
     std::shared_ptr<BaseCardElement> DeserializeFromString(

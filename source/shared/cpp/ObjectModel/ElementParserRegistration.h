@@ -14,8 +14,8 @@ namespace AdaptiveCards
     {
     public:
         virtual std::shared_ptr<BaseCardElement> Deserialize(
-            std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration, 
-            std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration, 
+            std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
             const Json::Value& value) = 0;
     };
 

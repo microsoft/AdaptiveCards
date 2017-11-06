@@ -9,7 +9,7 @@ ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetIn
 }
 
 ChoiceSetInput::ChoiceSetInput(
-    Spacing spacing, 
+    Spacing spacing,
     bool separation,
     std::vector<std::shared_ptr<ChoiceInput>>& choices) :
     BaseInputElement(CardElementType::ChoiceSetInput, spacing, separation),
@@ -73,7 +73,7 @@ void AdaptiveCards::ChoiceSetInput::SetChoiceSetStyle(const ChoiceSetStyle choic
 
 std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ChoiceSetInput);
@@ -92,7 +92,7 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ChoiceSetInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const std::string& jsonString)
 {
     return ChoiceSetInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

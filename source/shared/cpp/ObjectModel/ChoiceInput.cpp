@@ -11,7 +11,7 @@ ChoiceInput::ChoiceInput() :
 
 std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>, 
+    std::shared_ptr<ActionParserRegistration>,
     const Json::Value& json)
 {
     auto choice = std::make_shared<ChoiceInput>();
@@ -25,7 +25,7 @@ std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(
 
 std::shared_ptr<ChoiceInput> ChoiceInput::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const std::string& jsonString)
 {
     return ChoiceInput::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

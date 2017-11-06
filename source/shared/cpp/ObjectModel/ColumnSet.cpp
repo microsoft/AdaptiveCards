@@ -54,8 +54,8 @@ Json::Value ColumnSet::SerializeToJsonValue()
 }
 
 std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration, 
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "pch.h"
 #include "util.h"
 
 namespace AdaptiveCards { namespace Uwp
