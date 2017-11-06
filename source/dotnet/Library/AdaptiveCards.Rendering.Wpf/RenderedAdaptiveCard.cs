@@ -29,7 +29,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         /// <summary>
         /// The rendered card
-        /// </summary
+        /// </summary>
         public FrameworkElement FrameworkElement { get; set; } // TODO: make setter private
 
         internal Dictionary<string, Func<string>> InputBindings { get; set; } = new Dictionary<string, Func<string>>();
@@ -58,20 +58,20 @@ namespace AdaptiveCards.Rendering.Wpf
             return Task.WhenAll(_assetDownLoad);
         }
 
-        public async Task<MemoryStream> ToImageAsync(int width = 480)
+        public async Task<MemoryStream> ToImageAsync(int width = 400)
         {
-            Debug.WriteLine($"Starting to render to image...");
+            Debug.WriteLine("Starting to render to image...");
 
-            Debug.WriteLine($"Waiting for assets...");
+            Debug.WriteLine("Waiting for assets...");
             await Task.WhenAll(_assetDownLoad);
             Debug.WriteLine("Finished loading assets... waiting for layout update");
 
-            FrameworkElement.UpdateLayout();
+            //FrameworkElement.UpdateLayout();
 
             await FrameworkElement.AwaitLayoutUpdated();
             Debug.WriteLine("Framework layout updated...");
 
-            FrameworkElement.Measure(new Size(width, 4000));
+            FrameworkElement.Measure(new Size(width, int.MaxValue));
             FrameworkElement.Arrange(new Rect(new Size(width, FrameworkElement.DesiredSize.Height)));
             FrameworkElement.UpdateLayout();        
 

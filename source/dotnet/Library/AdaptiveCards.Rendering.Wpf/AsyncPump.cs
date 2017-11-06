@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
-    /// <summary>Provides a pump that supports running asynchronous methods on the current thread.</summary>
+    /// <summary>
+    /// Provides a pump that supports running asynchronous methods on the current thread.
+    /// From: https://blogs.msdn.microsoft.com/pfxteam/2012/01/20/await-synchronizationcontext-and-console-apps/
+    /// </summary>
     public static class AsyncPump
     {
         /// <summary>Runs the specified asynchronous function.</summary>

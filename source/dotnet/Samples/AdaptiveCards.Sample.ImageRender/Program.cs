@@ -32,7 +32,6 @@ namespace AdaptiveCards.Sample.ImageRender
             var hostConfigOption =
                 app.Option("--host-config", "Specify a host config file", CommandOptionType.SingleValue);
 
-            var uri = new Uri("skype:play");
             app.OnExecute(() =>
             {
                 AsyncPump.Run(async () =>
@@ -41,6 +40,9 @@ namespace AdaptiveCards.Sample.ImageRender
                     var outPath = optionOutput.HasValue()
                         ? optionOutput.Value()
                         : Environment.CurrentDirectory;
+
+                    if (!Directory.Exists(outPath))
+                        Directory.CreateDirectory(outPath);
 
                     // Get payload search path
                     var payloadPath = pathArg.Value ?? "..\\..\\..\\..\\samples\\v1.0\\Scenarios";
@@ -70,10 +72,12 @@ namespace AdaptiveCards.Sample.ImageRender
                         return;
                     }
 
+
                     AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
                     {
                         SupportsInteractivity = optionSupportsInteracitivty.HasValue()
                     };
+
 
                     if (hostConfigOption.HasValue())
                     {
@@ -81,48 +85,16 @@ namespace AdaptiveCards.Sample.ImageRender
                     }
 
                     AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
-                    renderer.ResourceResolvers.Add("ms-appx", assetUri => Task.FromResult(new MemoryStream()));
+                    // TODO: load custom symbols
+                    renderer.ResourceResolvers.Add("symbol", assetUri => Task.FromResult(new MemoryStream()));
 
                     foreach (var file in files)
                     {
-                        var watch = new Stopwatch();
-                        watch.Start();
-
-                        AdaptiveCardParseResult parseResult =
-                            AdaptiveCard.FromJson(File.ReadAllText(file, Encoding.UTF8));
-
-                        AdaptiveCard card = parseResult.Card;
-
-                        //var assets = await renderer.LoadAssetsForCardAsync(card);
-                        RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
-                        var cts = new CancellationTokenSource();
-
-                        //await renderedCard.WaitForAssetsAsync(cts.Token);
-                        var imageStream = await renderedCard.ToImageAsync();
-
-                        // Report any warnings
-                        foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
-                        {
-                            Console.WriteLine($"[{Path.GetFileName(file)}] WARNING: {warning.Message}");
-                        }
-
-                        // Write to a png file with the same name as the json file
-                        var outputFile = Path.Combine(outPath,
-                            Path.ChangeExtension(Path.GetFileName(file), ".png"));
-
-                        using (FileStream fileStream = new FileStream(outputFile, FileMode.Create))
-                        {
-                            imageStream.CopyTo(fileStream);
-                            Console.WriteLine(
-                                $"[{watch.ElapsedMilliseconds}ms] Rendered {Path.GetFullPath(outputFile)}");
-                        }
+                        await RenderCardFromFile(file, renderer, outPath);
                     }
 
                     Console.WriteLine($"All cards were written to {Path.GetFullPath(outPath)}");
-
                 });
-
-                //return Task.FromResult(new object());
             });
 
 
@@ -131,6 +103,47 @@ namespace AdaptiveCards.Sample.ImageRender
             if (Debugger.IsAttached)
             {
                 Console.ReadLine();
+            }
+        }
+
+        private static async Task RenderCardFromFile(string file, AdaptiveCardRenderer renderer, string outPath)
+        {
+            try
+            {
+                var watch = new Stopwatch();
+                watch.Start();
+
+                AdaptiveCardParseResult parseResult =
+                    AdaptiveCard.FromJson(File.ReadAllText(file, Encoding.UTF8));
+
+                AdaptiveCard card = parseResult.Card;
+
+                //var assets = await renderer.LoadAssetsForCardAsync(card);
+                RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
+                var cts = new CancellationTokenSource();
+
+                var imageStream = await renderedCard.ToImageAsync();
+
+                // Report any warnings
+                foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
+                {
+                    Console.WriteLine($"[{Path.GetFileName(file)}] WARNING: {warning.Message}");
+                }
+
+                // Write to a png file with the same name as the json file
+                var outputFile = Path.Combine(outPath,
+                    Path.ChangeExtension(Path.GetFileName(file), ".png"));
+
+                using (FileStream fileStream = new FileStream(outputFile, FileMode.Create))
+                {
+                    imageStream.CopyTo(fileStream);
+                    Console.WriteLine(
+                        $"[{watch.ElapsedMilliseconds}ms]\t\t{Path.GetFileName(file)} => {Path.GetFileName(outputFile)}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[FAILED]\t{Path.GetFileName(file)} => {ex.Message}");
             }
         }
     }
