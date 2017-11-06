@@ -170,7 +170,7 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
 
 std::string TextBlock::ParseISO8601UsingRegex() const
 {
-	std::regex pattern("\\{\\{(DATE|TIME)\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|([+-])(\\d{2}):{1}(\\d{2}))(\\)|, S[Hh][Oo][Rr][Tt]\\)|, L[Oo][Nn][Gg]\\))\\}\\}");
+	std::regex pattern("\\{\\{(DATE|Date|TIME|Time)\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|([+-])(\\d{2}):{1}(\\d{2}))(\\)|,Short\\)|,SHORT\\)|,Long\\)|,LONG\\))\\}\\}");
     std::smatch matches;
     std::string text = m_text;
     std::ostringstream parsedostr;
@@ -186,37 +186,45 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         Min,
         Sec,
         TimeZone,
-		TZHr = 10,
-		TZMn,
+        TZHr = 10,
+        TZMn,
         Format,
     };
-    int factor = 1, hr = 0, mn = 0;
+    int factor = 1, hours = 0, minutes = 0;
     struct tm parsedTm = { 0 };
-    int *addrs[]  = {&parsedTm.tm_year, &parsedTm.tm_mon, 
+    int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon, 
         &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min, 
-        &parsedTm.tm_sec, &hr, &mn}; 
+        &parsedTm.tm_sec, &hours, &minutes}; 
     std::vector<int> indexer = {YEAR, Month, Day, Hour, Min, Sec, TZHr, TZMn};
 
     while(std::regex_search(text, matches, pattern))
     {
-		parsedostr << matches.prefix().str();
+        parsedostr << matches.prefix().str();
 
         if(matches[IsDate].matched)
         {
+            // Date is matched
             isDate = (matches[IsDate].str()[0] == 'D')? true : false;
         }
 
-        for(int idx = 0; idx < indexer.size(); idx++) 
+        for(unsigned int idx = 0; idx < indexer.size(); idx++) 
         { 
             if(matches[indexer[idx]].matched)
             {
+                // get indexes for time attributes to index into conrresponding matches
+                // and covert it to string
                 *addrs[idx] = stoi(matches[indexer[idx]]);
             }
         }
 
+        // maches offset sign, 
+        // Z == UTC, 
+        // + == time added from UTC
+        // - == time subtracted from UTC
         if(matches[TimeZone].matched)
         {
-			char zone = matches[TimeZone].str()[0];
+            
+            char zone = matches[TimeZone].str()[0];
             if(zone == 'Z')
             {
                 factor = 0;
@@ -227,15 +235,19 @@ std::string TextBlock::ParseISO8601UsingRegex() const
             }
         }
 
+        // measured from year 1900
         parsedTm.tm_year -= 1900;
         parsedTm.tm_mon  -= 1;
 
-        hr *= 3600;
-        mn *= 60;
-        offset = (hr + mn) * factor;
+        // converts to seconds
+        hours *= 3600;
+        minutes *= 60;
+
+        // time zone offset calculation
+        offset = (hours + minutes) * factor;
 
         time_t utc;
-        // converts to ticks
+        // converts to ticks in UTC
         utc = mktime(&parsedTm);
         if(utc == -1)
         {
@@ -250,13 +262,16 @@ std::string TextBlock::ParseISO8601UsingRegex() const
         offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
         // add offset to utc
         utc += offset;
-		struct tm result = {0};
-        // converts to local time from utc
+        struct tm result = {0};
+
+        // match for long/short
         if(matches[Format].matched)
         {
-		   char format = matches[Format].str()[0];
-           isShort = (format != ')' && matches[Format].str()[2] == 'L')? false : true;
+           char format = matches[Format].str()[0];
+           isShort = (format != ')' && matches[Format].str()[1] == 'L')? false : true;
         }
+
+        // converts to local time from utc
         if(!localtime_s(&result, &utc))
         {
             // localtime_s double counts daylight saving time
@@ -279,15 +294,15 @@ std::string TextBlock::ParseISO8601UsingRegex() const
                 parsedostr << std::put_time(&result, "%I:%M:%S %p");
             }
         }
-		text = matches.suffix().str();
+        text = matches.suffix().str();
         parsedTm = {0};
         factor = 1;
-        hr = mn = 0;
+        hours = minutes = 0;
         isDate = false;
         isShort = true;
     }
 
     parsedostr << text;
 
-	return parsedostr.str();
+    return parsedostr.str();
 }
