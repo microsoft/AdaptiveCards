@@ -439,74 +439,73 @@ namespace AdaptiveCards { namespace Uwp
         T* uiElement,
         IAdaptiveCardResourceResolvers* resolvers)
     {
-        // Get the resource resolvers
-        ComPtr<IAdaptiveCardResourceResolvers> localResolvers(resolvers);
-
         // Get the image url scheme
         HSTRING schemeName;
         THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
 
         // Get the resolver for the image
         ComPtr<IAdaptiveCardResourceResolver> resolver;
-        THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
-
-        // If we have a resolver
-        if (resolver != nullptr)
+        if (resolvers != nullptr)
         {
-            // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
-            // the tracker to subscribe to the ImageLoaded/Failed events
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-
-            if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+            THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
+            // If we have a resolver
+            if (resolver != nullptr)
             {
-                m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
-            }
+                // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
+                // the tracker to subscribe to the ImageLoaded/Failed events
+                ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
 
-            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
-            ComPtr<IBitmapSource> bitmapSource;
-            bitmapImage.As(&bitmapSource);
-
-            // Create the arguments to pass to the resolver
-            ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-            THROW_IF_FAILED(MakeAndInitialize<AdaptiveCardGetResourceStreamArgs>(&args, imageUri));
-
-            // And call the resolver to get the image stream
-            ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
-            THROW_IF_FAILED(resolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
-
-            ComPtr<T> strongImageControl(uiElement);
-            ComPtr<XamlBuilder> strongThis(this);
-            THROW_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
-                ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
-            {
-                if (status == AsyncStatus::Completed)
+                if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
                 {
-                    // Get the random access stream
-                    ComPtr<IRandomAccessStream> randomAccessStream;
-                    RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
+                    m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+                }
 
-                    if (randomAccessStream == nullptr)
+                THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
+                ComPtr<IBitmapSource> bitmapSource;
+                bitmapImage.As(&bitmapSource);
+
+                // Create the arguments to pass to the resolver
+                ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
+                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCardGetResourceStreamArgs>(&args, imageUri));
+
+                // And call the resolver to get the image stream
+                ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
+                THROW_IF_FAILED(resolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
+
+                ComPtr<T> strongImageControl(uiElement);
+                ComPtr<XamlBuilder> strongThis(this);
+                THROW_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
+                    ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
+                {
+                    if (status == AsyncStatus::Completed)
+                    {
+                        // Get the random access stream
+                        ComPtr<IRandomAccessStream> randomAccessStream;
+                        RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
+
+                        if (randomAccessStream == nullptr)
+                        {
+                            m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                            return S_OK;
+                        }
+
+                        RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                        ComPtr<IImageSource> imageSource;
+                        RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+
+                        SetImageSource(strongImageControl.Get(), imageSource.Get());
+                        return S_OK;
+                    }
+                    else
                     {
                         m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
                         return S_OK;
                     }
+                }).Get()));
 
-                    RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
-
-                    ComPtr<IImageSource> imageSource;
-                    RETURN_IF_FAILED(bitmapSource.As(&imageSource));
-
-                    SetImageSource(strongImageControl.Get(), imageSource.Get());
-                    return S_OK;
-                }
-                else
-                {
-                    m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
-                    return S_OK;
-                }
-            }).Get()));
-
-            return;
+                return;
+            }
         }
 
         // Otherwise, no resolver...
@@ -1318,14 +1317,6 @@ namespace AdaptiveCards { namespace Uwp
             ComPtr<IImage> xamlImage = XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
             SetImageOnUIElement(imageUri.Get(), xamlImage.Get(), resourceResolvers.Get());
             THROW_IF_FAILED(xamlImage.As(&frameworkElement));
-            switch (size)
-            {
-                case ABI::AdaptiveCards::Uwp::ImageSize::None:
-                case ABI::AdaptiveCards::Uwp::ImageSize::Stretch:
-                case ABI::AdaptiveCards::Uwp::ImageSize::Auto:
-                    THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_Uniform));
-                    break;
-            }
 
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
