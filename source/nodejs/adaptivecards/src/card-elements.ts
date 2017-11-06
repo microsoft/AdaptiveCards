@@ -3221,6 +3221,16 @@ export abstract class ContainerWithActions extends Container {
         }
     }
 
+    validate(): Array<IValidationError> {
+        var result = super.validate();
+
+        if (this._actionCollection) {
+            result = result.concat(this._actionCollection.validate());            
+        }
+
+        return result;
+    }
+
     isLastElement(element: CardElement): boolean {
         return super.isLastElement(element) && this._actionCollection.items.length == 0;
     }
