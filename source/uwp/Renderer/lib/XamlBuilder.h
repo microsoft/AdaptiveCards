@@ -137,11 +137,15 @@ namespace AdaptiveCards { namespace Uwp
         void ApplyBackgroundToRoot(
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
             _In_ ABI::Windows::Foundation::IUriRuntimeClass* uri,
-            _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
+            _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderArgs* renderArgs);
         template<typename T>
         void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource);
         template<typename T>
-        void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* uiElement, ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
+        void SetImageOnUIElement(
+            _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
+            T* uiElement,
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers* resolvers);
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();
@@ -215,6 +219,11 @@ namespace AdaptiveCards { namespace Uwp
             _Inout_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext);
 
         static HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
+
+        static HRESULT SetAutoImageSize(
+            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
+            _In_ IInspectable* parentElement,
+            _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource);
 
     };
 }}
