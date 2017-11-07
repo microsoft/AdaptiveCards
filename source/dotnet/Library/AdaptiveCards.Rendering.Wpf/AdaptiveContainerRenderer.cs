@@ -33,7 +33,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return border;
         }
 
-        public static void AddContainerElements(Grid uiContainer, List<AdaptiveElement> elements, AdaptiveRenderContext context)
+        public static void AddContainerElements(Grid uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
         {
             foreach (var cardElement in elements)
             {

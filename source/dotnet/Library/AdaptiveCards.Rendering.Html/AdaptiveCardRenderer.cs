@@ -51,10 +51,13 @@ namespace AdaptiveCards.Rendering.Html
                 var tag = context.Render(card);
                 return new RenderedAdaptiveCard(tag, card, context.Warnings);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw new AdaptiveRenderException("Failed to render card", ex);
-            }            
+                throw new AdaptiveRenderException("Failed to render card", ex)
+                {
+                    CardFallbackText = card.FallbackText
+                };
+            }
         }
 
         private void SetObjectTypes()
@@ -77,7 +80,7 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveTimeInput>(TimeInputRender);
             ElementRenderers.Set<AdaptiveToggleInput>(ToggleInputRender);
 
-            ElementRenderers.Set<AdaptiveSubmitAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-submitData", WebUtility.HtmlEncode(JsonConvert.SerializeObject(action.Data, Formatting.None))));
+            ElementRenderers.Set<AdaptiveSubmitAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
 
             // TODO: implement default behavior to open the URL
             ElementRenderers.Set<AdaptiveOpenUrlAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-url", action.Url));
@@ -112,6 +115,7 @@ namespace AdaptiveCards.Rendering.Html
                 .AddClass($"ac-{card.Type.ToLower()}")
                 .Style("width", "100%")
                 .Style("background-color", context.GetRGBColor(context.Config.ContainerStyles.Default.BackgroundColor))
+                .Style("padding", $"{context.Config.Spacing.Padding}px")
                 .Style("box-sizing", "border-box");
 
             if (!string.IsNullOrEmpty(context.Config.FontFamily))
@@ -127,7 +131,7 @@ namespace AdaptiveCards.Rendering.Html
             return uiCard;
         }
 
-        protected static void AddContainerElements(HtmlTag uiContainer, List<AdaptiveElement> elements, List<AdaptiveAction> actions, AdaptiveRendererContext context)
+        protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, IList<AdaptiveAction> actions, AdaptiveRendererContext context)
         {
             if (elements != null)
             {
@@ -266,8 +270,8 @@ namespace AdaptiveCards.Rendering.Html
                 SeparatorConfig sep = context.Config.Separator;
                 var uiSep = new DivTag()
                         .AddClass("ac-separator")
-                        .Style("padding-top", $"{spacing}px")
-                        .Style("margin-top", $"{spacing}px")
+                        .Style("padding-top", $"{spacing / 2}px")
+                        .Style("margin-top", $"{spacing / 2}px")
                         .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
                         .Style("border-top-width", $"{sep.LineThickness}px")
                         .Style("border-top-style", "solid");
@@ -335,7 +339,7 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     SeparatorConfig sep = context.Config.Separator;
 
-                    int spacing = context.Config.GetSpacing(column.Spacing);
+                    int spacing = context.Config.GetSpacing(column.Spacing) / 2;
                     int lineThickness = column.Separator ? sep.LineThickness : 0;
 
                     if (sep != null)
@@ -481,13 +485,14 @@ namespace AdaptiveCards.Rendering.Html
                     weight = 600;
                     break;
             }
-            var lineHeight = fontSize * 1.2;
 
-            // TODO: will this break anything?
+            // Not sure where this magic value comes from?
+            var lineHeight = fontSize * 1.33;
+
             var uiTextBlock = new HtmlTag("div", false)
                 .AddClass($"ac-{textBlock.Type.Replace(".", "").ToLower()}")
-                .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
                 .Style("box-sizing", "border-box")
+                .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
@@ -571,7 +576,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiImage = new HtmlTag("img")
                 .Style("width", "100%")
                 .Attr("alt", image.AltText ?? "card image")
-                .Attr("src", image.Url);
+                .Attr("src", image.Url.ToString());
 
             switch (image.Style)
             {
@@ -662,90 +667,67 @@ namespace AdaptiveCards.Rendering.Html
                 }
                 else
                 {
-                    // render as a series of radio buttons
-                    var uiElement = new DivTag()
-                        .AddClass("ac-input")
-                        .Style("width", "100%");
-
-                    foreach (var choice in adaptiveChoiceSetInput.Choices)
-                    {
-                        var htmlLabelId = GenerateRandomId();
-
-                        var uiRadioInput = new HtmlTag("input")
-                            .Attr("id", htmlLabelId)
-                            .Attr("type", "radio")
-                            .Attr("name", adaptiveChoiceSetInput.Id)
-                            .Attr("value", choice.Value)
-                            .Style("margin", "0px")
-                            .Style("display", "inline-block")
-                            .Style("vertical-align", "middle");
-
-                        if (choice.Value == adaptiveChoiceSetInput.Value)
-                        {
-                            uiRadioInput.Attr("checked", string.Empty);
-                        }
-
-                        var uiLabel = new HtmlTag("label")
-                            .Attr("for", htmlLabelId)
-                            .SetInnerText(choice.Title)
-                            .Style("display", "inline-block")
-                            .Style("margin-left", "6px")
-                            .Style("vertical-align", "middle");
-
-                        var compoundInputElement = new DivTag()
-                            .Append(uiRadioInput)
-                            .Append(uiLabel);
-
-                        uiElement.Append(compoundInputElement);
-                    }
-
-                    return uiElement;
+                    return ChoiceSetRenderInternal(adaptiveChoiceSetInput, context, "radio");
                 }
             }
             else
             {
-                // the default values are specified by a comma separated string input.value
-                var defaultValues = adaptiveChoiceSetInput.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
+                return ChoiceSetRenderInternal(adaptiveChoiceSetInput, context, "checkbox");                
+            }
+        }
 
-                // render as a list of toggle inputs
-                var uiElement = new DivTag()
-                    .AddClass("ac-input")
-                    .Attr("width", "100%");
+        private static HtmlTag ChoiceSetRenderInternal(AdaptiveChoiceSetInput adaptiveChoiceSetInput, AdaptiveRendererContext context, string htmlInputType)
+        {
+            // the default values are specified by a comma separated string input.value
+            var defaultValues = adaptiveChoiceSetInput.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 
-                foreach (var choice in adaptiveChoiceSetInput.Choices)
+            // render as a series of radio buttons
+            var uiElement = new DivTag()
+                .AddClass("ac-input")
+                .Style("width", "100%");
+
+            foreach (var choice in adaptiveChoiceSetInput.Choices)
+            {
+                var htmlLabelId = GenerateRandomId();
+
+                var uiInput = new HtmlTag("input")
+                    .Attr("id", htmlLabelId)
+                    .Attr("type", htmlInputType)
+                    .Attr("name", adaptiveChoiceSetInput.Id)
+                    .Attr("value", choice.Value)
+                    .Style("margin", "0px")
+                    .Style("display", "inline-block")
+                    .Style("vertical-align", "middle");
+
+
+                if (defaultValues.Contains(choice.Value))
                 {
-                    var htmlLabelId = GenerateRandomId();
-
-                    var uiCheckboxInput = new HtmlTag("input")
-                        .Attr("id", htmlLabelId)
-                        .Attr("type", "checkbox")
-                        .Attr("name", adaptiveChoiceSetInput.Id)
-                        .Attr("value", choice.Value)
-                        .Style("margin", "0px")
-                        .Style("display", "inline-block")
-                        .Style("vertical-align", "middle");
-
-                    if (defaultValues.Contains(choice.Value))
-                    {
-                        uiCheckboxInput.Attr("checked", string.Empty);
-                    }
-
-                    var uiLabel = new HtmlTag("label")
-                        .Attr("for", htmlLabelId)
-                        .SetInnerText(choice.Title)
-                        .Style("display", "inline-block")
-                        .Style("margin-left", "6px")
-                        .Style("vertical-align", "middle");
-
-                    var compoundInputElement = new DivTag()
-                        .Append(uiCheckboxInput)
-                        .Append(uiLabel);
-
-                    uiElement.Append(compoundInputElement);
+                    uiInput.Attr("checked", string.Empty);
                 }
 
-                return uiElement;
+                var uiLabel = CreateLabel(htmlLabelId, choice.Title, context);
+
+                var compoundInputElement = new DivTag()
+                    .Append(uiInput)
+                    .Append(uiLabel);
+
+                uiElement.Append(compoundInputElement);
             }
+
+            return uiElement;
+
+        }
+
+        private static HtmlTag CreateLabel(string forId, string innerText, AdaptiveRendererContext context)
+        {
+            return new HtmlTag("label")
+                .Attr("for", forId)
+                .SetInnerText(innerText)
+                .Style("color", context.GetColor(AdaptiveTextColor.Default, false))
+                .Style("font-size", $"{context.Config.FontSizes.Default}px")
+                .Style("display", "inline-block")
+                .Style("margin-left", "6px")
+                .Style("vertical-align", "middle");
         }
 
         protected static HtmlTag DateInputRender(AdaptiveDateInput input, AdaptiveRendererContext context)
@@ -882,6 +864,8 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("id", htmlLabelId)
                 .Attr("type", "checkbox")
                 .Attr("name", toggleInput.Id)
+                .Attr("data-ac-valueOn", toggleInput.ValueOn ?? bool.TrueString)
+                .Attr("data-ac-valueOff", toggleInput.ValueOff ?? bool.FalseString)
                 .Style("display", "inline-block")
                 .Style("vertical-align", "middle")
                 .Style("margin", "0px");
@@ -891,12 +875,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiCheckboxInput.Attr("checked", string.Empty);
             }
 
-            var uiLabel = new HtmlTag("label")
-                .Attr("for", htmlLabelId)
-                .SetInnerText(toggleInput.Title)
-                .Style("display", "inline-block")
-                .Style("margin-left", "6px")
-                .Style("vertical-align", "middle");
+            var uiLabel = CreateLabel(htmlLabelId, toggleInput.Title, context);
 
             return uiElement.Append(uiCheckboxInput).Append(uiLabel);
         }
@@ -907,7 +886,6 @@ namespace AdaptiveCards.Rendering.Html
             if (!string.IsNullOrEmpty(adaptiveElement.Speak))
             {
 #if NET452
-                // TODO: Fix xamarin fallback
                 var doc = new System.Xml.XmlDocument();
                 var xml = adaptiveElement.Speak;
                 if (!xml.Trim().StartsWith("<"))

@@ -18,7 +18,7 @@ namespace AdaptiveCards.Test
             card.MinVersion = "1.0";
             card.FallbackText = "Fallback Text";
             card.Speak = "Speak";
-            card.BackgroundImage = "http://adaptivecards.io/content/cats/1.png";
+            card.BackgroundImage = new Uri("http://adaptivecards.io/content/cats/1.png");
             card.Body.Add(new AdaptiveTextBlock { Text = "Hello" });
             card.Actions.Add(new AdaptiveSubmitAction() { Title = "Action 1" });
 
@@ -79,6 +79,37 @@ namespace AdaptiveCards.Test
             Assert.IsNotNull(result.Card);
             Assert.AreEqual(1, result.Card.Body.Count);
             Assert.AreEqual(1, result.Card.Actions.Count);
+        }
+
+
+
+        [TestMethod]
+        public void TestDefaultValuesAreNotSerialized()
+        {
+            var card = new AdaptiveCard
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock("Hello world"),
+                    new AdaptiveImage("http://adaptivecards.io/content/cats/1.png")
+                }
+            };
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Hello world""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/1.png""
+    }
+  ]
+}";
+            Assert.AreEqual(expected, card.ToJson());
         }
 
         [TestMethod]

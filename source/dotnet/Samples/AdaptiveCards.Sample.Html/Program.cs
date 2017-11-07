@@ -23,7 +23,7 @@ namespace AdaptiveCards.Sample.Html
             var optionRecurse = app.Option("-r|--recursive", "Recurse the directory for all JSON files", CommandOptionType.NoValue);
             var optionOutput = app.Option("-o|--out", "The file to output the HTML to", CommandOptionType.SingleValue);
             var optionSupportsInteracitivty = app.Option("-i|--supports-interactivity", "Include actions and inputs in the output", CommandOptionType.NoValue);
-
+            var hostConfigOption = app.Option("--host-config", "Specify a host config file", CommandOptionType.SingleValue);
            
             app.OnExecute(() =>
             {
@@ -33,7 +33,7 @@ namespace AdaptiveCards.Sample.Html
                 // Output to file instead of console
                 if (optionOutput.HasValue())
                 {
-                    outputFile = File.OpenWrite(optionOutput.Value());
+                    outputFile = File.Open(optionOutput.Value(), FileMode.Create);
                     writer = new StreamWriter(outputFile);
                 }
 
@@ -61,7 +61,7 @@ namespace AdaptiveCards.Sample.Html
                 }
                 else
                 {
-                    Console.WriteLine($"{payloadPath} does not contain any JSON files");
+                    Console.WriteLine($"{payloadPath} does not contain any JSON files/. Nothing to do.");
                     return;
                 }
 
@@ -75,16 +75,23 @@ namespace AdaptiveCards.Sample.Html
                 writer.WriteLine(@"</head>");
                 writer.WriteLine(@"<body>");
 
+                
                 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
                 {
                     SupportsInteractivity = optionSupportsInteracitivty.HasValue()
                 };
 
+                if (hostConfigOption.HasValue())
+                {
+                    hostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(hostConfigOption.Value()));
+                }
+
                 AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
 
 
                 writer.WriteLine($"<h3>Renderer schema version: {renderer.SupportedSchemaVersion}</h3>");
-                writer.WriteLine($"<h4>Supports Interactivty Enabled: {hostConfig.SupportsInteractivity}</h4>");
+                writer.WriteLine($"<h4>Interactivty Enabled: {hostConfig.SupportsInteractivity}</h4>");
+                writer.WriteLine($"<h4>Generated at: {DateTime.Now:G}</h4>");
 
                 foreach (var file in files)
                 {
@@ -102,7 +109,7 @@ namespace AdaptiveCards.Sample.Html
                         // Report any warnings
                         foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
                         {
-                            writer.WriteLine($"<p class='warning'>WARNING: {warning.Message}</div>");
+                            writer.WriteLine($"<p class='warning'>WARNING: {warning.Message}</p>");
                         }
 
                         writer.WriteLine($"<div class='cardcontainer'>{renderedCard.Html}</div>");
@@ -119,6 +126,7 @@ namespace AdaptiveCards.Sample.Html
 
                 if (outputFile != null)
                 {
+                    writer.Flush();
                     outputFile.Flush();
                     outputFile.Dispose();
 

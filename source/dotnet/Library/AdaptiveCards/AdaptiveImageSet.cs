@@ -22,12 +22,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Specifies the horizontal size of each image in the set
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveImageSize ImageSize { get; set; }
-
-        public bool ShouldSerializeImageSize()
-        {
-            return ImageSize != AdaptiveImageSize.Auto;
-        }
     }
 }

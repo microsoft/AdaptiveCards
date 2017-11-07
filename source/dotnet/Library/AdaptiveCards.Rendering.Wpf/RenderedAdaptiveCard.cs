@@ -11,6 +11,7 @@ namespace AdaptiveCards.Rendering.Wpf
             : base(originatingCard, warnings)
         {
             FrameworkElement = frameworkElement;
+            UserInputs = new RenderedAdaptiveCardInputs(this);
         }
 
         /// <summary>
@@ -33,9 +34,6 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <summary>
         /// Gather the current values from inputs on the card
         /// </summary>
-        public RenderedAdaptiveCardInputs GetUserInputs(InputValueMode mode)
-        {
-            return new RenderedAdaptiveCardInputs(this, mode);
-        }
+        public RenderedAdaptiveCardInputs UserInputs { get; }
     }
 }

@@ -6,78 +6,70 @@ using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
-    public partial class RenderedAdaptiveCard
+    public class RenderedAdaptiveCardInputs : IReadOnlyDictionary<string, string>
     {
-        public class RenderedAdaptiveCardInputs : IReadOnlyDictionary<string, string>
+        private readonly IReadOnlyDictionary<string, string> _dictionary;
+
+        public RenderedAdaptiveCardInputs(RenderedAdaptiveCard card)
         {
-            private readonly InputValueMode _valueMode;
-            private readonly IReadOnlyDictionary<string, string> _dictionary;
+            if (card == null) throw new ArgumentNullException(nameof(card));
 
-            public RenderedAdaptiveCardInputs(RenderedAdaptiveCard card, InputValueMode valueMode)
+            var dic = new Dictionary<string, string>();
+            foreach (var id in card.InputBindings.Keys)
             {
-                if (card == null) throw new ArgumentNullException(nameof(card));
-
-                _valueMode = valueMode;
-
-                var dic = new Dictionary<string, string>();
-                foreach (var id in card.InputBindings.Keys)
+                var value = card.InputBindings[id]();
+                if (value != null)
                 {
-                    var value = card.InputBindings[id]();
-                    if (value != null)
-                    {
-                        dic[id] = value.ToString();
-                    }
+                    dic[id] = value.ToString();
                 }
-
-                _dictionary = new ReadOnlyDictionary<string, string>(dic);
             }
 
-            public JObject AsJson()
-            {
-                return JObject.FromObject(_dictionary);
-            }
-
-            public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-            {
-                return _dictionary.GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return ((IEnumerable)_dictionary).GetEnumerator();
-            }
-
-            public int Count
-            {
-                get { return _dictionary.Count; }
-            }
-
-            public bool ContainsKey(string key)
-            {
-                return _dictionary.ContainsKey(key);
-            }
-
-            public bool TryGetValue(string key, out string value)
-            {
-                return _dictionary.TryGetValue(key, out value);
-            }
-
-            public string this[string key]
-            {
-                get { return _dictionary[key]; }
-            }
-
-            public IEnumerable<string> Keys
-            {
-                get { return _dictionary.Keys; }
-            }
-
-            public IEnumerable<string> Values
-            {
-                get { return _dictionary.Values; }
-            }
+            _dictionary = new ReadOnlyDictionary<string, string>(dic);
         }
 
+        public JObject AsJson()
+        {
+            return JObject.FromObject(_dictionary);
+        }
 
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+        {
+            return _dictionary.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)_dictionary).GetEnumerator();
+        }
+
+        public int Count
+        {
+            get { return _dictionary.Count; }
+        }
+
+        public bool ContainsKey(string key)
+        {
+            return _dictionary.ContainsKey(key);
+        }
+
+        public bool TryGetValue(string key, out string value)
+        {
+            return _dictionary.TryGetValue(key, out value);
+        }
+
+        public string this[string key]
+        {
+            get { return _dictionary[key]; }
+        }
+
+        public IEnumerable<string> Keys
+        {
+            get { return _dictionary.Keys; }
+        }
+
+        public IEnumerable<string> Values
+        {
+            get { return _dictionary.Values; }
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class AdaptiveActionSetRenderer
     {
-        public static void AddActions(Grid uiContainer, List<AdaptiveAction> actions, AdaptiveRenderContext context)
+        public static void AddActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
         {
             var maxActions = context.Config.Actions.MaxActions;
             var actionsToProcess = actions

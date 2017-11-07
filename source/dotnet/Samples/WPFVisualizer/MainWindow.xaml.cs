@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Windows;
@@ -22,7 +23,6 @@ namespace WpfVisualizer
 {
     public partial class MainWindow : Window
     {
-        private RenderedAdaptiveCard _card;
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
@@ -86,26 +86,31 @@ namespace WpfVisualizer
 
             try
             {
-                var parseResult = AdaptiveCard.FromJson(textBox.Text);
-                _card = Renderer.RenderCard(parseResult.Card);
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
+
+                AdaptiveCard card = parseResult.Card;
+
+                RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
 
                 // Wire up click handler
-                _card.OnAction += OnAction;
+                renderedCard.OnAction += OnAction;
 
-                cardGrid.Children.Add(_card.FrameworkElement);
+                cardGrid.Children.Add(renderedCard.FrameworkElement);
 
                 // Report any warnings
-                foreach (var warning in parseResult.Warnings.Union(_card.Warnings))
+                var allWarnings = parseResult.Warnings.Union(renderedCard.Warnings);
+                foreach (var warning in allWarnings)
                 {
                     ShowWarning(warning.Message);
                 }
             }
-            catch (AdaptiveRenderException)
+            catch (AdaptiveRenderException ex)
             {
                 var fallbackCard = new TextBlock
                 {
-                    Text = _card.OriginatingCard.FallbackText ?? "Sorry, we couldn't render the card"
+                    Text = ex.CardFallbackText ?? "Sorry, we couldn't render the card"
                 };
+
                 cardGrid.Children.Add(fallbackCard);
             }
             catch (Exception ex)
@@ -131,7 +136,7 @@ namespace WpfVisualizer
             }
             else if (e.Action is AdaptiveSubmitAction submitAction)
             {
-                var inputs = sender.GetUserInputs(InputValueMode.RawString).AsJson();
+                var inputs = sender.UserInputs.AsJson();
                 inputs.Merge(submitAction.Data);
                 MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
@@ -142,7 +147,7 @@ namespace WpfVisualizer
         {
             var textBlock = new TextBlock
             {
-                Text = message,
+                Text = "WARNING: " + message,
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Warning"] as Style
             };
@@ -154,7 +159,7 @@ namespace WpfVisualizer
         {
             var textBlock = new TextBlock
             {
-                Text = err.Message,
+                Text = "ERROR: " + err.Message,
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Error"] as Style
             };
@@ -239,7 +244,7 @@ namespace WpfVisualizer
             // Disable interactivity to remove inputs and actions from the image
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
             Renderer.HostConfig.SupportsInteractivity = false;
-            var imageStream = Renderer.RenderToImage(_card.OriginatingCard, 480);
+            var imageStream = Renderer.RenderToImage(AdaptiveCard.FromJson(textBox.Text).Card, 480);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
 
             var path = Path.GetRandomFileName() + ".png";
@@ -253,21 +258,12 @@ namespace WpfVisualizer
         private void speak_Click(object sender, RoutedEventArgs e)
         {
             var result = AdaptiveCard.FromJson(textBox.Text);
-            if (result.Card != null)
-            {
-                var card = result.Card;
+            var card = result.Card;
 
-                _synth.SpeakAsyncCancelAll();
-                if (card.Speak != null)
-                    _synth.SpeakSsmlAsync(FixSSML(card.Speak));
-                else
-                    foreach (var element in card.Body)
-                    {
-#pragma warning disable CS0618 // Type or member is obsolete
-                        if (element.Speak != null)
-                            _synth.SpeakSsmlAsync(FixSSML(element.Speak));
-#pragma warning restore CS0618 // Type or member is obsolete
-                    }
+            _synth.SpeakAsyncCancelAll();
+            if (card.Speak != null)
+            {
+                _synth.SpeakSsmlAsync(FixSSML(card.Speak));
             }
         }
 
@@ -292,15 +288,38 @@ namespace WpfVisualizer
             hostConfigEditor.Visibility = hostConfigEditor.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
 
+        public AdaptiveHostConfig HostConfig
+        {
+            get => Renderer.HostConfig;
+            set
+            {
+                hostConfigerror.Children.Clear();
+                Renderer.HostConfig = value;
+                _dirty = true;
+                if (value != null)
+                {
+                    var props = value.GetType()
+                        .GetRuntimeProperties()
+                        .Where(p => typeof(AdaptiveConfigBase).IsAssignableFrom(p.PropertyType));
+
+                    foreach (var x in value.AdditionalData)
+                    {
+                        var textBlock = new TextBlock
+                        {
+                            Text = $"Unkown property {x.Key}",
+                            TextWrapping = TextWrapping.Wrap,
+                            Style = Resources["Warning"] as Style
+                        };
+                        hostConfigerror.Children.Add(textBlock);
+                    }
+                }
+            }
+        }
+
         private void hostConfigs_Selected(object sender, RoutedEventArgs e)
         {
-            var parseResult = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
-            if (parseResult.HostConfig != null)
-            {
-                Renderer.HostConfig = parseResult.HostConfig;
-                hostConfigEditor.SelectedObject = Renderer.HostConfig;
-            }
-            _dirty = true;
+            HostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
+            hostConfigEditor.SelectedObject = Renderer.HostConfig;
         }
 
         private void loadConfig_Click(object sender, RoutedEventArgs e)
@@ -311,13 +330,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var json = File.ReadAllText(dlg.FileName);
-
-                var parseResult = AdaptiveHostConfig.FromJson(json);
-                if (parseResult.HostConfig != null)
-                    Renderer.HostConfig = parseResult.HostConfig;
-
-                _dirty = true;
+                HostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(dlg.FileName));
             }
         }
 

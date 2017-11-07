@@ -40,7 +40,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }).ConfigureAwait(false);
         }
 
-        protected Stream _renderToImage(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
+        protected Stream _renderToImage(AdaptiveCard card, int width, Func<Uri, MemoryStream> imageResolver = null)
         {
             var bitmapImage = _renderToBitmapSource(card, width, imageResolver);
             var encoder = new PngBitmapEncoder();
@@ -58,7 +58,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <summary>
         /// Render card to bitmap source (must be called on STA thread)
         /// </summary>
-        protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
+        protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<Uri, MemoryStream> imageResolver = null)
         {
             // TODO: When ResourceResolver support is added, wire up the image resolver
             var result = RenderCard(card);

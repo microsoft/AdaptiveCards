@@ -15,7 +15,7 @@ namespace AdaptiveCards
         public AdaptiveSpacing Spacing { get; set; }
 
         /// <summary>
-        /// Indicates whether there should be a visible separator (e.g. a line) between the element and the one before it.
+        /// Indicates whether there should be a visible separator (e.g. a line) between this element and the one before it.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool Separator { get; set; }

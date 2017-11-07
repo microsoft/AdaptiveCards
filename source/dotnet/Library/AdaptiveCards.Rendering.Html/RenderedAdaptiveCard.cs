@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering.Html
         }
 
         /// <summary>
-        /// The rendered result. If there were errors present, this will be null.
+        /// The rendered HTML for the card
         /// </summary>
         public HtmlTag Html { get; }
     }

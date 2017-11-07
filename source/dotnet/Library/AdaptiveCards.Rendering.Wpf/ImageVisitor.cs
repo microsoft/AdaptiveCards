@@ -17,7 +17,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
         }
 
-        public Dictionary<string, byte[]> Images = new Dictionary<string, byte[]>();
+        public Dictionary<Uri, byte[]> Images = new Dictionary<Uri, byte[]>();
 
         /// <summary>
         /// Get all images 
@@ -31,7 +31,7 @@ namespace AdaptiveCards.Rendering.Wpf
             await Task.WhenAll(tasks.ToArray()).ConfigureAwait(false);
         }
 
-        public MemoryStream GetCachedImageStream(String url)
+        public MemoryStream GetCachedImageStream(Uri url)
         {
             if (this.Images.TryGetValue(url, out var bytes))
             {
@@ -40,7 +40,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return null;
         }
 
-        protected async Task GetImage(string url)
+        protected async Task GetImage(Uri url)
         {
             using (WebClient client = new WebClient())
             {
