@@ -56,15 +56,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <returns></returns>
         public Task WaitForAssetsAsync(CancellationToken cancellationToken)
         {
-            //if (cancellationToken.IsCancellationRequested)
-            //{
-            //    return;
-            //}
-            // TODO: implement cancellation token
-
-            return Task.WhenAll(_assetDownLoad);
-
-            //return Task.WhenAny(Task.Delay(-1, cancellationToken), Task.WhenAll(_assetDownLoad));
+            return Task.WhenAll(_assetDownLoad).WithCancellation(cancellationToken);
         }
 
         /// <summary>
@@ -78,7 +70,11 @@ namespace AdaptiveCards.Rendering.Wpf
             Debug.WriteLine("Starting to render to image...");
 
             Debug.WriteLine("Waiting for assets...");
-            await WaitForAssetsAsync(cancellationToken);
+            var at = WaitForAssetsAsync(cancellationToken);
+            await at;
+            if (!at.IsCompleted)
+                throw new OperationCanceledException();
+
             Debug.WriteLine("Finished loading assets... waiting for layout update");
 
             await FrameworkElement.AwaitLayoutUpdated();
@@ -87,7 +83,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             FrameworkElement.Measure(new Size(width, int.MaxValue));
             FrameworkElement.Arrange(new Rect(new Size(width, FrameworkElement.DesiredSize.Height)));
-            FrameworkElement.UpdateLayout();        
+            FrameworkElement.UpdateLayout();
 
             var bitmapImage = new RenderTargetBitmap((int)width, (int)FrameworkElement.DesiredSize.Height, 96, 96, PixelFormats.Default);
             bitmapImage.Render(FrameworkElement);

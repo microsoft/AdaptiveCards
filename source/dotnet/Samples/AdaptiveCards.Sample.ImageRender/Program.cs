@@ -29,7 +29,7 @@ namespace AdaptiveCards.Sample.ImageRender
             var optionSupportsInteracitivty = app.Option("-i|--supports-interactivity", "Include actions and inputs in the output", CommandOptionType.NoValue);
             var hostConfigOption = app.Option("--host-config", "Specify a host config file", CommandOptionType.SingleValue);
 
-            app.OnExecute(() =>
+            app.OnExecute(async () =>
             {
                 var outPath = optionOutput.HasValue()
                     ? optionOutput.Value()
@@ -78,27 +78,29 @@ namespace AdaptiveCards.Sample.ImageRender
                     hostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(hostConfigOption.Value()));
                 }
 
+                AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
+
                 foreach (var file in files)
                 {
-                    Task.Factory.StartNewSta(() =>
+                    await Task.Factory.StartNewSta(() =>
                     {
                         AsyncPump.Run(async () =>
                         {
-                            AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
-                            await RenderCardFromFile(file, renderer, outPath);
+                            await RenderCard(file, renderer, outPath);
                         });
-
-                        Console.WriteLine($"All cards were written to {Path.GetFullPath(outPath)}");
 
                         return new object();
                     });
                 }
 
-
+                Console.WriteLine($"All cards were written to {Path.GetFullPath(outPath)}");
             });
 
 
             app.Execute(args);
+            // TODO: this is required when running from PS. Main thread is dying early
+            //Console.ReadLine();
+
             // if output, launch the file
             if (Debugger.IsAttached)
             {
@@ -106,7 +108,7 @@ namespace AdaptiveCards.Sample.ImageRender
             }
         }
 
-        private static async Task RenderCardFromFile(string file, AdaptiveCardRenderer renderer, string outPath)
+        private static async Task RenderCard(string file, AdaptiveCardRenderer renderer, string outPath)
         {
             try
             {
@@ -119,9 +121,8 @@ namespace AdaptiveCards.Sample.ImageRender
 
                 RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
 
-                // TODO: Wire up cancellation
-                var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(5));
-
+                // Timeout after 30 seconds
+                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
                 // Render the card to an image
                 Stream imageStream = await renderedCard.ToImageAsync(400, cts.Token);
@@ -136,7 +137,7 @@ namespace AdaptiveCards.Sample.ImageRender
                 var outputFile = Path.Combine(outPath,
                     Path.ChangeExtension(Path.GetFileName(file), ".png"));
 
-                using (FileStream fileStream = new FileStream(outputFile, FileMode.Create))
+                using (var fileStream = new FileStream(outputFile, FileMode.Create))
                 {
                     imageStream.CopyTo(fileStream);
                     Console.WriteLine($"[{watch.ElapsedMilliseconds}ms T{Thread.CurrentThread.ManagedThreadId}]\t\t{Path.GetFileName(file)} => {Path.GetFileName(outputFile)}");

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -131,50 +132,50 @@ namespace AdaptiveCards.Rendering.Wpf
 
     public class ResourceResolver
     {
-        private readonly Dictionary<string, Func<Uri, Task<MemoryStream>>> _internal = new Dictionary<string, Func<Uri, Task<MemoryStream>>>(StringComparer.OrdinalIgnoreCase);
-
-        // TODO: cache? or better yet find someone else who solved this
-        // TODO: should WebClient be disposed?
+        private readonly Dictionary<string, Func<Uri, Task<MemoryStream>>> _internalResolver = new Dictionary<string, Func<Uri, Task<MemoryStream>>>(StringComparer.OrdinalIgnoreCase);
 
         public ResourceResolver()
-        {
-            
-            Add("http", async uri =>
-            {
-                var webclient = new WebClient()
-                {
-                    CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable)
-                };
-                var bytes = await webclient.DownloadDataTaskAsync(uri);
-                return new MemoryStream(bytes);
-            });
-
-            Add("https", async uri =>
-            {
-                var webclient = new WebClient()
-                {
-                    CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable)
-                };
-                var bytes = await webclient.DownloadDataTaskAsync(uri);
-                return new MemoryStream(bytes);
-            });
+        {            
+            Register("http", GetHttpAsync);
+            Register("https", GetHttpAsync);
         }
-        public void Add(string uriScheme, Func<Uri, Task<MemoryStream>> loadAsset)
+
+        private static async Task<MemoryStream> GetHttpAsync(Uri uri)
         {
-            _internal.Add(uriScheme, loadAsset);
+            using (var webclient = new WebClient())
+            {
+                webclient.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
+                var bytes = await webclient.DownloadDataTaskAsync(uri);
+                return new MemoryStream(bytes);
+            }
+        }
+
+
+        public void Register(string uriScheme, Func<Uri, Task<MemoryStream>> loadAsset)
+        {
+            _internalResolver[uriScheme] = loadAsset;
+        }
+
+        public void Clear()
+        {
+            _internalResolver.Clear();
+        }
+
+        public void Remove(string uriScheme)
+        {
+            _internalResolver.Remove(uriScheme);
         }
 
         public Task<MemoryStream> LoadAssetAsync(Uri uri)
         {
             if (uri == null) throw new ArgumentNullException(nameof(uri));
 
-            if (_internal.ContainsKey(uri.Scheme))
+            if (_internalResolver.ContainsKey(uri.Scheme))
             {
-                var task = _internal[uri.Scheme].Invoke(uri);
-                return Task.Factory.StartNew(() => task.Result);
+                return _internalResolver[uri.Scheme].Invoke(uri);
             }
 
-            // TODO: Context warning, asset URI not found
+            // TODO: Context warning, no asset resolver for URI scheme
             return null;
         }
     }

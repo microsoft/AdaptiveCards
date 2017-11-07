@@ -45,8 +45,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public Dictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
 
-
-
         public event EventHandler<AdaptiveActionEventArgs> OnAction;
 
         /// <summary>
@@ -72,21 +70,33 @@ namespace AdaptiveCards.Rendering.Wpf
             var completeTask = new TaskCompletionSource<object>();
             AssetTasks.Add(completeTask.Task);
 
-            var task = ResourceResolvers.LoadAssetAsync(url);
+            var loadAsset = ResourceResolvers.LoadAssetAsync(url);
             Debug.WriteLine($"ASSETS: Starting asset down task for {url}");
             BitmapImage source = new BitmapImage();
 
-            var stream = await task;
+            try
+            {
+                var stream = await loadAsset;
+                if (stream != null)
+                {
+                    source.BeginInit();
+                    source.CacheOption = BitmapCacheOption.OnLoad;
+                    source.StreamSource = stream;
+                    source.EndInit();
+                }
 
-            source.BeginInit();
-            source.CacheOption = BitmapCacheOption.OnLoad;
-            source.StreamSource = stream;
-            source.EndInit();
-            Debug.WriteLine($"ASSETS: Finished loading asset for {url} ({task.Result.Length} bytes)");
-            completeTask.SetResult(new object());
-            return source;
+                Debug.WriteLine($"ASSETS: Finished loading asset for {url} ({loadAsset.Result.Length} bytes)");
+                completeTask.SetResult(new object());
+                return source;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"ASSETS: Failed to load asset for {url}. {e.Message}");
+                return null;
+            }
+           
 
-            // TODO: attach to parent
+            // TODO: attach to parent task
         }
 
 
