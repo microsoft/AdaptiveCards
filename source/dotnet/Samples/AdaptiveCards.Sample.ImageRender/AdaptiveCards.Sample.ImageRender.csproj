@@ -15,4 +15,8 @@
     <Folder Include="symbols\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
 </Project>

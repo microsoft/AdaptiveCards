@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using McMaster.Extensions.CommandLineUtils;
@@ -79,14 +80,20 @@ namespace AdaptiveCards.Sample.ImageRender
 
                 foreach (var file in files)
                 {
-                    AsyncPump.Run(async () =>
+                    Task.Factory.StartNewSta(() =>
                     {
-                        AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
-                        await RenderCardFromFile(file, renderer, outPath);
+                        AsyncPump.Run(async () =>
+                        {
+                            AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
+                            await RenderCardFromFile(file, renderer, outPath);
+                        });
+
+                        Console.WriteLine($"All cards were written to {Path.GetFullPath(outPath)}");
+
+                        return new object();
                     });
                 }
 
-                Console.WriteLine($"All cards were written to {Path.GetFullPath(outPath)}");
 
             });
 
@@ -111,16 +118,14 @@ namespace AdaptiveCards.Sample.ImageRender
                 AdaptiveCard card = parseResult.Card;
 
                 RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
+
+                // TODO: Wire up cancellation
                 var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(5));
+
 
                 // Render the card to an image
                 Stream imageStream = await renderedCard.ToImageAsync(400, cts.Token);
-                if(imageStream == null)
-                {
-                    // cancelled
-                    Debug.WriteLine("Cancelled");
-                    return;
-                }
+
                 // Report any warnings
                 foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
                 {
@@ -134,7 +139,7 @@ namespace AdaptiveCards.Sample.ImageRender
                 using (FileStream fileStream = new FileStream(outputFile, FileMode.Create))
                 {
                     imageStream.CopyTo(fileStream);
-                    Console.WriteLine($"[{watch.ElapsedMilliseconds}ms]\t\t{Path.GetFileName(file)} => {Path.GetFileName(outputFile)}");
+                    Console.WriteLine($"[{watch.ElapsedMilliseconds}ms T{Thread.CurrentThread.ManagedThreadId}]\t\t{Path.GetFileName(file)} => {Path.GetFileName(outputFile)}");
                 }
             }
             catch (Exception ex)

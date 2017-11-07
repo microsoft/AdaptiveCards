@@ -40,6 +40,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public ResourceDictionary Resources { get; set; }
 
         public AdaptiveActionHandlers ActionHandlers { get; set; }
+
         public ResourceResolver ResourceResolvers { get; set; }
 
         public Dictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();

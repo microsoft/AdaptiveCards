@@ -63,6 +63,8 @@ namespace AdaptiveCards.Rendering.Wpf
             // TODO: implement cancellation token
 
             return Task.WhenAll(_assetDownLoad);
+
+            //return Task.WhenAny(Task.Delay(-1, cancellationToken), Task.WhenAll(_assetDownLoad));
         }
 
         /// <summary>
