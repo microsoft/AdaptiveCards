@@ -26,7 +26,7 @@ export declare class TextColorDefinition {
 }
 export declare class ContainerStyleDefinition {
     backgroundColor?: string;
-    readonly fontColors: {
+    readonly foregroundColors: {
         default: TextColorDefinition;
         accent: TextColorDefinition;
         good: TextColorDefinition;

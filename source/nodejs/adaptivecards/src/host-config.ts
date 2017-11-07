@@ -56,7 +56,8 @@ export class TextColorDefinition {
 
 export class ContainerStyleDefinition {
     backgroundColor?: string;
-    readonly fontColors = {
+
+    readonly foregroundColors = {
         default: new TextColorDefinition(),
         accent: new TextColorDefinition(),
         good: new TextColorDefinition(),
@@ -67,12 +68,12 @@ export class ContainerStyleDefinition {
     constructor(obj?: any) {
         if (obj) {
             this.backgroundColor = obj["backgroundColor"];
-            this.fontColors = {
-                default: new TextColorDefinition(obj["fontColors"]["default"]),
-                accent: new TextColorDefinition(obj["fontColors"]["accent"]),
-                good: new TextColorDefinition(obj["fontColors"]["good"]),
-                warning: new TextColorDefinition(obj["fontColors"]["warning"]),
-                attention: new TextColorDefinition(obj["fontColors"]["attention"])
+            this.foregroundColors = {
+                default: new TextColorDefinition(obj["foregroundColors"]["default"]),
+                accent: new TextColorDefinition(obj["foregroundColors"]["accent"]),
+                good: new TextColorDefinition(obj["foregroundColors"]["good"]),
+                warning: new TextColorDefinition(obj["foregroundColors"]["warning"]),
+                attention: new TextColorDefinition(obj["foregroundColors"]["attention"])
             }
         }
     }

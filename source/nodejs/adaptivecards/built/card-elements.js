@@ -403,19 +403,19 @@ var TextBlock = /** @class */ (function (_super) {
             var colorDefinition;
             switch (actualTextColor) {
                 case Enums.TextColor.Accent:
-                    colorDefinition = styleDefinition.fontColors.accent;
+                    colorDefinition = styleDefinition.foregroundColors.accent;
                     break;
                 case Enums.TextColor.Good:
-                    colorDefinition = styleDefinition.fontColors.good;
+                    colorDefinition = styleDefinition.foregroundColors.good;
                     break;
                 case Enums.TextColor.Warning:
-                    colorDefinition = styleDefinition.fontColors.warning;
+                    colorDefinition = styleDefinition.foregroundColors.warning;
                     break;
                 case Enums.TextColor.Attention:
-                    colorDefinition = styleDefinition.fontColors.attention;
+                    colorDefinition = styleDefinition.foregroundColors.attention;
                     break;
                 default:
-                    colorDefinition = styleDefinition.fontColors.default;
+                    colorDefinition = styleDefinition.foregroundColors.default;
                     break;
             }
             element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.normal);
@@ -2779,6 +2779,13 @@ var ContainerWithActions = /** @class */ (function (_super) {
             }
         }
     };
+    ContainerWithActions.prototype.validate = function () {
+        var result = _super.prototype.validate.call(this);
+        if (this._actionCollection) {
+            result = result.concat(this._actionCollection.validate());
+        }
+        return result;
+    };
     ContainerWithActions.prototype.isLastElement = function (element) {
         return _super.prototype.isLastElement.call(this, element) && this._actionCollection.items.length == 0;
     };
@@ -2890,32 +2897,6 @@ var AdaptiveCard = /** @class */ (function (_super) {
         _this.minVersion = { major: 1, minor: 0 };
         return _this;
     }
-    /*
-    static initialize() {
-        AdaptiveCard.elementTypeRegistry.clear();
-
-        AdaptiveCard.elementTypeRegistry.registerType("Container", () => { return new Container(); });
-        AdaptiveCard.elementTypeRegistry.registerType("TextBlock", () => { return new TextBlock(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Image", () => { return new Image(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ImageSet", () => { return new ImageSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("FactSet", () => { return new FactSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ColumnSet", () => { return new ColumnSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new ActionSet(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Text", () => { return new TextInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Date", () => { return new DateInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Time", () => { return new TimeInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Number", () => { return new NumberInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
-        AdaptiveCard.elementTypeRegistry.registerType("Input.Toggle", () => { return new ToggleInput(); });
-
-        AdaptiveCard.actionTypeRegistry.clear();
-
-        AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", () => { return new SubmitAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
-    }
-    */
     AdaptiveCard.prototype.isVersionSupported = function () {
         var unsupportedVersion = (AdaptiveCard.currentVersion.major < this.minVersion.major) ||
             (AdaptiveCard.currentVersion.major == this.minVersion.major && AdaptiveCard.currentVersion.minor < this.minVersion.minor);
@@ -3014,10 +2995,6 @@ var AdaptiveCard = /** @class */ (function (_super) {
     };
     AdaptiveCard.currentVersion = { major: 1, minor: 0 };
     AdaptiveCard.preExpandSingleShowCardAction = false;
-    /*
-    static elementTypeRegistry = new TypeRegistry<CardElement>();
-    static actionTypeRegistry = new TypeRegistry<Action>();
-    */
     AdaptiveCard.elementTypeRegistry = new ElementTypeRegistry();
     AdaptiveCard.actionTypeRegistry = new ActionTypeRegistry();
     AdaptiveCard.onAnchorClicked = null;
@@ -3029,8 +3006,6 @@ var AdaptiveCard = /** @class */ (function (_super) {
     return AdaptiveCard;
 }(ContainerWithActions));
 exports.AdaptiveCard = AdaptiveCard;
-// This call acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
-// AdaptiveCard.initialize();
 var InlineAdaptiveCard = /** @class */ (function (_super) {
     __extends(InlineAdaptiveCard, _super);
     function InlineAdaptiveCard() {
