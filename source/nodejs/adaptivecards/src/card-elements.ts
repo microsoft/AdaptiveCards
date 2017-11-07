@@ -625,10 +625,7 @@ export class TextBlock extends CardElement {
 
         if (truncationSupported) {
             var firstParagraph = <HTMLElement>children[0];
-            var originalText = firstParagraph.innerHTML;
-
             this.addRenderCallback(() => {
-                firstParagraph.innerHTML = originalText;
                 TextBlock.truncate(firstParagraph, maxHeight, lineHeight);
             });
         }
@@ -694,7 +691,6 @@ export class TextBlock extends CardElement {
             } while (idx < fullText.length)
             truncateAt(bestBreakIdx);
         }
-
     }
 
     private static findNextCharacter(html: string, currIdx: number): number {
