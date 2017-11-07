@@ -134,10 +134,12 @@ namespace AdaptiveCards.Rendering.Wpf
         private readonly Dictionary<string, Func<Uri, Task<MemoryStream>>> _internal = new Dictionary<string, Func<Uri, Task<MemoryStream>>>(StringComparer.OrdinalIgnoreCase);
 
         // TODO: cache? or better yet find someone else who solved this
+        // TODO: should WebClient be disposed?
+
         public ResourceResolver()
         {
             
-            Add("http", async (uri) =>
+            Add("http", async uri =>
             {
                 var webclient = new WebClient()
                 {
@@ -147,7 +149,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 return new MemoryStream(bytes);
             });
 
-            Add("https", async (uri) =>
+            Add("https", async uri =>
             {
                 var webclient = new WebClient()
                 {

@@ -1,6 +1,6 @@
-﻿# AdaptiveCards HTML Sample
+﻿# AdaptiveCards Image Renderer Sample
 
-This provides a CLI to exercise the .NET HTML Renderer (`AdaptiveCards.Rendering.Html`)
+This provides a CLI to exercise the .NET WPF Renderer to render to images (`AdaptiveCards.Rendering.Wpf`)
 
 ## Usage
 
@@ -14,11 +14,10 @@ Usage: dotnet run [payload-path] [options]
 $ dotnet run
 ```
 
-Or output to a file 
+Or output to a specific directory
 
 ```console
-$ dotnet run -o ./scenarios.html
-$ start ./scenarios.html
+$ dotnet run -o ./out
 ```
 
 
@@ -34,12 +33,12 @@ Short | Long | Description
 ---|---|---
 -h |--help | Show help information
 -r |--recursive | Recurse the directory for all JSON files
--o |--out | The file to output the HTML to
+-o |--out | The directory to output the image(s) to
 -i | --supports-interactivity  | Include actions and inputs in the output
 n/a | --host-config | Specify a host config file
 
 ## Example to use Windows Notification host config
 
 ```console
-dotnet run ../../../../samples -r -i -o ./samples.html --host-config ../../../../samples/v1.0/hostconfig/windows-notification.json
+dotnet run ../../../../samples -r -i -o ./out --host-config ../../../../samples/v1.0/hostconfig/windows-notification.json
 ```

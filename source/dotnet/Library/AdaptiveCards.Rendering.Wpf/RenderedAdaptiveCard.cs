@@ -49,42 +49,54 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         public RenderedAdaptiveCardInputs UserInputs { get; }
 
-        public Task WaitForAssetsAsync(CancellationToken cancel)
+        /// <summary>
+        ///  Wait for all assets in the card to be loaded. Useful to delay adding the card to the UI tree until images have been rendered
+        /// </summary>
+        /// <param name="cancellationToken">A token to cancel the operation</param>
+        /// <returns></returns>
+        public Task WaitForAssetsAsync(CancellationToken cancellationToken)
         {
-            //if (cancel.IsCancellationRequested)
+            //if (cancellationToken.IsCancellationRequested)
             //{
             //    return;
             //}
+            // TODO: implement cancellation token
+
             return Task.WhenAll(_assetDownLoad);
         }
 
-        public async Task<MemoryStream> ToImageAsync(int width = 400)
+        /// <summary>
+        /// Renders the current card to a bitmap image
+        /// </summary>
+        /// <param name="width">Desired width of the image</param>
+        /// <param name="cancellationToken">A token to cancel the operation</param>
+        /// <returns></returns>
+        public async Task<MemoryStream> ToImageAsync(int width = 400, CancellationToken cancellationToken = default(CancellationToken))
         {
             Debug.WriteLine("Starting to render to image...");
 
             Debug.WriteLine("Waiting for assets...");
-            await Task.WhenAll(_assetDownLoad);
+            await WaitForAssetsAsync(cancellationToken);
             Debug.WriteLine("Finished loading assets... waiting for layout update");
-
-            //FrameworkElement.UpdateLayout();
 
             await FrameworkElement.AwaitLayoutUpdated();
             Debug.WriteLine("Framework layout updated...");
+
 
             FrameworkElement.Measure(new Size(width, int.MaxValue));
             FrameworkElement.Arrange(new Rect(new Size(width, FrameworkElement.DesiredSize.Height)));
             FrameworkElement.UpdateLayout();        
 
-            RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)width, (int)FrameworkElement.DesiredSize.Height, 96, 96, PixelFormats.Default);
+            var bitmapImage = new RenderTargetBitmap((int)width, (int)FrameworkElement.DesiredSize.Height, 96, 96, PixelFormats.Default);
             bitmapImage.Render(FrameworkElement);
 
             var encoder = new PngBitmapEncoder();
-            BitmapMetadata metadata = new BitmapMetadata("png");
+            var metadata = new BitmapMetadata("png");
             metadata.SetQuery("/tEXt/{str=Description}", JsonConvert.SerializeObject(OriginatingCard));
-            BitmapFrame pngFrame = BitmapFrame.Create(bitmapImage, null, metadata, null);
+            var pngFrame = BitmapFrame.Create(bitmapImage, null, metadata, null);
             encoder.Frames.Add(pngFrame);
 
-            MemoryStream stream = new MemoryStream();
+            var stream = new MemoryStream();
             encoder.Save(stream);
             stream.Seek(0, SeekOrigin.Begin);
             return stream;

@@ -24,7 +24,7 @@ namespace AdaptiveCards.Sample.Html
             var optionOutput = app.Option("-o|--out", "The file to output the HTML to", CommandOptionType.SingleValue);
             var optionSupportsInteracitivty = app.Option("-i|--supports-interactivity", "Include actions and inputs in the output", CommandOptionType.NoValue);
             var hostConfigOption = app.Option("--host-config", "Specify a host config file", CommandOptionType.SingleValue);
-           
+
             app.OnExecute(() =>
             {
                 FileStream outputFile = null;
@@ -45,7 +45,7 @@ namespace AdaptiveCards.Sample.Html
                 }
 
                 var files = new List<string>();
-    
+
                 if (File.Exists(payloadPath))
                 {
                     files.Add(payloadPath);
@@ -75,7 +75,7 @@ namespace AdaptiveCards.Sample.Html
                 writer.WriteLine(@"</head>");
                 writer.WriteLine(@"<body>");
 
-                
+
                 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
                 {
                     SupportsInteractivity = optionSupportsInteracitivty.HasValue()

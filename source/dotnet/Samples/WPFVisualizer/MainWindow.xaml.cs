@@ -61,10 +61,13 @@ namespace WpfVisualizer
             Renderer.UseXceedElementRenderers();
 
             // Register custom elements and actions            
+            // TODO: Change to instance property? Change to UWP parser registration
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();
 
             Renderer.ElementRenderers.Set<MyCustomRating>(MyCustomRating.Render);
+
+            // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
         }
 
@@ -91,6 +94,7 @@ namespace WpfVisualizer
                 AdaptiveCard card = parseResult.Card;
 
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
+                // TODO: should we have an option to render fallback card instead of exception?
 
                 // Wire up click handler
                 renderedCard.OnAction += OnAction;

@@ -11,4 +11,8 @@
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="symbols\" />
+  </ItemGroup>
+
 </Project>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AdaptiveCards.Rendering.Wpf
 {
     /// <summary>
-    /// Provides a pump that supports running asynchronous methods on the current thread.
+    /// Allows Console apps to "fake" a UI thread. Provides a pump that supports running asynchronous methods on the current thread.
     /// From: https://blogs.msdn.microsoft.com/pfxteam/2012/01/20/await-synchronizationcontext-and-console-apps/
     /// </summary>
     public static class AsyncPump
