@@ -176,4 +176,11 @@ namespace AdaptiveCards { namespace Uwp
     {
         return StringToJsonObject(m_sharedNumberInput->Serialize(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveCards::NumberInput>& sharedModel)
+    {
+        sharedModel = m_sharedNumberInput;
+        return S_OK;
+    }
 }}

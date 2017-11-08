@@ -22,8 +22,8 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept try
     {
-        m_sharedChoiceSetInput = std::make_shared<ChoiceSetInput>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
+        return RuntimeClassInitialize(choiceSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
@@ -34,50 +34,58 @@ namespace AdaptiveCards { namespace Uwp
             return E_INVALIDARG;
         }
 
-        m_sharedChoiceSetInput = sharedChoiceSetInput;
-        GenerateInputChoicesProjection(m_sharedChoiceSetInput->GetChoices(), m_choices.Get());
+        GenerateInputChoicesProjection(sharedChoiceSetInput->GetChoices(), m_choices.Get());
+
+        m_isRequired = sharedChoiceSetInput->GetIsRequired();
+        m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
+        m_choiceSetStyle = static_cast<ABI::AdaptiveCards::Uwp::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
+
+        m_spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(sharedChoiceSetInput->GetSpacing());
+        m_separator = sharedChoiceSetInput->GetSeparator();
+        RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetId(), m_id.GetAddressOf()));
+
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::get_IsMultiSelect(boolean* isMultiSelect)
     {
-        *isMultiSelect = m_sharedChoiceSetInput->GetIsMultiSelect();
+        *isMultiSelect = m_isMultiSelect;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::put_IsMultiSelect(boolean isMultiSelect)
     {
-        m_sharedChoiceSetInput->SetIsMultiSelect(isMultiSelect);
+        m_isMultiSelect = isMultiSelect;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::get_IsRequired(boolean* isRequired)
     {
-        *isRequired = m_sharedChoiceSetInput->GetIsRequired();
+        *isRequired = m_isRequired;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::put_IsRequired(boolean isRequired)
     {
-        m_sharedChoiceSetInput->SetIsRequired(isRequired);
+        m_isRequired = isRequired;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveCards::Uwp::ChoiceSetStyle* choiceSetStyle)
     {
-        *choiceSetStyle = static_cast<ABI::AdaptiveCards::Uwp::ChoiceSetStyle>(m_sharedChoiceSetInput->GetChoiceSetStyle());
+        *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::Uwp::ChoiceSetStyle choiceSetStyle)
     {
-        m_sharedChoiceSetInput->SetChoiceSetStyle(static_cast<AdaptiveCards::ChoiceSetStyle>(choiceSetStyle));
+        m_choiceSetStyle = choiceSetStyle;
         return S_OK;
     }
 
@@ -90,16 +98,13 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedChoiceSetInput->GetId(), id);
+        return m_id.CopyTo(id);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::put_Id(HSTRING id)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedChoiceSetInput->SetId(out);
-        return S_OK;
+        return m_id.Set(id);
     }
 
     _Use_decl_annotations_
@@ -112,21 +117,21 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedChoiceSetInput->GetSpacing());
+        *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedChoiceSetInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        m_spacing = spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::get_Separator(boolean* separator)
     {
-        *separator = m_sharedChoiceSetInput->GetSeparator();
+        *separator = m_separator;
         return S_OK;
 
         //Issue #629 to make separator an object
@@ -136,7 +141,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::put_Separator(boolean separator)
     {
-        m_sharedChoiceSetInput->SetSeparator(separator);
+        m_separator = separator;
 
         /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
@@ -159,6 +164,26 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        return StringToJsonObject(m_sharedChoiceSetInput->Serialize(), result);
+        std::shared_ptr<AdaptiveCards::ChoiceSetInput> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(choiceSet)));
+
+        choiceSet->SetChoiceSetStyle(static_cast<AdaptiveCards::ChoiceSetStyle>(m_choiceSetStyle));
+        choiceSet->SetIsMultiSelect(m_isMultiSelect);
+        choiceSet->SetIsRequired(m_isRequired);
+
+        RETURN_IF_FAILED(GenerateSharedChoices(m_choices.Get(), choiceSet->GetChoices()));
+
+        sharedModel = choiceSet;
+        return S_OK;
     }
 }}

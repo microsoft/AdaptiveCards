@@ -7,11 +7,12 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveContainer :
+    class DECLSPEC_UUID("d6031009-7039-4735-bd07-ab6d99b29f03") AdaptiveContainer :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveContainer,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveContainer, BaseTrust)
 
@@ -45,9 +46,22 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::Container>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
+
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement*>> m_items;
-        std::shared_ptr<AdaptiveCards::Container> m_sharedContainer;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement> m_selectAction;
+        ABI::AdaptiveCards::Uwp::ContainerStyle m_style;
+
+        boolean m_separator;
+        Microsoft::WRL::Wrappers::HString m_id;
+        ABI::AdaptiveCards::Uwp::Spacing m_spacing;
     };
 
     ActivatableClass(AdaptiveContainer);
