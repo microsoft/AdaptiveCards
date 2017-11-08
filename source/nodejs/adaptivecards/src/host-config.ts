@@ -43,12 +43,12 @@ export class PaddingDefinition {
 }
 
 export class TextColorDefinition {
-    normal: string = "#0000FF";
+    default: string = "#0000FF";
     subtle: string = "#222222";
 
     constructor(obj?: any) {
         if (obj) {
-            this.normal = obj["normal"] || this.normal;
+            this.default = obj["default"] || this.default;
             this.subtle = obj["subtle"] || this.subtle;
         }
     }

@@ -1457,10 +1457,10 @@ var PaddingDefinition = /** @class */ (function () {
 exports.PaddingDefinition = PaddingDefinition;
 var TextColorDefinition = /** @class */ (function () {
     function TextColorDefinition(obj) {
-        this.normal = "#0000FF";
+        this.default = "#0000FF";
         this.subtle = "#222222";
         if (obj) {
-            this.normal = obj["normal"] || this.normal;
+            this.default = obj["default"] || this.default;
             this.subtle = obj["subtle"] || this.subtle;
         }
     }
@@ -28061,7 +28061,7 @@ var TextBlock = /** @class */ (function (_super) {
                     colorDefinition = styleDefinition.foregroundColors.default;
                     break;
             }
-            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.normal);
+            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
             var fontWeight;
             switch (this.weight) {
                 case Enums.TextWeight.Lighter:

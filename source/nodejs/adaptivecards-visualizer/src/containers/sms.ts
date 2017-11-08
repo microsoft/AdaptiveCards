@@ -62,23 +62,23 @@ export class SMSContainer extends HostContainer {
                     backgroundColor: "#FFFFFF",
                     foregroundColors: {
                         default: {
-                            normal: "#FF101010",
+                            default: "#FF101010",
                             subtle: "#b2101010"
                         },
                         accent: {
-                            normal: "#FF0000FF",
+                            default: "#FF0000FF",
                             subtle: "#b20000FF"
                         },
                         good: {
-                            normal: "#FF008000",
+                            default: "#FF008000",
                             subtle: "#b2008000"
                         },
                         warning: {
-                            normal: "#FFFFD700",
+                            default: "#FFFFD700",
                             subtle: "#b2FFD700"
                         },
                         attention: {
-                            normal: "#FF8B0000",
+                            default: "#FF8B0000",
                             subtle: "#b28B0000"
                         }
                     }
@@ -87,23 +87,23 @@ export class SMSContainer extends HostContainer {
                     backgroundColor: "#08000000",
                     foregroundColors: {
                         default: {
-                            normal: "#FF101010",
+                            default: "#FF101010",
                             subtle: "#b2101010"
                         },
                         accent: {
-                            normal: "#FF0000FF",
+                            default: "#FF0000FF",
                             subtle: "#b20000FF"
                         },
                         good: {
-                            normal: "#FF008000",
+                            default: "#FF008000",
                             subtle: "#b2008000"
                         },
                         warning: {
-                            normal: "#FFFFD700",
+                            default: "#FFFFD700",
                             subtle: "#b2FFD700"
                         },
                         attention: {
-                            normal: "#FF8B0000",
+                            default: "#FF8B0000",
                             subtle: "#b28B0000"
                         }
                     }

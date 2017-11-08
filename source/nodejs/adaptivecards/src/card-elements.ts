@@ -460,7 +460,7 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.normal);
+            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
 
             var fontWeight: number;
 
