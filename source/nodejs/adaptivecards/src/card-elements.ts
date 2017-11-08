@@ -2986,7 +2986,7 @@ export class ColumnSet extends CardElement {
             let jsonColumns = json["columns"] as Array<any>;
 
             for (let i = 0; i < jsonColumns.length; i++) {
-                var column = new Column();
+                var column = <Column>AdaptiveCard.elementTypeRegistry.createInstance("Column");
 
                 column.parse(jsonColumns[i]);
 
@@ -3320,6 +3320,7 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("ImageSet", () => { return new ImageSet(); });
         this.registerType("FactSet", () => { return new FactSet(); });
         this.registerType("ColumnSet", () => { return new ColumnSet(); });
+        this.registerType("Column", () => { return new Column(); });
         this.registerType("Input.Text", () => { return new TextInput(); });
         this.registerType("Input.Date", () => { return new DateInput(); });
         this.registerType("Input.Time", () => { return new TimeInput(); });
