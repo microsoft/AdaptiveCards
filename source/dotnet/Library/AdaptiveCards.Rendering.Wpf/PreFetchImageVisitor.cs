@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -12,9 +13,15 @@ namespace AdaptiveCards.Rendering.Wpf
     /// </summary>
     internal class PreFetchImageVisitor : AdaptiveVisitor
     {
+        private readonly ResourceResolver _resourceResolver;
         private readonly List<Task> _tasks = new List<Task>();
 
         public ConcurrentDictionary<Uri, MemoryStream> LoadedImages { get; } = new ConcurrentDictionary<Uri, MemoryStream>();
+
+        public PreFetchImageVisitor(ResourceResolver resourceResolver)
+        {
+            _resourceResolver = resourceResolver;
+        }
 
         /// <summary>
         /// Get all images 
@@ -37,11 +44,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         protected async Task GetImage(Uri url)
         {
-            using (WebClient client = new WebClient())
-            {
-                var data = await client.DownloadDataTaskAsync(url).ConfigureAwait(false);
-                LoadedImages[url] = new MemoryStream(data, writable: false);
-            }
+            LoadedImages[url] = await _resourceResolver.LoadAssetAsync(url).ConfigureAwait(false);
         }
 
         public override void Visit(AdaptiveCard card)

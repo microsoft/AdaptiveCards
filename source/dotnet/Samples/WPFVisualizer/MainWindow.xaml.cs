@@ -245,16 +245,17 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            // Disable interactivity to remove inputs and actions from the image
+            //Disable interactivity to remove inputs and actions from the image
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
             Renderer.HostConfig.SupportsInteractivity = false;
-            var imageStream = Renderer.RenderToImage(AdaptiveCard.FromJson(textBox.Text).Card, 480);
+
+            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(textBox.Text).Card);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
 
             var path = Path.GetRandomFileName() + ".png";
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
-                await imageStream.CopyToAsync(fileStream);
+                await renderedCard.ImageStream.CopyToAsync(fileStream);
             }
             Process.Start(path);
         }

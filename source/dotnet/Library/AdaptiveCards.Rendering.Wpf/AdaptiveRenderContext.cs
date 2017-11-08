@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
-using System.Net.Cache;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
+    /// <summary>
+    /// Context state for a render pass
+    /// </summary>
     public class AdaptiveRenderContext
     {
         private readonly Dictionary<string, SolidColorBrush> _colors = new Dictionary<string, SolidColorBrush>();
@@ -43,7 +40,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public ResourceResolver ResourceResolvers { get; set; }
 
-        public Dictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
+        public IDictionary<Uri, MemoryStream> CardAssets { get; set; } = new Dictionary<Uri, MemoryStream>();
+
+        public IDictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
 
         public event EventHandler<AdaptiveActionEventArgs> OnAction;
 
@@ -70,37 +69,35 @@ namespace AdaptiveCards.Rendering.Wpf
             var completeTask = new TaskCompletionSource<object>();
             AssetTasks.Add(completeTask.Task);
 
-            var loadAsset = ResourceResolvers.LoadAssetAsync(url);
+            // Load the stream from the pre-populated CardAssets or try to load from the ResourceResolver
+            var streamTask = CardAssets.TryGetValue(url, out var s) ? Task.FromResult(s) : ResourceResolvers.LoadAssetAsync(url);
+            // TODO: attach to parent task
+
             Debug.WriteLine($"ASSETS: Starting asset down task for {url}");
-            BitmapImage source = new BitmapImage();
 
             try
             {
-                var stream = await loadAsset;
+                var source = new BitmapImage();
+
+                var stream = await streamTask;
                 if (stream != null)
                 {
                     source.BeginInit();
                     source.CacheOption = BitmapCacheOption.OnLoad;
                     source.StreamSource = stream;
                     source.EndInit();
+                    Debug.WriteLine($"ASSETS: Finished loading asset for {url} ({stream.Length} bytes)");
                 }
-
-                Debug.WriteLine($"ASSETS: Finished loading asset for {url} ({loadAsset.Result.Length} bytes)");
                 completeTask.SetResult(new object());
                 return source;
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"ASSETS: Failed to load asset for {url}. {e.Message}");
+                completeTask.SetException(e);
                 return null;
             }
-           
-
-            // TODO: attach to parent task
         }
-
-
-
 
         public SolidColorBrush GetColorBrush(string color)
         {

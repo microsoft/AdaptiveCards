@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using McMaster.Extensions.CommandLineUtils;
@@ -15,10 +14,8 @@ namespace AdaptiveCards.Sample.ImageRender
 {
     class Program
     {
-        [STAThread]
         static void Main(string[] args)
         {
-
             var app = new CommandLineApplication();
 
             app.HelpOption("-h|--help");
@@ -29,7 +26,7 @@ namespace AdaptiveCards.Sample.ImageRender
             var optionSupportsInteracitivty = app.Option("-i|--supports-interactivity", "Include actions and inputs in the output", CommandOptionType.NoValue);
             var hostConfigOption = app.Option("--host-config", "Specify a host config file", CommandOptionType.SingleValue);
 
-            app.OnExecute(async () =>
+            app.OnExecute(() =>
             {
                 var outPath = optionOutput.HasValue()
                     ? optionOutput.Value()
@@ -66,7 +63,6 @@ namespace AdaptiveCards.Sample.ImageRender
                     return;
                 }
 
-
                 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
                 {
                     SupportsInteractivity = optionSupportsInteracitivty.HasValue()
@@ -82,24 +78,14 @@ namespace AdaptiveCards.Sample.ImageRender
 
                 foreach (var file in files)
                 {
-                    await Task.Factory.StartNewSta(() =>
-                    {
-                        AsyncPump.Run(async () =>
-                        {
-                            await RenderCard(file, renderer, outPath);
-                        });
-
-                        return new object();
-                    });
+                    RenderCard(file, renderer, outPath).Wait();
                 }
 
                 Console.WriteLine($"All cards were written to {Path.GetFullPath(outPath)}");
             });
 
-
             app.Execute(args);
-            // TODO: this is required when running from PS. Main thread is dying early
-            //Console.ReadLine();
+
 
             // if output, launch the file
             if (Debugger.IsAttached)
@@ -116,16 +102,13 @@ namespace AdaptiveCards.Sample.ImageRender
                 watch.Start();
 
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(File.ReadAllText(file, Encoding.UTF8));
-
                 AdaptiveCard card = parseResult.Card;
-
-                RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
 
                 // Timeout after 30 seconds
                 var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
                 // Render the card to an image
-                Stream imageStream = await renderedCard.ToImageAsync(400, cts.Token);
+                RenderedAdaptiveCardImage renderedCard = await renderer.RenderCardToImageAsync(card, 400, cts.Token);
 
                 // Report any warnings
                 foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
@@ -139,8 +122,8 @@ namespace AdaptiveCards.Sample.ImageRender
 
                 using (var fileStream = new FileStream(outputFile, FileMode.Create))
                 {
-                    imageStream.CopyTo(fileStream);
-                    Console.WriteLine($"[{watch.ElapsedMilliseconds}ms T{Thread.CurrentThread.ManagedThreadId}]\t\t{Path.GetFileName(file)} => {Path.GetFileName(outputFile)}");
+                    renderedCard.ImageStream.CopyTo(fileStream);
+                    Console.WriteLine($"[{watch.ElapsedMilliseconds}ms T{Thread.CurrentThread.ManagedThreadId}]\t{Path.GetFileName(file)} => {Path.GetFileName(outputFile)}");
                 }
             }
             catch (Exception ex)

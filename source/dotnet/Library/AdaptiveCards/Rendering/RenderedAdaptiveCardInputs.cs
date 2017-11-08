@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json.Linq;
 
-namespace AdaptiveCards.Rendering.Wpf
+namespace AdaptiveCards.Rendering
 {
     public class RenderedAdaptiveCardInputs : IReadOnlyDictionary<string, string>
     {
         private readonly IReadOnlyDictionary<string, string> _dictionary;
 
-        public RenderedAdaptiveCardInputs(RenderedAdaptiveCard card)
+        public RenderedAdaptiveCardInputs(RenderedAdaptiveCardBase card)
         {
             if (card == null) throw new ArgumentNullException(nameof(card));
 
