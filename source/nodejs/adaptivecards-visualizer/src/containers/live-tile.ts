@@ -70,50 +70,50 @@ export class LiveTileContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#0078D7",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#FFFFFF",
+                            default: "#FFFFFF",
                             subtle: "#88FFFFFF"
                         },
                         accent: {
-                            normal: "#00c2ff",
+                            default: "#00c2ff",
                             subtle: "#8800c2ff"
                         },
                         attention: {
-                            normal: "#ffa700",
+                            default: "#ffa700",
                             subtle: "#DDffa700"
                         },
                         good: {
-                            normal: "#00FF00",
+                            default: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            normal: "#FFD800",
+                            default: "#FFD800",
                             subtle: "#DDFFD800"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#FFFFFF",
+                            default: "#FFFFFF",
                             subtle: "#88FFFFFF"
                         },
                         accent: {
-                            normal: "#00c2ff",
+                            default: "#00c2ff",
                             subtle: "#8800c2ff"
                         },
                         attention: {
-                            normal: "#ffa700",
+                            default: "#ffa700",
                             subtle: "#DDffa700"
                         },
                         good: {
-                            normal: "#00FF00",
+                            default: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            normal: "#FFD800",
+                            default: "#FFD800",
                             subtle: "#DDFFD800"
                         }
                     }
