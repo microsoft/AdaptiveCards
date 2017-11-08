@@ -101,7 +101,7 @@ std::shared_ptr<TSharedBaseType> GetSharedModel(TAdaptiveBaseType * item)
     ComPtr<TAdaptiveType> adaptiveElement = PeekInnards<TAdaptiveType>(item);
 
     std::shared_ptr<TSharedType> sharedModelElement;
-    if (SUCCEEDED(adaptiveElement->GetSharedModel(sharedModelElement)))
+    if (adaptiveElement && SUCCEEDED(adaptiveElement->GetSharedModel(sharedModelElement)))
         return sharedModelElement;
     else
         return nullptr;
@@ -161,6 +161,11 @@ HRESULT GenerateSharedElements(
                 baseCardElement = std::make_shared<CustomElementWrapper>(item);
                 break;
         }
+        if (baseCardElement == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         containedElements.push_back(baseCardElement);
 
         return S_OK;
@@ -242,6 +247,11 @@ HRESULT GenerateSharedFacts(
     XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Uwp::IAdaptiveFact>(facts, [&](ABI::AdaptiveCards::Uwp::IAdaptiveFact* fact)
     {
         ComPtr<AdaptiveCards::Uwp::AdaptiveFact> adaptiveElement = PeekInnards<AdaptiveCards::Uwp::AdaptiveFact>(fact);
+        if (adaptiveElement == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+        
         std::shared_ptr<AdaptiveCards::Fact> sharedFact;
         RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedFact));
         containedElements.push_back(std::dynamic_pointer_cast<AdaptiveCards::Fact>(sharedFact));
@@ -260,6 +270,11 @@ HRESULT GenerateSharedChoices(
     XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput>(choices, [&](ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput* choice)
     {
         ComPtr<AdaptiveCards::Uwp::AdaptiveChoiceInput> adaptiveElement = PeekInnards<AdaptiveCards::Uwp::AdaptiveChoiceInput>(choice);
+        if (adaptiveElement == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         std::shared_ptr<AdaptiveCards::ChoiceInput> sharedChoice;
         RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedChoice));
         containedElements.push_back(std::dynamic_pointer_cast<AdaptiveCards::ChoiceInput>(sharedChoice));
