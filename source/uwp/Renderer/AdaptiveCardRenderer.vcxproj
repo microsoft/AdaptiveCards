@@ -265,7 +265,6 @@
     <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="dll\dll.cpp" />
     <ClInclude Include="lib\XamlHelpers.h" />
-    <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ObjectModelProjection\ObjectModelProjection.vcxproj">
