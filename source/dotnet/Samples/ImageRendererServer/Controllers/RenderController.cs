@@ -3,9 +3,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -13,6 +15,12 @@ namespace ImageRendererServer.Controllers
 {
     public class RenderController : Controller
     {
+        private readonly IHostingEnvironment _env;
+
+        public RenderController(IHostingEnvironment env)
+        {
+            _env = env;
+        }
 
         public async Task<ActionResult> Index(string cardUrl = null)
         {
@@ -49,11 +57,11 @@ namespace ImageRendererServer.Controllers
                 AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
 
                 // Set any XAML resource Dictionary if you have one
-                //renderer.Resources = X;
+                renderer.ResourcesPath = System.IO.Path.Combine(_env.WebRootPath, "Styles", "MyStyles.xaml");
 
                 // Render the card to bitmap
                 RenderedAdaptiveCardImage renderedCard =
-                    await renderer.RenderCardToImageAsync(card, cancellationToken: cts.Token);
+                    await renderer.RenderCardToImageAsync(card, createStaThread: true, cancellationToken: cts.Token);
 
                 return File(renderedCard.ImageStream, "image/png");
             }
