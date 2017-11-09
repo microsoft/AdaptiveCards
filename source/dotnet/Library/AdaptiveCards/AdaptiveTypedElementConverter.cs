@@ -98,7 +98,7 @@ namespace AdaptiveCards
                 return result;
             }
 
-            _parseResult.Warnings.Add(new AdaptiveWarning(-1, $"Unknown element type '{typeName}'"));
+            _parseResult?.Warnings.Add(new AdaptiveWarning(-1, $"Unknown element type '{typeName}'"));
             return null;
         }
 
@@ -117,7 +117,7 @@ namespace AdaptiveCards
 
             foreach (var prop in te.AdditionalProperties)
             {
-                _parseResult.Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on type '{te.Type}'"));
+                _parseResult?.Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on type '{te.Type}'"));
             }
         }
 

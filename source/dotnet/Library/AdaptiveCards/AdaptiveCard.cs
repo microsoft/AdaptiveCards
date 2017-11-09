@@ -10,6 +10,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     Adaptive card which has flexible container
     /// </summary>
+    [JsonConverter(typeof(AdaptiveCardConverter))]
     public class AdaptiveCard : AdaptiveTypedElement
 #if WINDOWS_UWP
       // TODO: uncomment when I figure out the Windows build
@@ -45,12 +46,13 @@ namespace AdaptiveCards
         /// <summary>
         /// Creates an AdaptiveCard using the <see cref="F:AdaptiveCards.AdaptiveCard.KnownSchemaVersion" /> of this library
         /// </summary>
-        public AdaptiveCard() : this(KnownSchemaVersion) { }       
+        public AdaptiveCard() : this(KnownSchemaVersion) { }
 
         /// <summary>
         /// The Body elements for this card
         /// </summary>
         [JsonProperty(Order = -3)]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
         public IList<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
         public bool ShouldSerializeBody() => Body?.Count > 0;
@@ -59,6 +61,7 @@ namespace AdaptiveCards
         ///     Actions for the card
         /// </summary>
         [JsonProperty(Order = -2)]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
         public IList<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
         public bool ShouldSerializeActions() => Actions?.Count > 0;
@@ -80,7 +83,7 @@ namespace AdaptiveCards
         ///     Background image for card
         /// </summary>
         [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public Uri BackgroundImage { get; set; } 
+        public Uri BackgroundImage { get; set; }
 
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.

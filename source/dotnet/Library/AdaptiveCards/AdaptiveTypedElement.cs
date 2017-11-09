@@ -9,6 +9,7 @@ using Newtonsoft.Json.Serialization;
 namespace AdaptiveCards
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+    [JsonConverter(typeof(AdaptiveTypedElementConverter))]
     public abstract class AdaptiveTypedElement
     {
         /// <summary>

@@ -50,7 +50,7 @@ namespace ImageRendererServer.Controllers
 
                 // Set any XAML resource Dictionary if you have one
                 //renderer.Resources = X;
- 
+
                 // Render the card to bitmap
                 RenderedAdaptiveCardImage renderedCard =
                     await renderer.RenderCardToImageAsync(card, cancellationToken: cts.Token);
@@ -66,7 +66,7 @@ namespace ImageRendererServer.Controllers
             {
                 // TODO: log
                 throw;
-            }      
+            }
         }
     }
 }
