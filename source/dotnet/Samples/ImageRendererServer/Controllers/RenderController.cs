@@ -33,6 +33,7 @@ namespace ImageRendererServer.Controllers
                 var res = await client.GetAsync(cardUrl, cts.Token);
                 var json = await res.Content.ReadAsStringAsync();
 
+                // TODO: add version, replace %20 urls
                 // Create a host config
                 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
                 {
@@ -52,7 +53,7 @@ namespace ImageRendererServer.Controllers
 
                 return File(renderedCard.ImageStream, "image/png");
             }
-            catch (OperationCanceledException e)
+            catch (OperationCanceledException)
             {
                 // Timed out
                 return StatusCode((int)HttpStatusCode.RequestTimeout);

@@ -9,7 +9,7 @@ namespace AdaptiveCards
     public abstract class AdaptiveElement : AdaptiveTypedElement
     {
         /// <summary>
-        /// The amount of space the element should be separated from the previous element. Default value is <see cref="Spacing.Default"/>.
+        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveSpacing.Default"/>.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveSpacing Spacing { get; set; }

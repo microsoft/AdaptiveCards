@@ -15,6 +15,7 @@ namespace AdaptiveCards.Test
 
         private void TestPayloadsInDirectory(string path)
         {
+            var exceptions = new List<Exception>();
             var files = Directory.GetFiles(path, "*.json").ToList();
             Assert.IsTrue(files.Count > 1);
             foreach (var file in files)
@@ -27,10 +28,13 @@ namespace AdaptiveCards.Test
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"Payload file failed: {file}", ex);
+                    exceptions.Add(new Exception($"Payload file failed: {Path.GetFileName(file)}", ex));
                 }
 
             }
+
+            if(exceptions.Count > 0)
+                throw new AggregateException(exceptions);
         }
 
         [TestMethod]

@@ -67,6 +67,9 @@ namespace AdaptiveCards.Rendering
 
         public static string JoinString(IList<string> choices, string sep, string last)
         {
+            if (choices == null || choices.Count == 0)
+                return "";
+
             var sb = new StringBuilder();
             var s = string.Empty;
             for (var i = 0; i < choices.Count - 1; i++)

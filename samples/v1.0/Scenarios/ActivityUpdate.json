@@ -91,8 +91,7 @@
 				"body": [
 					{
 						"type": "Input.Date",
-						"id": "dueDate",
-						"title": "Select due date"
+						"id": "dueDate"
 					}
 				],
 				"actions": [

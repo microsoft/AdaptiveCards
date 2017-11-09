@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
@@ -89,6 +90,7 @@ namespace WpfVisualizer
 
             try
             {
+
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
 
                 AdaptiveCard card = parseResult.Card;

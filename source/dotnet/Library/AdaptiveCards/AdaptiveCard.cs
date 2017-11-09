@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
@@ -54,7 +55,6 @@ namespace AdaptiveCards
 
         public bool ShouldSerializeBody() => Body?.Count > 0;
 
-
         /// <summary>
         ///     Actions for the card
         /// </summary>
@@ -85,7 +85,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
-        [JsonProperty(Order = -9, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
         public AdaptiveSchemaVersion Version { get; set; }
 
         /// <summary>
@@ -150,6 +150,17 @@ namespace AdaptiveCards
                 }
             };
             return JsonConvert.SerializeObject(this, Formatting.Indented, settings);
+        }
+
+        /// <summary>
+        /// This makes sure the $schema property doesn't show up in AdditionalProperties
+        /// </summary>
+        [JsonProperty("$schema")]
+        internal string JsonSchema { get; set; }
+
+        public bool ShouldSerializeJsonSchema()
+        {
+            return false;
         }
     }
 }

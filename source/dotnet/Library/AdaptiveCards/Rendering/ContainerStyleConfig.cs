@@ -18,6 +18,6 @@ namespace AdaptiveCards.Rendering
         /// The font colors to use for this container
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FontColorsConfig FontColors { get; set; } = new FontColorsConfig();
+        public ForegroundColorsConfig ForegroundColors { get; set; } = new ForegroundColorsConfig();
     }
 }

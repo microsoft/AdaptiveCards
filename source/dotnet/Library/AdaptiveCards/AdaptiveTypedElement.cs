@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
@@ -20,9 +22,12 @@ namespace AdaptiveCards
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string Id { get; set; }
+        public string Id { get; set; }    
 
+        /// <summary>
+        /// Additional properties not found on the default schema
+        /// </summary>
         [JsonExtensionData]
-        public IDictionary<string, JToken> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalProperties { get; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
     }
 }

@@ -9,13 +9,12 @@ namespace AdaptiveCards.Rendering.Wpf
             : base(originatingCard, warnings)
         {
             FrameworkElement = frameworkElement;
-
         }
 
         /// <summary>
         /// The rendered card
         /// </summary>
-        public FrameworkElement FrameworkElement { get; set; } // TODO: make setter private
+        public FrameworkElement FrameworkElement { get; }
 
 
         /// <summary>

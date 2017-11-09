@@ -23,6 +23,6 @@ namespace AdaptiveCards
         ///     Width for the column (either ColumnWidth string or number which is relative size of the column)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Width { get; set; }
+        public string Width { get; set; } // TODO: this should be a ColumnWidth type with implict converter
     }
 }

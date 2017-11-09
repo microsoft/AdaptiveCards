@@ -71,17 +71,17 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Load the stream from the pre-populated CardAssets or try to load from the ResourceResolver
             var streamTask = CardAssets.TryGetValue(url, out var s) ? Task.FromResult(s) : ResourceResolvers.LoadAssetAsync(url);
-            // TODO: attach to parent task
 
             Debug.WriteLine($"ASSETS: Starting asset down task for {url}");
 
             try
             {
                 var source = new BitmapImage();
-
+                
                 var stream = await streamTask;
                 if (stream != null)
                 {
+                    stream.Position = 0;
                     source.BeginInit();
                     source.CacheOption = BitmapCacheOption.OnLoad;
                     source.StreamSource = stream;
