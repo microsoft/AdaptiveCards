@@ -143,50 +143,50 @@ export abstract class HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#00000000",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#333333",
+                            normal: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            default: "#2E89FC",
+                            normal: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            default: "#FFD800",
+                            normal: "#FFD800",
                             subtle: "#DDFFD800"
                         },
                         good: {
-                            default: "#00FF00",
+                            normal: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            default: "#FF0000",
+                            normal: "#FF0000",
                             subtle: "#DDFF0000"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "08000000",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#333333",
+                            normal: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            default: "#2E89FC",
+                            normal: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            default: "#FFD800",
+                            normal: "#FFD800",
                             subtle: "#DDFFD800"
                         },
                         good: {
-                            default: "#00FF00",
+                            normal: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            default: "#FF0000",
+                            normal: "#FF0000",
                             subtle: "#DDFF0000"
                         }
                     }

@@ -36,9 +36,11 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         TryExecuteTask(t);
                     }
+                   
                 });
                 thread.IsBackground = true;
                 thread.SetApartmentState(ApartmentState.STA);
+
                 return thread;
             }).ToList();
 

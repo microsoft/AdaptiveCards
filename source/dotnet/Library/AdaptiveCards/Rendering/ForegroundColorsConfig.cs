@@ -5,9 +5,8 @@ using Newtonsoft.Json.Serialization;
 namespace AdaptiveCards.Rendering
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class FontColorsConfig
+    public class ForegroundColorsConfig
     {
-        public FontColorsConfig() { }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public FontColorConfig Default { get; set; } = new FontColorConfig("#FF000000");
@@ -34,13 +33,13 @@ namespace AdaptiveCards.Rendering
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FontColorConfig
     {
-        public FontColorConfig(string normal, string subtle = null)
+        public FontColorConfig(string defaultColor, string subtle = null)
         {
-            this.Normal = normal;
+            this.Default = defaultColor;
             if (subtle == null)
             {
-                var opacity = (byte)(Convert.ToByte(normal.Substring(1, 2), 16) * .7);
-                this.Subtle = $"#{opacity.ToString("x")}{normal.Substring(3)}";
+                var opacity = (byte)(Convert.ToByte(defaultColor.Substring(1, 2), 16) * .7);
+                this.Subtle = $"#{opacity.ToString("x")}{defaultColor.Substring(3)}";
             }
             else
                 this.Subtle = subtle;
@@ -50,7 +49,7 @@ namespace AdaptiveCards.Rendering
         /// Color in #RRGGBB format
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Normal { get; set; }
+        public string Default { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Subtle { get; set; }

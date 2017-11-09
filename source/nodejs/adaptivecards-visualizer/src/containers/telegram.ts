@@ -61,50 +61,50 @@ export class TelegramContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#FFFFFF",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#333333",
+                            normal: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            default: "#2E89FC",
+                            normal: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            default: "#FF0000",
+                            normal: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            default: "#54a254",
+                            normal: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            default: "#c3ab23",
+                            normal: "#c3ab23",
                             subtle: "#DDc3ab23"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#333333",
+                            normal: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            default: "#2E89FC",
+                            normal: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            default: "#FF0000",
+                            normal: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            default: "#54a254",
+                            normal: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            default: "#c3ab23",
+                            normal: "#c3ab23",
                             subtle: "#DDc3ab23"
                         }
                     }

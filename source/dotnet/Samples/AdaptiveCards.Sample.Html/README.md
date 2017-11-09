@@ -41,5 +41,5 @@ n/a | --host-config | Specify a host config file
 ## Example to use Windows Notification host config
 
 ```console
-dotnet run ../../../../samples -r -i -o ./samples.html --c ../../../../samples/v1.0/hostconfig/windows-notification.json
+dotnet run ../../../../samples -r -i -o ./samples.html --host-config ../../../../samples/v1.0/hostconfig/windows-notification.json
 ```

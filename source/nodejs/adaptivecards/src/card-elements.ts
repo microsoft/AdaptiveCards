@@ -444,23 +444,23 @@ export class TextBlock extends CardElement {
 
             switch (actualTextColor) {
                 case Enums.TextColor.Accent:
-                    colorDefinition = styleDefinition.foregroundColors.accent;
+                    colorDefinition = styleDefinition.fontColors.accent;
                     break;
                 case Enums.TextColor.Good:
-                    colorDefinition = styleDefinition.foregroundColors.good;
+                    colorDefinition = styleDefinition.fontColors.good;
                     break;
                 case Enums.TextColor.Warning:
-                    colorDefinition = styleDefinition.foregroundColors.warning;
+                    colorDefinition = styleDefinition.fontColors.warning;
                     break;
                 case Enums.TextColor.Attention:
-                    colorDefinition = styleDefinition.foregroundColors.attention;
+                    colorDefinition = styleDefinition.fontColors.attention;
                     break;
                 default:
-                    colorDefinition = styleDefinition.foregroundColors.default;
+                    colorDefinition = styleDefinition.fontColors.default;
                     break;
             }
 
-            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
+            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.normal);
 
             var fontWeight: number;
 

@@ -337,7 +337,6 @@ export declare abstract class ContainerWithActions extends Container {
     constructor();
     getActionById(id: string): Action;
     parse(json: any, itemsCollectionPropertyName?: string): void;
-    validate(): Array<IValidationError>;
     isLastElement(element: CardElement): boolean;
     addAction(action: Action): void;
     clear(): void;

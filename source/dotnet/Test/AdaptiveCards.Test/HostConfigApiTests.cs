@@ -68,50 +68,50 @@ namespace AdaptiveCards.Test
   ""containerStyles"": {
     ""default"": {
       ""backgroundColor"": ""#AABBCC"",
-      ""fontColors"": {
+      ""foregroundColors"": {
         ""default"": {
-          ""normal"": ""#333333"",
+          ""default"": ""#333333"",
           ""subtle"": ""#EE333333""
         },
         ""accent"": {
-          ""normal"": ""#2E89FC"",
+          ""default"": ""#2E89FC"",
           ""subtle"": ""#882E89FC""
         },
         ""attention"": {
-          ""normal"": ""#cc3300"",
+          ""default"": ""#cc3300"",
           ""subtle"": ""#DDcc3300""
         },
         ""good"": {
-          ""normal"": ""#54a254"",
+          ""default"": ""#54a254"",
           ""subtle"": ""#DD54a254""
         },
         ""warning"": {
-          ""normal"": ""#e69500"",
+          ""default"": ""#e69500"",
           ""subtle"": ""#DDe69500""
         }
       }
     },
     ""emphasis"": {
       ""backgroundColor"": ""#08000000"",
-      ""fontColors"": {
+      ""foregroundColors"": {
         ""default"": {
-          ""normal"": ""#333333"",
+          ""default"": ""#333333"",
           ""subtle"": ""#EE333333""
         },
         ""accent"": {
-          ""normal"": ""#2E89FC"",
+          ""default"": ""#2E89FC"",
           ""subtle"": ""#882E89FC""
         },
         ""attention"": {
-          ""normal"": ""#cc3300"",
+          ""default"": ""#cc3300"",
           ""subtle"": ""#DDcc3300""
         },
         ""good"": {
-          ""normal"": ""#54a254"",
+          ""default"": ""#54a254"",
           ""subtle"": ""#DD54a254""
         },
         ""warning"": {
-          ""normal"": ""#e69500"",
+          ""default"": ""#e69500"",
           ""subtle"": ""#DDe69500""
         }
       }
@@ -188,16 +188,16 @@ namespace AdaptiveCards.Test
             // TODO: FontWeights aren't supported
 
             Assert.AreEqual("#AABBCC", hostConfig.ContainerStyles.Default.BackgroundColor);
-            Assert.AreEqual("#333333", hostConfig.ContainerStyles.Default.FontColors.Default.Normal);
-            Assert.AreEqual("#EE333333", hostConfig.ContainerStyles.Default.FontColors.Default.Subtle);
-            Assert.AreEqual("#2E89FC", hostConfig.ContainerStyles.Default.FontColors.Accent.Normal);
-            Assert.AreEqual("#882E89FC", hostConfig.ContainerStyles.Default.FontColors.Accent.Subtle);
-            Assert.AreEqual("#cc3300", hostConfig.ContainerStyles.Default.FontColors.Attention.Normal);
-            Assert.AreEqual("#DDcc3300", hostConfig.ContainerStyles.Default.FontColors.Attention.Subtle);
-            Assert.AreEqual("#54a254", hostConfig.ContainerStyles.Default.FontColors.Good.Normal);
-            Assert.AreEqual("#DD54a254", hostConfig.ContainerStyles.Default.FontColors.Good.Subtle);
-            Assert.AreEqual("#e69500", hostConfig.ContainerStyles.Default.FontColors.Warning.Normal);
-            Assert.AreEqual("#DDe69500", hostConfig.ContainerStyles.Default.FontColors.Warning.Subtle);
+            Assert.AreEqual("#333333", hostConfig.ContainerStyles.Default.ForegroundColors.Default.Default);
+            Assert.AreEqual("#EE333333", hostConfig.ContainerStyles.Default.ForegroundColors.Default.Subtle);
+            Assert.AreEqual("#2E89FC", hostConfig.ContainerStyles.Default.ForegroundColors.Accent.Default);
+            Assert.AreEqual("#882E89FC", hostConfig.ContainerStyles.Default.ForegroundColors.Accent.Subtle);
+            Assert.AreEqual("#cc3300", hostConfig.ContainerStyles.Default.ForegroundColors.Attention.Default);
+            Assert.AreEqual("#DDcc3300", hostConfig.ContainerStyles.Default.ForegroundColors.Attention.Subtle);
+            Assert.AreEqual("#54a254", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Default);
+            Assert.AreEqual("#DD54a254", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Subtle);
+            Assert.AreEqual("#e69500", hostConfig.ContainerStyles.Default.ForegroundColors.Warning.Default);
+            Assert.AreEqual("#DDe69500", hostConfig.ContainerStyles.Default.ForegroundColors.Warning.Subtle);
 
             Assert.AreEqual("#08000000", hostConfig.ContainerStyles.Emphasis.BackgroundColor);
 

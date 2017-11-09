@@ -66,7 +66,7 @@ var TextColorDefinition = /** @class */ (function () {
 exports.TextColorDefinition = TextColorDefinition;
 var ContainerStyleDefinition = /** @class */ (function () {
     function ContainerStyleDefinition(obj) {
-        this.foregroundColors = {
+        this.fontColors = {
             default: new TextColorDefinition(),
             accent: new TextColorDefinition(),
             good: new TextColorDefinition(),
@@ -75,12 +75,12 @@ var ContainerStyleDefinition = /** @class */ (function () {
         };
         if (obj) {
             this.backgroundColor = obj["backgroundColor"];
-            this.foregroundColors = {
-                default: new TextColorDefinition(obj["foregroundColors"]["default"]),
-                accent: new TextColorDefinition(obj["foregroundColors"]["accent"]),
-                good: new TextColorDefinition(obj["foregroundColors"]["good"]),
-                warning: new TextColorDefinition(obj["foregroundColors"]["warning"]),
-                attention: new TextColorDefinition(obj["foregroundColors"]["attention"])
+            this.fontColors = {
+                default: new TextColorDefinition(obj["fontColors"]["default"]),
+                accent: new TextColorDefinition(obj["fontColors"]["accent"]),
+                good: new TextColorDefinition(obj["fontColors"]["good"]),
+                warning: new TextColorDefinition(obj["fontColors"]["warning"]),
+                attention: new TextColorDefinition(obj["fontColors"]["attention"])
             };
         }
     }

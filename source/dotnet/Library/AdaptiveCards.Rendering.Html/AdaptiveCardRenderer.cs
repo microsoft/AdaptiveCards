@@ -207,10 +207,6 @@ namespace AdaptiveCards.Rendering.Html
                     {
                         if (actions[i] is AdaptiveShowCardAction showCardAction)
                         {
-                            // add button-card mapping for clients to implement showcard action
-                            //var cardId = "ac-showCard" + i;
-                            //uiAction.Attr("ac-cardId", cardId);
-
                             var cardId = uiAction.Attributes["data-ac-showCardId"];
 
                             var uiCard = context.Render(showCardAction.Card);
@@ -295,6 +291,7 @@ namespace AdaptiveCards.Rendering.Html
 
             if (context.Config.SupportsInteractivity && adaptiveColumn.SelectAction != null)
             {
+                // TODO: selectAction support
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
                 //{

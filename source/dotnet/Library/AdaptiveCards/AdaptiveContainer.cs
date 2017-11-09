@@ -16,7 +16,8 @@ namespace AdaptiveCards
         ///     Elements of the container
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
+        public IList<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
         /// <summary>
         ///     Action for this container (this allows a default action at the container level)

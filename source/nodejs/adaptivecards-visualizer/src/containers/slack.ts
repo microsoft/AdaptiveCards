@@ -61,50 +61,50 @@ export class SlackContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#00FFFFFF",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#FF101010",
+                            normal: "#FF101010",
                             subtle: "#b2101010"
                         },
                         accent: {
-                            default: "#FF0000FF",
+                            normal: "#FF0000FF",
                             subtle: "#b20000FF"
                         },
                         good: {
-                            default: "#FF008000",
+                            normal: "#FF008000",
                             subtle: "#b2008000"
                         },
                         warning: {
-                            default: "#FFFFD700",
+                            normal: "#FFFFD700",
                             subtle: "#b2FFD700"
                         },
                         attention: {
-                            default: "#FF8B0000",
+                            normal: "#FF8B0000",
                             subtle: "#b28B0000"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#FF101010",
+                            normal: "#FF101010",
                             subtle: "#b2101010"
                         },
                         accent: {
-                            default: "#FF0000FF",
+                            normal: "#FF0000FF",
                             subtle: "#b20000FF"
                         },
                         good: {
-                            default: "#FF008000",
+                            normal: "#FF008000",
                             subtle: "#b2008000"
                         },
                         warning: {
-                            default: "#FFFFD700",
+                            normal: "#FFFFD700",
                             subtle: "#b2FFD700"
                         },
                         attention: {
-                            default: "#FF8B0000",
+                            normal: "#FF8B0000",
                             subtle: "#b28B0000"
                         }
                     }

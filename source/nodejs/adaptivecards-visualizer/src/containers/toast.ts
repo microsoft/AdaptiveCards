@@ -62,50 +62,50 @@ export class ToastContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#1F1F1F",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#FFFFFF",
+                            normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
                         },
                         accent: {
-                            default: "#2E89FC",
+                            normal: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            default: "#FF0000",
+                            normal: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            default: "#00FF00",
+                            normal: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            default: "#FFD800",
+                            normal: "#FFD800",
                             subtle: "#DDFFD800"
                         }                    
                     }
                 },
                 emphasis: {
                     backgroundColor: "#19FFFFFF",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#FFFFFF",
+                            normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
                         },
                         accent: {
-                            default: "#2E89FC",
+                            normal: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            default: "#FFD800",
+                            normal: "#FFD800",
                             subtle: "#DDFFD800"
                         },
                         good: {
-                            default: "#00FF00",
+                            normal: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            default: "#FF0000",
+                            normal: "#FF0000",
                             subtle: "#DDFF0000"
                         }
                     }

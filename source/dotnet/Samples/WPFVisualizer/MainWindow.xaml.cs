@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
@@ -61,10 +62,13 @@ namespace WpfVisualizer
             Renderer.UseXceedElementRenderers();
 
             // Register custom elements and actions            
+            // TODO: Change to instance property? Change to UWP parser registration
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();
 
             Renderer.ElementRenderers.Set<MyCustomRating>(MyCustomRating.Render);
+
+            // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
         }
 
@@ -86,11 +90,13 @@ namespace WpfVisualizer
 
             try
             {
+
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
 
                 AdaptiveCard card = parseResult.Card;
 
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
+                // TODO: should we have an option to render fallback card instead of exception?
 
                 // Wire up click handler
                 renderedCard.OnAction += OnAction;
@@ -241,16 +247,17 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            // Disable interactivity to remove inputs and actions from the image
+            //Disable interactivity to remove inputs and actions from the image
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
             Renderer.HostConfig.SupportsInteractivity = false;
-            var imageStream = Renderer.RenderToImage(AdaptiveCard.FromJson(textBox.Text).Card, 480);
+
+            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(textBox.Text).Card);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
 
             var path = Path.GetRandomFileName() + ".png";
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
-                await imageStream.CopyToAsync(fileStream);
+                await renderedCard.ImageStream.CopyToAsync(fileStream);
             }
             Process.Start(path);
         }

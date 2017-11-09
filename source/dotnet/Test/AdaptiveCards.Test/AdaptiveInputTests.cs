@@ -13,7 +13,6 @@ namespace AdaptiveCards.Test
         public void TestThatInputsRequireId()
         {
             var json = @"{
-	""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
 	""type"": ""AdaptiveCard"",
 	""version"": ""1.0"",
 	""body"": [

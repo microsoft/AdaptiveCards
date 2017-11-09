@@ -55,50 +55,50 @@ export class TeamsContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#00000000",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#333333",
+                            normal: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            default: "#2E89FC",
+                            normal: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            default: "#cc3300",
+                            normal: "#cc3300",
                             subtle: "#DDcc3300"
                         },
                         good: {
-                            default: "#54a254",
+                            normal: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            default: "#e69500",
+                            normal: "#e69500",
                             subtle: "#DDe69500"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    foregroundColors: {
+                    fontColors: {
                         default: {
-                            default: "#333333",
+                            normal: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            default: "#2E89FC",
+                            normal: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            default: "#cc3300",
+                            normal: "#cc3300",
                             subtle: "#DDcc3300"
                         },
                         good: {
-                            default: "#54a254",
+                            normal: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            default: "#e69500",
+                            normal: "#e69500",
                             subtle: "#DDe69500"
                         }
                     }

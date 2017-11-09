@@ -159,7 +159,6 @@
 						},
 						{
 							"type": "TextBlock",
-							"topSpacing": "none",
 							"horizontalAlignment": "right",
 							"size": "extraLarge",
 							"color": "accent",

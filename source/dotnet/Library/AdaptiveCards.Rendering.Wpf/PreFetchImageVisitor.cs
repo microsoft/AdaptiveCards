@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -9,57 +11,52 @@ namespace AdaptiveCards.Rendering.Wpf
     /// <summary>
     /// Walk tree and fetch any images referenced
     /// </summary>
-    class ImageVisitor : AdaptiveVisitor
+    internal class PreFetchImageVisitor : AdaptiveVisitor
     {
-        List<Task> tasks = new List<Task>();
+        private readonly ResourceResolver _resourceResolver;
+        private readonly List<Task> _tasks = new List<Task>();
 
-        public ImageVisitor()
+        public ConcurrentDictionary<Uri, MemoryStream> LoadedImages { get; } = new ConcurrentDictionary<Uri, MemoryStream>();
+
+        public PreFetchImageVisitor(ResourceResolver resourceResolver)
         {
+            _resourceResolver = resourceResolver;
         }
-
-        public Dictionary<Uri, byte[]> Images = new Dictionary<Uri, byte[]>();
 
         /// <summary>
         /// Get all images 
         /// </summary>
-        /// <param name="card"></param>
-        /// <returns></returns>
         public async Task GetAllImages(AdaptiveCard card)
         {
             Visit(card);
 
-            await Task.WhenAll(tasks.ToArray()).ConfigureAwait(false);
+            await Task.WhenAll(_tasks.ToArray()).ConfigureAwait(false);
         }
 
         public MemoryStream GetCachedImageStream(Uri url)
         {
-            if (this.Images.TryGetValue(url, out var bytes))
+            if (LoadedImages.TryGetValue(url, out var stream))
             {
-                return new MemoryStream(bytes, writable: false);
+                return stream;
             }
             return null;
         }
 
         protected async Task GetImage(Uri url)
         {
-            using (WebClient client = new WebClient())
-            {
-                var data = await client.DownloadDataTaskAsync(url).ConfigureAwait(false);
-                lock (Images)
-                    Images[url] = data;
-            }
+            LoadedImages[url] = await _resourceResolver.LoadAssetAsync(url).ConfigureAwait(false);
         }
 
         public override void Visit(AdaptiveCard card)
         {
             if (card.BackgroundImage != null)
-                tasks.Add(GetImage(card.BackgroundImage));
+                _tasks.Add(GetImage(card.BackgroundImage));
             base.Visit(card);
         }
 
         public override void Visit(AdaptiveImage image)
         {
-            tasks.Add(GetImage(image.Url));
+            _tasks.Add(GetImage(image.Url));
             base.Visit(image);
         }
     }
