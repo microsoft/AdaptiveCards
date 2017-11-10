@@ -6,11 +6,12 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveTextBlock :
+    class DECLSPEC_UUID("743555b2-f4fc-486f-9024-f77de55aef26") AdaptiveTextBlock :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveTextBlock,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveTextBlock, BaseTrust)
 
@@ -58,6 +59,14 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::TextBlock>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::TextBlock> m_sharedTextBlock;

@@ -44,8 +44,7 @@ public:
     void SetStyle(const ContainerStyle value);
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
-    const std::vector<std::shared_ptr<BaseCardElement>>& GetBody() const;
-    const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
+    std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
 
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__

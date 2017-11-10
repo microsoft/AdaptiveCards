@@ -109,7 +109,9 @@
         <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
         </xctk:PropertyGrid>
 
-        <StackPanel Grid.Row="2" Name="cardError" />
+        <StackPanel Grid.Row="2" Grid.Column="0" Name="cardError" />
+
+        <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
 
     </Grid>
 </Window>

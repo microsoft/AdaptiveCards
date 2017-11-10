@@ -5,10 +5,11 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveCard :
+    class DECLSPEC_UUID("6a88e6d4-373a-48ba-840e-16c4b39278b1") AdaptiveCard :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCard>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCard,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveCard, BaseTrust)
 
@@ -43,11 +44,25 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
+
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement*>> m_body;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement*>> m_actions;
 
-        std::shared_ptr<::AdaptiveCards::AdaptiveCard> m_sharedAdaptiveCard;
+        Microsoft::WRL::Wrappers::HString m_version;
+        Microsoft::WRL::Wrappers::HString m_minVersion;
+        Microsoft::WRL::Wrappers::HString m_fallbackText;
+        Microsoft::WRL::Wrappers::HString m_speak;
+
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_backgroundImage;
+        ABI::AdaptiveCards::Uwp::ContainerStyle m_style;
     };
 
     class AdaptiveCardStaticsImpl WrlFinal

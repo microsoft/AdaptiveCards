@@ -6,10 +6,11 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveFact :
+    class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveFact :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Uwp::IAdaptiveFact>
+            ABI::AdaptiveCards::Uwp::IAdaptiveFact,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveFact, BaseTrust)
 
@@ -25,6 +26,14 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::Fact>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::Fact> m_sharedFact;

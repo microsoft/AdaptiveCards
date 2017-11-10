@@ -218,17 +218,12 @@ const CardElementType AdaptiveCard::GetElementType() const
     return CardElementType::AdaptiveCard;
 }
 
-const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody() const
-{
-    return m_body;
-}
-
 std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody()
 {
     return m_body;
 }
 
-const std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions() const
+std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions()
 {
     return m_actions;
 }

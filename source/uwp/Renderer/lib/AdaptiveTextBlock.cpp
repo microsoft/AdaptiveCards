@@ -217,4 +217,11 @@ namespace AdaptiveCards { namespace Uwp
     {
         return StringToJsonObject(m_sharedTextBlock->Serialize(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock)
+    {
+        sharedTextBlock = m_sharedTextBlock;
+        return S_OK;
+    }
 }}

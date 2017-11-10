@@ -40,28 +40,28 @@ namespace AdaptiveCards.Rendering.Html
             switch (color)
             {
                 case AdaptiveTextColor.Accent:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Accent;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Accent;
                     break;
                 case AdaptiveTextColor.Good:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Good;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Good;
                     break;
                 case AdaptiveTextColor.Warning:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Warning;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Warning;
                     break;
                 case AdaptiveTextColor.Attention:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Attention;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Attention;
                     break;
                 case AdaptiveTextColor.Dark:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Dark;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Dark;
                     break;
                 case AdaptiveTextColor.Light:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Light;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Light;
                     break;
                 default:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Default;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Default;
                     break;
             }
-            return GetRGBColor(isSubtle ? colorConfig.Subtle : colorConfig.Normal);
+            return GetRGBColor(isSubtle ? colorConfig.Subtle : colorConfig.Default);
         }
 
         public string GetRGBColor(string color)

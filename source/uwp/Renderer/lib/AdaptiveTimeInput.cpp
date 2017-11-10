@@ -179,4 +179,11 @@ namespace AdaptiveCards { namespace Uwp
     {
         return StringToJsonObject(m_sharedTimeInput->Serialize(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveCards::TimeInput>& sharedModel)
+    {
+        sharedModel = m_sharedTimeInput;
+        return S_OK;
+    }
 }}

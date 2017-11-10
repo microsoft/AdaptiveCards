@@ -201,4 +201,11 @@ namespace AdaptiveCards { namespace Uwp
     {
         return StringToJsonObject(m_sharedImage->Serialize(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::Image>& sharedImage)
+    {
+        sharedImage = m_sharedImage;
+        return S_OK;
+    }
 }}

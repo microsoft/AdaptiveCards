@@ -178,4 +178,11 @@ namespace AdaptiveCards { namespace Uwp
     {
         return StringToJsonObject(m_sharedToggleInput->Serialize(), result);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ToggleInput>& sharedModel)
+    {
+        sharedModel = m_sharedToggleInput;
+        return S_OK;
+    }
 }}

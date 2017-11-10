@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -34,13 +33,9 @@ namespace AdaptiveCards
             if(jObject.Value<string>("type") != AdaptiveCard.TypeName)
                 throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveCard.TypeName}'");
 
+            var typedElementConverter = new AdaptiveTypedElementConverter(_parseResult);
 
-            var card = (AdaptiveCard) Activator.CreateInstance(objectType);
-
-            // AdaptiveCard ctor will specify the version by default, but we don't want that
-            card.Version = null;
-
-            serializer.Populate(jObject.CreateReader(), card);
+            var card = (AdaptiveCard)typedElementConverter.ReadJson(jObject.CreateReader(), objectType, existingValue, serializer);
 
             // If this is the root AdaptiveCard and missing a version we fail parsing. 
             // The depth checks that cards within a Action.ShowCard don't require the version

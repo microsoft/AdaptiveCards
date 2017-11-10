@@ -7,42 +7,42 @@ namespace AdaptiveCards.Rendering
     {
         public virtual void Visit(AdaptiveElement adaptiveElement)
         {
-            if (adaptiveElement is AdaptiveImage)
-                Visit((AdaptiveImage) adaptiveElement);
+            if (adaptiveElement is AdaptiveImage image)
+                Visit(image);
 
-            if (adaptiveElement is AdaptiveTextBlock)
-                Visit((AdaptiveTextBlock) adaptiveElement);
+            if (adaptiveElement is AdaptiveTextBlock textBlock)
+                Visit(textBlock);
 
             // includes Column
-            if (adaptiveElement is AdaptiveContainer)
-                Visit((AdaptiveContainer)adaptiveElement);
+            if (adaptiveElement is AdaptiveContainer container)
+                Visit(container);
             
-            if (adaptiveElement is AdaptiveColumnSet)
-                Visit((AdaptiveColumnSet) adaptiveElement);
+            if (adaptiveElement is AdaptiveColumnSet set)
+                Visit(set);
 
-            if (adaptiveElement is AdaptiveImageSet)
-                Visit((AdaptiveImageSet) adaptiveElement);
+            if (adaptiveElement is AdaptiveImageSet imageSet)
+                Visit(imageSet);
 
-            if (adaptiveElement is AdaptiveFactSet)
-                Visit((AdaptiveFactSet) adaptiveElement);
+            if (adaptiveElement is AdaptiveFactSet factSet)
+                Visit(factSet);
 
-            if (adaptiveElement is AdaptiveChoiceSetInput)
-                Visit((AdaptiveChoiceSetInput) adaptiveElement);
+            if (adaptiveElement is AdaptiveChoiceSetInput input)
+                Visit(input);
 
-            if (adaptiveElement is AdaptiveTextInput)
-                Visit((AdaptiveTextInput) adaptiveElement);
+            if (adaptiveElement is AdaptiveTextInput textInput)
+                Visit(textInput);
 
-            if (adaptiveElement is AdaptiveNumberInput)
-                Visit((AdaptiveNumberInput) adaptiveElement);
+            if (adaptiveElement is AdaptiveNumberInput numberInput)
+                Visit(numberInput);
 
-            if (adaptiveElement is AdaptiveDateInput)
-                Visit((AdaptiveDateInput) adaptiveElement);
+            if (adaptiveElement is AdaptiveDateInput dateInput)
+                Visit(dateInput);
 
-            if (adaptiveElement is AdaptiveTimeInput)
-                Visit((AdaptiveTimeInput) adaptiveElement);
+            if (adaptiveElement is AdaptiveTimeInput timeInput)
+                Visit(timeInput);
 
-            if (adaptiveElement is AdaptiveToggleInput)
-                Visit((AdaptiveToggleInput) adaptiveElement);
+            if (adaptiveElement is AdaptiveToggleInput toggleInput)
+                Visit(toggleInput);
         }
 
         public virtual void Visit(AdaptiveCard card)
@@ -116,12 +116,14 @@ namespace AdaptiveCards.Rendering
 
         public virtual void Visit(AdaptiveAction action)
         {
-            if (action is AdaptiveOpenUrlAction)
-                Visit((AdaptiveOpenUrlAction) action);
-            if (action is AdaptiveSubmitAction)
-                Visit((AdaptiveSubmitAction) action);
-            if (action is AdaptiveShowCardAction)
-                Visit((AdaptiveShowCardAction) action);
+            if (action is AdaptiveOpenUrlAction urlAction)
+                Visit(urlAction);
+
+            if (action is AdaptiveSubmitAction submitAction)
+                Visit(submitAction);
+
+            if (action is AdaptiveShowCardAction cardAction)
+                Visit(cardAction);
         }
 
         public virtual void Visit(AdaptiveSubmitAction action)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
@@ -9,12 +10,15 @@ namespace AdaptiveCards
     /// <summary>
     ///     Adaptive card which has flexible container
     /// </summary>
+    [JsonConverter(typeof(AdaptiveCardConverter))]
     public class AdaptiveCard : AdaptiveTypedElement
 #if WINDOWS_UWP
       // TODO: uncomment when I figure out the Windows build
        //   , Windows.UI.Shell.IAdaptiveCard
 #endif
     {
+        public const string ContentType = "application/vnd.microsoft.card.adaptive";
+
         public const string TypeName = "AdaptiveCard";
 
         public override string Type => TypeName;
@@ -44,51 +48,23 @@ namespace AdaptiveCards
         /// </summary>
         public AdaptiveCard() : this(KnownSchemaVersion) { }
 
-
-        /// <summary>
-        /// Parse an AdaptiveCard from a JSON string
-        /// </summary>
-        /// <param name="json">A JSON-serialized Adaptive Card</param>
-        /// <returns></returns>
-        public static AdaptiveCardParseResult FromJson(string json)
-        {
-            var parseResult = new AdaptiveCardParseResult();
-
-            var settings = new JsonSerializerSettings
-            {
-                Converters =
-                    {
-                        new AdaptiveCardConverter(parseResult),
-                        new AdaptiveTypedElementConverter(parseResult),
-                        new IgnoreEmptyItemsConverter<AdaptiveAction>(),
-                        new IgnoreEmptyItemsConverter<AdaptiveElement>()
-                    }
-            };
-            try
-            {
-                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
-            }
-            catch (JsonException ex)
-            {
-                throw new AdaptiveSerializationException(ex.Message, ex);
-            }
-
-            return parseResult;            
-        }
-
-        public const string ContentType = "application/vnd.microsoft.card.adaptive";
-
         /// <summary>
         /// The Body elements for this card
         /// </summary>
         [JsonProperty(Order = -3)]
-        public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
+        public IList<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
+
+        public bool ShouldSerializeBody() => Body?.Count > 0;
 
         /// <summary>
         ///     Actions for the card
         /// </summary>
         [JsonProperty(Order = -2)]
-        public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
+        public IList<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
+
+        public bool ShouldSerializeActions() => Actions?.Count > 0;
 
         /// <summary>
         ///     Speak annotation for the card
@@ -106,13 +82,13 @@ namespace AdaptiveCards
         /// <summary>
         ///     Background image for card
         /// </summary>
-        [JsonProperty(Order = -4, NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundImage { get; set; } // TODO: Should this be Uri?
+        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Uri BackgroundImage { get; set; }
 
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
-        [JsonProperty(Order = -9, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
         public AdaptiveSchemaVersion Version { get; set; }
 
         /// <summary>
@@ -129,12 +105,65 @@ namespace AdaptiveCards
         public string FallbackText { get; set; }
 
         /// <summary>
+        /// Parse an AdaptiveCard from a JSON string
+        /// </summary>
+        /// <param name="json">A JSON-serialized Adaptive Card</param>
+        /// <returns></returns>
+        public static AdaptiveCardParseResult FromJson(string json)
+        {
+            var parseResult = new AdaptiveCardParseResult();
+
+            var settings = new JsonSerializerSettings
+            {
+                Converters =
+                {
+                    new AdaptiveCardConverter(parseResult),
+                    new AdaptiveTypedElementConverter(parseResult),
+                    new IgnoreEmptyItemsConverter<AdaptiveAction>(),
+                    new IgnoreEmptyItemsConverter<AdaptiveElement>()
+                }
+            };
+            try
+            {
+                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
+            }
+            catch (JsonException ex)
+            {
+                throw new AdaptiveSerializationException(ex.Message, ex);
+            }
+
+            return parseResult;
+        }
+
+
+        /// <summary>
         ///  Serialize this Adaptive Card to JSON
         /// </summary>
         /// <returns></returns>
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            var settings = new JsonSerializerSettings
+            {
+                Converters =
+                {
+                    new AdaptiveCardConverter(),
+                    new AdaptiveTypedElementConverter(),
+                    new IgnoreEmptyItemsConverter<AdaptiveAction>(),
+                    new IgnoreEmptyItemsConverter<AdaptiveElement>()
+                }
+            };
+            return JsonConvert.SerializeObject(this, Formatting.Indented, settings);
+        }
+
+        /// <summary>
+        /// This makes sure the $schema property doesn't show up in AdditionalProperties
+        /// </summary>
+        [JsonProperty("$schema")]
+        internal string JsonSchema { get; set; }
+
+        public bool ShouldSerializeJsonSchema()
+        {
+            return false;
         }
     }
 }

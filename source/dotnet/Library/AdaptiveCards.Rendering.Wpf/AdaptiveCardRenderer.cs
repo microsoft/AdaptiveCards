@@ -1,11 +1,14 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
-    public partial class AdaptiveCardRenderer : AdaptiveCardRendererBase<FrameworkElement, AdaptiveRenderContext>
+    public class AdaptiveCardRenderer : AdaptiveCardRendererBase<FrameworkElement, AdaptiveRenderContext>
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
@@ -14,8 +17,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         protected Action<object, AdaptiveActionEventArgs> ActionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
-        protected AdaptiveHostConfig _defaultCardStyling;
-
+   
         public AdaptiveCardRenderer() : this(new AdaptiveHostConfig()) { }
 
         public AdaptiveCardRenderer(AdaptiveHostConfig hostConfig) : base(hostConfig)
@@ -54,6 +56,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public AdaptiveActionHandlers ActionHandlers { get; } = new AdaptiveActionHandlers();
 
+        public ResourceResolver ResourceResolvers { get; } = new ResourceResolver();
 
         public static FrameworkElement RenderAdaptiveCardWrapper(AdaptiveCard card, AdaptiveRenderContext context)
         {
@@ -78,14 +81,14 @@ namespace AdaptiveCards.Rendering.Wpf
             return outerGrid;
         }
 
+
         /// <summary>
         /// Renders an adaptive card.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="card">The card to render</param>
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
             if (card == null) throw new ArgumentNullException(nameof(card));
-
             ValidateCard(card);
 
             RenderedAdaptiveCard renderCard = null;
@@ -97,6 +100,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var context = new AdaptiveRenderContext(Callback, null)
             {
+                ResourceResolvers = ResourceResolvers,
                 ActionHandlers = ActionHandlers,
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
@@ -109,6 +113,44 @@ namespace AdaptiveCards.Rendering.Wpf
             renderCard.InputBindings = context.InputBindings;
 
             return renderCard;
+        }
+
+        /// <summary>
+        /// Renders an adaptive card.
+        /// </summary>
+        public async Task<RenderedAdaptiveCardImage> RenderCardToImageAsync(AdaptiveCard card, int width = 400, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (card == null) throw new ArgumentNullException(nameof(card));
+            ValidateCard(card);
+
+            return await await Task.Factory.StartNewSta(async () =>
+            {
+                var cardAssets = await LoadAssetsForCardAsync(card, cancellationToken);
+
+                var context = new AdaptiveRenderContext(null, null)
+                {
+                    CardAssets = cardAssets,
+                    ResourceResolvers = ResourceResolvers,
+                    ActionHandlers = ActionHandlers,
+                    Config = HostConfig ?? new AdaptiveHostConfig(),
+                    Resources = Resources,
+                    ElementRenderers = ElementRenderers
+                };
+
+                var stream = context.Render(card).RenderToImage(width);
+                var renderCard = new RenderedAdaptiveCardImage(stream, card, context.Warnings);
+                renderCard.InputBindings = context.InputBindings;
+
+                return renderCard;
+            });
+        }
+
+
+        public async Task<IDictionary<Uri, MemoryStream>> LoadAssetsForCardAsync(AdaptiveCard card, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var visitor = new PreFetchImageVisitor(ResourceResolvers);
+            await visitor.GetAllImages(card).WithCancellation(cancellationToken).ConfigureAwait(false);
+            return visitor.LoadedImages;
         }
     }
 }

@@ -10,9 +10,9 @@
         {
             "type": "Input.Time",
             "id": "time",
-            "min": "9:00 AM",
-            "max": "5:00 PM",
-            "value": "11:00 AM"
+            "min": "09:00",
+            "max": "17:00",
+            "value": "15:30"
         }
     ],
     "actions": [

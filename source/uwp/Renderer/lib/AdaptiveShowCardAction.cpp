@@ -10,8 +10,8 @@ namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
     {
-        m_sharedShowCardAction = std::make_shared<ShowCardAction>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
+        return RuntimeClassInitialize(showCardAction);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
@@ -22,33 +22,35 @@ namespace AdaptiveCards { namespace Uwp
             return E_INVALIDARG;
         }
 
-        m_sharedShowCardAction = sharedShowCardAction;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&m_card, sharedShowCardAction->GetCard()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedShowCardAction->GetId(), m_id.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedShowCardAction->GetTitle(), m_title.GetAddressOf()));
+        RETURN_IF_FAILED(JsonCppToJsonObject(sharedShowCardAction->GetAdditionalProperties(), &m_additionalProperties));
+
         return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard** card)
     {
-        return MakeAndInitialize<AdaptiveCard>(card, m_sharedShowCardAction->GetCard());
+        return m_card.CopyTo(card);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard* /*card*/)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard* card)
     {
-        return E_NOTIMPL;
+        m_card = card;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::get_Title(HSTRING* title)
     {
-        return UTF8ToHString(m_sharedShowCardAction->GetTitle(), title);
+        return m_title.CopyTo(title);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::put_Title(HSTRING title)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(title, out));
-        m_sharedShowCardAction->SetTitle(out);
-        return S_OK;
+        return m_title.Set(title);
     }
 
     _Use_decl_annotations_
@@ -61,16 +63,13 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedShowCardAction->GetId(), id);
+        return m_id.CopyTo(id);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::put_Id(HSTRING id)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedShowCardAction->SetId(out);
-        return S_OK;
+        return m_id.Set(id);
     }
 
     _Use_decl_annotations_
@@ -84,21 +83,45 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        return JsonCppToJsonObject(m_sharedShowCardAction->GetAdditionalProperties(), result);
+        return m_additionalProperties.CopyTo(result);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
     {
-        Json::Value jsonCpp;
-        RETURN_IF_FAILED(JsonObjectToJsonCpp(jsonObject, &jsonCpp));
-        m_sharedShowCardAction->SetAdditionalProperties(jsonCpp);
+        m_additionalProperties = jsonObject;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        return StringToJsonObject(m_sharedShowCardAction->Serialize(), result);
+        std::shared_ptr<AdaptiveCards::ShowCardAction> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardAction::GetSharedModel(std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
+
+        showCardAction->SetId(HStringToUTF8(m_id.Get()));
+        showCardAction->SetTitle(HStringToUTF8(m_title.Get()));
+
+        Json::Value jsonValue;
+        JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonValue);
+        showCardAction->SetAdditionalProperties(jsonValue);
+
+        ComPtr<AdaptiveCards::Uwp::AdaptiveCard> card = PeekInnards<AdaptiveCards::Uwp::AdaptiveCard>(m_card);
+        
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedCard;
+        RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
+
+        showCardAction->SetCard(sharedCard);
+        
+        sharedModel = showCardAction;
+        return S_OK;
     }
 }}

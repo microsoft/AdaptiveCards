@@ -10,36 +10,24 @@ namespace AdaptiveCards.Test
     public class AdaptiveInputTests
     {
         [TestMethod]
-        public void TestThatAllInputsRequireId()
+        public void TestThatInputsRequireId()
         {
             var json = @"{
-	""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
 	""type"": ""AdaptiveCard"",
 	""version"": ""1.0"",
 	""body"": [
 		{
-			""type"": ""TextBlock"",
-			""text"": ""Publish Adaptives Card schema"",
-			""weight"": ""bolder"",
-			""size"": ""medium""
-		},
-		{
 			""type"": ""Input.Text""
-		}
-	],
-	""actions"": [
-		{
-			""type"": ""Action.OpenUrl"",
-			""title"": ""View"",
-			""url"": ""http://adaptivecards.io""
 		}
 	]
 }";
 
-            Assert.ThrowsException<AdaptiveSerializationException>(() =>
+            var ex = Assert.ThrowsException<AdaptiveSerializationException>(() =>
             {
                 AdaptiveCard.FromJson(json);
             });
+
+            StringAssert.Contains(ex.Message, "'id'");
         }
     }
 }

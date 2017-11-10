@@ -75,7 +75,11 @@ Json::Value Column::SerializeToJsonValue()
         root[propertyName].append(cardElement->SerializeToJsonValue());
     }
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+    std::shared_ptr<BaseActionElement> selectAction = GetSelectAction();
+    if (selectAction != nullptr)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+    }
 
     return root;
 }

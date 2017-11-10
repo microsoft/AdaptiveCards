@@ -1,22 +1,56 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
     public static class ImageExtensions
     {
-        public static void SetSource(this Image image, string url, AdaptiveRenderContext context)
+
+        /// <summary>
+        /// Renders the element to a bitmap
+        /// </summary>
+        public static MemoryStream RenderToImage(this FrameworkElement element, int width)
         {
-            if (string.IsNullOrWhiteSpace(url))
-                return;
-            image.Source = context.ResolveImageSource(url);
+            element.Measure(new Size(width, int.MaxValue));
+            element.Arrange(new Rect(new Size(width, element.DesiredSize.Height)));
+            element.UpdateLayout();
+
+            var bitmapImage = new RenderTargetBitmap((int)width, (int)element.DesiredSize.Height, 96, 96,
+                PixelFormats.Default);
+            bitmapImage.Render(element);
+
+            var encoder = new PngBitmapEncoder();
+            var metadata = new BitmapMetadata("png");
+            // TODO: Should we set the image metadata?
+            //metadata.SetQuery("/tEXt/{str=Description}", JsonConvert.SerializeObject(OriginatingCard));
+            var pngFrame = BitmapFrame.Create(bitmapImage, null, metadata, null);
+            encoder.Frames.Add(pngFrame);
+
+            var stream = new MemoryStream();
+            encoder.Save(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            return stream;
         }
 
-        public static void SetBackgroundSource(this Grid grid, string url, AdaptiveRenderContext context)
+        public static async void SetSource(this Image image, Uri url, AdaptiveRenderContext context)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (url == null)
                 return;
-            grid.Background = new ImageBrush(context.ResolveImageSource(url))
+
+            image.Source = await context.ResolveImageSource(url);
+        }
+
+        public static async void SetBackgroundSource(this Grid grid, Uri url, AdaptiveRenderContext context)
+        {
+            if (url == null)
+                return;
+
+            grid.Background = new ImageBrush(await context.ResolveImageSource(url))
             {
                 Stretch = Stretch.UniformToFill,
                 AlignmentX = AlignmentX.Left,

@@ -7,12 +7,13 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveChoiceSetInput :
+    class DECLSPEC_UUID("fa103f57-5d54-48ba-80a5-d8939b85e82d") AdaptiveChoiceSetInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveChoiceSetInput,
             ABI::AdaptiveCards::Uwp::IAdaptiveInputElement,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveChoiceSetInput, BaseTrust)
 
@@ -33,9 +34,6 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_Choices(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput*>** columns);
 
         // IAdaptiveInputElement
-        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
-        IFACEMETHODIMP put_Id(_In_ HSTRING id);
-
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
 
@@ -48,15 +46,30 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_Separator(boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
         
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
+
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-    private:
-        // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput*>> m_choices;
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedModel);
 
-        std::shared_ptr<AdaptiveCards::ChoiceSetInput> m_sharedChoiceSetInput;
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
+
+    private:
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput*>> m_choices;
+        boolean m_isRequired;
+        boolean m_isMultiSelect;
+        ABI::AdaptiveCards::Uwp::ChoiceSetStyle m_choiceSetStyle;
+
+        boolean m_separator;
+        Microsoft::WRL::Wrappers::HString m_id;
+        ABI::AdaptiveCards::Uwp::Spacing m_spacing;
     };
 
     ActivatableClass(AdaptiveChoiceSetInput);

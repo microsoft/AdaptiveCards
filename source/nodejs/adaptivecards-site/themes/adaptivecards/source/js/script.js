@@ -142,13 +142,19 @@
         wrap: true
       },
       spacing: 10
-    }
+    },
+    // TODO: fix this. The Host Config ctor is blowing up if I don't provide it
+    getContainerStyleDefinition: function() { }
   };
+
 
   $('.adaptivecard').each(function (item) {
 
+    // TODO: clean this up to only provide custom host config options
+    // it breaks on any rename as-is
     var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-    adaptiveCard.hostConfig = hostConfig;
+
+    adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
     var json = JSON.parse($(this).text());
     adaptiveCard.parse(json);
     var renderedCard = adaptiveCard.render();

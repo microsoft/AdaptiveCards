@@ -81,7 +81,6 @@
       "type": "Input.ChoiceSet",
       "id": "CompactSelectVal",
       "style": "compact",
-      "placeholder": "Pick a color",
       "value": "1",
       "choices": [
         {

@@ -53,33 +53,6 @@ namespace AdaptiveCards.Rendering
             return text ?? String.Empty;
         }
 
-
-#if !WINDOWS_UWP
-
-        /// <summary>
-        ///     This function will parse text for {{binding}} statements and replace with appropriate values from the data object
-        ///     passed in
-        /// </summary>
-        /// <param name="data">data to bind fromt</param>
-        /// <param name="text"></param>
-        /// <param name="url">true if url text is a url (escaping will be applied to the vaue of the binding)</param>
-        /// <returns></returns>
-        public static string BindData(dynamic data, string text, bool url = false)
-        {
-            
-            //foreach (Match match in _regexBinding.Matches(text))
-            //{
-            //    var key = match.Value.Trim('{', '}');
-            //    var val = data[key]?.ToString() ?? string.Empty;
-            //    if (url)
-            //        val = Uri.EscapeDataString(val);
-            //    text = text.Replace(match.Value, val);
-            //}
-
-            return text;
-        }
-#endif
-
         private enum Functions
         {
             DATE,
@@ -94,6 +67,9 @@ namespace AdaptiveCards.Rendering
 
         public static string JoinString(IList<string> choices, string sep, string last)
         {
+            if (choices == null || choices.Count == 0)
+                return "";
+
             var sb = new StringBuilder();
             var s = string.Empty;
             for (var i = 0; i < choices.Count - 1; i++)
@@ -110,10 +86,7 @@ namespace AdaptiveCards.Rendering
 
         public static T TryGetValue<T>(this IDictionary dictionary, string key)
         {
-            if (dictionary == null)
-                throw new ArgumentNullException(nameof(dictionary));
-
-            if (dictionary.Contains(key))
+            if (dictionary != null && dictionary.Contains(key))
             {
                 return (T)dictionary[key];
             }
@@ -123,17 +96,12 @@ namespace AdaptiveCards.Rendering
 
         public static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
         {
-            if (dictionary == null)
-                return default(T);
-
-            if (dictionary.ContainsKey(key))
+            if (dictionary != null && dictionary.ContainsKey(key))
             {
                 return (T)dictionary[key];
             }
 
             return default(T);
         }
-
-
     }
 }

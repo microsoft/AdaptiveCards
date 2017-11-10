@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+    [JsonConverter(typeof(AdaptiveTypedElementConverter))]
     public abstract class AdaptiveTypedElement
     {
         /// <summary>
@@ -18,29 +23,12 @@ namespace AdaptiveCards
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string Id { get; set; }
+        public string Id { get; set; }    
 
-
-        protected TENum? GetEnum<TENum>(string value)
-            where TENum : struct
-        {
-            if (Enum.TryParse(value, out TENum val))
-                return val;
-            return null;
-        }
-
-        protected int? GetInt(string value)
-        {
-            if (int.TryParse(value, out var val))
-                return val;
-            return null;
-        }
-
-        protected bool? GetBool(string value)
-        {
-            if (bool.TryParse(value, out var val))
-                return val;
-            return null;
-        }
+        /// <summary>
+        /// Additional properties not found on the default schema
+        /// </summary>
+        [JsonExtensionData]
+        public IDictionary<string, object> AdditionalProperties { get; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
     }
 }

@@ -3,6 +3,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AdaptiveCards
 {
@@ -90,13 +91,34 @@ namespace AdaptiveCards
                 if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && jObject.Value<string>("id") == null)
                     throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
 
-                var result = Activator.CreateInstance(type);
+                var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
                 serializer.Populate(jObject.CreateReader(), result);
+
+                HandleAdditionalProperties(result);
                 return result;
             }
 
-            _parseResult.Warnings.Add(new AdaptiveWarning(5, $"Unknown element type '{typeName}'"));
+            _parseResult?.Warnings.Add(new AdaptiveWarning(-1, $"Unknown element type '{typeName}'"));
             return null;
+        }
+
+        private void HandleAdditionalProperties(AdaptiveTypedElement te)
+        {
+            // https://stackoverflow.com/questions/34995406/nullvaluehandling-ignore-influences-deserialization-into-extensiondata-despite
+
+            // The default behavior of JsonExtensionData is to include properties if the VALUE could not be set, including abstract properties or default values
+            // We don't want to deserialize any properties that exist on the type into AdditionalProperties, so this removes them
+            te.AdditionalProperties
+                .Select(prop => te.GetType().GetRuntimeProperties()
+                    .SingleOrDefault(p => p.Name.Equals(prop.Key, StringComparison.OrdinalIgnoreCase)))
+                .Where(p => p != null)
+                .ToList()
+                .ForEach(p => te.AdditionalProperties.Remove(p.Name));
+
+            foreach (var prop in te.AdditionalProperties)
+            {
+                _parseResult?.Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on type '{te.Type}'"));
+            }
         }
 
         public static T CreateElement<T>(string typeName = null)

@@ -6,12 +6,13 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveTextInput :
+    class DECLSPEC_UUID("2e716e94-a83a-4e9b-9873-bff858af068d") AdaptiveTextInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveTextInput,
             ABI::AdaptiveCards::Uwp::IAdaptiveInputElement,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveTextInput, BaseTrust)
 
@@ -54,6 +55,14 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::TextInput>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::TextInput> m_sharedTextInput;
