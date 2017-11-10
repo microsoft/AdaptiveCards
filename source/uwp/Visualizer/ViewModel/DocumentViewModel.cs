@@ -157,7 +157,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 answer += "\nUrl: " + (args.Action as AdaptiveOpenUrlAction).Url;
             }
 
-            answer += "\nInputs: " + args.Inputs.AsJson(InputValueMode.RawString).Stringify();
+            answer += "\nInputs: " + args.Inputs.AsJson().Stringify();
 
             return answer;
         }

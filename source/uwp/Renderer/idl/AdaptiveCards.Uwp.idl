@@ -284,12 +284,6 @@ namespace AdaptiveCards
             Emphasis
         } ContainerStyle;
 
-        [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum InputValueMode
-        {
-            RawString = 0,
-        } InputValueMode;
-
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -1630,7 +1624,7 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveInputs : IInspectable
         {
-            HRESULT AsJson([in] InputValueMode inputMode, [out, retval] Windows.Data.Json.JsonObject** value);
+            HRESULT AsJson([out, retval] Windows.Data.Json.JsonObject** value);
             HRESULT AsValueSet([out, retval] Windows.Foundation.Collections.ValueSet** value);
         };
 
