@@ -1454,12 +1454,12 @@ namespace AdaptiveCards { namespace Uwp
         BuildPanelChildren(childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
         ComPtr<IBorder> containerBorder = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         // If container style was explicitly assigned, apply background
         if (hasExplicitContainerStyle)
         {
-            ComPtr<IAdaptiveHostConfig> hostConfig;
-            THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
             ABI::Windows::UI::Color backgroundColor;
             THROW_IF_FAILED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor));
             ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
@@ -1486,7 +1486,7 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveContainer->get_SelectAction(&selectAction));
-        if (selectAction != nullptr)
+        if (selectAction != nullptr && SupportsInteractivity(hostConfig.Get()))
         {
             ComPtr<IUIElement> containerBorderAsUIElement;
             THROW_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
@@ -1578,8 +1578,10 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
         ComPtr<IAdaptiveElementRenderer> columnRenderer;
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Column").Get(), &columnRenderer));
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer](IAdaptiveColumn* column)
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column)
         {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
@@ -1592,8 +1594,6 @@ namespace AdaptiveCards { namespace Uwp
             // If not the first column
             if (currentColumn > 0)
             {
-                ComPtr<IAdaptiveHostConfig> hostConfig;
-                THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
                 // Add Separator to the columnSet
                 bool needsSeparator;
                 UINT spacing;
@@ -1673,7 +1673,7 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
-        if (selectAction != nullptr)
+        if (selectAction != nullptr && SupportsInteractivity(hostConfig.Get()))
         {
             ComPtr<IUIElement> gridAsUIElement;
             THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
