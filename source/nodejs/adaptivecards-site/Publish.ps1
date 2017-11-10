@@ -1,3 +1,4 @@
+npm run build-all
 hexo clean
 hexo generate
 remove-item -recurse -force ..\..\website\wwwroot\*
