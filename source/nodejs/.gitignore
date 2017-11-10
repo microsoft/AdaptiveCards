@@ -1,3 +1,7 @@
-**/built/
-**/dist/
+**/built/*.js
+**/built/*.js.map
+**/built/*.d.ts
+**/dist/*.js
+**/dist/*.js.map
+**/dist/*.d.ts
 .npmrc

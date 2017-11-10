@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Enums = require("./enums");
 var Utils = require("./utils");
-var SpacingDefinition = /** @class */ (function () {
+var SpacingDefinition = (function () {
     function SpacingDefinition(obj) {
         this.left = 0;
         this.top = 0;
@@ -28,7 +28,7 @@ var SpacingDefinition = /** @class */ (function () {
     return SpacingDefinition;
 }());
 exports.SpacingDefinition = SpacingDefinition;
-var PaddingDefinition = /** @class */ (function () {
+var PaddingDefinition = (function () {
     function PaddingDefinition(obj) {
         this.top = Enums.Padding.None;
         this.right = Enums.Padding.None;
@@ -52,7 +52,7 @@ var PaddingDefinition = /** @class */ (function () {
     return PaddingDefinition;
 }());
 exports.PaddingDefinition = PaddingDefinition;
-var TextColorDefinition = /** @class */ (function () {
+var TextColorDefinition = (function () {
     function TextColorDefinition(obj) {
         this.normal = "#0000FF";
         this.subtle = "#222222";
@@ -64,7 +64,7 @@ var TextColorDefinition = /** @class */ (function () {
     return TextColorDefinition;
 }());
 exports.TextColorDefinition = TextColorDefinition;
-var ContainerStyleDefinition = /** @class */ (function () {
+var ContainerStyleDefinition = (function () {
     function ContainerStyleDefinition(obj) {
         this.fontColors = {
             default: new TextColorDefinition(),
@@ -87,7 +87,7 @@ var ContainerStyleDefinition = /** @class */ (function () {
     return ContainerStyleDefinition;
 }());
 exports.ContainerStyleDefinition = ContainerStyleDefinition;
-var AdaptiveCardConfig = /** @class */ (function () {
+var AdaptiveCardConfig = (function () {
     function AdaptiveCardConfig(obj) {
         this.allowCustomStyle = false;
         if (obj) {
@@ -97,7 +97,7 @@ var AdaptiveCardConfig = /** @class */ (function () {
     return AdaptiveCardConfig;
 }());
 exports.AdaptiveCardConfig = AdaptiveCardConfig;
-var ImageSetConfig = /** @class */ (function () {
+var ImageSetConfig = (function () {
     function ImageSetConfig(obj) {
         this.imageSize = Enums.Size.Medium;
         this.maxImageHeight = 100;
@@ -115,7 +115,7 @@ var ImageSetConfig = /** @class */ (function () {
     return ImageSetConfig;
 }());
 exports.ImageSetConfig = ImageSetConfig;
-var FactTextDefinition = /** @class */ (function () {
+var FactTextDefinition = (function () {
     function FactTextDefinition(obj) {
         this.size = Enums.TextSize.Default;
         this.color = Enums.TextColor.Default;
@@ -143,7 +143,7 @@ var FactTextDefinition = /** @class */ (function () {
     return FactTextDefinition;
 }());
 exports.FactTextDefinition = FactTextDefinition;
-var FactTitleDefinition = /** @class */ (function (_super) {
+var FactTitleDefinition = (function (_super) {
     __extends(FactTitleDefinition, _super);
     function FactTitleDefinition(obj) {
         var _this = _super.call(this, obj) || this;
@@ -157,7 +157,7 @@ var FactTitleDefinition = /** @class */ (function (_super) {
     return FactTitleDefinition;
 }(FactTextDefinition));
 exports.FactTitleDefinition = FactTitleDefinition;
-var FactSetConfig = /** @class */ (function () {
+var FactSetConfig = (function () {
     function FactSetConfig(obj) {
         this.title = new FactTitleDefinition();
         this.value = new FactTextDefinition();
@@ -171,7 +171,7 @@ var FactSetConfig = /** @class */ (function () {
     return FactSetConfig;
 }());
 exports.FactSetConfig = FactSetConfig;
-var ShowCardActionConfig = /** @class */ (function () {
+var ShowCardActionConfig = (function () {
     function ShowCardActionConfig(obj) {
         this.actionMode = Enums.ShowCardActionMode.Inline;
         this.inlineTopMargin = 16;
@@ -192,7 +192,7 @@ var ShowCardActionConfig = /** @class */ (function () {
     return ShowCardActionConfig;
 }());
 exports.ShowCardActionConfig = ShowCardActionConfig;
-var ActionsConfig = /** @class */ (function () {
+var ActionsConfig = (function () {
     function ActionsConfig(obj) {
         this.maxActions = 5;
         this.spacing = Enums.Spacing.Default;
@@ -225,7 +225,7 @@ var ActionsConfig = /** @class */ (function () {
     return ActionsConfig;
 }());
 exports.ActionsConfig = ActionsConfig;
-var ContainerStyleSet = /** @class */ (function () {
+var ContainerStyleSet = (function () {
     function ContainerStyleSet(obj) {
         this.default = new ContainerStyleDefinition();
         this.emphasis = new ContainerStyleDefinition();
@@ -238,7 +238,7 @@ var ContainerStyleSet = /** @class */ (function () {
     return ContainerStyleSet;
 }());
 exports.ContainerStyleSet = ContainerStyleSet;
-var HostConfig = /** @class */ (function () {
+var HostConfig = (function () {
     function HostConfig(obj) {
         this.supportsInteractivity = true;
         this.fontFamily = "Segoe UI";
