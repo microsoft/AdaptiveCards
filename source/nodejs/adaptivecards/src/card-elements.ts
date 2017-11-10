@@ -732,7 +732,7 @@ export class Image extends CardElement {
             element.style.display = "flex";
             element.style.alignItems = "flex-start";
 
-            if (this.selectAction != null) {
+            if (this.selectAction != null && this.hostConfig.supportsInteractivity) {
                 element.tabIndex = 0
                 element.setAttribute("role", "button");
                 element.setAttribute("aria-label", this.selectAction.title);
@@ -2512,7 +2512,7 @@ export class Container extends CardElement {
             }
         }
 
-        if (this.selectAction) {
+        if (this.selectAction && this.hostConfig.supportsInteractivity) {
             element.classList.add("ac-selectable");
             element.tabIndex = 0;
             element.setAttribute("role", "button");
@@ -2908,7 +2908,7 @@ export class ColumnSet extends CardElement {
             element.className = "ac-columnSet";
             element.style.display = "flex";
 
-            if (this.selectAction) {
+            if (this.selectAction && this.hostConfig.supportsInteractivity) {
                 element.classList.add("ac-selectable");
 
                 element.onclick = (e) => {
