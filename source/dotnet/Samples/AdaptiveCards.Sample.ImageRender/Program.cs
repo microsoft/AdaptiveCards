@@ -106,9 +106,9 @@ namespace AdaptiveCards.Sample.ImageRender
 
                 // Timeout after 30 seconds
                 var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-
+                
                 // Render the card to an image
-                RenderedAdaptiveCardImage renderedCard = await renderer.RenderCardToImageAsync(card, 400, cts.Token);
+                RenderedAdaptiveCardImage renderedCard = await renderer.RenderCardToImageAsync(card, true, 400, cts.Token);
 
                 // Report any warnings
                 foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))

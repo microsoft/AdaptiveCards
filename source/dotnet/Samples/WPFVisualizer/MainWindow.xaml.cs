@@ -133,6 +133,8 @@ namespace WpfVisualizer
             }
             else if (e.Action is AdaptiveShowCardAction showCardAction)
             {
+                // Action.ShowCard can be rendered inline automatically, or in "popup" mode
+                // If the Host Config is set to Popup mode, then the app needs to show it
                 if (Renderer.HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
                 {
                     var dialog = new ShowCardWindow(showCardAction.Title, showCardAction, Resources);
@@ -251,7 +253,7 @@ namespace WpfVisualizer
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
             Renderer.HostConfig.SupportsInteractivity = false;
 
-            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(textBox.Text).Card);
+            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(textBox.Text).Card, false);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
 
             var path = Path.GetRandomFileName() + ".png";

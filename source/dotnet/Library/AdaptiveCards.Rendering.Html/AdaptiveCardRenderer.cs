@@ -35,15 +35,16 @@ namespace AdaptiveCards.Rendering.Html
 
         public AdaptiveCardRenderer() : this(new AdaptiveHostConfig()) { }
 
-        public AdaptiveCardRenderer(AdaptiveHostConfig config) : base(config)
+        public AdaptiveCardRenderer(AdaptiveHostConfig config)
         {
             SetObjectTypes();
+            HostConfig = config;
         }
 
 
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
-            ValidateCard(card);
+            EnsureCanRender(card);
 
             try
             {

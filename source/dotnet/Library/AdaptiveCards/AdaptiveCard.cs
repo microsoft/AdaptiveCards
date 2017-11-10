@@ -121,6 +121,7 @@ namespace AdaptiveCards
                     new AdaptiveTypedElementConverter(parseResult),
                     new IgnoreEmptyItemsConverter<AdaptiveAction>(),
                     new IgnoreEmptyItemsConverter<AdaptiveElement>()
+                    
                 }
             };
             try
