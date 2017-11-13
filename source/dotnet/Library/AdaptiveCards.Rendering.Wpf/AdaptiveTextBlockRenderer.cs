@@ -82,6 +82,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     Style = uiTextBlock.Style,
                     FontWeight = uiTextBlock.FontWeight,
+                    FontSize = uiTextBlock.FontSize,
                     Visibility = Visibility.Hidden,
                     TextWrapping = TextWrapping.NoWrap,
                     HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
