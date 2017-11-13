@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -14,7 +15,7 @@ import {
 export class SkypeContainer extends HostContainer {
     private _width: number;
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement) {
         var element = document.createElement("div");
         element.className = "skypeContainer";
 
@@ -31,12 +32,10 @@ export class SkypeContainer extends HostContainer {
         botElementIn1.appendChild(botElementIn2);
 
         element.appendChild(botElement);
+        target.appendChild(element);
 
+        var renderedCard = adaptiveCard.render(element);
         renderedCard.style.width = this._width + "px";
-
-        element.appendChild(renderedCard);
-
-        return element;
     }
 
     constructor(width: number, styleSheet: string) {

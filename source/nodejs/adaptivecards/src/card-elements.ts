@@ -61,6 +61,11 @@ export abstract class CardElement {
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
 
+    // Array of functions that will execute after this element is rendered
+    // The functions should take no args and return void (use arrow functions
+    // to preserve local and instance variables)
+    private _renderCallbacks: Array<() => void> = [];
+
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
             {
@@ -126,6 +131,10 @@ export abstract class CardElement {
 
     protected setParent(value: CardElement) {
         this._parent = value;
+    }
+
+    protected addRenderCallback(fn: () => void) {
+        this._renderCallbacks.push(fn);
     }
 
     protected get useDefaultSizing(): boolean {
@@ -236,7 +245,7 @@ export abstract class CardElement {
         return [];
     }
 
-    render(): HTMLElement {
+    renderElement(): HTMLElement {
         this._renderedElement = this.internalRender();
         this._separatorElement = this.internalRenderSeparator();
 
@@ -249,6 +258,12 @@ export abstract class CardElement {
         }
 
         return this._renderedElement;
+    }
+
+    onRender() {
+        for (let fn of this._renderCallbacks) {
+            fn();
+        }
     }
 
     updateLayout(processChildren: boolean = true) {
@@ -375,6 +390,18 @@ export abstract class CardElement {
 
     get separatorElement(): HTMLElement {
         return this._separatorElement;
+    }
+}
+
+export abstract class CardElementWithChildren extends CardElement {
+    protected abstract get children(): Array<CardElement>;
+
+    onRender() {
+        for (let child of this.children) {
+            child.onRender();
+        }
+
+        super.onRender();
     }
 }
 
@@ -514,8 +541,10 @@ export class TextBlock extends CardElement {
                 element.style.wordWrap = "break-word";
 
                 if (this.maxLines > 0) {
-                    element.style.maxHeight = (computedLineHeight * this.maxLines) + "px";
+                    var maxHeight = computedLineHeight * this.maxLines;
+                    element.style.maxHeight = maxHeight + "px";
                     element.style.overflow = "hidden";
+                    this.addTruncationCallback(element, maxHeight, computedLineHeight);
                 }
             }
             else {
@@ -583,6 +612,98 @@ export class TextBlock extends CardElement {
 
         return null;
     }
+
+    private addTruncationCallback(element: HTMLElement,
+                                  maxHeight: number,
+                                  lineHeight: number) {
+        // For now, only truncate TextBlocks that contain just a single
+        // paragraph -- since the maxLines calculation doesn't take into
+        // account Markdown lists
+        var children = element.children;
+        var truncationSupported = children.length == 1
+            && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
+
+        if (truncationSupported) {
+            var firstParagraph = <HTMLElement>children[0];
+            this.addRenderCallback(() => {
+                TextBlock.truncate(firstParagraph, maxHeight, lineHeight);
+            });
+        }
+    }
+
+    private static truncate(element: HTMLElement,
+                            maxHeight: number,
+                            lineHeight: number) {
+        var fits = () => {
+            // Allow a one pixel overflow to account for rounding differences
+            // between browsers
+            return maxHeight - element.scrollHeight >= -1.0;
+        };
+
+        // This check also handles the case where the element isn't currently
+        // added to the DOM -- scrollHeight will be 0
+        if (fits()) return;
+
+        var fullText = element.innerHTML;
+        var truncateAt = (idx) => {
+            element.innerHTML = fullText.substring(0, idx) + '...';
+        }
+
+        // We'll do a binary search for the longest string that fits
+        // Try to break on spaces first (safe, as it won't split HTML tags)
+        var spacePositions = [];
+        for (var i = 0; i < fullText.length; ++i) {
+            if (fullText[i] == ' ') {
+                spacePositions.push(i);
+            }
+        }
+
+        var lo = 0;
+        var hi = spacePositions.length;
+        var bestBreakIdx = 0;
+
+        while (lo < hi) {
+            var mid = Math.floor((lo + hi) / 2);
+            truncateAt(spacePositions[mid]);
+            if (fits()) {
+                bestBreakIdx = spacePositions[mid];
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+
+        truncateAt(bestBreakIdx);
+
+        // If we have extra room, try to expand the string character by
+        // character (covers the case where we have to break in the middle of
+        // a super long word)
+        if (maxHeight - element.scrollHeight >= lineHeight - 1.0) {
+            var idx = bestBreakIdx;
+            do {
+                idx = TextBlock.findNextCharacter(fullText, idx);
+                truncateAt(idx);
+                if (fits()) {
+                    bestBreakIdx = idx;
+                } else {
+                    break;
+                }
+            } while (idx < fullText.length)
+            truncateAt(bestBreakIdx);
+        }
+    }
+
+    private static findNextCharacter(html: string, currIdx: number): number {
+        currIdx += 1;
+
+        // If we found the start of an HTML tag, keep advancing until we get
+        // past it, so we don't end up truncating in the middle of the tag
+        while (currIdx < html.length && html[currIdx] == '<'){
+            while (currIdx < html.length && html[currIdx++] != '>');
+        }
+
+        return currIdx;
+    }
 }
 
 export class Fact {
@@ -642,7 +763,7 @@ export class FactSet extends CardElement {
                 textBlock.wrap = this.hostConfig.factSet.title.wrap;
                 textBlock.spacing = Enums.Spacing.None;
 
-                Utils.appendChild(tdElement, textBlock.render());
+                Utils.appendChild(tdElement, textBlock.renderElement());
                 Utils.appendChild(trElement, tdElement);
 
                 tdElement = document.createElement("td");
@@ -659,7 +780,7 @@ export class FactSet extends CardElement {
                 textBlock.wrap = this.hostConfig.factSet.value.wrap;
                 textBlock.spacing = Enums.Spacing.None;
 
-                Utils.appendChild(tdElement, textBlock.render());
+                Utils.appendChild(tdElement, textBlock.renderElement());
                 Utils.appendChild(trElement, tdElement);
                 Utils.appendChild(element, trElement);
             }
@@ -899,8 +1020,12 @@ export class Image extends CardElement {
     }
 }
 
-export class ImageSet extends CardElement {
+export class ImageSet extends CardElementWithChildren {
     private _images: Array<Image> = [];
+
+    protected get children(): Array<Image> {
+        return this._images;
+    }
 
     protected internalRender(): HTMLElement {
         let element: HTMLElement = null;
@@ -911,7 +1036,7 @@ export class ImageSet extends CardElement {
             element.style.flexWrap = "wrap";
 
             for (var i = 0; i < this._images.length; i++) {
-                let renderedImage = this._images[i].render();
+                let renderedImage = this._images[i].renderElement();
 
                 renderedImage.style.display = "inline-flex";
                 renderedImage.style.margin = "0px";
@@ -1126,7 +1251,7 @@ export class ToggleInput extends Input {
         label.hostConfig = this.hostConfig;
         label.text = this.title;
 
-        var labelElement = label.render();
+        var labelElement = label.renderElement();
         labelElement.style.display = "inline-block";
         labelElement.style.marginLeft = "6px";
         labelElement.style.verticalAlign = "middle";
@@ -1238,7 +1363,7 @@ export class ChoiceSetInput extends Input {
                     label.hostConfig = this.hostConfig;
                     label.text = this.choices[i].title;
 
-                    var labelElement = label.render();
+                    var labelElement = label.renderElement();
                     labelElement.style.display = "inline-block";
                     labelElement.style.marginLeft = "6px";
                     labelElement.style.verticalAlign = "middle";
@@ -1287,7 +1412,7 @@ export class ChoiceSetInput extends Input {
                 label.hostConfig = this.hostConfig;
                 label.text = this.choices[i].title;
 
-                var labelElement = label.render();
+                var labelElement = label.renderElement();
                 labelElement.style.display = "inline-block";
                 labelElement.style.marginLeft = "6px";
                 labelElement.style.verticalAlign = "middle";
@@ -1852,7 +1977,7 @@ class ActionCollection {
 
     showStatusCard(status: AdaptiveCard) {
         invokeSetParent(status, this._owner);
-        this._statusCard = status.render();
+        this._statusCard = status.renderElement();
 
         this.refreshContainer();
     }
@@ -1920,7 +2045,7 @@ class ActionCollection {
     private showActionCard(action: ShowCardAction) {
         if (action.card == null) return;
 
-        var renderedCard = action.card.render();
+        var renderedCard = action.card.renderElement();
 
         this._actionCard = renderedCard;
         this._expandedAction = action;
@@ -2306,7 +2431,7 @@ export class BackgroundImage {
     }
 }
 
-export class Container extends CardElement {
+export class Container extends CardElementWithChildren {
     private _selectAction: Action;
 
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
@@ -2330,6 +2455,10 @@ export class Container extends CardElement {
 
     private get hasExplicitStyle(): boolean {
         return this._style != null;
+    }
+
+    protected get children(): Array<CardElement> {
+        return this._items;
     }
 
     protected showBottomSpacer(requestingElement: CardElement) {
@@ -2539,7 +2668,7 @@ export class Container extends CardElement {
             var renderedElementCount: number = 0;
 
             for (var i = 0; i < this._items.length; i++) {
-                var renderedElement = this.isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].render() : null;
+                var renderedElement = this.isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].renderElement() : null;
 
                 if (renderedElement) {
                     if (renderedElementCount > 0 && this._items[i].separatorElement) {
@@ -2897,10 +3026,13 @@ export class Column extends Container {
     }
 }
 
-export class ColumnSet extends CardElement {
+export class ColumnSet extends CardElementWithChildren {
     private _columns: Array<Column> = [];
     private _selectAction: Action;
-    
+
+    protected get children(): Array<Column> {
+        return this._columns;
+    }
     
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
@@ -2947,7 +3079,7 @@ export class ColumnSet extends CardElement {
                     this._columns[i]["_computedWeight"] = computedWeight;
                 }
 
-                var renderedColumn = this._columns[i].render();
+                var renderedColumn = this._columns[i].renderElement();
 
                 if (renderedColumn) {
                     if (renderedColumnCount > 0 && this._columns[i].separatorElement) {
@@ -3442,7 +3574,7 @@ export class AdaptiveCard extends ContainerWithActions {
         super.parse(json, "body");
     }
 
-    render(): HTMLElement {
+    renderElement(): HTMLElement {
         var renderedCard: HTMLElement;
 
         if (!this.isVersionSupported()) {
@@ -3450,7 +3582,7 @@ export class AdaptiveCard extends ContainerWithActions {
             renderedCard.innerHTML = this.fallbackText ? this.fallbackText : "The specified card version is not supported.";
         }
         else {
-            renderedCard = super.render();
+            renderedCard = super.renderElement();
 
             if (renderedCard) {
                 renderedCard.tabIndex = 0;
@@ -3462,6 +3594,13 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedCard;
+    }
+
+    render(targetContainer: HTMLElement): HTMLElement {
+        var element = this.renderElement();
+        targetContainer.appendChild(element);
+        this.onRender();
+        return element;
     }
 
     canContentBleed(): boolean {
@@ -3485,8 +3624,8 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return this.hostConfig.actions.showCard.style ? this.hostConfig.actions.showCard.style : Enums.ContainerStyle.Emphasis;
     }
 
-    render() {
-        var renderedCard = super.render();
+    renderElement() {
+        var renderedCard = super.renderElement();
         renderedCard.setAttribute("aria-live", "polite");
         renderedCard.removeAttribute("tabindex");
         return renderedCard;
