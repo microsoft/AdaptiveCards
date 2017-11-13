@@ -17,7 +17,6 @@ When logging a bug, please be sure to include the following:
  * The platform you were using
  * If at all possible, an *isolated* way to reproduce the behavior
  * The behavior you expect to see, and the actual behavior
-
 ## 4. Do you have a suggestion?
 
 We also accept suggestions in the issue tracker. 
