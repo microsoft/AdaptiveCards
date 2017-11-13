@@ -44,7 +44,7 @@ Please open an issue with the `Schema` label to get a discussion started.
 
 You will need to complete a Contributor License Agreement (CLA). Briefly, this agreement testifies that you are granting us permission to use the submitted change according to the terms of the project's license, and that the work being submitted is under appropriate copyright.
 
-You will be askedd to sign the Microsoft Contributor License Agreement (CLA) when you submit a pull request, if there is 
+You will be asked to sign the Microsoft Contributor License Agreement (CLA) when you submit a pull request, if there is 
 not already a CLA on file for your GitHub account. Once we have received the signed CLA, we'll review the request. 
 
 You can review details of the agreement at https://cla.opensource.microsoft.com.
