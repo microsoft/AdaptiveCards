@@ -7,12 +7,18 @@ using System.Linq;
 
 namespace AdaptiveCards
 {
+    public interface ILogWarnings
+    {
+        IList<AdaptiveWarning> Warnings { get; set; }
+    }
+
     /// <summary>
     ///     This handles using type field to instantiate strongly typed object on deserialization
     /// </summary>
-    public class AdaptiveTypedElementConverter : JsonConverter
+    public class AdaptiveTypedElementConverter : JsonConverter, ILogWarnings
     {
-        private readonly AdaptiveCardParseResult _parseResult;
+        public IList<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
+
 
         /// <summary>
         /// Default types to support, register any new types to this list 
@@ -42,16 +48,6 @@ namespace AdaptiveCards
             };
             return types;
         });
-
-        public AdaptiveTypedElementConverter() : this(new AdaptiveCardParseResult())
-        {
-
-        }
-
-        public AdaptiveTypedElementConverter(AdaptiveCardParseResult parseResult)
-        {
-            _parseResult = parseResult;
-        }
 
         public static void RegisterTypedElement<T>(string typeName = null)
             where T : AdaptiveTypedElement
@@ -98,7 +94,7 @@ namespace AdaptiveCards
                 return result;
             }
 
-            _parseResult?.Warnings.Add(new AdaptiveWarning(-1, $"Unknown element type '{typeName}'"));
+            Warnings.Add(new AdaptiveWarning(-1, $"Unknown element type '{typeName}'"));
             return null;
         }
 
@@ -117,7 +113,7 @@ namespace AdaptiveCards
 
             foreach (var prop in te.AdditionalProperties)
             {
-                _parseResult?.Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on type '{te.Type}'"));
+                Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on type '{te.Type}'"));
             }
         }
 
