@@ -7,11 +7,6 @@ using System.Linq;
 
 namespace AdaptiveCards
 {
-    public interface ILogWarnings
-    {
-        IList<AdaptiveWarning> Warnings { get; set; }
-    }
-
     /// <summary>
     ///     This handles using type field to instantiate strongly typed object on deserialization
     /// </summary>
