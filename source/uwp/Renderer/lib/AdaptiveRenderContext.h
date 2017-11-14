@@ -29,6 +29,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP AddInputItem(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* cardElement, _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers** value);
         IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary);
+        IFACEMETHODIMP AddFailure(_In_ ABI::AdaptiveCards::Uwp::FailureStatusCode failureStatusCode, _In_ HSTRING message);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig> m_hostConfig;

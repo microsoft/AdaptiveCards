@@ -114,6 +114,22 @@ namespace AdaptiveCardVisualizer.ViewModel
                             Type = ErrorViewModelType.Error
                         });
                     }
+                    foreach (var error in renderResult.Errors)
+                    {
+                        newErrors.Add(new ErrorViewModel()
+                        {
+                            Message = error.Message,
+                            Type = ErrorViewModelType.Error
+                        });
+                    }
+                    foreach (var error in renderResult.Warnings)
+                    {
+                        newErrors.Add(new ErrorViewModel()
+                        {
+                            Message = error.Message,
+                            Type = ErrorViewModelType.Warning
+                        });
+                    }
                 }
                 else
                 {
@@ -179,6 +195,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
+                _renderer.ElementRenderers.Remove("FactSet");
             }
             catch
             {

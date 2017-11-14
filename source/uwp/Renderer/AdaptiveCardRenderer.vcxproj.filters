@@ -73,6 +73,7 @@
     <ClCompile Include="lib\CustomElementWrapper.cpp" />
     <ClCompile Include="lib\CustomActionWrapper.cpp" />
     <ClCompile Include="lib\WholeItemsPanel.cpp" />
+    <ClCompile Include="lib\AdaptiveFailure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\CustomActionWrapper.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
+    <ClInclude Include="lib\AdaptiveFailure.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Uwp.idl" />

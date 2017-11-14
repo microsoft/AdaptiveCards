@@ -27,12 +27,12 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveCard* adaptiveCard,
             _COM_Outptr_ ABI::AdaptiveCards::Uwp::IRenderedAdaptiveCard** result);
         HRESULT RenderCardAsXamlAsync(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
+            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*>** result);
 
         IFACEMETHODIMP RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson, 
             _COM_Outptr_ ABI::AdaptiveCards::Uwp::IRenderedAdaptiveCard** result);
         HRESULT RenderAdaptiveJsonAsXamlAsync(_In_ HSTRING adaptiveJson,
-            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
+            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*>** result);
 
         IFACEMETHODIMP RenderAdaptiveCardFromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
             _COM_Outptr_ ABI::AdaptiveCards::Uwp::IRenderedAdaptiveCard** result);

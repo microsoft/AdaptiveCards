@@ -49,11 +49,12 @@ namespace AdaptiveCards
         runtimeclass AdaptiveSeparatorConfig;
         runtimeclass AdaptiveContainerStyleDefinition;
         runtimeclass AdaptiveContainerStylesDefinition;
-        runtimeclass AdaptiveActionEventArgs;
         runtimeclass RenderedAdaptiveCard;
+        runtimeclass AdaptiveActionEventArgs;
         runtimeclass AdaptiveInputs;
         runtimeclass AdaptiveCardParseResult;
         runtimeclass AdaptiveHostConfigParseResult;
+        runtimeclass AdaptiveFailure;
 
         runtimeclass AdaptiveElementParserRegistration;
         runtimeclass AdaptiveActionParserRegistration;
@@ -101,6 +102,7 @@ namespace AdaptiveCards
         interface IAdaptiveTimeInput;
         interface IAdaptiveToggleInput;
         interface IAdaptiveSeparator;
+        interface IAdaptiveFailure;
 
         interface IAdaptiveFontSizesConfig;
         interface IAdaptiveFontWeightsConfig;
@@ -284,6 +286,24 @@ namespace AdaptiveCards
             Emphasis
         } ContainerStyle;
 
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum FailureStatusCode {
+            // Errors
+            InvalidJson = 0x10000000,
+            UnsupportedSchemaVersion,
+            RenderFailed,
+            // Warnings
+            RequiredPropertyMissing = 0x2000000,
+            InvalidPropertyValue,
+            UnknownElementType,
+            UnknownPropertyOnElement,
+            UnknownEnumValue,
+            NoRendererForType,
+            InteractivityNotSupported,
+            MaxActionsExceeded,
+            AssetLoadFailed
+        } FailureStatusCode;
+
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -291,10 +311,11 @@ namespace AdaptiveCards
             interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveChoiceInput*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveFailure*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
-            interface Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>;
+            interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
             interface Windows.Foundation.IReference<Windows.UI.Text.FontWeight>;
         }
 
@@ -426,6 +447,8 @@ namespace AdaptiveCards
         interface IAdaptiveCardParseResult : IInspectable
         {
             [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCard** value);
+            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
+            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
         };
 
         [
@@ -1417,6 +1440,8 @@ namespace AdaptiveCards
         interface IAdaptiveHostConfigParseResult : IInspectable
         {
             [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
+            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
+            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
         };
 
         [
@@ -1604,6 +1629,11 @@ namespace AdaptiveCards
 
             [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
 
+            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
+
+            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
+
+
             [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
             [eventremove] HRESULT Action([in] EventRegistrationToken token);
         };
@@ -1763,6 +1793,7 @@ namespace AdaptiveCards
             [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 
             HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
+            HRESULT AddFailure([in] FailureStatusCode statusCode, [in] HSTRING message);
         };
 
         [
@@ -1943,6 +1974,28 @@ namespace AdaptiveCards
         runtimeclass AdaptiveRenderArgs
         {
             [default] interface IAdaptiveRenderArgs;
+        };
+
+        [
+            uuid(c0222295-bbec-4ff6-bdf3-f207ce78df69),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveFailure : IInspectable
+        {
+            [propget] HRESULT FailureStatusCode([out, retval] FailureStatusCode* value);
+            [propput] HRESULT FailureStatusCode([in] FailureStatusCode value);
+
+            [propget] HRESULT Message([out, retval] HSTRING* value);
+            [propput] HRESULT Message([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveFailure
+        {
+            [default] interface IAdaptiveFailure;
         };
 
         [uuid(cced6652-8ca5-4841-b650-851770ec6ecf)]

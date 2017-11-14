@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "AdaptiveRenderContext.h"
+#include "AdaptiveFailure.h"
 #include "InputItem.h"
 #include "Util.h"
 
@@ -8,6 +9,7 @@ using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation;
+using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 
 namespace AdaptiveCards { namespace Uwp
@@ -64,6 +66,24 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveRenderContext::AddFailure(FailureStatusCode failureStatusCode, HSTRING message)
+    {
+        ComPtr<AdaptiveFailure> error;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFailure>(&error, failureStatusCode, message));
+        ComPtr<IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFailure*>> vector;
+        int statusAsInt = static_cast<int>(failureStatusCode);
+        if (IsWarning(statusAsInt))
+        {
+            RETURN_IF_FAILED(m_renderResult->get_Warnings(&vector));
+        }
+        else
+        {
+            RETURN_IF_FAILED(m_renderResult->get_Errors(&vector));
+        }
+        return (vector->Append(error.Detach()));
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveRenderContext::AddInputItem(IAdaptiveCardElement* cardElement, ABI::Windows::UI::Xaml::IUIElement* uiElement)
     {
         ComPtr<IAdaptiveCardElement> localCardElement(cardElement);
@@ -87,4 +107,6 @@ namespace AdaptiveCards { namespace Uwp
 
         return S_OK;
     }
+
+
 }}
