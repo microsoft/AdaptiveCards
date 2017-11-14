@@ -245,7 +245,7 @@ export abstract class CardElement {
 
             this.adjustRenderedElementSize(this._renderedElement);
             this.updateLayout(false);
-            this.updateRenderedElementVisibility();    
+            this.updateRenderedElementVisibility();
         }
 
         return this._renderedElement;
@@ -679,7 +679,7 @@ export class FactSet extends CardElement {
 
         if (json["facts"] != null) {
             var jsonFacts = json["facts"] as Array<any>;
-
+            this.facts = [];
             for (var i = 0; i < jsonFacts.length; i++) {
                 let fact = new Fact();
 
@@ -718,7 +718,7 @@ export class FactSet extends CardElement {
 
 export class Image extends CardElement {
     private _selectAction: Action;
-    
+
     protected get useDefaultSizing() {
         return false;
     }
@@ -939,7 +939,7 @@ export class ImageSet extends CardElement {
 
         if (json["images"] != null) {
             let jsonImages = json["images"] as Array<any>;
-
+            this._images = [];
             for (let i = 0; i < jsonImages.length; i++) {
                 var image = new Image();
                 image.parse(jsonImages[i]);
@@ -1769,7 +1769,7 @@ export class HttpAction extends Action {
 
         if (json["headers"] != null) {
             var jsonHeaders = json["headers"] as Array<any>;
-
+            this._headers = [];
             for (var i = 0; i < jsonHeaders.length; i++) {
                 let httpHeader = new HttpHeader();
 
@@ -2058,7 +2058,7 @@ class ActionCollection {
                         case Enums.HorizontalAlignment.Center:
                             buttonStrip.style.justifyContent = "center";
                             break;
-                            case Enums.HorizontalAlignment.Right:
+                        case Enums.HorizontalAlignment.Right:
                             buttonStrip.style.justifyContent = "flex-end";
                             break;
                         default:
@@ -2525,7 +2525,7 @@ export class Container extends CardElement {
                     e.cancelBubble = true;
                 }
             }
-    
+
             element.onkeypress = (e) => {
                 if (this.selectAction != null) {
                     // Enter or space pressed
@@ -2533,7 +2533,7 @@ export class Container extends CardElement {
                         this.selectAction.execute();
                     }
                 }
-            }    
+            }
         }
 
         if (this._items.length > 0) {
@@ -2660,7 +2660,7 @@ export class Container extends CardElement {
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
-
+            this.clear();
             for (var i = 0; i < items.length; i++) {
                 var elementType = items[i]["type"];
 
@@ -2675,7 +2675,7 @@ export class Container extends CardElement {
                 }
                 else {
                     this.addItem(element);
-                    
+
                     element.parse(items[i]);
                 }
             }
@@ -2901,8 +2901,8 @@ export class Column extends Container {
 export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
     private _selectAction: Action;
-    
-    
+
+
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
@@ -2985,7 +2985,7 @@ export class ColumnSet extends CardElement {
 
         if (json["columns"] != null) {
             let jsonColumns = json["columns"] as Array<any>;
-
+            this._columns = [];
             for (let i = 0; i < jsonColumns.length; i++) {
                 var column = new Column();
 
@@ -3226,7 +3226,7 @@ export abstract class ContainerWithActions extends Container {
         var result = super.validate();
 
         if (this._actionCollection) {
-            result = result.concat(this._actionCollection.validate());            
+            result = result.concat(this._actionCollection.validate());
         }
 
         return result;
@@ -3314,7 +3314,7 @@ export abstract class TypeRegistry<T> {
 export class ElementTypeRegistry extends TypeRegistry<CardElement> {
     reset() {
         this.clear();
-        
+
         this.registerType("Container", () => { return new Container(); });
         this.registerType("TextBlock", () => { return new TextBlock(); });
         this.registerType("Image", () => { return new Image(); });
@@ -3326,18 +3326,18 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("Input.Time", () => { return new TimeInput(); });
         this.registerType("Input.Number", () => { return new NumberInput(); });
         this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
-        this.registerType("Input.Toggle", () => { return new ToggleInput(); });        
+        this.registerType("Input.Toggle", () => { return new ToggleInput(); });
     }
 }
 
 export class ActionTypeRegistry extends TypeRegistry<Action> {
     reset() {
         this.clear();
-        
+
         this.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
         this.registerType("Action.Submit", () => { return new SubmitAction(); });
         this.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
-    }    
+    }
 }
 
 export class AdaptiveCard extends ContainerWithActions {

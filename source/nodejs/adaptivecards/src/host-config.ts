@@ -94,7 +94,7 @@ export class ImageSetConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.imageSize = obj["imageSize"] || this.imageSize;
+            this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
             this.maxImageHeight = Utils.getValueOrDefault<number>("maxImageHeight", 100);
         }
     }
@@ -120,7 +120,7 @@ export class FactTextDefinition {
             this.color = Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
             this.isSubtle = obj["isSubtle"] || this.isSubtle;
             this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Default);
-            this.wrap = obj["wrap"] || this.wrap;
+            this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
         }
     }
 
@@ -143,7 +143,7 @@ export class FactTitleDefinition extends FactTextDefinition {
         super(obj);
 
         if (obj) {
-            this.maxWidth = obj["maxWidth"] || this.maxWidth;
+            this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
         }
     }
 }
@@ -157,7 +157,7 @@ export class FactSetConfig {
         if (obj) {
             this.title = new FactTitleDefinition(obj["title"]);
             this.value = new FactTextDefinition(obj["value"]);
-            this.spacing = obj["spacing"] || this.spacing;
+            this.spacing = obj["spacing"] != null ? obj["spacing"] : this.spacing;
         }
     }
 }
@@ -170,7 +170,7 @@ export class ShowCardActionConfig {
     constructor(obj?: any) {
         if (obj) {
             this.actionMode = Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
-            this.inlineTopMargin = obj["inlineTopMargin"] || this.inlineTopMargin;
+            this.inlineTopMargin = obj["inlineTopMargin"] != null ? obj["inlineTopMargin"] : this.inlineTopMargin;
             this.style = Utils.parseHostConfigEnum(Enums.ContainerStyle, obj["style"], Enums.ContainerStyle.Emphasis);
         }
     }
@@ -195,9 +195,9 @@ export class ActionsConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.maxActions = obj["maxActions"] || this.maxActions;
+            this.maxActions = obj["maxActions"] != null ? obj["maxActions"] : this.maxActions;
             this.spacing = Utils.parseHostConfigEnum(Enums.Spacing, obj["spacing"], Enums.Spacing.Default);
-            this.buttonSpacing = obj["buttonSpacing"] || this.buttonSpacing;
+            this.buttonSpacing = obj["buttonSpacing"] != null ? obj["buttonSpacing"] : this.buttonSpacing;
             this.showCard = new ShowCardActionConfig(obj["showCard"]);
             this.preExpandSingleShowCardAction = Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false);
             this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
