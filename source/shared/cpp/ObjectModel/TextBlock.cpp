@@ -176,12 +176,13 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
 
 std::string TextBlock::ParseISO8601() const
 {
-    std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})Z(((, SHORT)|(, LONG))|)\\)\\}\\}");
+    std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, SHORT)|(, LONG))|(, COMPACT))|)\\)\\}\\}");
     std::smatch matches;
     std::string text = m_text;
     std::ostringstream parsedostr;
     time_t offset = 0;
-    bool isDate = false, isLong = true;
+    bool isDate = false; 
+    int  formatStyle = 0;
     enum MatchIndex
     {
         IsDate = 2,
@@ -191,27 +192,33 @@ std::string TextBlock::ParseISO8601() const
         Hour,
         Min,
         Sec,
-        Format = 11,
-        Long  = 13,
+        TimeZone = 12,
+        TZHr,
+        TZMn,
+        Format,
+        Style,
     };
-    int hours = 0, minutes = 0;
+    int factor = 0, hours = 0, minutes = 0;
     struct tm parsedTm = { 0 };
     int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
         &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
-        &parsedTm.tm_sec};
-    std::vector<int> indexer = {Year, Month, Day, Hour, Min, Sec};
+        &parsedTm.tm_sec, &hours, &minutes};
+    std::vector<int> indexer = {Year, Month, Day, Hour, Min, Sec, TZHr, TZMn};
 
     while (std::regex_search(text, matches, pattern))
     {
         // Date is matched
         isDate = matches[IsDate].matched;
 
-        // match for long/short
-        isLong = matches[Long].matched;
+        if(matches[Style].matched)
+        {
+            // match for long/short/compact
+            formatStyle = matches[Format].str()[2];
+        }
 
         parsedostr << matches.prefix().str();
 
-        if(!isDate && matches[Format].matched)
+        if(!isDate && formatStyle)
         {
             parsedostr << matches[0].str();
             text = matches.suffix().str();
@@ -227,6 +234,25 @@ std::string TextBlock::ParseISO8601() const
                 *addrs[idx] = stoi(matches[indexer[idx]]);
             }
         }
+
+        // maches offset sign, 
+        // Z == UTC, 
+        // + == time added from UTC
+        // - == time subtracted from UTC
+        if(matches[TimeZone].matched)
+        {
+            
+            char zone = matches[TimeZone].str()[0];
+            factor = (zone == '+')? -1 : 1;
+        }
+
+        // converts to seconds
+        hours *= 3600;
+        minutes *= 60;
+
+        // time zone offset calculation
+        offset = (hours + minutes) * factor;
+
 
         // measured from year 1900
         parsedTm.tm_year -= 1900;
@@ -259,13 +285,17 @@ std::string TextBlock::ParseISO8601() const
 
             if (isDate)
             {
-                if (isLong)
+                switch(formatStyle)
                 {
+                    case 'S':
+                    parsedostr << std::put_time(&result, "%a, %b %e, %Y");
+                    break;
+                    case 'L':
                     parsedostr << std::put_time(&result, "%A, %B %e, %Y");
-                }
-                else
-                {
+                    break;
+                    case 'C': default:
                     parsedostr << std::put_time(&result, "%Ex");
+                    break;
                 }
             }
             else
@@ -278,7 +308,7 @@ std::string TextBlock::ParseISO8601() const
         offset = 0;
         hours = minutes = 0;
         isDate = false;
-        isLong = true;
+        formatStyle = 0;
     }
 
     parsedostr << text;
