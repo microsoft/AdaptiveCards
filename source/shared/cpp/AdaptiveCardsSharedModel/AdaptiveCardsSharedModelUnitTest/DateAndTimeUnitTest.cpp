@@ -205,5 +205,47 @@ namespace AdaptiveCardsSharedModelUnitTest
             blck.SetText(testString);
             Assert::AreEqual<string>("{{DATE(2017-02-13T20:46:30Z, Long)}}", blck.GetText());
         }
+        TEST_METHOD(InvalidDateTest)
+        {
+            TextBlock blck;
+            string testString = "{{DATE(2017-99-14T06:08:00Z)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<string>("{{DATE(2017-99-14T06:08:00Z)}}", blck.GetText());
+
+        }
+        TEST_METHOD(InvalidTimeTest)
+        {
+            TextBlock blck;
+            string testString = "{{TIME(2017-99-14T06:08:00Z)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<string>("{{TIME(2017-99-14T06:08:00Z)}}", blck.GetText());
+
+        }
+        TEST_METHOD(LeapYearValidDayTest)
+        {
+            TextBlock blck;
+            // UTC and PST at Leap Year
+            string testString = "{{DATE(1992-02-29T18:08:00Z)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<string>("02/29/92", blck.GetText());
+
+        }
+        TEST_METHOD(LeapYearValidDayOnlyAtUTCTest)
+        {
+            TextBlock blck;
+            // UTC and PST at Leap Year
+            string testString = "{{DATE(1992-02-29T07:59:00Z)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<string>("02/28/92", blck.GetText());
+
+        }
+        TEST_METHOD(NoneLeapYearInvalidDayTest)
+        {
+            TextBlock blck;
+            string testString = "{{DATE(1994-02-29T06:08:00Z)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<string>("{{DATE(1994-02-29T06:08:00Z)}}", blck.GetText());
+
+        }
     };
 }

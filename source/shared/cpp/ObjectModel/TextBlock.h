@@ -62,6 +62,6 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
-    std::string ParseISO8601() const;
+    std::string ParseDateTime() const;
 };
 }

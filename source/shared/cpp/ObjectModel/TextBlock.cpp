@@ -95,7 +95,7 @@ Json::Value TextBlock::SerializeToJsonValue()
 
 std::string TextBlock::GetText() const
 {
-    return ParseISO8601();
+    return ParseDateTime();
 }
 
 void TextBlock::SetText(const std::string value)
@@ -174,14 +174,14 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
-std::string TextBlock::ParseISO8601() const
+std::string TextBlock::ParseDateTime() const
 {
     std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, SHORT)|(, LONG))|(, COMPACT))|)\\)\\}\\}");
     std::smatch matches;
     std::string text = m_text;
     std::ostringstream parsedostr;
     time_t offset = 0;
-    bool isDate = false; 
+    bool isDate = false, isValidForm = false; 
     int  formatStyle = 0;
     enum MatchIndex
     {
@@ -235,80 +235,127 @@ std::string TextBlock::ParseISO8601() const
             }
         }
 
-        // maches offset sign, 
-        // Z == UTC, 
-        // + == time added from UTC
-        // - == time subtracted from UTC
-        if(matches[TimeZone].matched)
-        {
-            
-            char zone = matches[TimeZone].str()[0];
-            factor = (zone == '+')? -1 : 1;
-        }
-
-        // converts to seconds
-        hours *= 3600;
-        minutes *= 60;
-
-        // time zone offset calculation
-        offset = (hours + minutes) * factor;
-
-
-        // measured from year 1900
-        parsedTm.tm_year -= 1900;
-        parsedTm.tm_mon  -= 1;
-
-        time_t utc;
-        // converts to ticks in UTC
-        utc = mktime(&parsedTm);
-        if (utc == -1)
-        {
-            parsedostr << matches[0];
-        }
-
-        char tzOffsetBuff[6] = { 0 };
-        // gets local time zone offset
-        strftime(tzOffsetBuff, 6, "%z", &parsedTm);
-        std::string localTimeZoneOffsetStr(tzOffsetBuff);
-        int nTzOffset = std::stoi(localTimeZoneOffsetStr);
-        offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
-        // add offset to utc
-        utc += offset;
-        struct tm result = {0};
-
-        // converts to local time from utc
-        if (!LOCALTIME(&result, &utc))
-        {
-            // localtime_s double counts daylight saving time
-            if (result.tm_isdst == 1)
-                result.tm_hour -= 1;
-
-            if (isDate)
-            {
-                switch(formatStyle)
+        // check for date and time validation
+        if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 && 
+            parsedTm.tm_min <= 60 && parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
+        { 
+            if (parsedTm.tm_mon == 4 || parsedTm.tm_mon == 6 || parsedTm.tm_mon == 9 || parsedTm.tm_mon == 11)
+            { 
+                if (parsedTm.tm_mday <= 30)
                 {
-                    case 'S':
-                    parsedostr << std::put_time(&result, "%a, %b %e, %Y");
-                    break;
-                    case 'L':
-                    parsedostr << std::put_time(&result, "%A, %B %e, %Y");
-                    break;
-                    case 'C': default:
-                    parsedostr << std::put_time(&result, "%Ex");
-                    break;
+                    isValidForm = true;
+                }
+            } 
+            else if (parsedTm.tm_mon == 2)
+            {
+                /// check for leap year
+                if ((parsedTm.tm_year % 4 == 0 && parsedTm.tm_year % 100 != 0) || parsedTm.tm_year % 400 == 0)
+                {
+                    if (parsedTm.tm_mday <= 29)
+                    {
+                        isValidForm = true;
+                    }
+                }
+                else if (parsedTm.tm_mday <= 28)
+                {
+                    isValidForm = true;
                 }
             }
             else
             {
-                parsedostr << std::put_time(&result, "%I:%M %p");
+                if (parsedTm.tm_mday <= 31)
+                {
+                    isValidForm = true;
+                }
             }
         }
+
+        if (isValidForm)
+        {
+            // maches offset sign, 
+            // Z == UTC, 
+            // + == time added from UTC
+            // - == time subtracted from UTC
+            if (matches[TimeZone].matched)
+            {
+
+                char zone = matches[TimeZone].str()[0];
+                factor = (zone == '+') ? -1 : 1;
+            }
+
+            // converts to seconds
+            hours *= 3600;
+            minutes *= 60;
+
+            // time zone offset calculation
+            offset = (hours + minutes) * factor;
+
+
+            // measured from year 1900
+            parsedTm.tm_year -= 1900;
+            parsedTm.tm_mon -= 1;
+
+            time_t utc;
+            // converts to ticks in UTC
+            utc = mktime(&parsedTm);
+            if (utc == -1)
+            {
+                parsedostr << matches[0];
+            }
+
+            char tzOffsetBuff[6] = { 0 };
+            // gets local time zone offset
+            strftime(tzOffsetBuff, 6, "%z", &parsedTm);
+            std::string localTimeZoneOffsetStr(tzOffsetBuff);
+            int nTzOffset = std::stoi(localTimeZoneOffsetStr);
+            offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
+            // add offset to utc
+            utc += offset;
+            struct tm result = { 0 };
+
+            // converts to local time from utc
+            if (!LOCALTIME(&result, &utc))
+            {
+                // localtime_s double counts daylight saving time
+                if (result.tm_isdst == 1)
+                    result.tm_hour -= 1;
+
+                if (isDate)
+                {
+                    switch (formatStyle)
+                    {
+                        // SHORT Style
+                    case 'S':
+                        parsedostr << std::put_time(&result, "%a, %b %e, %Y");
+                        break;
+                        // LONG Style
+                    case 'L':
+                        parsedostr << std::put_time(&result, "%A, %B %e, %Y");
+                        break;
+                        // COMPACT or DEFAULT Style
+                    case 'C': default:
+                        parsedostr << std::put_time(&result, "%Ex");
+                        break;
+                    }
+                }
+                else
+                {
+                    parsedostr << std::put_time(&result, "%I:%M %p");
+                }
+            }
+        }
+        else
+        {
+            parsedostr << matches[0];
+        }
+
         text = matches.suffix().str();
         parsedTm = {0};
         offset = 0;
         hours = minutes = 0;
         isDate = false;
         formatStyle = 0;
+        isValidForm = false;
     }
 
     parsedostr << text;
