@@ -201,9 +201,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(DateSmallCaseLONGStyleInputTest)
         {
             TextBlock blck;
-            string testString = "{{DATE(2017-02-13T20:46:30Z, LONG)}}";
+            string testString = "{{DATE(2017-02-13T20:46:30Z, Long)}}";
             blck.SetText(testString);
-            Assert::AreEqual<string>("Monday, February 13, 2017", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-02-13T20:46:30Z, Long)}}", blck.GetText());
         }
     };
 }
