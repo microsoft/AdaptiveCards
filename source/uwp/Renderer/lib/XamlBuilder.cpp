@@ -1297,20 +1297,23 @@ namespace AdaptiveCards { namespace Uwp
                 ComPtr<IUIElement> ellipseAsUIElement;
                 THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
 
-                // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed);
                 ComPtr<IImageSource> imageSource;
                 THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
                 ComPtr<IBitmapSource> imageSourceAsBitmap;
                 THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
 
-                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>(
-                    [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                if (m_enableXamlImageHandling)
                 {
-                    return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
-                }).Get(), &eventToken));
+                    // Collapse the Ellipse while the image loads, so that resizing is not noticeable
+                    THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>(
+                        [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                    {
+                        return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                    }).Get(), &eventToken));
+                }
             }
         }
         else
@@ -1331,16 +1334,19 @@ namespace AdaptiveCards { namespace Uwp
                 ComPtr<IUIElement> imageAsUIElement;
                 THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
 
-                //Collapse the Image control while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-
-                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-                    [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                if (m_enableXamlImageHandling)
                 {
-                    return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
-                }).Get(), &eventToken));
+                    //Collapse the Image control while the image loads, so that resizing is not noticeable
+                    THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+
+                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+                        [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                    {
+                        return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                    }).Get(), &eventToken));
+                }
             }
         }
 
