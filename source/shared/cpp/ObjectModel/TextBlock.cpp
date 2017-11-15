@@ -190,15 +190,11 @@ bool TextBlock::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int min
             {
                 return parsedTm.tm_mday <= 29;
             }
-            else if (parsedTm.tm_mday <= 28)
-            {
-                return true;
-            }
+            
+            return parsedTm.tm_mday <= 28;
         }
-        else
-        {
-            return parsedTm.tm_mday <= 31;
-        }
+
+        return true;
     }
     return false;
 }
@@ -273,7 +269,6 @@ std::string TextBlock::ParseDateTime() const
             // - == time subtracted from UTC
             if (matches[TimeZone].matched)
             {
-
                 char zone = matches[TimeZone].str()[0];
                 factor = (zone == '+') ? -1 : 1;
             }
@@ -284,7 +279,6 @@ std::string TextBlock::ParseDateTime() const
 
             // time zone offset calculation
             offset = (hours + minutes) * factor;
-
 
             // measured from year 1900
             parsedTm.tm_year -= 1900;
