@@ -311,7 +311,8 @@ std::string TextBlock::ParseDateTime() const
             // converts to local time from utc
             if (!LOCALTIME(&result, &utc))
             {
-                // localtime_s double counts daylight saving time
+                // localtime() set dst, put_time adjusts time accordingly which is not what we want since 
+                // we have already taken cared of it in our calculation
                 if (result.tm_isdst == 1)
                     result.tm_hour -= 1;
 
