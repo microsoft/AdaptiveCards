@@ -144,5 +144,3 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     }
     return inner;
 }
-
-bool IsWarning(int FailureStatusCode);

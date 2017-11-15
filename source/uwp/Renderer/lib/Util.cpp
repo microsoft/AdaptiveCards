@@ -700,9 +700,3 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Uwp::ElementType proje
     CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
-
-bool IsWarning(int FailureStatusCode)
-{
-    int mask = 0xFF000000;
-    return (FailureStatusCode & mask) == 0x2000000;
-}

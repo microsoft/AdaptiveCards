@@ -1,7 +1,8 @@
 #include "pch.h"
 
 #include "AdaptiveRenderContext.h"
-#include "AdaptiveFailure.h"
+#include "AdaptiveError.h"
+#include "AdaptiveWarning.h"
 #include "InputItem.h"
 #include "Util.h"
 
@@ -66,21 +67,23 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddFailure(FailureStatusCode failureStatusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddError(ErrorStatusCode statusCode, HSTRING message)
     {
-        ComPtr<AdaptiveFailure> error;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFailure>(&error, failureStatusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFailure*>> vector;
-        int statusAsInt = static_cast<int>(failureStatusCode);
-        if (IsWarning(statusAsInt))
-        {
-            RETURN_IF_FAILED(m_renderResult->get_Warnings(&vector));
-        }
-        else
-        {
-            RETURN_IF_FAILED(m_renderResult->get_Errors(&vector));
-        }
-        return (vector->Append(error.Detach()));
+        ComPtr<AdaptiveError> error;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
+        ComPtr<IVector<ABI::AdaptiveCards::Uwp::IAdaptiveError*>> errors;
+        RETURN_IF_FAILED(m_renderResult->get_Errors(&errors));
+        return (errors->Append(error.Detach()));
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveRenderContext::AddWarning(WarningStatusCode statusCode, HSTRING message)
+    {
+        ComPtr<AdaptiveWarning> warning;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
+        ComPtr<IVector<ABI::AdaptiveCards::Uwp::IAdaptiveWarning*>> warnings;
+        RETURN_IF_FAILED(m_renderResult->get_Warnings(&warnings));
+        return (warnings->Append(warning.Detach()));
     }
 
     _Use_decl_annotations_

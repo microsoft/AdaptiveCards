@@ -141,8 +141,8 @@ namespace AdaptiveCards { namespace Uwp
             }
             catch (...)
             {
-                RETURN_IF_FAILED(renderContext->AddFailure(
-                    FailureStatusCode::RenderFailed,
+                RETURN_IF_FAILED(renderContext->AddError(
+                    ErrorStatusCode::RenderFailed,
                     HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
                 renderedCard->SetFrameworkElement(nullptr);
             }

@@ -54,7 +54,8 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputs;
         runtimeclass AdaptiveCardParseResult;
         runtimeclass AdaptiveHostConfigParseResult;
-        runtimeclass AdaptiveFailure;
+        runtimeclass AdaptiveError;
+        runtimeclass AdaptiveWarning;
 
         runtimeclass AdaptiveElementParserRegistration;
         runtimeclass AdaptiveActionParserRegistration;
@@ -102,7 +103,8 @@ namespace AdaptiveCards
         interface IAdaptiveTimeInput;
         interface IAdaptiveToggleInput;
         interface IAdaptiveSeparator;
-        interface IAdaptiveFailure;
+        interface IAdaptiveError;
+        interface IAdaptiveWarning;
 
         interface IAdaptiveFontSizesConfig;
         interface IAdaptiveFontWeightsConfig;
@@ -287,22 +289,25 @@ namespace AdaptiveCards
         } ContainerStyle;
 
         [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum FailureStatusCode {
+        typedef [v1_enum] enum ErrorStatusCode {
             // Errors
-            InvalidJson = 0x10000000,
+            InvalidJson = 0,
             UnsupportedSchemaVersion,
             RenderFailed,
-            // Warnings
-            RequiredPropertyMissing = 0x2000000,
-            InvalidPropertyValue,
-            UnknownElementType,
+            RequiredPropertyMissing,
+            InvalidPropertyValue
+        } ErrorStatusCode;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum WarningStatusCode {
+            UnknownElementType = 0,
             UnknownPropertyOnElement,
             UnknownEnumValue,
             NoRendererForType,
             InteractivityNotSupported,
             MaxActionsExceeded,
             AssetLoadFailed
-        } FailureStatusCode;
+        } WarningStatusCode;
 
         declare
         {
@@ -311,7 +316,8 @@ namespace AdaptiveCards
             interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveChoiceInput*>;
-            interface Windows.Foundation.Collections.IVector<IAdaptiveFailure*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveError*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveWarning*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
@@ -447,8 +453,8 @@ namespace AdaptiveCards
         interface IAdaptiveCardParseResult : IInspectable
         {
             [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCard** value);
-            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
-            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
+            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
+            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
         };
 
         [
@@ -1440,8 +1446,8 @@ namespace AdaptiveCards
         interface IAdaptiveHostConfigParseResult : IInspectable
         {
             [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
-            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
-            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
+            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
+            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
         };
 
         [
@@ -1629,9 +1635,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
 
-            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
+            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
 
-            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFailure*>** value);
+            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
 
 
             [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
@@ -1793,7 +1799,8 @@ namespace AdaptiveCards
             [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 
             HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
-            HRESULT AddFailure([in] FailureStatusCode statusCode, [in] HSTRING message);
+            HRESULT AddError([in] ErrorStatusCode statusCode, [in] HSTRING message);
+            HRESULT AddWarning([in] WarningStatusCode statusCode, [in] HSTRING message);
         };
 
         [
@@ -1980,22 +1987,40 @@ namespace AdaptiveCards
             uuid(c0222295-bbec-4ff6-bdf3-f207ce78df69),
             version(NTDDI_WIN10_RS1)
         ]
-        interface IAdaptiveFailure : IInspectable
+        interface IAdaptiveError : IInspectable
         {
-            [propget] HRESULT FailureStatusCode([out, retval] FailureStatusCode* value);
-            [propput] HRESULT FailureStatusCode([in] FailureStatusCode value);
+            [propget] HRESULT StatusCode([out, retval] ErrorStatusCode* value);
 
             [propget] HRESULT Message([out, retval] HSTRING* value);
-            [propput] HRESULT Message([in] HSTRING value);
         };
 
         [
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveFailure
+        runtimeclass AdaptiveError
         {
-            [default] interface IAdaptiveFailure;
+            [default] interface IAdaptiveError;
+        };
+
+        [
+            uuid(4b5b28fe-9645-4e11-89c9-b9d25dd1b777),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveWarning : IInspectable
+        {
+            [propget] HRESULT StatusCode([out, retval] WarningStatusCode* value);
+
+            [propget] HRESULT Message([out, retval] HSTRING* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveWarning
+        {
+            [default] interface IAdaptiveWarning;
         };
 
         [uuid(cced6652-8ca5-4841-b650-851770ec6ecf)]

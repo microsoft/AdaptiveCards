@@ -31,8 +31,8 @@ namespace AdaptiveCards { namespace Uwp
             _Out_ EventRegistrationToken* token);
         IFACEMETHODIMP remove_Action(_In_ EventRegistrationToken token);
 
-        IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFailure*>** value);
-        IFACEMETHODIMP get_Warnings(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFailure*>** value);
+        IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveError*>** value);
+        IFACEMETHODIMP get_Warnings(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveWarning*>** value);
 
         std::shared_ptr<std::vector<InputItem>> GetInputItems();
         void SetFrameworkElement(ABI::Windows::UI::Xaml::IUIElement* value);
@@ -43,8 +43,8 @@ namespace AdaptiveCards { namespace Uwp
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCard> m_originatingCard;
         Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::AdaptiveInputs> m_inputs;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_frameworkElement;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFailure*>> m_errors;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFailure*>> m_warnings;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveError*>> m_errors;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveWarning*>> m_warnings;
         std::shared_ptr<ActionEventSource> m_events;
     };
 
