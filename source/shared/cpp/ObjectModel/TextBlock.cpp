@@ -205,9 +205,6 @@ std::string TextBlock::ParseDateTime() const
     std::smatch matches;
     std::string text = m_text;
     std::ostringstream parsedostr;
-    time_t offset = 0;
-    bool isDate = false; 
-    int  formatStyle = 0;
     enum MatchIndex
     {
         IsDate = 2,
@@ -223,17 +220,19 @@ std::string TextBlock::ParseDateTime() const
         Format,
         Style,
     };
-    int factor = 0, hours = 0, minutes = 0;
-    struct tm parsedTm = { 0 };
-    int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
-        &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
-        &parsedTm.tm_sec, &hours, &minutes};
     std::vector<int> indexer = {Year, Month, Day, Hour, Min, Sec, TZHr, TZMn};
 
     while (std::regex_search(text, matches, pattern))
     {
+        time_t offset = 0;
+        int  formatStyle = 0;
         // Date is matched
-        isDate = matches[IsDate].matched;
+        bool isDate = matches[IsDate].matched;
+        int hours = 0, minutes = 0;
+        struct tm parsedTm = { 0 };
+        int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
+            &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+            &parsedTm.tm_sec, &hours, &minutes};
 
         if(matches[Style].matched)
         {
@@ -269,16 +268,18 @@ std::string TextBlock::ParseDateTime() const
             // - == time subtracted from UTC
             if (matches[TimeZone].matched)
             {
+                // converts to seconds
+                hours *= 3600;
+                minutes *= 60;
+                offset = hours + minutes;
+
                 char zone = matches[TimeZone].str()[0];
-                factor = (zone == '+') ? -1 : 1;
+                // time zone offset calculation 
+                if (zone == '+')
+                { 
+                    offset *= -1;
+                }
             }
-
-            // converts to seconds
-            hours *= 3600;
-            minutes *= 60;
-
-            // time zone offset calculation
-            offset = (hours + minutes) * factor;
 
             // measured from year 1900
             parsedTm.tm_year -= 1900;
@@ -340,11 +341,6 @@ std::string TextBlock::ParseDateTime() const
         }
 
         text = matches.suffix().str();
-        parsedTm = {0};
-        offset = 0;
-        hours = minutes = 0;
-        isDate = false;
-        formatStyle = 0;
     }
 
     parsedostr << text;
