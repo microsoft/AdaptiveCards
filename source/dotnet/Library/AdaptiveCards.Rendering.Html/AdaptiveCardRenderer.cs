@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Xml;
-using Microsoft.MarkedNet;
-using System.Xml.Linq;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace AdaptiveCards.Rendering.Html
 {
     /// <summary>
-    ///     Render as texthtml suitable for server side generation
+    ///     Render a card as HTML suitable for server side generation
     /// </summary>
     public class AdaptiveCardRenderer : AdaptiveCardRendererBase<HtmlTag, AdaptiveRendererContext>
     {
@@ -20,144 +17,97 @@ namespace AdaptiveCards.Rendering.Html
         }
 
         /// <summary>
-        /// Generate a random matching 'id' for the HTML &lt;label&gt; and &lt;input&gt; radio's and checkboxes
+        /// Generate a ID, useful for joining two elements together, e.g., an input and label
         /// </summary>
-        public static Func<string> GenerateRandomLabelInputId => () => "ac-" + Guid.NewGuid().ToString().Substring(0, 8);
+        public static Func<string> GenerateRandomId => () => "ac-" + Guid.NewGuid().ToString().Substring(0, 8);
+
+        /// <summary>
+        /// Adds a CSS class to the action based on it's type name. Default is "ac-action-[actionName]
+        /// </summary>
+        public static Func<AdaptiveAction, string> GetActionCssClass = (action) =>
+        {
+            var lenFromDot = action.Type.IndexOf(".") + 1;
+            var suffix = action.Type.Substring(lenFromDot, action.Type.Length - lenFromDot);
+            return "ac-action-" + suffix.Replace(suffix[0], char.ToLower(suffix[0]));
+        };
 
 
-        // ---------------- INTERNAL METHODS -----------------------------
-
-        //        private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
-        //        {
-        //#if NET452
-        //            var assembly = Assembly.GetExecutingAssembly();
-        //            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.css"))
-        //            using (var reader = new StreamReader(stream))
-        //            {
-        //                return reader.ReadToEnd();
-        //            }
-        //#else
-        //            return null;
-        //#endif
-        //        });
 
         public AdaptiveCardRenderer() : this(new AdaptiveHostConfig()) { }
 
-        public AdaptiveCardRenderer(AdaptiveHostConfig config) : base(config)
+        public AdaptiveCardRenderer(AdaptiveHostConfig config)
         {
             SetObjectTypes();
+            HostConfig = config;
         }
 
-        ///// <summary>
-        /////     Stock CSS you can use with the generated html
-        ///// </summary>
-        //public static string StockCss
-        //{
-        //    get { return _stockCss.Value; }
-        //}
 
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
-            HtmlTag tag = null;
+            EnsureCanRender(card);
 
             try
             {
-                var context = new AdaptiveRendererContext(this.HostConfig, this.ElementRenderers);
-                tag = context.Render(card);
+                var context = new AdaptiveRendererContext(HostConfig, ElementRenderers);
+                var tag = context.Render(card);
+                return new RenderedAdaptiveCard(tag, card, context.Warnings);
             }
-            catch
+            catch (Exception ex)
             {
-                return new RenderedAdaptiveCard(null, card);
+                throw new AdaptiveRenderException("Failed to render card", ex)
+                {
+                    CardFallbackText = card.FallbackText
+                };
             }
-
-            return new RenderedAdaptiveCard(tag, card);
         }
 
         private void SetObjectTypes()
         {
-            this.ElementRenderers.Set<AdaptiveCard>(AdaptiveCardRender);
+            ElementRenderers.Set<AdaptiveCard>(AdaptiveCardRender);
 
-            this.ElementRenderers.Set<AdaptiveTextBlock>(TextBlockRender);
-            this.ElementRenderers.Set<AdaptiveImage>(ImageRender);
+            ElementRenderers.Set<AdaptiveTextBlock>(TextBlockRender);
+            ElementRenderers.Set<AdaptiveImage>(ImageRender);
 
-            this.ElementRenderers.Set<AdaptiveContainer>(ContainerRender);
-            this.ElementRenderers.Set<AdaptiveColumn>(ColumnRender);
-            this.ElementRenderers.Set<AdaptiveColumnSet>(ColumnSetRender);
-            this.ElementRenderers.Set<AdaptiveFactSet>(FactSetRender);
-            this.ElementRenderers.Set<AdaptiveImageSet>(ImageSetRender);
+            ElementRenderers.Set<AdaptiveContainer>(ContainerRender);
+            ElementRenderers.Set<AdaptiveColumn>(ColumnRender);
+            ElementRenderers.Set<AdaptiveColumnSet>(ColumnSetRender);
+            ElementRenderers.Set<AdaptiveFactSet>(FactSetRender);
+            ElementRenderers.Set<AdaptiveImageSet>(ImageSetRender);
 
-            this.ElementRenderers.Set<AdaptiveChoiceSetInput>(ChoiceSetRender);
-            this.ElementRenderers.Set<AdaptiveTextInput>(TextInputRender);
-            this.ElementRenderers.Set<AdaptiveNumberInput>(NumberInputRender);
-            this.ElementRenderers.Set<AdaptiveDateInput>(DateInputRender);
-            this.ElementRenderers.Set<AdaptiveTimeInput>(TimeInputRender);
-            this.ElementRenderers.Set<AdaptiveToggleInput>(ToggleInputRender); ;
+            ElementRenderers.Set<AdaptiveChoiceSetInput>(ChoiceSetRender);
+            ElementRenderers.Set<AdaptiveTextInput>(TextInputRender);
+            ElementRenderers.Set<AdaptiveNumberInput>(NumberInputRender);
+            ElementRenderers.Set<AdaptiveDateInput>(DateInputRender);
+            ElementRenderers.Set<AdaptiveTimeInput>(TimeInputRender);
+            ElementRenderers.Set<AdaptiveToggleInput>(ToggleInputRender);
 
-            this.ElementRenderers.Set<AdaptiveSubmitAction>(SubmitActionRender);
-            this.ElementRenderers.Set<AdaptiveOpenUrlAction>(OpenUrlActionRender);
-            this.ElementRenderers.Set<AdaptiveShowCardAction>(ShowCardActionRender);
+            ElementRenderers.Set<AdaptiveSubmitAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
+
+            // TODO: implement default behavior to open the URL
+            ElementRenderers.Set<AdaptiveOpenUrlAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-url", action.Url));
+
+            // TODO: implement default toggle behavior
+            ElementRenderers.Set<AdaptiveShowCardAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-showCardId", GenerateRandomId()));
         }
 
-
-        protected static HtmlTag OpenUrlActionRender(AdaptiveOpenUrlAction action, AdaptiveRendererContext context)
+        protected static HtmlTag AdaptiveActionRender(AdaptiveAction action, AdaptiveRendererContext context)
         {
-            if (!context.Config.SupportsInteractivity)
+            if (context.Config.SupportsInteractivity)
             {
-                return null;
+                var buttonElement = new HtmlTag("button", false) { Text = action.Title }
+                    .Attr("type", "button")
+                    .Style("overflow", "hidden")
+                    .Style("white-space", "nowrap")
+                    .Style("text-overflow", "ellipsis")
+                    .Style("flex",
+                        context.Config.Actions.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                    .AddClass("ac-pushButton")
+                    .AddClass(GetActionCssClass(action));
+
+                return buttonElement;
             }
 
-            var buttonElement = new HtmlTag("button") { Text = action.Title }
-                .Attr("type", "button")
-                .Attr("url", action.Url)
-                .Style("overflow", "hidden")
-                .Style("white-space", "nowrap")
-                .Style("text-overflow", "ellipsis")
-                .Style("flex",
-                    context.Config.Actions.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
-                .AddClass("ac-pushButton")
-                .AddClass("ac-openUrlAction");
-
-            return buttonElement;
-        }
-
-        protected static HtmlTag ShowCardActionRender(AdaptiveShowCardAction action, AdaptiveRendererContext context)
-        {
-            if (!context.Config.SupportsInteractivity)
-            {
-                return null;
-            }
-
-            var buttonElement = new HtmlTag("button") { Text = action.Title }
-                .Attr("type", "button")
-                .Style("overflow", "hidden")
-                .Style("white-space", "nowrap")
-                .Style("text-overflow", "ellipsis")
-                .Style("flex",
-                    context.Config.Actions.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
-                .AddClass("ac-linkButton")
-                .AddClass("ac-showCardAction");
-
-            return buttonElement;
-        }
-
-        protected static HtmlTag SubmitActionRender(AdaptiveSubmitAction action, AdaptiveRendererContext context)
-        {
-            if (!context.Config.SupportsInteractivity)
-            {
-                return null;
-            }
-
-            var buttonElement = new HtmlTag("button") { Text = action.Title }
-                .Attr("type", "button")
-                .Style("overflow", "hidden")
-                .Style("white-space", "nowrap")
-                .Style("text-overflow", "ellipsis")
-                .Style("flex",
-                    context.Config.Actions.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
-                .AddClass("ac-pushButton")
-                .AddClass("ac-submitAction");
-
-            return buttonElement;
+            return null;
         }
 
         protected static HtmlTag AdaptiveCardRender(AdaptiveCard card, AdaptiveRendererContext context)
@@ -166,7 +116,11 @@ namespace AdaptiveCards.Rendering.Html
                 .AddClass($"ac-{card.Type.ToLower()}")
                 .Style("width", "100%")
                 .Style("background-color", context.GetRGBColor(context.Config.ContainerStyles.Default.BackgroundColor))
+                .Style("padding", $"{context.Config.Spacing.Padding}px")
                 .Style("box-sizing", "border-box");
+
+            if (!string.IsNullOrEmpty(context.Config.FontFamily))
+                uiCard.Style("font-family", context.Config.FontFamily);
 
             if (card.BackgroundImage != null)
                 uiCard = uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
@@ -178,7 +132,7 @@ namespace AdaptiveCards.Rendering.Html
             return uiCard;
         }
 
-        protected static void AddContainerElements(HtmlTag uiContainer, List<AdaptiveElement> elements, List<AdaptiveActionBase> actions, AdaptiveRendererContext context)
+        protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, IList<AdaptiveAction> actions, AdaptiveRendererContext context)
         {
             if (elements != null)
             {
@@ -190,7 +144,7 @@ namespace AdaptiveCards.Rendering.Html
                     {
                         if (uiContainer.Children.Any())
                         {
-                            AdaptiveCardRenderer.AddSeparator(uiContainer, cardElement, context);
+                            AddSeparator(uiContainer, cardElement, context);
                         }
 
                         uiContainer.Children.Add(uiElement);
@@ -252,16 +206,14 @@ namespace AdaptiveCards.Rendering.Html
                     var uiAction = context.Render(actions[i]);
                     if (uiAction != null)
                     {
-                        if (actions[i].Type == AdaptiveShowCardAction.TypeName)
+                        if (actions[i] is AdaptiveShowCardAction showCardAction)
                         {
-                            // add button-card mapping for clients to implement showcard action
-                            var cardId = "ac-showCard" + i;
-                            uiAction.Attr("ac-cardId", cardId);
+                            var cardId = uiAction.Attributes["data-ac-showCardId"];
 
-                            var uiCard = context.Render(((AdaptiveShowCardAction)actions[i]).Card);
+                            var uiCard = context.Render(showCardAction.Card);
                             if (uiCard != null)
                             {
-                                uiCard.Attr(cardId, string.Empty)
+                                uiCard.Attr("id", cardId)
                                     .AddClass("ac-showCard")
                                     .Style("display", "none");
                                 uiShowCardStrip.Children.Add(uiCard);
@@ -273,7 +225,7 @@ namespace AdaptiveCards.Rendering.Html
                     // add spacer between buttons according to config
                     if (i < maxActions - 1 && context.Config.Actions.ButtonSpacing > 0)
                     {
-                        var uiSpacer = new HtmlTag("div");
+                        var uiSpacer = new DivTag();
 
                         if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
                         {
@@ -315,8 +267,8 @@ namespace AdaptiveCards.Rendering.Html
                 SeparatorConfig sep = context.Config.Separator;
                 var uiSep = new DivTag()
                         .AddClass("ac-separator")
-                        .Style("padding-top", $"{spacing}px")
-                        .Style("margin-top", $"{spacing}px")
+                        .Style("padding-top", $"{spacing / 2}px")
+                        .Style("margin-top", $"{spacing / 2}px")
                         .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
                         .Style("border-top-width", $"{sep.LineThickness}px")
                         .Style("border-top-style", "solid");
@@ -340,6 +292,7 @@ namespace AdaptiveCards.Rendering.Html
 
             if (context.Config.SupportsInteractivity && adaptiveColumn.SelectAction != null)
             {
+                // TODO: selectAction support
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
                 //{
@@ -384,7 +337,7 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     SeparatorConfig sep = context.Config.Separator;
 
-                    int spacing = context.Config.GetSpacing(column.Spacing);
+                    int spacing = context.Config.GetSpacing(column.Spacing) / 2;
                     int lineThickness = column.Separator ? sep.LineThickness : 0;
 
                     if (sep != null)
@@ -530,20 +483,19 @@ namespace AdaptiveCards.Rendering.Html
                     weight = 600;
                     break;
             }
-            var lineHeight = fontSize * 1.2;
 
-            var uiTextBlock = new DivTag()
+            // Not sure where this magic value comes from?
+            var lineHeight = fontSize * 1.33;
+
+            var uiTextBlock = new HtmlTag("div", false)
                 .AddClass($"ac-{textBlock.Type.Replace(".", "").ToLower()}")
-                .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
                 .Style("box-sizing", "border-box")
+                .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
 
-            if (!String.IsNullOrEmpty(context.Config.FontFamily))
-                uiTextBlock = uiTextBlock
-                    .Style("font-family", context.Config.FontFamily);
 
             if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock
@@ -595,7 +547,7 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag ImageRender(AdaptiveImage image, AdaptiveRendererContext context)
         {
-            var uiDiv = new HtmlTag("div")
+            var uiDiv = new DivTag()
                 .AddClass($"ac-{image.Type.Replace(".", "").ToLower()}")
                 .Style("display", "block")
                 .Style("box-sizing", "border-box");
@@ -621,7 +573,8 @@ namespace AdaptiveCards.Rendering.Html
 
             var uiImage = new HtmlTag("img")
                 .Style("width", "100%")
-                .Attr("src", image.Url);
+                .Attr("alt", image.AltText ?? "card image")
+                .Attr("src", image.Url.ToString());
 
             switch (image.Style)
             {
@@ -712,91 +665,67 @@ namespace AdaptiveCards.Rendering.Html
                 }
                 else
                 {
-                    // render as a series of radio buttons
-                    var uiElement = new HtmlTag("div")
-                        .AddClass("ac-input")
-                        .Style("width", "100%");
-
-                    foreach (var choice in adaptiveChoiceSetInput.Choices)
-                    {
-                        var htmlLabelId = GenerateRandomLabelInputId();
-
-                        var uiRadioInput = new HtmlTag("input")
-                            .Attr("id", htmlLabelId)
-                            .Attr("type", "radio")
-                            .Attr("name", adaptiveChoiceSetInput.Id)
-                            .Attr("value", choice.Value)
-                            .Style("margin", "0px")
-                            .Style("display", "inline-block")
-                            .Style("vertical-align", "middle");
-
-                        if (choice.Value == adaptiveChoiceSetInput.Value)
-                        {
-                            uiRadioInput.Attr("checked", string.Empty);
-                        }
-
-                        var uiLabel = new HtmlTag("label")
-                            .Attr("for", htmlLabelId).Append(
-                                context.Render(new AdaptiveTextBlock() { Text = choice.Title })
-                                    .Style("display", "inline-block")
-                                    .Style("margin-left", "6px")
-                                    .Style("vertical-align", "middle")
-                            );
-
-                        var compoundInputElement = new HtmlTag("div")
-                            .Append(uiRadioInput)
-                            .Append(uiLabel);
-
-                        uiElement.Append(compoundInputElement);
-                    }
-
-                    return uiElement;
+                    return ChoiceSetRenderInternal(adaptiveChoiceSetInput, context, "radio");
                 }
             }
             else
             {
-                // the default values are specified by a comma separated string input.value
-                var defaultValues = adaptiveChoiceSetInput.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
+                return ChoiceSetRenderInternal(adaptiveChoiceSetInput, context, "checkbox");                
+            }
+        }
 
-                // render as a list of toggle inputs
-                var uiElement = new HtmlTag("div")
-                    .AddClass("ac-input")
-                    .Attr("width", "100%");
+        private static HtmlTag ChoiceSetRenderInternal(AdaptiveChoiceSetInput adaptiveChoiceSetInput, AdaptiveRendererContext context, string htmlInputType)
+        {
+            // the default values are specified by a comma separated string input.value
+            var defaultValues = adaptiveChoiceSetInput.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 
-                foreach (var choice in adaptiveChoiceSetInput.Choices)
+            // render as a series of radio buttons
+            var uiElement = new DivTag()
+                .AddClass("ac-input")
+                .Style("width", "100%");
+
+            foreach (var choice in adaptiveChoiceSetInput.Choices)
+            {
+                var htmlLabelId = GenerateRandomId();
+
+                var uiInput = new HtmlTag("input")
+                    .Attr("id", htmlLabelId)
+                    .Attr("type", htmlInputType)
+                    .Attr("name", adaptiveChoiceSetInput.Id)
+                    .Attr("value", choice.Value)
+                    .Style("margin", "0px")
+                    .Style("display", "inline-block")
+                    .Style("vertical-align", "middle");
+
+
+                if (defaultValues.Contains(choice.Value))
                 {
-                    var htmlLabelId = GenerateRandomLabelInputId();
-
-                    var uiCheckboxInput = new HtmlTag("input")
-                        .Attr("id", htmlLabelId)
-                        .Attr("type", "checkbox")
-                        .Attr("name", adaptiveChoiceSetInput.Id)
-                        .Attr("value", choice.Value)
-                        .Style("margin", "0px")
-                        .Style("display", "inline-block")
-                        .Style("vertical-align", "middle");
-
-                    if (defaultValues.Contains(choice.Value))
-                    {
-                        uiCheckboxInput.Attr("checked", string.Empty);
-                    }
-
-                    var uiLabel = new HtmlTag("label")
-                        .Attr("for", htmlLabelId).Append(
-                            context.Render(new AdaptiveTextBlock() { Text = choice.Title })
-                            .Style("display", "inline-block")
-                            .Style("margin-left", "6px")
-                            .Style("vertical-align", "middle"));
-
-                    var compoundInputElement = new HtmlTag("div")
-                        .Append(uiCheckboxInput)
-                        .Append(uiLabel);
-
-                    uiElement.Append(compoundInputElement);
+                    uiInput.Attr("checked", string.Empty);
                 }
 
-                return uiElement;
+                var uiLabel = CreateLabel(htmlLabelId, choice.Title, context);
+
+                var compoundInputElement = new DivTag()
+                    .Append(uiInput)
+                    .Append(uiLabel);
+
+                uiElement.Append(compoundInputElement);
             }
+
+            return uiElement;
+
+        }
+
+        private static HtmlTag CreateLabel(string forId, string innerText, AdaptiveRendererContext context)
+        {
+            return new HtmlTag("label")
+                .Attr("for", forId)
+                .SetInnerText(innerText)
+                .Style("color", context.GetColor(AdaptiveTextColor.Default, false))
+                .Style("font-size", $"{context.Config.FontSizes.Default}px")
+                .Style("display", "inline-block")
+                .Style("margin-left", "6px")
+                .Style("vertical-align", "middle");
         }
 
         protected static HtmlTag DateInputRender(AdaptiveDateInput input, AdaptiveRendererContext context)
@@ -923,9 +852,9 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag ToggleInputRender(AdaptiveToggleInput toggleInput, AdaptiveRendererContext context)
         {
-            var htmlLabelId = GenerateRandomLabelInputId();
+            var htmlLabelId = GenerateRandomId();
 
-            var uiElement = new HtmlTag("div")
+            var uiElement = new DivTag()
                 .AddClass("ac-input")
                 .Style("width", "100%");
 
@@ -933,6 +862,8 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("id", htmlLabelId)
                 .Attr("type", "checkbox")
                 .Attr("name", toggleInput.Id)
+                .Attr("data-ac-valueOn", toggleInput.ValueOn ?? bool.TrueString)
+                .Attr("data-ac-valueOff", toggleInput.ValueOff ?? bool.FalseString)
                 .Style("display", "inline-block")
                 .Style("vertical-align", "middle")
                 .Style("margin", "0px");
@@ -942,13 +873,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiCheckboxInput.Attr("checked", string.Empty);
             }
 
-            var uiLabel = new HtmlTag("label")
-                .Attr("for", htmlLabelId)
-                .Append(
-                    context.Render(new AdaptiveTextBlock { Text = toggleInput.Title })
-                        .Style("display", "inline-block")
-                        .Style("margin-left", "6px")
-                        .Style("vertical-align", "middle"));
+            var uiLabel = CreateLabel(htmlLabelId, toggleInput.Title, context);
 
             return uiElement.Append(uiCheckboxInput).Append(uiLabel);
         }
@@ -959,8 +884,7 @@ namespace AdaptiveCards.Rendering.Html
             if (!string.IsNullOrEmpty(adaptiveElement.Speak))
             {
 #if NET452
-                // TODO: Fix xamarin fallback
-                var doc = new XmlDocument();
+                var doc = new System.Xml.XmlDocument();
                 var xml = adaptiveElement.Speak;
                 if (!xml.Trim().StartsWith("<"))
                     xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Speak>{xml}</Speak>";

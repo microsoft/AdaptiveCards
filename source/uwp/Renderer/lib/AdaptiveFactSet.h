@@ -7,11 +7,12 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveFactSet :
+    class DECLSPEC_UUID("3aacc7c9-f600-4928-ae06-4cc21a83f4b3") AdaptiveFactSet :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveFactSet,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveFactSet, BaseTrust)
 
@@ -38,12 +39,22 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::FactSet>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
+
     private:
-        // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFact*>> m_facts;
 
-        //Using a Container as backing element for now
-        std::shared_ptr<AdaptiveCards::FactSet> m_sharedFactSet;
+        boolean m_separator;
+        Microsoft::WRL::Wrappers::HString m_id;
+        ABI::AdaptiveCards::Uwp::Spacing m_spacing;
     };
 
     ActivatableClass(AdaptiveFactSet);

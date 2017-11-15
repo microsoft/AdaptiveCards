@@ -6,10 +6,11 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveChoiceInput :
+    class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput>
+            ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveChoiceInput, BaseTrust)
 
@@ -28,6 +29,14 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_IsSelected(_In_ boolean isSelected);
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::ChoiceInput> m_sharedChoiceInput;

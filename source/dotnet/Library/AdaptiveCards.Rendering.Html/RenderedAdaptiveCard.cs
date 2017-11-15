@@ -1,19 +1,21 @@
-﻿namespace AdaptiveCards.Rendering.Html
+﻿using System.Collections.Generic;
+
+namespace AdaptiveCards.Rendering.Html
 {
     /// <summary>
     /// The rendered Adaptive Card result.
     /// </summary>
     public class RenderedAdaptiveCard : RenderedAdaptiveCardBase
     {
-        public RenderedAdaptiveCard(HtmlTag htmlTag, AdaptiveCard originatingCard)
-            : base(originatingCard: originatingCard)
+        public RenderedAdaptiveCard(HtmlTag htmlTag, AdaptiveCard originatingCard, IList<AdaptiveWarning> warnings)
+            : base(originatingCard, warnings)
         {
             Html = htmlTag;
         }
 
         /// <summary>
-        /// The rendered result. If there were errors present, this will be null.
+        /// The rendered HTML for the card
         /// </summary>
-        public HtmlTag Html { get; private set; }
+        public HtmlTag Html { get; }
     }
 }

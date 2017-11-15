@@ -10,7 +10,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
         }
 
-        public AdaptiveXamlMarkdownRenderer(Microsoft.MarkedNet.Options options) : base(options)
+        public AdaptiveXamlMarkdownRenderer(Options options) : base(options)
         {
         }
 

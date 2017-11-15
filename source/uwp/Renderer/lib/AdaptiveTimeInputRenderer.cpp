@@ -1,8 +1,11 @@
 #include "pch.h"
 
+#include "AdaptiveElementParserRegistration.h"
+#include "AdaptiveTimeInput.h"
 #include "AdaptiveTimeInputRenderer.h"
 #include "enums.h"
 #include "Util.h"
+#include "XamlBuilder.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -23,7 +26,16 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder.BuildTimeInput(cardElement, renderContext, renderArgs, result);
+        XamlBuilder::BuildTimeInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
+    }
+
+    HRESULT AdaptiveTimeInputRenderer::FromJson(
+        ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)
+    {
+        return AdaptiveCards::Uwp::FromJson<AdaptiveCards::Uwp::AdaptiveTimeInput, AdaptiveCards::TimeInput, AdaptiveCards::TimeInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
 }}

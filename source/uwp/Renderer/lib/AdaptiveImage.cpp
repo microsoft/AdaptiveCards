@@ -26,6 +26,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Image>& sharedImage)
     {
+        if (sharedImage == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedImage = sharedImage;
         return S_OK;
     }
@@ -189,5 +194,18 @@ namespace AdaptiveCards { namespace Uwp
         ElementType typeEnum;
         RETURN_IF_FAILED(get_ElementType(&typeEnum));
         return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedImage->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::Image>& sharedImage)
+    {
+        sharedImage = m_sharedImage;
+        return S_OK;
     }
 }}

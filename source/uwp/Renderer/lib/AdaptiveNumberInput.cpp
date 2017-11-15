@@ -23,6 +23,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::NumberInput>& sharedNumberInput)
     {
+        if (sharedNumberInput == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedNumberInput = sharedNumberInput;
         return S_OK;
     }
@@ -166,4 +171,16 @@ namespace AdaptiveCards { namespace Uwp
         return ProjectedElementTypeToHString(typeEnum, type);
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedNumberInput->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveCards::NumberInput>& sharedModel)
+    {
+        sharedModel = m_sharedNumberInput;
+        return S_OK;
+    }
 }}

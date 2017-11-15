@@ -41,20 +41,6 @@ public class NumberInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_NumberInput(), true);
   }
 
-  public static NumberInput Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.NumberInput_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new NumberInput(cPtr, true);
-  }
-
-  public static NumberInput DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.NumberInput_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new NumberInput(cPtr, true);
-  }
-
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.NumberInput_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.NumberInput_SerializeToJsonValue(swigCPtr, this), true);
   }

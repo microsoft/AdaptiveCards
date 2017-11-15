@@ -26,18 +26,9 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputs::AsJson(InputValueMode inputMode, IJsonObject** value)
+    HRESULT AdaptiveInputs::AsJson(IJsonObject** value)
     {
-        std::string inputItemsAsString;
-        switch (inputMode)
-        {
-        case InputValueMode::RawString:
-        default:
-            inputItemsAsString = GetInputItemsAsJsonString();
-            break;
-        }
-
-        return StringToJsonObject(inputItemsAsString, value);
+        return StringToJsonObject(GetInputItemsAsJsonString(), value);
     }
 
     std::shared_ptr<std::vector<InputItem>> AdaptiveInputs::GetInputItems()

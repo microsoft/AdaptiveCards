@@ -1,27 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
-    public partial class AdaptiveCardRenderer : AdaptiveCardRendererBase<FrameworkElement, AdaptiveRenderContext>
+    public class AdaptiveCardRenderer : AdaptiveCardRendererBase<FrameworkElement, AdaptiveRenderContext>
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
             return new AdaptiveSchemaVersion(1, 0);
         }
 
-        protected Action<object, AdaptiveActionEventArgs> actionCallback;
+        protected Action<object, AdaptiveActionEventArgs> ActionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
-        protected AdaptiveHostConfig _defaultCardStyling;
 
         public AdaptiveCardRenderer() : this(new AdaptiveHostConfig()) { }
 
-        public AdaptiveCardRenderer(AdaptiveHostConfig hostConfig) : base(hostConfig)
+        public AdaptiveCardRenderer(AdaptiveHostConfig hostConfig)
         {
+            HostConfig = hostConfig;
             SetObjectTypes();
         }
 
@@ -45,15 +47,20 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveTimeInput>(AdaptiveTimeInputRenderer.Render);
             ElementRenderers.Set<AdaptiveToggleInput>(AdaptiveToggleInputRenderer.Render);
 
-            ElementRenderers.Set<AdaptiveSubmitAction>(XamlSubmitAction.Render);
-            ElementRenderers.Set<AdaptiveOpenUrlAction>(XamlOpenUrlAction.Render);
-            ElementRenderers.Set<AdaptiveShowCardAction>(XamlShowCardAction.Render);
+            ElementRenderers.Set<AdaptiveAction>(AdaptiveActionRenderer.Render);
         }
 
+
         /// <summary>
-        /// Resource dictionary to use when rendering
+        /// A path to a XAML resource dictionary
         /// </summary>
+        public string ResourcesPath { get; set; }
+
         private ResourceDictionary _resources;
+
+        /// <summary>
+        /// Resource dictionary to use when rendering. Don't use this from a server, use <see cref="ResourcesPath"/> instead.
+        /// </summary>
         public ResourceDictionary Resources
         {
             get
@@ -61,34 +68,26 @@ namespace AdaptiveCards.Rendering.Wpf
                 if (_resources != null)
                     return _resources;
 
-                if (File.Exists(this.StylePath))
+                if (File.Exists(ResourcesPath))
                 {
-                    using (var styleStream = File.OpenRead(this.StylePath))
+                    using (var styleStream = File.OpenRead(ResourcesPath))
                     {
                         _resources = (ResourceDictionary)XamlReader.Load(styleStream);
                     }
                 }
                 else
+                {
                     _resources = new ResourceDictionary();
+                }
 
                 return _resources;
             }
             set => _resources = value;
         }
 
-        /// <summary>
-        /// Path to Xaml resource dictionary
-        /// </summary>
-        private string _stylePath;
-        public string StylePath
-        {
-            get => _stylePath;
-            set
-            {
-                this._stylePath = value;
-                this._resources = null;
-            }
-        }
+        public AdaptiveActionHandlers ActionHandlers { get; } = new AdaptiveActionHandlers();
+
+        public ResourceResolver ResourceResolvers { get; } = new ResourceResolver();
 
         public static FrameworkElement RenderAdaptiveCardWrapper(AdaptiveCard card, AdaptiveRenderContext context)
         {
@@ -101,14 +100,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
-            grid.Margin = new Thickness(context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding,
-                context.Config.Spacing.Padding);
+            grid.Margin = new Thickness(context.Config.Spacing.Padding);
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-            var inputControls = new List<FrameworkElement>();
+
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
@@ -116,32 +112,86 @@ namespace AdaptiveCards.Rendering.Wpf
             return outerGrid;
         }
 
+
         /// <summary>
         /// Renders an adaptive card.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="card">The card to render</param>
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
-            FrameworkElement el = null;
-            RenderedAdaptiveCard answer = null;
+            if (card == null) throw new ArgumentNullException(nameof(card));
+            EnsureCanRender(card);
 
+            RenderedAdaptiveCard renderCard = null;
 
-            Action<object, AdaptiveActionEventArgs> actionCallback = (sender, args) =>
+            void Callback(object sender, AdaptiveActionEventArgs args)
             {
-                answer?.InvokeOnAction(args);
+                renderCard?.InvokeOnAction(args);
+            }
+
+            var context = new AdaptiveRenderContext(Callback, null)
+            {
+                ResourceResolvers = ResourceResolvers,
+                ActionHandlers = ActionHandlers,
+                Config = HostConfig ?? new AdaptiveHostConfig(),
+                Resources = Resources,
+                ElementRenderers = ElementRenderers
             };
 
-            AdaptiveRenderContext context = new AdaptiveRenderContext(actionCallback, null)
+            var element = context.Render(card);
+
+            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings);
+            renderCard.InputBindings = context.InputBindings;
+
+            return renderCard;
+        }
+
+        /// <summary>
+        /// Renders an adaptive card to a PNG image. This method cannot be called from a server. Use <see cref="RenderCardToImageOnStaThreadAsync"/> instead.
+        /// </summary>
+        /// <param name="createStaThread">If true this method will create an STA thread allowing it to be called from a server.</param>
+        public async Task<RenderedAdaptiveCardImage> RenderCardToImageAsync(AdaptiveCard card, bool createStaThread, int width = 400, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (card == null) throw new ArgumentNullException(nameof(card));
+            EnsureCanRender(card);
+
+            if (createStaThread)
             {
-                Config = this.HostConfig ?? new AdaptiveHostConfig(),
-                Resources = this.Resources,
-                ElementRenderers = this.ElementRenderers
+                return await await Task.Factory.StartNewSta(async () => await RenderCardToImageInternalAsync(card, width, cancellationToken));
+            }
+            else
+            {
+                return await RenderCardToImageInternalAsync(card, width, cancellationToken);
+            }
+        }
+
+        private async Task<RenderedAdaptiveCardImage> RenderCardToImageInternalAsync(AdaptiveCard card, int width, CancellationToken cancellationToken)
+        {
+            var cardAssets = await LoadAssetsForCardAsync(card, cancellationToken);
+
+            var context = new AdaptiveRenderContext(null, null)
+            {
+                CardAssets = cardAssets,
+                ResourceResolvers = ResourceResolvers,
+                ActionHandlers = ActionHandlers,
+                Config = HostConfig ?? new AdaptiveHostConfig(),
+                Resources = Resources,
+                ElementRenderers = ElementRenderers
             };
 
-            el = context.Render(card);
+            var stream = context.Render(card).RenderToImage(width);
+            var renderCard = new RenderedAdaptiveCardImage(stream, card, context.Warnings);
+            renderCard.InputBindings = context.InputBindings;
 
-            answer = new RenderedAdaptiveCard(el, card);
-            return answer;
+            return renderCard;
+        }
+
+
+        public async Task<IDictionary<Uri, MemoryStream>> LoadAssetsForCardAsync(AdaptiveCard card, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var visitor = new PreFetchImageVisitor(ResourceResolvers);
+            await visitor.GetAllImages(card).WithCancellation(cancellationToken).ConfigureAwait(false);
+            return visitor.LoadedImages;
         }
     }
 }

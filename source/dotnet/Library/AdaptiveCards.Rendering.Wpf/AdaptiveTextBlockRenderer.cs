@@ -21,33 +21,33 @@ namespace AdaptiveCards.Rendering.Wpf
             switch (textBlock.Color)
             {
                 case AdaptiveTextColor.Accent:
-                    colorOption = context.Config.ContainerStyles.Default.FontColors.Accent;
+                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Accent;
                     break;
                 case AdaptiveTextColor.Attention:
-                    colorOption = context.Config.ContainerStyles.Default.FontColors.Attention;
+                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Attention;
                     break;
                 case AdaptiveTextColor.Dark:
-                    colorOption = context.Config.ContainerStyles.Default.FontColors.Dark;
+                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Dark;
                     break;
                 case AdaptiveTextColor.Good:
-                    colorOption = context.Config.ContainerStyles.Default.FontColors.Good;
+                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Good;
                     break;
                 case AdaptiveTextColor.Light:
-                    colorOption = context.Config.ContainerStyles.Default.FontColors.Light;
+                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Light;
                     break;
                 case AdaptiveTextColor.Warning:
-                    colorOption = context.Config.ContainerStyles.Default.FontColors.Warning;
+                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Warning;
                     break;
                 case AdaptiveTextColor.Default:
                 default:
-                    colorOption = context.Config.ContainerStyles.Default.FontColors.Default;
+                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Default;
                     break;
             }
 
             if (textBlock.IsSubtle)
                 uiTextBlock.SetColor(colorOption.Subtle, context);
             else
-                uiTextBlock.SetColor(colorOption.Normal, context);
+                uiTextBlock.SetColor(colorOption.Default, context);
 
             switch (textBlock.Size)
             {
@@ -82,6 +82,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     Style = uiTextBlock.Style,
                     FontWeight = uiTextBlock.FontWeight,
+                    FontSize = uiTextBlock.FontSize,
                     Visibility = Visibility.Hidden,
                     TextWrapping = TextWrapping.NoWrap,
                     HorizontalAlignment = System.Windows.HorizontalAlignment.Left,

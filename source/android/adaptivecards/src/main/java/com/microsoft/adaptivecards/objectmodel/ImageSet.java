@@ -49,10 +49,6 @@ public class ImageSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_2(spacing.swigValue(), separation, ImageVector.getCPtr(images), images), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.ImageSet_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ImageSet_SerializeToJsonValue(swigCPtr, this), true);
   }
@@ -67,16 +63,6 @@ public class ImageSet extends BaseCardElement {
 
   public ImageVector GetImages() {
     return new ImageVector(AdaptiveCardObjectModelJNI.ImageSet_GetImages__SWIG_0(swigCPtr, this), false);
-  }
-
-  public static ImageSet Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageSet_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new ImageSet(cPtr, true);
-  }
-
-  public static ImageSet DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageSet_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new ImageSet(cPtr, true);
   }
 
   public static ImageSet dynamic_cast(BaseCardElement baseCardElement) {

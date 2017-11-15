@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdaptiveCards.Rendering
 {
@@ -14,11 +11,27 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// The card that the visual was rendered from.
         /// </summary>
-        public AdaptiveCard OriginatingCard { get; private set; }
+        public AdaptiveCard OriginatingCard { get; }
 
-        protected RenderedAdaptiveCardBase(AdaptiveCard originatingCard)
+        /// <summary>
+        /// If any modifications were done to the rendered card they will be reported here
+        /// </summary>
+        public IList<AdaptiveWarning> Warnings { get; }
+
+        /// <summary>
+        /// Input bindings associated with this card. Used to get input values from any controls
+        /// </summary>
+        public IDictionary<string, Func<string>> InputBindings { get; set; } = new Dictionary<string, Func<string>>();
+
+        public RenderedAdaptiveCardInputs UserInputs { get; set; }
+
+
+        protected RenderedAdaptiveCardBase(AdaptiveCard originatingCard, IList<AdaptiveWarning> warnings)
         {
+            Warnings = warnings ?? throw new ArgumentNullException(nameof(warnings));
             OriginatingCard = originatingCard ?? throw new ArgumentNullException(nameof(originatingCard));
+            UserInputs = new RenderedAdaptiveCardInputs(this);
         }
+
     }
 }

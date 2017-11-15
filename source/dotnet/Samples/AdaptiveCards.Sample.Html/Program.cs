@@ -4,111 +4,144 @@ using System.IO;
 using System.Linq;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Html;
+using System.Diagnostics;
+using System.Text;
+using McMaster.Extensions.CommandLineUtils;
 
 namespace AdaptiveCards.Sample.Html
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            if (args.Length == 0)
+            Console.OutputEncoding = Encoding.UTF8;
+            var app = new CommandLineApplication();
+
+            app.HelpOption("-h|--help");
+
+            var pathArg = app.Argument("path", "The path that contains JSON card payloads");
+            var optionRecurse = app.Option("-r|--recursive", "Recurse the directory for all JSON files", CommandOptionType.NoValue);
+            var optionOutput = app.Option("-o|--out", "The file to output the HTML to", CommandOptionType.SingleValue);
+            var optionSupportsInteracitivty = app.Option("-i|--supports-interactivity", "Include actions and inputs in the output", CommandOptionType.NoValue);
+            var hostConfigOption = app.Option("--host-config", "Specify a host config file", CommandOptionType.SingleValue);
+
+            app.OnExecute(() =>
             {
-                args = new[] {"..\\..\\..\\..\\samples\\v1.0\\Scenarios"};
-                Console.WriteLine($"No path specified as first arg, trying '{args[0]}'");
-            }
+                FileStream outputFile = null;
+                var writer = Console.Out;
 
-            var files = new List<string>();
-
-            try
-            {
-                if (File.Exists(args[0]))
-                    files.Add(args[0]);
-                else
-                    files = Directory.GetFiles(args[0]).ToList();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return;
-            }
-
-
-
-            bool supportsInteractivity = false;
-
-            const string supportsInteractivityFlag = "/supportsInteractivity";
-            if (args.Contains(supportsInteractivityFlag))
-            {
-                supportsInteractivity = true;
-                args = args.Except(new string[] { supportsInteractivityFlag }).ToArray();
-            }
-
-            Console.WriteLine(@"<!DOCTYPE html>");
-            Console.WriteLine(@"<html><head>");
-            Console.WriteLine(@"<title>Adaptive Cards HTML Renderer Test Bed</title>");
-            Console.WriteLine(@"<style type='text/css'>");
-            Console.WriteLine(@".cardcontainer { ");
-            Console.WriteLine(@"  width: 400px;");
-            Console.WriteLine(@"  border-width: 1px;");
-            Console.WriteLine(@"  border-color: #808080;");
-            Console.WriteLine(@"  border-style: solid;");
-            Console.WriteLine(@"  padding: 8px;");
-            Console.WriteLine(@"}");
-            Console.WriteLine(@"</style>");
-            Console.WriteLine(@"</head>");
-            Console.WriteLine(@"<body>");
-
-            foreach (var file in files)
-            {
-                try
+                // Output to file instead of console
+                if (optionOutput.HasValue())
                 {
-                    Console.WriteLine("<hr/>");
-                    Console.WriteLine($"<h2>{file}</h2>");
+                    outputFile = File.Open(optionOutput.Value(), FileMode.Create);
+                    writer = new StreamWriter(outputFile);
+                }
 
-                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(File.ReadAllText(file));
-                    if (parseResult.Card != null)
+                // Get payload search path
+                var payloadPath = pathArg.Value ?? "..\\..\\..\\..\\samples\\v1.0\\Scenarios";
+                if (pathArg.Value == null)
+                {
+                    Console.WriteLine($"No path argument specified, trying {payloadPath}...");
+                }
+
+                var files = new List<string>();
+
+                if (File.Exists(payloadPath))
+                {
+                    files.Add(payloadPath);
+                }
+                else if (Directory.Exists(payloadPath))
+                {
+                    var recurse = optionRecurse.HasValue()
+                        ? SearchOption.AllDirectories
+                        : SearchOption.TopDirectoryOnly;
+
+                    files = Directory.GetFiles(payloadPath, "*.json", recurse).ToList();
+                    Console.WriteLine($"Found {files.Count} card payloads...");
+                }
+                else
+                {
+                    Console.WriteLine($"{payloadPath} does not contain any JSON files/. Nothing to do.");
+                    return;
+                }
+
+
+                writer.WriteLine(@"<!DOCTYPE html>");
+                writer.WriteLine(@"<html>");
+                writer.WriteLine(@"<head>");
+                writer.WriteLine(@"  <title>Adaptive Cards HTML Renderer Test Bed</title>");
+                writer.WriteLine(@"  <meta charset=""UTF-8"">");
+                writer.WriteLine(@"  <link rel='stylesheet' type='text/css' href='AdaptiveCards.css' />");
+                writer.WriteLine(@"</head>");
+                writer.WriteLine(@"<body>");
+
+
+                AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()
+                {
+                    SupportsInteractivity = optionSupportsInteracitivty.HasValue()
+                };
+
+                if (hostConfigOption.HasValue())
+                {
+                    hostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(hostConfigOption.Value()));
+                }
+
+                AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
+
+
+                writer.WriteLine($"<h3>Renderer schema version: {renderer.SupportedSchemaVersion}</h3>");
+                writer.WriteLine($"<h4>Interactivty Enabled: {hostConfig.SupportsInteractivity}</h4>");
+                writer.WriteLine($"<h4>Generated at: {DateTime.Now:G}</h4>");
+
+                foreach (var file in files)
+                {
+                    try
                     {
+                        writer.WriteLine("<hr/>");
+                        writer.WriteLine($"<h2>{Path.GetFileName(file)}</h2>");
+
+                        AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(File.ReadAllText(file, Encoding.UTF8));
+
                         AdaptiveCard card = parseResult.Card;
-
-                        AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(new AdaptiveHostConfig()
-                        {
-                            SupportsInteractivity = supportsInteractivity
-                        });
-
-                        Console.WriteLine($"<h3>Renderer schema version: {renderer.SupportedSchemaVersion}</h3>");
 
                         RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
 
-                        if (renderedCard.Html != null)
+                        // Report any warnings
+                        foreach (var warning in parseResult.Warnings.Union(renderedCard.Warnings))
                         {
-                            Console.WriteLine($"<div class='cardcontainer'>{renderedCard.Html}</div>");
+                            writer.WriteLine($"<p class='warning'>WARNING: {warning.Message}</p>");
                         }
-                        else
-                        {
-                            Console.WriteLine($"<p>Rendering failed</p>");
-                        }
+
+                        writer.WriteLine($"<div class='cardcontainer'>{renderedCard.Html}</div>");
                     }
-                    else
+                    catch (Exception err)
                     {
-                        Console.WriteLine($"<p>Failed to parse card: {file}</p>");
+                        Debugger.Break();
+                        writer.WriteLine($"<p class='error'>ERROR: {err.Message}</p>");
                     }
                 }
-                catch (Exception err)
+
+                writer.WriteLine("</body>");
+                writer.WriteLine("</html>");
+
+                if (outputFile != null)
                 {
-                    Console.WriteLine($"{file} failed: {err.Message}<br/>");
+                    writer.Flush();
+                    outputFile.Flush();
+                    outputFile.Dispose();
+
+                    Console.WriteLine($"All cards were written to {outputFile.Name}");
                 }
-            }
 
-            Console.WriteLine("</body>");
-            Console.WriteLine("</html>");
 
-#if DEBUG
-            // Leave the console up while debugging
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                Console.ReadLine();
-            }
-#endif
+                // if output, launch the file
+                if (Debugger.IsAttached)
+                {
+                    Console.ReadLine();
+                }
+            });
+
+            return app.Execute(args);
         }
     }
 }

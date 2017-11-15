@@ -76,4 +76,11 @@ namespace AdaptiveCards { namespace Uwp
         *elementType = ElementType::ChoiceInput;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveChoiceInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel)
+    {
+        sharedModel = m_sharedChoiceInput;
+        return S_OK;
+    }
 }}

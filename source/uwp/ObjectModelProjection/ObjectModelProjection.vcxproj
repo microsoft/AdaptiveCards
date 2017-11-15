@@ -27,9 +27,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseInputElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HostConfig.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.cpp" />
@@ -57,6 +59,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
@@ -64,6 +67,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />

@@ -5,19 +5,16 @@ namespace AdaptiveCards
     /// <summary>
     ///     ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
     /// </summary>
-    public class AdaptiveShowCardAction : AdaptiveActionBase
+    public class AdaptiveShowCardAction : AdaptiveAction
     {
         public const string TypeName = "Action.ShowCard";
 
-        public AdaptiveShowCardAction()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Container card to show when the action is invoked
         /// </summary>
-        [JsonRequired]
+        [JsonProperty(Required = Required.Always)]
         public AdaptiveCard Card { get; set; }
     }
 }

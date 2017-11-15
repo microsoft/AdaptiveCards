@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (adaptiveColumn.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(adaptiveColumn.SelectAction);//, new RenderContext(this.actionCallback, this.missingDataCallback));
+                var uiButton = (Button)context.Render(adaptiveColumn.SelectAction);
                 if (uiButton != null)
                 {
                     uiButton.Content = uiContainer;

@@ -4,6 +4,7 @@
 #include "BaseActionElement.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
+#include "ElementParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -20,12 +21,7 @@ public:
         std::string altText,
         HorizontalAlignment hAlignment);
 
-    static std::shared_ptr<Image> Deserialize(const Json::Value& root);
-    static std::shared_ptr<Image> DeserializeWithoutCheckingType(const Json::Value& root);
-    static std::shared_ptr<Image> DeserializeFromString(const std::string& jsonString);
-
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetUrl() const;
     void SetUrl(const std::string value);
@@ -52,5 +48,24 @@ private:
     std::string m_altText;
     HorizontalAlignment m_hAlignment;
     std::shared_ptr<BaseActionElement> m_selectAction;
+};
+
+class ImageParser : public IBaseCardElementParser
+{
+public:
+    std::shared_ptr<BaseCardElement> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        const Json::Value& root);
+
+    std::shared_ptr<BaseCardElement> DeserializeWithoutCheckingType(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        const Json::Value& root);
+
+    std::shared_ptr<BaseCardElement> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        const std::string& jsonString);
 };
 }

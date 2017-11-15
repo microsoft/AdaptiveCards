@@ -10,13 +10,13 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var containerStyle = context.Config.ContainerStyles.Default;
             var uiContainer = new Grid();
-            uiContainer.Margin = new Thickness(context.Config.Spacing.Padding);
+            //uiContainer.Margin = new Thickness(context.Config.Spacing.Padding);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(container.SelectAction);//, new RenderContext(container.actionCallback, container.missingDataCallback));
+                var uiButton = (Button)context.Render(container.SelectAction);
                 if (uiButton != null)
                 {
                     uiButton.Content = uiContainer;
@@ -24,7 +24,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     return uiButton;
                 }
             }
-
 
             Grid uiOuterContainer = new Grid();
             uiOuterContainer.Background = context.GetColorBrush(containerStyle.BackgroundColor);
@@ -34,7 +33,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return border;
         }
 
-        public static void AddContainerElements(Grid uiContainer, List<AdaptiveElement> elements, AdaptiveRenderContext context)
+        public static void AddContainerElements(Grid uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
         {
             foreach (var cardElement in elements)
             {
@@ -42,10 +41,16 @@ namespace AdaptiveCards.Rendering.Wpf
                 FrameworkElement uiElement = context.Render(cardElement);
                 if (uiElement != null)
                 {
-                    if (cardElement.Separator && uiContainer.RowDefinitions.Count > 0)
+                    if (cardElement.Separator && uiContainer.Children.Count > 0)
                     {
                         AddSeperator(context, cardElement, uiContainer);
                     }
+                    else if (uiContainer.Children.Count > 0)
+                    {
+                        var spacing = context.Config.GetSpacing(cardElement.Spacing);                        
+                        uiElement.Margin = new Thickness(0, spacing, 0, 0);
+                    }
+
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                     uiContainer.Children.Add(uiElement);
@@ -64,7 +69,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             SeparatorConfig sepStyle = context.Config.Separator;
             
-            uiSep.Margin = new Thickness(0, (spacing - sepStyle.LineThickness) / 2, 0, (spacing - sepStyle.LineThickness) / 2);
+            uiSep.Margin = new Thickness(0, (spacing - sepStyle.LineThickness) / 2, 0, 0);
             uiSep.SetHeight(sepStyle.LineThickness);
             if(!string.IsNullOrWhiteSpace(sepStyle.LineColor))
                 uiSep.SetBackgroundColor(sepStyle.LineColor,context);

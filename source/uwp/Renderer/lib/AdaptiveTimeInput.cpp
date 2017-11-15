@@ -23,6 +23,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TimeInput>& sharedTimeInput)
     {
+        if (sharedTimeInput == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedTimeInput = sharedTimeInput;
         return S_OK;
     }
@@ -167,5 +172,18 @@ namespace AdaptiveCards { namespace Uwp
         ElementType typeEnum;
         RETURN_IF_FAILED(get_ElementType(&typeEnum));
         return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTimeInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedTimeInput->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveCards::TimeInput>& sharedModel)
+    {
+        sharedModel = m_sharedTimeInput;
+        return S_OK;
     }
 }}

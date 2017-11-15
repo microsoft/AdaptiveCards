@@ -356,6 +356,7 @@ function actionExecuted(action: Adaptive.Action) {
     }
     else if (action instanceof Adaptive.ShowCardAction) {
         showPopupCard(<Adaptive.ShowCardAction>action);
+        return;
     }
     else {
         message += "    Type: <unknown>";

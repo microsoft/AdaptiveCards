@@ -11,34 +11,40 @@ namespace AdaptiveCards
     {
         public const string TypeName = "TextBlock";
 
+        public override string Type => TypeName;
+
         public AdaptiveTextBlock()
         {
-            Type = TypeName;
-            Text = "";
+            
+        }
+
+        public AdaptiveTextBlock(string text)
+        {
+            Text = text;
         }
 
         /// <summary>
         ///     The size of the text
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveTextSize Size { get; set; }
 
         /// <summary>
         ///     The weight of the text
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveTextWeight Weight { get; set; }
 
         /// <summary>
         ///     The color of the text
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveTextColor Color { get; set; }
 
         /// <summary>
-        ///     Should it be subtle?
+        ///     Make the text less prominent
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool IsSubtle { get; set; }
 
         /// <summary>
@@ -50,54 +56,19 @@ namespace AdaptiveCards
         /// <summary>
         ///     Horizontal alignment for element
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         ///     Is it allowed for the text to wrap
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool Wrap { get; set; }
 
         /// <summary>
         ///     When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int MaxLines { get; set; }
-
-        public bool ShouldSerializeSize()
-        {
-            return Size != AdaptiveTextSize.Default;
-        }
-
-        public bool ShouldSerializeColor()
-        {
-            return Color != AdaptiveTextColor.Default;
-        }
-
-        public bool ShouldSerializeHorizontalAlignment()
-        {
-            return HorizontalAlignment != AdaptiveHorizontalAlignment.Left;
-        }
-
-        public bool ShouldSerializeWeight()
-        {
-            return Weight != AdaptiveTextWeight.Default;
-        }
-
-        public bool ShouldSerializeWrap()
-        {
-            return Wrap;
-        }
-
-        public bool ShouldSerializeIsSubtle()
-        {
-            return IsSubtle;
-        }
-
-        public bool ShouldSerializeMaxLines()
-        {
-            return MaxLines > 0;
-        }
     }
 }

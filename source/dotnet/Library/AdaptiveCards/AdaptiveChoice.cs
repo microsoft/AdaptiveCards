@@ -26,6 +26,7 @@ namespace AdaptiveCards
         ///     Is this choice selected?
         /// </summary>
         [Obsolete("Choice.IsSelected has been deprecated.  Use AdaptiveChoiceSetInput.Value", false)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool IsSelected { get; set; } = false;
 
         /// <summary>
@@ -34,12 +35,5 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("AdaptiveChoiceSetInput.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
-
-        public bool ShouldSerializeIsSelected()
-        {
-#pragma warning disable CS0618 // Type or member is obsolete
-            return IsSelected;
-#pragma warning restore CS0618 // Type or member is obsolete
-        }
     }
 }

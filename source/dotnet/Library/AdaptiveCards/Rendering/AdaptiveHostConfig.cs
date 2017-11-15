@@ -1,30 +1,22 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class AdaptiveHostConfig
+    public class AdaptiveConfigBase
     {
-        public AdaptiveHostConfig() { }
+        [JsonExtensionData]
+        public IDictionary<string, JToken> AdditionalData { get; set; } = new Dictionary<string, JToken>();
+    }
 
-        public static AdaptiveHostConfigParseResult FromJson(string json)
-        {
-            AdaptiveHostConfig hostConfig = null;
 
-            try
-            {
-                hostConfig = JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
-            }
-            catch
-            {
-                // TODO: return errors
-            }
-
-            return new AdaptiveHostConfigParseResult(hostConfig);
-        }
-
+    public class AdaptiveHostConfig : AdaptiveConfigBase
+    {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ActionsConfig Actions { get; set; } = new ActionsConfig();
 
@@ -41,7 +33,7 @@ namespace AdaptiveCards.Rendering
         public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string FontFamily { get; set; } = "Calibri";
+        public string FontFamily { get; set; } = "Segoe UI";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
@@ -61,28 +53,50 @@ namespace AdaptiveCards.Rendering
         {
             switch (spacing)
             {
-                case AdaptiveCards.AdaptiveSpacing.Small:
+                case AdaptiveSpacing.None:
+                    return 0;
+
+                case AdaptiveSpacing.Small:
                     return Spacing.Small;
 
-                case AdaptiveCards.AdaptiveSpacing.Default:
-                    return Spacing.Default;
-
-                case AdaptiveCards.AdaptiveSpacing.Medium:
+                case AdaptiveSpacing.Medium:
                     return Spacing.Medium;
 
-                case AdaptiveCards.AdaptiveSpacing.Large:
+                case AdaptiveSpacing.Large:
                     return Spacing.Large;
 
-                case AdaptiveCards.AdaptiveSpacing.ExtraLarge:
+                case AdaptiveSpacing.ExtraLarge:
                     return Spacing.ExtraLarge;
 
-                case AdaptiveCards.AdaptiveSpacing.Padding:
+                case AdaptiveSpacing.Padding:
                     return Spacing.Padding;
 
                 default:
-                    throw new NotImplementedException();
+                    return Spacing.Default;
             }
         }
-    }   
+
+
+        public static AdaptiveHostConfig FromJson(string json)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
+            }
+            catch (JsonException ex)
+            {
+                throw new AdaptiveSerializationException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        ///  Serialize this Host Config to JSON
+        /// </summary>
+        /// <returns></returns>
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
+    }
 }
 

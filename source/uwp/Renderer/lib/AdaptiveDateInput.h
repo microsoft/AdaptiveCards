@@ -6,12 +6,13 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveDateInput :
+    class DECLSPEC_UUID("9aa05662-098b-4588-addb-af62378a8706") AdaptiveDateInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveDateInput,
             ABI::AdaptiveCards::Uwp::IAdaptiveInputElement,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveDateInput, BaseTrust)
 
@@ -49,6 +50,16 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP put_Separator(boolean separator);
 
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
+
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::DateInput>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::DateInput> m_sharedDateInput;

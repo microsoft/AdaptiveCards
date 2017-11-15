@@ -63,4 +63,10 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveFact::GetSharedModel(std::shared_ptr<AdaptiveCards::Fact>& sharedModel)
+    {
+        sharedModel = m_sharedFact;
+        return S_OK;
+    }
 }}

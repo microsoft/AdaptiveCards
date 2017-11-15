@@ -49,10 +49,6 @@ public class Container extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(spacing.swigValue(), separator, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.Container_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.Container_SerializeToJsonValue(swigCPtr, this), true);
   }
@@ -67,16 +63,6 @@ public class Container extends BaseCardElement {
 
   public void SetStyle(ContainerStyle value) {
     AdaptiveCardObjectModelJNI.Container_SetStyle(swigCPtr, this, value.swigValue());
-  }
-
-  public static Container Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.Container_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new Container(cPtr, true);
-  }
-
-  public static Container DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.Container_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new Container(cPtr, true);
   }
 
   public BaseActionElement GetSelectAction() {

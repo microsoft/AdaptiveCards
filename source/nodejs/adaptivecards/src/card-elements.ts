@@ -732,7 +732,7 @@ export class Image extends CardElement {
             element.style.display = "flex";
             element.style.alignItems = "flex-start";
 
-            if (this.selectAction != null) {
+            if (this.selectAction != null && this.hostConfig.supportsInteractivity) {
                 element.tabIndex = 0
                 element.setAttribute("role", "button");
                 element.setAttribute("aria-label", this.selectAction.title);
@@ -1340,6 +1340,7 @@ export class ChoiceSetInput extends Input {
 
         if (json["choices"] != undefined) {
             var choiceArray = json["choices"] as Array<any>;
+            this.choices = [];
 
             for (var i = 0; i < choiceArray.length; i++) {
                 var choice = new Choice();
@@ -2512,7 +2513,7 @@ export class Container extends CardElement {
             }
         }
 
-        if (this.selectAction) {
+        if (this.selectAction && this.hostConfig.supportsInteractivity) {
             element.classList.add("ac-selectable");
             element.tabIndex = 0;
             element.setAttribute("role", "button");
@@ -2908,7 +2909,7 @@ export class ColumnSet extends CardElement {
             element.className = "ac-columnSet";
             element.style.display = "flex";
 
-            if (this.selectAction) {
+            if (this.selectAction && this.hostConfig.supportsInteractivity) {
                 element.classList.add("ac-selectable");
 
                 element.onclick = (e) => {
@@ -3219,6 +3220,16 @@ export abstract class ContainerWithActions extends Container {
                 }
             }
         }
+    }
+
+    validate(): Array<IValidationError> {
+        var result = super.validate();
+
+        if (this._actionCollection) {
+            result = result.concat(this._actionCollection.validate());            
+        }
+
+        return result;
     }
 
     isLastElement(element: CardElement): boolean {

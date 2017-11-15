@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
@@ -12,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCardVisualizer", "V
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectModelProjection", "ObjectModelProjection\ObjectModelProjection.vcxproj", "{2D040C7D-757A-4292-BB59-62BC53A83C9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCardTestApp", "AdaptiveCardTestApp\AdaptiveCardTestApp.csproj", "{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,11 +62,22 @@ Global
 		{2D040C7D-757A-4292-BB59-62BC53A83C9F}.Release|x64.Build.0 = Release|x64
 		{2D040C7D-757A-4292-BB59-62BC53A83C9F}.Release|x86.ActiveCfg = Release|Win32
 		{2D040C7D-757A-4292-BB59-62BC53A83C9F}.Release|x86.Build.0 = Release|Win32
+		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|ARM.ActiveCfg = Debug|ARM
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|ARM.Build.0 = Debug|ARM
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|ARM.Deploy.0 = Debug|ARM
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|x64.ActiveCfg = Debug|x64
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|x64.Build.0 = Debug|x64
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|x64.Deploy.0 = Debug|x64
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|x86.ActiveCfg = Debug|x86
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|x86.Build.0 = Debug|x86
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Debug|x86.Deploy.0 = Debug|x86
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|ARM.ActiveCfg = Release|ARM
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|x64.ActiveCfg = Release|x64
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|x86.ActiveCfg = Release|x86
+		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|x86.Build.0 = Release|x86
+ 		{88DCE2AC-22EA-4313-B283-3B3D0A2CAAD2}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {00111E40-D9EF-47BA-87F8-3B7EFBBCA7CC}
 	EndGlobalSection
 EndGlobal

@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     This handles using @type field to instantiate strongly typed object on deserialization
+    ///     This handles using type field to instantiate strongly typed object on deserialization
     /// </summary>
     public class AdaptiveTypedElementConverter : JsonConverter
     {
+        private readonly AdaptiveCardParseResult _parseResult;
+
         /// <summary>
         /// Default types to support, register any new types to this list 
         /// </summary>
@@ -43,6 +43,16 @@ namespace AdaptiveCards
             return types;
         });
 
+        public AdaptiveTypedElementConverter() : this(new AdaptiveCardParseResult())
+        {
+
+        }
+
+        public AdaptiveTypedElementConverter(AdaptiveCardParseResult parseResult)
+        {
+            _parseResult = parseResult;
+        }
+
         public static void RegisterTypedElement<T>(string typeName = null)
             where T : AdaptiveTypedElement
         {
@@ -58,33 +68,57 @@ namespace AdaptiveCards
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo()) 
-                && TypedElementTypes.Value.ContainsValue(objectType);
+            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            throw new NotImplementedException();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
-            // Create target object based on JObject
+
             var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
-                throw new JsonException("AdaptiveCard elements must contain a 'type' property");
+                throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
             }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
-                var result = Activator.CreateInstance(type);
+                if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && jObject.Value<string>("id") == null)
+                    throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
+
+                var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
                 serializer.Populate(jObject.CreateReader(), result);
+
+                HandleAdditionalProperties(result);
                 return result;
             }
-            
-            // TODO: log unknown element type 
+
+            _parseResult?.Warnings.Add(new AdaptiveWarning(-1, $"Unknown element type '{typeName}'"));
             return null;
+        }
+
+        private void HandleAdditionalProperties(AdaptiveTypedElement te)
+        {
+            // https://stackoverflow.com/questions/34995406/nullvaluehandling-ignore-influences-deserialization-into-extensiondata-despite
+
+            // The default behavior of JsonExtensionData is to include properties if the VALUE could not be set, including abstract properties or default values
+            // We don't want to deserialize any properties that exist on the type into AdditionalProperties, so this removes them
+            te.AdditionalProperties
+                .Select(prop => te.GetType().GetRuntimeProperties()
+                    .SingleOrDefault(p => p.Name.Equals(prop.Key, StringComparison.OrdinalIgnoreCase)))
+                .Where(p => p != null)
+                .ToList()
+                .ForEach(p => te.AdditionalProperties.Remove(p.Name));
+
+            foreach (var prop in te.AdditionalProperties)
+            {
+                _parseResult?.Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on type '{te.Type}'"));
+            }
         }
 
         public static T CreateElement<T>(string typeName = null)

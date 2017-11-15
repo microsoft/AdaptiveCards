@@ -35,6 +35,14 @@ public class BaseCardElement {
     }
   }
 
+  public BaseCardElement(CardElementType type, Spacing spacing, boolean separator) {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_0(type.swigValue(), spacing.swigValue(), separator), true);
+  }
+
+  public BaseCardElement(CardElementType type) {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_1(type.swigValue()), true);
+  }
+
   public boolean GetSeparator() {
     return AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparator(swigCPtr, this);
   }
@@ -69,6 +77,11 @@ public class BaseCardElement {
 
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.BaseCardElement_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
+  public static BaseActionElement DeserializeSelectAction(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value json, AdaptiveCardSchemaKey key) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_DeserializeSelectAction(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(json), key.swigValue());
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
   }
 
 }

@@ -49,26 +49,12 @@ public class FactSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_2(spacing.swigValue(), separation, FactVector.getCPtr(facts), facts), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.FactSet_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.FactSet_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public FactVector GetFacts() {
     return new FactVector(AdaptiveCardObjectModelJNI.FactSet_GetFacts__SWIG_0(swigCPtr, this), false);
-  }
-
-  public static FactSet Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.FactSet_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new FactSet(cPtr, true);
-  }
-
-  public static FactSet DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.FactSet_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new FactSet(cPtr, true);
   }
 
   public static FactSet dynamic_cast(BaseCardElement baseCardElement) {

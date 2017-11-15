@@ -157,7 +157,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 answer += "\nUrl: " + (args.Action as AdaptiveOpenUrlAction).Url;
             }
 
-            answer += "\nInputs: " + args.Inputs.AsJson(InputValueMode.RawString).Stringify();
+            answer += "\nInputs: " + args.Inputs.AsJson().Stringify();
 
             return answer;
         }
@@ -170,6 +170,11 @@ namespace AdaptiveCardVisualizer.ViewModel
                 if (hostConfig != null)
                 {
                     _renderer.HostConfig = hostConfig;
+                }
+
+                if (Settings.UseFixedDimensions)
+                {
+                    _renderer.SetFixedDimensions(320, 180);
                 }
 
                 // Custom resource resolvers

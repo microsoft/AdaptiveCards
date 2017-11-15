@@ -10,6 +10,11 @@
         Title="MainWindow" Height="1000" Width="1000">
 
     <Window.Resources>
+
+        <Style x:Key="Warning" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Orange"/>
+        </Style>
         <Style x:Key="Error" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="DarkRed"/>
@@ -101,10 +106,12 @@
 
         <!--<avalon:TextEditor Grid.Row="1" Grid.Column="5" Name="options" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
                             ShowLineNumbers="true" TextChanged="options_TextChanged" Visibility="Collapsed"/>-->
-        <xctk:PropertyGrid Grid.Row="1" Grid.Column="5"  SelectedObject="{Binding}" Name="hostConfigEditor" PropertyChanged="options_PropertyChanged" Visibility="Collapsed" >
+        <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
         </xctk:PropertyGrid>
 
-        <Grid Grid.Row="2" Name="cardError" />
+        <StackPanel Grid.Row="2" Grid.Column="0" Name="cardError" />
+
+        <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
 
     </Grid>
 </Window>

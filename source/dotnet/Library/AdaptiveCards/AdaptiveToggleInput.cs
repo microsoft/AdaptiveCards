@@ -9,10 +9,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Input.Toggle";
 
-        public AdaptiveToggleInput()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Title text for toggle

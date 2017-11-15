@@ -1,27 +1,29 @@
-﻿using System;
+﻿using AdaptiveCards;
+using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Wpf;
+using ICSharpCode.AvalonEdit.Document;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Wpf;
-using ICSharpCode.AvalonEdit.Document;
-using Microsoft.Win32;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using AdaptiveCards;
 
 namespace WpfVisualizer
 {
     public partial class MainWindow : Window
     {
-        private AdaptiveCard _card;
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
@@ -38,7 +40,7 @@ namespace WpfVisualizer
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             _synth.SetOutputToDefaultAudioDevice();
             var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-            timer.Tick += _timer_Tick;
+            timer.Tick += Timer_Tick;
             timer.Start();
 
             foreach (var config in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))
@@ -50,66 +52,122 @@ namespace WpfVisualizer
                 });
             }
 
+
             Renderer = new AdaptiveCardRenderer()
             {
                 Resources = Resources
             };
+
+            // Use the Xceed rich input controls
             Renderer.UseXceedElementRenderers();
+
+            // Register custom elements and actions            
+            // TODO: Change to instance property? Change to UWP parser registration
+            AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
+            AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();
+
+            Renderer.ElementRenderers.Set<MyCustomRating>(MyCustomRating.Render);
+
+            // This seems unecessary?
+            Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
 
-
-        private void Config_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _dirty = true;
-        }
-
-        private void _timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             if (_dirty)
             {
                 _dirty = false;
-                try
-                {
-                    cardError.Children.Clear();
-
-                    var result = AdaptiveCard.FromJson(textBox.Text);
-                    if (result.Card != null)
-                        _card = result.Card;
-                    
-
-                    cardGrid.Children.Clear();
-                    if (_card != null)
-                    {
-                        var renderedAdaptiveCard = Renderer.RenderCard(_card);
-                        if (renderedAdaptiveCard.FrameworkElement != null)
-                        {
-                            // Wire up click handler
-                            renderedAdaptiveCard.OnAction += _onAction;
-
-                            cardGrid.Children.Add(renderedAdaptiveCard.FrameworkElement);
-                        }
-                    }
-                }
-                catch (Exception err)
-                {
-                    HandleParseError(err);
-                }
+                RenderCard();
             }
         }
 
-        private void _OnMissingInput(object sender, MissingInputEventArgs args)
+        private void RenderCard()
         {
-            MessageBox.Show($"Required input is missing.");
-            args.FrameworkElement.Focus();
+            cardError.Children.Clear();
+            cardGrid.Children.Clear();
+
+            try
+            {
+
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
+
+                AdaptiveCard card = parseResult.Card;
+
+                RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
+                // TODO: should we have an option to render fallback card instead of exception?
+
+                // Wire up click handler
+                renderedCard.OnAction += OnAction;
+
+                cardGrid.Children.Add(renderedCard.FrameworkElement);
+
+                // Report any warnings
+                var allWarnings = parseResult.Warnings.Union(renderedCard.Warnings);
+                foreach (var warning in allWarnings)
+                {
+                    ShowWarning(warning.Message);
+                }
+            }
+            catch (AdaptiveRenderException ex)
+            {
+                var fallbackCard = new TextBlock
+                {
+                    Text = ex.CardFallbackText ?? "Sorry, we couldn't render the card"
+                };
+
+                cardGrid.Children.Add(fallbackCard);
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex);
+            }
         }
 
-        private void HandleParseError(Exception err)
+        private void OnAction(RenderedAdaptiveCard sender, AdaptiveActionEventArgs e)
+        {
+            if (e.Action is AdaptiveOpenUrlAction openUrlAction)
+            {
+                Process.Start(openUrlAction.Url);
+            }
+            else if (e.Action is AdaptiveShowCardAction showCardAction)
+            {
+                // Action.ShowCard can be rendered inline automatically, or in "popup" mode
+                // If the Host Config is set to Popup mode, then the app needs to show it
+                if (Renderer.HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
+                {
+                    var dialog = new ShowCardWindow(showCardAction.Title, showCardAction, Resources);
+                    dialog.Owner = this;
+                    dialog.ShowDialog();
+                }
+            }
+            else if (e.Action is AdaptiveSubmitAction submitAction)
+            {
+                var inputs = sender.UserInputs.AsJson();
+                inputs.Merge(submitAction.Data);
+                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
+            }
+        }
+
+
+        private void ShowWarning(string message)
         {
             var textBlock = new TextBlock
             {
-                Text = err.Message,
+                Text = "WARNING: " + message,
+                TextWrapping = TextWrapping.Wrap,
+                Style = Resources["Warning"] as Style
+            };
+            var button = new Button { Content = textBlock };
+            cardError.Children.Add(button);
+        }
+
+        private void ShowError(Exception err)
+        {
+            var textBlock = new TextBlock
+            {
+                Text = "ERROR: " + err.Message,
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Error"] as Style
             };
@@ -123,9 +181,10 @@ namespace WpfVisualizer
                 iPos += 5;
                 var iEnd = err.Message.IndexOf(",", iPos);
 
-                var line = 0;
+                var line = 1;
                 if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out line))
                 {
+                    if (line == 0) line = 1;
                     iPos = err.Message.IndexOf("position ");
                     if (iPos > 0)
                     {
@@ -138,6 +197,13 @@ namespace WpfVisualizer
                 }
             }
         }
+
+        private void _OnMissingInput(object sender, MissingInputEventArgs args)
+        {
+            MessageBox.Show("Required input is missing.");
+            args.FrameworkElement.Focus();
+        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -165,28 +231,6 @@ namespace WpfVisualizer
             CommandManager.RegisterClassCommandBinding(typeof(Window), binding);
         }
 
-        private void _onAction(object sender, AdaptiveActionEventArgs e)
-        {
-            
-            if (e.Action is AdaptiveOpenUrlAction openUrlAction)
-            {
-                Process.Start(openUrlAction.Url);
-            }
-            else if (e.Action is AdaptiveShowCardAction showCardAction)
-            {
-                if (Renderer.HostConfig.Actions.ShowCard.ActionMode == ShowCardActionMode.Popup)
-                {
-                    var dialog = new ShowCardWindow(showCardAction.Title, showCardAction, Resources);
-                    dialog.Owner = this;
-                    dialog.ShowDialog();
-                }
-            }
-            else if (e.Action is AdaptiveSubmitAction submitAction)
-            {
-                // TODO: Shouldn't e.Data be on the SubmitAction?
-                MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Formatting.Indented), "SubmitAction");
-            }
-        }
 
         private void GoToPage(object sender, ExecutedRoutedEventArgs e)
         {
@@ -205,16 +249,17 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            // Disable interactivity to remove inputs and actions from the image
+            //Disable interactivity to remove inputs and actions from the image
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
             Renderer.HostConfig.SupportsInteractivity = false;
-            var imageStream = Renderer.RenderToImage(_card, 480);
+
+            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(textBox.Text).Card, false);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
-            
+
             var path = Path.GetRandomFileName() + ".png";
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
-                await imageStream.CopyToAsync(fileStream);
+                await renderedCard.ImageStream.CopyToAsync(fileStream);
             }
             Process.Start(path);
         }
@@ -222,21 +267,12 @@ namespace WpfVisualizer
         private void speak_Click(object sender, RoutedEventArgs e)
         {
             var result = AdaptiveCard.FromJson(textBox.Text);
-            if (result.Card != null)
-            {
-                var card = result.Card;
+            var card = result.Card;
 
-                _synth.SpeakAsyncCancelAll();
-                if (card.Speak != null)
-                    _synth.SpeakSsmlAsync(FixSSML(card.Speak));
-                else
-                    foreach (var element in card.Body)
-                    {
-#pragma warning disable CS0618 // Type or member is obsolete
-                        if (element.Speak != null)
-                            _synth.SpeakSsmlAsync(FixSSML(element.Speak));
-#pragma warning restore CS0618 // Type or member is obsolete
-                    }
+            _synth.SpeakAsyncCancelAll();
+            if (card.Speak != null)
+            {
+                _synth.SpeakSsmlAsync(FixSSML(card.Speak));
             }
         }
 
@@ -261,17 +297,38 @@ namespace WpfVisualizer
             hostConfigEditor.Visibility = hostConfigEditor.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void options_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public AdaptiveHostConfig HostConfig
         {
-            _dirty = true;
+            get => Renderer.HostConfig;
+            set
+            {
+                hostConfigerror.Children.Clear();
+                Renderer.HostConfig = value;
+                _dirty = true;
+                if (value != null)
+                {
+                    var props = value.GetType()
+                        .GetRuntimeProperties()
+                        .Where(p => typeof(AdaptiveConfigBase).IsAssignableFrom(p.PropertyType));
+
+                    foreach (var x in value.AdditionalData)
+                    {
+                        var textBlock = new TextBlock
+                        {
+                            Text = $"Unkown property {x.Key}",
+                            TextWrapping = TextWrapping.Wrap,
+                            Style = Resources["Warning"] as Style
+                        };
+                        hostConfigerror.Children.Add(textBlock);
+                    }
+                }
+            }
         }
 
         private void hostConfigs_Selected(object sender, RoutedEventArgs e)
         {
-            var parseResult = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
-            if (parseResult.HostConfig != null)
-                Renderer.HostConfig = parseResult.HostConfig;
-            _dirty = true;
+            HostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)hostConfigs.SelectedItem).Tag));
+            hostConfigEditor.SelectedObject = Renderer.HostConfig;
         }
 
         private void loadConfig_Click(object sender, RoutedEventArgs e)
@@ -282,13 +339,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var json = File.ReadAllText(dlg.FileName);
-
-                var parseResult = AdaptiveHostConfig.FromJson(json);
-                if (parseResult.HostConfig != null)
-                    Renderer.HostConfig = parseResult.HostConfig;
-
-                _dirty = true;
+                HostConfig = AdaptiveHostConfig.FromJson(File.ReadAllText(dlg.FileName));
             }
         }
 
@@ -303,6 +354,11 @@ namespace WpfVisualizer
                 var json = JsonConvert.SerializeObject(Renderer.HostConfig, Formatting.Indented);
                 File.WriteAllText(dlg.FileName, json);
             }
+        }
+
+        private void HostConfigEditor_OnPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
+        {
+            _dirty = true;
         }
     }
 }

@@ -17,6 +17,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction)
     {
+        if (sharedSubmitAction == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedSubmitAction = sharedSubmitAction;
         return S_OK;
     }
@@ -93,6 +98,19 @@ namespace AdaptiveCards { namespace Uwp
         Json::Value jsonCpp;
         RETURN_IF_FAILED(JsonObjectToJsonCpp(jsonObject, &jsonCpp));
         m_sharedSubmitAction->SetAdditionalProperties(jsonCpp);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedSubmitAction->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveCards::SubmitAction>& sharedModel)
+    {
+        sharedModel = m_sharedSubmitAction;
         return S_OK;
     }
 }}

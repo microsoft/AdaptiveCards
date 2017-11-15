@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace AdaptiveCards.Rendering
 {
@@ -10,7 +8,7 @@ namespace AdaptiveCards.Rendering
         where TUIElement : class
         where TContext : class
     {
-        private Dictionary<Type, Func<AdaptiveTypedElement, TContext, TUIElement>> _dictionary = new Dictionary<Type, Func<AdaptiveTypedElement, TContext, TUIElement>>();
+        private readonly Dictionary<Type, Func<AdaptiveTypedElement, TContext, TUIElement>> _dictionary = new Dictionary<Type, Func<AdaptiveTypedElement, TContext, TUIElement>>();
 
         public void Set<TElement>(Func<TElement, TContext, TUIElement> renderer)
             where TElement : AdaptiveTypedElement
@@ -32,7 +30,14 @@ namespace AdaptiveCards.Rendering
 
         public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Type type)
         {
-            return _dictionary[type];
+            if (_dictionary.ContainsKey(type))
+                return _dictionary[type];
+
+            // For Actions we can render the base AdaptiveAction type
+            if (typeof(AdaptiveAction).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                return _dictionary[typeof(AdaptiveAction)];
+
+            throw new ArgumentOutOfRangeException(nameof(type), $"Unable to locate renderer for {type}");
         }
     }
 }

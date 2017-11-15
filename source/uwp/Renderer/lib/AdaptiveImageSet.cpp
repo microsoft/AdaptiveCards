@@ -22,15 +22,26 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept try
     {
-        m_sharedImageSet = std::make_shared<ImageSet>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::ImageSet> imageSet = std::make_shared<AdaptiveCards::ImageSet>();
+        return RuntimeClassInitialize(imageSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ImageSet>& sharedImageSet)
     {
-        m_sharedImageSet = sharedImageSet;
-        GenerateImagesProjection(m_sharedImageSet->GetImages(), m_images.Get());
+        if (sharedImageSet == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
+
+        m_imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(sharedImageSet->GetImageSize());
+
+        m_spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(sharedImageSet->GetSpacing());
+        m_separator = sharedImageSet->GetSeparator();
+        RETURN_IF_FAILED(UTF8ToHString(sharedImageSet->GetId(), m_id.GetAddressOf()));
+
         return S_OK;
     }
 
@@ -43,19 +54,19 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
     {
-        *imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(m_sharedImageSet->GetImageSize());
+        *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
     {
-        m_sharedImageSet->SetImageSize(static_cast<AdaptiveCards::ImageSize>(imageSize));
+        m_imageSize = imageSize;
         return S_OK; 
     }
 
     _Use_decl_annotations_
-        IFACEMETHODIMP AdaptiveImageSet::get_ElementType(ElementType* elementType)
+    IFACEMETHODIMP AdaptiveImageSet::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::ImageSet;
         return S_OK;
@@ -64,21 +75,21 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedImageSet->GetSpacing());
+        *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedImageSet->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        m_spacing = spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::get_Separator(boolean* separator)
     {
-        *separator = m_sharedImageSet->GetSeparator();
+        *separator = m_separator;
         return S_OK;
 
         //Issue #629 to make separator an object
@@ -88,7 +99,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::put_Separator(boolean separator)
     {
-        m_sharedImageSet->SetSeparator(separator);
+        m_separator = separator;
 
         /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
@@ -103,16 +114,13 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedImageSet->GetId(), id);
+        return m_id.CopyTo(id);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::put_Id(HSTRING id)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedImageSet->SetId(out);
-        return S_OK;
+        return m_id.Set(id);
     }
 
     _Use_decl_annotations_
@@ -121,6 +129,30 @@ namespace AdaptiveCards { namespace Uwp
         ElementType typeEnum;
         RETURN_IF_FAILED(get_ElementType(&typeEnum));
         return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        std::shared_ptr<AdaptiveCards::ImageSet> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveCards::ImageSet>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::ImageSet> imageSet = std::make_shared<AdaptiveCards::ImageSet>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(imageSet)));
+
+        imageSet->SetImageSize(static_cast<AdaptiveCards::ImageSize>(m_imageSize));
+
+        RETURN_IF_FAILED(GenerateSharedImages(m_images.Get(), imageSet->GetImages()));
+
+        sharedModel = imageSet;
+        return S_OK;
     }
 }
 }

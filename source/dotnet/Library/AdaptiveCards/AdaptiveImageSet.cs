@@ -10,11 +10,8 @@ namespace AdaptiveCards
     public class AdaptiveImageSet : AdaptiveElement
     {
         public const string TypeName = "ImageSet";
-
-        public AdaptiveImageSet()
-        {
-            Type = TypeName;
-        }
+    
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Collection of images to display together
@@ -25,12 +22,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Specifies the horizontal size of each image in the set
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveImageSize ImageSize { get; set; }
-
-        public bool ShouldSerializeImageSize()
-        {
-            return ImageSize != AdaptiveImageSize.Auto;
-        }
     }
 }

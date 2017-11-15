@@ -22,15 +22,24 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept try
     {
-        m_sharedFactSet = std::make_shared<FactSet>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+        return RuntimeClassInitialize(factSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::FactSet>& sharedFactSet)
     {
-        m_sharedFactSet = sharedFactSet;
-        GenerateFactsProjection(m_sharedFactSet->GetFacts(), m_facts.Get());
+        if (sharedFactSet == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        GenerateFactsProjection(sharedFactSet->GetFacts(), m_facts.Get());
+        
+        m_spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(sharedFactSet->GetSpacing());
+        m_separator = sharedFactSet->GetSeparator();
+        RETURN_IF_FAILED(UTF8ToHString(sharedFactSet->GetId(), m_id.GetAddressOf()));
+
         return S_OK;
     }
 
@@ -50,21 +59,21 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedFactSet->GetSpacing());
+        *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedFactSet->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        m_spacing = spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::get_Separator(boolean* separator)
     {
-        *separator = m_sharedFactSet->GetSeparator();
+        *separator = m_separator;
         return S_OK;
 
         //Issue #629 to make separator an object
@@ -74,7 +83,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::put_Separator(boolean separator)
     {
-        m_sharedFactSet->SetSeparator(separator);
+        m_separator = separator;
 
         /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
@@ -89,16 +98,13 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedFactSet->GetId(), id);
+        return m_id.CopyTo(id);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::put_Id(HSTRING id)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedFactSet->SetId(out);
-        return S_OK;
+        return m_id.Set(id);
     }
 
     _Use_decl_annotations_
@@ -107,5 +113,27 @@ namespace AdaptiveCards { namespace Uwp
         ElementType typeEnum;
         RETURN_IF_FAILED(get_ElementType(&typeEnum));
         return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        std::shared_ptr<AdaptiveCards::FactSet> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveCards::FactSet>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(factSet)));
+        RETURN_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));
+
+        sharedModel = factSet;
+
+        return S_OK;
     }
 }}

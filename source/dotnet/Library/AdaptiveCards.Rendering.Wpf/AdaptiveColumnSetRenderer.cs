@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
-    public static class AdaptiveColumnSetRenderer 
+    public static class AdaptiveColumnSetRenderer
     {
         public static FrameworkElement Render(AdaptiveColumnSet columnSet, AdaptiveRenderContext context)
         {
@@ -23,14 +23,14 @@ namespace AdaptiveCards.Rendering.Wpf
                         var uiSep = new Grid();
                         uiSep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
 
-                    uiSep.VerticalAlignment = VerticalAlignment.Stretch;
+                        uiSep.VerticalAlignment = VerticalAlignment.Stretch;
 
                         int spacing = context.Config.GetSpacing(column.Spacing);
                         uiSep.Margin = new Thickness(spacing / 2.0, 0, spacing / 2.0, 0);
 
-                    uiSep.Width = context.Config.Separator.LineThickness;
-                    if (column.Separator && context.Config.Separator.LineColor != null)
-                        uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
+                        uiSep.Width = context.Config.Separator.LineThickness;
+                        if (column.Separator && context.Config.Separator.LineColor != null)
+                            uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
 
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                         Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);

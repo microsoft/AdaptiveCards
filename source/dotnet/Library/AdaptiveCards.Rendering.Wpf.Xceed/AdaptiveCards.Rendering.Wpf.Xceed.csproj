@@ -11,6 +11,7 @@
     <PackageIconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</PackageLicenseUrl>
+    <RootNamespace>AdaptiveCards.Rendering.Wpf</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

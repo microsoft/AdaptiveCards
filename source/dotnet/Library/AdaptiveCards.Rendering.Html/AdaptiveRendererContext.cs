@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards.Rendering.Html
@@ -8,22 +9,28 @@ namespace AdaptiveCards.Rendering.Html
         public AdaptiveRendererContext(AdaptiveHostConfig hostConfig, AdaptiveElementRenderers<HtmlTag, AdaptiveRendererContext> elementRenderers)
         {
             // clone it
-            this.Config = JsonConvert.DeserializeObject<AdaptiveHostConfig>(JsonConvert.SerializeObject(hostConfig));
-            this.ElementRenderers = elementRenderers;
+            Config = JsonConvert.DeserializeObject<AdaptiveHostConfig>(JsonConvert.SerializeObject(hostConfig));
+            ElementRenderers = elementRenderers;
         }
 
         public AdaptiveHostConfig Config { get; set; }
 
         public AdaptiveElementRenderers<HtmlTag, AdaptiveRendererContext> ElementRenderers { get; set; }
 
-        /// <summary>
-        /// Helper to deal with casting
-        /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
+        public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
+
         public HtmlTag Render(AdaptiveTypedElement element)
         {
-            return this.ElementRenderers.Get(element.GetType())(element, this);
+            var renderer = ElementRenderers.Get(element.GetType());
+            if (renderer != null)
+            {
+                return renderer.Invoke(element, this);
+            }
+            else
+            {
+                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element type '{element.Type}'"));
+                return null;
+            }
         }
 
 
@@ -33,28 +40,28 @@ namespace AdaptiveCards.Rendering.Html
             switch (color)
             {
                 case AdaptiveTextColor.Accent:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Accent;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Accent;
                     break;
                 case AdaptiveTextColor.Good:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Good;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Good;
                     break;
                 case AdaptiveTextColor.Warning:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Warning;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Warning;
                     break;
                 case AdaptiveTextColor.Attention:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Attention;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Attention;
                     break;
                 case AdaptiveTextColor.Dark:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Dark;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Dark;
                     break;
                 case AdaptiveTextColor.Light:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Light;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Light;
                     break;
                 default:
-                    colorConfig = Config.ContainerStyles.Default.FontColors.Default;
+                    colorConfig = Config.ContainerStyles.Default.ForegroundColors.Default;
                     break;
             }
-            return GetRGBColor(isSubtle ? colorConfig.Subtle : colorConfig.Normal);
+            return GetRGBColor(isSubtle ? colorConfig.Subtle : colorConfig.Default);
         }
 
         public string GetRGBColor(string color)

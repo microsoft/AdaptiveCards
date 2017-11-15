@@ -22,6 +22,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput)
     {
+        if (sharedDateInput == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedDateInput = sharedDateInput;
         return S_OK;
     }
@@ -169,4 +174,16 @@ namespace AdaptiveCards { namespace Uwp
         return ProjectedElementTypeToHString(typeEnum, type);
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveDateInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedDateInput->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::DateInput>& sharedModel)
+    {
+        sharedModel = m_sharedDateInput;
+        return S_OK;
+    }
 }}

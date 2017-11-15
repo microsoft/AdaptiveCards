@@ -67,13 +67,13 @@ public class Fact {
     AdaptiveCardObjectModelJNI.Fact_SetValue(swigCPtr, this, value);
   }
 
-  public static Fact Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.Fact_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
+  public static Fact Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value root) {
+    long cPtr = AdaptiveCardObjectModelJNI.Fact_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(root));
     return (cPtr == 0) ? null : new Fact(cPtr, true);
   }
 
-  public static Fact DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.Fact_DeserializeFromString(jsonString);
+  public static Fact DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.Fact_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, jsonString);
     return (cPtr == 0) ? null : new Fact(cPtr, true);
   }
 

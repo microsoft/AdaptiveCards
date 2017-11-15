@@ -17,7 +17,8 @@ namespace AdaptiveCards { namespace Uwp
         HRESULT RuntimeClassInitialize();
 
         // IAdaptiveCardRenderer
-        IFACEMETHODIMP SetOverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
+        IFACEMETHODIMP put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
+        IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary);
         IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig);
         IFACEMETHODIMP get_HostConfig(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig** hostConfig);
         IFACEMETHODIMP SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight);
@@ -39,7 +40,7 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration** result);
 
         ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* GetHostConfig();
-        ABI::Windows::UI::Xaml::IResourceDictionary* GetOverrideDictionary();
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetMergedDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
 
         IFACEMETHODIMP get_ResourceResolvers(
@@ -47,17 +48,20 @@ namespace AdaptiveCards { namespace Uwp
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig> m_hostConfig;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
-
-        HRESULT RegisterDefaultElementRenderers();
 
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
 
         HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** adaptiveCard);
+        HRESULT RegisterDefaultElementRenderers();
+        void InitializeDefaultResourceDictionary();
+        HRESULT SetMergedDictionary();
     };
 
     ActivatableClass(AdaptiveCardRenderer);

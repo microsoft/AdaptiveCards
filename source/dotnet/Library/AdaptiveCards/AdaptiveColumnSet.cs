@@ -10,10 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "ColumnSet";
 
-        public AdaptiveColumnSet()
-        {
-            Type = TypeName;
-        }
+        public override string Type => TypeName;
 
         /// <summary>
         ///     Columns that are part of this group
@@ -25,6 +22,6 @@ namespace AdaptiveCards
         ///     Action for this ColumnSet (this allows a default action at the column set level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveActionBase SelectAction { get; set; }
+        public AdaptiveAction SelectAction { get; set; }
     }
 }

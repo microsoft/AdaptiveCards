@@ -6,11 +6,12 @@
 
 namespace AdaptiveCards { namespace Uwp
 {
-    class AdaptiveShowCardAction :
+    class DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::Uwp::IAdaptiveShowCardAction,
-            ABI::AdaptiveCards::Uwp::IAdaptiveActionElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveActionElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveShowCardAction, BaseTrust)
 
@@ -35,8 +36,24 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
+
     private:
-        std::shared_ptr<AdaptiveCards::ShowCardAction> m_sharedShowCardAction;
+        
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCard> m_card;
+
+        Microsoft::WRL::Wrappers::HString m_id;
+        Microsoft::WRL::Wrappers::HString m_title;
+        Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
+
     };
 
     ActivatableClass(AdaptiveShowCardAction);

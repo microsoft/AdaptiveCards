@@ -49,10 +49,6 @@ public class ChoiceSetInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_2(spacing.swigValue(), separation, ChoiceInputVector.getCPtr(choices), choices), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.ChoiceSetInput_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ChoiceSetInput_SerializeToJsonValue(swigCPtr, this), true);
   }
@@ -75,16 +71,6 @@ public class ChoiceSetInput extends BaseInputElement {
 
   public ChoiceInputVector GetChoices() {
     return new ChoiceInputVector(AdaptiveCardObjectModelJNI.ChoiceSetInput_GetChoices__SWIG_0(swigCPtr, this), false);
-  }
-
-  public static ChoiceSetInput Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ChoiceSetInput_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new ChoiceSetInput(cPtr, true);
-  }
-
-  public static ChoiceSetInput DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ChoiceSetInput_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new ChoiceSetInput(cPtr, true);
   }
 
   public static ChoiceSetInput dynamic_cast(BaseCardElement baseCardElement) {

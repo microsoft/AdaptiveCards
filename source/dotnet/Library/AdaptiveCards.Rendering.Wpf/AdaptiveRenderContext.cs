@@ -1,92 +1,115 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
+    /// <summary>
+    /// Context state for a render pass
+    /// </summary>
     public class AdaptiveRenderContext
     {
-        private Func<string, MemoryStream> _imageResolver = null;
+        private readonly Dictionary<string, SolidColorBrush> _colors = new Dictionary<string, SolidColorBrush>();
+
+        public List<Task> AssetTasks { get; } = new List<Task>();
 
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
-            Action<object, MissingInputEventArgs> missingDataCallback,
-            Func<string, MemoryStream> imageResolver = null)
+            Action<object, MissingInputEventArgs> missingDataCallback)
         {
             if (actionCallback != null)
-                this.OnAction += (obj, args) => actionCallback(obj, args);
+                OnAction += (obj, args) => actionCallback(obj, args);
 
             if (missingDataCallback != null)
-                this.OnMissingInput += (obj, args) => missingDataCallback(obj, args);
-
-            this._imageResolver = imageResolver;
+                OnMissingInput += (obj, args) => missingDataCallback(obj, args);
         }
 
         public AdaptiveHostConfig Config { get; set; } = new AdaptiveHostConfig();
 
+        public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
+
         public AdaptiveElementRenderers<FrameworkElement, AdaptiveRenderContext> ElementRenderers { get; set; }
 
+        public ResourceDictionary Resources { get; set; }
 
-        public BitmapImage ResolveImageSource(string url)
-        {
-            BitmapImage source = null;
-            if (this._imageResolver != null)
-            {
-                // off screen rendering can pass already loaded image to us so we can render immediately
-                var stream = this._imageResolver(url);
-                if (stream != null)
-                {
-                    source = new BitmapImage();
-                    source.BeginInit();
-                    source.StreamSource = stream;
-                    source.EndInit();
-                }
-            }
-            return source ?? new BitmapImage(new Uri(url));
-        }
+        public AdaptiveActionHandlers ActionHandlers { get; set; }
 
-        /// <summary>
-        /// Event fires when action is invoked
-        /// </summary>
-        public delegate void ActionEventHandler(object sender, AdaptiveActionEventArgs e);
+        public ResourceResolver ResourceResolvers { get; set; }
 
-        public event ActionEventHandler OnAction;
+        public IDictionary<Uri, MemoryStream> CardAssets { get; set; } = new Dictionary<Uri, MemoryStream>();
+
+        public IDictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
+
+        public event EventHandler<AdaptiveActionEventArgs> OnAction;
 
         /// <summary>
         /// Event fires when missing input for submit/http actions
         /// </summary>
-        public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
+        public event EventHandler<MissingInputEventArgs> OnMissingInput;
 
-        public event MissingInputEventHandler OnMissingInput;
-
-        public void Action(FrameworkElement ui, AdaptiveActionEventArgs args)
+        public void InvokeAction(FrameworkElement ui, AdaptiveActionEventArgs args)
         {
-            this.OnAction?.Invoke(ui, args);
+            OnAction?.Invoke(ui, args);
         }
 
-        public void MissingInput(AdaptiveActionBase sender, MissingInputEventArgs args)
+        public void MissingInput(AdaptiveAction sender, MissingInputEventArgs args)
         {
-            this.OnMissingInput?.Invoke(sender, args);
+            OnMissingInput?.Invoke(sender, args);
         }
 
-        private Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
-
-        public SolidColorBrush GetColorBrush(string color)
+        /// <summary>
+        /// All remote assets should be resolved through this method for tracking
+        /// </summary>
+        public async Task<BitmapImage> ResolveImageSource(Uri url)
         {
-            lock (colors)
+            var completeTask = new TaskCompletionSource<object>();
+            AssetTasks.Add(completeTask.Task);
+
+            // Load the stream from the pre-populated CardAssets or try to load from the ResourceResolver
+            var streamTask = CardAssets.TryGetValue(url, out var s) ? Task.FromResult(s) : ResourceResolvers.LoadAssetAsync(url);
+
+            Debug.WriteLine($"ASSETS: Starting asset down task for {url}");
+
+            try
             {
-                if (colors.TryGetValue(color, out var brush))
-                    return brush;
-                brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
-                colors[color] = brush;
-                return brush;
+                var source = new BitmapImage();
+                
+                var stream = await streamTask;
+                if (stream != null)
+                {
+                    stream.Position = 0;
+                    source.BeginInit();
+                    source.CacheOption = BitmapCacheOption.OnLoad;
+                    source.StreamSource = stream;
+                    source.EndInit();
+                    Debug.WriteLine($"ASSETS: Finished loading asset for {url} ({stream.Length} bytes)");
+                }
+                completeTask.SetResult(new object());
+                return source;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"ASSETS: Failed to load asset for {url}. {e.Message}");
+                completeTask.SetException(e);
+                return null;
             }
         }
 
-        public ResourceDictionary Resources { get; set; }
+        public SolidColorBrush GetColorBrush(string color)
+        {
+            lock (_colors)
+            {
+                if (_colors.TryGetValue(color, out var brush))
+                    return brush;
+                brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                _colors[color] = brush;
+                return brush;
+            }
+        }
 
 
         public virtual Style GetStyle(string styleName)
@@ -106,76 +129,22 @@ namespace AdaptiveCards.Rendering.Wpf
             return null;
         }
 
-
-        public virtual dynamic MergeInputData(dynamic data)
-        {
-            foreach (var id in this.InputBindings.Keys)
-            {
-                var value = this.InputBindings[id]();
-                if (value != null)
-                {
-                    data[id] = JToken.FromObject(value);
-                }
-            }
-            return data;
-        }
-
         /// <summary>
         /// Helper to deal with casting
         /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
         public FrameworkElement Render(AdaptiveTypedElement element)
         {
-            return ElementRenderers.Get(element.GetType())(element, this);
+            var renderer = ElementRenderers.Get(element.GetType());
+            if (renderer != null)
+            {
+                return renderer.Invoke(element, this);
+            }
+            else
+            {
+                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element type '{element.Type}'"));
+                return null;
+            }
         }
 
-        public Dictionary<string, Func<object>> InputBindings = new Dictionary<string, Func<object>>();
-    }
-
-
-    public class AdaptiveActionEventArgs : EventArgs
-    {
-        public AdaptiveActionEventArgs()
-        {
-        }
-
-        /// <summary>
-        /// The action that fired
-        /// </summary>
-        public AdaptiveActionBase Action { get; set; }
-
-        /// <summary>
-        /// Data for Input controls (if appropriate)
-        /// </summary>
-        public object Data { get; set; }
-    }
-
-    public class MissingInputEventArgs : EventArgs
-    {
-        public MissingInputEventArgs(AdaptiveInput input, FrameworkElement frameworkElement)
-        {
-            this.FrameworkElement = frameworkElement;
-            this.AdaptiveInput = input;
-        }
-
-        public FrameworkElement FrameworkElement { get; private set; }
-
-        public AdaptiveInput AdaptiveInput { get; private set; }
-    }
-
-
-    public class MissingInputException : Exception
-    {
-        public MissingInputException(string message, AdaptiveInput input, FrameworkElement frameworkElement)
-            : base(message)
-        {
-            this.FrameworkElement = frameworkElement;
-            this.AdaptiveInput = input;
-        }
-
-        public FrameworkElement FrameworkElement { get; set; }
-
-        public AdaptiveInput AdaptiveInput { get; set; }
     }
 }

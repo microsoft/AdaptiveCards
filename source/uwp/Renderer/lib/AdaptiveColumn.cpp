@@ -22,44 +22,46 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept try
     {
-        m_sharedColumn = std::make_shared<Column>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
+        return RuntimeClassInitialize(column);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn)
     {
-        m_sharedColumn = sharedColumn;
-        GenerateContainedElementsProjection(m_sharedColumn->GetItems(), m_items.Get());
+        GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
+        m_style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(sharedColumn->GetStyle());
+        RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
+
+        m_spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(sharedColumn->GetSpacing());
+        m_separator = sharedColumn->GetSeparator();
+        RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetId(), m_id.GetAddressOf()));
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Width(HSTRING* width)
     {
-        return UTF8ToHString(m_sharedColumn->GetWidth(), width);
+        return m_width.CopyTo(width);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::put_Width(HSTRING width)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(width, out));
-        m_sharedColumn->SetWidth(out);
-        return S_OK;
+        return m_width.Set(width);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
     {
-        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedColumn->GetStyle());
+        *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
     {
-        m_sharedColumn->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
+        m_style = style;
         return S_OK;
     }
 
@@ -78,21 +80,21 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedColumn->GetSpacing());
+        *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
-        m_sharedColumn->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        m_spacing = spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Separator(boolean* separator)
     {
-        *separator = m_sharedColumn->GetSeparator();
+        *separator = m_separator;
         return S_OK;
 
         //Issue #629 to make separator an object
@@ -102,7 +104,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::put_Separator(boolean separator)
     {
-        m_sharedColumn->SetSeparator(separator);
+        m_separator = separator;
 
         /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
@@ -117,16 +119,13 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedColumn->GetId(), id);
+        return m_id.CopyTo(id);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::put_Id(HSTRING id)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedColumn->SetId(out);
-        return S_OK;
+        return m_id.Set(id);
     }
 
     _Use_decl_annotations_
@@ -135,5 +134,30 @@ namespace AdaptiveCards { namespace Uwp
         ElementType typeEnum;
         RETURN_IF_FAILED(get_ElementType(&typeEnum));
         return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        std::shared_ptr<AdaptiveCards::Column> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveCards::Column>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(column)));
+
+        column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+        column->SetWidth(HStringToUTF8(m_width.Get()));
+
+        GenerateSharedElements(m_items.Get(), column->GetItems());
+
+        sharedModel = column;
+        return S_OK;
     }
 }}

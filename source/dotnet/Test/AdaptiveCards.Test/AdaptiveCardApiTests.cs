@@ -1,52 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace AdaptiveCards.Test
 {
     [TestClass]
     public class AdaptiveCardApiTests
     {
-        /// <summary>
-        /// Note that tests take a hard dependency on the items within this card. Do not change this payload.
-        /// </summary>
-        private const string SIMPLE_CARD = @"{
-  ""type"": ""AdaptiveCard"",
-  ""version"": ""1.0"",
-  ""body"": [
-    {
-      ""type"": ""TextBlock"",
-      ""text"": ""Adaptive Card design session"",
-      ""size"": ""large"",
-      ""weight"": ""bolder""
-    }
-  ]
-}";
-
-        private const string INVALID_CARD_MISSING_VERSION = @"{
-  ""type"": ""AdaptiveCard"",
-  ""body"": [
-    {
-      ""type"": ""TextBlock"",
-      ""text"": ""Adaptive Card design session"",
-      ""size"": ""large"",
-      ""weight"": ""bolder""
-    }
-  ]
-}";
-
-        private const string INVALID_CARD_MISSING_TYPE = @"{
-  ""version"": ""1.0"",
-  ""body"": [
-    {
-      ""type"": ""TextBlock"",
-      ""text"": ""Adaptive Card design session"",
-      ""size"": ""large"",
-      ""weight"": ""bolder""
-    }
-  ]
-}";
-
         [TestMethod]
         public void TestAssigningVersion()
         {
@@ -96,31 +57,55 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestParsingCard()
         {
-            AdaptiveCardParseResult result = AdaptiveCard.FromJson(SIMPLE_CARD);
-
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Adaptive Card design session"",
+      ""size"": ""large"",
+      ""weight"": ""bolder""
+    }
+  ]
+}";
+            var result = AdaptiveCard.FromJson(json);
             Assert.IsNotNull(result.Card);
-
             Assert.AreEqual(1, result.Card.Body.Count);
         }
 
         [TestMethod]
         public void TestParsingInvalidCardMissingVersion()
         {
-            TestParsingInvalidCard(INVALID_CARD_MISSING_VERSION);
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Adaptive Card design session"",
+      ""size"": ""large"",
+      ""weight"": ""bolder""
+    }
+  ]
+}";
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
 
         [TestMethod]
         public void TestParsingInvalidCardMissingType()
         {
-            TestParsingInvalidCard(INVALID_CARD_MISSING_TYPE);
+            var json = @"{
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Adaptive Card design session"",
+      ""size"": ""large"",
+      ""weight"": ""bolder""
+    }
+  ]
+}";
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
-
-        private void TestParsingInvalidCard(string cardPayload)
-        {
-            AdaptiveCardParseResult result = AdaptiveCard.FromJson(cardPayload);
-
-            Assert.IsNull(result.Card);
-        }
-
     }
 }

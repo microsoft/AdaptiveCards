@@ -23,8 +23,7 @@ public:
     bool GetIsRequired() const;
     void SetIsRequired(const bool isRequired);
 
-    virtual std::string Serialize() = 0;
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
 private:
     std::string m_id;

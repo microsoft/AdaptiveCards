@@ -18,6 +18,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
     {
+        if (sharedOpenUrlAction == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedOpenUrlAction = sharedOpenUrlAction;
         return S_OK;
     }
@@ -114,6 +119,19 @@ namespace AdaptiveCards { namespace Uwp
         Json::Value jsonCpp;
         RETURN_IF_FAILED(JsonObjectToJsonCpp(jsonObject, &jsonCpp));
         m_sharedOpenUrlAction->SetAdditionalProperties(jsonCpp);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedOpenUrlAction->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedModel)
+    {
+        sharedModel = m_sharedOpenUrlAction;
         return S_OK;
     }
 }}

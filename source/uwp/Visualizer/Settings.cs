@@ -9,10 +9,10 @@ namespace AdaptiveCardVisualizer
 {
     public static class Settings
     {
-        public static bool UseAsyncRenderMethod
+        public static bool UseFixedDimensions
         {
-            get { ApplicationData.Current.RoamingSettings.Values.TryGetValue("UseAsyncRenderMethod", out object result); return result is bool && (bool)result; }
-            set { ApplicationData.Current.RoamingSettings.Values["UseAsyncRenderMethod"] = value; }
+            get { ApplicationData.Current.RoamingSettings.Values.TryGetValue("UseFixedDimensions", out object result); return result is bool && (bool)result; }
+            set { ApplicationData.Current.RoamingSettings.Values["UseFixedDimensions"] = value; }
         }
     }
 }

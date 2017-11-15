@@ -22,8 +22,12 @@
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveToggleInput.h"
+#include "CustomActionWrapper.h"
+#include "CustomElementWrapper.h"
 #include "enums.h"
 #include "util.h"
+#include <windows.foundation.collections.h>
+#include "XamlHelpers.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -35,6 +39,7 @@ using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace AdaptiveCards::Uwp;
 using namespace Windows::Foundation;
+using namespace ABI::Windows::Foundation::Collections;
 
 HRESULT UTF8ToHString(const string& in, HSTRING* out)
 {
@@ -71,6 +76,214 @@ bool Boolify(const boolean value)
     return value > 0 ? true : false;
 }
 
+HRESULT SetSharedElementProperties(
+    ABI::AdaptiveCards::Uwp::IAdaptiveCardElement * adaptiveCardElement,
+    std::shared_ptr<AdaptiveCards::BaseCardElement> sharedCardElement)
+{
+    HString id;
+    RETURN_IF_FAILED(adaptiveCardElement->get_Id(id.GetAddressOf()));
+    sharedCardElement->SetId(HStringToUTF8(id.Get()));
+
+    boolean separator;
+    RETURN_IF_FAILED(adaptiveCardElement->get_Separator(&separator));
+    sharedCardElement->SetSeparator(separator);
+
+    ABI::AdaptiveCards::Uwp::Spacing spacing;
+    RETURN_IF_FAILED(adaptiveCardElement->get_Spacing(&spacing));
+    sharedCardElement->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+
+    return S_OK;
+}
+
+template <typename TSharedBaseType, typename TSharedType, typename TAdaptiveBaseType, typename TAdaptiveType>
+std::shared_ptr<TSharedBaseType> GetSharedModel(TAdaptiveBaseType * item)
+{
+    ComPtr<TAdaptiveType> adaptiveElement = PeekInnards<TAdaptiveType>(item);
+
+    std::shared_ptr<TSharedType> sharedModelElement;
+    if (adaptiveElement && SUCCEEDED(adaptiveElement->GetSharedModel(sharedModelElement)))
+        return sharedModelElement;
+    else
+        return nullptr;
+}
+
+HRESULT GenerateSharedElements(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement*>* items,
+    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
+{
+    containedElements.clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement>(items, [&](ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* item)
+    {
+        ABI::AdaptiveCards::Uwp::ElementType elementType;
+        RETURN_IF_FAILED(item->get_ElementType(&elementType));
+
+        std::shared_ptr<AdaptiveCards::BaseCardElement> baseCardElement;
+        switch (elementType)
+        {
+            case ABI::AdaptiveCards::Uwp::ElementType::ChoiceSetInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::ChoiceSetInput, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveChoiceSetInput>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::ColumnSet:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::ColumnSet, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveColumnSet>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::Container:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::Container, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveContainer>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::DateInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::DateInput, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveDateInput>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::FactSet:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::FactSet, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveFactSet>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::Image:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::Image, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveImage>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::ImageSet:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::ImageSet, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveImageSet>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::NumberInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::NumberInput, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveNumberInput>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::TextBlock:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::TextBlock, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveTextBlock>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::TextInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::TextInput, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveTextInput>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::TimeInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::TimeInput, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveTimeInput>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::ToggleInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::ToggleInput, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveToggleInput>(item);
+                break;
+            case ABI::AdaptiveCards::Uwp::ElementType::Custom:
+                baseCardElement = std::make_shared<CustomElementWrapper>(item);
+                break;
+        }
+        if (baseCardElement == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        containedElements.push_back(baseCardElement);
+
+        return S_OK;
+    });
+
+    return S_OK;
+}
+
+HRESULT GenerateSharedAction(
+    ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action,
+    std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction)
+{
+    ABI::AdaptiveCards::Uwp::ActionType actionType;
+    RETURN_IF_FAILED(action->get_ActionType(&actionType));
+
+    switch (actionType)
+    {
+        case ABI::AdaptiveCards::Uwp::ActionType::OpenUrl:
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, AdaptiveCards::OpenUrlAction, ABI::AdaptiveCards::Uwp::IAdaptiveActionElement, AdaptiveCards::Uwp::AdaptiveOpenUrlAction>(action);
+            break;
+        case ABI::AdaptiveCards::Uwp::ActionType::ShowCard:
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, AdaptiveCards::ShowCardAction, ABI::AdaptiveCards::Uwp::IAdaptiveActionElement, AdaptiveCards::Uwp::AdaptiveShowCardAction>(action);
+            break;
+        case ABI::AdaptiveCards::Uwp::ActionType::Submit:
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, AdaptiveCards::SubmitAction, ABI::AdaptiveCards::Uwp::IAdaptiveActionElement, AdaptiveCards::Uwp::AdaptiveSubmitAction>(action);
+            break;
+        case ABI::AdaptiveCards::Uwp::ActionType::Custom:
+            sharedAction = std::make_shared<CustomActionWrapper>(action);
+            break;
+    }
+
+    return S_OK;
+}
+
+HRESULT GenerateSharedActions(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement*>* actions,
+    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements)
+{
+    containedElements.clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Uwp::IAdaptiveActionElement>(actions, [&](ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* action)
+    {
+        std::shared_ptr<AdaptiveCards::BaseActionElement> baseActionElement;
+        GenerateSharedAction(action, baseActionElement);
+        containedElements.push_back(baseActionElement);
+        return S_OK;
+    });
+
+    return S_OK;
+}
+
+HRESULT GenerateSharedImages(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveImage*>* images,
+    std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements)
+{
+    containedElements.clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Uwp::IAdaptiveImage>(images, [&](ABI::AdaptiveCards::Uwp::IAdaptiveImage* image)
+    {
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveImage> localImage = image;
+        ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement> imageAsElement;
+        localImage.As(&imageAsElement);
+
+        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedImage = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::Image, ABI::AdaptiveCards::Uwp::IAdaptiveCardElement, AdaptiveCards::Uwp::AdaptiveImage>(imageAsElement.Get());
+        containedElements.push_back(std::dynamic_pointer_cast<AdaptiveCards::Image>(sharedImage));
+
+        return S_OK;
+    });
+
+    return S_OK;
+}
+
+HRESULT GenerateSharedFacts(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveFact*>* facts,
+    std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements)
+{
+    containedElements.clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Uwp::IAdaptiveFact>(facts, [&](ABI::AdaptiveCards::Uwp::IAdaptiveFact* fact)
+    {
+        ComPtr<AdaptiveCards::Uwp::AdaptiveFact> adaptiveElement = PeekInnards<AdaptiveCards::Uwp::AdaptiveFact>(fact);
+        if (adaptiveElement == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+        
+        std::shared_ptr<AdaptiveCards::Fact> sharedFact;
+        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedFact));
+        containedElements.push_back(std::dynamic_pointer_cast<AdaptiveCards::Fact>(sharedFact));
+        return S_OK;
+    });
+
+    return S_OK;
+}
+
+HRESULT GenerateSharedChoices(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput*>* choices,
+    std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements)
+{
+    containedElements.clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput>(choices, [&](ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput* choice)
+    {
+        ComPtr<AdaptiveCards::Uwp::AdaptiveChoiceInput> adaptiveElement = PeekInnards<AdaptiveCards::Uwp::AdaptiveChoiceInput>(choice);
+        if (adaptiveElement == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        std::shared_ptr<AdaptiveCards::ChoiceInput> sharedChoice;
+        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedChoice));
+        containedElements.push_back(std::dynamic_pointer_cast<AdaptiveCards::ChoiceInput>(sharedChoice));
+        return S_OK;
+    });
+
+    return S_OK;
+}
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
@@ -82,51 +295,54 @@ HRESULT GenerateContainedElementsProjection(
         {
         case CardElementType::TextBlock:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTextBlock>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::TextBlock>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::TextBlock>(containedElement)));
             break;
         case CardElementType::Image:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveImage>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::Image>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::Image>(containedElement)));
             break;
         case CardElementType::Container:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveContainer>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::Container>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::Container>(containedElement)));
             break;
         case CardElementType::ColumnSet:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveColumnSet>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::ColumnSet>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::ColumnSet>(containedElement)));
             break;
         case CardElementType::FactSet:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveFactSet>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::FactSet>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::FactSet>(containedElement)));
             break;
         case CardElementType::ImageSet:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveImageSet>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
             break;
         case CardElementType::ChoiceSetInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveChoiceSetInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::ChoiceSetInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::ChoiceSetInput>(containedElement)));
             break;
         case CardElementType::DateInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveDateInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::DateInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::DateInput>(containedElement)));
             break;
         case CardElementType::NumberInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveNumberInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::NumberInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::NumberInput>(containedElement)));
             break;
         case CardElementType::TextInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTextInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::TextInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::TextInput>(containedElement)));
             break;
         case CardElementType::TimeInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTimeInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::TimeInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::TimeInput>(containedElement)));
             break;
         case CardElementType::ToggleInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveToggleInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::ToggleInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::ToggleInput>(containedElement)));
+            break;
+        case CardElementType::Custom:
+            RETURN_IF_FAILED(std::dynamic_pointer_cast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));
             break;
         default:
             return E_UNEXPECTED;
@@ -165,15 +381,18 @@ HRESULT GenerateActionProjection(
     {
         case ActionType::OpenUrl:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveOpenUrlAction>(projectedAction,
-                std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(action)));
+                std::dynamic_pointer_cast<AdaptiveCards::OpenUrlAction>(action)));
             break;
         case ActionType::ShowCard:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveShowCardAction>(projectedAction,
-                std::static_pointer_cast<AdaptiveCards::ShowCardAction>(action)));
+                std::dynamic_pointer_cast<AdaptiveCards::ShowCardAction>(action)));
             break;
         case ActionType::Submit:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveSubmitAction>(projectedAction,
-                std::static_pointer_cast<AdaptiveCards::SubmitAction>(action)));
+                std::dynamic_pointer_cast<AdaptiveCards::SubmitAction>(action)));
+            break;
+        case ActionType::Custom:
+            RETURN_IF_FAILED(std::dynamic_pointer_cast<CustomActionWrapper> (action)->GetWrappedElement(projectedAction));
             break;
         default:
             return E_UNEXPECTED;

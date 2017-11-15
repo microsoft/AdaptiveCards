@@ -1,8 +1,11 @@
 #include "pch.h"
 
+#include "AdaptiveTextBlock.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveRenderContext.h"
 #include "Util.h"
+#include "XamlBuilder.h"
+#include "AdaptiveElementParserRegistration.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -23,7 +26,16 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder.BuildTextBlock(cardElement, renderContext, renderArgs, result);
+        XamlBuilder::BuildTextBlock(cardElement, renderContext, renderArgs, result);
         return S_OK;
+    }
+
+    HRESULT AdaptiveTextBlockRenderer::FromJson(
+        ABI::Windows::Data::Json::IJsonObject* jsonObject, 
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)
+    {
+        return AdaptiveCards::Uwp::FromJson<AdaptiveCards::Uwp::AdaptiveTextBlock, AdaptiveCards::TextBlock, AdaptiveCards::TextBlockParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
 }}

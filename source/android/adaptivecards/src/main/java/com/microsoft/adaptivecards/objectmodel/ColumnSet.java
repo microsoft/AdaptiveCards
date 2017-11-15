@@ -45,26 +45,12 @@ public class ColumnSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_1(ColumnVector.getCPtr(columns), columns), true);
   }
 
-  public String Serialize() {
-    return AdaptiveCardObjectModelJNI.ColumnSet_Serialize(swigCPtr, this);
-  }
-
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
     return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ColumnSet_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public ColumnVector GetColumns() {
     return new ColumnVector(AdaptiveCardObjectModelJNI.ColumnSet_GetColumns__SWIG_0(swigCPtr, this), false);
-  }
-
-  public static ColumnSet Deserialize(SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
-    return (cPtr == 0) ? null : new ColumnSet(cPtr, true);
-  }
-
-  public static ColumnSet DeserializeFromString(String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_DeserializeFromString(jsonString);
-    return (cPtr == 0) ? null : new ColumnSet(cPtr, true);
   }
 
   public BaseActionElement GetSelectAction() {

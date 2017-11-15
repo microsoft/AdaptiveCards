@@ -16,9 +16,11 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle) noexcept try
+        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
+        IInspectable* parentElement) noexcept try
     {
         m_containerStyle = containerStyle;
+        m_parentElement = parentElement;
         return S_OK;
     } CATCH_RETURN;
 
@@ -33,6 +35,19 @@ namespace AdaptiveCards { namespace Uwp
     HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveCards::Uwp::ContainerStyle value)
     {
         m_containerStyle = value;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveRenderArgs::get_ParentElement(_COM_Outptr_ IInspectable** value)
+    {
+        return m_parentElement.CopyTo(value);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveRenderArgs::put_ParentElement(_In_ IInspectable* value)
+    {
+        m_parentElement = value;
         return S_OK;
     }
 }}
