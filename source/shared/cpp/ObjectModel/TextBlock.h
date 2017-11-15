@@ -63,5 +63,6 @@ private:
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
     std::string ParseDateTime() const;
+    static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
 };
 }

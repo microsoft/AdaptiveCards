@@ -174,6 +174,35 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
+bool TextBlock::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
+{
+    if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 && 
+        parsedTm.tm_min <= 60 && parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
+    { 
+        if (parsedTm.tm_mon == 4 || parsedTm.tm_mon == 6 || parsedTm.tm_mon == 9 || parsedTm.tm_mon == 11)
+        { 
+            return parsedTm.tm_mday <= 30;
+        } 
+        else if (parsedTm.tm_mon == 2)
+        {
+            /// check for leap year
+            if ((parsedTm.tm_year % 4 == 0 && parsedTm.tm_year % 100 != 0) || parsedTm.tm_year % 400 == 0)
+            {
+                return parsedTm.tm_mday <= 29;
+            }
+            else if (parsedTm.tm_mday <= 28)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return parsedTm.tm_mday <= 31;
+        }
+    }
+    return false;
+}
+
 std::string TextBlock::ParseDateTime() const
 {
     std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, SHORT)|(, LONG))|(, COMPACT))|)\\)\\}\\}");
@@ -181,7 +210,7 @@ std::string TextBlock::ParseDateTime() const
     std::string text = m_text;
     std::ostringstream parsedostr;
     time_t offset = 0;
-    bool isDate = false, isValidForm = false; 
+    bool isDate = false; 
     int  formatStyle = 0;
     enum MatchIndex
     {
@@ -236,41 +265,7 @@ std::string TextBlock::ParseDateTime() const
         }
 
         // check for date and time validation
-        if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 && 
-            parsedTm.tm_min <= 60 && parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
-        { 
-            if (parsedTm.tm_mon == 4 || parsedTm.tm_mon == 6 || parsedTm.tm_mon == 9 || parsedTm.tm_mon == 11)
-            { 
-                if (parsedTm.tm_mday <= 30)
-                {
-                    isValidForm = true;
-                }
-            } 
-            else if (parsedTm.tm_mon == 2)
-            {
-                /// check for leap year
-                if ((parsedTm.tm_year % 4 == 0 && parsedTm.tm_year % 100 != 0) || parsedTm.tm_year % 400 == 0)
-                {
-                    if (parsedTm.tm_mday <= 29)
-                    {
-                        isValidForm = true;
-                    }
-                }
-                else if (parsedTm.tm_mday <= 28)
-                {
-                    isValidForm = true;
-                }
-            }
-            else
-            {
-                if (parsedTm.tm_mday <= 31)
-                {
-                    isValidForm = true;
-                }
-            }
-        }
-
-        if (isValidForm)
+        if (IsValidTimeAndDate(parsedTm, hours, minutes))
         {
             // maches offset sign, 
             // Z == UTC, 
@@ -355,7 +350,6 @@ std::string TextBlock::ParseDateTime() const
         hours = minutes = 0;
         isDate = false;
         formatStyle = 0;
-        isValidForm = false;
     }
 
     parsedostr << text;
