@@ -147,13 +147,21 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
         BuildPanelChildren(body.Get(), childElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
 
+        ComPtr<IVector<IAdaptiveActionElement*>> actions;
+        THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
+        UINT32 actionsSize;
+        THROW_IF_FAILED(actions->get_Size(&actionsSize));
         if (SupportsInteractivity(hostConfig.Get()))
         {
-            ComPtr<IVector<IAdaptiveActionElement*>> actions;
-            THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
             unsigned int bodyCount;
             THROW_IF_FAILED(body->get_Size(&bodyCount));
             BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext);
+        }
+        else if (actionsSize > 0)
+        {
+            renderContext->AddWarning(
+                WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
         }
 
         if (isOuterCard)
@@ -612,12 +620,12 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(children->get_Size(&childrenSize));
         XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, [&](IAdaptiveCardElement* element)
         {
-            HSTRING elementType;
-            THROW_IF_FAILED(element->get_ElementTypeString(&elementType));
+            HString elementType;
+            THROW_IF_FAILED(element->get_ElementTypeString(elementType.GetAddressOf()));
             ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
             THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
             ComPtr<IAdaptiveElementRenderer> elementRenderer;
-            THROW_IF_FAILED(elementRenderers->Get(elementType, &elementRenderer));
+            THROW_IF_FAILED(elementRenderers->Get(elementType.Get(), &elementRenderer));
             if (elementRenderer != nullptr)
             {
                 ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -640,6 +648,14 @@ namespace AdaptiveCards { namespace Uwp
                 elementRenderer->Render(element, renderContext, renderArgs, &newControl);
                 XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel);
                 childCreatedCallback(newControl.Get());
+            }
+            else
+            {
+                std::wstring errorString = L"No Renderer found for type: ";
+                errorString += elementType.GetRawBuffer(nullptr);
+                renderContext->AddWarning(
+                    WarningStatusCode::NoRendererForType,
+                    HStringReference(errorString.c_str()).Get());
             }
         });
     }
@@ -927,6 +943,13 @@ namespace AdaptiveCards { namespace Uwp
 
                     gridStatics->SetColumn(buttonFrameworkElement.Get(), currentAction);
                 }
+            }
+            else
+            {
+                renderContext->AddWarning(
+                    WarningStatusCode::MaxActionsExceeded,
+                    HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed").Get());
+                return;
             }
             currentAction++;
         });
@@ -1485,11 +1508,20 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveContainer->get_SelectAction(&selectAction));
-        if (selectAction != nullptr && SupportsInteractivity(hostConfig.Get()))
+        if (selectAction != nullptr)
         {
-            ComPtr<IUIElement> containerBorderAsUIElement;
-            THROW_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
-            WrapInFullWidthTouchTarget(adaptiveCardElement, containerBorderAsUIElement.Get(), selectAction.Get(), renderContext, containerControl);
+            if (SupportsInteractivity(hostConfig.Get()))
+            {
+                ComPtr<IUIElement> containerBorderAsUIElement;
+                THROW_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
+                WrapInFullWidthTouchTarget(adaptiveCardElement, containerBorderAsUIElement.Get(), selectAction.Get(), renderContext, containerControl);
+            }
+            else
+            {
+                renderContext->AddWarning(
+                    WarningStatusCode::InteractivityNotSupported,
+                    HStringReference(L"SelectAction present in Container, but Interactivity is not supported").Get());
+            }
         }
         else
         {
@@ -1579,6 +1611,16 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
         ComPtr<IAdaptiveElementRenderer> columnRenderer;
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Column").Get(), &columnRenderer));
+        
+        if (columnRenderer == nullptr)
+        {
+            renderContext->AddWarning(
+                WarningStatusCode::NoRendererForType,
+                HStringReference(L"No renderer found for type: Column").Get());
+            *columnSetControl = nullptr;
+            return;
+        }
+
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
@@ -1678,11 +1720,20 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
-        if (selectAction != nullptr && SupportsInteractivity(hostConfig.Get()))
+        if (selectAction != nullptr)
         {
-            ComPtr<IUIElement> gridAsUIElement;
-            THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
-            WrapInFullWidthTouchTarget(adaptiveCardElement, gridAsUIElement.Get(), selectAction.Get(), renderContext, columnSetControl);
+            if (SupportsInteractivity(hostConfig.Get()))
+            {
+                ComPtr<IUIElement> gridAsUIElement;
+                THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
+                WrapInFullWidthTouchTarget(adaptiveCardElement, gridAsUIElement.Get(), selectAction.Get(), renderContext, columnSetControl);
+            }
+            else
+            {
+                renderContext->AddWarning(
+                    WarningStatusCode::InteractivityNotSupported,
+                    HStringReference(L"SelectAction present in ColumnSet, but Interactivity is not supported").Get());
+            }
         }
         else
         {
@@ -1848,6 +1899,14 @@ namespace AdaptiveCards { namespace Uwp
                 XamlHelpers::AppendXamlElementToPanel(uiImage.Get(), gridAsPanel.Get());
             });
         }
+        else
+        {
+            renderContext->AddWarning(
+                WarningStatusCode::NoRendererForType,
+                HStringReference(L"No renderer found for type: Image").Get());
+            *imageSetControl = nullptr;
+            return;
+        }
 
         ComPtr<IFrameworkElement> imageSetAsFrameworkElement;
         THROW_IF_FAILED(xamlGrid.As(&imageSetAsFrameworkElement));
@@ -1985,6 +2044,9 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         if (!SupportsInteractivity(hostConfig.Get()))
         {
+            renderContext->AddWarning(
+                WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"ChoiceSet was stripped from card because interactivity is not supported").Get());
             return;
         }
 
@@ -2021,6 +2083,9 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         if (!SupportsInteractivity(hostConfig.Get()))
         {
+            renderContext->AddWarning(
+                WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Date input was stripped from card because interactivity is not supported").Get());
             return;
         }
 
@@ -2058,6 +2123,9 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         if (!SupportsInteractivity(hostConfig.Get()))
         {
+            renderContext->AddWarning(
+                WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Number input was stripped from card because interactivity is not supported").Get());
             return;
         }
 
@@ -2109,6 +2177,9 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         if (!SupportsInteractivity(hostConfig.Get()))
         {
+            renderContext->AddWarning(
+                WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
             return;
         }
 
@@ -2181,6 +2252,9 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         if (!SupportsInteractivity(hostConfig.Get()))
         {
+            renderContext->AddWarning(
+                WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Time Input was stripped from card because interactivity is not supported").Get());
             return;
         }
 
@@ -2209,6 +2283,9 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         if (!SupportsInteractivity(hostConfig.Get()))
         {
+            renderContext->AddWarning(
+                WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Toggle Input was stripped from card because interactivity is not supported").Get());
             return;
         }
 

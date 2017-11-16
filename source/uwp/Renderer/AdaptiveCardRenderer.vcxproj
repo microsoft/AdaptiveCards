@@ -124,6 +124,7 @@
     <ClInclude Include="lib\AdaptiveCardGetResourceStreamArgs.h" />
     <ClInclude Include="lib\AdaptiveCardRendererComponent.h" />
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
+    <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleInputRenderer.h" />
+    <ClInclude Include="lib\AdaptiveWarning.h" />
     <ClInclude Include="lib\CustomActionWrapper.h" />
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
@@ -202,6 +204,7 @@
     <ClCompile Include="lib\AdaptiveCardGetResourceStreamArgs.cpp" />
     <ClCompile Include="lib\AdaptiveCardRendererComponent.cpp" />
     <ClCompile Include="lib\AdaptiveCardResourceResolvers.cpp" />
+    <ClCompile Include="lib\AdaptiveError.cpp" />
     <ClCompile Include="lib\AdaptiveHostConfigParseResult.cpp" />
     <ClCompile Include="lib\AdaptiveCardParseResult.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
@@ -225,6 +228,7 @@
     <ClCompile Include="lib\AdaptiveTextInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTimeInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveToggleInputRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveWarning.cpp" />
     <ClCompile Include="lib\CustomActionWrapper.cpp" />
     <ClCompile Include="lib\CustomElementWrapper.cpp" />
     <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
