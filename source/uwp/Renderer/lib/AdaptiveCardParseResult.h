@@ -19,6 +19,7 @@ namespace AdaptiveCards { namespace Uwp
 
         // IAdaptiveCardParseResult
         IFACEMETHODIMP get_AdaptiveCard(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCard** value);
+        HRESULT put_AdaptiveCard(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveCard* value);
 
         IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveError*>** value);
         IFACEMETHODIMP get_Warnings(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveWarning*>** value);

@@ -276,6 +276,25 @@ enum class ContainerStyle {
     Emphasis
 };
 
+enum class ErrorStatusCode {
+    InvalidJson = 0,
+    UnsupportedSchemaVersion,
+    RenderFailed,
+    RequiredPropertyMissing,
+    InvalidPropertyValue,
+    UnsupportedParserOverride
+};
+
+enum class WarningStatusCode {
+    UnknownElementType = 0,
+    UnknownPropertyOnElement,
+    UnknownEnumValue,
+    NoRendererForType,
+    InteractivityNotSupported,
+    MaxActionsExceeded,
+    AssetLoadFailed
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 

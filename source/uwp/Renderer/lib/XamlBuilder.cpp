@@ -160,7 +160,7 @@ namespace AdaptiveCards { namespace Uwp
         else if (actionsSize > 0)
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
         }
 
@@ -654,7 +654,7 @@ namespace AdaptiveCards { namespace Uwp
                 std::wstring errorString = L"No Renderer found for type: ";
                 errorString += elementType.GetRawBuffer(nullptr);
                 renderContext->AddWarning(
-                    WarningStatusCode::NoRendererForType,
+                   ABI::AdaptiveCards::Uwp::WarningStatusCode::NoRendererForType,
                     HStringReference(errorString.c_str()).Get());
             }
         });
@@ -947,7 +947,7 @@ namespace AdaptiveCards { namespace Uwp
             else
             {
                 renderContext->AddWarning(
-                    WarningStatusCode::MaxActionsExceeded,
+                   ABI::AdaptiveCards::Uwp::WarningStatusCode::MaxActionsExceeded,
                     HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed").Get());
                 return;
             }
@@ -1519,7 +1519,7 @@ namespace AdaptiveCards { namespace Uwp
             else
             {
                 renderContext->AddWarning(
-                    WarningStatusCode::InteractivityNotSupported,
+                   ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                     HStringReference(L"SelectAction present in Container, but Interactivity is not supported").Get());
             }
         }
@@ -1615,7 +1615,7 @@ namespace AdaptiveCards { namespace Uwp
         if (columnRenderer == nullptr)
         {
             renderContext->AddWarning(
-                WarningStatusCode::NoRendererForType,
+               ABI::AdaptiveCards::Uwp::WarningStatusCode::NoRendererForType,
                 HStringReference(L"No renderer found for type: Column").Get());
             *columnSetControl = nullptr;
             return;
@@ -1731,7 +1731,7 @@ namespace AdaptiveCards { namespace Uwp
             else
             {
                 renderContext->AddWarning(
-                    WarningStatusCode::InteractivityNotSupported,
+                   ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                     HStringReference(L"SelectAction present in ColumnSet, but Interactivity is not supported").Get());
             }
         }
@@ -1902,7 +1902,7 @@ namespace AdaptiveCards { namespace Uwp
         else
         {
             renderContext->AddWarning(
-                WarningStatusCode::NoRendererForType,
+               ABI::AdaptiveCards::Uwp::WarningStatusCode::NoRendererForType,
                 HStringReference(L"No renderer found for type: Image").Get());
             *imageSetControl = nullptr;
             return;
@@ -2045,7 +2045,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"ChoiceSet was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2084,7 +2084,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Date input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2124,7 +2124,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Number input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2178,7 +2178,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2253,7 +2253,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Time Input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2284,7 +2284,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Toggle Input was stripped from card because interactivity is not supported").Get());
             return;
         }
