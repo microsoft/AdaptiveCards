@@ -1340,6 +1340,7 @@ export class ChoiceSetInput extends Input {
 
         if (json["choices"] != undefined) {
             var choiceArray = json["choices"] as Array<any>;
+            this.choices = [];
 
             for (var i = 0; i < choiceArray.length; i++) {
                 var choice = new Choice();

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{430407C5-059C-48E8-9260-62A12D30F81C}</ProjectGuid>
+    <RootNamespace>AdaptiveCardsSharedModel</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseCardElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseInputElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ChoiceInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ChoiceSetInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Column.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ColumnSet.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Container.cpp" />
+    <ClCompile Include="..\..\ObjectModel\DateInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Enums.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Fact.cpp" />
+    <ClCompile Include="..\..\ObjectModel\FactSet.cpp" />
+    <ClCompile Include="..\..\ObjectModel\HostConfig.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Image.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ImageSet.cpp" />
+    <ClCompile Include="..\..\ObjectModel\jsoncpp.cpp" />
+    <ClCompile Include="..\..\ObjectModel\NumberInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\OpenUrlAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ParseUtil.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Separator.cpp" />
+    <ClCompile Include="..\..\ObjectModel\SharedAdaptiveCard.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ShowCardAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\SubmitAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseActionElement.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseCardElement.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseInputElement.h" />
+    <ClInclude Include="..\..\ObjectModel\ChoiceInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ChoiceSetInput.h" />
+    <ClInclude Include="..\..\ObjectModel\Column.h" />
+    <ClInclude Include="..\..\ObjectModel\ColumnSet.h" />
+    <ClInclude Include="..\..\ObjectModel\Container.h" />
+    <ClInclude Include="..\..\ObjectModel\DateInput.h" />
+    <ClInclude Include="..\..\ObjectModel\Enums.h" />
+    <ClInclude Include="..\..\ObjectModel\Fact.h" />
+    <ClInclude Include="..\..\ObjectModel\FactSet.h" />
+    <ClInclude Include="..\..\ObjectModel\HostConfig.h" />
+    <ClInclude Include="..\..\ObjectModel\Image.h" />
+    <ClInclude Include="..\..\ObjectModel\ImageSet.h" />
+    <ClInclude Include="..\..\ObjectModel\NumberInput.h" />
+    <ClInclude Include="..\..\ObjectModel\OpenUrlAction.h" />
+    <ClInclude Include="..\..\ObjectModel\ParseUtil.h" />
+    <ClInclude Include="..\..\ObjectModel\pch.h" />
+    <ClInclude Include="..\..\ObjectModel\Separator.h" />
+    <ClInclude Include="..\..\ObjectModel\SharedAdaptiveCard.h" />
+    <ClInclude Include="..\..\ObjectModel\ShowCardAction.h" />
+    <ClInclude Include="..\..\ObjectModel\SubmitAction.h" />
+    <ClInclude Include="..\..\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\ObjectModel\TextInput.h" />
+    <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

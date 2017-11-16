@@ -94,7 +94,6 @@
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClInclude Include="lib\XamlHelpers.h" />
-    <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
     <ClInclude Include="lib\AdaptiveFactSet.h" />
     <ClInclude Include="lib\AdaptiveFact.h" />
     <ClInclude Include="lib\AdaptiveImageSet.h" />
