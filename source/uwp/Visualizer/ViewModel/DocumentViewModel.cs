@@ -195,7 +195,6 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
-                _renderer.ElementRenderers.Remove("FactSet");
             }
             catch
             {
