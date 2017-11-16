@@ -42,7 +42,7 @@ public:
 
     static std::shared_ptr<AdaptiveCards::BaseActionElement> DeserializeSelectAction(
         std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration, 
+        std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
         const Json::Value& json, AdaptiveCardSchemaKey key);
 
 protected:

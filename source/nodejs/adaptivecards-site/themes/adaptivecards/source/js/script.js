@@ -34,7 +34,7 @@
       lineColor: "#EEEEEE"
     },
     supportsInteractivity: true,
-    fontFamily: "Segoe UI",
+    fontFamily: "Segoe UI, Helvetica Neue, Helvetica, sans-serif",
     fontSizes: {
       small: 12,
       default: 14,

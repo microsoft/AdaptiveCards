@@ -8,6 +8,7 @@
 #include "XamlHelpers.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveActionEventArgs.h"
+#include "AdaptiveError.h"
 #include "vector.h"
 
 using namespace concurrency;
@@ -29,8 +30,8 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize()
     {
-        RETURN_IF_FAILED(MakeAndInitialize<Vector<HSTRING>>(&m_errors));
-        RETURN_IF_FAILED(MakeAndInitialize<Vector<HSTRING>>(&m_warnings));
+        m_errors = Make<Vector<IAdaptiveError*>>();
+        m_warnings = Make<Vector<IAdaptiveWarning*>>();
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveInputs>(&m_inputs));
         m_events.reset(new ActionEventSource);
         return S_OK;
@@ -69,13 +70,13 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_Errors(ABI::Windows::Foundation::Collections::IVector<HSTRING>** value)
+    HRESULT RenderedAdaptiveCard::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_Warnings(ABI::Windows::Foundation::Collections::IVector<HSTRING>** value)
+    HRESULT RenderedAdaptiveCard::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }

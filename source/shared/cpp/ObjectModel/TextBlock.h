@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
+#include <time.h>
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveCards
@@ -12,7 +13,7 @@ class TextBlock : public BaseCardElement
 public:
     TextBlock();
     TextBlock(
-        Spacing spacing, 
+        Spacing spacing,
         bool separator,
         std::string text,
         TextSize textSize,
@@ -58,6 +59,8 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
+    std::string ParseDateTime() const;
+    static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
 };
 
 class TextBlockParser : public IBaseCardElementParser
@@ -65,7 +68,7 @@ class TextBlockParser : public IBaseCardElementParser
 public:
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& root);
 
     std::shared_ptr<BaseCardElement> DeserializeFromString(

@@ -18,7 +18,7 @@ Column::Column(
 }
 
 Column::Column(
-    Spacing spacing, 
+    Spacing spacing,
     bool separation,
     std::string width,
     ContainerStyle style) :
@@ -68,6 +68,12 @@ Json::Value Column::SerializeToJsonValue()
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = GetWidth();
 
+    ContainerStyle style = GetStyle();
+    if (style != ContainerStyle::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
+    }
+
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[propertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : GetItems())
@@ -113,7 +119,7 @@ std::shared_ptr<Column> Column::Deserialize(
 
 std::shared_ptr<Column> Column::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const std::string& jsonString)
 {
     return Column::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

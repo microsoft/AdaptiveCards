@@ -64,7 +64,7 @@ void NumberInput::SetMin(const int value)
 
 std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>, 
+    std::shared_ptr<ActionParserRegistration>,
     const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::NumberInput);
@@ -81,7 +81,7 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const std::string& jsonString)
 {
     return NumberInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

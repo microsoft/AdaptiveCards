@@ -103,7 +103,7 @@ namespace AdaptiveCards { namespace Uwp
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RenderAdaptiveCard(
-        IAdaptiveCard* adaptiveCard, 
+        IAdaptiveCard* adaptiveCard,
         IRenderedAdaptiveCard** result)
     {
         ComPtr<::AdaptiveCards::Uwp::RenderedAdaptiveCard> renderedCard;
@@ -141,20 +141,11 @@ namespace AdaptiveCards { namespace Uwp
             }
             catch (...)
             {
-                HString error;
-                RETURN_IF_FAILED(error.Set(L"There was an error rendering this card"));
-                ComPtr<IVector<HSTRING>> errors;
-                RETURN_IF_FAILED(renderedCard->get_Errors(&errors));
-                errors->Append(error.Detach());
+                RETURN_IF_FAILED(renderContext->AddError(
+                    ErrorStatusCode::RenderFailed,
+                    HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
+                renderedCard->SetFrameworkElement(nullptr);
             }
-        }
-        else
-        {
-            HString error;
-            RETURN_IF_FAILED(error.Set(L"There was an error in the card attempting to being rendered."));
-            ComPtr<IVector<HSTRING>> errors;
-            RETURN_IF_FAILED(renderedCard->get_Errors(&errors));
-            errors->Append(error.Detach());
         }
         *result = renderedCard.Detach();
         return S_OK;
@@ -163,7 +154,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RenderCardAsXamlAsync(
         IAdaptiveCard* adaptiveCard,
-        IAsyncOperation<UIElement*>** result)
+        IAsyncOperation<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*>** result)
     {
         *result = Make<RenderCardAsXamlAsyncOperation>(adaptiveCard, this).Detach();
         return S_OK;
@@ -181,11 +172,6 @@ namespace AdaptiveCards { namespace Uwp
         HRESULT hr = CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult);
         if (FAILED(hr))
         {
-            HString error;
-            RETURN_IF_FAILED(error.Set(L"There was an error creating the card from Json."));
-            ComPtr<IVector<HSTRING>> errors;
-            RETURN_IF_FAILED(renderedCard->get_Errors(&errors));
-            errors->Append(error.Detach());
             *result = renderedCard.Detach();
             return S_OK;
         }
@@ -211,7 +197,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RenderAdaptiveJsonAsXamlAsync(
         HSTRING adaptiveJson,
-        IAsyncOperation<UIElement*>** result)
+        IAsyncOperation<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*>** result)
     {
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));

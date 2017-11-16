@@ -29,7 +29,7 @@ void OpenUrlAction::SetUrl(const std::string value)
 
 std::shared_ptr<BaseActionElement> OpenUrlActionParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>, 
+    std::shared_ptr<ActionParserRegistration>,
     const Json::Value& json)
 {
     std::shared_ptr<OpenUrlAction> openUrlAction = BaseActionElement::Deserialize<OpenUrlAction>(json);
