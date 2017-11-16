@@ -59,7 +59,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveColumnSet::put_SelectAction(IAdaptiveActionElement* /*action*/)
+    IFACEMETHODIMP AdaptiveColumnSet::put_SelectAction(IAdaptiveActionElement* action)
     {
         m_selectAction = action;
         return S_OK;
