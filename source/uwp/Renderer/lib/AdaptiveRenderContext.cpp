@@ -110,6 +110,4 @@ namespace AdaptiveCards { namespace Uwp
 
         return S_OK;
     }
-
-
 }}
