@@ -59,7 +59,7 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
 #else
     static std::shared_ptr<AdaptiveCard> DeserializeFromFile(
-        const std::string& jsonFile, 
+        const std::string& jsonFile,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 

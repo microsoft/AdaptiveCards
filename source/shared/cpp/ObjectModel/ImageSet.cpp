@@ -11,7 +11,7 @@ ImageSet::ImageSet() :
 }
 
 ImageSet::ImageSet(
-    Spacing spacing, 
+    Spacing spacing,
     bool separation,
     std::vector<std::shared_ptr<Image>>& images) :
     BaseCardElement(CardElementType::ImageSet, spacing, separation),
@@ -21,7 +21,7 @@ ImageSet::ImageSet(
 }
 
 ImageSet::ImageSet(
-    Spacing spacing, 
+    Spacing spacing,
     bool separation) :
     BaseCardElement(CardElementType::ImageSet, spacing, separation),
     m_imageSize(ImageSize::None)

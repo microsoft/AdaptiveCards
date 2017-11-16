@@ -103,7 +103,7 @@ namespace AdaptiveCards { namespace Uwp
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RenderAdaptiveCard(
-        IAdaptiveCard* adaptiveCard, 
+        IAdaptiveCard* adaptiveCard,
         IRenderedAdaptiveCard** result)
     {
         ComPtr<::AdaptiveCards::Uwp::RenderedAdaptiveCard> renderedCard;

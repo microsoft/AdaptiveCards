@@ -1,6 +1,5 @@
 #pragma once
 
-#include "pch.h"
 #include "AdaptiveCards.Uwp.h"
 #include "util.h"
 #include "InputItem.h"

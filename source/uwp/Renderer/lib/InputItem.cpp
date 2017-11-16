@@ -15,8 +15,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace AdaptiveCards::Uwp;
 
-std::string InputItem::SerializeTextInput(
-    const char * idString) const
+std::string InputItem::SerializeTextInput() const
 {
     ComPtr<ITextBox> textBox;
     THROW_IF_FAILED(m_uiInputElement.As(&textBox));
@@ -33,8 +32,7 @@ std::string InputItem::SerializeTextInput(
     return textString;
 }
 
-std::string InputItem::SerializeDateInput(
-    const char * idString) const
+std::string InputItem::SerializeDateInput() const
 {
     ComPtr<ICalendarDatePicker> datePicker;
     THROW_IF_FAILED(m_uiInputElement.As(&datePicker));
@@ -63,8 +61,7 @@ std::string InputItem::SerializeDateInput(
     return "";
 }
 
-std::string InputItem::SerializeTimeInput(
-    const char * idString) const
+std::string InputItem::SerializeTimeInput() const
 {
     ComPtr<ITimePicker> timePicker;
     THROW_IF_FAILED(m_uiInputElement.As(&timePicker));
@@ -82,8 +79,7 @@ std::string InputItem::SerializeTimeInput(
     return std::string(buffer);
 }
 
-std::string InputItem::SerializeToggleInput(
-    const char * idString) const
+std::string InputItem::SerializeToggleInput() const
 {
     boolean checkedValue = false;
     XamlHelpers::GetToggleValue(m_uiInputElement.Get(), &checkedValue);
@@ -127,8 +123,7 @@ std::string InputItem::GetChoiceValue(
     return "";
 }
 
-std::string InputItem::SerializeChoiceSetInput(
-    const char* idString) const
+std::string InputItem::SerializeChoiceSetInput() const
 {
     ComPtr<IAdaptiveChoiceSetInput> choiceInput;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&choiceInput));
@@ -226,23 +221,23 @@ std::string InputItem::Serialize() const
         case ElementType_TextInput:
         case ElementType_NumberInput:
         {
-            return SerializeTextInput(idString.c_str());
+            return SerializeTextInput();
         }
         case ElementType_DateInput:
         {
-            return SerializeDateInput(idString.c_str());
+            return SerializeDateInput();
         }
         case ElementType_TimeInput:
         {
-            return SerializeTimeInput(idString.c_str());
+            return SerializeTimeInput();
         }
         case ElementType_ToggleInput:
         {
-            return SerializeToggleInput(idString.c_str());
+            return SerializeToggleInput();
         }
         case ElementType_ChoiceSetInput:
         {
-            return SerializeChoiceSetInput(idString.c_str());
+            return SerializeChoiceSetInput();
         }
         default:
             return "";

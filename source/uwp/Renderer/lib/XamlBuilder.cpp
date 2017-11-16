@@ -1033,7 +1033,7 @@ namespace AdaptiveCards { namespace Uwp
         ABI::AdaptiveCards::Uwp::ForegroundColor color,
         ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
         bool isSubtle,
-        bool wrap, 
+        bool wrap,
         UINT32 maxWidth,
         ABI::AdaptiveCards::Uwp::TextWeight weight,
         ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
@@ -1125,7 +1125,7 @@ namespace AdaptiveCards { namespace Uwp
 
     _Use_decl_annotations_
     void XamlBuilder::BuildTextBlock(
-        IAdaptiveCardElement* adaptiveCardElement, 
+        IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs,
         IUIElement** textBlockControl)
@@ -2170,7 +2170,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildTextInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
-        IAdaptiveRenderArgs* renderArgs,
+        IAdaptiveRenderArgs* /*renderArgs*/,
         IUIElement** textInputControl)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -2245,7 +2245,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildTimeInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
-        IAdaptiveRenderArgs* renderArgs,
+        IAdaptiveRenderArgs* /*renderArgs*/,
         IUIElement** timeInputControl)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -2276,7 +2276,7 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildToggleInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
-        IAdaptiveRenderArgs* renderArgs,
+        IAdaptiveRenderArgs* /*renderArgs*/,
         IUIElement** toggleInputControl)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;

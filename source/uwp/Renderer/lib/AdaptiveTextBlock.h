@@ -50,8 +50,8 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Uwp::Spacing* spacing);
         IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Uwp::Spacing spacing);
 
-        IFACEMETHODIMP get_Separator(boolean* separator);
-        IFACEMETHODIMP put_Separator(boolean separator);
+        IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
+        IFACEMETHODIMP put_Separator(_In_ boolean separator);
 
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);

@@ -224,7 +224,7 @@ enum class CardElementType
 
 enum class ActionType
 {
-    Unsupported = 0, 
+    Unsupported = 0,
     ShowCard,
     Submit,
     OpenUrl,

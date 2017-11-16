@@ -27,7 +27,7 @@ namespace AdaptiveCards { namespace Uwp
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(
-        HSTRING adaptiveJson, 
+        HSTRING adaptiveJson,
         IAdaptiveElementParserRegistration* elementParserRegistration,
         IAdaptiveActionParserRegistration* actionParserRegistration,
         IAdaptiveCardParseResult** parseResult) noexcept try
@@ -48,7 +48,7 @@ namespace AdaptiveCards { namespace Uwp
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonWithParserRegistration(
-        IJsonObject* adaptiveJson, 
+        IJsonObject* adaptiveJson,
         IAdaptiveElementParserRegistration* elementParserRegistration,
         IAdaptiveActionParserRegistration* actionParserRegistration,
         IAdaptiveCardParseResult** parseResult) noexcept try
@@ -63,9 +63,9 @@ namespace AdaptiveCards { namespace Uwp
 
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonString(
-        const std::string jsonString, 
+        const std::string jsonString,
         IAdaptiveElementParserRegistration* elementParserRegistration,
-        IAdaptiveActionParserRegistration* actionParserRegistration, 
+        IAdaptiveActionParserRegistration* actionParserRegistration,
         IAdaptiveCardParseResult** parseResult)
     {
         std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
