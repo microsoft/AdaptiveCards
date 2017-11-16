@@ -3120,9 +3120,54 @@ export class ColumnSet extends CardElement {
     }
 }
 
-export interface IVersion {
-    major: number;
-    minor: number;
+export class Version {
+    private _versionString: string;
+    private _major: number;
+    private _minor: number;
+    private _isValid: boolean = true;
+
+    constructor(major: number = 1, minor: number = 1) {
+        this._major = major;
+        this._minor = minor;
+    }
+
+    static parse(versionString: string): Version {
+        if (!versionString) {
+            return null;
+        }
+    
+        var result = new Version();
+        result._versionString = versionString;
+
+        var regEx = /(\d+).(\d+)/gi;
+        var matches = regEx.exec(versionString);
+
+        if (matches != null && matches.length == 3) {
+            result._major = parseInt(matches[1]);
+            result._minor = parseInt(matches[2]);
+        }        
+        else {
+            result._isValid = false;
+        }
+
+        return result;
+    }
+
+    toString(): string {
+        return !this._isValid ? this._versionString : this._major + "." + this._minor;
+    }
+
+    get major(): number {
+        return this._major;
+    }
+
+    get minor(): number {
+        return this._minor;
+    }
+
+    get isValid(): boolean {
+        return this._isValid;
+    }
 }
 
 function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
@@ -3341,7 +3386,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: IVersion = { major: 1, minor: 0 };
+    private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
 
@@ -3357,8 +3402,9 @@ export class AdaptiveCard extends ContainerWithActions {
 
     private isVersionSupported(): boolean {
         var unsupportedVersion: boolean =
-            (AdaptiveCard.currentVersion.major < this.minVersion.major) ||
-            (AdaptiveCard.currentVersion.major == this.minVersion.major && AdaptiveCard.currentVersion.minor < this.minVersion.minor);
+            !this.version ||
+            (AdaptiveCard.currentVersion.major < this.version.major) ||
+            (AdaptiveCard.currentVersion.major == this.version.major && AdaptiveCard.currentVersion.minor < this.version.minor);
 
         return !unsupportedVersion;
     }
@@ -3397,7 +3443,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    minVersion: IVersion = { major: 1, minor: 0 };
+    version?: Version = new Version(1, 0);
     fallbackText: string;
 
     getJsonTypeName(): string {
@@ -3415,11 +3461,18 @@ export class AdaptiveCard extends ContainerWithActions {
                 });
         }
 
-        if (!this.isVersionSupported()) {
+        if (!this.version || !this.version.isValid) {
+            result.push(
+                {
+                    error: Enums.ValidationError.PropertyCantBeNull,
+                    message: !this.version ? "The version property must be specified." : "Invalid version: " + this.version
+                });
+        }
+        else if (!this.isVersionSupported()) {
             result.push(
                 {
                     error: Enums.ValidationError.UnsupportedCardVersion,
-                    message: "The specified card version is not supported."
+                    message: "The specified card version (" + this.version + ") is not supported. The maximum supported card version is " + AdaptiveCard.currentVersion
                 });
         }
 
@@ -3429,14 +3482,7 @@ export class AdaptiveCard extends ContainerWithActions {
     parse(json: any) {
         this._cardTypeName = json["type"];
 
-        var minVersion = json["minVersion"];
-        var regEx = /(\d+).(\d+)/gi;
-        var matches = regEx.exec(minVersion);
-
-        if (matches != null && matches.length == 3) {
-            this.minVersion.major = parseInt(matches[1]);
-            this.minVersion.minor = parseInt(matches[2]);
-        }
+        this.version = Version.parse(json["version"]);
 
         this.fallbackText = json["fallbackText"];
 
@@ -3490,6 +3536,7 @@ class InlineAdaptiveCard extends AdaptiveCard {
         var renderedCard = super.render();
         renderedCard.setAttribute("aria-live", "polite");
         renderedCard.removeAttribute("tabindex");
+
         return renderedCard;
     }
 
