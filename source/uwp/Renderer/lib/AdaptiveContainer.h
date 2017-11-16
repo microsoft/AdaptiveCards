@@ -46,7 +46,7 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::Container>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::Container>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override

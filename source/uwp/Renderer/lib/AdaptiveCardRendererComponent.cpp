@@ -94,7 +94,6 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::ResetFixedDimensions()
     {
         m_explicitDimensions = false;
@@ -278,7 +277,6 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RegisterDefaultElementRenderers()
     {
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(), Make<AdaptiveChoiceSetInputRenderer>().Get()));

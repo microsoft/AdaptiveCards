@@ -13,7 +13,6 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveWarning::RuntimeClassInitialize(
         ABI::AdaptiveCards::Uwp::WarningStatusCode statusCode,
         HSTRING message)

@@ -17,7 +17,7 @@ namespace AdaptiveCards { namespace Uwp
 
         HRESULT RuntimeClassInitialize(AdaptiveCards::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
 
-        IFACEMETHODIMP SendActionEvent(ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* actionElement);
+        IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* actionElement);
 
     private:
         Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::RenderedAdaptiveCard> m_renderResult;
