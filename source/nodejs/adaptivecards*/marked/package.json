@@ -11,7 +11,7 @@
     "json-schema"
   ],
   "author": "Matt Hidinger",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "fs": "0.0.1-security",
     "glob": "^7.1.2",
