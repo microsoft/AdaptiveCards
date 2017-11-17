@@ -14,8 +14,7 @@
     "watch": "webpack --watch",
     "start": "http-server -c-1 -o",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "version": "npm run build && git add . && git commit -m \"bump version\"",
-    "postversion": "git push"
+    "version": "npm run build"
   },
   "dependencies": {
     "@types/ace": "0.0.32",

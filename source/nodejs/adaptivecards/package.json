@@ -2,6 +2,8 @@
   "name": "adaptivecards",
   "version": "1.0.1-4",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
+  "author": "AdaptiveCards",
+  "license": "MIT",
   "homepage": "http://adaptivecards.io",
   "keywords": [
     "adaptivecards",
@@ -20,29 +22,7 @@
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "test": "jest --coverage",
     "preversion": "npm test",
-    "version": "npm run build && git add . && git commit -m \"bump version\"",
-    "postversion": "git push"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "text-summary",
-      "html"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.ts"
-    ]
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -68,6 +48,25 @@
     "typescript": "^2.1.5",
     "webpack": "^2.2.1"
   },
-  "author": "Microsoft",
-  "license": "MIT"
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text-summary",
+      "html"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ]
+  }
 }
