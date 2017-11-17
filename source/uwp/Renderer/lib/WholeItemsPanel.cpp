@@ -514,9 +514,9 @@ namespace AdaptiveCards { namespace Uwp
     bool WholeItemsPanel::HasExplicitSize(_In_ IFrameworkElement *element)
     {
         DOUBLE definedImageHeight;
-        RETURN_IF_FAILED(element->get_Height(&definedImageHeight));
+        element->get_Height(&definedImageHeight);
         DOUBLE definedImageWidth;
-        RETURN_IF_FAILED(element->get_Height(&definedImageWidth));
+        element->get_Height(&definedImageWidth);
 
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
