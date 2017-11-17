@@ -38,6 +38,8 @@ export class OutlookContainer extends HostContainer {
 
         AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
         AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
+
+        AdaptiveCard.preExpandSingleShowCardAction = true;
     }
 
     public parseElement(element: CardElement, json: any) {

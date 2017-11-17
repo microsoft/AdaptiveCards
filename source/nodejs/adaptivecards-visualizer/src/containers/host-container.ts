@@ -101,6 +101,7 @@ export abstract class HostContainer {
     public initialize() {
         AdaptiveCard.elementTypeRegistry.reset();
         AdaptiveCard.actionTypeRegistry.reset();
+        AdaptiveCard.preExpandSingleShowCardAction = false;
     }
 
     public parseElement(element: CardElement, json: any) {
