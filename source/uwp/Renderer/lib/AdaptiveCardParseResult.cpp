@@ -56,10 +56,10 @@ namespace AdaptiveCards { namespace Uwp
         return m_warnings.CopyTo(value);
     }
 
-        _Use_decl_annotations_
-        HRESULT AdaptiveCardParseResult::put_AdaptiveCard(_In_ IAdaptiveCard* value)
-        {
-                m_adaptiveCard = value;
-                return S_OK;
-        }
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardParseResult::put_AdaptiveCard(_In_ IAdaptiveCard* value)
+    {
+            m_adaptiveCard = value;
+            return S_OK;
+    }
 }}

@@ -138,6 +138,7 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
     }
     catch (const std::out_of_range&)
     {
+        // TODO: Uncomment and add to warnings instead of throwing.
         // throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
         return defaultEnumValue;
     }
