@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta2",
+  "version": "1.0.1-2",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "homepage": "http://adaptivecards.io",
   "keywords": [
@@ -18,7 +18,9 @@
     "build": "npm run tsc && npm run build-dist && npm run dts",
     "watch": "webpack --watch",
     "dts": "dts-generator --name adaptive-cards --project . --out dist/adaptivecards.d.ts",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "preversion": "npm test",
+    "version": "npm run build"
   },
   "jest": {
     "transform": {
