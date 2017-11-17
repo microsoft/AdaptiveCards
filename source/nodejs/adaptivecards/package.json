@@ -20,7 +20,7 @@
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "test": "jest --coverage",
     "preversion": "npm test",
-    "version": "npm run build && git add . && git commit -m 'bump version'",
+    "version": "npm run build && git add . && git commit -m \"bump version\"",
     "postversion": "git push"
   },
   "jest": {
