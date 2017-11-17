@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.1-2",
+  "version": "1.0.1-4",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "homepage": "http://adaptivecards.io",
   "keywords": [
@@ -20,7 +20,8 @@
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "test": "jest --coverage",
     "preversion": "npm test",
-    "version": "npm run build"
+    "version": "npm run build && git add . && git commit -m 'bump version'",
+    "postversion": "git push"
   },
   "jest": {
     "transform": {

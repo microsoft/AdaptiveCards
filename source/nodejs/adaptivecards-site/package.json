@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards-site",
-  "version": "1.0.1-2",
+  "version": "1.0.1-4",
   "private": true,
   "scripts": {
     "build-all": "cd ../adaptivecards-visualizer && npm run build-all",
@@ -10,8 +10,8 @@
     "version": "3.4.1"
   },
   "dependencies": {
-    "adaptivecards": "^1.0.1-2",
-    "adaptivecards-visualizer": "^1.0.1-2",
+    "adaptivecards": "^1.0.1-4",
+    "adaptivecards-visualizer": "^1.0.1-4",
     "change-case": "^3.0.1",
     "glob": "^7.1.2",
     "hexo": "^3.4.1",
