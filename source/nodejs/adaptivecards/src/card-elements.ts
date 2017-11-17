@@ -1918,9 +1918,13 @@ class ActionCollection {
         this.refreshContainer();
     }
 
-    private showActionCard(action: ShowCardAction) {
-        if (action.card == null) return;
+    private showActionCard(action: ShowCardAction, suppressStyle: boolean = false) {
+        if (action.card == null) {
+            return;
+        }
 
+        (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
+        
         var renderedCard = action.card.render();
 
         this._actionCard = renderedCard;
@@ -2043,7 +2047,7 @@ class ActionCollection {
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         if (AdaptiveCard.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
-            this.showActionCard(<ShowCardAction>this.items[0]);
+            this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
         else {
@@ -2343,7 +2347,9 @@ export class Container extends CardElement {
 
     protected hideBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
-            this.renderedElement.style.paddingBottom = "0px";
+            if (this.renderedElement) {
+                this.renderedElement.style.paddingBottom = "0px";
+            }
 
             super.hideBottomSpacer(requestingElement);
         }
@@ -3520,17 +3526,24 @@ class InlineAdaptiveCard extends AdaptiveCard {
     protected get defaultPadding(): HostConfig.PaddingDefinition {
         return new HostConfig.PaddingDefinition(
             {
-                top: Enums.Padding.Default,
+                top: this.suppressStyle ? Enums.Padding.None : Enums.Padding.Default,
                 right: Enums.Padding.Default,
-                bottom: Enums.Padding.Default,
+                bottom: this.suppressStyle ? Enums.Padding.None : Enums.Padding.Default,
                 left: Enums.Padding.Default
             }
         );
     }
 
     protected get defaultStyle(): Enums.ContainerStyle {
-        return this.hostConfig.actions.showCard.style ? this.hostConfig.actions.showCard.style : Enums.ContainerStyle.Emphasis;
+        if (this.suppressStyle) {
+            return Enums.ContainerStyle.Default;
+        }
+        else {
+            return this.hostConfig.actions.showCard.style ? this.hostConfig.actions.showCard.style : Enums.ContainerStyle.Emphasis;
+        }
     }
+
+    suppressStyle: boolean = false;
 
     render() {
         var renderedCard = super.render();
