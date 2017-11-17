@@ -11,13 +11,13 @@
     "bot"
   ],
   "main": "built/adaptivecards.js",
-  "types": "built/adaptivecards.d.ts",
+  "types": "dist/adaptivecards.d.ts",
   "scripts": {
     "build-dist": "webpack",
     "tsc": "tsc -p .",
     "build": "npm run tsc && npm run build-dist && npm run dts",
     "watch": "webpack --watch",
-    "dts": "dts-generator --name adaptive-cards --project . --out dist/adaptivecards.d.ts",
+    "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "test": "jest --coverage",
     "preversion": "npm test",
     "version": "npm run build"

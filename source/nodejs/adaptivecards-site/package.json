@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards-site",
-  "version": "0.1.0",
+  "version": "1.0.1-2",
   "private": true,
   "scripts": {
     "build-all": "cd ../adaptivecards-visualizer && npm run build-all",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "adaptivecards": "^1.0.1-2",
+    "adaptivecards-visualizer": "^1.0.1-2",
     "change-case": "^3.0.1",
     "glob": "^7.1.2",
     "hexo": "^3.4.1",
@@ -25,6 +26,7 @@
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.2.0",
     "markdown-it": "^8.2.2",
+    "marked-schema": "^0.1.1",
     "minimist": "^1.2.0"
   }
 }

@@ -1,8 +1,8 @@
 {
   "name": "adaptivecards-visualizer",
-  "version": "0.1.0",
+  "version": "1.0.1-2",
   "description": "Adaptive Card Visualizer for HTML renderer",
-  "main": "built/adaptivecards-visualizer.js",
+  "main": "dist/adaptivecards-visualizer.js",
   "private": true,
   "scripts": {
     "build-all": "cd ../adaptivecards && npm run build && cd ../adaptivecards-visualizer && npm run build",
