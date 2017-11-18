@@ -1,3 +1,2 @@
-npm install hexo-cli -g
-hexo clean
-hexo generate
+node node_modules/hexo-cli/bin/hexo clean
+node node_modules/hexo-cli/bin/hexo generate
