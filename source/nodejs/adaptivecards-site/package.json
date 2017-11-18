@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards-site",
-  "version": "1.0.1-4",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "build-all": "cd ../adaptivecards-visualizer && npm run build-all",
