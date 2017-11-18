@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.1-4",
+  "version": "1.0.1-6",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "author": "AdaptiveCards",
   "license": "MIT",
@@ -13,7 +13,7 @@
     "bot"
   ],
   "main": "built/adaptivecards.js",
-  "types": "dist/adaptivecards.d.ts",
+  "types": "built/adaptivecards.d.ts",
   "scripts": {
     "build-dist": "webpack",
     "tsc": "tsc -p .",
