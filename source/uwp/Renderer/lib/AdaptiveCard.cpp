@@ -3,6 +3,8 @@
 #include "AdaptiveCardParseResult.h"
 #include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveElementParserRegistration.h"
+#include "AdaptiveCardParseException.h"
+#include "AdaptiveError.h"
 
 #include <json.h>
 #include "Util.h"
@@ -88,12 +90,28 @@ namespace AdaptiveCards { namespace Uwp
             }
         }
 
-        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-
-        ComPtr<IAdaptiveCard> adaptiveCard;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(parseResult, adaptiveCard.Get()));
-        return S_OK;
+                ComPtr<AdaptiveCardParseResult> adaptiveParseResult;
+                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
+                try
+                {
+                        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
+                        ComPtr<IAdaptiveCard> adaptiveCard;
+                        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));
+                        RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
+                        return adaptiveParseResult.CopyTo(parseResult);
+                }
+                catch (const AdaptiveCardParseException& e)
+                {
+                        ComPtr<IVector<IAdaptiveError*>> errors;
+                        RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
+                        HString errorMessage;
+                        ABI::AdaptiveCards::Uwp::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveCards::Uwp::ErrorStatusCode>(e.GetStatusCode());
+                        RETURN_IF_FAILED(UTF8ToHString(e.GetMessage(), errorMessage.GetAddressOf()));
+                        ComPtr<IAdaptiveError> adaptiveError;
+                        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
+                        RETURN_IF_FAILED(errors->Append(adaptiveError.Get()));
+                        return adaptiveParseResult.CopyTo(parseResult);
+                }
     }
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()

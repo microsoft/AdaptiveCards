@@ -67,7 +67,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddError(ErrorStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::Uwp::ErrorStatusCode statusCode, HSTRING message)
     {
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
@@ -77,7 +77,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddWarning(WarningStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::Uwp::WarningStatusCode statusCode, HSTRING message)
     {
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));

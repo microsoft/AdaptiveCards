@@ -290,12 +290,12 @@ namespace AdaptiveCards
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ErrorStatusCode {
-            // Errors
             InvalidJson = 0,
             UnsupportedSchemaVersion,
             RenderFailed,
             RequiredPropertyMissing,
-            InvalidPropertyValue
+            InvalidPropertyValue,
+            UnsupportedParserOverride
         } ErrorStatusCode;
 
         [version(NTDDI_WIN10_RS1)]

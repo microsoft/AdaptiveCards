@@ -141,7 +141,7 @@ namespace AdaptiveCards { namespace Uwp
             catch (...)
             {
                 RETURN_IF_FAILED(renderContext->AddError(
-                    ErrorStatusCode::RenderFailed,
+                    ABI::AdaptiveCards::Uwp::ErrorStatusCode::RenderFailed,
                     HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
                 renderedCard->SetFrameworkElement(nullptr);
             }
@@ -169,8 +169,19 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         HRESULT hr = CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult);
-        if (FAILED(hr))
-        {
+        ComPtr<IAdaptiveCard> parsedCard;
+        RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&parsedCard));
+        if (parsedCard == nullptr)
+        {            
+            ComPtr<IVector<IAdaptiveError*>> renderResultErrors;
+            RETURN_IF_FAILED(renderedCard->get_Errors(&renderResultErrors));
+            ComPtr<IVector<IAdaptiveError*>> parseErrors;
+            RETURN_IF_FAILED(adaptiveCardParseResult->get_Errors(&parseErrors));
+            XamlHelpers::IterateOverVector<IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error)
+            {
+                ComPtr<IAdaptiveError> localError(error);
+                return renderResultErrors->Append(localError.Get());
+            });
             *result = renderedCard.Detach();
             return S_OK;
         }
@@ -178,7 +189,6 @@ namespace AdaptiveCards { namespace Uwp
         {
             ComPtr<IAdaptiveCard> adaptiveCard;
             RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&adaptiveCard));
-
             return RenderAdaptiveCard(adaptiveCard.Get(), result);
         }
     }
