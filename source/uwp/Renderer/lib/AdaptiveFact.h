@@ -27,7 +27,7 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::Fact>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::Fact>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override

@@ -120,7 +120,7 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
         {
             if (isRequired)
             {
-                throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
             }
             else
             {
@@ -130,7 +130,7 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
 
         if (!propertyValue.isString())
         {
-            throw AdaptiveCardParseException("Enum type was invalid. Expected type string.");
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Enum type was invalid. Expected type string.");
         }
 
         propertyValueStr = propertyValue.asString();
@@ -138,7 +138,9 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
     }
     catch (const std::out_of_range&)
     {
-        throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
+        // TODO: Uncomment and add to warnings instead of throwing.
+        // throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
+        return defaultEnumValue;
     }
 }
 

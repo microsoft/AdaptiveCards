@@ -20,11 +20,11 @@ namespace AdaptiveCards { namespace Uwp
 
 
     private:
-        std::string SerializeChoiceSetInput(const char* idString) const;
-        std::string SerializeDateInput(const char* idString) const;
-        std::string SerializeTextInput(const char* idString) const;
-        std::string SerializeTimeInput(const char* idString) const;
-        std::string SerializeToggleInput(const char* idString) const;
+        std::string SerializeChoiceSetInput() const;
+        std::string SerializeDateInput() const;
+        std::string SerializeTextInput() const;
+        std::string SerializeTimeInput() const;
+        std::string SerializeToggleInput() const;
 
         std::string GetChoiceValue(ABI::AdaptiveCards::Uwp::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
 

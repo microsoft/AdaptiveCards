@@ -31,7 +31,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     HRESULT AdaptiveTextBlockRenderer::FromJson(
-        ABI::Windows::Data::Json::IJsonObject* jsonObject, 
+        ABI::Windows::Data::Json::IJsonObject* jsonObject,
         ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
         ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
         ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)

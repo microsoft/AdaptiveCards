@@ -43,8 +43,8 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Uwp::Spacing* spacing);
         IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Uwp::Spacing spacing);
 
-        IFACEMETHODIMP get_Separator(boolean* separator);
-        IFACEMETHODIMP put_Separator(boolean separator);
+        IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
+        IFACEMETHODIMP put_Separator(_In_ boolean separator);
 
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
@@ -53,7 +53,7 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::Image>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::Image>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override

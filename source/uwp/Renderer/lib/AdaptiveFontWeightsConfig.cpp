@@ -14,9 +14,9 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveFontWeightsConfig::RuntimeClassInitialize(FontWeightsConfig fontWeightsConfig) noexcept
     {
-        m_default = fontWeightsConfig.defaultWeight;
-        m_lighter = fontWeightsConfig.lighterWeight;
-        m_bolder = fontWeightsConfig.bolderWeight;
+        m_default = static_cast<UINT16>(fontWeightsConfig.defaultWeight);
+        m_lighter = static_cast<UINT16>(fontWeightsConfig.lighterWeight);
+        m_bolder = static_cast<UINT16>(fontWeightsConfig.bolderWeight);
 
         return S_OK;
     }

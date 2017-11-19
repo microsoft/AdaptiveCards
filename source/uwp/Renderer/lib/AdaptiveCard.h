@@ -44,7 +44,7 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -79,17 +79,17 @@ namespace AdaptiveCards { namespace Uwp
 
         // IAdaptiveCardStatics
         IFACEMETHODIMP FromJson(
-            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson, 
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
             _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
 
         IFACEMETHODIMP FromJsonWithParserRegistration(
-            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson, 
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
             ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
             ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
             _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
 
         IFACEMETHODIMP FromJsonString(
-            _In_ HSTRING adaptiveJson, 
+            _In_ HSTRING adaptiveJson,
             _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
 
         IFACEMETHODIMP FromJsonStringWithParserRegistration(
@@ -100,7 +100,7 @@ namespace AdaptiveCards { namespace Uwp
 
     private:
         HRESULT FromJsonString(
-            _In_ const std::string jsonString, 
+            _In_ const std::string jsonString,
             ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
             ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
             _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult);

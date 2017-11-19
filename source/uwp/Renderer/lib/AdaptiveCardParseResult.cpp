@@ -27,6 +27,8 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveCardParseResult::RuntimeClassInitialize()
     {
+        m_errors = Make<Vector<IAdaptiveError*>>();
+        m_warnings = Make<Vector<IAdaptiveWarning*>>();
         return S_OK;
     }
 
@@ -43,14 +45,21 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_Errors(ABI::Windows::Foundation::Collections::IVector<HSTRING>** value)
+    HRESULT AdaptiveCardParseResult::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_Warnings(ABI::Windows::Foundation::Collections::IVector<HSTRING>** value)
+    HRESULT AdaptiveCardParseResult::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardParseResult::put_AdaptiveCard(_In_ IAdaptiveCard* value)
+    {
+            m_adaptiveCard = value;
+            return S_OK;
     }
 }}

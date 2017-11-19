@@ -143,7 +143,7 @@ namespace AdaptiveCards { namespace Uwp
     };
 
     template <typename T>
-    class Vector : public RuntimeClass<IVector<T>, 
+    class Vector : public RuntimeClass<IVector<T>,
         IIterable<T>,
         Microsoft::WRL::FtmBase>
     {

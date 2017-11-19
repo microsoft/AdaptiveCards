@@ -32,8 +32,8 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_MaxActions(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxActions(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* value);
-        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::Uwp::Spacing value);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Uwp::Spacing* value);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Uwp::Spacing value);
 
     private:
         ABI::AdaptiveCards::Uwp::ActionAlignment m_actionAlignment;

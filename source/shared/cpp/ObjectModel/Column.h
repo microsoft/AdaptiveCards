@@ -19,7 +19,7 @@ public:
 
     static std::shared_ptr<Column> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& root);
 
     static std::shared_ptr<Column> DeserializeFromString(

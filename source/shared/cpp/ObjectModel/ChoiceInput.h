@@ -26,12 +26,12 @@ public:
 
     static std::shared_ptr<ChoiceInput> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& root);
 
     static std::shared_ptr<ChoiceInput> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 
 private:

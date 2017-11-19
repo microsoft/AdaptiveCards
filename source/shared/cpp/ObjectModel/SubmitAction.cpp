@@ -30,7 +30,7 @@ Json::Value SubmitAction::SerializeToJsonValue()
 
 std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>, 
+    std::shared_ptr<ActionParserRegistration>,
     const Json::Value& json)
 {
     std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(json);
@@ -42,7 +42,7 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(
 
 std::shared_ptr<BaseActionElement> SubmitActionParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const std::string& jsonString)
 {
     return SubmitActionParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
