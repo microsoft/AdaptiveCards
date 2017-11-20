@@ -32,7 +32,9 @@ namespace AdaptiveCards
             // The depth checks that cards within a Action.ShowCard don't require the version
             if (reader.Depth == 0 && card.Version == null)
             {
-                throw new AdaptiveSerializationException("Required property 'version' not found on AdaptiveCard");
+                // TODO: HACK for BF needing to deserialize legacy payloads that did not have a version
+                card.Version = "0.5";
+                //throw new AdaptiveSerializationException("Required property 'version' not found on AdaptiveCard");
             }
 
             return card;

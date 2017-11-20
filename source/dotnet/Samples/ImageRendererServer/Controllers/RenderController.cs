@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
