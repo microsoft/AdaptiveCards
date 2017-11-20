@@ -7,7 +7,7 @@ namespace WpfVisualizer
 {
     public class MyCustomRating : AdaptiveElement
     {
-        public override string Type => "Rating";
+        public override string Type { get; protected set; } = "Rating";
 
         public double Rating { get; set; }
 
@@ -33,7 +33,7 @@ namespace WpfVisualizer
 
     public class MyCustomInput : AdaptiveInput
     {
-        public override string Type => "MyCustomInput";    
+        public override string Type { get; protected set; } = "MyCustomInput";
 
         public static FrameworkElement Render(MyCustomInput input, AdaptiveRenderContext context)
         {

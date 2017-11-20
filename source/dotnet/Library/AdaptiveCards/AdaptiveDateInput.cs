@@ -10,7 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Input.Date";
 
-        public override string Type => TypeName;
+        public override string Type { get; protected set; } = TypeName;
 
         /// <summary>
         ///     Placeholder text for the input desired

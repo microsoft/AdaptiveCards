@@ -21,7 +21,7 @@ namespace AdaptiveCards
 
         public const string TypeName = "AdaptiveCard";
 
-        public override string Type => TypeName;
+        public override string Type { get; protected set; } = TypeName;
 
         /// <summary>
         /// The latest known schema version supported by this library
