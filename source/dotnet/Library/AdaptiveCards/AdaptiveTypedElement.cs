@@ -15,7 +15,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The type name of the element 
         /// </summary>
-        [JsonProperty(Order = -10, Required = Required.Always)]
+        [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
         [JsonRequired]
         public abstract string Type { get; }
 
