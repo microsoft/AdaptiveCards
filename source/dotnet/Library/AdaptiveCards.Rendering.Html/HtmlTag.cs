@@ -65,6 +65,15 @@ namespace AdaptiveCards.Rendering.Html
             return this;
         }
 
+        public HtmlTag Attr(string name, Uri value)
+        {
+            if (value == null)
+                this.Attributes.Remove(name);
+            else
+                this.Attributes[name] = value.ToString();
+            return this;
+        }
+
         public override string ToString()
         {
             if (string.IsNullOrEmpty(this.Element))
