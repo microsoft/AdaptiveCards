@@ -5,12 +5,13 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept
     {
         return S_OK;
@@ -29,4 +30,4 @@ namespace AdaptiveCards { namespace Uwp
         return m_renderResult->SendActionEvent(actionElement);
     }
 
-}}
+}}}

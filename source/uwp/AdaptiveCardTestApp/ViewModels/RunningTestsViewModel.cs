@@ -1,4 +1,4 @@
-﻿using AdaptiveCards.Uwp;
+﻿using AdaptiveCards.Rendering.Uwp;
 using AdaptiveCardTestApp.Helpers;
 using System;
 using System.Collections.Generic;

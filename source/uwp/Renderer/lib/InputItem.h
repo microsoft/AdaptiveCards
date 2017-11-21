@@ -1,14 +1,15 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     class InputItem
     {
     public:
         InputItem(
-            ABI::AdaptiveCards::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
             ABI::Windows::UI::Xaml::IUIElement* uiInputElement) :
             m_adaptiveInputElement(adaptiveInputElement),
             m_uiInputElement(uiInputElement)
@@ -26,9 +27,9 @@ namespace AdaptiveCards { namespace Uwp
         std::string SerializeTimeInput() const;
         std::string SerializeToggleInput() const;
 
-        std::string GetChoiceValue(ABI::AdaptiveCards::Uwp::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
+        std::string GetChoiceValue(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveInputElement> m_adaptiveInputElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement> m_adaptiveInputElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_uiInputElement;
     };
-}}
+}}}

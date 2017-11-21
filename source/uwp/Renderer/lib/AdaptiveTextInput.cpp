@@ -7,13 +7,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
         m_sharedTextInput = std::make_shared<TextInput>();
@@ -90,13 +91,13 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::Uwp::TextInputStyle * textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle * textInputStyle)
     {
-        *textInputStyle = static_cast<ABI::AdaptiveCards::Uwp::TextInputStyle>(m_sharedTextInput->GetTextInputStyle());
+        *textInputStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle>(m_sharedTextInput->GetTextInputStyle());
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Uwp::TextInputStyle textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle)
     {
         m_sharedTextInput->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(textInputStyle));
         return S_OK;
@@ -125,14 +126,14 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
+    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedTextInput->GetSpacing());
+        *spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(m_sharedTextInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
+    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
         m_sharedTextInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
@@ -196,4 +197,4 @@ namespace AdaptiveCards { namespace Uwp
         sharedModel = m_sharedTextInput;
         return S_OK;
     }
-}}
+}}}

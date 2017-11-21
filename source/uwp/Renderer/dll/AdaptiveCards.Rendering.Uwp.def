@@ -1,4 +1,4 @@
-LIBRARY "AdaptiveCards.Uwp.dll"
+LIBRARY "AdaptiveCards.Rendering.Uwp.dll"
 
 EXPORTS
     DllGetClassObject           PRIVATE

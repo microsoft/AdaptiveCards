@@ -6,13 +6,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
     {
         m_sharedTextBlock = std::make_shared<TextBlock>();
@@ -47,42 +48,42 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveCards::Uwp::TextSize* textSize)
+    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize* textSize)
     {
-        *textSize = static_cast<ABI::AdaptiveCards::Uwp::TextSize>(m_sharedTextBlock->GetTextSize());
+        *textSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextSize>(m_sharedTextBlock->GetTextSize());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveCards::Uwp::TextSize textSize)
+    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize)
     {
         m_sharedTextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(textSize));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveCards::Uwp::TextWeight* textWeight)
+    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight* textWeight)
     {
-        *textWeight = static_cast<ABI::AdaptiveCards::Uwp::TextWeight>(m_sharedTextBlock->GetTextWeight());
+        *textWeight = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>(m_sharedTextBlock->GetTextWeight());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveCards::Uwp::TextWeight textWeight)
+    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight)
     {
         m_sharedTextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeight));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::Uwp::ForegroundColor* textColor)
+    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* textColor)
     {
-        *textColor = static_cast<ABI::AdaptiveCards::Uwp::ForegroundColor>(m_sharedTextBlock->GetTextColor());
+        *textColor = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>(m_sharedTextBlock->GetTextColor());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::Uwp::ForegroundColor textColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor)
     {
         m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::ForegroundColor>(textColor));
         return S_OK;
@@ -131,14 +132,14 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveCards::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
     {
-        *alignment = static_cast<ABI::AdaptiveCards::Uwp::HAlignment>(m_sharedTextBlock->GetHorizontalAlignment());
+        *alignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(m_sharedTextBlock->GetHorizontalAlignment());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Uwp::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
     {
         m_sharedTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(alignment));
         return S_OK;
@@ -152,14 +153,14 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
+    HRESULT AdaptiveTextBlock::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedTextBlock->GetSpacing());
+        *spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(m_sharedTextBlock->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
+    HRESULT AdaptiveTextBlock::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
         m_sharedTextBlock->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
@@ -224,4 +225,4 @@ namespace AdaptiveCards { namespace Uwp
         sharedTextBlock = m_sharedTextBlock;
         return S_OK;
     }
-}}
+}}}

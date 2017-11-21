@@ -16,11 +16,12 @@
 #include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfigParseResult** parseResult) noexcept try
     {
@@ -135,13 +136,13 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition** value)
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition** value)
     {
         return m_containerStyles.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
     {
         m_containerStyles = containerStylesDefinition;
         return S_OK;
@@ -161,26 +162,26 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig** spacingConfig)
+    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig** spacingConfig)
     {
         return m_spacing.CopyTo(spacingConfig);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig* spacingConfig)
+    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig* spacingConfig)
     {
         m_spacing = spacingConfig;
         return S_OK;
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::Uwp::IAdaptiveSeparatorConfig** separatorConfig)
+    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig** separatorConfig)
     {
         return m_separator.CopyTo(separatorConfig);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveCards::Uwp::IAdaptiveSeparatorConfig* separatorConfig)
+    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig* separatorConfig)
     {
         m_separator = separatorConfig;
         return S_OK;
@@ -250,4 +251,4 @@ namespace AdaptiveCards { namespace Uwp
         m_actions = actionsConfig;
         return S_OK;
     }
-}}
+}}}

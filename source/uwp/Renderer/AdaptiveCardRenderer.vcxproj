@@ -29,7 +29,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{cf169157-f487-420c-8b9b-ca3abe2bb209}</ProjectGuid>
     <Keyword>AdaptiveCards</Keyword>
-    <RootNamespace>AdaptiveCards.Uwp</RootNamespace>
+    <RootNamespace>AdaptiveCards.Rendering.Uwp</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
@@ -37,7 +37,7 @@
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <TargetName>AdaptiveCards.Uwp</TargetName>
+    <TargetName>AdaptiveCards.Rendering.Uwp</TargetName>
     <GenerateManifest>false</GenerateManifest>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
@@ -80,7 +80,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>.\dll\AdaptiveCards.Uwp.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>.\dll\AdaptiveCards.Rendering.Uwp.def</ModuleDefinitionFile>
       <AdditionalDependencies>
         user32.lib;
         %(AdditionalDependencies);
@@ -276,7 +276,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Uwp.idl">
+    <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl">
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
     </Midl>

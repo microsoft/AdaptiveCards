@@ -1,21 +1,22 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "ChoiceSetInput.h"
 #include "Enums.h"
 #include <windows.foundation.h>
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     class DECLSPEC_UUID("fa103f57-5d54-48ba-80a5-d8939b85e82d") AdaptiveChoiceSetInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Uwp::IAdaptiveChoiceSetInput,
-            ABI::AdaptiveCards::Uwp::IAdaptiveInputElement,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveChoiceSetInput, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveChoiceSetInput, BaseTrust)
 
     public:
         AdaptiveChoiceSetInput();
@@ -28,20 +29,20 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_IsMultiSelect(_Out_ boolean* isMultiSelect);
         IFACEMETHODIMP put_IsMultiSelect(_In_ boolean isMultiSelect);
 
-        IFACEMETHODIMP get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::Uwp::ChoiceSetStyle* choiceSetStyle);
-        IFACEMETHODIMP put_ChoiceSetStyle(_In_ ABI::AdaptiveCards::Uwp::ChoiceSetStyle choiceSetStyle);
+        IFACEMETHODIMP get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle* choiceSetStyle);
+        IFACEMETHODIMP put_ChoiceSetStyle(_In_ ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle);
 
-        IFACEMETHODIMP get_Choices(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput*>** columns);
+        IFACEMETHODIMP get_Choices(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput*>** columns);
 
         // IAdaptiveInputElement
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Uwp::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Uwp::Spacing spacing);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
 
         IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
         IFACEMETHODIMP put_Separator(_In_ boolean separator);
@@ -62,15 +63,15 @@ namespace AdaptiveCards { namespace Uwp
         }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput*>> m_choices;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput*>> m_choices;
         boolean m_isRequired;
         boolean m_isMultiSelect;
-        ABI::AdaptiveCards::Uwp::ChoiceSetStyle m_choiceSetStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle m_choiceSetStyle;
 
         boolean m_separator;
         Microsoft::WRL::Wrappers::HString m_id;
-        ABI::AdaptiveCards::Uwp::Spacing m_spacing;
+        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
     };
 
     ActivatableClass(AdaptiveChoiceSetInput);
-}}
+}}}

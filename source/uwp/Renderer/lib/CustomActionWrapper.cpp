@@ -2,10 +2,11 @@
 #include "CustomActionWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
 
 std::string CustomActionWrapper::GetId() const
 {
@@ -46,9 +47,9 @@ Json::Value CustomActionWrapper::SerializeToJsonValue()
     return jsonCppValue;
 }
 
-HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** actionElement)
+HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** actionElement)
 {
     return m_actionElement.CopyTo(actionElement);
 }
 
-}}
+}}}
