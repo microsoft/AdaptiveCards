@@ -1,7 +1,7 @@
 var visualizer = {
     entry: "./src/App.ts",
     output: {
-        filename: "./built/adaptivecards-visualizer.js"
+        filename: "./dist/adaptivecards-visualizer.js"
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -34,7 +34,7 @@ var visualizer = {
 var visualizerWithRenderer = {
     entry: "./src/App.ts",
     output: {
-        filename: "./built/visualizer-with-renderer.js"
+        filename: "./dist/visualizer-with-renderer.js"
     },
 
     // Enable sourcemaps for debugging webpack's output.
