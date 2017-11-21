@@ -37,7 +37,7 @@ class TimeFormatter extends AbstractTextFormatter {
     protected internalFormat(matches: RegExpExecArray): string {
         var date = new Date(Date.parse(matches[1]));
 
-        return date.toLocaleTimeString();
+        return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
     }
 }
 
