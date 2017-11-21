@@ -2592,6 +2592,10 @@ export class Container extends CardElement {
         }
     }
 
+    set style(value: Enums.ContainerStyle) {
+        this._style = value;
+    }
+
     getJsonTypeName(): string {
         return "Container";
     }
