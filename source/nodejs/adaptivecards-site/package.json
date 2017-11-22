@@ -10,8 +10,8 @@
     "version": "3.4.1"
   },
   "dependencies": {
-    "adaptivecards": "^1.0.1-4",
-    "adaptivecards-visualizer": "^1.0.1-4",
+    "adaptivecards": "^1.0.0-0",
+    "adaptivecards-visualizer": "^1.0.0-0",
     "change-case": "^3.0.1",
     "glob": "^7.1.2",
     "hexo": "^3.4.1",
