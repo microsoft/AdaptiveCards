@@ -25,7 +25,7 @@ namespace AdaptiveCards
 
         public const string TypeName = "Image";
 
-        public override string Type => TypeName;
+        public override string Type { get; protected set; } = TypeName;
 
         /// <summary>
         ///     Size for the Image

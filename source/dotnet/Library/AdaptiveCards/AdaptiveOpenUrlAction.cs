@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace AdaptiveCards
 {
@@ -10,12 +11,12 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Action.OpenUrl";
 
-        public override string Type => TypeName;
+        public override string Type { get; protected set; } = TypeName;
 
         /// <summary>
         ///     Url to open using default operating system browser
         /// </summary>
         [JsonRequired]
-        public string Url { get; set; }
+        public Uri Url { get; set; }
     }
 }
