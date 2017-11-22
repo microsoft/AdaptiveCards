@@ -111,6 +111,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseCardElement.cpp" />
@@ -121,6 +122,7 @@
     <ClCompile Include="..\..\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\ObjectModel\DateInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ElementParserRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\ObjectModel\Fact.cpp" />
     <ClCompile Include="..\..\ObjectModel\FactSet.cpp" />
@@ -141,6 +143,7 @@
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\ObjectModel\BaseCardElement.h" />
@@ -151,6 +154,7 @@
     <ClInclude Include="..\..\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\ObjectModel\Container.h" />
     <ClInclude Include="..\..\ObjectModel\DateInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\Enums.h" />
     <ClInclude Include="..\..\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\ObjectModel\FactSet.h" />
