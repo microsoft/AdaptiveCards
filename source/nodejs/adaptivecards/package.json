@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta3",
+  "version": "1.0.0-beta4",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "author": "AdaptiveCards",
   "license": "MIT",
@@ -12,8 +12,8 @@
     "microsoft",
     "bot"
   ],
-  "main": "built/adaptivecards.js",
-  "types": "built/adaptivecards.d.ts",
+  "main": "dist/adaptivecards.js",
+  "types": "dist/adaptivecards.d.ts",
   "scripts": {
     "build-dist": "webpack",
     "tsc": "tsc -p .",
@@ -46,7 +46,7 @@
     "ts-loader": "^2.0.0",
     "tslint": "^4.4.2",
     "typescript": "^2.1.5",
-    "webpack": "^2.2.1"
+    "webpack": "^3.8.1"
   },
   "jest": {
     "transform": {
