@@ -32,7 +32,7 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -45,9 +45,8 @@ using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
     {
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
@@ -105,8 +104,8 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveCard* adaptiveCard,
         IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveCards::Uwp::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&renderedCard));
         renderedCard->SetOriginatingCard(adaptiveCard);
 
         XamlBuilder xamlBuilder;
@@ -141,7 +140,7 @@ namespace AdaptiveCards { namespace Uwp
             catch (...)
             {
                 RETURN_IF_FAILED(renderContext->AddError(
-                    ABI::AdaptiveCards::Uwp::ErrorStatusCode::RenderFailed,
+                    ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode::RenderFailed,
                     HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
                 renderedCard->SetFrameworkElement(nullptr);
             }
@@ -153,7 +152,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RenderCardAsXamlAsync(
         IAdaptiveCard* adaptiveCard,
-        IAsyncOperation<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*>** result)
+        IAsyncOperation<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*>** result)
     {
         *result = Make<RenderCardAsXamlAsyncOperation>(adaptiveCard, this).Detach();
         return S_OK;
@@ -164,8 +163,8 @@ namespace AdaptiveCards { namespace Uwp
         HSTRING adaptiveJson,
         IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveCards::Uwp::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&renderedCard));
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         HRESULT hr = CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult);
@@ -206,7 +205,7 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RenderAdaptiveJsonAsXamlAsync(
         HSTRING adaptiveJson,
-        IAsyncOperation<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*>** result)
+        IAsyncOperation<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*>** result)
     {
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
@@ -217,7 +216,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult)
+    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult)
     {
         ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
@@ -305,4 +304,4 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-}}
+}}}

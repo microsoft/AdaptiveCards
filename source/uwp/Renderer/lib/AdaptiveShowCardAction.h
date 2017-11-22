@@ -1,30 +1,31 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "ShowCardAction.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     class DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Uwp::IAdaptiveShowCardAction,
-            ABI::AdaptiveCards::Uwp::IAdaptiveActionElement,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveShowCardAction,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveShowCardAction, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveShowCardAction, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction);
 
         // IAdaptiveShowCardAction
-        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveCards::Uwp::IAdaptiveCard** card);
-        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveCards::Uwp::IAdaptiveCard* card);
+        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** card);
+        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Uwp::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
@@ -48,7 +49,7 @@ namespace AdaptiveCards { namespace Uwp
 
     private:
         
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCard> m_card;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard> m_card;
 
         Microsoft::WRL::Wrappers::HString m_id;
         Microsoft::WRL::Wrappers::HString m_title;
@@ -57,4 +58,4 @@ namespace AdaptiveCards { namespace Uwp
     };
 
     ActivatableClass(AdaptiveShowCardAction);
-}}
+}}}

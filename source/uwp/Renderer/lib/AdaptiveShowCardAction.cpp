@@ -4,10 +4,11 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
@@ -30,12 +31,12 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** card)
     {
         return m_card.CopyTo(card);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard* card)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card)
     {
         m_card = card;
         return S_OK;
@@ -54,9 +55,9 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveCards::Uwp::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::Uwp::ActionType::ShowCard;
+        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard;
         return S_OK;
     }
 
@@ -114,7 +115,7 @@ namespace AdaptiveCards { namespace Uwp
         JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonValue);
         showCardAction->SetAdditionalProperties(jsonValue);
 
-        ComPtr<AdaptiveCards::Uwp::AdaptiveCard> card = PeekInnards<AdaptiveCards::Uwp::AdaptiveCard>(m_card);
+        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveCard> card = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveCard>(m_card);
         
         std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedCard;
         RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
@@ -124,4 +125,4 @@ namespace AdaptiveCards { namespace Uwp
         sharedModel = showCardAction;
         return S_OK;
     }
-}}
+}}}

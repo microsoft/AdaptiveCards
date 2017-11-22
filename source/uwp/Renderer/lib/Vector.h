@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include <windows.foundation.collections.h>
 #include <wrl.h>
 
@@ -8,8 +8,9 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     template <typename T>
     struct Wrap
     {
@@ -261,4 +262,4 @@ namespace AdaptiveCards { namespace Uwp
     private:
         std::shared_ptr<WrappedVector> m_wrappedVector;
     };
-}}
+}}}

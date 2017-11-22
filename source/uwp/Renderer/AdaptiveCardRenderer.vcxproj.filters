@@ -160,6 +160,6 @@
     <ClInclude Include="lib\AdaptiveWarning.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Uwp.idl" />
+    <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
   </ItemGroup>
 </Project>

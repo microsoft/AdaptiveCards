@@ -1,17 +1,18 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     class AdaptiveCardConfig :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::Uwp::IAdaptiveCardConfig>
+        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardConfig>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveCardConfig, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveCardConfig, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -25,5 +26,4 @@ namespace AdaptiveCards { namespace Uwp
     };
 
     ActivatableClass(AdaptiveCardConfig);
-}
-}
+}}}

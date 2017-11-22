@@ -10,13 +10,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     AdaptiveColumnSet::AdaptiveColumnSet()
     {
         m_columns = Microsoft::WRL::Make<Vector<IAdaptiveColumn*>>();
@@ -39,7 +40,7 @@ namespace AdaptiveCards { namespace Uwp
         GenerateColumnsProjection(sharedColumnSet->GetColumns(), m_columns.Get());
         GenerateActionProjection(sharedColumnSet->GetSelectAction(), &m_selectAction);
 
-        m_spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(sharedColumnSet->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedColumnSet->GetSpacing());
         m_separator = sharedColumnSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedColumnSet->GetId(), m_id.GetAddressOf()));
 
@@ -73,14 +74,14 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
+    HRESULT AdaptiveColumnSet::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
+    HRESULT AdaptiveColumnSet::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -157,7 +158,7 @@ namespace AdaptiveCards { namespace Uwp
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column)
         {
             std::shared_ptr<Column> sharedColumn = std::make_shared<Column>();
-            ComPtr<AdaptiveCards::Uwp::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveCards::Uwp::AdaptiveColumn>(column);
+            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveColumn>(column);
             RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumn));
 
             columnSet->GetColumns().push_back(sharedColumn);
@@ -168,4 +169,4 @@ namespace AdaptiveCards { namespace Uwp
         sharedModel = columnSet;
         return S_OK;
     }
-}}
+}}}

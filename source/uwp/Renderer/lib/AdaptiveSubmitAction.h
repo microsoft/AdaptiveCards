@@ -1,26 +1,27 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "SubmitAction.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     class DECLSPEC_UUID("32114ce2-7e10-4f7f-8225-bfd661c6794c") AdaptiveSubmitAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Uwp::IAdaptiveSubmitAction,
-            ABI::AdaptiveCards::Uwp::IAdaptiveActionElement,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSubmitAction,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveSubmitAction, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveSubmitAction, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Uwp::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
@@ -50,4 +51,4 @@ namespace AdaptiveCards { namespace Uwp
     };
 
     ActivatableClass(AdaptiveSubmitAction);
-}}
+}}}

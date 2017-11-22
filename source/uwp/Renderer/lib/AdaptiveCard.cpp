@@ -11,7 +11,7 @@
 #include "Vector.h"
 #include <windows.foundation.collections.h>
 
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -19,8 +19,9 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {
@@ -105,7 +106,7 @@ namespace AdaptiveCards { namespace Uwp
                         ComPtr<IVector<IAdaptiveError*>> errors;
                         RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
                         HString errorMessage;
-                        ABI::AdaptiveCards::Uwp::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveCards::Uwp::ErrorStatusCode>(e.GetStatusCode());
+                        ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode>(e.GetStatusCode());
                         RETURN_IF_FAILED(UTF8ToHString(e.GetMessage(), errorMessage.GetAddressOf()));
                         ComPtr<IAdaptiveError> adaptiveError;
                         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
@@ -143,7 +144,7 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
 
-        m_style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedAdaptiveCard->GetStyle());
 
         ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
         RETURN_IF_FAILED(GetActivationFactory(
@@ -229,14 +230,14 @@ namespace AdaptiveCards { namespace Uwp
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
+    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
@@ -290,4 +291,4 @@ namespace AdaptiveCards { namespace Uwp
         sharedModel = adaptiveCard;
         return S_OK;
     }
-}}
+}}}
