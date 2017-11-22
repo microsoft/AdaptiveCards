@@ -14,22 +14,22 @@
         <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     </metadata>
     <files>
-        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.winmd" target="lib\uap10.0"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.winmd" target="lib\uap10.0"/>
 
-        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.dll" target="runtimes\win10-x86\native"/>
-        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.lib" target="runtimes\win10-x86\native"/>
-        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pri" target="runtimes\win10-x86\native"/>
-        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pdb" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.dll" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.lib" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-x86\native"/>
 
-        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.dll" target="runtimes\win10-x64\native"/>
-        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.lib" target="runtimes\win10-x64\native"/>
-        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pri" target="runtimes\win10-x64\native"/>
-        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pdb" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.dll" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.lib" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-x64\native"/>
 
-        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.dll" target="runtimes\win10-arm\native"/>
-        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.lib" target="runtimes\win10-arm\native"/>
-        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pri" target="runtimes\win10-arm\native"/>
-        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pdb" target="runtimes\win10-arm\native"/>
+        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.dll" target="runtimes\win10-arm\native"/>
+        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.lib" target="runtimes\win10-arm\native"/>
+        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-arm\native"/>
+        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-arm\native"/>
 
         <file src="AdaptiveCards.Rendering.Uwp.targets" target="build\uap10.0"/>
         <file src="AdaptiveCards.Rendering.Uwp.native.targets" target="build\native"/>
