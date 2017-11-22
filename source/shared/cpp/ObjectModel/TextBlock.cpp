@@ -172,7 +172,7 @@ bool TextBlock::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int min
 
 std::string TextBlock::ParseDateTime() const
 {
-    std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, SHORT)|(, LONG))|(, COMPACT))|)\\)\\}\\}");
+    std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
     std::smatch matches;
     std::string text = m_text;
     std::ostringstream parsedostr;
@@ -208,7 +208,9 @@ std::string TextBlock::ParseDateTime() const
         if(matches[Style].matched)
         {
             // match for long/short/compact
-            formatStyle = matches[Format].str()[2];
+            bool formatHasSpace = matches[Format].str()[1] == ' ';
+            int formatStartIndex = formatHasSpace ? 2 : 1;
+            formatStyle = matches[Format].str()[formatStartIndex];
         }
 
         parsedostr << matches.prefix().str();

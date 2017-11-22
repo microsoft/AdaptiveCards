@@ -99,6 +99,12 @@
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\ElementParserRegistration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h">
@@ -183,6 +189,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ElementParserRegistration.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

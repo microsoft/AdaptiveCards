@@ -77,12 +77,29 @@ namespace AdaptiveCardsSharedModelUnitTest
             blck.SetText(testString);
             Assert::AreEqual<string>("10/27/17", blck.GetText());
         }
+
         TEST_METHOD(TransformToDateNegativeOffset)
         {
             TextBlock blck;
             string testString = "{{DATE(2017-10-27T22:27:00-04:00, COMPACT)}}";
             blck.SetText(testString);
             Assert::AreEqual<string>("10/27/17", blck.GetText());
+        }
+
+        TEST_METHOD(TransformToDateRespectsOptionalSpace)
+        {
+            TextBlock blck;
+            string testString = "{{DATE(2017-10-27T22:27:00-04:00,COMPACT)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<string>("10/27/17", blck.GetText());
+        }
+
+        TEST_METHOD(TransformToDateOnlyAllowsUpToOneSpaceBeforeModifier)
+        {
+            TextBlock blck;
+            string testString = "{{DATE(2017-10-27T22:27:00-04:00,  COMPACT)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<string>(testString, blck.GetText());
         }
     };
     TEST_CLASS(TimeAndDateInputTest)
