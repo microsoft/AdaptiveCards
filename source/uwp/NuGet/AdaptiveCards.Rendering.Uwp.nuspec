@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>AdaptiveCards.Renderer.Uwp</id>
-        <version>1.0.0-beta1</version>
-        <authors>Microsoft</authors>
-        <owners>microsoft</owners>
-        <projectUrl>https://github.com/microsoft/adaptivecards</projectUrl>
+        <id>AdaptiveCards.Rendering.Uwp</id>
+        <version>1.0.0-beta2</version>
+        <authors>AdaptiveCards</authors>
+        <summary>Adaptive Cards library for UWP</summary>
+        <description>Used to render Adaptive Cards into UWP XAML or to work with the object model for C++ projects</description>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>Adaptive Cards library for UWP.</summary>
-        <description>Beta library of Adaptive Cards for UWP.</description>
+        <tags>adaptivecards;adaptive-cards</tags>
+        <projectUrl>http://adaptivecards.io</projectUrl>
+        <iconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+        <licenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</licenseUrl>
         <copyright>© Microsoft Corporation. All rights reserved.</copyright>
-        <tags>Adaptive Cards</tags>
     </metadata>
     <files>
         <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.winmd" target="lib\uap10.0"/>
@@ -30,7 +31,7 @@
         <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pri" target="runtimes\win10-arm\native"/>
         <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pdb" target="runtimes\win10-arm\native"/>
 
-        <file src="AdaptiveCards.UWP.targets" target="build\uap10.0"/>
-        <file src="AdaptiveCards.UWP.native.targets" target="build\native"/>
+        <file src="AdaptiveCards.Rendering.Uwp.targets" target="build\uap10.0"/>
+        <file src="AdaptiveCards.Rendering.Uwp.native.targets" target="build\native"/>
     </files>
 </package>
