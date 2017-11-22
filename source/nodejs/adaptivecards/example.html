@@ -30,6 +30,7 @@
         };
 
         var adaptiveCard = new AdaptiveCards.AdaptiveCard();
+        adaptiveCard.hostConfig = new AdaptiveCards.HostConfig();
         adaptiveCard.parse(json);
         var renderedCard = adaptiveCard.render();
 
