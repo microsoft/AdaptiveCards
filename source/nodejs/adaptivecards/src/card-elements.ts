@@ -3411,12 +3411,17 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseError: (error: IValidationError) => void = null;
 
     private isVersionSupported(): boolean {
-        var unsupportedVersion: boolean =
-            !this.version ||
-            (AdaptiveCard.currentVersion.major < this.version.major) ||
-            (AdaptiveCard.currentVersion.major == this.version.major && AdaptiveCard.currentVersion.minor < this.version.minor);
+        if (this.bypassVersionCheck) {
+            return true;
+        }
+        else {
+            var unsupportedVersion: boolean =
+                !this.version ||
+                (AdaptiveCard.currentVersion.major < this.version.major) ||
+                (AdaptiveCard.currentVersion.major == this.version.major && AdaptiveCard.currentVersion.minor < this.version.minor);
 
-        return !unsupportedVersion;
+            return !unsupportedVersion;
+        }
     }
 
     private _cardTypeName: string;
@@ -3428,6 +3433,10 @@ export class AdaptiveCard extends ContainerWithActions {
         this.renderedElement.style.paddingRight = effectivePadding.right + "px";
         this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
         this.renderedElement.style.paddingLeft = effectivePadding.left + "px";
+    }
+
+    protected get bypassVersionCheck(): boolean {
+        return false;
     }
 
     protected get defaultPadding(): HostConfig.PaddingDefinition {
@@ -3471,7 +3480,7 @@ export class AdaptiveCard extends ContainerWithActions {
                 });
         }
 
-        if (!this.version || !this.version.isValid) {
+        if (!this.bypassVersionCheck && (!this.version || !this.version.isValid)) {
             result.push(
                 {
                     error: Enums.ValidationError.PropertyCantBeNull,
@@ -3527,6 +3536,10 @@ export class AdaptiveCard extends ContainerWithActions {
 }
 
 class InlineAdaptiveCard extends AdaptiveCard {
+    protected get bypassVersionCheck(): boolean {
+        return true;
+    }
+
     protected get defaultPadding(): HostConfig.PaddingDefinition {
         return new HostConfig.PaddingDefinition(
             {
