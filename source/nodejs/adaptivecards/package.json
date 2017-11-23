@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta5",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "author": "adaptivecards",
   "license": "MIT",
