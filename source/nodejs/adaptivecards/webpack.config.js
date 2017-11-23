@@ -1,4 +1,6 @@
 module.exports = {
+    context: __dirname,
+    devtool: "inline-source-map",
     entry: "./src/adaptivecards.ts",
     output: {
         filename: "./dist/adaptivecards.js",
@@ -6,7 +8,7 @@ module.exports = {
     },
 
     resolve: {
-        extensions: [".webpack.js", ".web.js", ".ts", ".js"]
+        extensions: [".ts", ".js"]
     },
 
     module: {

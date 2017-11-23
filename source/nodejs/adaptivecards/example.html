@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <title>Adaptive Cards - Basic Example</title>
 
-    <script src="./dist/adaptivecards.js"></script>
+    <script src="dist/adaptivecards.js"></script>
 
 </head>
 
@@ -23,146 +23,32 @@
             "version": "1.0",
             "body": [
                 {
-                    "type": "Container",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Publish Adaptive Card schema",
-                            "weight": "bolder",
-                            "size": "medium"
-                        },
-                        {
-                            "type": "ColumnSet",
-                            "columns": [
-                                {
-                                    "type": "Column",
-                                    "width": "auto",
-                                    "items": [
-                                        {
-                                            "type": "Image",
-                                            "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-                                            "size": "small",
-                                            "style": "person"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "Column",
-                                    "width": "stretch",
-                                    "items": [
-                                        {
-                                            "type": "TextBlock",
-                                            "text": "Matt Hidinger",
-                                            "weight": "bolder",
-                                            "wrap": true
-                                        },
-                                        {
-                                            "type": "TextBlock",
-                                            "spacing": "none",
-                                            "text": "Created {{DATE(2017-02-14T06:08:39Z,Short)}}",
-                                            "isSubtle": true,
-                                            "wrap": true
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "Container",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-                            "wrap": true
-                        },
-                        {
-                            "type": "FactSet",
-                            "facts": [
-                                {
-                                    "title": "Board:",
-                                    "value": "Adaptive Card"
-                                },
-                                {
-                                    "title": "List:",
-                                    "value": "Backlog"
-                                },
-                                {
-                                    "title": "Assigned to:",
-                                    "value": "Matt Hidinger"
-                                },
-                                {
-                                    "title": "Due date:",
-                                    "value": "Not set"
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "TextBlock",
+                    "text": "Hello Adaptive Cards!"
                 }
             ],
             "actions": [
                 {
-                    "type": "Action.ShowCard",
-                    "title": "Set due date",
-                    "card": {
-                        "type": "AdaptiveCard",
-                        "body": [
-                            {
-                                "type": "Input.Date",
-                                "id": "dueDate",
-                                "title": "Select due date"
-                            }
-                        ],
-                        "actions": [
-                            {
-                                "type": "Action.Submit",
-                                "title": "OK"
-                            }
-                        ]
-                    }
-                },
-                {
-                    "type": "Action.ShowCard",
-                    "title": "Comment",
-                    "card": {
-                        "type": "AdaptiveCard",
-                        "body": [
-                            {
-                                "type": "Input.Text",
-                                "id": "comment",
-                                "isMultiline": true,
-                                "placeholder": "Enter your comment"
-                            }
-                        ],
-                        "actions": [
-                            {
-                                "type": "Action.Submit",
-                                "title": "OK"
-                            }
-                        ]
-                    }
-                },
-                {
                     "type": "Action.OpenUrl",
-                    "title": "View",
+                    "title": "View the site",
                     "url": "http://adaptivecards.io"
                 }
             ]
         };
-    </script>
 
-    <script>
+        
+        AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
+            alert(JSON.stringify(action));
+        };
+
         var adaptiveCard = new AdaptiveCards.AdaptiveCard();
+        adaptiveCard.hostConfig = new AdaptiveCards.HostConfig();
         adaptiveCard.parse(json);
         var renderedCard = adaptiveCard.render();
 
         var exampleDiv = document.getElementById('exampleDiv');
         exampleDiv.appendChild(renderedCard);
 
-        AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
-            alert(JSON.stringify(action));
-        };
     </script>
 
     <p>
