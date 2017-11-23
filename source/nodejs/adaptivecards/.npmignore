@@ -4,3 +4,5 @@ src/
 tsconfig.json
 tslint.json
 webpack.config.js
+__test__
+coverage

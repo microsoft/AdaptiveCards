@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <title>Adaptive Cards - Basic Example</title>
 
-    <script src="./dist/adaptivecards.js"></script>
+    <script src="dist/adaptivecards.js"></script>
 
 </head>
 
@@ -26,7 +26,19 @@
                     "type": "TextBlock",
                     "text": "Hello Adaptive Cards!"
                 }
+            ],
+            "actions": [
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "View the site",
+                    "url": "http://adaptivecards.io"
+                }
             ]
+        };
+
+        
+        AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
+            alert(JSON.stringify(action));
         };
 
         var adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -37,9 +49,6 @@
         var exampleDiv = document.getElementById('exampleDiv');
         exampleDiv.appendChild(renderedCard);
 
-        AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
-            alert(JSON.stringify(action));
-        };
     </script>
 
     <p>
