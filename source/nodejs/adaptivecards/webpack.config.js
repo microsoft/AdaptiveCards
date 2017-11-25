@@ -3,14 +3,16 @@ module.exports = {
     devtool: "inline-source-map",
     entry: "./src/adaptivecards.ts",
     output: {
-        filename: "./dist/adaptivecards.js",
+        path: __dirname + "dist",
+        filename: "adaptivecards.js",
         library: 'AdaptiveCards'
     },
-
     resolve: {
         extensions: [".ts", ".js"]
     },
-
+    externals: [
+        { "markdown-it": "markdown" }
+    ],
     module: {
         rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.

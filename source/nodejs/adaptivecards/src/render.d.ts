@@ -5,4 +5,4 @@ export interface RenderOptions {
     onAction?: (action: Action) => void;
     onValidationError?: (error: string) => void;
 }
-export declare function renderCard(card: IAdaptiveCard | string, options?: RenderOptions): HTMLElement;
+export declare function render(card: IAdaptiveCard | string, options?: RenderOptions): HTMLElement;
