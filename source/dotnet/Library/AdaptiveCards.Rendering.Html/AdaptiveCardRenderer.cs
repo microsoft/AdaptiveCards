@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
@@ -31,7 +32,10 @@ namespace AdaptiveCards.Rendering.Html
             return "ac-action-" + suffix.Replace(suffix[0], char.ToLower(suffix[0]));
         };
 
-
+        /// <summary>
+        /// A set of transforms that are applied to the HtmlTags for specific types
+        /// </summary>
+        public static AdaptiveRenderTransformers<HtmlTag, AdaptiveRendererContext> ActionTransformers { get; } = new AdaptiveRenderTransformers<HtmlTag, AdaptiveRendererContext>();
 
         public AdaptiveCardRenderer() : this(new AdaptiveHostConfig()) { }
 
@@ -40,7 +44,6 @@ namespace AdaptiveCards.Rendering.Html
             SetObjectTypes();
             HostConfig = config;
         }
-
 
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
@@ -81,13 +84,24 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveTimeInput>(TimeInputRender);
             ElementRenderers.Set<AdaptiveToggleInput>(ToggleInputRender);
 
-            ElementRenderers.Set<AdaptiveSubmitAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
+            ElementRenderers.Set<AdaptiveSubmitAction>(AdaptiveActionRender);
+            ElementRenderers.Set<AdaptiveOpenUrlAction>(AdaptiveActionRender);
+            ElementRenderers.Set<AdaptiveShowCardAction>(AdaptiveActionRender);
 
-            // TODO: implement default behavior to open the URL
-            ElementRenderers.Set<AdaptiveOpenUrlAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-url", action.Url));
+            ActionTransformers.Register<AdaptiveOpenUrlAction>((action, tag, context) => tag.Attr("data-ac-url", action.Url));
+            ActionTransformers.Register<AdaptiveSubmitAction>((action, tag, context) => tag.Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
+            ActionTransformers.Register<AdaptiveShowCardAction>((action, tag, context) => tag.Attr("data-ac-showCardId", GenerateRandomId()));
+        }
 
-            // TODO: implement default toggle behavior
-            ElementRenderers.Set<AdaptiveShowCardAction>((action, context) => AdaptiveActionRender(action, context).Attr("data-ac-showCardId", GenerateRandomId()));
+        protected static HtmlTag AddActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRendererContext context)
+        {
+            tag.AddClass(GetActionCssClass(action))
+                .Attr("role", "button")
+                .Attr("aria-label", action.Title ?? "");
+
+            ActionTransformers.Apply(action, tag, context);
+
+            return tag;
         }
 
         protected static HtmlTag AdaptiveActionRender(AdaptiveAction action, AdaptiveRendererContext context)
@@ -101,9 +115,9 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("text-overflow", "ellipsis")
                     .Style("flex",
                         context.Config.Actions.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
-                    .AddClass("ac-pushButton")
-                    .AddClass(GetActionCssClass(action));
+                    .AddClass("ac-pushButton");
 
+                AddActionAttributes(action, buttonElement, context);
                 return buttonElement;
             }
 
@@ -123,7 +137,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiCard.Style("font-family", context.Config.FontFamily);
 
             if (card.BackgroundImage != null)
-                uiCard = uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
+                uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
                     .Style("background-repeat", "no-repeat")
                     .Style("background-size", "cover");
 
@@ -283,23 +297,18 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
-        protected static HtmlTag ColumnRender(AdaptiveColumn adaptiveColumn, AdaptiveRendererContext context)
+        protected static HtmlTag ColumnRender(AdaptiveColumn column, AdaptiveRendererContext context)
         {
             var uiColumn = new DivTag()
-                .AddClass($"ac-{adaptiveColumn.Type.Replace(".", "").ToLower()}");
+                .AddClass($"ac-{column.Type.Replace(".", "").ToLower()}");
 
-            AddContainerElements(uiColumn, adaptiveColumn.Items, null, context);
+            AddContainerElements(uiColumn, column.Items, null, context);
 
-            if (context.Config.SupportsInteractivity && adaptiveColumn.SelectAction != null)
+            // selectAction
+            if (context.Config.SupportsInteractivity && column.SelectAction != null)
             {
-                // TODO: selectAction support
-                //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
-                //if (uiButton != null)
-                //{
-                //    uiButton.Content = uiContainer;
-                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
-                //    return uiButton;
-                //}
+                uiColumn.AddClass("ac-selectable");
+                AddActionAttributes(column.SelectAction, uiColumn, context);
             }
 
             return uiColumn;
@@ -312,9 +321,11 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("overflow", "hidden")
                 .Style("display", "flex");
 
+            // selectAction
             if (context.Config.SupportsInteractivity && columnSet.SelectAction != null)
             {
-                uiColumnSet.AddClass("ac-tap");
+                uiColumnSet.AddClass("ac-selectable");
+                AddActionAttributes(columnSet.SelectAction, uiColumnSet, context);
             }
 
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
@@ -396,13 +407,8 @@ namespace AdaptiveCards.Rendering.Html
 
             if (context.Config.SupportsInteractivity && container.SelectAction != null)
             {
-                //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
-                //if (uiButton != null)
-                //{
-                //    uiButton.Content = uiContainer;
-                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
-                //    return uiButton;
-                //}
+                uiContainer.AddClass("ac-selectable");
+                AddActionAttributes(container.SelectAction, uiContainer, context);
             }
 
             return uiContainer;
@@ -610,7 +616,8 @@ namespace AdaptiveCards.Rendering.Html
 
             if (context.Config.SupportsInteractivity && image.SelectAction != null)
             {
-                uiDiv.AddClass("ac-tap");
+                uiDiv.AddClass("ac-selectable");
+                AddActionAttributes(image.SelectAction, uiDiv, context);
             }
             return uiDiv;
         }
@@ -639,6 +646,13 @@ namespace AdaptiveCards.Rendering.Html
         /// </summary>
         protected static HtmlTag ChoiceSetRender(AdaptiveChoiceSetInput adaptiveChoiceSetInput, AdaptiveRendererContext context)
         {
+            if (!context.Config.SupportsInteractivity)
+            {
+                var tag = new HtmlTag("p");
+                tag.SetInnerText(adaptiveChoiceSetInput.Value);
+                ApplyDefaultTextAttributes(tag, context);
+                return tag;
+            }
             if (!adaptiveChoiceSetInput.IsMultiSelect)
             {
                 if (adaptiveChoiceSetInput.Style == AdaptiveChoiceInputStyle.Compact)
@@ -670,7 +684,7 @@ namespace AdaptiveCards.Rendering.Html
             }
             else
             {
-                return ChoiceSetRenderInternal(adaptiveChoiceSetInput, context, "checkbox");                
+                return ChoiceSetRenderInternal(adaptiveChoiceSetInput, context, "checkbox");
             }
         }
 
@@ -718,10 +732,16 @@ namespace AdaptiveCards.Rendering.Html
 
         private static HtmlTag CreateLabel(string forId, string innerText, AdaptiveRendererContext context)
         {
-            return new HtmlTag("label")
-                .Attr("for", forId)
+            var tag = new HtmlTag("label")
                 .SetInnerText(innerText)
-                .Style("color", context.GetColor(AdaptiveTextColor.Default, false))
+                .Attr("for", forId);
+            ApplyDefaultTextAttributes(tag, context);
+            return tag;
+        }
+
+        private static void ApplyDefaultTextAttributes(HtmlTag tag, AdaptiveRendererContext context)
+        {
+            tag.Style("color", context.GetColor(AdaptiveTextColor.Default, false))
                 .Style("font-size", $"{context.Config.FontSizes.Default}px")
                 .Style("display", "inline-block")
                 .Style("margin-left", "6px")
