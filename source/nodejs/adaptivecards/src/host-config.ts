@@ -43,7 +43,7 @@ export class PaddingDefinition {
 }
 
 export class TextColorDefinition {
-    normal: string = "#0000FF";
+    normal: string = "#000000";
     subtle: string = "#222222";
 
     constructor(obj?: any) {
@@ -233,13 +233,13 @@ export class ContainerStyleSet {
 
 export class HostConfig {
     supportsInteractivity: boolean = true;
-    fontFamily?: string = "Segoe UI";
+    fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
     readonly fontSizes = {
-        small: 8,
-        default: 10,
-        medium: 12,
-        large: 14,
-        extraLarge: 16
+        small: 12,
+        default: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
     };
     readonly fontWeights = {
         lighter: 200,
@@ -258,7 +258,7 @@ export class HostConfig {
         medium: 20,
         large: 30,
         extraLarge: 40,
-        padding: 20
+        padding: 15
     };
     readonly separator = {
         lineThickness: 1,
