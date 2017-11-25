@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -7,6 +6,9 @@
     <title>Adaptive Cards - Basic Example</title>
 
     <script src="dist/adaptivecards.js"></script>
+    <style type="text/css">
+        
+    </style>
 
 </head>
 
@@ -41,10 +43,12 @@
             alert(JSON.stringify(action));
         };
 
-        var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-        adaptiveCard.hostConfig = new AdaptiveCards.HostConfig();
-        adaptiveCard.parse(json);
-        var renderedCard = adaptiveCard.render();
+        // var adaptiveCard = new AdaptiveCards.AdaptiveCard();
+        // adaptiveCard.hostConfig = new AdaptiveCards.HostConfig();
+        // adaptiveCard.parse(json);
+        // var renderedCard = adaptiveCard.render();
+
+        var renderedCard = AdaptiveCards.renderCard(json);
 
         var exampleDiv = document.getElementById('exampleDiv');
         exampleDiv.appendChild(renderedCard);

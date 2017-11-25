@@ -2,6 +2,7 @@
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
+import { IAdaptiveCard } from "./schema";
 
 function invokeSetParent(obj: any, parent: CardElement) {
     if (obj) {
@@ -3395,7 +3396,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
     }
 }
 
-export class AdaptiveCard extends ContainerWithActions {
+export class AdaptiveCard extends ContainerWithActions implements IAdaptiveCard {
     private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
@@ -3455,7 +3456,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected get allowCustomStyle() {
-        return this.hostConfig.adaptiveCard.allowCustomStyle;
+        return this.hostConfig.adaptiveCard && this.hostConfig.adaptiveCard.allowCustomStyle;
     }
 
     protected get hasBackground(): boolean {
@@ -3464,7 +3465,8 @@ export class AdaptiveCard extends ContainerWithActions {
 
     version?: Version = new Version(1, 0);
     fallbackText: string;
-
+    type: string = "AdaptiveCard";
+    
     getJsonTypeName(): string {
         return "AdaptiveCard";
     }

@@ -16,9 +16,12 @@
   "types": "built/adaptivecards.d.ts",
   "scripts": {
     "tsc": "tsc -p .",
-    "build": "tsc && webpack && npm run dts",
+    "build": "tsc -p ./config/tsconfig.debug.json && webpack",
+    "pack": "npm run build && webpack && npm run dts",
     "watch": "webpack --watch",
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "pretest:notyet": "npm run lint",
     "test": "jest --forceExit --runInBand",
     "preversion": "npm test",
     "version": "npm run build"
@@ -31,7 +34,7 @@
     "markdown-it": "^8.4.0"
   },
   "devDependencies": {
-    "@types/jest": "^21.1.7",
+    "@types/jest": "^21.1.8",
     "@types/markdown-it": "0.0.1",
     "@types/node": "0.0.2",
     "@types/vkbeautify": "^0.99.2",
@@ -49,7 +52,7 @@
   },
   "jest": {
     "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
@@ -58,14 +61,6 @@
       "js",
       "jsx",
       "json"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "text-summary",
-      "html"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.ts"
     ]
   }
 }

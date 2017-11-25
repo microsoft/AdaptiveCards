@@ -9,8 +9,7 @@
         "noImplicitAny": false,
         "sourceMap": true,
         "target": "es5",
-        "declaration": true,
-        "outDir": "built"        
+        "declaration": true
     },
     "include": [
         "./src/**/*"

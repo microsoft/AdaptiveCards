@@ -13,14 +13,23 @@ export interface IActionOpenUrl extends IActionBase {
     url: string;
 }
 export interface IActionShowCard extends IActionBase {
-    card: ICard;
+    card: IAdaptiveCard;
 }
 export interface IActionSubmit extends IActionBase {
     data?: any;
 }
-export interface ICard extends ITypedElement {
-    actions?: (IActionHttp | IActionOpenUrl | IActionShowCard | IActionSubmit)[];
-    backgroundImage?: string;
+export interface IVersion {
+    major: number;
+    minor: number;
+    
+}
+export interface IBackgroundImage {
+    url: string;    
+}
+export interface IAdaptiveCard extends ITypedElement {
+    version?: IVersion | string,
+    actions?: (IActionBase)[];
+    backgroundImage?: IBackgroundImage | string;
     body?: (ITextBlock | IImage | IImageSet | IFactSet | IContainer | IColumnSet | IInputDate | IInputNumber | IInputText | IInputTime | IInputToggle)[];
     speak?: string;
     title?: string;
@@ -130,8 +139,8 @@ export class TypedElement implements ITypedElement {
     type: string;
 }
 
-export class Card extends TypedElement implements ICard {
-    public constructor(init?: Partial<ICard>) {
+export class Card extends TypedElement implements IAdaptiveCard {
+    public constructor(init?: Partial<IAdaptiveCard>) {
         super("AdaptiveCard");
         Object.assign(this, init);
         if (!this.actions)
@@ -183,7 +192,7 @@ export class ActionShowCard extends ActionBase implements IActionShowCard {
         if (!this.card)
             this.card = new Card(null);
     }
-    card: ICard;
+    card: IAdaptiveCard;
 }
 
 export class ActionSubmit extends ActionBase implements IActionSubmit {
@@ -345,7 +354,7 @@ export class InputTime extends Input implements IInputTime {
 
 export class InputToggle extends Input implements IInputToggle {
     public constructor(init?: Partial<IInputToggle>) {
-        super("Input.Toggle",init);
+        super("Input.Toggle", init);
         Object.assign(this, init);
     }
     title: string;
@@ -355,7 +364,7 @@ export class InputToggle extends Input implements IInputToggle {
 }
 
 export class TextBlock extends TypedElement implements ITextBlock {
-    public constructor(init?:Partial<ITextBlock>) {
+    public constructor(init?: Partial<ITextBlock>) {
         super("TextBlock");
         Object.assign(this, init);
     }
