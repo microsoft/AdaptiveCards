@@ -85,11 +85,15 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiShowCardContainer.Visibility = Visibility.Collapsed;
 
                             // render the card
-                            var uiShowCard = context.Render(showCardAction.Card);
-                            uiShowCard.Margin = new Thickness(0);
-                            ((Grid)uiShowCard).Background = context.GetColorBrush("Transparent");
-                            uiShowCard.DataContext = showCardAction;
-                            uiShowCardContainer.Children.Add(uiShowCard);
+                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);                            
+                            uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
+                            uiShowCardWrapper.DataContext = showCardAction;
+
+                            // Remove the card padding
+                            var innerCard = (Grid)uiShowCardWrapper.Children[0];
+                            innerCard.Margin = new Thickness(0);
+
+                            uiShowCardContainer.Children.Add(uiShowCardWrapper);
 
                             actionBarCards.Add(uiShowCardContainer);
                             Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
