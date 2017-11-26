@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Globalization;
+using Newtonsoft.Json;
 
 
 namespace AdaptiveCards
@@ -10,7 +11,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Input.Number";
 
-        public override string Type { get; protected set; } = TypeName;
+        public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///     Placeholder text for the input desired
@@ -32,5 +33,12 @@ namespace AdaptiveCards
         ///     hint of maximum value(may be ignored by some clients)
         /// </summary>
         public double Max { get; set; } = double.NaN;
+
+        public override string GetNonInteractiveValue()
+        {
+            return double.IsNaN(Value)
+                ? Value.ToString(CultureInfo.InvariantCulture)
+                : $"*[{Placeholder}]*";
+        }
     }
 }

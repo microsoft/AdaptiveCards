@@ -77,7 +77,7 @@ namespace AdaptiveCards.Rendering.Wpf
             try
             {
                 var source = new BitmapImage();
-                
+
                 var stream = await streamTask;
                 if (stream != null)
                 {
@@ -134,16 +134,25 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         public FrameworkElement Render(AdaptiveTypedElement element)
         {
+            // Inputs should render read-only if interactivity is false
+            if (!Config.SupportsInteractivity && element is AdaptiveInput input)
+            {
+                var tb = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
+                tb.Text = input.GetNonInteractiveValue() ?? "*[Input]*";
+                tb.Color = AdaptiveTextColor.Accent;
+                tb.Wrap = true;
+                Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
+                return Render(tb);
+            }
+
             var renderer = ElementRenderers.Get(element.GetType());
             if (renderer != null)
             {
                 return renderer.Invoke(element, this);
             }
-            else
-            {
-                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element type '{element.Type}'"));
-                return null;
-            }
+
+            Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
+            return null;
         }
 
     }

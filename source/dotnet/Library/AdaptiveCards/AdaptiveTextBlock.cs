@@ -11,7 +11,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "TextBlock";
 
-        public override string Type { get; protected set; } = TypeName;
+        public override string Type { get; set; } = TypeName;
 
         public AdaptiveTextBlock()
         {

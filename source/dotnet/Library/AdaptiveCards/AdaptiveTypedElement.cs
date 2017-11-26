@@ -17,7 +17,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
         [JsonRequired]
-        public abstract string Type { get; protected set; } 
+        public abstract string Type { get; set; } 
 
         /// <summary>
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response

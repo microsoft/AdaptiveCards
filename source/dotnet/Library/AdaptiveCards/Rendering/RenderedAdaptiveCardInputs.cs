@@ -1,75 +1,47 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards.Rendering
 {
-    public class RenderedAdaptiveCardInputs : IReadOnlyDictionary<string, string>
+    /// <summary>
+    /// Provides access to the input fields on a card
+    /// </summary>
+    public class RenderedAdaptiveCardInputs
     {
-        private readonly IReadOnlyDictionary<string, string> _dictionary;
+        private readonly IDictionary<string, Func<string>> _inputBindings;
 
-        public RenderedAdaptiveCardInputs(RenderedAdaptiveCardBase card)
+        public RenderedAdaptiveCardInputs(IDictionary<string, Func<string>> inputBindings = null)
         {
-            if (card == null) throw new ArgumentNullException(nameof(card));
+            _inputBindings = inputBindings;
+        }
 
+        /// <summary>
+        /// Read the input fields as a JSON object. All input values will serialize to strings
+        /// </summary>
+        /// <returns></returns>
+        public JObject AsJson()
+        {
+            return JObject.FromObject(AsDictionary());
+        }
+
+        /// <summary>
+        /// Read the input fields as a Dictionary. All input values will serialize the strings
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyDictionary<string, string> AsDictionary()
+        {
             var dic = new Dictionary<string, string>();
-            foreach (var id in card.InputBindings.Keys)
+            foreach (var id in _inputBindings.Keys)
             {
-                var value = card.InputBindings[id]();
+                var value = _inputBindings[id]();
                 if (value != null)
                 {
-                    dic[id] = value.ToString();
+                    dic[id] = value;
                 }
             }
 
-            _dictionary = new ReadOnlyDictionary<string, string>(dic);
-        }
-
-        public JObject AsJson()
-        {
-            return JObject.FromObject(_dictionary);
-        }
-
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-        {
-            return _dictionary.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)_dictionary).GetEnumerator();
-        }
-
-        public int Count
-        {
-            get { return _dictionary.Count; }
-        }
-
-        public bool ContainsKey(string key)
-        {
-            return _dictionary.ContainsKey(key);
-        }
-
-        public bool TryGetValue(string key, out string value)
-        {
-            return _dictionary.TryGetValue(key, out value);
-        }
-
-        public string this[string key]
-        {
-            get { return _dictionary[key]; }
-        }
-
-        public IEnumerable<string> Keys
-        {
-            get { return _dictionary.Keys; }
-        }
-
-        public IEnumerable<string> Values
-        {
-            get { return _dictionary.Values; }
+            return dic;
         }
     }
 }

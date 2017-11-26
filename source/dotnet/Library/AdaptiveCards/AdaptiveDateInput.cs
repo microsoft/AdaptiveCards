@@ -10,7 +10,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Input.Date";
 
-        public override string Type { get; protected set; } = TypeName;
+        public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///     Placeholder text for the input desired
@@ -35,5 +35,10 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Max { get; set; }
+
+        public override string GetNonInteractiveValue()
+        {
+            return Value ?? $"*[{Placeholder}]*";
+        }
     }
 }

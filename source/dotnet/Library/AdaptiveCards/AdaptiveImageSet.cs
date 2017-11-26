@@ -11,7 +11,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "ImageSet";
     
-        public override string Type { get; protected set; } = TypeName;
+        public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///     Collection of images to display together

@@ -78,7 +78,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
                 // using same style, fontWeight settings as original textblock
-                var measureBlock = new System.Windows.Controls.TextBlock()
+                var measureBlock = new TextBlock()
                 {
                     Style = uiTextBlock.Style,
                     FontWeight = uiTextBlock.FontWeight,
@@ -93,7 +93,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 measureBlock.Inlines.Add(uiTextBlock.Text);
 
                 // bind the real textBlock's Height => MeasureBlock.ActualHeight
-                uiTextBlock.SetBinding(Control.MaxHeightProperty, new Binding()
+                uiTextBlock.SetBinding(FrameworkElement.MaxHeightProperty, new Binding()
                 {
                     Path = new PropertyPath("ActualHeight"),
                     Source = measureBlock,

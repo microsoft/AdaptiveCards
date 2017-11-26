@@ -88,7 +88,8 @@ namespace AdaptiveCards.Test
     }
   ]
 }";
-            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+            // TODO: No longer throwing on this exception to work around bot framework integration issues. Revisit later
+            //Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
 
         [TestMethod]
