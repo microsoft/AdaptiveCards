@@ -8,6 +8,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public static FrameworkElement Render(AdaptiveImageSet imageSet, AdaptiveRenderContext context)
         {
             var uiImageSet = new ListBox();
+            uiImageSet.BorderThickness = new Thickness(0);
             ScrollViewer.SetHorizontalScrollBarVisibility(uiImageSet, ScrollBarVisibility.Disabled);
             var itemsPanelTemplate = new ItemsPanelTemplate();
             var factory = new FrameworkElementFactory(typeof(WrapPanel));
