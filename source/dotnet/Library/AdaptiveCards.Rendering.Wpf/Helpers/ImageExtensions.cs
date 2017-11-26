@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -44,6 +47,43 @@ namespace AdaptiveCards.Rendering.Wpf
                 return;
 
             image.Source = await context.ResolveImageSource(url);
+
+            var binding = new Binding
+            {
+                RelativeSource = RelativeSource.Self,
+                Path = new PropertyPath("Parent.ActualWidth"),
+                Mode = BindingMode.OneWay,
+                Converter = new StretchConverter(),
+                ConverterParameter = image
+            };
+
+            image.SetBinding(Image.StretchProperty, binding);
+        }
+
+        public class StretchConverter : IValueConverter
+        {
+
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                var parentWidth = (double)value;
+                var image = (Image)parameter;
+
+                var imageWidth = ((BitmapImage) image.Source).PixelWidth;
+                if (imageWidth >= parentWidth)
+                {
+
+                    return Stretch.Uniform;
+                }
+                else
+                {
+                    return Stretch.None;
+                }
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public static async void SetBackgroundSource(this Grid grid, Uri url, AdaptiveRenderContext context)
