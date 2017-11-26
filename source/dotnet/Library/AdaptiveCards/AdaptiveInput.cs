@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
@@ -15,6 +12,10 @@ namespace AdaptiveCards
         /// </summary>
         [Obsolete("Ths IsRequired property is not supported in Adaptive Cards yet and will be ignored")]
         public bool IsRequired { get; set; }
-    }
 
+        /// <summary>
+        /// The string that will be rendered on a a host with "SupportsInteractivity" set to false.
+        /// </summary>
+        public abstract string GetNonInteractiveValue();
+    }
 }

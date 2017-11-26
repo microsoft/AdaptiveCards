@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 
 namespace AdaptiveCards.Rendering.Html
 {
-    public class AdaptiveRendererContext
+    public class AdaptiveRenderContext
     {
-        public AdaptiveRendererContext(AdaptiveHostConfig hostConfig, AdaptiveElementRenderers<HtmlTag, AdaptiveRendererContext> elementRenderers)
+        public AdaptiveRenderContext(AdaptiveHostConfig hostConfig, AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> elementRenderers)
         {
             // clone it
             Config = JsonConvert.DeserializeObject<AdaptiveHostConfig>(JsonConvert.SerializeObject(hostConfig));
@@ -15,12 +15,21 @@ namespace AdaptiveCards.Rendering.Html
 
         public AdaptiveHostConfig Config { get; set; }
 
-        public AdaptiveElementRenderers<HtmlTag, AdaptiveRendererContext> ElementRenderers { get; set; }
+        public AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> ElementRenderers { get; set; }
 
         public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
 
         public HtmlTag Render(AdaptiveTypedElement element)
         {
+            // If non-inertactive, inputs should just render text
+            if (!Config.SupportsInteractivity && element is AdaptiveInput input)
+            {
+                var tb = new AdaptiveTextBlock();
+                tb.Text = input.GetNonInteractiveValue();
+                Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
+                return Render(tb);
+            }
+
             var renderer = ElementRenderers.Get(element.GetType());
             if (renderer != null)
             {
@@ -28,7 +37,7 @@ namespace AdaptiveCards.Rendering.Html
             }
             else
             {
-                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element type '{element.Type}'"));
+                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
                 return null;
             }
         }

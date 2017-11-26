@@ -1,43 +1,8 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using xaml = System.Windows.Controls;
-
-namespace AdaptiveCards.Rendering.Wpf
+﻿namespace AdaptiveCards.Rendering.Wpf
 {
 
     public class XamlUtilities
     {
-
-        public static Button CreateActionButton(AdaptiveAction action, AdaptiveRenderContext context)
-        {
-            ActionsConfig styling = context.Config.Actions;
-            var uiButton = new Button()
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-            };
-
-            uiButton.SetBackgroundColor(styling.BackgroundColor, context);
-            uiButton.SetBorderColor(styling.BorderColor, context);
-            uiButton.SetBorderThickness(styling.BorderThickness);
-            uiButton.Style = context.GetStyle($"Adaptive.{action.Type}");
-
-            TextBlock uiTitle = new TextBlock()
-            {
-                Text = action.Title,                
-                FontSize = styling.FontSize,
-                Margin = new Thickness(6)
-                // TODO: Should this be from HostConfig?
-            };
-            uiTitle.SetFontWeight(styling.FontWeight);
-            uiTitle.SetColor(styling.TextColor, context);
-            uiTitle.Style = context.GetStyle($"Adaptive.Action.Title");
-            uiButton.Content = uiTitle;
-            string name = context.GetType().Name.Replace("Action", String.Empty);
-            return uiButton;
-            
-        }
-
         /// <summary>
         /// Get fallback text from the speech element 
         /// </summary>
