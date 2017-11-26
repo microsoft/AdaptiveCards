@@ -61,19 +61,47 @@ namespace AdaptiveCards.Sample.Html
                 }
                 else
                 {
-                    Console.WriteLine($"{payloadPath} does not contain any JSON files/. Nothing to do.");
+                    Console.WriteLine($"{payloadPath} does not contain any JSON files. Nothing to do.");
                     return;
                 }
 
+                writer.WriteLine(@"<!DOCTYPE html>
+<html>
+<head>
+    <title>Adaptive Cards HTML Renderer Test Bed</title>
+    <meta charset=""UTF-8"">
+    <style type""text/css"">
+                
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI'
+        }
 
-                writer.WriteLine(@"<!DOCTYPE html>");
-                writer.WriteLine(@"<html>");
-                writer.WriteLine(@"<head>");
-                writer.WriteLine(@"  <title>Adaptive Cards HTML Renderer Test Bed</title>");
-                writer.WriteLine(@"  <meta charset=""UTF-8"">");
-                writer.WriteLine(@"  <link rel='stylesheet' type='text/css' href='AdaptiveCards.css' />");
-                writer.WriteLine(@"</head>");
-                writer.WriteLine(@"<body>");
+        .cardcontainer {
+            width: 400px;
+            border-width: 1px;
+            border-color: #808080;
+            border-style: solid;
+        }
+
+        .error {
+            border: solid 1px maroon;
+            color: white;
+            background: maroon;
+            padding: 5px;
+            width: 400px;
+        }
+
+        .warning {
+            border: solid 1px orange;
+            color: white;
+            background: orange;
+            padding: 5px;
+            width: 400px;
+        } 
+    </style>
+</head>
+<body>");
 
 
                 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig()

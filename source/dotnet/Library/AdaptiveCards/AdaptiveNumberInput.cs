@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Globalization;
+using Newtonsoft.Json;
 
 
 namespace AdaptiveCards
@@ -32,5 +33,12 @@ namespace AdaptiveCards
         ///     hint of maximum value(may be ignored by some clients)
         /// </summary>
         public double Max { get; set; } = double.NaN;
+
+        public override string GetNonInteractiveValue()
+        {
+            return double.IsNaN(Value)
+                ? Value.ToString(CultureInfo.InvariantCulture)
+                : $"*[{Placeholder}]*";
+        }
     }
 }

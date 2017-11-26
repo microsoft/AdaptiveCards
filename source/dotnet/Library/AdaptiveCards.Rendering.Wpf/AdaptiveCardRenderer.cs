@@ -140,8 +140,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var element = context.Render(card);
 
-            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings);
-            renderCard.InputBindings = context.InputBindings;
+            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);
+
 
             return renderCard;
         }
@@ -181,7 +181,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var stream = context.Render(card).RenderToImage(width);
             var renderCard = new RenderedAdaptiveCardImage(stream, card, context.Warnings);
-            renderCard.InputBindings = context.InputBindings;
 
             return renderCard;
         }

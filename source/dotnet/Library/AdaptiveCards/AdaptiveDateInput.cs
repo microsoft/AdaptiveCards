@@ -35,5 +35,10 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Max { get; set; }
+
+        public override string GetNonInteractiveValue()
+        {
+            return Value ?? $"*[{Placeholder}]*";
+        }
     }
 }

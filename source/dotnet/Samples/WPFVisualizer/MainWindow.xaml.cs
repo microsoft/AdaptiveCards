@@ -145,7 +145,10 @@ namespace WpfVisualizer
             else if (e.Action is AdaptiveSubmitAction submitAction)
             {
                 var inputs = sender.UserInputs.AsJson();
+
+                // Merge the Action.Submit Data property with the inputs
                 inputs.Merge(submitAction.Data);
+
                 MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
         }

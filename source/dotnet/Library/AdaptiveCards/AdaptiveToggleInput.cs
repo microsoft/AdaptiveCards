@@ -34,5 +34,11 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Value { get; set; }
+
+        public override string GetNonInteractiveValue()
+        {
+            var x = Value == ValueOn ? "X" : " ";
+            return $"[{x}] {Title}";
+        }
     }
 }

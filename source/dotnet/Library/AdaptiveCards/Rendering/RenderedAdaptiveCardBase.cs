@@ -19,18 +19,14 @@ namespace AdaptiveCards.Rendering
         public IList<AdaptiveWarning> Warnings { get; }
 
         /// <summary>
-        /// Input bindings associated with this card. Used to get input values from any controls
+        /// Provides access to the input fields on a card
         /// </summary>
-        public IDictionary<string, Func<string>> InputBindings { get; set; } = new Dictionary<string, Func<string>>();
-
-        public RenderedAdaptiveCardInputs UserInputs { get; set; }
-
+        public RenderedAdaptiveCardInputs UserInputs { get; set; } = new RenderedAdaptiveCardInputs();
 
         protected RenderedAdaptiveCardBase(AdaptiveCard originatingCard, IList<AdaptiveWarning> warnings)
         {
             Warnings = warnings ?? throw new ArgumentNullException(nameof(warnings));
-            OriginatingCard = originatingCard ?? throw new ArgumentNullException(nameof(originatingCard));
-            UserInputs = new RenderedAdaptiveCardInputs(this);
+            OriginatingCard = originatingCard ?? throw new ArgumentNullException(nameof(originatingCard));           
         }
 
     }

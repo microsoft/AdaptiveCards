@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using xaml = System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
