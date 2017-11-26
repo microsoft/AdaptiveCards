@@ -17,7 +17,8 @@ namespace AdaptiveCards.Rendering.Wpf
         public static MemoryStream RenderToImage(this FrameworkElement element, int width)
         {
             element.Measure(new Size(width, int.MaxValue));
-            element.Arrange(new Rect(new Size(width, element.DesiredSize.Height)));
+            // Add 100 to the height to give it some buffer. This addressed some bugs with maxlines getting clipped
+            element.Arrange(new Rect(new Size(width, element.DesiredSize.Height + 100)));
             element.UpdateLayout();
 
             var bitmapImage = new RenderTargetBitmap((int)width, (int)element.DesiredSize.Height, 96, 96,

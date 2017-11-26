@@ -23,8 +23,6 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public AdaptiveHorizontalAlignment ActionAlignment { get; set; } = AdaptiveHorizontalAlignment.Stretch;
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundColor { get; set; } = "#FF5098FF";
 
         /// <summary>
         /// Space between actions
@@ -36,24 +34,12 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public int MaxActions { get; set; } = 5;
 
+        public AdaptiveSpacing Spacing { get; set; }
+
         /// <summary>
         /// ShowCard configuration
         /// </summary>
         public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string BorderColor { get; set; } = "#FF000000";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string TextColor { get; set; } = "#FFFFFFFF";
-
-        public int BorderThickness { get; set; } = 1;
-
-        public int FontWeight { get; set; } = 400;
-
-        public int FontSize { get; set; } = 12;
-
-
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]

@@ -8,25 +8,25 @@ namespace AdaptiveCards.Rendering
     public class ForegroundColorsConfig
     {
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontColorConfig Default { get; set; } = new FontColorConfig("#FF000000");
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontColorConfig Accent { get; set; } = new FontColorConfig("#FF0000FF");
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontColorConfig Dark { get; set; } = new FontColorConfig("#FF101010");
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontColorConfig Light { get; set; } = new FontColorConfig("#FFFFFFFF");
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontColorConfig Good { get; set; } = new FontColorConfig("#FF008000");
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontColorConfig Warning { get; set; } = new FontColorConfig("#FFFFD700");
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontColorConfig Attention { get; set; } = new FontColorConfig("#FF8B0000");
     }
 
@@ -48,10 +48,10 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Color in #RRGGBB format
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Default { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Subtle { get; set; }
     }
 }

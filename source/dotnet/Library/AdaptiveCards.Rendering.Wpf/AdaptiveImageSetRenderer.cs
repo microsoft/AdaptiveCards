@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -9,6 +10,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiImageSet = new ListBox();
             uiImageSet.BorderThickness = new Thickness(0);
+            uiImageSet.Background = new SolidColorBrush(Colors.Transparent);
             ScrollViewer.SetHorizontalScrollBarVisibility(uiImageSet, ScrollBarVisibility.Disabled);
             var itemsPanelTemplate = new ItemsPanelTemplate();
             var factory = new FrameworkElementFactory(typeof(WrapPanel));

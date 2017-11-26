@@ -170,7 +170,8 @@ namespace AdaptiveCards.Rendering.Html
             {
                 var uiButtonStrip = new DivTag()
                     .AddClass("ac-actionset")
-                    .Style("display", "flex");
+                    .Style("display", "flex")
+                    .Style("margin-top", $"{context.Config.GetSpacing(context.Config.Actions.Spacing)}px");
 
                 // contains ShowCardAction.AdaptiveCard
                 var uiShowCardStrip = new DivTag()
