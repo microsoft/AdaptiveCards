@@ -10,35 +10,38 @@ namespace AdaptiveCards.Rendering
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ActionsConfig 
     {
-        public ActionsConfig() { }
-
-
         /// <summary>
         /// Arrange actions horizontal or vertical
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ActionsOrientation ActionsOrientation { get; set; } = ActionsOrientation.Horizontal;
 
         /// <summary>
         /// should they be aligned Left, Center or Right
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveHorizontalAlignment ActionAlignment { get; set; } = AdaptiveHorizontalAlignment.Stretch;
 
 
         /// <summary>
         /// Space between actions
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int ButtonSpacing { get; set; } = 10;
 
         /// <summary>
         /// Max number of actions to support on your Cards(e.g., 3)
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int MaxActions { get; set; } = 5;
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveSpacing Spacing { get; set; }
 
         /// <summary>
         /// ShowCard configuration
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
     }
 
@@ -47,11 +50,13 @@ namespace AdaptiveCards.Rendering
     {
         public ShowCardConfig() { }
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Inline;
 
         /// <summary>
         /// If actionMode is inline this is the margin between the inline card and the actions
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int InlineTopMargin { get; set; } = 16;
     }
 

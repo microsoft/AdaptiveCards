@@ -10,7 +10,7 @@ namespace AdaptiveCards
     {
         public new const string TypeName = "Column";
 
-        public override string Type { get; protected set; } = TypeName;
+        public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///     Size for the column (either ColumnSize string or number which is relative size of the column)

@@ -68,7 +68,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 var parentWidth = (double)value;
                 var image = (Image)parameter;
 
-                var imageWidth = ((BitmapImage) image.Source).PixelWidth;
+                var imageWidth = ((BitmapImage) image.Source)?.PixelWidth;
                 if (imageWidth >= parentWidth)
                 {
 
@@ -104,10 +104,10 @@ namespace AdaptiveCards.Rendering.Wpf
             switch (image.Size)
             {
                 case AdaptiveImageSize.Auto:
-                    imageview.Stretch = System.Windows.Media.Stretch.Uniform;
+                    imageview.Stretch = Stretch.Uniform;
                     break;
                 case AdaptiveImageSize.Stretch:
-                    imageview.Stretch = System.Windows.Media.Stretch.Uniform;
+                    imageview.Stretch = Stretch.Uniform;
                     break;
                 case AdaptiveImageSize.Small:
                     imageview.Width = context.Config.ImageSizes.Small;

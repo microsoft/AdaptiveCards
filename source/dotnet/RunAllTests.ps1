@@ -7,6 +7,11 @@ New-Item -ItemType directory $testResultsPath/WPF
 $samplesPath =  "..\..\..\..\samples\v1.0"
 $scenariosPath = $samplesPath + "\scenarios"
 
+
+Write-Host Running unit tests...
+dotnet test .\test\AdaptiveCards.Test
+dotnet test .\test\AdaptiveCards.Rendering.Html.Test
+
 Write-Host Running HTML tests...
 Set-Location .\Samples\AdaptiveCards.Sample.Html
 

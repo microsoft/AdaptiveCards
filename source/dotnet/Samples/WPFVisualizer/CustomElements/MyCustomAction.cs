@@ -4,7 +4,7 @@ namespace WpfVisualizer
 {
     public class MyCustomAction : AdaptiveAction
     {
-        public override string Type { get; protected set; } = "Action.MyCustomAction";
+        public override string Type { get; set; } = "Action.MyCustomAction";
 
     }
 }
