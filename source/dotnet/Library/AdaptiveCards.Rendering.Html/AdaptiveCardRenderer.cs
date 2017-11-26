@@ -170,12 +170,13 @@ namespace AdaptiveCards.Rendering.Html
             {
                 var uiButtonStrip = new DivTag()
                     .AddClass("ac-actionset")
-                    .Style("display", "flex")
-                    .Style("margin-top", $"{context.Config.GetSpacing(context.Config.Actions.Spacing)}px");
+                    .Style("display", "flex");
+
+                // TODO: This top marging is currently being double applied, will have to investigate later
+                //.Style("margin-top", $"{context.Config.GetSpacing(context.Config.Actions.Spacing)}px");
 
                 // contains ShowCardAction.AdaptiveCard
-                var uiShowCardStrip = new DivTag()
-                    .Style("margin-top", context.Config.Actions.ShowCard.InlineTopMargin + "px");
+                var showCards = new List<HtmlTag>();
 
                 if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
                 {
@@ -230,8 +231,11 @@ namespace AdaptiveCards.Rendering.Html
                             {
                                 uiCard.Attr("id", cardId)
                                     .AddClass("ac-showCard")
-                                    .Style("display", "none");
-                                uiShowCardStrip.Children.Add(uiCard);
+                                    .Style("padding", "0")
+                                    .Style("display", "none")
+                                    .Style("margin-top", $"{context.Config.Actions.ShowCard.InlineTopMargin}px");
+
+                                showCards.Add(uiCard);
                             }
                         }
                         uiButtonStrip.Children.Add(uiAction);
@@ -261,9 +265,9 @@ namespace AdaptiveCards.Rendering.Html
                     uiContainer.Children.Add(uiButtonStrip);
                 }
 
-                if (uiShowCardStrip.Children.Any())
+                foreach (var showCard in showCards)
                 {
-                    uiContainer.Children.Add(uiShowCardStrip);
+                    uiContainer.Children.Add(showCard);
                 }
             }
         }
@@ -633,8 +637,10 @@ namespace AdaptiveCards.Rendering.Html
                 if (imageSet.ImageSize != AdaptiveImageSize.Auto)
                     image.Size = imageSet.ImageSize;
 
-                var uiImage = context.Render(image);
-                uiImage = uiImage.Style("display", "inline-block");
+                var uiImage = context.Render(image)
+                    .Style("display", "inline-block")
+                    .Style("margin-right", "10px");
+
                 uiImageSet.Children.Add(uiImage);
             }
             return uiImageSet;
