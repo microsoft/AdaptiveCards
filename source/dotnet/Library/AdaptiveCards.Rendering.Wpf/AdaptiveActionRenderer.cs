@@ -26,11 +26,11 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 //HorizontalAlignment = HorizontalAlignment.Stretch,
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
+                Padding = new Thickness(6, 4, 6, 4),
                 Content = new TextBlock
                 {
                     Text = action.Title,
                     FontSize = context.Config.FontSizes.Default,
-                    Margin = new Thickness(4),
                     Style = context.GetStyle($"Adaptive.Action.Title")
                 }
             };
