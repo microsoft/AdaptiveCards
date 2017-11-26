@@ -1,11 +1,19 @@
 ﻿function Invoke-TagRelease {
-param([string]$tagPrefix, [string]$version)
+param(
+[Parameter(Mandatory)]
+[string]$tagPrefix, 
+
+[Parameter(Mandatory)]
+[string]$version,
+
+[AllowNull()]
+[string]$commitWithMessage
+)
 
     if(!$env:BUILD_SOURCEBRANCH) { 
         Write-Error "Unknown source branch. Is this running from VSTS?" 
-        return -1;
+        return;
     }
-
 
     # Convert "/refs/head/master" => "master"
     $sourceBranch = $env:BUILD_SOURCEBRANCH -Split "/",3 | select -skip 2
@@ -15,6 +23,11 @@ param([string]$tagPrefix, [string]$version)
     git tag -a -m "Released $tagPrefix v$version" $tagName
     git push origin $tagName
 
+    if($commitWithMessage) {
+        git add .
+        git commit -m "$commitWithMessage ***NO_CI***"
+        git push origin $sourceBranch
+    }
 }
 
 function Get-VersionFromNupkg {
