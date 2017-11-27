@@ -3186,7 +3186,7 @@ function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
 }
 
 function raiseExecuteActionEvent(action: Action) {
-
+    
     var card = <AdaptiveCard>action.parent.getRootElement();
     if (card.onAction) {
         action.prepare(action.parent.getRootElement().getAllInputs());

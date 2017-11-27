@@ -1,4 +1,4 @@
-import { render } from "../../render";
+import { renderCard } from "../../rendercard";
 
 test('Render card works', () => {
 
@@ -16,6 +16,7 @@ test('Render card works', () => {
     let hostConfig = {
         "fontFamily": "Segoe UI"
     };
+
 
     const html1 = render(card);
     const html2 = render(card, {

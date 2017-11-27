@@ -4,7 +4,7 @@
       "tsConfigFile": "./tsconfig.debug.json"
     }
   },
-  "rootDir": "lib",
+  "rootDir": "./build",
   "transform": {
     ".(ts|tsx)": "<rootDir>/../node_modules/ts-jest/preprocessor.js"
   },

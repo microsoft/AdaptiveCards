@@ -6,6 +6,7 @@
             "request": "launch",
             "name": "Debug Tests",
             "cwd": "${workspaceFolder}\\adaptivecards",
+            //"preLaunchTask": "buildDebug", // not working until https://github.com/Microsoft/vscode/issues/31217
             "program": "${workspaceFolder}\\adaptivecards\\node_modules\\jest\\bin\\jest.js",
             "args": [
                 "--runInBand",
@@ -14,8 +15,7 @@
             ],
             "sourceMaps": true,
             "outFiles": [
-                //"${workspaceRoot}/adaptivecards/build/**/*"
-                "${workspaceRoot}/adaptivecards/lib/*"
+                "${workspaceRoot}/adaptivecards/build/*"
             ]
         }
     ]

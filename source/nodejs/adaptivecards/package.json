@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta7",
+  "version": "1.0.0-beta8",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "author": "adaptivecards",
   "license": "MIT",
@@ -20,20 +20,18 @@
   ],
   "scripts": {
     "test": "jest --forceExit --runInBand",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --host 0.0.0.0 --port 8000 --config ./examples/typescript/webpack.config.js --history-api-fallback --content-base examples/typescript",
-    "start:dev": "webpack-dev-server",    
+    "start": "start ./example.html",
     "clean": "rimraf build lib dist",
     "compile": "npm run clean && tsc",
+    "bundle": "cross-env NODE_ENV=production webpack",
     "build": "npm run compile && npm run bundle",
     "build:debug": "tsc -p ./tsconfig.debug.json && webpack",
-    "bundle": "cross-env NODE_ENV=production webpack",
     "watch": "webpack --watch",
-    "pack": "npm run build && webpack && npm run dts",
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-    "pretest:notyet": "npm run lint",
-    "preversion:notyet": "npm test",
-    "version:notyet": "npm run build"
+    "preversion": "npm test",
+    "version": "npm run build",
+    "prepublish": "npm run build && npm run dts"
   },
   "repository": {
     "type": "git",
@@ -59,8 +57,7 @@
     "ts-loader": "^3.1.1",
     "tslint": "^4.4.2",
     "typescript": "^2.6.1",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack": "^3.8.1"
   },
   "jest": {
     "rootDir": "src",

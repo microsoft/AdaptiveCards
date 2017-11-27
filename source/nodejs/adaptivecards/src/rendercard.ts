@@ -7,7 +7,7 @@ export interface RenderOptions {
     onValidationError?: (error: string) => void;
 }
 
-export function render(card: IAdaptiveCard | string, options?: RenderOptions): HTMLElement {
+export function renderCard(card: IAdaptiveCard | string, options?: RenderOptions): HTMLElement {
 
     if (typeof card === "string") {
         card = <IAdaptiveCard>JSON.parse(card);

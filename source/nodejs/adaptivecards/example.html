@@ -21,15 +21,16 @@
 
     <h1>Adaptive Cards Example</h1>
     
-    <p>
-        This example requires a build of the Adaptive Cards library. From the command line, enter "npm run build" which will put
-        the built files in the /dist folder. Then refresh this page.
-    </p>
+    <p>This example requires a build of the Adaptive Cards library.</p>
     
+    <h3>To run:</h3>
     <code>
         <pre>> npm install</pre>
         <pre>> npm run build</pre>
+        <pre>> npm start (or refresh this page)</pre>
     </code>
+
+    <h3>Card will render below</h3>
 
     <div id="exampleDiv"></div>
 
@@ -40,6 +41,10 @@
             "version": "1.0",
             "body": [
                 {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/content/adaptive-card-50.png"
+                },
+                {
                     "type": "TextBlock",
                     "text": "Hello **Adaptive Cards!**"
                 }
@@ -47,31 +52,30 @@
             "actions": [
                 {
                     "type": "Action.OpenUrl",
-                    "title": "View the site",
+                    "title": "Learn more",
                     "url": "http://adaptivecards.io"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "GitHub",
+                    "url": "http://github.com/Microsoft/AdaptiveCards"
                 }
             ]
         };
-
-        
-        AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
-            alert("Global action handler");
-        };
-
+    
         // var adaptiveCard = new AdaptiveCards.AdaptiveCard();
         // adaptiveCard.hostConfig = new AdaptiveCards.HostConfig();
         // adaptiveCard.parse(json);
         // var renderedCard = adaptiveCard.render();
 
         var options = {
-            onAction: function(action) { alert("boom" + action.title); }
+            onAction: function(action) { window.open(action.url); }
         }
 
-        var html = AdaptiveCards.render(json, options);
-        //  renderedCard.on("action", action => {});
+        var cardHtml = AdaptiveCards.renderCard(json, options);
 
-        var exampleDiv = document.getElementById('exampleDiv');
-        exampleDiv.appendChild(html);
+
+        document.getElementById('exampleDiv').appendChild(cardHtml);
 
     </script>
 
