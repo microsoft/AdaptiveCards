@@ -30,7 +30,6 @@ using namespace AdaptiveCards;
         NSString *minDateStr = nil;
         NSString *maxDateStr = nil;
         
-        
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateStyle = dateStyle;
         formatter.locale = [NSLocale currentLocale];        
@@ -82,7 +81,7 @@ using namespace AdaptiveCards;
         self.formatter = formatter;
         self.min = [formatter dateFromString:minDateStr];
         self.max = [formatter dateFromString:maxDateStr];
-        self.placeholder = placeHolderStr;	
+        self.placeholder = placeHolderStr;
         self.text = valueStr;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleLine;
