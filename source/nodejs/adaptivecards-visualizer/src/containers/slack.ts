@@ -61,7 +61,7 @@ export class SlackContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#00FFFFFF",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"
@@ -86,7 +86,7 @@ export class SlackContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"

@@ -144,7 +144,7 @@ export abstract class HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#00000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"
@@ -169,7 +169,7 @@ export abstract class HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "08000000",
-                    fontColors: {
+                    fonforegroundColorstColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"

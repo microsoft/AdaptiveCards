@@ -102,7 +102,7 @@ export class OutlookContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#FFFFFF",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"
@@ -127,7 +127,7 @@ export class OutlookContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"

@@ -60,7 +60,7 @@ export class SMSContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#FFFFFF",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"
@@ -85,7 +85,7 @@ export class SMSContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"

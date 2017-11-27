@@ -60,7 +60,7 @@ export class GroupMeContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#F7F7F7",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333",
@@ -85,7 +85,7 @@ export class GroupMeContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"

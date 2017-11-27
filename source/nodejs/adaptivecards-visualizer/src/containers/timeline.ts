@@ -70,7 +70,7 @@ export class TimelineContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#535454",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             "normal": "#FFFFFF",
                             "subtle": "#9C9E9F"
@@ -95,7 +95,7 @@ export class TimelineContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#33000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             "normal": "#FFFFFF",
                             "subtle": "#9C9E9F"
