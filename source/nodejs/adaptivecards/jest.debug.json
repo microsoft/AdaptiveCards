@@ -1,12 +1,12 @@
 {
   "globals": {
     "ts-jest": {
-      "tsConfigFile": "./config/tsconfig.debug.json"
+      "tsConfigFile": "./tsconfig.debug.json"
     }
   },
-  "rootDir": "../",
+  "rootDir": "lib",
   "transform": {
-    ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    ".(ts|tsx)": "<rootDir>/../node_modules/ts-jest/preprocessor.js"
   },
   "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(js)$",
   "testPathIgnorePatterns": [

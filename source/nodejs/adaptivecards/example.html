@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Adaptive Cards - Basic Example</title>
+    <title>Adaptive Cards Example</title>
 
     <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script>
     <script type="text/javascript" src="dist/adaptivecards.js"></script>
@@ -19,7 +19,7 @@
 
 <body>
 
-    <h1>Adaptive Cards - Basic Example</h1>
+    <h1>Adaptive Cards Example</h1>
     
     <p>
         This example requires a build of the Adaptive Cards library. From the command line, enter "npm run build" which will put
@@ -41,7 +41,7 @@
             "body": [
                 {
                     "type": "TextBlock",
-                    "text": "Hello Adaptive Cards!"
+                    "text": "Hello **Adaptive Cards!**"
                 }
             ],
             "actions": [
@@ -55,7 +55,7 @@
 
         
         AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
-            alert(JSON.stringify(action));
+            alert("Global action handler");
         };
 
         // var adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -67,11 +67,11 @@
             onAction: function(action) { alert("boom" + action.title); }
         }
 
-        var renderedCard = AdaptiveCards.render(json, options);
+        var html = AdaptiveCards.render(json, options);
         //  renderedCard.on("action", action => {});
 
         var exampleDiv = document.getElementById('exampleDiv');
-        exampleDiv.appendChild(renderedCard);
+        exampleDiv.appendChild(html);
 
     </script>
 

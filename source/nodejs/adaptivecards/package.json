@@ -12,23 +12,28 @@
     "microsoft",
     "bot"
   ],
-  "main": "built/adaptivecards.js",
-  "types": "built/adaptivecards.d.ts",
+  "main": "lib/adaptivecards.js",
+  "types": "lib/adaptivecards.d.ts",
+  "files": [
+    "lib",
+    "dist"
+  ],
   "scripts": {
-    "clean": "rimraf output built dist",
-    "tsc": "tsc -p .",
-    "build": "webpack",
-    "build:debug": "tsc -p ./config/tsconfig.debug.json && webpack",
-    "pack": "npm run build && webpack && npm run dts",
+    "test": "jest --forceExit --runInBand",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --host 0.0.0.0 --port 8000 --config ./examples/typescript/webpack.config.js --history-api-fallback --content-base examples/typescript",
+    "start:dev": "webpack-dev-server",    
+    "clean": "rimraf build lib dist",
+    "compile": "npm run clean && tsc",
+    "build": "npm run compile && npm run bundle",
+    "build:debug": "tsc -p ./tsconfig.debug.json && webpack",
+    "bundle": "cross-env NODE_ENV=production webpack",
     "watch": "webpack --watch",
-    "start:dev": "webpack-dev-server",
+    "pack": "npm run build && webpack && npm run dts",
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "pretest:notyet": "npm run lint",
-    "test": "jest --forceExit --runInBand",
     "preversion:notyet": "npm test",
-    "version:notyet": "npm run build",
-    "postversion": "cross-env-shell BUILD_VERSION=\"npm version\""
+    "version:notyet": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -43,6 +48,7 @@
     "@types/node": "0.0.2",
     "@types/vkbeautify": "^0.99.2",
     "ajv-cli": "1.1.1",
+    "awesome-typescript-loader": "^3.4.0",
     "babel-jest": "^21.2.0",
     "cross-env": "^5.1.1",
     "dts-generator": "^2.1.0",
@@ -57,6 +63,7 @@
     "webpack-dev-server": "^2.9.4"
   },
   "jest": {
+    "rootDir": "src",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },

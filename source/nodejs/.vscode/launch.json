@@ -10,11 +10,12 @@
             "args": [
                 "--runInBand",
                 "--config",
-                "${workspaceRoot}\\adaptivecards\\config\\jest.debug.json"
+                "${workspaceRoot}\\adaptivecards\\jest.debug.json"
             ],
             "sourceMaps": true,
             "outFiles": [
-                "${workspaceRoot}/adaptivecards/output/debug/**/*"
+                //"${workspaceRoot}/adaptivecards/build/**/*"
+                "${workspaceRoot}/adaptivecards/lib/*"
             ]
         }
     ]

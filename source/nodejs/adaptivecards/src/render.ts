@@ -12,7 +12,7 @@ export function render(card: IAdaptiveCard | string, options?: RenderOptions): H
     if (typeof card === "string") {
         card = <IAdaptiveCard>JSON.parse(card);
     }
-
+    
     if (typeof options === "undefined") {
         options = {}
     }
