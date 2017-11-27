@@ -66,7 +66,7 @@ export class BingContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#FFFFFF",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"
@@ -91,7 +91,7 @@ export class BingContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"

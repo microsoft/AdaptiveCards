@@ -62,7 +62,7 @@ export class ToastContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#1F1F1F",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
@@ -87,7 +87,7 @@ export class ToastContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#19FFFFFF",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FFFFFF",
                             subtle: "#88FFFFFF"

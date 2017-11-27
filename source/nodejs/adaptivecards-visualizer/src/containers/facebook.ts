@@ -62,7 +62,7 @@ export class FacebookContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#FFF5F5F5",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"
@@ -87,7 +87,7 @@ export class FacebookContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"

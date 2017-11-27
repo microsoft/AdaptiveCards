@@ -70,7 +70,7 @@ export class LiveTileContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#0078D7",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
@@ -95,7 +95,7 @@ export class LiveTileContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
