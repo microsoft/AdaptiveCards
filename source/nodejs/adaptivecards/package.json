@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta5",
+  "version": "1.0.0-beta7",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "author": "adaptivecards",
   "license": "MIT",
@@ -23,8 +23,11 @@
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "pretest:notyet": "npm run lint",
     "test": "jest --forceExit --runInBand",
-    "preversion": "npm test",
-    "version": "npm run build"
+    "parentScript": "cross-env-shell GREET=\"npm version\" npm run childScript",
+    "childScript": "node -e \"console.log('Hello', process.env.npm_package_version)\"",
+    "preversion:notyet": "npm test",
+    "version:notyet": "npm run build",
+    "postversion": "cross-env-shell BUILD_VERSION=\"npm version\""
   },
   "repository": {
     "type": "git",
@@ -40,6 +43,7 @@
     "@types/vkbeautify": "^0.99.2",
     "ajv-cli": "1.1.1",
     "babel-jest": "^21.2.0",
+    "cross-env": "^5.1.1",
     "dts-generator": "^2.1.0",
     "jest": "^21.2.1",
     "json-loader": "0.5.4",
