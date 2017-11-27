@@ -17,17 +17,19 @@ param(
 
     # Convert "/refs/head/master" => "master"
     $sourceBranch = $env:BUILD_SOURCEBRANCH -Split "/",3 | select -skip 2
-
-    $tagName = "$tagPrefix-v$version"
     git checkout $sourceBranch 
-    git tag -a -m "Released $tagPrefix v$version" $tagName
-    git push origin $tagName
 
+    # Commit any changes
     if($commitWithMessage) {
         git add .
         git commit -m "$commitWithMessage ***NO_CI***"
         git push origin $sourceBranch
     }
+
+    # Tag and push
+    $tagName = "$tagPrefix-v$version"
+    git tag -a -m "Released $tagPrefix v$version" $tagName
+    git push origin $tagName
 }
 
 function Get-VersionFromNupkg {
