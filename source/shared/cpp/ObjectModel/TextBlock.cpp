@@ -1,4 +1,4 @@
-#if defined(__ANDROID__) || (__APPLE__)
+#if defined(__ANDROID__) || (__APPLE__) || (__linux__)
 #define LOCALTIME(X,Y) (nullptr == localtime_r(Y, X))
 #else
 #define LOCALTIME(X,Y) localtime_s(X,Y)
