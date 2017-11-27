@@ -35,6 +35,7 @@
     txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
     txtInput.placeholder = placeHolderStr;
+    txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
     txtInput.allowsEditingTextAttributes = YES;
     txtInput.borderStyle = UITextBorderStyleLine;
     txtInput.isRequired  = inputBlck->GetIsRequired();
