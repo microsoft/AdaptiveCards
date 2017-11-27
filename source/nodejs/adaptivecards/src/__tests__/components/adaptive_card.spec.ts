@@ -1,4 +1,4 @@
-import { AdaptiveCard } from "../../src/card-elements";
+import { AdaptiveCard } from "../../card-elements";
 
 test('AdaptiveCard should be instantiated', () => {
     const adaptiveCard = new AdaptiveCard();

@@ -1,4 +1,4 @@
-import { ColumnSet } from "../../src/card-elements";
+import { ColumnSet } from "../../card-elements";
 
 test('Container should be instantiated', () => {
     const columnSet = new ColumnSet();

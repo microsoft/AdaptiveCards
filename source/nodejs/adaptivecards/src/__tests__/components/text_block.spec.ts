@@ -1,4 +1,4 @@
-import {TextBlock} from "../../src/card-elements";
+import {TextBlock} from "../../card-elements";
 
 test('TextBlock should be instantiated', ()=>{
     const textBlock = new TextBlock();

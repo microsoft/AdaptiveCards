@@ -15,16 +15,17 @@
   "main": "built/adaptivecards.js",
   "types": "built/adaptivecards.d.ts",
   "scripts": {
+    "clean": "rimraf output built dist",
     "tsc": "tsc -p .",
-    "build": "tsc -p ./config/tsconfig.debug.json && webpack",
+    "build": "webpack",
+    "build:debug": "tsc -p ./config/tsconfig.debug.json && webpack",
     "pack": "npm run build && webpack && npm run dts",
     "watch": "webpack --watch",
+    "start:dev": "webpack-dev-server",
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "pretest:notyet": "npm run lint",
     "test": "jest --forceExit --runInBand",
-    "parentScript": "cross-env-shell GREET=\"npm version\" npm run childScript",
-    "childScript": "node -e \"console.log('Hello', process.env.npm_package_version)\"",
     "preversion:notyet": "npm test",
     "version:notyet": "npm run build",
     "postversion": "cross-env-shell BUILD_VERSION=\"npm version\""
@@ -52,7 +53,8 @@
     "ts-loader": "^3.1.1",
     "tslint": "^4.4.2",
     "typescript": "^2.6.1",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
   },
   "jest": {
     "transform": {

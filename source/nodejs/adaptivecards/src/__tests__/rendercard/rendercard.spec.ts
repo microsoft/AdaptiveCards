@@ -1,4 +1,4 @@
-import { render } from "../../src/render";
+import { render } from "../../render";
 
 test('Render card works', () => {
 

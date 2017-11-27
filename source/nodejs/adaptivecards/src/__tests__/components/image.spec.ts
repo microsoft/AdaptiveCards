@@ -1,4 +1,4 @@
-import {Image} from "../../src/card-elements";
+import {Image} from "../../card-elements";
 
 test('Image should be instantiated', ()=>{
     const image = new Image();

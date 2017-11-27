@@ -1,4 +1,4 @@
-import { Column } from "../../src/card-elements";
+import { Column } from "../../card-elements";
 
 test('Column should be instantiated', () => {
     const column = new Column();

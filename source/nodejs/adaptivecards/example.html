@@ -63,7 +63,11 @@
         // adaptiveCard.parse(json);
         // var renderedCard = adaptiveCard.render();
 
-        var renderedCard = AdaptiveCards.render(json);
+        var options = {
+            onAction: function(action) { alert("boom" + action.title); }
+        }
+
+        var renderedCard = AdaptiveCards.render(json, options);
         //  renderedCard.on("action", action => {});
 
         var exampleDiv = document.getElementById('exampleDiv');

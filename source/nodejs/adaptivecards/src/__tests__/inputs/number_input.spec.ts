@@ -1,4 +1,4 @@
-import {NumberInput} from "../../src/card-elements";
+import {NumberInput} from "../../card-elements";
 
 test('NumberInput should be instantiated', ()=>{
     const numberInput = new NumberInput();

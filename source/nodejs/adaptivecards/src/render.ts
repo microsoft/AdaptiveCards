@@ -19,6 +19,7 @@ export function render(card: IAdaptiveCard | string, options?: RenderOptions): H
 
     let adaptiveCard = new AdaptiveCard();
     adaptiveCard.parse(card);
+    adaptiveCard.onAction = options.onAction;
 
     let hostConfig: HostConfig;
 

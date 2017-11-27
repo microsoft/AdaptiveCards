@@ -1,4 +1,4 @@
-import { ShowCardAction } from "../../src/card-elements";
+import { ShowCardAction } from "../../card-elements";
 
 test('ShowCardAction should be instantiated', () => {
     const showCardAction = new ShowCardAction();

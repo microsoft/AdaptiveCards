@@ -1,4 +1,4 @@
-import {TimeInput} from "../../src/card-elements";
+import {TimeInput} from "../../card-elements";
 
 test('TimeInput should be instantiated', ()=>{
     const timeInput = new TimeInput();

@@ -1,4 +1,4 @@
-import {Fact} from "../../src/card-elements";
+import {Fact} from "../../card-elements";
 
 test('Fact should be instantiated', ()=>{
     const fact = new Fact();

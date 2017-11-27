@@ -1925,7 +1925,7 @@ class ActionCollection {
         }
 
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
-        
+
         var renderedCard = action.card.render();
 
         this._actionCard = renderedCard;
@@ -3146,7 +3146,7 @@ export class Version {
         if (!versionString) {
             return null;
         }
-    
+
         var result = new Version();
         result._versionString = versionString;
 
@@ -3156,7 +3156,7 @@ export class Version {
         if (matches != null && matches.length == 3) {
             result._major = parseInt(matches[1]);
             result._minor = parseInt(matches[2]);
-        }        
+        }
         else {
             result._isValid = false;
         }
@@ -3186,6 +3186,13 @@ function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
 }
 
 function raiseExecuteActionEvent(action: Action) {
+
+    var card = <AdaptiveCard>action.parent.getRootElement();
+    if (card.onAction) {
+        action.prepare(action.parent.getRootElement().getAllInputs());
+        card.onAction(action);
+    }
+
     if (AdaptiveCard.onExecuteAction != null) {
         action.prepare(action.parent.getRootElement().getAllInputs());
 
@@ -3397,6 +3404,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions implements IAdaptiveCard {
+
     private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
@@ -3410,6 +3418,8 @@ export class AdaptiveCard extends ContainerWithActions implements IAdaptiveCard 
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
+
+    onAction: (action: Action) => void = null;
 
     private isVersionSupported(): boolean {
         if (this.bypassVersionCheck) {
@@ -3466,7 +3476,7 @@ export class AdaptiveCard extends ContainerWithActions implements IAdaptiveCard 
     version?: Version = new Version(1, 0);
     fallbackText: string;
     type: string = "AdaptiveCard";
-    
+
     getJsonTypeName(): string {
         return "AdaptiveCard";
     }

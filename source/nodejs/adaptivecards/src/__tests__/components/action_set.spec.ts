@@ -1,4 +1,4 @@
-import { ActionSet } from "../../src/card-elements";
+import { ActionSet } from "../../card-elements";
 
 test('ActionSet should be instantiated', () => {
     const actionSet = new ActionSet();

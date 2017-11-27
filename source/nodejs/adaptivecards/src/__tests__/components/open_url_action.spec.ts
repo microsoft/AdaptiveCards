@@ -1,4 +1,4 @@
-import {OpenUrlAction} from "../../src/card-elements";
+import {OpenUrlAction} from "../../card-elements";
 
 test('OpenUrlAction should be instantiated', ()=>{
     const openUrlAction = new OpenUrlAction();

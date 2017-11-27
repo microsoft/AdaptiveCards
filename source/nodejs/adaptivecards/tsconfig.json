@@ -4,6 +4,7 @@
             "dom",
             "es2015"
         ],
+        "outDir": "./module",
         "module": "commonjs",
         "moduleResolution": "node",
         "noImplicitAny": false,

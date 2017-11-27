@@ -1,4 +1,4 @@
-import {ChoiceSetInput} from "../../src/card-elements";
+import {ChoiceSetInput} from "../../card-elements";
 
 test('ChoiceSetInput should be instantiated', ()=>{
     const choiceSetInput = new ChoiceSetInput();

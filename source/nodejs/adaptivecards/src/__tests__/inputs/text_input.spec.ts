@@ -1,4 +1,4 @@
-import {TextInput} from "../../src/card-elements";
+import {TextInput} from "../../card-elements";
 
 test('TextInput should be instantiated', ()=>{
     const textInput = new TextInput();

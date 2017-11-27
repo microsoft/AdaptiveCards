@@ -16,7 +16,12 @@ export interface IInput {
 }
 
 export function processMarkdown(text: string): any {
-    return markdownProcessor.render(text);
+    if (markdownProcessor) {
+        markdownProcessor.render(text);
+    }
+    else {
+        
+    }
 }
 
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {

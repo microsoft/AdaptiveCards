@@ -1,4 +1,4 @@
-import {DateInput} from "../../src/card-elements";
+import {DateInput} from "../../card-elements";
 
 test('DateInput should be instantiated', ()=>{
     const dateInput = new DateInput();

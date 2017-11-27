@@ -1,4 +1,4 @@
-import { HttpAction } from "../../src/card-elements";
+import { HttpAction } from "../../card-elements";
 
 test('HttpAction should be instantiate', () => {
     const httpAction = new HttpAction();
