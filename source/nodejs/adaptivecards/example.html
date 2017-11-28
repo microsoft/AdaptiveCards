@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <title>Adaptive Cards Example</title>
 
-    <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script>
-    <script type="text/javascript" src="dist/adaptivecards.js"></script>
+    <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
+    <script src="dist/adaptivecards.js"></script>
 
     <style type="text/css">
         #exampleDiv {
-            width: 300px;
+            width: 250px;
             border: solid 1px black;
         }
     </style>
@@ -79,7 +79,7 @@
             // For markdown support you need a third-party library
             // E.g., to use markdown-it include the script and add the following:
             // <!-- <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script> -->
-            processMarkdown: function (text) { return markdownit().render(text); }
+            //processMarkdown: function (text) { return markdownit().render(text); }
         };
         
 

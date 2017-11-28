@@ -61,6 +61,7 @@ export abstract class CardElement {
     private _isVisibile: boolean = true;
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
+    private _rootCard: AdaptiveCard;
 
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
@@ -481,8 +482,7 @@ export class TextBlock extends CardElement {
 
             var formattedText = TextFormatters.formatText(this.text);
 
-            // TODO: Should getRootElement just be an AdaptiveCard?
-            element.innerHTML = (<AdaptiveCard>this.getRootElement()).processMarkdown(formattedText);
+            element.innerHTML = AdaptiveCard.processMarkdown(formattedText);
 
             if (element.firstElementChild instanceof HTMLElement) {
                 var firstElementChild = <HTMLElement>element.firstElementChild;
@@ -3187,7 +3187,7 @@ function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
 }
 
 function raiseExecuteActionEvent(action: Action) {
-    
+    // TODO: is this the best way to get access to the parent card?
     var card = <AdaptiveCard>action.parent.getRootElement();
     if (card.onAction) {
         action.prepare(action.parent.getRootElement().getAllInputs());
@@ -3419,8 +3419,15 @@ export class AdaptiveCard extends ContainerWithActions implements IAdaptiveCard 
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
-    
-    processMarkdown: (text: string) => string = (text) => text;
+
+    static processMarkdown = function (text: string): string {
+        // Check for markdownit
+        if (window["markdownit"]) {
+            return window["markdownit"]().render(text);
+        }
+
+        return text;
+    }
 
     // TODO: Added this as an experiment, if it works we should remove the static handler?
     onAction: (action: Action) => void = null;

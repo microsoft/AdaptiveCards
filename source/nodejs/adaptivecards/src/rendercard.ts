@@ -33,7 +33,7 @@ export function renderCard(card: IAdaptiveCard | string, options?: RenderOptions
 
     if(options.processMarkdown)
     {
-        adaptiveCard.processMarkdown = options.processMarkdown;
+        AdaptiveCard.processMarkdown = options.processMarkdown;
     }
     
     adaptiveCard.hostConfig = hostConfig;

@@ -9,11 +9,9 @@ import {
     ShowCardActionMode,
     Orientation,
     ActionAlignment,
-    FactTitleDefinition,
-    FactTextDefinition
 } from "adaptivecards";
 
-export class FacebookContainer extends HostContainer {
+export class BotFrameworkImageContainer extends HostContainer {
     private _width: number;
 
     constructor(width: number, styleSheet: string) {
@@ -25,7 +23,7 @@ export class FacebookContainer extends HostContainer {
 
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {
         var outerElement = document.createElement("div");
-        outerElement.className = "facebookOuterContainer";
+        outerElement.className = "kikOuterContainer";
         outerElement.style.width = this._width + "px";
         outerElement.appendChild(renderedCard);
         return outerElement;
@@ -61,7 +59,7 @@ export class FacebookContainer extends HostContainer {
             },
             containerStyles: {
                 default: {
-                    backgroundColor: "#FFF5F5F5",
+                    backgroundColor: "#FFFFFF",
                     foregroundColors: {
                         default: {
                             normal: "#FF101010",
@@ -119,7 +117,7 @@ export class FacebookContainer extends HostContainer {
             actions: {
                 maxActions: 5,
                 spacing: Spacing.Default,
-                buttonSpacing: 20,
+                buttonSpacing: 10,
                 showCard: {
                     actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16
@@ -141,16 +139,16 @@ export class FacebookContainer extends HostContainer {
                     isSubtle: false,
                     weight: TextWeight.Bolder,
                     wrap: true,
-                    maxWidth: 150,
+                    maxWidth: 150
                 },
                 value: {
                     color: TextColor.Default,
                     size: TextSize.Default,
                     isSubtle: false,
                     weight: TextWeight.Default,
-                    wrap: true,
+                    wrap: true
                 },
-                spacing: 20
+                spacing: 10
             }
         });
     }

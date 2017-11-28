@@ -4,12 +4,11 @@
   "description": "Adaptive Card Visualizer for HTML renderer",
   "author": "AdaptiveCards",
   "license": "MIT",
-  "main": "dist/adaptivecards-visualizer.js",
+  "main": "lib/app.js",
   "scripts": {
+    "clean": "rimraf lib dist",
     "build-all": "cd ../adaptivecards && npm run build && cd ../adaptivecards-visualizer && npm run build",
-    "force-update": "npm install adaptivecards -f",
     "build": "webpack",
-    "build-verbose": "webpack --display-error-details",
     "prebuild-css": "node-sass ./scss/ -o ./css --output-style expanded",
     "build-css": "postcss ./css/*.css --use autoprefixer --replace --no-map",
     "watch": "webpack --watch",
@@ -17,25 +16,24 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "version": "npm run build"
   },
-  "dependencies": {
+  "devDependencies": {
     "@types/ace": "0.0.32",
-    "@types/markdown-it": "0.0.1",
     "@types/node": "0.0.2",
-    "@types/vkbeautify": "^0.99.0",
-    "adaptivecards": "^1.0.0-0",
-    "ajv-cli": "1.1.1",
+    "@types/vkbeautify": "^0.99.2",
     "autoprefixer": "^6.7.7",
-    "brace": "^0.9.1",
+    "awesome-typescript-loader": "^3.4.0",
     "http-server": "0.9.0",
     "json-loader": "0.5.4",
-    "markdown-it": "^8.2.2",
-    "node-sass": "^4.5.2",
-    "postcss": "^5.2.16",
+    "node-sass": "^4.7.2",
+    "postcss": "^5.2.18",
     "postcss-cli": "^3.1.1",
-    "ts-loader": "^2.0.3",
     "tslint": "^4.4.2",
-    "typescript": "^2.1.5",
-    "vkbeautify": "^0.99.1",
-    "webpack": "^2.3.1"
+    "typescript": "^2.6.2",
+    "vkbeautify": "^0.99.3",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "brace": "^0.9.1",
+    "adaptivecards": "^1.0.0-0"
   }
 }

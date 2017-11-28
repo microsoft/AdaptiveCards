@@ -26,7 +26,6 @@
     "hexo-renderer-marked": "^0.3.0",
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.2.0",
-    "markdown-it": "^8.2.2",
     "marked-schema": "^0.1.1",
     "minimist": "^1.2.0"
   }

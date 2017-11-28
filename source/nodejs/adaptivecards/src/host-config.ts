@@ -68,11 +68,11 @@ export class ContainerStyleDefinition {
         if (obj) {
             this.backgroundColor = obj["backgroundColor"];
             this.foregroundColors = {
-                default: new TextColorDefinition(obj["foregroundColors"]["default"]),
-                accent: new TextColorDefinition(obj["foregroundColors"]["accent"]),
-                good: new TextColorDefinition(obj["foregroundColors"]["good"]),
-                warning: new TextColorDefinition(obj["foregroundColors"]["warning"]),
-                attention: new TextColorDefinition(obj["foregroundColors"]["attention"])
+                default: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["default"]),
+                accent: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["accent"]),
+                good: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["good"]),
+                warning: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["warning"]),
+                attention: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["attention"])
             }
         }
     }
