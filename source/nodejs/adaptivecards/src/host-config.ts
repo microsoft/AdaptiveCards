@@ -224,6 +224,7 @@ export class ContainerStyleSet {
 
     constructor(obj?: any) {
         this.emphasis.backgroundColor = "#EEEEEE";
+        
         if (obj) {
             this.default = new ContainerStyleDefinition(obj["default"]);
             this.emphasis = new ContainerStyleDefinition(obj["emphasis"])
@@ -233,7 +234,23 @@ export class ContainerStyleSet {
 
 export class HostConfig {
     supportsInteractivity: boolean = true;
+
     fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
+    
+    readonly spacing = {
+        small: 3,
+        default: 8,
+        medium: 20,
+        large: 30,
+        extraLarge: 40,
+        padding: 15
+    };
+
+    readonly separator = {
+        lineThickness: 1,
+        lineColor: "#EEEEEE"
+    };
+
     readonly fontSizes = {
         small: 12,
         default: 14,
@@ -251,19 +268,8 @@ export class HostConfig {
         medium: 80,
         large: 160
     };
+
     readonly containerStyles: ContainerStyleSet = new ContainerStyleSet();
-    readonly spacing = {
-        small: 3,
-        default: 8,
-        medium: 20,
-        large: 30,
-        extraLarge: 40,
-        padding: 15
-    };
-    readonly separator = {
-        lineThickness: 1,
-        lineColor: "#EEEEEE"
-    }
     readonly actions: ActionsConfig = new ActionsConfig();
     readonly adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
@@ -275,7 +281,7 @@ export class HostConfig {
                 obj = JSON.parse(obj as string);
             }
 
-            this.supportsInteractivity = obj["supportsInteractivity"] || this.supportsInteractivity;
+            this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
             this.fontFamily = obj["fontFamily"] || this.fontFamily;
             this.fontSizes = {
                 small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
