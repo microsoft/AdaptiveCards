@@ -30,8 +30,10 @@
 {
     std::shared_ptr<NumberInput> numInputBlck = std::dynamic_pointer_cast<NumberInput>(elem);
     ACRNumericTextField *numInput = [[ACRNumericTextField alloc] init];
-    NSString *placeHolderStr = [NSString stringWithFormat: @"%d", numInputBlck->GetValue()];
-    numInput.placeholder = placeHolderStr;
+    numInput.id = [NSString stringWithCString:numInputBlck->GetId().c_str()
+                                     encoding:NSUTF8StringEncoding];
+    numInput.placeholder = [NSString stringWithCString:numInputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
+    numInput.text = [NSString stringWithFormat: @"%d", numInputBlck->GetValue()];
     numInput.allowsEditingTextAttributes = YES;
     numInput.borderStyle = UITextBorderStyleLine;
     numInput.keyboardType = UIKeyboardTypeNumberPad;
