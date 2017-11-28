@@ -17,33 +17,38 @@ export class WebChatContainer extends HostContainer {
         var outerElement = document.createElement("div");
         outerElement.className = "webChatOuterContainer";
 
-        window.addEventListener(
-            "resize",
-            () => {
-                if (outerElement.parentElement) {
-                    var bounds = outerElement.parentElement.getBoundingClientRect();
+        var resizeCard = () => {
+            if (outerElement.parentElement) {
+                var bounds = outerElement.parentElement.getBoundingClientRect();
 
-                    var newWidth: string = "216px";
+                var newWidth: string = "216px";
 
-                    if (bounds.width >= 500) {
-                        newWidth = "416px";
-                    }
-                    else if (bounds.width >= 400) {
-                        newWidth = "320px";
-                    }
-
-                    if (outerElement.style.width != newWidth) {
-                        outerElement.style.width = newWidth;
-                    }
+                if (bounds.width >= 500) {
+                    newWidth = "416px";
                 }
-            });
+                else if (bounds.width >= 400) {
+                    newWidth = "320px";
+                }
+
+                if (outerElement.style.width != newWidth) {
+                    outerElement.style.width = newWidth;
+                }
+
+                adaptiveCard.updateLayout();
+            }
+        };
+
+        window.addEventListener("resize", resizeCard);
 
         var innerElement = document.createElement("div");
         innerElement.className = "webChatInnerContainer";
 
         target.appendChild(outerElement);
         outerElement.appendChild(innerElement);
-        adaptiveCard.render(innerElement);
+
+        var renderedCard = adaptiveCard.render();
+        innerElement.appendChild(renderedCard);
+        resizeCard();
 
         return outerElement;
     }
