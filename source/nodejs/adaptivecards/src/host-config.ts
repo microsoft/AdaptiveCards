@@ -224,6 +224,7 @@ export class ContainerStyleSet {
 
     constructor(obj?: any) {
         this.emphasis.backgroundColor = "#EEEEEE";
+        
         if (obj) {
             this.default = new ContainerStyleDefinition(obj["default"]);
             this.emphasis = new ContainerStyleDefinition(obj["emphasis"])
@@ -234,12 +235,24 @@ export class ContainerStyleSet {
 export class HostConfig {
     supportsInteractivity: boolean = true;
     fontFamily?: string = "Segoe UI";
+    readonly spacing = {
+        small: 10,
+        default: 20,
+        medium: 30,
+        large: 40,
+        extraLarge: 50,
+        padding: 20
+    };
+    readonly separator = {
+        lineThickness: 1,
+        lineColor: "#EEEEEE"
+    };
     readonly fontSizes = {
-        small: 8,
-        default: 10,
-        medium: 12,
-        large: 14,
-        extraLarge: 16
+        small: 12,
+        default: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
     };
     readonly fontWeights = {
         lighter: 200,
@@ -252,18 +265,6 @@ export class HostConfig {
         large: 160
     };
     readonly containerStyles: ContainerStyleSet = new ContainerStyleSet();
-    readonly spacing = {
-        small: 3,
-        default: 8,
-        medium: 20,
-        large: 30,
-        extraLarge: 40,
-        padding: 20
-    };
-    readonly separator = {
-        lineThickness: 1,
-        lineColor: "#EEEEEE"
-    }
     readonly actions: ActionsConfig = new ActionsConfig();
     readonly adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
     readonly imageSet: ImageSetConfig = new ImageSetConfig();

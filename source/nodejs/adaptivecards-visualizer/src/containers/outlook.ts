@@ -73,20 +73,20 @@ export class OutlookContainer extends HostContainer {
 
     public getHostConfig(): HostConfig {
         return new HostConfig({
+            supportsInteractivity: true,
+            fontFamily: "Segoe UI",
             spacing: {
-                small: 3,
-                default: 8,
-                medium: 20,
-                large: 30,
-                extraLarge: 40,
+                small: 10,
+                default: 20,
+                medium: 30,
+                large: 40,
+                extraLarge: 50,
                 padding: 20
             },
             separator: {
                 lineThickness: 1,
                 lineColor: "#EEEEEE"
             },
-            supportsInteractivity: true,
-            fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
                 default: 14,
@@ -98,6 +98,11 @@ export class OutlookContainer extends HostContainer {
                 lighter: 200,
                 default: 400,
                 bolder: 600
+            },
+            imageSizes: {
+                small: 40,
+                medium: 80,
+                large: 160
             },
             containerStyles: {
                 default: {
@@ -150,11 +155,6 @@ export class OutlookContainer extends HostContainer {
                         }
                     }
                 }
-            },
-            imageSizes: {
-                small: 40,
-                medium: 80,
-                large: 160
             },
             actions: {
                 maxActions: 5,

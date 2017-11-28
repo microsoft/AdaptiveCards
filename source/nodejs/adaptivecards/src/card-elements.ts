@@ -54,7 +54,7 @@ export interface IValidationError {
 }
 
 export abstract class CardElement {
-    private _hostConfig?: HostConfig.HostConfig;
+    private _hostConfig?: HostConfig.HostConfig = null;
     private _internalPadding: HostConfig.PaddingDefinition = null;
     private _parent: CardElement = null;
     private _isVisibile: boolean = true;
@@ -328,13 +328,17 @@ export abstract class CardElement {
     }
 
     get hostConfig(): HostConfig.HostConfig {
-        if (!this._hostConfig) {
-            var result = this.parent.hostConfig;
-
-            this._hostConfig = result ? result : defaultHostConfig;
+        if (this._hostConfig) {
+            return this._hostConfig;
         }
-
-        return this._hostConfig;
+        else {
+            if (this.parent) {
+                return this.parent.hostConfig;
+            }
+            else {
+                return defaultHostConfig;
+            }
+        }
     }
 
     set hostConfig(value: HostConfig.HostConfig) {
@@ -3575,4 +3579,127 @@ class InlineAdaptiveCard extends AdaptiveCard {
     }
 }
 
-const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig();
+// const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig();
+
+const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
+{
+    supportsInteractivity: true,
+    fontFamily: "Segoe UI",
+    spacing: {
+        small: 10,
+        default: 20,
+        medium: 30,
+        large: 40,
+        extraLarge: 50,
+        padding: 20
+    },
+    separator: {
+        lineThickness: 1,
+        lineColor: "#EEEEEE"
+    },
+    fontSizes: {
+        small: 12,
+        default: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
+    },
+    fontWeights: {
+        lighter: 200,
+        default: 400,
+        bolder: 600
+    },
+    imageSizes: {
+        small: 40,
+        medium: 80,
+        large: 160
+    },
+    containerStyles: {
+        default: {
+            backgroundColor: "#FFFFFF",
+            foregroundColors: {
+                default: {
+                    normal: "#333333",
+                    subtle: "#EE333333"
+                },
+                accent: {
+                    normal: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    normal: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#e69500",
+                    subtle: "#DDe69500"
+                }
+            }
+        },
+        emphasis: {
+            backgroundColor: "#08000000",
+            foregroundColors: {
+                default: {
+                    normal: "#333333",
+                    subtle: "#EE333333"
+                },
+                accent: {
+                    normal: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    normal: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#e69500",
+                    subtle: "#DDe69500"
+                }
+            }
+        }
+    },
+    actions: {
+        maxActions: 5,
+        spacing: Enums.Spacing.Default,
+        buttonSpacing: 10,
+        showCard: {
+            actionMode: Enums.ShowCardActionMode.Inline,
+            inlineTopMargin: 16
+        },
+        actionsOrientation: Enums.Orientation.Horizontal,
+        actionAlignment: Enums.ActionAlignment.Left
+    },
+    adaptiveCard: {
+        allowCustomStyle: false
+    },
+    imageSet: {
+        imageSize: Enums.Size.Medium,
+        maxImageHeight: 100
+    },
+    factSet: {
+        title: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Bolder,
+            wrap: true,
+            maxWidth: 150,
+        },
+        value: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Default,
+            wrap: true,
+        },
+        spacing: 10
+    }
+});
