@@ -510,7 +510,7 @@ export class TextBlock extends CardElement {
                 anchor.classList.add("ac-anchor");
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
-                    if (raiseAnchorClickedEvent(anchor)) {
+                    if (raiseAnchorClickedEvent(this, anchor)) {
                         e.preventDefault();
                     }
                 }
@@ -3187,42 +3187,50 @@ export class Version {
     }
 }
 
-function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
-    return AdaptiveCard.onAnchorClicked != null ? AdaptiveCard.onAnchorClicked(anchor) : false;
+function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement): boolean {
+    let card = element.getRootElement() as AdaptiveCard;
+    let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
+    
+    return onAnchorClickedHandler != null ? onAnchorClickedHandler(anchor) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
-    // TODO: is this the best way to get access to the parent card?
-    var card = action.parent.getRootElement() as AdaptiveCard;
-    if (card && card.onExecuteAction) {
-        action.prepare(action.parent.getRootElement().getAllInputs());
-        card.onExecuteAction(action);
-    }
+    let card = action.parent.getRootElement() as AdaptiveCard;
+    let onExecuteActionHandler = (card && card.onExecuteAction) ? card.onExecuteAction : AdaptiveCard.onExecuteAction;
 
-    if (AdaptiveCard.onExecuteAction != null) {
+    if (onExecuteActionHandler) {
         action.prepare(action.parent.getRootElement().getAllInputs());
 
-        AdaptiveCard.onExecuteAction(action);
+        onExecuteActionHandler(action);
     }
 }
 
 function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolean) {
-    if (AdaptiveCard.onInlineCardExpanded != null) {
-        AdaptiveCard.onInlineCardExpanded(action, isExpanded);
+    let card = action.parent.getRootElement() as AdaptiveCard;
+    let onInlineCardExpandedHandler = (card && card.onInlineCardExpanded) ? card.onInlineCardExpanded : AdaptiveCard.onInlineCardExpanded;
+
+    if (onInlineCardExpandedHandler) {
+        onInlineCardExpandedHandler(action, isExpanded);
     }
 }
 
 function raiseElementVisibilityChangedEvent(element: CardElement) {
     element.getRootElement().updateLayout();
 
-    if (AdaptiveCard.onElementVisibilityChanged != null) {
-        AdaptiveCard.onElementVisibilityChanged(element);
+    let card = element.getRootElement() as AdaptiveCard;
+    let onElementVisibilityChangedHandler = (card && card.onElementVisibilityChanged) ? card.onElementVisibilityChanged : AdaptiveCard.onElementVisibilityChanged;
+
+    if (onElementVisibilityChangedHandler != null) {
+        onElementVisibilityChangedHandler(element);
     }
 }
 
 function raiseParseElementEvent(element: CardElement, json: any) {
-    if (AdaptiveCard.onParseElement != null) {
-        AdaptiveCard.onParseElement(element, json);
+    let card = element.getRootElement() as AdaptiveCard;
+    let onParseElementHandler = (card && card.onParseElement) ? card.onParseElement : AdaptiveCard.onParseElement;
+
+    if (onParseElementHandler != null) {
+        onParseElementHandler(element, json);
     }
 }
 
@@ -3504,8 +3512,11 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    // TODO: Added this as an experiment, if it works we should remove the static handler?
+    onAnchorClicked: (anchor: HTMLAnchorElement) => boolean = null;
     onExecuteAction: (action: Action) => void = null;
+    onElementVisibilityChanged: (element: CardElement) => void = null;
+    onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    onParseElement: (element: CardElement, json: any) => void = null;
     
     version?: Version = new Version(1, 0);
     fallbackText: string;
@@ -3620,8 +3631,6 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return [ShowCardAction];
     }
 }
-
-// const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig();
 
 const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
 {
