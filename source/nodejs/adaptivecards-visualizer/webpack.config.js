@@ -16,8 +16,7 @@ var visualizer = {
         rules: [
             {
                 test: /\.ts$/,
-                loader: "awesome-typescript-loader",
-                exclude: /(node_modules|__tests__)/
+                loader: "ts-loader"
             },
             {
                 test: /\.json$/,
