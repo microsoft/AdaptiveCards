@@ -275,7 +275,7 @@ export class HostConfig {
                 obj = JSON.parse(obj as string);
             }
 
-            this.supportsInteractivity = obj["supportsInteractivity"] || this.supportsInteractivity;
+            this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
             this.fontFamily = obj["fontFamily"] || this.fontFamily;
             this.fontSizes = {
                 small: obj["fontSizes"]["small"] || this.fontSizes.small,
