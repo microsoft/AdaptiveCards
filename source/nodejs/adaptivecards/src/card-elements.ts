@@ -481,7 +481,8 @@ export class TextBlock extends CardElement {
 
             var formattedText = TextFormatters.formatText(this.text);
 
-            element.innerHTML = Utils.processMarkdown(formattedText);
+            // TODO: Should getRootElement just be an AdaptiveCard?
+            element.innerHTML = (<AdaptiveCard>this.getRootElement()).processMarkdown(formattedText);
 
             if (element.firstElementChild instanceof HTMLElement) {
                 var firstElementChild = <HTMLElement>element.firstElementChild;
@@ -3418,7 +3419,10 @@ export class AdaptiveCard extends ContainerWithActions implements IAdaptiveCard 
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
+    
+    processMarkdown: (text: string) => string = (text) => text;
 
+    // TODO: Added this as an experiment, if it works we should remove the static handler?
     onAction: (action: Action) => void = null;
 
     private isVersionSupported(): boolean {

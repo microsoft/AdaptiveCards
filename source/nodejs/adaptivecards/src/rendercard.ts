@@ -5,6 +5,7 @@ export interface RenderOptions {
     hostConfig?: HostConfig | string | object;
     onAction?: (action: Action) => void;
     onValidationError?: (error: string) => void;
+    processMarkdown?: (text: string) => string;
 }
 
 export function renderCard(card: IAdaptiveCard | string, options?: RenderOptions): HTMLElement {
@@ -13,9 +14,7 @@ export function renderCard(card: IAdaptiveCard | string, options?: RenderOptions
         card = <IAdaptiveCard>JSON.parse(card);
     }
     
-    if (typeof options === "undefined") {
-        options = {}
-    }
+    options = options || {};
 
     let adaptiveCard = new AdaptiveCard();
     adaptiveCard.parse(card);
@@ -32,7 +31,11 @@ export function renderCard(card: IAdaptiveCard | string, options?: RenderOptions
         hostConfig = new HostConfig(options.hostConfig);
     }
 
-    AdaptiveCard.onExecuteAction = options.onAction;
+    if(options.processMarkdown)
+    {
+        adaptiveCard.processMarkdown = options.processMarkdown;
+    }
+    
     adaptiveCard.hostConfig = hostConfig;
     return adaptiveCard.render();
 }

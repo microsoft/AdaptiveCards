@@ -18,8 +18,8 @@ test('Render card works', () => {
     };
 
 
-    const html1 = render(card);
-    const html2 = render(card, {
+    const html1 = renderCard(card);
+    const html2 = renderCard(card, {
         hostConfig: hostConfig,
         onAction: function (a) { alert(JSON.stringify(a)); }
     });

@@ -20,9 +20,9 @@
 <body>
 
     <h1>Adaptive Cards Example</h1>
-    
+
     <p>This example requires a build of the Adaptive Cards library.</p>
-    
+
     <h3>To run:</h3>
     <code>
         <pre>> npm install</pre>
@@ -35,8 +35,10 @@
     <div id="exampleDiv"></div>
 
     <script>
-        var json = {
-            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        // author a card
+        // in practice you'll probably get this from a service
+        // see http://adaptivecards.io/samples/ for inspiration
+        var card = {
             "type": "AdaptiveCard",
             "version": "1.0",
             "body": [
@@ -62,20 +64,30 @@
                 }
             ]
         };
-    
-        // var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-        // adaptiveCard.hostConfig = new AdaptiveCards.HostConfig();
-        // adaptiveCard.parse(json);
-        // var renderedCard = adaptiveCard.render();
 
-        var options = {
-            onAction: function(action) { window.open(action.url); }
-        }
+        // define your render options
+        var renderOptions = {
 
-        var cardHtml = AdaptiveCards.renderCard(json, options);
+            // a Host Config describes style and behavior of your card
+            hostConfig: {
+                "fontFamily": "Segoe UI, Helvetica Nue, sans-serif"
+            },
 
+            // the action handler is invoked when actions are pressed
+            onAction: function (action) { alert("Ow!"); },
 
-        document.getElementById('exampleDiv').appendChild(cardHtml);
+            // For markdown support you need a third-party library
+            // E.g., to use markdown-it include the script and add the following:
+            // <!-- <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script> -->
+            processMarkdown: function (text) { return markdownit().render(text); }
+        };
+        
+
+        // render the card to HTML
+        var renderedCard = AdaptiveCards.renderCard(card, renderOptions);
+
+        // show the user!
+        document.getElementById('exampleDiv').appendChild(renderedCard);
 
     </script>
 

@@ -1,8 +1,8 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta8",
+  "version": "1.0.0-beta6",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
-  "author": "adaptivecards",
+  "author": "AdaptiveCards <adaptivecardspkg@microsoft.com>",
   "license": "MIT",
   "homepage": "http://adaptivecards.io",
   "keywords": [
@@ -25,26 +25,20 @@
     "compile": "npm run clean && tsc",
     "bundle": "cross-env NODE_ENV=production webpack",
     "build": "npm run compile && npm run bundle",
-    "build:debug": "tsc -p ./tsconfig.debug.json && webpack",
+    "build:debug": "npm run clena && tsc -p ./tsconfig.debug.json && webpack",
     "watch": "webpack --watch",
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-    "preversion": "npm test",
-    "version": "npm run build",
-    "prepublish": "npm run build && npm run dts"
+    "prepare": "npm run build && npm test && npm run dts"
   },
   "repository": {
     "type": "git",
     "url": "git://git@github.com/microsoft/AdaptiveCards.git"
   },
-  "dependencies": {
-    "markdown-it": "^8.4.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^21.1.8",
-    "@types/markdown-it": "0.0.1",
     "@types/node": "0.0.2",
-    "@types/vkbeautify": "^0.99.2",
     "ajv-cli": "1.1.1",
     "awesome-typescript-loader": "^3.4.0",
     "babel-jest": "^21.2.0",
@@ -54,7 +48,6 @@
     "json-loader": "0.5.4",
     "regenerator-runtime": "^0.11.0",
     "ts-jest": "^21.2.3",
-    "ts-loader": "^3.1.1",
     "tslint": "^4.4.2",
     "typescript": "^2.6.1",
     "webpack": "^3.8.1"
