@@ -16,6 +16,7 @@
 #include "AdaptiveRenderArgs.h"
 #include "json/json.h"
 #include "WholeItemsPanel.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -114,81 +115,84 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle defaultContainerStyle)
     {
         *xamlTreeRoot = nullptr;
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        ComPtr<IAdaptiveCardConfig> adaptiveCardConfig;
-        THROW_IF_FAILED(hostConfig->get_AdaptiveCard(&adaptiveCardConfig));
-
-        boolean allowCustomStyle;
-        THROW_IF_FAILED(adaptiveCardConfig->get_AllowCustomStyle(&allowCustomStyle));
-
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle = defaultContainerStyle;
-        if (allowCustomStyle)
+        if (adaptiveCard != nullptr)
         {
-            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle cardStyle;
-            THROW_IF_FAILED(adaptiveCard->get_Style(&cardStyle));
+            ComPtr<IAdaptiveHostConfig> hostConfig;
+            THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+            ComPtr<IAdaptiveCardConfig> adaptiveCardConfig;
+            THROW_IF_FAILED(hostConfig->get_AdaptiveCard(&adaptiveCardConfig));
 
-            if (cardStyle != ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
+            boolean allowCustomStyle;
+            THROW_IF_FAILED(adaptiveCardConfig->get_AllowCustomStyle(&allowCustomStyle));
+
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle = defaultContainerStyle;
+            if (allowCustomStyle)
             {
-                containerStyle = cardStyle;
+                ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle cardStyle;
+                THROW_IF_FAILED(adaptiveCard->get_Style(&cardStyle));
+
+                if (cardStyle != ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
+                {
+                    containerStyle = cardStyle;
+                }
             }
-        }
-        ComPtr<IAdaptiveRenderArgs> renderArgs;
-        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr));
+            ComPtr<IAdaptiveRenderArgs> renderArgs;
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr));
 
-        ComPtr<IPanel> childElementContainer;
-        ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), &childElementContainer);
-        ComPtr<IFrameworkElement> childElementContainerAsFE;
-        THROW_IF_FAILED(rootElement.As(&childElementContainerAsFE));
+            ComPtr<IPanel> childElementContainer;
+            ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), &childElementContainer);
+            ComPtr<IFrameworkElement> childElementContainerAsFE;
+            THROW_IF_FAILED(rootElement.As(&childElementContainerAsFE));
 
-        // Enumerate the child items of the card and build xaml for them
-        ComPtr<IVector<IAdaptiveCardElement*>> body;
-        THROW_IF_FAILED(adaptiveCard->get_Body(&body));
-        ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
-        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
-        BuildPanelChildren(body.Get(), childElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
+            // Enumerate the child items of the card and build xaml for them
+            ComPtr<IVector<IAdaptiveCardElement*>> body;
+            THROW_IF_FAILED(adaptiveCard->get_Body(&body));
+            ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
+            BuildPanelChildren(body.Get(), childElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
 
-        ComPtr<IVector<IAdaptiveActionElement*>> actions;
-        THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
-        UINT32 actionsSize;
-        THROW_IF_FAILED(actions->get_Size(&actionsSize));
-        if (SupportsInteractivity(hostConfig.Get()))
-        {
-            unsigned int bodyCount;
-            THROW_IF_FAILED(body->get_Size(&bodyCount));
-            BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext);
-        }
-        else if (actionsSize > 0)
-        {
-            renderContext->AddWarning(
-                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
-        }
-
-        if (isOuterCard)
-        {
-            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", childElementContainerAsFE.Get()));
-        }
-        else
-        {
-            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", childElementContainerAsFE.Get()));
-        }
-
-        THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
-
-        if (isOuterCard)
-        {
-            if (m_listeners.size() == 0)
+            ComPtr<IVector<IAdaptiveActionElement*>> actions;
+            THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
+            UINT32 actionsSize;
+            THROW_IF_FAILED(actions->get_Size(&actionsSize));
+            if (SupportsInteractivity(hostConfig.Get()))
             {
-                // If we're done and no one's listening for the images to load, make sure 
-                // any outstanding image loads are no longer tracked.
-                m_imageLoadTracker.AbandonOutstandingImages();
+                unsigned int bodyCount;
+                THROW_IF_FAILED(body->get_Size(&bodyCount));
+                BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext);
             }
-            else if (m_imageLoadTracker.GetTotalImagesTracked() == 0)
+            else if (actionsSize > 0)
             {
-                // If there are no images to track, fire the all images loaded
-                // event to signal the xaml is ready
-                FireAllImagesLoaded();
+                renderContext->AddWarning(
+                    ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                    HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
+            }
+
+            if (isOuterCard)
+            {
+                THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", childElementContainerAsFE.Get()));
+            }
+            else
+            {
+                THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", childElementContainerAsFE.Get()));
+            }
+
+            THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
+
+            if (isOuterCard)
+            {
+                if (m_listeners.size() == 0)
+                {
+                    // If we're done and no one's listening for the images to load, make sure 
+                    // any outstanding image loads are no longer tracked.
+                    m_imageLoadTracker.AbandonOutstandingImages();
+                }
+                else if (m_imageLoadTracker.GetTotalImagesTracked() == 0)
+                {
+                    // If there are no images to track, fire the all images loaded
+                    // event to signal the xaml is ready
+                    FireAllImagesLoaded();
+                }
             }
         }
     }
@@ -1311,7 +1315,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             THROW_IF_FAILED(ellipse.As(&frameworkElement));
 
             // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
-            if (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Auto && parentElement != nullptr)
+            if (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Auto &&
+                parentElement != nullptr &&
+                m_enableXamlImageHandling)
             {
                 ComPtr<IBrush> ellipseBrush;
                 THROW_IF_FAILED(ellipseAsShape->get_Fill(&ellipseBrush));
@@ -1325,19 +1331,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
                 ComPtr<IBitmapSource> imageSourceAsBitmap;
                 THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-
-                if (m_enableXamlImageHandling)
+                // Collapse the Ellipse while the image loads, so that resizing is not noticeable
+                THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                EventRegistrationToken eventToken;
+                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>(
+                    [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
-                    // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                    THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                    EventRegistrationToken eventToken;
-                    THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>(
-                        [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-                    {
-                        return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
-                    }).Get(), &eventToken));
-                }
+                    return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                }).Get(), &eventToken));
             }
         }
         else
@@ -1348,7 +1350,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
-            if (parentElement != nullptr && size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Auto)
+            if (parentElement != nullptr &&
+                size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Auto &&
+                m_enableXamlImageHandling)
             {
                 ComPtr<IImageSource> imageSource;
                 THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
@@ -1358,19 +1362,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 ComPtr<IUIElement> imageAsUIElement;
                 THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
 
-                if (m_enableXamlImageHandling)
-                {
-                    //Collapse the Image control while the image loads, so that resizing is not noticeable
-                    THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                //Collapse the Image control while the image loads, so that resizing is not noticeable
+                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
-                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                    EventRegistrationToken eventToken;
-                    THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-                        [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-                    {
-                        return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
-                    }).Get(), &eventToken));
-                }
+                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                EventRegistrationToken eventToken;
+                THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+                    [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                {
+                    return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                }).Get(), &eventToken));
             }
         }
 

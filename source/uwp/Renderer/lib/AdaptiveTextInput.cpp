@@ -3,7 +3,6 @@
 
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

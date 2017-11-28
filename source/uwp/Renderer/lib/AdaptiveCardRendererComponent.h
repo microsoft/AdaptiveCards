@@ -1,9 +1,11 @@
 ﻿#pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
+#include "XamlBuilder.h"
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+    class XamlBuilder;
 
     // This class is effectively a singleton, and stays around between subsequent renders.
     class AdaptiveCardRenderer :
@@ -43,6 +45,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* GetHostConfig();
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetMergedDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
+        std::shared_ptr<AdaptiveCards::Rendering::Uwp::XamlBuilder> GetXamlBuilder();
 
         IFACEMETHODIMP get_ResourceResolvers(
             _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers** value);
@@ -55,6 +58,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
 
+        std::shared_ptr<AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
