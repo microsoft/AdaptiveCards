@@ -114,6 +114,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParser.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveActionParserRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
