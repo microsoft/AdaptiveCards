@@ -1,3 +1,5 @@
+import { HorizontalAlignment, Spacing } from "./adaptivecards";
+
 
 export interface IActionBase extends ITypedElement {
     speak?: string;
@@ -126,14 +128,12 @@ export interface ITypedElement {
     type: string;
 }
 
-export type HorizontalAlignment = "left" | "center" | "right";
 export type ImageSize = "auto" | "stretch" | "small" | "medium" | "large";
 export type ImageStyle = "normal" | "person";
 export type TextColor = "default" | "dark" | "light" | "accent" | "good" | "warning" | "attention";
 export type TextInputStyle = "text" | "tel" | "url" | "email";
 export type TextSize = "small" | "normal" | "medium" | "large" | "extraLarge";
 export type TextWeight = "lighter" | "normal" | "bolder";
-export type Spacing = "none" | "default" | "small" | "medium" | "large" | "extraLarge";
 
 export class TypedElement implements ITypedElement {
     public constructor(type: string) {
