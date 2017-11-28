@@ -31,11 +31,14 @@ export class SkypeContainer extends HostContainer {
         botElementIn2.className = "hexagon-in2";
         botElementIn1.appendChild(botElementIn2);
 
-        element.appendChild(botElement);
-        target.appendChild(element)
+        var cardWrapper = document.createElement("div");
+        cardWrapper.style.width = this._width + "px";
 
-        var renderedCard = adaptiveCard.render(element);
-        renderedCard.style.width = this._width + "px";
+        element.appendChild(botElement);
+        element.appendChild(cardWrapper);
+        target.appendChild(element);
+
+        var renderedCard = adaptiveCard.render(cardWrapper);
 
         return element;
     }
