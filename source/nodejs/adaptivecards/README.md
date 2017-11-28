@@ -85,7 +85,7 @@ var renderOptions = {
     },
 
     // the action handler is invoked when actions are pressed
-    onAction: function (action) { alert("Ow!"); },
+    onExecuteAction: function (action) { alert("Ow!"); },
 
     // For markdown support you need a third-party library
     // E.g., to use markdown-it include the script and add the following:
