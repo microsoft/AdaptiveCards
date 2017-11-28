@@ -39,10 +39,9 @@ export interface ICardElement extends ITypedElement {
     type: string,
     id?: string;
     horizontalAlignment?: HorizontalAlignment;
-    spacing?: Separation;
+    spacing?: Spacing;
     separator?: boolean;
-    [propName: string]: any;
-    
+    [propName: string]: any;    
 }
 export interface IColumn extends IContainer {
     size?: string;
@@ -134,7 +133,7 @@ export type TextColor = "default" | "dark" | "light" | "accent" | "good" | "warn
 export type TextInputStyle = "text" | "tel" | "url" | "email";
 export type TextSize = "small" | "normal" | "medium" | "large" | "extraLarge";
 export type TextWeight = "lighter" | "normal" | "bolder";
-export type Separation = "none" | "default" | "strong";
+export type Spacing = "none" | "default" | "small" | "medium" | "large" | "extraLarge";
 
 export class TypedElement implements ITypedElement {
     public constructor(type: string) {
