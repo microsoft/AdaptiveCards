@@ -457,7 +457,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         }
     };
-    TEST_CLASS(Rule11Test)
+    TEST_CLASS(Rule11_12Test)
     {
         TEST_METHOD(EscapeTest)
         {
@@ -466,7 +466,60 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             MarkDownParser blck2("foo **\\***");
             Assert::AreEqual<string>("<p>foo <strong>*</strong></p>", blck2.TransformToHtml());
+
+            MarkDownParser blck3("foo __\\___");
+            Assert::AreEqual<string>("<p>foo <strong>_</strong></p>", blck3.TransformToHtml());
+        }
+        TEST_METHOD(UnevenMatchingDelimiter)
+        {
+            MarkDownParser blck("**foo*");
+            Assert::AreEqual<string>("<p>*<em>foo</em></p>", blck.TransformToHtml());
+
+            MarkDownParser blck1("*foo**");
+            Assert::AreEqual<string>("<p><em>foo</em>*</p>", blck1.TransformToHtml());
+
+            MarkDownParser blck2("***foo**");
+            Assert::AreEqual<string>("<p>*<strong>foo</strong></p>", blck2.TransformToHtml());
+
+            MarkDownParser blck3("*foo****");
+            Assert::AreEqual<string>("<p><em>foo</em>***</p>", blck3.TransformToHtml());
+        }
+    };
+    TEST_CLASS(Rule13Test)
+    {
+        TEST_METHOD(strongEmphasisNesting)
+        {
+            MarkDownParser blck("****foo****");
+            Assert::AreEqual<string>("<p><strong><strong>foo</strong></strong></p>", blck.TransformToHtml());
+            MarkDownParser blck2("******foo******");
+            Assert::AreEqual<string>("<p><strong><strong><strong>foo</strong></strong></strong></p>", blck2.TransformToHtml());
+        }
+    };
+    TEST_CLASS(Rule14Test)
+    {
+        TEST_METHOD(strongAndEmpEmphasisNesting)
+        {
+            MarkDownParser blck("***foo***");
+            Assert::AreEqual<string>("<p><strong><em>foo</em></strong></p>", blck.TransformToHtml());
+
+            MarkDownParser blck2("_____foo_____");
+            Assert::AreEqual<string>("<p><strong><strong><em>foo</em></strong></strong></p>", blck2.TransformToHtml());
+        }
+    };
+
+    TEST_CLASS(Rule15Test)
+    {
+        TEST_METHOD(strongAndEmpEmphasisNesting)
+        {
+            MarkDownParser blck("*foo _bar* baz_");
+            Assert::AreEqual<string>("<p><em>foo _bar</em> baz_</p>", blck.TransformToHtml());
         }
 
+        TEST_METHOD(TmpTest)
+        {
+            MarkDownParser blck2("_____foo_____");
+            Assert::AreEqual<string>("<p><strong><strong><em>foo</em></strong></strong></p>", blck2.TransformToHtml());
+        }
     };
+
 }

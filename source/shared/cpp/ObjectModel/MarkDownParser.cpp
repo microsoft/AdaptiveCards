@@ -63,10 +63,10 @@ std::string MarkDownParser::TransformToHtml(void)
                     m_leftLookUpTable[curr_left_delim].m_emphCnts = 0; 
                 }
             }
-            else
+
+            if(delimCnts % 2)
             {
-                left << m_tokenizedString[m_leftLookUpTable[curr_left_delim].m_idx];
-                right << m_tokenizedString[m_rightLookUpTable[top_right].m_idx];
+                right << "</em>";
             }
 
             for(int rpts = 0; rpts < delimCnts / 2; rpts++)
@@ -78,7 +78,6 @@ std::string MarkDownParser::TransformToHtml(void)
             if(delimCnts % 2)
             {
                 left << "<em>";
-                right << "</em>";
             }
             
             // stich strings between delims
@@ -127,15 +126,32 @@ std::string MarkDownParser::TransformToHtml(void)
     }
 
     leftBound = std::min(m_leftLookUpTable.front().m_idx, m_rightLookUpTable.front().m_idx);
+    Emphasis &leftBoundEmphasis = (leftBound == m_leftLookUpTable.front().m_idx)? m_leftLookUpTable.front() : m_rightLookUpTable.front();
+    // if there are unused emphasis, append them
+    if(leftBoundEmphasis.m_emphCnts)
+    {
+        int startIdx = m_tokenizedString[leftBound].size() - leftBoundEmphasis.m_emphCnts;
+        html = m_tokenizedString[leftBound].substr(startIdx, std::string::npos) + html;
+    }
+
     for (int idx = leftBound - 1; idx  >= 0; idx--)
     {
         html = m_tokenizedString[idx] + html;
     }
 
     rightBound = std::max(m_leftLookUpTable.back().m_idx, m_rightLookUpTable.back().m_idx);
+
     for (int idx = rightBound + 1; idx  < m_tokenizedString.size(); idx++)
     {
         html += m_tokenizedString[idx];
+    }
+
+    Emphasis &rightBoundEmphasis = (rightBound == m_leftLookUpTable.back().m_idx)? m_leftLookUpTable.back() : m_rightLookUpTable.back();
+    // if there are unused emphasis, append them
+    if(rightBoundEmphasis.m_emphCnts)
+    {
+        int startIdx = m_tokenizedString[rightBound].size() -  rightBoundEmphasis.m_emphCnts;
+        html = html + m_tokenizedString[rightBound].substr(startIdx, std::string::npos);
     }
 
     return "<p>" + html + "</p>";
@@ -144,7 +160,7 @@ std::string MarkDownParser::TransformToHtml(void)
 
 void MarkDownParser::GetCh(char ch)
 {
-    // store chars except escape
+    // store chars unless it's escape
     if (ch != '\\')
     {
         m_tokenizedString[m_currentWordIndex] += ch;
