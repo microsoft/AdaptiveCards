@@ -3565,7 +3565,7 @@ export class AdaptiveCard extends ContainerWithActions {
         super.parse(json, "body");
     }
 
-    render(): HTMLElement {
+    render(target?: HTMLElement): HTMLElement {
         var renderedCard: HTMLElement;
 
         if (!this.isVersionSupported()) {
@@ -3582,6 +3582,11 @@ export class AdaptiveCard extends ContainerWithActions {
                     renderedCard.setAttribute("aria-label", this.speak);
                 }
             }
+        }
+
+        if (target) {
+            target.appendChild(renderedCard);
+            this.updateLayout();
         }
 
         return renderedCard;

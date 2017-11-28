@@ -19,14 +19,15 @@ import {
 } from "adaptivecards";
 
 export class OutlookContainer extends HostContainer {
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
         element.style.borderBottom = "1px solid #F1F1F1";
         element.style.border = "1px solid #F1F1F1"
+        target.appendChild(element);
 
-        element.appendChild(renderedCard);
+        adaptiveCard.render(element);
 
         return element;
     }

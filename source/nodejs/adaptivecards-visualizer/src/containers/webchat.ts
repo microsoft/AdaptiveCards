@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -12,7 +13,7 @@ import {
 } from "adaptivecards";
 
 export class WebChatContainer extends HostContainer {
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var outerElement = document.createElement("div");
         outerElement.className = "webChatOuterContainer";
 
@@ -40,8 +41,9 @@ export class WebChatContainer extends HostContainer {
         var innerElement = document.createElement("div");
         innerElement.className = "webChatInnerContainer";
 
-        innerElement.appendChild(renderedCard);
+        target.appendChild(outerElement);
         outerElement.appendChild(innerElement);
+        adaptiveCard.render(innerElement);
 
         return outerElement;
     }

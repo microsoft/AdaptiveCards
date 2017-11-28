@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -14,13 +15,14 @@ import {
 export class ToastContainer extends HostContainer {
     private _width: number;
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var element = document.createElement("div");
         element.style.border = "#474747 1px solid";
         element.style.width = this._width + "px";
         element.style.overflow = "hidden";
+        target.appendChild(element);
 
-        element.appendChild(renderedCard);
+        adaptiveCard.render(element);
 
         return element;
     }
