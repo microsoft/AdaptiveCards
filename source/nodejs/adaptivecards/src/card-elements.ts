@@ -1947,6 +1947,7 @@ class ActionCollection {
                 this._actionButtons[i].state = ActionButtonState.Normal;
             }
 
+            this.hideStatusCard();
             this.hideActionCard();
 
             actionButton.action.execute();
@@ -3433,9 +3434,6 @@ export class AdaptiveCard extends ContainerWithActions {
         return text;
     }
 
-    // TODO: Added this as an experiment, if it works we should remove the static handler?
-    onExecuteAction: (action: Action) => void = null;
-
     private isVersionSupported(): boolean {
         if (this.bypassVersionCheck) {
             return true;
@@ -3451,6 +3449,24 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private _cardTypeName: string;
+
+    protected showBottomSpacer(requestingElement: CardElement) {
+        if ((!requestingElement || this.isLastElement(requestingElement))) {
+            this.applyPadding();
+
+            // Do not walk up the tree from an AdaptiveCard instance
+        }
+    }
+
+    protected hideBottomSpacer(requestingElement: CardElement) {
+        if ((!requestingElement || this.isLastElement(requestingElement))) {
+            if (this.renderedElement) {
+                this.renderedElement.style.paddingBottom = "0px";
+            }
+
+            // Do not walk up the tree from an AdaptiveCard instance
+        }
+    }
 
     protected applyPadding() {
         var effectivePadding = this.hostConfig.paddingToSpacingDefinition(this.internalPadding);
@@ -3488,6 +3504,9 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
+    // TODO: Added this as an experiment, if it works we should remove the static handler?
+    onExecuteAction: (action: Action) => void = null;
+    
     version?: Version = new Version(1, 0);
     fallbackText: string;
     type: string = "AdaptiveCard";
