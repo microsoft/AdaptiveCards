@@ -531,7 +531,10 @@ export class TextBlock extends CardElement {
                 element.style.whiteSpace = "nowrap";
             }
 
-            this.innerHtml = element.innerHTML;
+            if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+                this.innerHtml = element.innerHTML;
+            }
+
             return element;
         }
         else {
@@ -595,10 +598,12 @@ export class TextBlock extends CardElement {
     }
 
     updateLayout(processChildren: boolean = false) {
-        // Reset the element's innerHTML in case the available room for content
-        // has increased
-        this.renderedElement.innerHTML = this.innerHtml;
-        this.truncateIfSupported();
+        if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+            // Reset the element's innerHTML in case the available room for
+            // content has increased
+            this.renderedElement.innerHTML = this.innerHtml;
+            this.truncateIfSupported();
+        }
     }
 
     private truncateIfSupported() {
@@ -3527,6 +3532,7 @@ export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
+    static useAdvancedTextBlockTruncation: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
