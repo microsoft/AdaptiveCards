@@ -1,4 +1,5 @@
-built/
+build/
+lib/
 dist/
 node_modules/
 coverage/

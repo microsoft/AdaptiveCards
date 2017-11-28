@@ -2,6 +2,7 @@
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
+import { IAdaptiveCard } from "./schema";
 
 function invokeSetParent(obj: any, parent: CardElement) {
     if (obj) {
@@ -60,6 +61,7 @@ export abstract class CardElement {
     private _isVisibile: boolean = true;
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
+    private _rootCard: AdaptiveCard;
 
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
@@ -484,7 +486,7 @@ export class TextBlock extends CardElement {
 
             var formattedText = TextFormatters.formatText(this.text);
 
-            element.innerHTML = Utils.processMarkdown(formattedText);
+            element.innerHTML = AdaptiveCard.processMarkdown(formattedText);
 
             if (element.firstElementChild instanceof HTMLElement) {
                 var firstElementChild = <HTMLElement>element.firstElementChild;
@@ -1928,7 +1930,7 @@ class ActionCollection {
         }
 
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
-        
+
         var renderedCard = action.card.render();
 
         this._actionCard = renderedCard;
@@ -3149,7 +3151,7 @@ export class Version {
         if (!versionString) {
             return null;
         }
-    
+
         var result = new Version();
         result._versionString = versionString;
 
@@ -3159,7 +3161,7 @@ export class Version {
         if (matches != null && matches.length == 3) {
             result._major = parseInt(matches[1]);
             result._minor = parseInt(matches[2]);
-        }        
+        }
         else {
             result._isValid = false;
         }
@@ -3189,6 +3191,13 @@ function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
 }
 
 function raiseExecuteActionEvent(action: Action) {
+    // TODO: is this the best way to get access to the parent card?
+    var card = action.parent.getRootElement() as AdaptiveCard;
+    if (card && card.onExecuteAction) {
+        action.prepare(action.parent.getRootElement().getAllInputs());
+        card.onExecuteAction(action);
+    }
+
     if (AdaptiveCard.onExecuteAction != null) {
         action.prepare(action.parent.getRootElement().getAllInputs());
 
@@ -3400,6 +3409,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
+
     private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
@@ -3413,6 +3423,18 @@ export class AdaptiveCard extends ContainerWithActions {
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
+
+    static processMarkdown = function (text: string): string {
+        // Check for markdownit
+        if (window["markdownit"]) {
+            return window["markdownit"]().render(text);
+        }
+
+        return text;
+    }
+
+    // TODO: Added this as an experiment, if it works we should remove the static handler?
+    onExecuteAction: (action: Action) => void = null;
 
     private isVersionSupported(): boolean {
         if (this.bypassVersionCheck) {
@@ -3459,7 +3481,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected get allowCustomStyle() {
-        return this.hostConfig.adaptiveCard.allowCustomStyle;
+        return this.hostConfig.adaptiveCard && this.hostConfig.adaptiveCard.allowCustomStyle;
     }
 
     protected get hasBackground(): boolean {
@@ -3468,6 +3490,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     version?: Version = new Version(1, 0);
     fallbackText: string;
+    type: string = "AdaptiveCard";
 
     getJsonTypeName(): string {
         return "AdaptiveCard";

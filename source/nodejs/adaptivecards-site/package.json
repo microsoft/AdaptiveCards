@@ -3,18 +3,19 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
+    "build": "hexo generate",
     "build-all": "cd ../adaptivecards-visualizer && npm run build-all",
     "build-and-generate": "npm run build-all && hexo generate"
   },
   "hexo": {
-    "version": "3.4.1"
+    "version": "3.4.2"
   },
   "dependencies": {
     "adaptivecards": "^1.0.0-0",
     "adaptivecards-visualizer": "^1.0.0-0",
     "change-case": "^3.0.1",
     "glob": "^7.1.2",
-    "hexo": "^3.4.1",
+    "hexo": "^3.4.2",
     "hexo-browsersync": "^0.2.0",
     "hexo-cli": "^1.0.4",
     "hexo-fs": "^0.2.2",
@@ -26,7 +27,6 @@
     "hexo-renderer-marked": "^0.3.0",
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.2.0",
-    "markdown-it": "^8.2.2",
     "marked-schema": "^0.1.1",
     "minimist": "^1.2.0"
   }

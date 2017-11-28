@@ -1,60 +1,95 @@
 ﻿<!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <title>Adaptive Cards - Basic Example</title>
+    <title>Adaptive Cards Example</title>
 
+    <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
     <script src="dist/adaptivecards.js"></script>
+
+    <style type="text/css">
+        #exampleDiv {
+            width: 250px;
+            border: solid 1px black;
+        }
+    </style>
 
 </head>
 
 <body>
 
-    <h1>Adaptive Cards - Basic Example</h1>
+    <h1>Adaptive Cards Example</h1>
+
+    <p>This example requires a build of the Adaptive Cards library.</p>
+
+    <h3>To run:</h3>
+    <code>
+        <pre>$ npm install</pre>
+        <pre>$ npm run build</pre>
+        <pre>Refresh this page</pre>
+    </code>
+
+    <h3>A card will render below</h3>
 
     <div id="exampleDiv"></div>
 
     <script>
-        var json = {
-            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        // author a card
+        // in practice you'll probably get this from a service
+        // see http://adaptivecards.io/samples/ for inspiration
+        var card = {
             "type": "AdaptiveCard",
             "version": "1.0",
             "body": [
                 {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/content/adaptive-card-50.png"
+                },
+                {
                     "type": "TextBlock",
-                    "text": "Hello Adaptive Cards!"
+                    "text": "Hello **Adaptive Cards!**"
                 }
             ],
             "actions": [
                 {
                     "type": "Action.OpenUrl",
-                    "title": "View the site",
+                    "title": "Learn more",
                     "url": "http://adaptivecards.io"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "GitHub",
+                    "url": "http://github.com/Microsoft/AdaptiveCards"
                 }
             ]
         };
 
-        
-        AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
-            alert(JSON.stringify(action));
+        // define your render options
+        var renderOptions = {
+
+            // a Host Config describes style and behavior of your card
+            hostConfig: {
+                "fontFamily": "Segoe UI, Helvetica Nue, sans-serif"
+            },
+
+            // the action handler is invoked when actions are pressed
+            onExecuteAction: function (action) { alert("Ow!"); },
+
+            // For markdown support you need a third-party library
+            // E.g., to use markdown-it include the script and add the following:
+            // <!-- <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script> -->
+            //processMarkdown: function (text) { return markdownit().render(text); }
         };
+        
 
-        var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-        adaptiveCard.hostConfig = new AdaptiveCards.HostConfig();
-        adaptiveCard.parse(json);
-        var renderedCard = adaptiveCard.render();
+        // render the card to HTML
+        var renderedCard = AdaptiveCards.renderCard(card, renderOptions);
 
-        var exampleDiv = document.getElementById('exampleDiv');
-        exampleDiv.appendChild(renderedCard);
+        // show the user!
+        document.getElementById('exampleDiv').appendChild(renderedCard);
 
     </script>
-
-    <p>
-        This example requires a build of the Adaptive Cards library. From the command line, enter "npm run build" which will put
-        the built files in the /dist folder. Then refresh this page.
-    </p>
 
 </body>
 

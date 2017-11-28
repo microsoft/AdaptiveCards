@@ -1,9 +1,6 @@
 import * as Enums from "./enums";
 import * as HostConfig from "./host-config";
 
-import markdownIt = require("markdown-it");
-let markdownProcessor = new markdownIt();
-
 export interface ISeparationDefinition {
     spacing: number,
     lineThickness?: number,
@@ -13,10 +10,6 @@ export interface ISeparationDefinition {
 export interface IInput {
     id: string;
     value: string;
-}
-
-export function processMarkdown(text: string): any {
-    return markdownProcessor.render(text);
 }
 
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {

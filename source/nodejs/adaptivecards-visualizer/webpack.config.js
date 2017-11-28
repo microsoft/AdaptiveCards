@@ -1,11 +1,11 @@
 var visualizer = {
-    entry: "./src/App.ts",
+    entry: "./src/app.ts",
     output: {
         filename: "./dist/adaptivecards-visualizer.js"
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    //devtool: "source-map",
+    devtool: "source-map",
 
     resolve: {
         // Add '.ts' as resolvable extensions.
@@ -14,52 +14,20 @@ var visualizer = {
 
     module: {
         rules: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             {
-                test: /\.tsx?$/,
-                loader: "ts-loader",
+                test: /\.ts$/,
+                loader: "ts-loader"
             },
             {
                 test: /\.json$/,
                 loader: "json-loader",
             }
-
         ]
     },
     externals: {
-        "adaptivecards": "AdaptiveCards"
+        "adaptivecards": { var: "AdaptiveCards" },
+        "markdown-it": { var: 'markdownit' }
     }
 };
 
-var visualizerWithRenderer = {
-    entry: "./src/App.ts",
-    output: {
-        filename: "./dist/visualizer-with-renderer.js"
-    },
-
-    // Enable sourcemaps for debugging webpack's output.
-    //devtool: "source-map",
-
-    resolve: {
-        // Add '.ts' as resolvable extensions.
-        extensions: [".webpack.js", ".web.js", ".ts", ".js"],
-    },
-
-    module: {
-        loaders: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            {
-                test: /\.tsx?$/,
-                loader: "ts-loader",
-            },
-            {
-                test: /\.json$/,
-                loader: "json-loader",
-            }
-
-        ]
-    },
-
-};
-
-module.exports = [visualizer, visualizerWithRenderer];
+module.exports = visualizer;

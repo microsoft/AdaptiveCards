@@ -1,3 +1,5 @@
+import { HorizontalAlignment, Spacing } from "./adaptivecards";
+
 
 export interface IActionBase extends ITypedElement {
     speak?: string;
@@ -13,22 +15,35 @@ export interface IActionOpenUrl extends IActionBase {
     url: string;
 }
 export interface IActionShowCard extends IActionBase {
-    card: ICard;
+    card: IAdaptiveCard;
 }
 export interface IActionSubmit extends IActionBase {
     data?: any;
 }
-export interface ICard extends ITypedElement {
-    actions?: (IActionHttp | IActionOpenUrl | IActionShowCard | IActionSubmit)[];
-    backgroundImage?: string;
-    body?: (ITextBlock | IImage | IImageSet | IFactSet | IContainer | IColumnSet | IInputDate | IInputNumber | IInputText | IInputTime | IInputToggle)[];
+export interface IVersion {
+    major: number;
+    minor: number;
+    
+}
+export interface IBackgroundImage {
+    url: string;    
+}
+export interface IAdaptiveCard extends ITypedElement {
+    type: string;
+    version?: IVersion | string;
+    backgroundImage?: IBackgroundImage | string;
+    body?: (any)[];
+    actions?: (IActionBase)[];    
     speak?: string;
-    title?: string;
+    [propName: string]: any;
 }
 export interface ICardElement extends ITypedElement {
-    speak?: string;
+    type: string,
+    id?: string;
     horizontalAlignment?: HorizontalAlignment;
-    separation?: Separation;
+    spacing?: Spacing;
+    separator?: boolean;
+    [propName: string]: any;    
 }
 export interface IColumn extends IContainer {
     size?: string;
@@ -113,14 +128,12 @@ export interface ITypedElement {
     type: string;
 }
 
-export type HorizontalAlignment = "left" | "center" | "right";
 export type ImageSize = "auto" | "stretch" | "small" | "medium" | "large";
 export type ImageStyle = "normal" | "person";
 export type TextColor = "default" | "dark" | "light" | "accent" | "good" | "warning" | "attention";
 export type TextInputStyle = "text" | "tel" | "url" | "email";
 export type TextSize = "small" | "normal" | "medium" | "large" | "extraLarge";
 export type TextWeight = "lighter" | "normal" | "bolder";
-export type Separation = "none" | "default" | "strong";
 
 export class TypedElement implements ITypedElement {
     public constructor(type: string) {
@@ -130,8 +143,8 @@ export class TypedElement implements ITypedElement {
     type: string;
 }
 
-export class Card extends TypedElement implements ICard {
-    public constructor(init?: Partial<ICard>) {
+export class Card extends TypedElement implements IAdaptiveCard {
+    public constructor(init?: Partial<IAdaptiveCard>) {
         super("AdaptiveCard");
         Object.assign(this, init);
         if (!this.actions)
@@ -183,7 +196,7 @@ export class ActionShowCard extends ActionBase implements IActionShowCard {
         if (!this.card)
             this.card = new Card(null);
     }
-    card: ICard;
+    card: IAdaptiveCard;
 }
 
 export class ActionSubmit extends ActionBase implements IActionSubmit {
@@ -345,7 +358,7 @@ export class InputTime extends Input implements IInputTime {
 
 export class InputToggle extends Input implements IInputToggle {
     public constructor(init?: Partial<IInputToggle>) {
-        super("Input.Toggle",init);
+        super("Input.Toggle", init);
         Object.assign(this, init);
     }
     title: string;
@@ -355,7 +368,7 @@ export class InputToggle extends Input implements IInputToggle {
 }
 
 export class TextBlock extends TypedElement implements ITextBlock {
-    public constructor(init?:Partial<ITextBlock>) {
+    public constructor(init?: Partial<ITextBlock>) {
         super("TextBlock");
         Object.assign(this, init);
     }
