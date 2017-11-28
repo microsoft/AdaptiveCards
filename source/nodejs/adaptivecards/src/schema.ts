@@ -27,17 +27,22 @@ export interface IBackgroundImage {
     url: string;    
 }
 export interface IAdaptiveCard extends ITypedElement {
-    version?: IVersion | string,
-    actions?: (IActionBase)[];
+    type: string;
+    version?: IVersion | string;
     backgroundImage?: IBackgroundImage | string;
-    body?: (ITextBlock | IImage | IImageSet | IFactSet | IContainer | IColumnSet | IInputDate | IInputNumber | IInputText | IInputTime | IInputToggle)[];
+    body?: (any)[];
+    actions?: (IActionBase)[];    
     speak?: string;
-    title?: string;
+    [propName: string]: any;
 }
 export interface ICardElement extends ITypedElement {
-    speak?: string;
+    type: string,
+    id?: string;
     horizontalAlignment?: HorizontalAlignment;
-    separation?: Separation;
+    spacing?: Separation;
+    separator?: boolean;
+    [propName: string]: any;
+    
 }
 export interface IColumn extends IContainer {
     size?: string;

@@ -3,7 +3,7 @@ import { IAdaptiveCard } from "./schema";
 
 export interface RenderOptions {
     hostConfig?: HostConfig | string | object;
-    onAction?: (action: Action) => void;
+    onExecuteAction?: (action: Action) => void;
     onValidationError?: (error: string) => void;
     processMarkdown?: (text: string) => string;
 }
@@ -13,15 +13,11 @@ export function renderCard(card: IAdaptiveCard | string, options?: RenderOptions
     if (typeof card === "string") {
         card = <IAdaptiveCard>JSON.parse(card);
     }
-    
+
     options = options || {};
 
-    let adaptiveCard = new AdaptiveCard();
-    adaptiveCard.parse(card);
-    adaptiveCard.onAction = options.onAction;
-
+    // Parse the host config
     let hostConfig: HostConfig;
-
     if (isHostConfig(options.hostConfig)) {
         hostConfig = options.hostConfig;
     }
@@ -31,16 +27,22 @@ export function renderCard(card: IAdaptiveCard | string, options?: RenderOptions
         hostConfig = new HostConfig(options.hostConfig);
     }
 
-    if(options.processMarkdown)
-    {
+    // Parse the card
+    let adaptiveCard = new AdaptiveCard();
+    adaptiveCard.parse(card);
+    adaptiveCard.hostConfig = hostConfig;    
+    adaptiveCard.onExecuteAction = options.onExecuteAction;
+    
+    // Process markdown
+    if (options.processMarkdown) {
         AdaptiveCard.processMarkdown = options.processMarkdown;
     }
-    
-    adaptiveCard.hostConfig = hostConfig;
+
+    // Render the card
     return adaptiveCard.render();
 }
 
 function isHostConfig(hostConfig: HostConfig | string | any): hostConfig is HostConfig {
-    // TODO: make this 5check better
+    // TODO: make this check better
     return hostConfig && hostConfig.getContainerStyleDefinition;
 }

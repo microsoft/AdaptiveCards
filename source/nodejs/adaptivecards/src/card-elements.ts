@@ -3188,10 +3188,10 @@ function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
 
 function raiseExecuteActionEvent(action: Action) {
     // TODO: is this the best way to get access to the parent card?
-    var card = <AdaptiveCard>action.parent.getRootElement();
-    if (card.onAction) {
+    var card = action.parent.getRootElement() as AdaptiveCard;
+    if (card && card.onExecuteAction) {
         action.prepare(action.parent.getRootElement().getAllInputs());
-        card.onAction(action);
+        card.onExecuteAction(action);
     }
 
     if (AdaptiveCard.onExecuteAction != null) {
@@ -3404,7 +3404,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
     }
 }
 
-export class AdaptiveCard extends ContainerWithActions implements IAdaptiveCard {
+export class AdaptiveCard extends ContainerWithActions {
 
     private static currentVersion: Version = new Version(1, 0);
 
@@ -3430,7 +3430,7 @@ export class AdaptiveCard extends ContainerWithActions implements IAdaptiveCard 
     }
 
     // TODO: Added this as an experiment, if it works we should remove the static handler?
-    onAction: (action: Action) => void = null;
+    onExecuteAction: (action: Action) => void = null;
 
     private isVersionSupported(): boolean {
         if (this.bypassVersionCheck) {

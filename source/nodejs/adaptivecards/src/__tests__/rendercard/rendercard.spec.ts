@@ -1,8 +1,10 @@
 import { renderCard } from "../../rendercard";
+import { IAdaptiveCard } from "../../schema";
+import { AdaptiveCard } from "../../adaptivecards";
 
 test('Render card works', () => {
 
-    let card = {
+    let card: IAdaptiveCard = {
         "type": "AdaptiveCard",
         "version": "1.0",
         "body": [
@@ -10,7 +12,7 @@ test('Render card works', () => {
                 "type": "TextBlock",
                 "text": "Hello world"
             }
-        ]
+        ]        
     };
 
     let hostConfig = {
@@ -20,8 +22,8 @@ test('Render card works', () => {
 
     const html1 = renderCard(card);
     const html2 = renderCard(card, {
-        hostConfig: hostConfig,
-        onAction: function (a) { alert(JSON.stringify(a)); }
+        hostConfig: hostConfig,        
+        onExecuteAction: function (a) { alert(JSON.stringify(a)); }
     });
 
     

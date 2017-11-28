@@ -20,7 +20,6 @@
   ],
   "scripts": {
     "test": "jest --forceExit --runInBand",
-    "start": "start ./example.html",
     "clean": "rimraf build lib dist",
     "compile": "npm run clean && tsc",
     "bundle": "cross-env NODE_ENV=production webpack",

@@ -228,11 +228,6 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Microsoft Outlook Actionable Messages",
-            new OutlookContainer("css/outlook.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
             "Bot Framework WebChat",
             new WebChatContainer("css/webchat.css")));
 
@@ -243,14 +238,18 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Windows Timeline",
-            new TimelineContainer(320, 176, "css/timeline.css")));
+            "Microsoft Outlook Actionable Messages",
+            new OutlookContainer("css/outlook.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Windows Toast Notification",
+            "Windows Notifications",
             new ToastContainer(362, "css/toast.css")));
 
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Windows Timeline",
+            new TimelineContainer(320, 176, "css/timeline.css")));
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(
