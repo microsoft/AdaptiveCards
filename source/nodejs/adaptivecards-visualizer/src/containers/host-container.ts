@@ -169,7 +169,7 @@ export abstract class HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "08000000",
-                    fonforegroundColorstColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"
