@@ -393,6 +393,9 @@ export class TextBlock extends CardElement {
     wrap: boolean = false;
     maxLines: number;
 
+    private computedLineHeight: number;
+    private innerHtml: string;
+
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
@@ -437,10 +440,10 @@ export class TextBlock extends CardElement {
 
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
-            var computedLineHeight = fontSize * 1.33;
+            this.computedLineHeight = fontSize * 1.33;
 
             element.style.fontSize = fontSize + "px";
-            element.style.lineHeight = computedLineHeight + "px";
+            element.style.lineHeight = this.computedLineHeight + "px";
 
             var parentContainer = this.getParentContainer();
             var styleDefinition = this.hostConfig.getContainerStyleDefinition(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
@@ -520,7 +523,7 @@ export class TextBlock extends CardElement {
                 element.style.wordWrap = "break-word";
 
                 if (this.maxLines > 0) {
-                    element.style.maxHeight = (computedLineHeight * this.maxLines) + "px";
+                    element.style.maxHeight = (this.computedLineHeight * this.maxLines) + "px";
                     element.style.overflow = "hidden";
                 }
             }
@@ -528,6 +531,7 @@ export class TextBlock extends CardElement {
                 element.style.whiteSpace = "nowrap";
             }
 
+            this.innerHtml = element.innerHTML;
             return element;
         }
         else {
@@ -588,6 +592,107 @@ export class TextBlock extends CardElement {
             return '<s>' + this.text + '</s>\n';
 
         return null;
+    }
+
+    updateLayout(processChildren: boolean = false) {
+        // Reset the element's innerHTML in case the available room for content
+        // has increased
+        this.renderedElement.innerHTML = this.innerHtml;
+        this.truncateIfSupported();
+    }
+
+    private truncateIfSupported() {
+        if (this.maxLines && this.renderedElement.scrollHeight) {
+            // For now, only truncate TextBlocks that contain just a single
+            // paragraph -- since the maxLines calculation doesn't take into
+            // account Markdown lists
+            var children = this.renderedElement.children;
+            var truncationSupported = children.length == 1
+                && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
+
+            if (truncationSupported) {
+                var element = <HTMLElement>children[0];
+                var maxHeight = this.computedLineHeight * this.maxLines;
+                this.truncate(element, maxHeight);
+            }
+        }
+    }
+
+    private truncate(element: HTMLElement, maxHeight: number) {
+        var fits = () => {
+            // Allow a one pixel overflow to account for rounding differences
+            // between browsers
+            return maxHeight - element.scrollHeight >= -1.0;
+        };
+
+        if (fits()) return;
+
+        var fullText = element.innerHTML;
+        var truncateAt = (idx) => {
+            element.innerHTML = fullText.substring(0, idx) + '...';
+        }
+
+        var breakableIndices = TextBlock.findBreakableIndices(fullText);
+        var lo = 0;
+        var hi = breakableIndices.length;
+        var bestBreakIdx = 0;
+
+        // Do a binary search for the longest string that fits
+        while (lo < hi) {
+            var mid = Math.floor((lo + hi) / 2);
+            truncateAt(breakableIndices[mid]);
+            if (fits()) {
+                bestBreakIdx = breakableIndices[mid];
+                lo = mid + 1;
+            }
+            else {
+                hi = mid;
+            }
+        }
+
+        truncateAt(bestBreakIdx);
+
+        // If we have extra room, try to expand the string letter by letter
+        // (covers the case where we have to break in the middle of a long word)
+        if (maxHeight - element.scrollHeight >= this.computedLineHeight - 1.0) {
+            let idx = TextBlock.findNextCharacter(fullText, bestBreakIdx);
+            while (idx < fullText.length) {
+                truncateAt(idx);
+                if (fits()) {
+                    bestBreakIdx = idx;
+                    idx = TextBlock.findNextCharacter(fullText, idx);
+                } else {
+                    break;
+                }
+            }
+            truncateAt(bestBreakIdx);
+        }
+    }
+
+    private static findBreakableIndices(html: string): Array<number> {
+        var results: Array<number> = [];
+
+        var idx = TextBlock.findNextCharacter(html, -1);
+        while (idx < html.length) {
+            if (html[idx] == ' ') {
+                results.push(idx);
+            }
+            idx = TextBlock.findNextCharacter(html, idx);
+        }
+
+        return results;
+    }
+
+    private static findNextCharacter(html: string, currIdx: number): number {
+        currIdx += 1;
+
+        // If we found the start of an HTML tag, keep advancing until we get
+        // past it, so we don't end up truncating in the middle of the tag
+        while (currIdx < html.length && html[currIdx] == '<') {
+            while (currIdx < html.length && html[currIdx++] != '>');
+        }
+
+        return currIdx;
     }
 }
 
