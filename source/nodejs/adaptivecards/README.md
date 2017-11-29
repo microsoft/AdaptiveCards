@@ -105,7 +105,7 @@ document.body.appendChild(renderedCard);
 
 If you don't want adaptivecards in your bundle, make sure the script is loaded and add the following the your `webpack.config.json`
 
-```json
+```js
 module.exports = {
   ...
   externals: [
