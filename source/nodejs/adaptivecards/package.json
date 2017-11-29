@@ -28,7 +28,7 @@
     "watch": "webpack --watch",
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-    "prepare": "npm run build && npm test && npm run dts"
+    "prepublish": "npm run build && npm test && npm run dts"
   },
   "repository": {
     "type": "git",
