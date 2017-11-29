@@ -11,7 +11,10 @@ export interface IRenderOptions {
     processMarkdown?: (text: string) => string;
 }
 
-export function renderCard(card: IAdaptiveCard | string, options?: IRenderOptions): HTMLElement {
+export function renderCard(card: IAdaptiveCard | string,
+                           options?: IRenderOptions,
+                           target?: HTMLElement): HTMLElement {
+
     if (typeof card === "string") {
         card = <IAdaptiveCard>JSON.parse(card);
     }
@@ -45,5 +48,5 @@ export function renderCard(card: IAdaptiveCard | string, options?: IRenderOption
     adaptiveCard.parse(card);
     
     // Render the card
-    return adaptiveCard.render();
+    return adaptiveCard.render(target);
 }
