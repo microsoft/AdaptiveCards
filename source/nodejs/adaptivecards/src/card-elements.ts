@@ -394,7 +394,7 @@ export class TextBlock extends CardElement {
     maxLines: number;
 
     private _computedLineHeight: number;
-    private _innerHtml: string;
+    private _originalInnerHtml: string;
 
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
@@ -532,7 +532,7 @@ export class TextBlock extends CardElement {
             }
 
             if (AdaptiveCard.useAdvancedTextBlockTruncation) {
-                this._innerHtml = element.innerHTML;
+                this._originalInnerHtml = element.innerHTML;
             }
 
             return element;
@@ -601,7 +601,7 @@ export class TextBlock extends CardElement {
         if (AdaptiveCard.useAdvancedTextBlockTruncation) {
             // Reset the element's innerHTML in case the available room for
             // content has increased
-            this.renderedElement.innerHTML = this._innerHtml;
+            this.renderedElement.innerHTML = this._originalInnerHtml;
             this.truncateIfSupported();
         }
     }
