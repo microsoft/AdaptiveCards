@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta6",
+  "version": "1.0.0-beta7",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "author": "AdaptiveCards <adaptivecardspkg@microsoft.com>",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "watch": "webpack --watch",
     "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-    "prepare": "npm run build && npm test && npm run dts"
+    "version": "npm run build && npm test && npm run dts"
   },
   "repository": {
     "type": "git",

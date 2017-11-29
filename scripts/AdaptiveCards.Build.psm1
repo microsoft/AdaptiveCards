@@ -21,6 +21,9 @@ param(
 
     # Commit any changes
     if($commitWithMessage) {
+        # This worked around a build issue
+        git pull
+
         git add .
         git commit -m "$commitWithMessage ***NO_CI***"
         git push origin $sourceBranch

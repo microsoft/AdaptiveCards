@@ -25,7 +25,7 @@ npm install adaptivecards --save
 ### CDN
 
 ```html
-<script type="text/javascript" src="https://unpkg.com/adaptivecards/dist/adaptivecards.js"></script>
+<script src="https://unpkg.com/adaptivecards/dist/adaptivecards.js"></script>
 ```
 
 ## Usage
@@ -105,7 +105,7 @@ document.body.appendChild(renderedCard);
 
 If you don't want adaptivecards in your bundle, make sure the script is loaded and add the following the your `webpack.config.json`
 
-```json
+```js
 module.exports = {
   ...
   externals: [
