@@ -666,7 +666,8 @@ export class TextBlock extends CardElement {
                 if (fits()) {
                     bestBreakIdx = idx;
                     idx = TextBlock.findNextCharacter(fullText, idx);
-                } else {
+                }
+                else {
                     break;
                 }
             }
