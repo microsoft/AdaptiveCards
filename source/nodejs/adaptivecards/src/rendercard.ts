@@ -1,48 +1,49 @@
-import { Action, AdaptiveCard, HostConfig } from "./adaptivecards";
+import { Action, ShowCardAction, CardElement, AdaptiveCard, HostConfig } from "./adaptivecards";
 import { IAdaptiveCard } from "./schema";
 
-export interface RenderOptions {
+export interface IRenderOptions {
     hostConfig?: HostConfig | string | object;
+    onAnchorClicked?: (anchor: HTMLAnchorElement) => boolean;
     onExecuteAction?: (action: Action) => void;
-    onValidationError?: (error: string) => void;
+    onElementVisibilityChanged?: (element: CardElement) => void;
+    onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
+    onParseElement?: (element: CardElement, json: any) => void;
     processMarkdown?: (text: string) => string;
 }
 
-export function renderCard(card: IAdaptiveCard | string, options?: RenderOptions): HTMLElement {
-
+export function renderCard(card: IAdaptiveCard | string, options?: IRenderOptions): HTMLElement {
     if (typeof card === "string") {
         card = <IAdaptiveCard>JSON.parse(card);
     }
 
     options = options || {};
 
-    // Parse the host config
-    let hostConfig: HostConfig;
-    if (isHostConfig(options.hostConfig)) {
-        hostConfig = options.hostConfig;
+    // Setup a card
+    let adaptiveCard = new AdaptiveCard();
+
+    if (typeof options.hostConfig === "string") {
+        adaptiveCard.hostConfig = new HostConfig(JSON.parse(options.hostConfig));
     }
-    else if (options.hostConfig instanceof String) {
-        hostConfig = new HostConfig(JSON.parse(options.hostConfig));
-    } else {
-        hostConfig = new HostConfig(options.hostConfig);
+    else if (typeof options.hostConfig === "object" && !(options.hostConfig instanceof HostConfig)) {
+        adaptiveCard.hostConfig = new HostConfig(options.hostConfig);
+    }
+    else {
+        adaptiveCard.hostConfig = options.hostConfig;
     }
 
-    // Parse the card
-    let adaptiveCard = new AdaptiveCard();
-    adaptiveCard.parse(card);
-    adaptiveCard.hostConfig = hostConfig;    
+    adaptiveCard.onAnchorClicked = options.onAnchorClicked;
     adaptiveCard.onExecuteAction = options.onExecuteAction;
-    
-    // Process markdown
+    adaptiveCard.onElementVisibilityChanged = options.onElementVisibilityChanged;
+    adaptiveCard.onInlineCardExpanded = options.onInlineCardExpanded;
+    adaptiveCard.onParseElement = options.onParseElement;
+
     if (options.processMarkdown) {
         AdaptiveCard.processMarkdown = options.processMarkdown;
     }
 
+    // Parse the card
+    adaptiveCard.parse(card);
+    
     // Render the card
     return adaptiveCard.render();
-}
-
-function isHostConfig(hostConfig: HostConfig | string | any): hostConfig is HostConfig {
-    // TODO: make this check better
-    return hostConfig && hostConfig.getContainerStyleDefinition;
 }
