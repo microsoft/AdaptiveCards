@@ -15,20 +15,36 @@ MarkDownParser::MarkDownParser(const std::string &txt) : m_currentDelimiterType(
     m_tokenizedString = std::vector<std::string>(1, "");
 }
 
+int MarkDownParser::adjustDelimsCntsAndMetaData(int leftOver, int left_idx, int right_idx)
+{
+    int delimCnts = 0;
+    if (leftOver >= 0)
+    {
+        delimCnts = m_leftLookUpTable[left_idx].m_emphCnts - leftOver;
+        m_leftLookUpTable[left_idx].m_emphCnts = leftOver;
+        m_rightLookUpTable[right_idx].m_emphCnts = 0;
+    }
+    else
+    {
+        delimCnts = m_leftLookUpTable[left_idx].m_emphCnts;
+        m_rightLookUpTable[right_idx].m_emphCnts = leftOver * (-1);
+        m_leftLookUpTable[left_idx].m_emphCnts = 0;
+    }
+    return delimCnts;
+}
+
 std::string MarkDownParser::TransformToHtml(void)
 {
     GenSymbolTable();
-    std::string html;
     if(!m_leftLookUpTable.size() || !m_rightLookUpTable.size())
     {
         return "<p>" + m_text + "</p>";
     }
 
     std::vector<unsigned int> stk;
-    unsigned int top_left = 0, top_right = 0;
+    unsigned int top_left = 0, top_right = 0, right_token_idx = 0, curr_left_delim = 0;
+    int lookBehind = (m_tokenizedString[m_leftLookUpTable[top_left].m_idx][0] == '*')? Asterisk : Underscore; 
     stk.push_back(top_left++);
-
-    unsigned int leftBound = 0, rightBound = 0;
 
     while(!stk.empty() && top_right < m_rightLookUpTable.size())
     {
@@ -36,78 +52,63 @@ std::string MarkDownParser::TransformToHtml(void)
         if(top_left < m_leftLookUpTable.size() && m_leftLookUpTable[top_left].m_idx < m_rightLookUpTable[top_right].m_idx)
         {
             stk.push_back(top_left);
+            lookBehind |= (m_tokenizedString[m_leftLookUpTable[top_left].m_idx][0] == '*')? Asterisk : Underscore; 
             ++top_left;
         }
         else
         {
             // found the left and right delimiter, gen string
-            unsigned int curr_left_delim = stk.back();
+            curr_left_delim = stk.back();
             int delimCnts = 0, leftOver = 0;
-            std::ostringstream left, right;
+            DelimiterType curr_left_delim_type = (m_tokenizedString[m_leftLookUpTable[curr_left_delim].m_idx][0] == '*')? Asterisk : Underscore; 
+            DelimiterType curr_right_delim_type = (m_tokenizedString[m_rightLookUpTable[top_right].m_idx][0] == '*')? Asterisk : Underscore; 
 
-            if (m_tokenizedString[m_leftLookUpTable[curr_left_delim].m_idx][0] == 
-                m_tokenizedString[m_rightLookUpTable[top_right].m_idx][0])
+            if (curr_left_delim_type == curr_right_delim_type)
             {
+                // rule #9 & #10, sume of delim cnts can't be multipe of 3 
+                if (!((m_leftLookUpTable[curr_left_delim].m_emphCnts + m_rightLookUpTable[top_right].m_emphCnts) % 3))
+                {
+
+                }
                 // check which one will have leftover delims
                 leftOver = m_leftLookUpTable[curr_left_delim].m_emphCnts - m_rightLookUpTable[top_right].m_emphCnts;
+                delimCnts = adjustDelimsCntsAndMetaData(leftOver, curr_left_delim, top_right);
+                right_token_idx = top_right;
                 if (leftOver >= 0)
                 {
-                    delimCnts = m_leftLookUpTable[curr_left_delim].m_emphCnts - leftOver;
-                    m_leftLookUpTable[curr_left_delim].m_emphCnts = leftOver;
-                    m_rightLookUpTable[top_right].m_emphCnts = 0;
+                    lookBehind ^= curr_left_delim_type;
                 }
-                else
+            }
+            else
+            {
+                // Rule #14, when two overraps, prefer left side of the overrap
+                if(stk.size() > 1 && lookBehind & curr_right_delim_type) 
                 {
-                    delimCnts = m_leftLookUpTable[curr_left_delim].m_emphCnts;
-                    m_rightLookUpTable[top_right].m_emphCnts = leftOver * (-1);
-                    m_leftLookUpTable[curr_left_delim].m_emphCnts = 0; 
+                    char ch = (curr_right_delim_type == Asterisk)? '*' :'_';
+                    // pop until matching delim is found
+                    while(!stk.empty() && m_tokenizedString[m_leftLookUpTable[curr_left_delim].m_idx][0] != ch)
+                    {
+                        stk.pop_back();
+                        curr_left_delim = stk.back();
+                    }
+
+                    leftOver = m_leftLookUpTable[curr_left_delim].m_emphCnts - m_rightLookUpTable[top_right].m_emphCnts;
+                    delimCnts = adjustDelimsCntsAndMetaData(leftOver, curr_left_delim, top_right);
+                    right_token_idx = top_right;
+                    lookBehind = 0;
                 }
             }
 
             if(delimCnts % 2)
             {
-                right << "</em>";
+                m_leftLookUpTable[curr_left_delim].m_tags.push_back(EmphasisItalic);
+                m_rightLookUpTable[top_right].m_tags.push_back(EmphasisItalic);
             }
 
             for(int rpts = 0; rpts < delimCnts / 2; rpts++)
             {
-                left << "<strong>";
-                right << "</strong>";
-            }
-
-            if(delimCnts % 2)
-            {
-                left << "<em>";
-            }
-            
-            // stich strings between delims
-            if (leftBound == 0 && rightBound == 0)
-            { 
-                std::ostringstream center;
-                leftBound = m_leftLookUpTable[curr_left_delim].m_idx;
-                rightBound = m_rightLookUpTable[top_right].m_idx;
-                for(unsigned int i = leftBound + 1; i < rightBound; i++)
-                {
-                    center << m_tokenizedString[i];
-                }
-                html = center.str();
-            }
-            else
-            {
-                std::ostringstream leftHtml, rightHtml;
-                for(unsigned int i = m_leftLookUpTable[curr_left_delim].m_idx + 1; i < leftBound; i++)
-                {
-                    leftHtml << m_tokenizedString[i];
-                }
-                for(unsigned int i = rightBound + 1; i < m_rightLookUpTable[top_right].m_idx; i++)
-                {
-                    rightHtml << m_tokenizedString[i];
-                }
-                
-                leftBound  =  m_leftLookUpTable[curr_left_delim].m_idx;
-                rightBound = m_rightLookUpTable[top_right].m_idx;
-
-                html = leftHtml.str() + html + rightHtml.str();
+                m_leftLookUpTable[curr_left_delim].m_tags.push_back(EmphasisBold);
+                m_rightLookUpTable[top_right].m_tags.push_back(EmphasisBold);
             }
 
             // all right delims used, move to next
@@ -115,46 +116,63 @@ std::string MarkDownParser::TransformToHtml(void)
             {
                 top_right++;
             }
-            // all left delims used, pop
+            // all left or right delims used, pop
             if (leftOver == 0 || m_leftLookUpTable[curr_left_delim].m_emphCnts == 0)
             { 
                 stk.pop_back();
+                if(stk.empty() && top_left < m_leftLookUpTable.size())
+                {
+                    stk.push_back(top_left);
+                    top_left++;
+                }
             }
-
-            html = left.str() + html + right.str();
         }
     }
 
-    leftBound = std::min(m_leftLookUpTable.front().m_idx, m_rightLookUpTable.front().m_idx);
-    Emphasis &leftBoundEmphasis = (leftBound == m_leftLookUpTable.front().m_idx)? m_leftLookUpTable.front() : m_rightLookUpTable.front();
-    // if there are unused emphasis, append them
-    if(leftBoundEmphasis.m_emphCnts)
-    {
-        int startIdx = m_tokenizedString[leftBound].size() - leftBoundEmphasis.m_emphCnts;
-        html = m_tokenizedString[leftBound].substr(startIdx, std::string::npos) + html;
+    // append all processed tags
+    std::ostringstream html;
+    auto leftItr = m_leftLookUpTable.begin(), rightItr = m_rightLookUpTable.begin();
+    for(auto idx = 0; idx < m_tokenizedString.size(); idx++)
+    { 
+        if (leftItr != m_leftLookUpTable.end() && leftItr->m_idx == idx)
+        {
+            // if there are unused emphasis, append them 
+            if(leftItr->m_emphCnts)
+            {
+                int startIdx = m_tokenizedString[idx].size() - leftItr->m_emphCnts;
+                html << m_tokenizedString[idx].substr(startIdx, std::string::npos);
+            }
+            // appends tags; since left delims, append it in the reverse order
+            for(auto itr = leftItr->m_tags.rbegin(); itr != leftItr->m_tags.rend(); itr++)
+            { 
+                html << ((*itr == EmphasisItalic)? "<em>" : "<strong>");
+            }
+            leftItr++;
+        } 
+        else if (rightItr != m_rightLookUpTable.end() && rightItr->m_idx == idx)
+        {
+            // appends tags; 
+            for(auto itr = rightItr->m_tags.begin(); itr != rightItr->m_tags.end(); itr++)
+            { 
+                html << ((*itr == EmphasisItalic)? "</em>" : "</strong>");
+            }
+            // if there are unused emphasis, append them 
+            if(rightItr->m_emphCnts)
+            {
+                int startIdx = m_tokenizedString[idx].size() - rightItr->m_emphCnts;
+                html << m_tokenizedString[idx].substr(startIdx, std::string::npos);
+            }
+            rightItr++;
+        }
+        else
+        {
+            html << m_tokenizedString[idx];
+        }
+
+
     }
 
-    for (int idx = leftBound - 1; idx  >= 0; idx--)
-    {
-        html = m_tokenizedString[idx] + html;
-    }
-
-    rightBound = std::max(m_leftLookUpTable.back().m_idx, m_rightLookUpTable.back().m_idx);
-
-    for (int idx = rightBound + 1; idx  < m_tokenizedString.size(); idx++)
-    {
-        html += m_tokenizedString[idx];
-    }
-
-    Emphasis &rightBoundEmphasis = (rightBound == m_leftLookUpTable.back().m_idx)? m_leftLookUpTable.back() : m_rightLookUpTable.back();
-    // if there are unused emphasis, append them
-    if(rightBoundEmphasis.m_emphCnts)
-    {
-        int startIdx = m_tokenizedString[rightBound].size() -  rightBoundEmphasis.m_emphCnts;
-        html = html + m_tokenizedString[rightBound].substr(startIdx, std::string::npos);
-    }
-
-    return "<p>" + html + "</p>";
+    return "<p>" + html.str() + "</p>";
 }
 
 

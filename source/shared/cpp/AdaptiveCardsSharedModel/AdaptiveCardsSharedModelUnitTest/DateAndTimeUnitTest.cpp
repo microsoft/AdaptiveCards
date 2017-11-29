@@ -483,6 +483,19 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             MarkDownParser blck3("*foo****");
             Assert::AreEqual<string>("<p><em>foo</em>***</p>", blck3.TransformToHtml());
+
+            MarkDownParser blck4("**Gomphocarpus (*Gomphocarpus physocarpus*, syn.\n*Asclepias physocarpa*)**");
+            Assert::AreEqual<string>("<p><strong>Gomphocarpus (<em>Gomphocarpus physocarpus</em>, syn.\n<em>Asclepias physocarpa</em>)</strong></p>", 
+                blck4.TransformToHtml());
+
+            MarkDownParser blck5("*Hello* abc ***Hello* def *world***");
+            Assert::AreEqual<string>("<p><em>Hello</em> abc <strong><em>Hello</em> def <em>world</em></strong></p>", blck5.TransformToHtml());
+        }
+        TEST_METHOD(TmpTest)
+        {
+            MarkDownParser blck1("*foo**bar**baz*");
+            Assert::AreEqual<string>("<p><em>foo<strong>bar</strong>baz</em></p>", blck1.TransformToHtml());
+            
         }
     };
     TEST_CLASS(Rule13Test)
@@ -509,17 +522,25 @@ namespace AdaptiveCardsSharedModelUnitTest
 
     TEST_CLASS(Rule15Test)
     {
-        TEST_METHOD(strongAndEmpEmphasisNesting)
+        TEST_METHOD(OverrapingTest)
         {
             MarkDownParser blck("*foo _bar* baz_");
             Assert::AreEqual<string>("<p><em>foo _bar</em> baz_</p>", blck.TransformToHtml());
-        }
 
-        TEST_METHOD(TmpTest)
-        {
-            MarkDownParser blck2("_____foo_____");
-            Assert::AreEqual<string>("<p><strong><strong><em>foo</em></strong></strong></p>", blck2.TransformToHtml());
+            MarkDownParser blck2("*foo __bar *baz bim__ bam*");
+            Assert::AreEqual<string>("<p><em>foo <strong>bar *baz bim</strong> bam</em></p>", blck2.TransformToHtml());
         }
     };
 
+    TEST_CLASS(Rule16Test)
+    {
+        TEST_METHOD(strongEmphasis)
+        {
+            MarkDownParser blck("**foo **bar baz**");
+            Assert::AreEqual<string>("<p>**foo <strong>bar baz</strong></p>", blck.TransformToHtml());
+
+            MarkDownParser blck2("*foo *bar baz*");
+            Assert::AreEqual<string>("<p>*foo <em>bar baz</em></p>", blck2.TransformToHtml());
+        }
+    };
 }

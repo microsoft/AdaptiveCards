@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iomanip>
 #include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
@@ -18,8 +19,14 @@ public:
         Puntuation,
         Escape,
         WhiteSpace,
-        Underscore,
-        Asterisk,
+        Underscore = 0x8,
+        Asterisk   = 0x10,
+    };
+
+    enum EmphasisType
+    {
+        EmphasisItalic = 1,
+        EmphasisBold = 2,
     };
 
     enum EmphasisState
@@ -32,18 +39,13 @@ public:
         EmphasisOff = EmphasisEnded | EmphasisNotDetected,
     };
 
-    enum EmphasisType
-    {
-        Italic = 0x1,
-        Bold   = 0x2,
-    };
-
     struct Emphasis
     {
         int m_emphCnts;
         unsigned m_idx;
+        std::vector<int> m_tags;
         Emphasis(unsigned int empCnts, unsigned idx) : 
-            m_emphCnts(empCnts), m_idx(idx){};
+            m_emphCnts(empCnts), m_idx(idx), m_tags(){};
     };
 
     std::vector<std::string> m_tokenizedString;
@@ -59,6 +61,7 @@ private:
     void PutBackCh();
     void GenSymbolTable(void);
     void UpdateState(void);
+    int adjustDelimsCntsAndMetaData(int leftOver, int left_idx, int right_idx);
 
     DelimiterType m_currentDelimiterType;
     unsigned int m_currentWordIndex;
