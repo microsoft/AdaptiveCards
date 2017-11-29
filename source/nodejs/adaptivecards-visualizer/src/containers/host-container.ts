@@ -237,7 +237,7 @@ export abstract class HostContainer {
         });
     }
 
-    protected renderContainer(adaptiveCard: AdaptiveCard, target:HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         return null;
     }
 
