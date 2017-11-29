@@ -1817,8 +1817,6 @@ export class ShowCardAction extends Action {
 
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
-    title: string;
-
     getJsonTypeName(): string {
         return "Action.ShowCard";
     }
@@ -2919,7 +2917,6 @@ export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
     private _selectAction: Action;
 
-
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
@@ -3418,7 +3415,6 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-
     private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
