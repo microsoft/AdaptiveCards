@@ -130,6 +130,70 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void TestSerializingLegacySeparation()
+        {
+            var inputJson = @"{
+ ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+ ""type"": ""AdaptiveCard"",
+ ""version"": ""1.0"",
+ ""body"": [
+    {
+        ""type"": ""TextBlock"",
+        ""text"": ""Line 1"",
+        ""separation"": ""default""
+    },
+    {
+        ""type"": ""TextBlock"",
+        ""text"": ""separation:default"",
+        ""separation"": ""default""
+    },
+    {
+        ""type"": ""TextBlock"",
+        ""text"": ""separation:none"",
+        ""separation"": ""none""
+    },
+    {
+        ""type"": ""TextBlock"",
+        ""text"": ""separation:strong"",
+        ""separation"": ""strong""
+    }
+ ]
+}";
+
+            var expectedJson = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Line 1""
+    },
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""separation:default""
+    },
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""separation:none"",
+      ""spacing"": ""none"",
+      ""separation"": ""none""
+    },
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""separation:strong"",
+      ""spacing"": ""large"",
+      ""separator"": true,
+      ""separation"": ""strong""
+    }
+  ]
+}";
+
+            var card = AdaptiveCard.FromJson(inputJson).Card;
+            Assert.AreEqual(expectedJson, card.ToJson());
+        }
+
+
+        [TestMethod]
         public void TestAllSpacingValues()
         {
             TestSpacing(AdaptiveSpacing.Small, "small");
