@@ -393,6 +393,9 @@ export class TextBlock extends CardElement {
     wrap: boolean = false;
     maxLines: number;
 
+    private _computedLineHeight: number;
+    private _originalInnerHtml: string;
+
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
@@ -437,10 +440,10 @@ export class TextBlock extends CardElement {
 
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
-            var computedLineHeight = fontSize * 1.33;
+            this._computedLineHeight = fontSize * 1.33;
 
             element.style.fontSize = fontSize + "px";
-            element.style.lineHeight = computedLineHeight + "px";
+            element.style.lineHeight = this._computedLineHeight + "px";
 
             var parentContainer = this.getParentContainer();
             var styleDefinition = this.hostConfig.getContainerStyleDefinition(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
@@ -520,12 +523,16 @@ export class TextBlock extends CardElement {
                 element.style.wordWrap = "break-word";
 
                 if (this.maxLines > 0) {
-                    element.style.maxHeight = (computedLineHeight * this.maxLines) + "px";
+                    element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
                     element.style.overflow = "hidden";
                 }
             }
             else {
                 element.style.whiteSpace = "nowrap";
+            }
+
+            if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+                this._originalInnerHtml = element.innerHTML;
             }
 
             return element;
@@ -588,6 +595,32 @@ export class TextBlock extends CardElement {
             return '<s>' + this.text + '</s>\n';
 
         return null;
+    }
+
+    updateLayout(processChildren: boolean = false) {
+        if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+            // Reset the element's innerHTML in case the available room for
+            // content has increased
+            this.renderedElement.innerHTML = this._originalInnerHtml;
+            this.truncateIfSupported();
+        }
+    }
+
+    private truncateIfSupported() {
+        if (this.maxLines && this.renderedElement.scrollHeight) {
+            // For now, only truncate TextBlocks that contain just a single
+            // paragraph -- since the maxLines calculation doesn't take into
+            // account Markdown lists
+            var children = this.renderedElement.children;
+            var truncationSupported = children.length == 1
+                && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
+
+            if (truncationSupported) {
+                var element = <HTMLElement>children[0];
+                var maxHeight = this._computedLineHeight * this.maxLines;
+                Utils.truncate(element, maxHeight, this._computedLineHeight);
+            }
+        }
     }
 }
 
@@ -3422,6 +3455,7 @@ export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
+    static useAdvancedTextBlockTruncation: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -3565,7 +3599,7 @@ export class AdaptiveCard extends ContainerWithActions {
         super.parse(json, "body");
     }
 
-    render(): HTMLElement {
+    render(target?: HTMLElement): HTMLElement {
         var renderedCard: HTMLElement;
 
         if (!this.isVersionSupported()) {
@@ -3582,6 +3616,11 @@ export class AdaptiveCard extends ContainerWithActions {
                     renderedCard.setAttribute("aria-label", this.speak);
                 }
             }
+        }
+
+        if (target) {
+            target.appendChild(renderedCard);
+            this.updateLayout();
         }
 
         return renderedCard;

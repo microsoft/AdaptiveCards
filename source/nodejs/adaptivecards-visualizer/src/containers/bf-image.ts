@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -21,11 +22,12 @@ export class BotFrameworkImageContainer extends HostContainer {
         this.supportsActionBar = false;
     }
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var outerElement = document.createElement("div");
         outerElement.className = "kikOuterContainer";
         outerElement.style.width = this._width + "px";
-        outerElement.appendChild(renderedCard);
+        target.appendChild(outerElement);
+        adaptiveCard.render(outerElement);
         return outerElement;
     }
 
