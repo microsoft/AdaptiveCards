@@ -69,7 +69,7 @@ namespace ImageRendererServer.Controllers
                 // Timed out
                 return StatusCode((int)HttpStatusCode.RequestTimeout);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // TODO: log
                 throw;
