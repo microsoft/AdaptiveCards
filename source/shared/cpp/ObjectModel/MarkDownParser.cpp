@@ -72,7 +72,7 @@ std::string MarkDownParser::TransformToHtml(void)
                       {
                           // check adjcent char is space
                           char right_ch = m_tokenizedString[top_right->m_idx + 1][0];
-                          // no need to check if there is token on the right since it's right delim
+                          // no need to check the right bound since it's right delim
                           char left_ch =  m_tokenizedString[top_right->m_idx - 1][0];
                           // check if right delim also can be left delim
                           if (!isspace (right_ch) && 
@@ -111,7 +111,6 @@ std::string MarkDownParser::TransformToHtml(void)
                                   }
 
                                   //right emphasis becomes left emphasis
-                                  //stk.push_back(top_right);
                                   auto elem_to_be_inserted = curr_left_delim;
                                   elem_to_be_inserted++;
                                   m_leftLookUpTable.insert(elem_to_be_inserted, *top_right);
@@ -122,11 +121,11 @@ std::string MarkDownParser::TransformToHtml(void)
                                   // move to next token for right delim tokens
                                   top_right++;
                                   m_rightLookUpTable.erase (elem_to_erase);
+                                  // no maching found begin from the start
                                   continue;
                               }
                           }
                       }
-
                 }
                 // check which one will have leftover delims
                 leftOver = curr_left_delim->m_emphCnts - top_right->m_emphCnts;
@@ -157,12 +156,14 @@ std::string MarkDownParser::TransformToHtml(void)
                 }
             }
 
+            // emphasis found
             if (delimCnts % 2)
             {
                 curr_left_delim->m_tags.push_back(EmphasisItalic);
                 top_right->m_tags.push_back(EmphasisItalic);
             }
 
+            // strong emphasis found
             for (int rpts = 0; rpts < delimCnts / 2; rpts++)
             {
                 curr_left_delim->m_tags.push_back(EmphasisBold);
@@ -174,6 +175,7 @@ std::string MarkDownParser::TransformToHtml(void)
             {
                 top_right++;
             }
+
             // all left or right delims used, pop
             if (leftOver == 0 || curr_left_delim->m_emphCnts == 0)
             { 
@@ -200,7 +202,7 @@ std::string MarkDownParser::TransformToHtml(void)
                 int startIdx = m_tokenizedString[idx].size () - leftItr->m_emphCnts;
                 html << m_tokenizedString[idx].substr (startIdx, std::string::npos);
             }
-            // appends tags; since left delims, append it in the reverse order
+            // append tags; since left delims, append it in the reverse order
             for (auto itr = leftItr->m_tags.rbegin(); itr != leftItr->m_tags.rend(); itr++)
             { 
                 html << ((*itr == EmphasisItalic)? "<em>" : "<strong>");
@@ -209,7 +211,7 @@ std::string MarkDownParser::TransformToHtml(void)
         } 
         else if (rightItr != m_rightLookUpTable.end() && rightItr->m_idx == idx)
         {
-            // appends tags; 
+            // append tags; 
             for (auto itr = rightItr->m_tags.begin(); itr != rightItr->m_tags.end(); itr++)
             { 
                 html << ((*itr == EmphasisItalic)? "</em>" : "</strong>");
