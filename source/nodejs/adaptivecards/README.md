@@ -25,7 +25,7 @@ npm install adaptivecards --save
 ### CDN
 
 ```html
-<script type="text/javascript" src="https://unpkg.com/adaptivecards/dist/adaptivecards.js"></script>
+<script src="https://unpkg.com/adaptivecards/dist/adaptivecards.js"></script>
 ```
 
 ## Usage
