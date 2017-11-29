@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iomanip>
+#include <list>
 #include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
@@ -48,8 +49,6 @@ public:
             m_emphCnts(empCnts), m_idx(idx), m_tags(){};
     };
 
-    std::vector<std::string> m_tokenizedString;
-
     bool IsLeftEmphasisDelimiter(void);
     bool IsRightEmphasisDelimiter(void);
     bool IsMarkDownDelimiter(char ch);
@@ -61,7 +60,8 @@ private:
     void PutBackCh();
     void GenSymbolTable(void);
     void UpdateState(void);
-    int adjustDelimsCntsAndMetaData(int leftOver, int left_idx, int right_idx);
+    int adjustDelimsCntsAndMetaData(int leftOver, std::list<Emphasis>::iterator left_itr, 
+            std::list<Emphasis>::iterator right_itr);
 
     DelimiterType m_currentDelimiterType;
     unsigned int m_currentWordIndex;
@@ -76,8 +76,9 @@ private:
     std::string::iterator m_textBegin;
     std::string::iterator m_curPos;
     std::string::iterator m_textEnd;
-    std::vector<Emphasis> m_leftLookUpTable;
-    std::vector<Emphasis> m_rightLookUpTable;
     int m_LeftEmphasisDetecting;
+    std::list<Emphasis> m_leftLookUpTable;
+    std::list<Emphasis> m_rightLookUpTable;
+    std::vector<std::string> m_tokenizedString;
 };
 }
