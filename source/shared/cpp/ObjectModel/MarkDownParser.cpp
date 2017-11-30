@@ -57,12 +57,19 @@ std::string MarkDownParser::TransformToHtml(void)
         }
         else
         {
-            // found the left and right delimiter, gen string
             curr_left_delim = stk.back();
+            // because of rule #9 & #10 and multiple of 3 rule, left delim jump ahead of right delim,
+            // so need to check this condition.
+            if (curr_left_delim->m_idx > top_right->m_idx)
+            {
+                top_right++;
+                continue;
+            }
             int delimCnts = 0, leftOver = 0;
             DelimiterType curr_left_delim_type = (m_tokenizedString[curr_left_delim->m_idx][0] == '*')? Asterisk : Underscore; 
             DelimiterType curr_right_delim_type = (m_tokenizedString[top_right->m_idx][0] == '*')? Asterisk : Underscore; 
 
+            // found the left and right delimiter, gen string
             if (curr_left_delim_type == curr_right_delim_type)
             {
                 // rule #9 & #10, sume of delim cnts can't be multipe of 3 
@@ -81,7 +88,7 @@ std::string MarkDownParser::TransformToHtml(void)
                           {
                               std::vector<std::list<Emphasis>::iterator> store;
                               bool isFound = false;
-                              while (!stk.empty())
+                              while (!stk.empty() && !isFound)
                               { 
                                   auto leftdelim = stk.back();
                                   DelimiterType left_delim_type = (m_tokenizedString[leftdelim->m_idx][0] == '*')? Asterisk : Underscore; 

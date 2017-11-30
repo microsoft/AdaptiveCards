@@ -300,6 +300,19 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             MarkDownParser blck2("*foo *bar baz*");
             Assert::AreEqual<string>("<p>*foo <em>bar baz</em></p>", blck2.TransformToHtml());
+
+            MarkDownParser blck3("**K *J *foo**bar* *cool*");
+            Assert::AreEqual<string>("<p><strong>K *J *foo</strong>bar* <em>cool</em></p>", blck3.TransformToHtml());
+
+            MarkDownParser blck4("**m *J *foo**bar *cool**");
+            Assert::AreEqual<string>("<p><strong>m *J *foo</strong>bar <em>cool</em>*</p>", blck4.TransformToHtml());
         }
+#if 1
+        TEST_METHOD(tmpTest)
+        {
+            MarkDownParser blck5("**H *foo**bar***");
+            Assert::AreEqual<string>("<p><strong>H *foo</strong>bar***</p>", blck5.TransformToHtml());
+        }
+#endif
     };
 }
