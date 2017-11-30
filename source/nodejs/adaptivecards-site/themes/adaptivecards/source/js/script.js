@@ -34,7 +34,7 @@
       lineColor: "#EEEEEE"
     },
     supportsInteractivity: true,
-    fontFamily: "Segoe UI",
+    fontFamily: "Segoe UI, Helvetica Neue, Helvetica, sans-serif",
     fontSizes: {
       small: 12,
       default: 14,
@@ -50,7 +50,7 @@
     containerStyles: {
       default: {
         backgroundColor: "#00000000",
-        fontColors: {
+        foregroundColors: {
           default: {
             normal: "#333333",
             subtle: "#EE333333"
@@ -75,7 +75,7 @@
       },
       emphasis: {
         backgroundColor: "08000000",
-        fontColors: {
+        foregroundColors: {
           default: {
             normal: "#333333",
             subtle: "#EE333333"

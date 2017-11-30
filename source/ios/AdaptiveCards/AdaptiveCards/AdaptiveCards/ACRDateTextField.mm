@@ -25,6 +25,7 @@ using namespace AdaptiveCards;
 
     if(self)
     {
+        NSString *valueStr = nil;
         NSString *placeHolderStr = nil;
         NSString *minDateStr = nil;
         NSString *maxDateStr = nil;
@@ -41,41 +42,47 @@ using namespace AdaptiveCards;
         
         if(dateStyle == NSDateFormatterShortStyle)
         {
-             std::shared_ptr<DateInput> dateInput = std::dynamic_pointer_cast<DateInput>(elem);
+            std::shared_ptr<DateInput> dateInput = std::dynamic_pointer_cast<DateInput>(elem);
             
-             placeHolderStr = [NSString stringWithCString:dateInput->GetValue().c_str()
+            valueStr = [NSString stringWithCString:dateInput->GetValue().c_str()
                                                  encoding:NSUTF8StringEncoding];
-             minDateStr = [NSString stringWithCString:dateInput->GetMin().c_str()
-                                             encoding:NSUTF8StringEncoding];
-             maxDateStr = [NSString stringWithCString:dateInput->GetMax().c_str()
-                                             encoding:NSUTF8StringEncoding];
+            placeHolderStr = [NSString stringWithCString:dateInput->GetPlaceholder().c_str()
+                                                encoding:NSUTF8StringEncoding];
+            minDateStr = [NSString stringWithCString:dateInput->GetMin().c_str()
+                                            encoding:NSUTF8StringEncoding];
+            maxDateStr = [NSString stringWithCString:dateInput->GetMax().c_str()
+                                            encoding:NSUTF8StringEncoding];
             formatter.timeStyle = NSDateFormatterNoStyle;
             
+            [formatter setDateFormat:@"yyyy-MM-dd"];
+            
             picker.datePickerMode = UIDatePickerModeDate;
-
         }
         else
         {
             std::shared_ptr<TimeInput> timeInput = std::dynamic_pointer_cast<TimeInput>(elem);
             
-            placeHolderStr = [NSString stringWithCString:timeInput->GetValue().c_str()
-                                                          encoding:NSUTF8StringEncoding];
+            valueStr = [NSString stringWithCString:timeInput->GetValue().c_str()
+                                          encoding:NSUTF8StringEncoding];
+            placeHolderStr = [NSString stringWithCString:timeInput->GetPlaceholder().c_str()
+                                                encoding:NSUTF8StringEncoding];
             minDateStr = [NSString stringWithCString:timeInput->GetMin().c_str()
                                             encoding:NSUTF8StringEncoding];
             maxDateStr = [NSString stringWithCString:timeInput->GetMax().c_str()
                                             encoding:NSUTF8StringEncoding];
             formatter.timeStyle = NSDateFormatterShortStyle;
             
+            [formatter setDateFormat:@"HH:mm"];
+
             picker.datePickerMode = UIDatePickerModeTime;
         }
        
-        NSDate *date = [formatter dateFromString:placeHolderStr];
-        
+        NSDate *date = [formatter dateFromString:valueStr];
         self.formatter = formatter;
         self.min = [formatter dateFromString:minDateStr];
         self.max = [formatter dateFromString:maxDateStr];
-        self.placeholder = [formatter stringFromDate:date];
-        self.text = self.placeholder;
+        self.placeholder = placeHolderStr;
+        self.text = valueStr;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleLine;
 

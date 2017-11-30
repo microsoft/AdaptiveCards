@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -65,13 +66,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (columnSet.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(columnSet.SelectAction);
-                if (uiButton != null)
-                {
-                    uiButton.Content = uiColumnSet;
-                    uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
-                    return uiButton;
-                }
+                return context.RenderSelectAction(columnSet.SelectAction, uiColumnSet);
             }
             return uiColumnSet;
         }

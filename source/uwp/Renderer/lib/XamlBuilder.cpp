@@ -19,7 +19,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -41,8 +41,9 @@ using namespace ABI::Windows::Web::Http::Filters;
 const PCWSTR c_TextBlockSubtleOpacityKey = L"TextBlock.SubtleOpacity";
 const PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     XamlBuilder::XamlBuilder()
     {
 
@@ -110,7 +111,7 @@ namespace AdaptiveCards { namespace Uwp
         AdaptiveCardRenderer* renderer,
         AdaptiveRenderContext* renderContext,
         boolean isOuterCard,
-        ABI::AdaptiveCards::Uwp::ContainerStyle defaultContainerStyle)
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle defaultContainerStyle)
     {
         *xamlTreeRoot = nullptr;
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -121,13 +122,13 @@ namespace AdaptiveCards { namespace Uwp
         boolean allowCustomStyle;
         THROW_IF_FAILED(adaptiveCardConfig->get_AllowCustomStyle(&allowCustomStyle));
 
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle = defaultContainerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle = defaultContainerStyle;
         if (allowCustomStyle)
         {
-            ABI::AdaptiveCards::Uwp::ContainerStyle cardStyle;
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle cardStyle;
             THROW_IF_FAILED(adaptiveCard->get_Style(&cardStyle));
 
-            if (cardStyle != ABI::AdaptiveCards::Uwp::ContainerStyle::None)
+            if (cardStyle != ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
             {
                 containerStyle = cardStyle;
             }
@@ -160,7 +161,7 @@ namespace AdaptiveCards { namespace Uwp
         else if (actionsSize > 0)
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
         }
 
@@ -311,7 +312,7 @@ namespace AdaptiveCards { namespace Uwp
 
         ComPtr<IPanel> rootAsPanel;
         THROW_IF_FAILED(rootElement.As(&rootAsPanel));
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         ABI::Windows::UI::Color backgroundColor;
@@ -611,8 +612,8 @@ namespace AdaptiveCards { namespace Uwp
     void XamlBuilder::BuildPanelChildren(
         IVector<IAdaptiveCardElement*>* children,
         IPanel* parentPanel,
-        ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
-        ABI::AdaptiveCards::Uwp::IAdaptiveRenderArgs* renderArgs,
+        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
         std::function<void(IUIElement* child)> childCreatedCallback)
     {
         int currentElement = 0;
@@ -654,7 +655,7 @@ namespace AdaptiveCards { namespace Uwp
                 std::wstring errorString = L"No Renderer found for type: ";
                 errorString += elementType.GetRawBuffer(nullptr);
                 renderContext->AddWarning(
-                    WarningStatusCode::NoRendererForType,
+                   ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::NoRendererForType,
                     HStringReference(errorString.c_str()).Get());
             }
         });
@@ -672,7 +673,7 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveShowCardAction> showCardAction;
         THROW_IF_FAILED(localAction.As(&showCardAction));
 
-        ABI::AdaptiveCards::Uwp::ContainerStyle showCardConfigStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle showCardConfigStyle;
         THROW_IF_FAILED(showCardActionConfig->get_Style(&showCardConfigStyle));
 
         ComPtr<IAdaptiveCard> showCard;
@@ -693,7 +694,7 @@ namespace AdaptiveCards { namespace Uwp
         UINT32 padding;
         THROW_IF_FAILED(spacingConfig->get_Padding(&padding));
 
-        ABI::AdaptiveCards::Uwp::ActionMode showCardActionMode;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
         THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
         Thickness thickness = { (double)0, (double)padding, (double)0, (double)padding };
@@ -730,7 +731,7 @@ namespace AdaptiveCards { namespace Uwp
         // Create a separator between the body and the actions
         if (insertSeparator)
         {
-            ABI::AdaptiveCards::Uwp::Spacing spacing;
+            ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing;
             THROW_IF_FAILED(actionsConfig->get_Spacing(&spacing)); 
 
             UINT spacingSize;
@@ -741,18 +742,18 @@ namespace AdaptiveCards { namespace Uwp
             XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
         }
 
-        ABI::AdaptiveCards::Uwp::ActionAlignment actionAlignment;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment actionAlignment;
         THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        ABI::AdaptiveCards::Uwp::ActionsOrientation actionsOrientation;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation actionsOrientation;
         THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
         // Declare the panel that will host the buttons
         ComPtr<IPanel> actionsPanel;
         ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
 
-        if (actionAlignment == ABI::AdaptiveCards::Uwp::ActionAlignment::Stretch &&
-            actionsOrientation == ABI::AdaptiveCards::Uwp::ActionsOrientation::Horizontal)
+        if (actionAlignment == ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Stretch &&
+            actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal)
         {
             // If stretch alignment and orientation is horizontal, we use a grid with equal column widths to achieve stretch behavior.
             // For vertical orientation, we'll still just use a stack panel since the concept of stretching buttons height isn't really
@@ -767,7 +768,7 @@ namespace AdaptiveCards { namespace Uwp
             // Create a stack panel for the action buttons
             ComPtr<IStackPanel> actionStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
 
-            auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::Uwp::ActionsOrientation::Horizontal) ?
+            auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal) ?
                 Orientation::Orientation_Horizontal :
                 Orientation::Orientation_Vertical;
 
@@ -778,16 +779,16 @@ namespace AdaptiveCards { namespace Uwp
 
             switch (actionAlignment)
             {
-            case ABI::AdaptiveCards::Uwp::ActionAlignment::Center:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Center:
                 THROW_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
                 break;
-            case ABI::AdaptiveCards::Uwp::ActionAlignment::Left:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Left:
                 THROW_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
                 break;
-            case ABI::AdaptiveCards::Uwp::ActionAlignment::Right:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Right:
                 THROW_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
                 break;
-            case ABI::AdaptiveCards::Uwp::ActionAlignment::Stretch:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Stretch:
                 THROW_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
                 break;
             }
@@ -800,7 +801,7 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(actionsConfig->get_ButtonSpacing(&buttonSpacing));
 
         Thickness buttonMargin = { 0, 0, 0, 0 };
-        if (actionsOrientation == ABI::AdaptiveCards::Uwp::ActionsOrientation::Horizontal)
+        if (actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal)
         {
             buttonMargin.Left = buttonMargin.Right = buttonSpacing / 2;
 
@@ -828,7 +829,7 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
 
-        ABI::AdaptiveCards::Uwp::ActionMode showCardActionMode;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
         THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
         UINT currentAction = 0;
@@ -851,7 +852,7 @@ namespace AdaptiveCards { namespace Uwp
 
                 THROW_IF_FAILED(buttonFrameworkElement->put_Margin(buttonMargin));
 
-                if (actionsOrientation == ABI::AdaptiveCards::Uwp::ActionsOrientation::Horizontal)
+                if (actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal)
                 {
                     // For horizontal alignment, we always use stretch
                     THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Stretch));
@@ -860,16 +861,16 @@ namespace AdaptiveCards { namespace Uwp
                 {
                     switch (actionAlignment)
                     {
-                    case ABI::AdaptiveCards::Uwp::ActionAlignment::Center:
+                    case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Center:
                         THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
                         break;
-                    case ABI::AdaptiveCards::Uwp::ActionAlignment::Left:
+                    case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Left:
                         THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
                         break;
-                    case ABI::AdaptiveCards::Uwp::ActionAlignment::Right:
+                    case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Right:
                         THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
                         break;
-                    case ABI::AdaptiveCards::Uwp::ActionAlignment::Stretch:
+                    case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Stretch:
                         THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
                         break;
                     }
@@ -879,13 +880,13 @@ namespace AdaptiveCards { namespace Uwp
                 THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
                 XamlHelpers::SetContent(button.Get(), title.Get());
 
-                ABI::AdaptiveCards::Uwp::ActionType actionType;
+                ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
                 THROW_IF_FAILED(action->get_ActionType(&actionType));
 
                 // If this is a show card action and we're rendering the actions inline, render the card that will be shown
                 ComPtr<IUIElement> uiShowCard;
-                if (actionType == ABI::AdaptiveCards::Uwp::ActionType::ShowCard && 
-                    showCardActionMode == ABI::AdaptiveCards::Uwp::ActionMode::Inline)
+                if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard && 
+                    showCardActionMode == ABI::AdaptiveCards::Rendering::Uwp::ActionMode::Inline)
                 {
                     BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), strongRenderContext.Get(), uiShowCard.GetAddressOf());
                     allShowCards->push_back(uiShowCard);
@@ -903,8 +904,8 @@ namespace AdaptiveCards { namespace Uwp
                 EventRegistrationToken clickToken;
                 THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
-                    if (actionType == ABI::AdaptiveCards::Uwp::ActionType::ShowCard &&
-                        showCardActionMode != ABI::AdaptiveCards::Uwp::ActionMode_Popup)
+                    if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard &&
+                        showCardActionMode != ABI::AdaptiveCards::Rendering::Uwp::ActionMode_Popup)
                     {
                         // Check if this show card is currently visible
                         Visibility currentVisibility;
@@ -947,7 +948,7 @@ namespace AdaptiveCards { namespace Uwp
             else
             {
                 renderContext->AddWarning(
-                    WarningStatusCode::MaxActionsExceeded,
+                   ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::MaxActionsExceeded,
                     HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed").Get());
                 return;
             }
@@ -989,7 +990,7 @@ namespace AdaptiveCards { namespace Uwp
         ABI::Windows::UI::Color* separatorColor,
         bool * needsSeparator)
     {
-        ABI::AdaptiveCards::Uwp::Spacing elementSpacing;
+        ABI::AdaptiveCards::Rendering::Uwp::Spacing elementSpacing;
         THROW_IF_FAILED(cardElement->get_Spacing(&elementSpacing));
 
         UINT localSpacing;
@@ -1010,7 +1011,7 @@ namespace AdaptiveCards { namespace Uwp
         }
         
         *needsSeparator = hasSeparator ||
-            (elementSpacing != ABI::AdaptiveCards::Uwp::Spacing::None);
+            (elementSpacing != ABI::AdaptiveCards::Rendering::Uwp::Spacing::None);
 
         *spacing = localSpacing;
         *separatorThickness = localThickness;
@@ -1029,13 +1030,13 @@ namespace AdaptiveCards { namespace Uwp
 
     _Use_decl_annotations_
     void XamlBuilder::StyleXamlTextBlock(
-        ABI::AdaptiveCards::Uwp::TextSize size,
-        ABI::AdaptiveCards::Uwp::ForegroundColor color,
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
+        ABI::AdaptiveCards::Rendering::Uwp::TextSize size,
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor color,
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
         bool isSubtle,
         bool wrap,
         UINT32 maxWidth,
-        ABI::AdaptiveCards::Uwp::TextWeight weight,
+        ABI::AdaptiveCards::Rendering::Uwp::TextWeight weight,
         ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
         IAdaptiveHostConfig* hostConfig)
     {
@@ -1053,19 +1054,19 @@ namespace AdaptiveCards { namespace Uwp
         UINT32 fontSize;
         switch (size)
         {
-        case ABI::AdaptiveCards::Uwp::TextSize::Small:
+        case ABI::AdaptiveCards::Rendering::Uwp::TextSize::Small:
             THROW_IF_FAILED(fontSizesConfig->get_Small(&fontSize));
             break;
-        case ABI::AdaptiveCards::Uwp::TextSize::Medium:
+        case ABI::AdaptiveCards::Rendering::Uwp::TextSize::Medium:
             THROW_IF_FAILED(fontSizesConfig->get_Medium(&fontSize));
             break;
-        case ABI::AdaptiveCards::Uwp::TextSize::Large:
+        case ABI::AdaptiveCards::Rendering::Uwp::TextSize::Large:
             THROW_IF_FAILED(fontSizesConfig->get_Large(&fontSize));
             break;
-        case ABI::AdaptiveCards::Uwp::TextSize::ExtraLarge:
+        case ABI::AdaptiveCards::Rendering::Uwp::TextSize::ExtraLarge:
             THROW_IF_FAILED(fontSizesConfig->get_ExtraLarge(&fontSize));
             break;
-        case ABI::AdaptiveCards::Uwp::TextSize::Default:
+        case ABI::AdaptiveCards::Rendering::Uwp::TextSize::Default:
         default:
             THROW_IF_FAILED(fontSizesConfig->get_Default(&fontSize));
             break;
@@ -1078,13 +1079,13 @@ namespace AdaptiveCards { namespace Uwp
         ABI::Windows::UI::Text::FontWeight xamlFontWeight;
         switch (weight)
         {
-        case ABI::AdaptiveCards::Uwp::TextWeight::Lighter:
+        case ABI::AdaptiveCards::Rendering::Uwp::TextWeight::Lighter:
             THROW_IF_FAILED(fontWeightsConfig->get_Lighter(&xamlFontWeight.Weight));
             break;
-        case ABI::AdaptiveCards::Uwp::TextWeight::Bolder:
+        case ABI::AdaptiveCards::Rendering::Uwp::TextWeight::Bolder:
             THROW_IF_FAILED(fontWeightsConfig->get_Bolder(&xamlFontWeight.Weight));
             break;
-        case ABI::AdaptiveCards::Uwp::TextWeight::Default:
+        case ABI::AdaptiveCards::Rendering::Uwp::TextWeight::Default:
         default:
             THROW_IF_FAILED(fontWeightsConfig->get_Default(&xamlFontWeight.Weight));
             break;
@@ -1104,15 +1105,15 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     void XamlBuilder::StyleXamlTextBlock(
         IAdaptiveTextConfig* textConfig,
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
         ITextBlock* xamlTextBlock,
         IAdaptiveHostConfig* hostConfig)
     {
-        ABI::AdaptiveCards::Uwp::TextWeight textWeight;
+        ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight;
         THROW_IF_FAILED(textConfig->get_Weight(&textWeight));
-        ABI::AdaptiveCards::Uwp::ForegroundColor textColor;
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor;
         THROW_IF_FAILED(textConfig->get_Color(&textColor));
-        ABI::AdaptiveCards::Uwp::TextSize textSize;
+        ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize;
         THROW_IF_FAILED(textConfig->get_Size(&textSize));
         boolean isSubtle;
         THROW_IF_FAILED(textConfig->get_IsSubtle(&isSubtle));
@@ -1144,7 +1145,7 @@ namespace AdaptiveCards { namespace Uwp
         adaptiveTextBlock->get_Text(text.GetAddressOf());
         xamlTextBlock->put_Text(text.Get());
 
-        ABI::AdaptiveCards::Uwp::ForegroundColor textColor;
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor;
         THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));
         boolean isSubtle = false;
         THROW_IF_FAILED(adaptiveTextBlock->get_IsSubtle(&isSubtle));
@@ -1176,26 +1177,26 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
         THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
 
-        ABI::AdaptiveCards::Uwp::HAlignment adaptiveHorizontalAlignment;
+        ABI::AdaptiveCards::Rendering::Uwp::HAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
 
         // Set the horizontal alignment of the text
         switch (adaptiveHorizontalAlignment)
         {
-            case ABI::AdaptiveCards::Uwp::HAlignment::Left:
+            case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left:
                 THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Left));
                 break;
-            case ABI::AdaptiveCards::Uwp::HAlignment::Right:
+            case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Right:
                 THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Right));
                 break;
-            case ABI::AdaptiveCards::Uwp::HAlignment::Center:
+            case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Center:
                 THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center));
                 break;
         }
-        ABI::AdaptiveCards::Uwp::TextSize textblockSize;
+        ABI::AdaptiveCards::Rendering::Uwp::TextSize textblockSize;
         THROW_IF_FAILED(adaptiveTextBlock->get_Size(&textblockSize));
 
-        ABI::AdaptiveCards::Uwp::TextWeight textWeight;
+        ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight;
         THROW_IF_FAILED(adaptiveTextBlock->get_Weight(&textWeight));
 
         boolean shouldWrap = false;
@@ -1208,7 +1209,7 @@ namespace AdaptiveCards { namespace Uwp
         //Style the TextBlock using Host config
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
         StyleXamlTextBlock(textblockSize, textColor, containerStyle, isSubtle, shouldWrap, MAXUINT32, textWeight, xamlTextBlock.Get(), hostConfig.Get());
 
@@ -1272,19 +1273,19 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(adaptiveImage->get_Url(imageUri.GetAddressOf()));
 
         // Get the image's size and style
-        ABI::AdaptiveCards::Uwp::ImageSize size;
+        ABI::AdaptiveCards::Rendering::Uwp::ImageSize size;
         THROW_IF_FAILED(adaptiveImage->get_Size(&size));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (size == ABI::AdaptiveCards::Uwp::ImageSize::None)
+        if (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::None)
         {
             ComPtr<IAdaptiveImageConfig> imageConfig;
             THROW_IF_FAILED(hostConfig->get_Image(&imageConfig));
             THROW_IF_FAILED(imageConfig->get_ImageSize(&size));
         }
 
-        ABI::AdaptiveCards::Uwp::ImageStyle imageStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ImageStyle imageStyle;
         THROW_IF_FAILED(adaptiveImage->get_Style(&imageStyle));
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
@@ -1298,9 +1299,9 @@ namespace AdaptiveCards { namespace Uwp
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
             // Set Auto, None, and Stretch to Stretch_UniformToFill. An ellipse set to Stretch_Uniform ends up with size 0.
-            if (size == ABI::AdaptiveCards::Uwp::ImageSize::None ||
-                size == ABI::AdaptiveCards::Uwp::ImageSize::Stretch ||
-                size == ABI::AdaptiveCards::Uwp::ImageSize::Auto)
+            if (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::None ||
+                size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Stretch ||
+                size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Auto)
             {
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(Stretch::Stretch_UniformToFill));
             }
@@ -1310,7 +1311,7 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(ellipse.As(&frameworkElement));
 
             // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
-            if (size == ABI::AdaptiveCards::Uwp::ImageSize::Auto && parentElement != nullptr)
+            if (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Auto && parentElement != nullptr)
             {
                 ComPtr<IBrush> ellipseBrush;
                 THROW_IF_FAILED(ellipseAsShape->get_Fill(&ellipseBrush));
@@ -1347,7 +1348,7 @@ namespace AdaptiveCards { namespace Uwp
 
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
-            if (parentElement != nullptr && size == ABI::AdaptiveCards::Uwp::ImageSize::Auto)
+            if (parentElement != nullptr && size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Auto)
             {
                 ComPtr<IImageSource> imageSource;
                 THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
@@ -1378,7 +1379,7 @@ namespace AdaptiveCards { namespace Uwp
 
         switch (size)
         {
-            case ABI::AdaptiveCards::Uwp::ImageSize::Small:
+            case ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Small:
             {
                 UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
@@ -1388,7 +1389,7 @@ namespace AdaptiveCards { namespace Uwp
                 break;
             }
 
-            case ABI::AdaptiveCards::Uwp::ImageSize::Medium:
+            case ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Medium:
             {
                 UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
@@ -1398,7 +1399,7 @@ namespace AdaptiveCards { namespace Uwp
                 break;
             }
 
-            case ABI::AdaptiveCards::Uwp::ImageSize::Large:
+            case ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Large:
             {
                 UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
@@ -1409,18 +1410,18 @@ namespace AdaptiveCards { namespace Uwp
             }
         }
 
-        ABI::AdaptiveCards::Uwp::HAlignment adaptiveHorizontalAlignment;
+        ABI::AdaptiveCards::Rendering::Uwp::HAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
 
         switch (adaptiveHorizontalAlignment)
         {
-            case ABI::AdaptiveCards::Uwp::HAlignment::Left:
+            case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left:
                 THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
                 break;
-            case ABI::AdaptiveCards::Uwp::HAlignment::Right:
+            case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Right:
                 THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
                 break;
-            case ABI::AdaptiveCards::Uwp::HAlignment::Center:
+            case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Center:
                 THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
                 break;
         }
@@ -1450,14 +1451,14 @@ namespace AdaptiveCards { namespace Uwp
         // still renders at the top even if the content is shorter than the full card
         THROW_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(VerticalAlignment_Top));
 
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
 
-        ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle parentContainerStyle;
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
 
         bool hasExplicitContainerStyle = true;
-        if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
+        if (containerStyle == ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
             containerStyle = parentContainerStyle;
@@ -1519,7 +1520,7 @@ namespace AdaptiveCards { namespace Uwp
             else
             {
                 renderContext->AddWarning(
-                    WarningStatusCode::InteractivityNotSupported,
+                   ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                     HStringReference(L"SelectAction present in Container, but Interactivity is not supported").Get());
             }
         }
@@ -1543,13 +1544,13 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<WholeItemsPanel> columnPanel;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&columnPanel));
 
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveColumn->get_Style(&containerStyle));
         bool hasExplicitContainerStyle = true;
-        if (containerStyle == ABI::AdaptiveCards::Uwp::ContainerStyle::None)
+        if (containerStyle == ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
-            ABI::AdaptiveCards::Uwp::ContainerStyle parentContainerStyle;
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle parentContainerStyle;
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
             containerStyle = parentContainerStyle;
         }
@@ -1615,7 +1616,7 @@ namespace AdaptiveCards { namespace Uwp
         if (columnRenderer == nullptr)
         {
             renderContext->AddWarning(
-                WarningStatusCode::NoRendererForType,
+               ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::NoRendererForType,
                 HStringReference(L"No renderer found for type: Column").Get());
             *columnSetControl = nullptr;
             return;
@@ -1697,7 +1698,7 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
 
             ComPtr<IAdaptiveRenderArgs> columnRenderArgs;
-            ABI::AdaptiveCards::Uwp::ContainerStyle style;
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style;
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&style));
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&columnRenderArgs, style, columnDefinition.Get()));
 
@@ -1731,7 +1732,7 @@ namespace AdaptiveCards { namespace Uwp
             else
             {
                 renderContext->AddWarning(
-                    WarningStatusCode::InteractivityNotSupported,
+                   ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                     HStringReference(L"SelectAction present in ColumnSet, but Interactivity is not supported").Get());
             }
         }
@@ -1794,7 +1795,7 @@ namespace AdaptiveCards { namespace Uwp
             ComPtr<IAdaptiveTextConfig> titleTextConfig;
             THROW_IF_FAILED(factSetConfig->get_Title(&titleTextConfig));
 
-            ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle;
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
             StyleXamlTextBlock(titleTextConfig.Get(), containerStyle, titleTextBlock.Get(), hostConfig.Get());
 
@@ -1865,10 +1866,10 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IVector<IAdaptiveImage*>> images;
         THROW_IF_FAILED(adaptiveImageSet->get_Images(&images));
 
-        ABI::AdaptiveCards::Uwp::ImageSize imageSize;
+        ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize;
         THROW_IF_FAILED(adaptiveImageSet->get_ImageSize(&imageSize));
 
-        if (imageSize == ABI::AdaptiveCards::Uwp::ImageSize::None)
+        if (imageSize == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::None)
         {
             ComPtr<IAdaptiveHostConfig> hostConfig;
             THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -1902,7 +1903,7 @@ namespace AdaptiveCards { namespace Uwp
         else
         {
             renderContext->AddWarning(
-                WarningStatusCode::NoRendererForType,
+               ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::NoRendererForType,
                 HStringReference(L"No renderer found for type: Image").Get());
             *imageSetControl = nullptr;
             return;
@@ -2045,7 +2046,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"ChoiceSet was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2054,13 +2055,13 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveChoiceSetInput> adaptiveChoiceSetInput;
         THROW_IF_FAILED(cardElement.As(&adaptiveChoiceSetInput));
 
-        ABI::AdaptiveCards::Uwp::ChoiceSetStyle choiceSetStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
         THROW_IF_FAILED(adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
         boolean isMultiSelect;
         THROW_IF_FAILED(adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
-        if (choiceSetStyle == ABI::AdaptiveCards::Uwp::ChoiceSetStyle_Compact &&
+        if (choiceSetStyle == ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle_Compact &&
             !isMultiSelect)
         {
             BuildCompactChoiceSetInput(renderContext, adaptiveChoiceSetInput.Get(), choiceInputSet);
@@ -2084,7 +2085,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Date input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2124,7 +2125,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Number input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2178,7 +2179,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2208,21 +2209,21 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
-        ABI::AdaptiveCards::Uwp::TextInputStyle textInputStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle;
         THROW_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
 
         ComPtr<IInputScopeName> inputScopeName = XamlHelpers::CreateXamlClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
         switch (textInputStyle)
         {
-            case ABI::AdaptiveCards::Uwp::TextInputStyle::Email:
+            case ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle::Email:
                 THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_EmailSmtpAddress));
                 break;
 
-            case ABI::AdaptiveCards::Uwp::TextInputStyle::Tel:
+            case ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle::Tel:
                 THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_TelephoneNumber));
                 break;
 
-            case ABI::AdaptiveCards::Uwp::TextInputStyle::Url:
+            case ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle::Url:
                 THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Url));
                 break;
         }
@@ -2253,7 +2254,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Time Input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2284,7 +2285,7 @@ namespace AdaptiveCards { namespace Uwp
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                WarningStatusCode::InteractivityNotSupported,
+               ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Toggle Input was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -2339,19 +2340,19 @@ namespace AdaptiveCards { namespace Uwp
     {        
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        ABI::AdaptiveCards::Uwp::ActionType actionType;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
         THROW_IF_FAILED(action->get_ActionType(&actionType));
 
         // TODO: In future should support inline ShowCard, but that's complicated for inline elements
-        if (actionType == ABI::AdaptiveCards::Uwp::ActionType::ShowCard)
+        if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard)
         {
             ComPtr<IAdaptiveActionsConfig> actionsConfig;
             THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
             ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
             THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-            ABI::AdaptiveCards::Uwp::ActionMode showCardActionMode;
+            ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
             THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-            if (showCardActionMode == ABI::AdaptiveCards::Uwp::ActionMode::Inline)
+            if (showCardActionMode == ABI::AdaptiveCards::Rendering::Uwp::ActionMode::Inline)
             {
                 // Was inline show card, so don't wrap the element and just return
                 ComPtr<IUIElement> localElementToWrap(elementToWrap);
@@ -2376,7 +2377,7 @@ namespace AdaptiveCards { namespace Uwp
         // However, all we know is the spacing of the current item, which only applies to the spacing above.
         // We don't know what the spacing of the NEXT element will be, so we can't calculate the correct spacing below.
         // For now, we'll simply assume the bottom spacing is the same as the top.
-        ABI::AdaptiveCards::Uwp::Spacing elementSpacing;
+        ABI::AdaptiveCards::Rendering::Uwp::Spacing elementSpacing;
         THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));
         UINT spacingSize;
         THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), elementSpacing, &spacingSize));
@@ -2440,4 +2441,4 @@ namespace AdaptiveCards { namespace Uwp
             return args->put_Handled(TRUE);
         }).Get(), &clickToken);
     }
-}}
+}}}

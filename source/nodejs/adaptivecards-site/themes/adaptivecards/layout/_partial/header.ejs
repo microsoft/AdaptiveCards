@@ -32,7 +32,7 @@
  <div class="theme-dark brand-neutral js-cat-head" itemprop="brand" itemscope="itemscope" itemtype="http://schema.org/Brand" ms.cmpgrp='UHF category nav'>
  
  <div>
- <a id="uhfCatLogo" class="c-logo" href="http://adaptivecards.io" aria-label="Adaptive Cards" itemprop="url" ms.title='Adaptive Cards'>
+ <a id="uhfCatLogo" class="c-logo" href="<%- url_for('/') %>" aria-label="Adaptive Cards" itemprop="url" ms.title='Adaptive Cards'>
  <span>Adaptive Cards</span>
  </a>
  
@@ -40,8 +40,12 @@
  
  <button class="c-action-trigger c-glyph glyph-chevron-right" aria-label="Scroll right" title="Scroll right" ms.title='Next'></button>
  <nav id="uhf-c-nav" role="navigation" aria-labelledby="uhfCatLogo" >
- 
- <a id="shellmenu_0" class="c-uhf-nav-link" href="https://docs.microsoft.com/en-us/adaptive-cards" ms.title='Documentation'>Documentation</a><a id="shellmenu_1" class="c-uhf-nav-link" href="http://adaptivecards.io/explorer/" ms.title='Schema Explorer'>Schema Explorer</a><a id="Visualizer" class="c-uhf-nav-link" href="http://adaptivecards.io/visualizer/" ms.title='Visualizer'>Visualizer</a><a id="shellmenu_3" class="c-uhf-nav-link" href="http://adaptivecards.io/samples/" ms.title='Samples'>Samples</a><a id="shellmenu_4" class="c-uhf-nav-link" href="http://adaptivecards.io/connect/" ms.title='Connect'>Connect</a> </nav>
+ <a id="shellmenu_0" class="c-uhf-nav-link" href="https://docs.microsoft.com/en-us/adaptive-cards" ms.title='Documentation'>Documentation</a>
+ <a id="shellmenu_1" class="c-uhf-nav-link" href="<%- url_for('explorer') %>" ms.title='Schema Explorer'>Schema Explorer</a>
+ <a id="Visualizer" class="c-uhf-nav-link" href="<%- url_for('visualizer') %>" ms.title='Visualizer'>Visualizer</a>
+ <a id="shellmenu_3" class="c-uhf-nav-link" href="<%- url_for('samples') %>" ms.title='Samples'>Samples</a>
+ <a id="shellmenu_4" class="c-uhf-nav-link" href="<%- url_for('connect') %>" ms.title='Connect'>Connect</a>
+  </nav>
  
  </div>
  

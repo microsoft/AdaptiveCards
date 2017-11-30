@@ -28,7 +28,7 @@ namespace AdaptiveCards
         }
         else
         {
-            throw AdaptiveCardParseException("Overriding known action parsers is unsupported");
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known action parsers is unsupported");
         }
     }
 
@@ -40,7 +40,7 @@ namespace AdaptiveCards
         }
         else
         {
-            throw AdaptiveCardParseException("Overriding known action parsers is unsupported");
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known action parsers is unsupported");
         }
     }
 

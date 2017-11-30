@@ -34,13 +34,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (image.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(image.SelectAction);
-                if (uiButton != null)
-                {
-                    uiButton.Content = uiImage;
-                    uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
-                    return uiButton;
-                }
+                return context.RenderSelectAction(image.SelectAction, uiImage);
             }
             return uiImage;
         }

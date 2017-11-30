@@ -43,7 +43,7 @@ export class PaddingDefinition {
 }
 
 export class TextColorDefinition {
-    normal: string = "#0000FF";
+    normal: string = "#000000";
     subtle: string = "#222222";
 
     constructor(obj?: any) {
@@ -56,7 +56,7 @@ export class TextColorDefinition {
 
 export class ContainerStyleDefinition {
     backgroundColor?: string;
-    readonly fontColors = {
+    readonly foregroundColors = {
         default: new TextColorDefinition(),
         accent: new TextColorDefinition(),
         good: new TextColorDefinition(),
@@ -67,12 +67,12 @@ export class ContainerStyleDefinition {
     constructor(obj?: any) {
         if (obj) {
             this.backgroundColor = obj["backgroundColor"];
-            this.fontColors = {
-                default: new TextColorDefinition(obj["fontColors"]["default"]),
-                accent: new TextColorDefinition(obj["fontColors"]["accent"]),
-                good: new TextColorDefinition(obj["fontColors"]["good"]),
-                warning: new TextColorDefinition(obj["fontColors"]["warning"]),
-                attention: new TextColorDefinition(obj["fontColors"]["attention"])
+            this.foregroundColors = {
+                default: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["default"]),
+                accent: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["accent"]),
+                good: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["good"]),
+                warning: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["warning"]),
+                attention: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["attention"])
             }
         }
     }
@@ -94,7 +94,7 @@ export class ImageSetConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.imageSize = obj["imageSize"] || this.imageSize;
+            this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
             this.maxImageHeight = Utils.getValueOrDefault<number>("maxImageHeight", 100);
         }
     }
@@ -120,7 +120,7 @@ export class FactTextDefinition {
             this.color = Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
             this.isSubtle = obj["isSubtle"] || this.isSubtle;
             this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Default);
-            this.wrap = obj["wrap"] || this.wrap;
+            this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
         }
     }
 
@@ -143,7 +143,7 @@ export class FactTitleDefinition extends FactTextDefinition {
         super(obj);
 
         if (obj) {
-            this.maxWidth = obj["maxWidth"] || this.maxWidth;
+            this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
         }
     }
 }
@@ -157,7 +157,7 @@ export class FactSetConfig {
         if (obj) {
             this.title = new FactTitleDefinition(obj["title"]);
             this.value = new FactTextDefinition(obj["value"]);
-            this.spacing = obj["spacing"] || this.spacing;
+            this.spacing = obj.spacing && obj.spacing != null ? obj.spacing && obj.spacing : this.spacing;
         }
     }
 }
@@ -170,7 +170,7 @@ export class ShowCardActionConfig {
     constructor(obj?: any) {
         if (obj) {
             this.actionMode = Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
-            this.inlineTopMargin = obj["inlineTopMargin"] || this.inlineTopMargin;
+            this.inlineTopMargin = obj["inlineTopMargin"] != null ? obj["inlineTopMargin"] : this.inlineTopMargin;
             this.style = Utils.parseHostConfigEnum(Enums.ContainerStyle, obj["style"], Enums.ContainerStyle.Emphasis);
         }
     }
@@ -195,9 +195,9 @@ export class ActionsConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.maxActions = obj["maxActions"] || this.maxActions;
-            this.spacing = Utils.parseHostConfigEnum(Enums.Spacing, obj["spacing"], Enums.Spacing.Default);
-            this.buttonSpacing = obj["buttonSpacing"] || this.buttonSpacing;
+            this.maxActions = obj["maxActions"] != null ? obj["maxActions"] : this.maxActions;
+            this.spacing = Utils.parseHostConfigEnum(Enums.Spacing, obj.spacing && obj.spacing, Enums.Spacing.Default);
+            this.buttonSpacing = obj["buttonSpacing"] != null ? obj["buttonSpacing"] : this.buttonSpacing;
             this.showCard = new ShowCardActionConfig(obj["showCard"]);
             this.preExpandSingleShowCardAction = Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false);
             this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
@@ -224,6 +224,7 @@ export class ContainerStyleSet {
 
     constructor(obj?: any) {
         this.emphasis.backgroundColor = "#EEEEEE";
+        
         if (obj) {
             this.default = new ContainerStyleDefinition(obj["default"]);
             this.emphasis = new ContainerStyleDefinition(obj["emphasis"])
@@ -233,13 +234,29 @@ export class ContainerStyleSet {
 
 export class HostConfig {
     supportsInteractivity: boolean = true;
-    fontFamily?: string = "Segoe UI";
+
+    fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
+    
+    readonly spacing = {
+        small: 3,
+        default: 8,
+        medium: 20,
+        large: 30,
+        extraLarge: 40,
+        padding: 15
+    };
+
+    readonly separator = {
+        lineThickness: 1,
+        lineColor: "#EEEEEE"
+    };
+
     readonly fontSizes = {
-        small: 8,
-        default: 10,
-        medium: 12,
-        large: 14,
-        extraLarge: 16
+        small: 12,
+        default: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
     };
     readonly fontWeights = {
         lighter: 200,
@@ -251,19 +268,8 @@ export class HostConfig {
         medium: 80,
         large: 160
     };
+
     readonly containerStyles: ContainerStyleSet = new ContainerStyleSet();
-    readonly spacing = {
-        small: 3,
-        default: 8,
-        medium: 20,
-        large: 30,
-        extraLarge: 40,
-        padding: 20
-    };
-    readonly separator = {
-        lineThickness: 1,
-        lineColor: "#EEEEEE"
-    }
     readonly actions: ActionsConfig = new ActionsConfig();
     readonly adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
@@ -275,45 +281,45 @@ export class HostConfig {
                 obj = JSON.parse(obj as string);
             }
 
-            this.supportsInteractivity = obj["supportsInteractivity"] || this.supportsInteractivity;
+            this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
             this.fontFamily = obj["fontFamily"] || this.fontFamily;
             this.fontSizes = {
-                small: obj["fontSizes"]["small"] || this.fontSizes.small,
-                default: obj["fontSizes"]["default"] || this.fontSizes.default,
-                medium: obj["fontSizes"]["medium"] || this.fontSizes.medium,
-                large: obj["fontSizes"]["large"] || this.fontSizes.large,
-                extraLarge: obj["fontSizes"]["extraLarge"] || this.fontSizes.extraLarge
+                small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
+                default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
+                medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
+                large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
+                extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
             };
 
             this.fontWeights = {
-                lighter: obj["fontWeights"]["lighter"] || this.fontWeights.lighter,
-                default: obj["fontWeights"]["default"] || this.fontWeights.default,
-                bolder: obj["fontWeights"]["bolder"] || this.fontWeights.bolder
+                lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
+                default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
+                bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
             };
 
             this.imageSizes = {
-                small: obj["imageSizes"]["small"] || this.imageSizes.small,
-                medium: obj["imageSizes"]["medium"] || this.imageSizes.medium,
-                large: obj["imageSizes"]["large"] || this.imageSizes.large,
+                small: obj.imageSizes && obj.imageSizes["small"] || this.imageSizes.small,
+                medium: obj.imageSizes && obj.imageSizes["medium"] || this.imageSizes.medium,
+                large: obj.imageSizes && obj.imageSizes["large"] || this.imageSizes.large,
             };
 
             this.containerStyles = new ContainerStyleSet(obj["containerStyles"]);
             this.spacing = {
-                small: obj["spacing"]["small"] || this.spacing.small,
-                default: obj["spacing"]["default"] || this.spacing.default,
-                medium: obj["spacing"]["medium"] || this.spacing.medium,
-                large: obj["spacing"]["large"] || this.spacing.large,
-                extraLarge: obj["spacing"]["extraLarge"] || this.spacing.extraLarge,
-                padding: obj["spacing"]["padding"] || this.spacing.padding
+                small: obj.spacing && obj.spacing["small"] || this.spacing.small,
+                default: obj.spacing && obj.spacing["default"] || this.spacing.default,
+                medium: obj.spacing && obj.spacing["medium"] || this.spacing.medium,
+                large: obj.spacing && obj.spacing["large"] || this.spacing.large,
+                extraLarge: obj.spacing && obj.spacing["extraLarge"] || this.spacing.extraLarge,
+                padding: obj.spacing && obj.spacing["padding"] || this.spacing.padding
             };
 
             this.separator = {
-                lineThickness: obj["separator"]["lineThickness"] || this.separator.lineThickness,
-                lineColor: obj["separator"]["lineColor"] || this.separator.lineColor
+                lineThickness: obj.separator && obj.separator["lineThickness"] || this.separator.lineThickness,
+                lineColor: obj.separator && obj.separator["lineColor"] || this.separator.lineColor
             }
 
-            this.actions = new ActionsConfig(obj["actions"]);
-            this.adaptiveCard = new AdaptiveCardConfig(obj["adaptiveCard"]);
+            this.actions = new ActionsConfig(obj.actions || this.actions);
+            this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
             this.factSet = new FactSetConfig(obj["factSet"])
         }

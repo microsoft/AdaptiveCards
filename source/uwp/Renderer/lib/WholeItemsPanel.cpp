@@ -9,7 +9,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -18,8 +18,9 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Media;
 
 static const float OutsidePanelY = -1000.0f;
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     HRESULT WholeItemsPanel::RuntimeClassInitialize()
     {
         ComPtr<IPanelFactory> spFactory;
@@ -514,11 +515,11 @@ namespace AdaptiveCards { namespace Uwp
     bool WholeItemsPanel::HasExplicitSize(_In_ IFrameworkElement *element)
     {
         DOUBLE definedImageHeight;
-        RETURN_IF_FAILED(element->get_Height(&definedImageHeight));
+        element->get_Height(&definedImageHeight);
         DOUBLE definedImageWidth;
-        RETURN_IF_FAILED(element->get_Height(&definedImageWidth));
+        element->get_Height(&definedImageWidth);
 
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
-}}
+}}}
 

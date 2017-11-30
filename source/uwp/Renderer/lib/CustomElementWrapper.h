@@ -1,14 +1,15 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {
     public:
-        CustomElementWrapper(ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* cardElement):
+        CustomElementWrapper(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement):
             BaseCardElement(AdaptiveCards::CardElementType::Custom),
             m_cardElement(cardElement)
         {}
@@ -24,9 +25,9 @@ namespace AdaptiveCards { namespace Uwp
 
         virtual Json::Value SerializeToJsonValue() override;
 
-        HRESULT GetWrappedElement(ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** cardElement);
+        HRESULT GetWrappedElement(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** cardElement);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement> m_cardElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement> m_cardElement;
     };
-}}
+}}}

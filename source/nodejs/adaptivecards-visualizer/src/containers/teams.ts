@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -12,14 +13,15 @@ import {
 } from "adaptivecards";
 
 export class TeamsContainer extends HostContainer {
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
         element.style.borderBottom = "1px solid #F1F1F1";
         element.style.border = "1px solid #F1F1F1"
+        target.appendChild(element);
 
-        element.appendChild(renderedCard);
+        adaptiveCard.render(element);
 
         return element;
     }
@@ -55,7 +57,7 @@ export class TeamsContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#00000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"
@@ -80,7 +82,7 @@ export class TeamsContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"

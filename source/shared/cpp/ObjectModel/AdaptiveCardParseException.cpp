@@ -2,7 +2,7 @@
 
 using namespace AdaptiveCards;
 
-AdaptiveCardParseException::AdaptiveCardParseException(const std::string & message) : m_message(message)
+AdaptiveCardParseException::AdaptiveCardParseException(const ErrorStatusCode statusCode, const std::string & message) : m_statusCode(statusCode), m_message(message)
 {
 }
 
@@ -10,7 +10,17 @@ AdaptiveCardParseException::~AdaptiveCardParseException()
 {
 }
 
-const char * AdaptiveCardParseException::what() const throw()
+const char* AdaptiveCardParseException::what() const throw()
 {
     return m_message.c_str();
+}
+
+const ErrorStatusCode AdaptiveCardParseException::GetStatusCode() const
+{
+    return m_statusCode;
+}
+
+const std::string& AdaptiveCardParseException::GetMessage() const
+{
+    return m_message;
 }

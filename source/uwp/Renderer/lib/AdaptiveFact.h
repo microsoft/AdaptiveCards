@@ -1,18 +1,19 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "Fact.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveFact :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Uwp::IAdaptiveFact,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveFact, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveFact, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -25,9 +26,9 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_Value(_In_ HSTRING* value);
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::Fact>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::Fact>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -40,4 +41,4 @@ namespace AdaptiveCards { namespace Uwp
     };
 
     ActivatableClass(AdaptiveFact);
-}}
+}}}

@@ -80,6 +80,7 @@ namespace AdaptiveCards.Test
             Assert.IsNotNull(result.Card);
             Assert.AreEqual(1, result.Card.Body.Count);
             Assert.AreEqual(1, result.Card.Actions.Count);
+            Assert.AreEqual(2, result.Warnings.Count);
         }
 
         [TestMethod]
@@ -190,7 +191,7 @@ namespace AdaptiveCards.Test
 
 
         [TestMethod]
-        public void Test_MissingTypeSkipsElement()
+        public void Test_MissingTypePropertyThrowsException()
         {
             // TODO: we can actually pull this payload from ~/samples/Tests/TypeIsRequired.json
             // Should we also do this for the other Tests payloads in the samples folder?

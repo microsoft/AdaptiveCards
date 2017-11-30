@@ -21,7 +21,7 @@ namespace AdaptiveCards
 
         public const string TypeName = "AdaptiveCard";
 
-        public override string Type => TypeName;
+        public override string Type { get; set; } = TypeName;
 
         /// <summary>
         /// The latest known schema version supported by this library
@@ -36,7 +36,6 @@ namespace AdaptiveCards
         {
             Version = schemaVersion;
         }
-
 
         /// <inheritdoc />
         /// <param name="schemaVersion">The schema version to use</param>
@@ -113,20 +112,12 @@ namespace AdaptiveCards
         {
             var parseResult = new AdaptiveCardParseResult();
 
-            var settings = new JsonSerializerSettings
-            {
-                Converters =
-                {
-                    new AdaptiveCardConverter(parseResult),
-                    new AdaptiveTypedElementConverter(parseResult),
-                    new IgnoreEmptyItemsConverter<AdaptiveAction>(),
-                    new IgnoreEmptyItemsConverter<AdaptiveElement>()
-                    
-                }
-            };
             try
             {
-                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, settings);
+                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
+                {
+                    ContractResolver = new WarningLoggingContractResolver(parseResult)
+                });
             }
             catch (JsonException ex)
             {
@@ -143,17 +134,7 @@ namespace AdaptiveCards
         /// <returns></returns>
         public string ToJson()
         {
-            var settings = new JsonSerializerSettings
-            {
-                Converters =
-                {
-                    new AdaptiveCardConverter(),
-                    new AdaptiveTypedElementConverter(),
-                    new IgnoreEmptyItemsConverter<AdaptiveAction>(),
-                    new IgnoreEmptyItemsConverter<AdaptiveElement>()
-                }
-            };
-            return JsonConvert.SerializeObject(this, Formatting.Indented, settings);
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
         /// <summary>

@@ -1,18 +1,19 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "ChoiceInput.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveChoiceInput, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveChoiceInput, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -28,9 +29,9 @@ namespace AdaptiveCards { namespace Uwp
         IFACEMETHODIMP get_IsSelected(_Out_ boolean* isSelected);
         IFACEMETHODIMP put_IsSelected(_In_ boolean isSelected);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -43,4 +44,4 @@ namespace AdaptiveCards { namespace Uwp
     };
 
     ActivatableClass(AdaptiveChoiceInput);
-}}
+}}}

@@ -2,6 +2,7 @@
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
+import { IAdaptiveCard } from "./schema";
 
 function invokeSetParent(obj: any, parent: CardElement) {
     if (obj) {
@@ -54,12 +55,13 @@ export interface IValidationError {
 }
 
 export abstract class CardElement {
-    private _hostConfig?: HostConfig.HostConfig;
+    private _hostConfig?: HostConfig.HostConfig = null;
     private _internalPadding: HostConfig.PaddingDefinition = null;
     private _parent: CardElement = null;
     private _isVisibile: boolean = true;
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
+    private _rootCard: AdaptiveCard;
 
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
@@ -245,7 +247,7 @@ export abstract class CardElement {
 
             this.adjustRenderedElementSize(this._renderedElement);
             this.updateLayout(false);
-            this.updateRenderedElementVisibility();    
+            this.updateRenderedElementVisibility();
         }
 
         return this._renderedElement;
@@ -328,13 +330,17 @@ export abstract class CardElement {
     }
 
     get hostConfig(): HostConfig.HostConfig {
-        if (!this._hostConfig) {
-            var result = this.parent.hostConfig;
-
-            this._hostConfig = result ? result : defaultHostConfig;
+        if (this._hostConfig) {
+            return this._hostConfig;
         }
-
-        return this._hostConfig;
+        else {
+            if (this.parent) {
+                return this.parent.hostConfig;
+            }
+            else {
+                return defaultHostConfig;
+            }
+        }
     }
 
     set hostConfig(value: HostConfig.HostConfig) {
@@ -387,6 +393,9 @@ export class TextBlock extends CardElement {
     wrap: boolean = false;
     maxLines: number;
 
+    private _computedLineHeight: number;
+    private _originalInnerHtml: string;
+
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
@@ -431,10 +440,10 @@ export class TextBlock extends CardElement {
 
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
-            var computedLineHeight = fontSize * 1.33;
+            this._computedLineHeight = fontSize * 1.33;
 
             element.style.fontSize = fontSize + "px";
-            element.style.lineHeight = computedLineHeight + "px";
+            element.style.lineHeight = this._computedLineHeight + "px";
 
             var parentContainer = this.getParentContainer();
             var styleDefinition = this.hostConfig.getContainerStyleDefinition(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
@@ -444,19 +453,19 @@ export class TextBlock extends CardElement {
 
             switch (actualTextColor) {
                 case Enums.TextColor.Accent:
-                    colorDefinition = styleDefinition.fontColors.accent;
+                    colorDefinition = styleDefinition.foregroundColors.accent;
                     break;
                 case Enums.TextColor.Good:
-                    colorDefinition = styleDefinition.fontColors.good;
+                    colorDefinition = styleDefinition.foregroundColors.good;
                     break;
                 case Enums.TextColor.Warning:
-                    colorDefinition = styleDefinition.fontColors.warning;
+                    colorDefinition = styleDefinition.foregroundColors.warning;
                     break;
                 case Enums.TextColor.Attention:
-                    colorDefinition = styleDefinition.fontColors.attention;
+                    colorDefinition = styleDefinition.foregroundColors.attention;
                     break;
                 default:
-                    colorDefinition = styleDefinition.fontColors.default;
+                    colorDefinition = styleDefinition.foregroundColors.default;
                     break;
             }
 
@@ -480,7 +489,7 @@ export class TextBlock extends CardElement {
 
             var formattedText = TextFormatters.formatText(this.text);
 
-            element.innerHTML = Utils.processMarkdown(formattedText);
+            element.innerHTML = AdaptiveCard.processMarkdown(formattedText);
 
             if (element.firstElementChild instanceof HTMLElement) {
                 var firstElementChild = <HTMLElement>element.firstElementChild;
@@ -504,7 +513,7 @@ export class TextBlock extends CardElement {
                 anchor.classList.add("ac-anchor");
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
-                    if (raiseAnchorClickedEvent(anchor)) {
+                    if (raiseAnchorClickedEvent(this, anchor)) {
                         e.preventDefault();
                     }
                 }
@@ -514,12 +523,16 @@ export class TextBlock extends CardElement {
                 element.style.wordWrap = "break-word";
 
                 if (this.maxLines > 0) {
-                    element.style.maxHeight = (computedLineHeight * this.maxLines) + "px";
+                    element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
                     element.style.overflow = "hidden";
                 }
             }
             else {
                 element.style.whiteSpace = "nowrap";
+            }
+
+            if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+                this._originalInnerHtml = element.innerHTML;
             }
 
             return element;
@@ -582,6 +595,32 @@ export class TextBlock extends CardElement {
             return '<s>' + this.text + '</s>\n';
 
         return null;
+    }
+
+    updateLayout(processChildren: boolean = false) {
+        if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+            // Reset the element's innerHTML in case the available room for
+            // content has increased
+            this.renderedElement.innerHTML = this._originalInnerHtml;
+            this.truncateIfSupported();
+        }
+    }
+
+    private truncateIfSupported() {
+        if (this.maxLines && this.renderedElement.scrollHeight) {
+            // For now, only truncate TextBlocks that contain just a single
+            // paragraph -- since the maxLines calculation doesn't take into
+            // account Markdown lists
+            var children = this.renderedElement.children;
+            var truncationSupported = children.length == 1
+                && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
+
+            if (truncationSupported) {
+                var element = <HTMLElement>children[0];
+                var maxHeight = this._computedLineHeight * this.maxLines;
+                Utils.truncate(element, maxHeight, this._computedLineHeight);
+            }
+        }
     }
 }
 
@@ -679,7 +718,7 @@ export class FactSet extends CardElement {
 
         if (json["facts"] != null) {
             var jsonFacts = json["facts"] as Array<any>;
-
+            this.facts = [];
             for (var i = 0; i < jsonFacts.length; i++) {
                 let fact = new Fact();
 
@@ -718,7 +757,7 @@ export class FactSet extends CardElement {
 
 export class Image extends CardElement {
     private _selectAction: Action;
-    
+
     protected get useDefaultSizing() {
         return false;
     }
@@ -939,7 +978,7 @@ export class ImageSet extends CardElement {
 
         if (json["images"] != null) {
             let jsonImages = json["images"] as Array<any>;
-
+            this._images = [];
             for (let i = 0; i < jsonImages.length; i++) {
                 var image = new Image();
                 image.parse(jsonImages[i]);
@@ -1769,7 +1808,7 @@ export class HttpAction extends Action {
 
         if (json["headers"] != null) {
             var jsonHeaders = json["headers"] as Array<any>;
-
+            this._headers = [];
             for (var i = 0; i < jsonHeaders.length; i++) {
                 let httpHeader = new HttpHeader();
 
@@ -1918,8 +1957,12 @@ class ActionCollection {
         this.refreshContainer();
     }
 
-    private showActionCard(action: ShowCardAction) {
-        if (action.card == null) return;
+    private showActionCard(action: ShowCardAction, suppressStyle: boolean = false) {
+        if (action.card == null) {
+            return;
+        }
+
+        (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
         var renderedCard = action.card.render();
 
@@ -1937,6 +1980,7 @@ class ActionCollection {
                 this._actionButtons[i].state = ActionButtonState.Normal;
             }
 
+            this.hideStatusCard();
             this.hideActionCard();
 
             actionButton.action.execute();
@@ -2043,7 +2087,7 @@ class ActionCollection {
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         if (AdaptiveCard.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
-            this.showActionCard(<ShowCardAction>this.items[0]);
+            this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
         else {
@@ -2058,7 +2102,7 @@ class ActionCollection {
                         case Enums.HorizontalAlignment.Center:
                             buttonStrip.style.justifyContent = "center";
                             break;
-                            case Enums.HorizontalAlignment.Right:
+                        case Enums.HorizontalAlignment.Right:
                             buttonStrip.style.justifyContent = "flex-end";
                             break;
                         default:
@@ -2343,7 +2387,9 @@ export class Container extends CardElement {
 
     protected hideBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
-            this.renderedElement.style.paddingBottom = "0px";
+            if (this.renderedElement) {
+                this.renderedElement.style.paddingBottom = "0px";
+            }
 
             super.hideBottomSpacer(requestingElement);
         }
@@ -2525,7 +2571,7 @@ export class Container extends CardElement {
                     e.cancelBubble = true;
                 }
             }
-    
+
             element.onkeypress = (e) => {
                 if (this.selectAction != null) {
                     // Enter or space pressed
@@ -2533,7 +2579,7 @@ export class Container extends CardElement {
                         this.selectAction.execute();
                     }
                 }
-            }    
+            }
         }
 
         if (this._items.length > 0) {
@@ -2584,6 +2630,10 @@ export class Container extends CardElement {
         else {
             return this.defaultStyle;
         }
+    }
+
+    set style(value: Enums.ContainerStyle) {
+        this._style = value;
     }
 
     getJsonTypeName(): string {
@@ -2660,7 +2710,7 @@ export class Container extends CardElement {
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
-
+            this.clear();
             for (var i = 0; i < items.length; i++) {
                 var elementType = items[i]["type"];
 
@@ -2675,7 +2725,7 @@ export class Container extends CardElement {
                 }
                 else {
                     this.addItem(element);
-                    
+
                     element.parse(items[i]);
                 }
             }
@@ -2901,8 +2951,8 @@ export class Column extends Container {
 export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
     private _selectAction: Action;
-    
-    
+
+
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
@@ -2985,7 +3035,7 @@ export class ColumnSet extends CardElement {
 
         if (json["columns"] != null) {
             let jsonColumns = json["columns"] as Array<any>;
-
+            this._columns = [];
             for (let i = 0; i < jsonColumns.length; i++) {
                 var column = new Column();
 
@@ -3120,40 +3170,100 @@ export class ColumnSet extends CardElement {
     }
 }
 
-export interface IVersion {
-    major: number;
-    minor: number;
+export class Version {
+    private _versionString: string;
+    private _major: number;
+    private _minor: number;
+    private _isValid: boolean = true;
+
+    constructor(major: number = 1, minor: number = 1) {
+        this._major = major;
+        this._minor = minor;
+    }
+
+    static parse(versionString: string): Version {
+        if (!versionString) {
+            return null;
+        }
+
+        var result = new Version();
+        result._versionString = versionString;
+
+        var regEx = /(\d+).(\d+)/gi;
+        var matches = regEx.exec(versionString);
+
+        if (matches != null && matches.length == 3) {
+            result._major = parseInt(matches[1]);
+            result._minor = parseInt(matches[2]);
+        }
+        else {
+            result._isValid = false;
+        }
+
+        return result;
+    }
+
+    toString(): string {
+        return !this._isValid ? this._versionString : this._major + "." + this._minor;
+    }
+
+    get major(): number {
+        return this._major;
+    }
+
+    get minor(): number {
+        return this._minor;
+    }
+
+    get isValid(): boolean {
+        return this._isValid;
+    }
 }
 
-function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
-    return AdaptiveCard.onAnchorClicked != null ? AdaptiveCard.onAnchorClicked(anchor) : false;
+function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement): boolean {
+    let card = element.getRootElement() as AdaptiveCard;
+    let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
+    
+    return onAnchorClickedHandler != null ? onAnchorClickedHandler(anchor) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
-    if (AdaptiveCard.onExecuteAction != null) {
+    let card = action.parent.getRootElement() as AdaptiveCard;
+    let onExecuteActionHandler = (card && card.onExecuteAction) ? card.onExecuteAction : AdaptiveCard.onExecuteAction;
+
+    if (onExecuteActionHandler) {
         action.prepare(action.parent.getRootElement().getAllInputs());
 
-        AdaptiveCard.onExecuteAction(action);
+        onExecuteActionHandler(action);
     }
 }
 
 function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolean) {
-    if (AdaptiveCard.onInlineCardExpanded != null) {
-        AdaptiveCard.onInlineCardExpanded(action, isExpanded);
+    let card = action.parent.getRootElement() as AdaptiveCard;
+    let onInlineCardExpandedHandler = (card && card.onInlineCardExpanded) ? card.onInlineCardExpanded : AdaptiveCard.onInlineCardExpanded;
+
+    if (onInlineCardExpandedHandler) {
+        onInlineCardExpandedHandler(action, isExpanded);
     }
 }
 
 function raiseElementVisibilityChangedEvent(element: CardElement) {
     element.getRootElement().updateLayout();
 
-    if (AdaptiveCard.onElementVisibilityChanged != null) {
-        AdaptiveCard.onElementVisibilityChanged(element);
+    let card = element.getRootElement() as AdaptiveCard;
+    let onElementVisibilityChangedHandler = (card && card.onElementVisibilityChanged) ? card.onElementVisibilityChanged : AdaptiveCard.onElementVisibilityChanged;
+
+    if (onElementVisibilityChangedHandler != null) {
+        onElementVisibilityChangedHandler(element);
     }
 }
 
 function raiseParseElementEvent(element: CardElement, json: any) {
-    if (AdaptiveCard.onParseElement != null) {
-        AdaptiveCard.onParseElement(element, json);
+    let card = element.getRootElement() as AdaptiveCard;
+    let onParseElementHandler = (card && card.onParseElement) ? card.onParseElement : AdaptiveCard.onParseElement;
+
+    if (onParseElementHandler != null) {
+        onParseElementHandler(element, json);
     }
 }
 
@@ -3226,7 +3336,7 @@ export abstract class ContainerWithActions extends Container {
         var result = super.validate();
 
         if (this._actionCollection) {
-            result = result.concat(this._actionCollection.validate());            
+            result = result.concat(this._actionCollection.validate());
         }
 
         return result;
@@ -3314,7 +3424,7 @@ export abstract class TypeRegistry<T> {
 export class ElementTypeRegistry extends TypeRegistry<CardElement> {
     reset() {
         this.clear();
-        
+
         this.registerType("Container", () => { return new Container(); });
         this.registerType("TextBlock", () => { return new TextBlock(); });
         this.registerType("Image", () => { return new Image(); });
@@ -3326,24 +3436,26 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("Input.Time", () => { return new TimeInput(); });
         this.registerType("Input.Number", () => { return new NumberInput(); });
         this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
-        this.registerType("Input.Toggle", () => { return new ToggleInput(); });        
+        this.registerType("Input.Toggle", () => { return new ToggleInput(); });
     }
 }
 
 export class ActionTypeRegistry extends TypeRegistry<Action> {
     reset() {
         this.clear();
-        
+
         this.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
         this.registerType("Action.Submit", () => { return new SubmitAction(); });
         this.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
-    }    
+    }
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: IVersion = { major: 1, minor: 0 };
+
+    private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
+    static useAdvancedTextBlockTruncation: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -3355,15 +3467,48 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
-    private isVersionSupported(): boolean {
-        var unsupportedVersion: boolean =
-            (AdaptiveCard.currentVersion.major < this.minVersion.major) ||
-            (AdaptiveCard.currentVersion.major == this.minVersion.major && AdaptiveCard.currentVersion.minor < this.minVersion.minor);
+    static processMarkdown = function (text: string): string {
+        // Check for markdownit
+        if (window["markdownit"]) {
+            return window["markdownit"]().render(text);
+        }
 
-        return !unsupportedVersion;
+        return text;
+    }
+
+    private isVersionSupported(): boolean {
+        if (this.bypassVersionCheck) {
+            return true;
+        }
+        else {
+            var unsupportedVersion: boolean =
+                !this.version ||
+                (AdaptiveCard.currentVersion.major < this.version.major) ||
+                (AdaptiveCard.currentVersion.major == this.version.major && AdaptiveCard.currentVersion.minor < this.version.minor);
+
+            return !unsupportedVersion;
+        }
     }
 
     private _cardTypeName: string;
+
+    protected showBottomSpacer(requestingElement: CardElement) {
+        if ((!requestingElement || this.isLastElement(requestingElement))) {
+            this.applyPadding();
+
+            // Do not walk up the tree from an AdaptiveCard instance
+        }
+    }
+
+    protected hideBottomSpacer(requestingElement: CardElement) {
+        if ((!requestingElement || this.isLastElement(requestingElement))) {
+            if (this.renderedElement) {
+                this.renderedElement.style.paddingBottom = "0px";
+            }
+
+            // Do not walk up the tree from an AdaptiveCard instance
+        }
+    }
 
     protected applyPadding() {
         var effectivePadding = this.hostConfig.paddingToSpacingDefinition(this.internalPadding);
@@ -3372,6 +3517,10 @@ export class AdaptiveCard extends ContainerWithActions {
         this.renderedElement.style.paddingRight = effectivePadding.right + "px";
         this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
         this.renderedElement.style.paddingLeft = effectivePadding.left + "px";
+    }
+
+    protected get bypassVersionCheck(): boolean {
+        return false;
     }
 
     protected get defaultPadding(): HostConfig.PaddingDefinition {
@@ -3390,15 +3539,22 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected get allowCustomStyle() {
-        return this.hostConfig.adaptiveCard.allowCustomStyle;
+        return this.hostConfig.adaptiveCard && this.hostConfig.adaptiveCard.allowCustomStyle;
     }
 
     protected get hasBackground(): boolean {
         return true;
     }
 
-    minVersion: IVersion = { major: 1, minor: 0 };
+    onAnchorClicked: (anchor: HTMLAnchorElement) => boolean = null;
+    onExecuteAction: (action: Action) => void = null;
+    onElementVisibilityChanged: (element: CardElement) => void = null;
+    onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    onParseElement: (element: CardElement, json: any) => void = null;
+    
+    version?: Version = new Version(1, 0);
     fallbackText: string;
+    type: string = "AdaptiveCard";
 
     getJsonTypeName(): string {
         return "AdaptiveCard";
@@ -3415,11 +3571,18 @@ export class AdaptiveCard extends ContainerWithActions {
                 });
         }
 
-        if (!this.isVersionSupported()) {
+        if (!this.bypassVersionCheck && (!this.version || !this.version.isValid)) {
+            result.push(
+                {
+                    error: Enums.ValidationError.PropertyCantBeNull,
+                    message: !this.version ? "The version property must be specified." : "Invalid version: " + this.version
+                });
+        }
+        else if (!this.isVersionSupported()) {
             result.push(
                 {
                     error: Enums.ValidationError.UnsupportedCardVersion,
-                    message: "The specified card version is not supported."
+                    message: "The specified card version (" + this.version + ") is not supported. The maximum supported card version is " + AdaptiveCard.currentVersion
                 });
         }
 
@@ -3429,21 +3592,14 @@ export class AdaptiveCard extends ContainerWithActions {
     parse(json: any) {
         this._cardTypeName = json["type"];
 
-        var minVersion = json["minVersion"];
-        var regEx = /(\d+).(\d+)/gi;
-        var matches = regEx.exec(minVersion);
-
-        if (matches != null && matches.length == 3) {
-            this.minVersion.major = parseInt(matches[1]);
-            this.minVersion.minor = parseInt(matches[2]);
-        }
+        this.version = Version.parse(json["version"]);
 
         this.fallbackText = json["fallbackText"];
 
         super.parse(json, "body");
     }
 
-    render(): HTMLElement {
+    render(target?: HTMLElement): HTMLElement {
         var renderedCard: HTMLElement;
 
         if (!this.isVersionSupported()) {
@@ -3462,6 +3618,11 @@ export class AdaptiveCard extends ContainerWithActions {
             }
         }
 
+        if (target) {
+            target.appendChild(renderedCard);
+            this.updateLayout();
+        }
+
         return renderedCard;
     }
 
@@ -3471,25 +3632,37 @@ export class AdaptiveCard extends ContainerWithActions {
 }
 
 class InlineAdaptiveCard extends AdaptiveCard {
+    protected get bypassVersionCheck(): boolean {
+        return true;
+    }
+
     protected get defaultPadding(): HostConfig.PaddingDefinition {
         return new HostConfig.PaddingDefinition(
             {
-                top: Enums.Padding.Default,
+                top: this.suppressStyle ? Enums.Padding.None : Enums.Padding.Default,
                 right: Enums.Padding.Default,
-                bottom: Enums.Padding.Default,
+                bottom: this.suppressStyle ? Enums.Padding.None : Enums.Padding.Default,
                 left: Enums.Padding.Default
             }
         );
     }
 
     protected get defaultStyle(): Enums.ContainerStyle {
-        return this.hostConfig.actions.showCard.style ? this.hostConfig.actions.showCard.style : Enums.ContainerStyle.Emphasis;
+        if (this.suppressStyle) {
+            return Enums.ContainerStyle.Default;
+        }
+        else {
+            return this.hostConfig.actions.showCard.style ? this.hostConfig.actions.showCard.style : Enums.ContainerStyle.Emphasis;
+        }
     }
+
+    suppressStyle: boolean = false;
 
     render() {
         var renderedCard = super.render();
         renderedCard.setAttribute("aria-live", "polite");
         renderedCard.removeAttribute("tabindex");
+
         return renderedCard;
     }
 
@@ -3498,4 +3671,125 @@ class InlineAdaptiveCard extends AdaptiveCard {
     }
 }
 
-const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig();
+const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
+{
+    supportsInteractivity: true,
+    fontFamily: "Segoe UI",
+    spacing: {
+        small: 10,
+        default: 20,
+        medium: 30,
+        large: 40,
+        extraLarge: 50,
+        padding: 20
+    },
+    separator: {
+        lineThickness: 1,
+        lineColor: "#EEEEEE"
+    },
+    fontSizes: {
+        small: 12,
+        default: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
+    },
+    fontWeights: {
+        lighter: 200,
+        default: 400,
+        bolder: 600
+    },
+    imageSizes: {
+        small: 40,
+        medium: 80,
+        large: 160
+    },
+    containerStyles: {
+        default: {
+            backgroundColor: "#FFFFFF",
+            foregroundColors: {
+                default: {
+                    normal: "#333333",
+                    subtle: "#EE333333"
+                },
+                accent: {
+                    normal: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    normal: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#e69500",
+                    subtle: "#DDe69500"
+                }
+            }
+        },
+        emphasis: {
+            backgroundColor: "#08000000",
+            foregroundColors: {
+                default: {
+                    normal: "#333333",
+                    subtle: "#EE333333"
+                },
+                accent: {
+                    normal: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    normal: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#e69500",
+                    subtle: "#DDe69500"
+                }
+            }
+        }
+    },
+    actions: {
+        maxActions: 5,
+        spacing: Enums.Spacing.Default,
+        buttonSpacing: 10,
+        showCard: {
+            actionMode: Enums.ShowCardActionMode.Inline,
+            inlineTopMargin: 16
+        },
+        actionsOrientation: Enums.Orientation.Horizontal,
+        actionAlignment: Enums.ActionAlignment.Left
+    },
+    adaptiveCard: {
+        allowCustomStyle: false
+    },
+    imageSet: {
+        imageSize: Enums.Size.Medium,
+        maxImageHeight: 100
+    },
+    factSet: {
+        title: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Bolder,
+            wrap: true,
+            maxWidth: 150,
+        },
+        value: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Default,
+            wrap: true,
+        },
+        spacing: 10
+    }
+});

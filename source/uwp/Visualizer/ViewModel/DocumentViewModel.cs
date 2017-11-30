@@ -1,4 +1,4 @@
-﻿using AdaptiveCards.Uwp;
+﻿using AdaptiveCards.Rendering.Uwp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;

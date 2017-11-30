@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -14,7 +15,7 @@ import {
 export class SkypeContainer extends HostContainer {
     private _width: number;
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var element = document.createElement("div");
         element.className = "skypeContainer";
 
@@ -30,11 +31,14 @@ export class SkypeContainer extends HostContainer {
         botElementIn2.className = "hexagon-in2";
         botElementIn1.appendChild(botElementIn2);
 
+        var cardWrapper = document.createElement("div");
+        cardWrapper.style.width = this._width + "px";
+
         element.appendChild(botElement);
+        element.appendChild(cardWrapper);
+        target.appendChild(element);
 
-        renderedCard.style.width = this._width + "px";
-
-        element.appendChild(renderedCard);
+        var renderedCard = adaptiveCard.render(cardWrapper);
 
         return element;
     }
@@ -76,7 +80,7 @@ export class SkypeContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#EAEAEA",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"
@@ -101,7 +105,7 @@ export class SkypeContainer extends HostContainer {
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
                             normal: "#333333",
                             subtle: "#EE333333"

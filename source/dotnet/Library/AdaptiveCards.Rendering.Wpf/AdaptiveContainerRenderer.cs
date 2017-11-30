@@ -16,13 +16,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (container.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(container.SelectAction);
-                if (uiButton != null)
-                {
-                    uiButton.Content = uiContainer;
-                    uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
-                    return uiButton;
-                }
+                return context.RenderSelectAction(container.SelectAction, uiContainer);
             }
 
             Grid uiOuterContainer = new Grid();
