@@ -75,7 +75,7 @@ export interface IFactSet extends ICardElement {
 }
 
 export interface IImage extends ICardElement {
-    type: "Type";
+    type: "Image";
     altText?: string;
     selectAction?: IAction;
     size?: Enums.Size;
