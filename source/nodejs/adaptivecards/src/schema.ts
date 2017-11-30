@@ -117,6 +117,7 @@ export interface IInputToggle extends IInput {
 }
 export interface ITextBlock extends ICardElement {
     color?: TextColor;
+    horizontalAlignment?: HorizontalAlignment;
     isSubtle?: boolean;
     maxLines?: number;
     size?: TextSize;
