@@ -14,7 +14,6 @@ export interface IRenderOptions {
 export function renderCard(card: IAdaptiveCard | string,
                            options?: IRenderOptions,
                            target?: HTMLElement): HTMLElement {
-
     if (typeof card === "string") {
         card = <IAdaptiveCard>JSON.parse(card);
     }

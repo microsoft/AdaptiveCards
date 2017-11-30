@@ -1,4 +1,12 @@
-import * as Enums from "./enums";
+export type Size = "auto" | "stretch" | "small" | "medium" | "large";
+export type TextSize  = "small" | "default" | "medium" | "large" | "extraLarge";
+export type HorizontalAlignment = "left" | "center" | "right";
+export type VerticalAlignment = "top" | "center" | "bottom";
+export type Spacing = "none" | "small" | "default" | "medium" | "large" | "extraLarge" | "padding";
+export type TextWeight = "lighter" | "default" | "bolder";
+export type TextColor = "default" | "dark" | "light" | "accent" | "good" | "warning" | "attention";
+export type ContainerStyle = "default" | "emphasis";
+export type ImageStyle = "default" | "person";
 
 export interface IAction {
     id: string;
@@ -23,8 +31,8 @@ export interface IShowCardAction extends IAction {
 export interface ICardElement {
     id?: string;
     speak?: string;
-    horizontalAlignment?: Enums.HorizontalAlignment;
-    spacing?: Enums.Spacing;
+    horizontalAlignment?: HorizontalAlignment;
+    spacing?: Spacing;
     separator?: boolean;
     height?: "auto" | "stretch";
     [propName: string]: any;
@@ -36,9 +44,9 @@ export interface IBackgroundImage {
 
 export interface ITextBlock extends ICardElement {
     type: "TextBlock";
-    size?: Enums.TextSize;
-    weight?: Enums.TextWeight;
-    color?: Enums.TextColor;
+    size?: TextSize;
+    weight?: TextWeight;
+    color?: TextColor;
     text: string;
     isSubtle?: boolean;
     wrap?: boolean;
@@ -48,8 +56,8 @@ export interface ITextBlock extends ICardElement {
 export interface IContainer extends ICardElement {
     type: "Container";
     backgroundImage?: IBackgroundImage | string;
-    style?: Enums.ContainerStyle;
-    verticalContentAlignment?: Enums.VerticalAlignment;
+    style?: ContainerStyle;
+    verticalContentAlignment?: VerticalAlignment;
     selectAction?: IAction;
     items?: ICardElement[];
 }
@@ -78,15 +86,15 @@ export interface IImage extends ICardElement {
     type: "Image";
     altText?: string;
     selectAction?: IAction;
-    size?: Enums.Size;
-    style?: Enums.ImageStyle;
+    size?: Size;
+    style?: ImageStyle;
     url: string;
 }
 
 export interface IImageSet extends ICardElement {
     type: "ImageSet";
     images: IImage[];
-    size?: Enums.Size;
+    size?: Size;
 }
 
 export interface IInput extends ICardElement {
