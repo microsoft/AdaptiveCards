@@ -6,7 +6,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class AdaptiveColumnRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

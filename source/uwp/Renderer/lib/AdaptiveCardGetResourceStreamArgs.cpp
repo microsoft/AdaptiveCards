@@ -7,7 +7,6 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     _Use_decl_annotations_
     HRESULT AdaptiveCardGetResourceStreamArgs::RuntimeClassInitialize(IUriRuntimeClass* url)
     {

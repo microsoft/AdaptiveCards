@@ -5,7 +5,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     struct TrackedImageDetails
     {
         EventRegistrationToken imageOpenedRegistration;

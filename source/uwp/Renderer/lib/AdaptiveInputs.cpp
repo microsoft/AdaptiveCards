@@ -14,7 +14,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     AdaptiveInputs::AdaptiveInputs()
     {
         m_inputItems = std::make_shared<std::vector<InputItem>>();

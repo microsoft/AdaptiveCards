@@ -12,7 +12,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept try
     {
         m_sharedFact = std::make_shared<Fact>();

@@ -5,7 +5,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class DECLSPEC_UUID("6a88e6d4-373a-48ba-840e-16c4b39278b1") AdaptiveCard :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,

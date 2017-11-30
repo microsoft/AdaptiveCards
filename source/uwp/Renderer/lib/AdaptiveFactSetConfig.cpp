@@ -7,7 +7,6 @@ using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept try
     {
         FactSetConfig factSetConfig;

@@ -14,7 +14,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
         m_choices = Microsoft::WRL::Make<Vector<IAdaptiveChoiceInput*>>();

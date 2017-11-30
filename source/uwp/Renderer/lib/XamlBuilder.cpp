@@ -44,7 +44,6 @@ const PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlay
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     XamlBuilder::XamlBuilder()
     {
 

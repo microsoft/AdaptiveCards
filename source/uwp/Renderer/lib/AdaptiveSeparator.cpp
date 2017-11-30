@@ -12,7 +12,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveSeparator::RuntimeClassInitialize() noexcept try
     {
         m_sharedSeparator = std::make_shared<Separator>();

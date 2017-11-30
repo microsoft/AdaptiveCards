@@ -21,7 +21,6 @@ using namespace ABI::Windows::Data::Json;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfigParseResult** parseResult) noexcept try
     {

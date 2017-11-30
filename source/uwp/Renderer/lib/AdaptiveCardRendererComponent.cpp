@@ -46,6 +46,7 @@ using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
+
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
     {
         m_xamlBuilder = std::make_shared<XamlBuilder>();
@@ -306,5 +307,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         return m_xamlBuilder;
     }
-
 }}}

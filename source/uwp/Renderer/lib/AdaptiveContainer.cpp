@@ -14,7 +14,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     AdaptiveContainer::AdaptiveContainer()
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();

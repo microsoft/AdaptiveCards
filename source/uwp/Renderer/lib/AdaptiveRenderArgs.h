@@ -4,7 +4,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class AdaptiveRenderArgs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -31,3 +30,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     ActivatableClass(AdaptiveRenderArgs);
 }}}
+#pragma once

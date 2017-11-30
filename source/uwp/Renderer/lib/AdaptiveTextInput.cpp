@@ -13,7 +13,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
         m_sharedTextInput = std::make_shared<TextInput>();

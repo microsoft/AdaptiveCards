@@ -12,7 +12,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
     {
         m_sharedTextBlock = std::make_shared<TextBlock>();

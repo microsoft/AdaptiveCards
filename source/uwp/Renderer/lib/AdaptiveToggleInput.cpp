@@ -13,7 +13,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
     {
         m_sharedToggleInput = std::make_shared<ToggleInput>();

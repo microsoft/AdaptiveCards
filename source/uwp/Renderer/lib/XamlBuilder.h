@@ -11,7 +11,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class AdaptiveCardRenderer;
 
     class XamlBuilder : public Microsoft::WRL::RuntimeClass<
@@ -19,7 +18,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         Microsoft::WRL::FtmBase,
         AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener>
     {
-        InspectableClass(L"AdaptiveCards.Uwp.XamlBuilder", BaseTrust)
+        InspectableClass(L"AdaptiveCards.Rendering.Uwp.XamlBuilder", BaseTrust)
     public:
         XamlBuilder();
 

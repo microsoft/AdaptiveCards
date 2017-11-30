@@ -12,7 +12,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveChoiceInput::RuntimeClassInitialize() noexcept try
     {
         m_sharedChoiceInput = std::make_shared<ChoiceInput>();

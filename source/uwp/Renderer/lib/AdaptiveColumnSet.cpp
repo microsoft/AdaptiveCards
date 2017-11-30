@@ -16,7 +16,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     AdaptiveColumnSet::AdaptiveColumnSet()
     {
         m_columns = Microsoft::WRL::Make<Vector<IAdaptiveColumn*>>();
