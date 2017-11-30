@@ -1,5 +1,6 @@
 import * as Enums from "./enums";
 import * as Utils from "./utils";
+import { TextColor } from "./adaptivecards";
 
 export class SpacingDefinition {
     left: number = 0;
@@ -43,21 +44,27 @@ export class PaddingDefinition {
 }
 
 export class TextColorDefinition {
-    normal: string = "#000000";
-    subtle: string = "#222222";
+    default: string = "#000000";
+    subtle: string = "#666666";
 
     constructor(obj?: any) {
         if (obj) {
-            this.normal = obj["normal"] || this.normal;
+            this.default = obj["default"] || this.default;
             this.subtle = obj["subtle"] || this.subtle;
         }
     }
 }
 
 export class ContainerStyleDefinition {
+    private getTextColorDefinitionOrDefault(obj: any, defaultValue: { default: string, subtle: string }) {
+        return new TextColorDefinition(obj ? obj : defaultValue);
+    }
+
     backgroundColor?: string;
     readonly foregroundColors = {
         default: new TextColorDefinition(),
+        dark: new TextColorDefinition(),
+        light: new TextColorDefinition(),
         accent: new TextColorDefinition(),
         good: new TextColorDefinition(),
         warning: new TextColorDefinition(),
@@ -67,12 +74,17 @@ export class ContainerStyleDefinition {
     constructor(obj?: any) {
         if (obj) {
             this.backgroundColor = obj["backgroundColor"];
-            this.foregroundColors = {
-                default: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["default"]),
-                accent: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["accent"]),
-                good: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["good"]),
-                warning: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["warning"]),
-                attention: new TextColorDefinition(obj.foregroundColors && obj.foregroundColors["attention"])
+
+            if (obj.foregroundColors) {
+                this.foregroundColors = {
+                    default: this.getTextColorDefinitionOrDefault(obj.foregroundColors["default"], { default: "#333333", subtle: "#EE333333" }),
+                    dark: this.getTextColorDefinitionOrDefault(obj.foregroundColors["dark"], { default: "#000000", subtle: "#66000000" }),
+                    light: this.getTextColorDefinitionOrDefault(obj.foregroundColors["light"], { default: "#FFFFFF", subtle: "#33000000" }),
+                    accent: this.getTextColorDefinitionOrDefault(obj.foregroundColors["accent"], { default: "#2E89FC", subtle: "#882E89FC" }),
+                    good: this.getTextColorDefinitionOrDefault(obj.foregroundColors["good"], { default: "#54A254", subtle: "#DD54A254" }),
+                    warning: this.getTextColorDefinitionOrDefault(obj.foregroundColors["warning"], { default: "#E69500", subtle: "#DDE69500" }),
+                    attention: this.getTextColorDefinitionOrDefault(obj.foregroundColors["attention"], { default: "#CC3300", subtle: "#DDCC3300" })
+                }
             }
         }
     }

@@ -455,6 +455,12 @@ export class TextBlock extends CardElement {
                 case Enums.TextColor.Accent:
                     colorDefinition = styleDefinition.foregroundColors.accent;
                     break;
+                case Enums.TextColor.Dark:
+                    colorDefinition = styleDefinition.foregroundColors.dark;
+                    break;
+                case Enums.TextColor.Light:
+                    colorDefinition = styleDefinition.foregroundColors.light;
+                    break;
                 case Enums.TextColor.Good:
                     colorDefinition = styleDefinition.foregroundColors.good;
                     break;
@@ -469,7 +475,7 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.normal);
+            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
 
             var fontWeight: number;
 
@@ -1850,8 +1856,6 @@ export class ShowCardAction extends Action {
 
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
-    title: string;
-
     getJsonTypeName(): string {
         return "Action.ShowCard";
     }
@@ -2952,7 +2956,6 @@ export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
     private _selectAction: Action;
 
-
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
@@ -3451,7 +3454,6 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-
     private static currentVersion: Version = new Version(1, 0);
 
     static preExpandSingleShowCardAction: boolean = false;
@@ -3712,6 +3714,14 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
                     normal: "#333333",
                     subtle: "#EE333333"
                 },
+                dark: {
+                    normal: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    normal: "#FFFFFF",
+                    subtle: "#33000000"
+                },
                 accent: {
                     normal: "#2E89FC",
                     subtle: "#882E89FC"
@@ -3736,6 +3746,14 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
                 default: {
                     normal: "#333333",
                     subtle: "#EE333333"
+                },
+                dark: {
+                    normal: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    normal: "#FFFFFF",
+                    subtle: "#33000000"
                 },
                 accent: {
                     normal: "#2E89FC",
