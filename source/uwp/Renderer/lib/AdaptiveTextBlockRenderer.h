@@ -4,9 +4,7 @@
 #include "Enums.h"
 #include "TextBlock.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
-
+namespace AdaptiveCards { namespace Rendering { namespace Uwp {
     class AdaptiveTextBlockRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

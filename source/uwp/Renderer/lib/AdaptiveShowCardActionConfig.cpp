@@ -8,7 +8,6 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
     {
         ShowCardActionConfig showCardActionConfig;

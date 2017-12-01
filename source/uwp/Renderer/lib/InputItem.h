@@ -4,7 +4,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class InputItem
     {
     public:

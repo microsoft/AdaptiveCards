@@ -6,7 +6,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class DECLSPEC_UUID("2e716e94-a83a-4e9b-9873-bff858af068d") AdaptiveTextInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

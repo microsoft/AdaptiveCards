@@ -20,7 +20,6 @@ using namespace ABI::Windows::UI::Xaml::Media;
 static const float OutsidePanelY = -1000.0f;
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT WholeItemsPanel::RuntimeClassInitialize()
     {
         ComPtr<IPanelFactory> spFactory;
@@ -522,4 +521,3 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
 }}}
-

@@ -5,7 +5,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class AdaptiveActionInvoker :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

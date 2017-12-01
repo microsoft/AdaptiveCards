@@ -11,7 +11,6 @@ using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     ImageLoadTracker::~ImageLoadTracker()
     {
         for (auto& eventRegistration : m_eventRegistrations)

@@ -2,9 +2,7 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
-
+namespace AdaptiveCards { namespace Rendering { namespace Uwp {
     class AdaptiveError:
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

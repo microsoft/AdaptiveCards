@@ -13,7 +13,6 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     AdaptiveImageRenderer::AdaptiveImageRenderer()
     {
         m_xamlBuilder = std::make_shared<XamlBuilder>();

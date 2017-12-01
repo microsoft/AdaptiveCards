@@ -14,7 +14,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     AdaptiveFactSet::AdaptiveFactSet()
     {
         m_facts = Microsoft::WRL::Make<Vector<IAdaptiveFact*>>();

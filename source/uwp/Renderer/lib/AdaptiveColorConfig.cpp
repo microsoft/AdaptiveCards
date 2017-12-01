@@ -8,7 +8,6 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept try
     {
         ColorConfig colorConfig;
@@ -51,3 +50,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 }}}
+

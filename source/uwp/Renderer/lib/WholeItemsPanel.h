@@ -5,12 +5,11 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class WholeItemsPanel : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::Uwp::IWholeItemsPanel,
         ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
         Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
     {
-        InspectableClass(L"AdaptiveCards.Uwp.WholeItemsPanel", BaseTrust)
+        InspectableClass(L"AdaptiveCards.Rendering.Uwp.WholeItemsPanel", BaseTrust)
 
         public:
             HRESULT STDMETHODCALLTYPE RuntimeClassInitialize();

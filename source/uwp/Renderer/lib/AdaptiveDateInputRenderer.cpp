@@ -14,7 +14,6 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveDateInputRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;

@@ -6,7 +6,6 @@ using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept try
     {
         ImageSetConfig imageSetConfig;
