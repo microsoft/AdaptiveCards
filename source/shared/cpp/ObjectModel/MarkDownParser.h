@@ -80,15 +80,14 @@ private:
     unsigned int m_currentWordIndex = 0;
     int m_lookBehind = Init;
     int m_delimiterCnts = 0;
-    int m_EmphasisState = EmphasisNone;
+    int m_emphasisState = EmphasisNone;
     bool m_checkLookAhead = false;
     bool m_checkIntraWord = false;
-    int m_LeftEmphasisDetecting = false;
+    int m_LeftEmphasisDetecting = 0;
 
     std::string m_text;
     std::string::iterator m_textBegin;
     std::string::iterator m_curPos;
-    std::string::iterator m_textEnd;
     std::list<Emphasis> m_leftLookUpTable;
     std::list<Emphasis> m_rightLookUpTable;
     std::vector<std::string> m_tokenizedString = std::vector<std::string>(1, "");

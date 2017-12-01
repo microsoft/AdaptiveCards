@@ -5,8 +5,7 @@
 
 using namespace AdaptiveCards;
 
-MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), 
-        m_textBegin(m_text.begin()), m_curPos(m_text.begin()), m_textEnd(m_text.end())
+MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_curPos(m_text.begin())
 {
 }
 
@@ -257,7 +256,7 @@ void MarkDownParser::PutBackCh()
     --m_currentWordIndex;
     char ch = (m_currentDelimiterType == Asterisk)? '*' : '_';
     // last ch gets stored; so no need to put back last ch
-    if (m_curPos + 1 == m_textEnd)
+    if (m_curPos + 1 == m_text.end())
     { 
         m_delimiterCnts--;
     }
@@ -270,7 +269,7 @@ void MarkDownParser::PutBackCh()
 
 bool MarkDownParser::IsLeftEmphasisDelimiter () 
 {
-    return ((m_EmphasisState & ~InsideEmphasis) && 
+    return ((m_emphasisState & ~InsideEmphasis) && 
              m_delimiterCnts && 
              !isspace (*m_curPos) && 
              !(m_lookBehind == Alphanumeric && ispunct(*m_curPos)) && 
@@ -316,8 +315,8 @@ bool MarkDownParser::IsRightEmphasisDelimiter ()
 
     if (ispunct(*m_curPos) && m_lookBehind != WhiteSpace)
     {
-        if ((m_EmphasisState & EmphasisEnd) || 
-           ((m_EmphasisState & InsideEmphasis) && (m_curPos + 1 == m_textEnd))) 
+        if ((m_emphasisState & EmphasisEnd) || 
+           ((m_emphasisState & InsideEmphasis) && (m_curPos + 1 == m_text.end()))) 
         {
             return true;
         }
@@ -357,12 +356,12 @@ void MarkDownParser::UpdateState ()
 {
     if (IsMarkDownDelimiter (*m_curPos))
     {
-        m_EmphasisState = (m_EmphasisState & (OutsideEmphasis))?
+        m_emphasisState = (m_emphasisState & (OutsideEmphasis))?
             EmphasisStart : EmphasisRun;
     }
     else
     {
-        m_EmphasisState = (m_EmphasisState & InsideEmphasis)?
+        m_emphasisState = (m_emphasisState & InsideEmphasis)?
             EmphasisEnd : EmphasisNone;
     }
 
@@ -381,7 +380,7 @@ void MarkDownParser::StartNewTokenCapture()
 
 bool MarkDownParser::IsEmphasisDelimiterRun(MarkDownParser::DelimiterType emphasisType)
 {
-    return ((m_currentDelimiterType == emphasisType ) || (m_EmphasisState & EmphasisStart));
+    return ((m_currentDelimiterType == emphasisType ) || (m_emphasisState & EmphasisStart));
 }
 
 void MarkDownParser::UpdateCurrentEmphasisRunState(MarkDownParser::DelimiterType emphasisType)
@@ -396,7 +395,7 @@ void MarkDownParser::UpdateCurrentEmphasisRunState(MarkDownParser::DelimiterType
 
 void MarkDownParser::ResetCurrentEmphasisRunState(MarkDownParser::DelimiterType emphasisType)
 {
-    m_EmphasisState = EmphasisStart;
+    m_emphasisState = EmphasisStart;
     m_delimiterCnts = 1;
 }
 // detects valid emphasis delimiters, when valid delimiters are found, they are added into
@@ -407,14 +406,14 @@ void MarkDownParser::ResetCurrentEmphasisRunState(MarkDownParser::DelimiterType 
 // emphasis count and its types that are used in html generation 
 void MarkDownParser::GenSymbolTable ()
 {
-    while (m_curPos < m_textEnd)
+    while (m_curPos < m_text.end())
     {
-        UpdateState ();
+        UpdateState();
 
-        if (m_EmphasisState & InsideEmphasis)
+        if (m_emphasisState & InsideEmphasis)
         {
             // if new emphasis token found start capturing new token
-            if (m_curPos != m_textBegin && (m_EmphasisState & EmphasisStart))
+            if (m_curPos != m_text.begin() && (m_emphasisState & EmphasisStart))
             { 
                 StartNewTokenCapture();
             }
@@ -433,13 +432,13 @@ void MarkDownParser::GenSymbolTable ()
             m_currentDelimiterType = delimiterTypeForNewChar;
         }
 
-        if ((m_EmphasisState == EmphasisEnd) || 
-           ((m_EmphasisState & InsideEmphasis) && (m_curPos + 1 == m_textEnd)))
+        if ((m_emphasisState == EmphasisEnd) || 
+           ((m_emphasisState & InsideEmphasis) && (m_curPos + 1 == m_text.end())))
         {
             if (PushRightEmphasisToLookUpTableIfValid() || PushLeftEmphasisToLookUpTableIfValid())
             {
                 // begin new token capture  
-                if (m_EmphasisState & OutsideEmphasis)
+                if (m_emphasisState & OutsideEmphasis)
                 {
                     StartNewTokenCapture();
                 }
@@ -453,7 +452,7 @@ void MarkDownParser::GenSymbolTable ()
             m_delimiterCnts = 0;
         }
 
-        if (m_EmphasisState & OutsideEmphasis)
+        if (m_emphasisState & OutsideEmphasis)
         {
             //store ch and move itr
             if (isspace (*m_curPos))
