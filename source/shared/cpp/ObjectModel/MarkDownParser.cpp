@@ -5,15 +5,8 @@
 
 using namespace AdaptiveCards;
 
-MarkDownParser::MarkDownParser (const std::string &txt) : m_currentDelimiterType (Init), 
-    m_currentWordIndex(0), m_lookBehind(Init), m_delimiterCnts(0), m_EmphasisState (EmphasisNotDetected), 
-    m_checkLookAhead(false), m_checkIntraWord(false), m_isRightEmphasisDetecting(false), m_text(txt), 
-    m_textBegin(m_text.begin()), m_curPos(m_text.begin()), m_textEnd(m_text.end()), m_LeftEmphasisDetecting(0),
-    m_leftLookUpTable (), m_rightLookUpTable (), m_tokenizedString(1, "")
-{
-}
-
-int MarkDownParser::adjustDelimsCntsAndMetaData(int leftOver, std::list<Emphasis>::iterator left_itr, 
+// adjust number of emphasis counts after maching is done
+int MarkDownParser::AdjustEmphasisCounts(int leftOver, std::list<Emphasis>::iterator left_itr, 
         std::list<Emphasis>::iterator right_itr)
 {
     int delimCnts = 0;
@@ -32,7 +25,9 @@ int MarkDownParser::adjustDelimsCntsAndMetaData(int leftOver, std::list<Emphasis
     return delimCnts;
 }
 
-std::string MarkDownParser::TransformToHtml(void)
+// Following the rules speicified in CommonMark (http://spec.commonmark.org/0.27/)
+// It generally supports more stricker version of the rules
+std::string MarkDownParser::TransformToHtml()
 {
     GenSymbolTable ();
     if (!m_leftLookUpTable.size () || !m_rightLookUpTable.size ())
@@ -58,7 +53,7 @@ std::string MarkDownParser::TransformToHtml(void)
         else
         {
             curr_left_delim = stk.back();
-            // because of rule #9 & #10 and multiple of 3 rule, left delim jump ahead of right delim,
+            // because of rule #9 & #10 and multiple of 3 rule, left delim can jump ahead of right delim,
             // so need to check this condition.
             if (curr_left_delim->m_idx > top_right->m_idx)
             {
@@ -72,7 +67,7 @@ std::string MarkDownParser::TransformToHtml(void)
             // found the left and right delimiter, gen string
             if (curr_left_delim_type == curr_right_delim_type)
             {
-                // rule #9 & #10, sume of delim cnts can't be multipe of 3 
+                // rule #9 & #10, sum of delim cnts can't be multipe of 3 
                 if (!((curr_left_delim->m_emphCnts + top_right->m_emphCnts) % 3))
                 {
                       if (m_tokenizedString.size () != top_right->m_idx + 1)
@@ -136,7 +131,7 @@ std::string MarkDownParser::TransformToHtml(void)
                 }
                 // check which one will have leftover delims
                 leftOver = curr_left_delim->m_emphCnts - top_right->m_emphCnts;
-                delimCnts = adjustDelimsCntsAndMetaData(leftOver, curr_left_delim, top_right);
+                delimCnts = AdjustEmphasisCounts(leftOver, curr_left_delim, top_right);
                 right_token_idx = top_right;
                 if (leftOver >= 0)
                 {
@@ -157,7 +152,7 @@ std::string MarkDownParser::TransformToHtml(void)
                     }
 
                     leftOver = curr_left_delim->m_emphCnts - top_right->m_emphCnts;
-                    delimCnts = adjustDelimsCntsAndMetaData(leftOver, curr_left_delim, top_right);
+                    delimCnts = AdjustEmphasisCounts(leftOver, curr_left_delim, top_right);
                     right_token_idx = top_right;
                     lookBehind = 0;
                 }
@@ -266,7 +261,7 @@ void MarkDownParser::PutBackCh()
     }
 }
 
-bool MarkDownParser::IsLeftEmphasisDelimiter (void) 
+bool MarkDownParser::IsLeftEmphasisDelimiter () 
 {
     bool isLeftEmphasisDetecting = ((m_EmphasisState & ~EmphasisOn) && 
                           m_delimiterCnts && 
@@ -282,7 +277,7 @@ bool MarkDownParser::IsLeftEmphasisDelimiter (void)
     return isLeftEmphasisDetecting;
 }
 
-bool MarkDownParser::IsRightEmphasisDelimiter (void)
+bool MarkDownParser::IsRightEmphasisDelimiter ()
 {
     bool isRightEmphasisDetected = false;
     if (isspace (*m_curPos) && 
@@ -337,7 +332,7 @@ bool MarkDownParser::IsMarkDownDelimiter (char ch)
 }
 
 // Updates Emphasis MarkDown State
-void MarkDownParser::UpdateState (void)
+void MarkDownParser::UpdateState ()
 {
     if (IsMarkDownDelimiter (*m_curPos))
     {
@@ -352,7 +347,7 @@ void MarkDownParser::UpdateState (void)
 
 }
 
-void MarkDownParser::GenSymbolTable (void)
+void MarkDownParser::GenSymbolTable ()
 {
     while (m_curPos < m_textEnd)
     {

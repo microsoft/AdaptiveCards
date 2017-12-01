@@ -33,6 +33,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParser.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">
