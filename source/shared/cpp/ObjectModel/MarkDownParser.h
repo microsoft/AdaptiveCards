@@ -11,11 +11,7 @@ namespace AdaptiveCards
 class MarkDownParser
 {
 public:
-    MarkDownParser (const std::string &txt) : m_currentDelimiterType (Init), 
-        m_currentWordIndex(0), m_lookBehind(Init), m_delimiterCnts(0), m_EmphasisState (EmphasisNotDetected), 
-        m_checkLookAhead(false), m_checkIntraWord(false), m_isRightEmphasisDetecting(false), m_text(txt), 
-        m_textBegin(m_text.begin()), m_curPos(m_text.begin()), m_textEnd(m_text.end()), m_LeftEmphasisDetecting(0),
-        m_leftLookUpTable (), m_rightLookUpTable (), m_tokenizedString(1, "") {};
+    MarkDownParser (const std::string &txt); 
 
     enum DelimiterType
     {
@@ -37,15 +33,17 @@ public:
     enum EmphasisState
     {   
         // state for the first encounter of emphasis delimiter 
-        EmphasisDetected = 0x1,  
+        EmphasisStart = 0x1,  
         // state for a emphasis delimiter run 
-        EmphasisDetecting = 0x2,   
-        EmphasisOn = EmphasisDetected | EmphasisDetecting,
-        // state for when a empahsis delimiter run is ended 
-        EmphasisEnded = 0x4,       
+        EmphasisRun = 0x2,   
+        InsideEmphasis = EmphasisStart | EmphasisRun,
+        // state for when a emphasis delimiter run is ended 
+        EmphasisEnd = 0x4,       
         // init state for emphasis detection 
-        EmphasisNotDetected = 0x8,
-        EmphasisOff = EmphasisEnded | EmphasisNotDetected,
+        EmphasisNone = 0x8,
+        OutsideEmphasis = EmphasisEnd | EmphasisNone,
+        EndOfWords = 0x10,
+        BeginOfWords = 0x20,
     };
 
     struct Emphasis
@@ -63,7 +61,14 @@ public:
 private:
     bool IsLeftEmphasisDelimiter();
     bool IsRightEmphasisDelimiter();
+    bool PushLeftEmphasisToLookUpTableIfValid();
+    bool PushRightEmphasisToLookUpTableIfValid();
     bool IsMarkDownDelimiter(char ch);
+    DelimiterType GetDelimiterTypeForCharAtCurrentPosition();
+    bool IsEmphasisDelimiterRun(MarkDownParser::DelimiterType delimiterRunType);
+    void UpdateCurrentEmphasisRunState(MarkDownParser::DelimiterType emphasisType);
+    void ResetCurrentEmphasisRunState(MarkDownParser::DelimiterType emphasisType);
+    void StartNewTokenCapture();
     void GetCh(char ch);
     void PutBackCh();
     void GenSymbolTable();
@@ -71,22 +76,21 @@ private:
     int AdjustEmphasisCounts(int leftOver, std::list<Emphasis>::iterator left_itr, 
             std::list<Emphasis>::iterator right_itr);
 
-    DelimiterType m_currentDelimiterType;
-    unsigned int m_currentWordIndex;
-    int m_lookBehind;
-    int m_delimiterCnts;
-    int m_EmphasisState;
-    bool m_checkLookAhead;
-    bool m_checkIntraWord;
-    bool m_isRightEmphasisDetecting;
+    DelimiterType m_currentDelimiterType = Init;
+    unsigned int m_currentWordIndex = 0;
+    int m_lookBehind = Init;
+    int m_delimiterCnts = 0;
+    int m_EmphasisState = EmphasisNone;
+    bool m_checkLookAhead = false;
+    bool m_checkIntraWord = false;
+    int m_LeftEmphasisDetecting = false;
 
     std::string m_text;
     std::string::iterator m_textBegin;
     std::string::iterator m_curPos;
     std::string::iterator m_textEnd;
-    int m_LeftEmphasisDetecting;
     std::list<Emphasis> m_leftLookUpTable;
     std::list<Emphasis> m_rightLookUpTable;
-    std::vector<std::string> m_tokenizedString;
+    std::vector<std::string> m_tokenizedString = std::vector<std::string>(1, "");
 };
 }
