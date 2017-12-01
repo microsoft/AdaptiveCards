@@ -3492,7 +3492,7 @@ export class AdaptiveCard extends ContainerWithActions {
         }
     }
 
-    private _cardTypeName: string;
+    private _cardTypeName?: string = "AdaptiveCard";
 
     protected showBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
@@ -3556,7 +3556,6 @@ export class AdaptiveCard extends ContainerWithActions {
     
     version?: Version = new Version(1, 0);
     fallbackText: string;
-    type: string = "AdaptiveCard";
 
     getJsonTypeName(): string {
         return "AdaptiveCard";
