@@ -86,7 +86,6 @@ private:
     int m_LeftEmphasisDetecting = 0;
 
     std::string m_text;
-    std::string::iterator m_textBegin;
     std::string::iterator m_curPos;
     std::list<Emphasis> m_leftLookUpTable;
     std::list<Emphasis> m_rightLookUpTable;
