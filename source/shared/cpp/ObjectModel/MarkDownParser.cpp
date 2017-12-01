@@ -35,8 +35,8 @@ int MarkDownParser::AdjustEmphasisCounts(int leftOver, std::list<Emphasis>::iter
 // update emphasis counts and type to build string after search is complete
 std::string MarkDownParser::TransformToHtml()
 {
-    GenSymbolTable ();
-    if (!m_leftLookUpTable.size () || !m_rightLookUpTable.size ())
+    GenSymbolTable();
+    if (!m_leftLookUpTable.size() || !m_rightLookUpTable.size())
     {
         return "<p>" + m_text + "</p>";
     }
@@ -76,14 +76,14 @@ std::string MarkDownParser::TransformToHtml()
                 // rule #9 & #10, sum of delim cnts can't be multipe of 3 
                 if (!((curr_left_delim->m_emphCnts + top_right->m_emphCnts) % 3))
                 {
-                      if (m_tokenizedString.size () != top_right->m_idx + 1)
+                      if (m_tokenizedString.size() != top_right->m_idx + 1)
                       {
                           // check adjcent char is space
                           char right_ch = m_tokenizedString[top_right->m_idx + 1][0];
                           // no need to check the right bound since it's right delim
                           char left_ch =  m_tokenizedString[top_right->m_idx - 1][0];
                           // check if right delim also can be left delim
-                          if (!isspace (right_ch) && 
+                          if (!isspace(right_ch) && 
                              !(isalnum(left_ch) && ispunct(right_ch)) && 
                              !(isalnum(left_ch) && curr_right_delim_type == Underscore))
                           {
@@ -128,7 +128,7 @@ std::string MarkDownParser::TransformToHtml()
                                   auto elem_to_erase = top_right;
                                   // move to next token for right delim tokens
                                   top_right++;
-                                  m_rightLookUpTable.erase (elem_to_erase);
+                                  m_rightLookUpTable.erase(elem_to_erase);
                                   // no maching found begin from the start
                                   continue;
                               }
@@ -147,7 +147,7 @@ std::string MarkDownParser::TransformToHtml()
             else
             {
                 // Rule #14, when two overraps, prefer left side of the overrap
-                if (DFSSearchStack.size () > 1 && lookBehind & curr_right_delim_type) 
+                if (DFSSearchStack.size() > 1 && lookBehind & curr_right_delim_type) 
                 {
                     char ch = (curr_right_delim_type == Asterisk)? '*' :'_';
                     // pop until matching delim is found
@@ -200,15 +200,15 @@ std::string MarkDownParser::TransformToHtml()
     // append all processed tags
     std::ostringstream html;
     auto leftItr = m_leftLookUpTable.begin(), rightItr = m_rightLookUpTable.begin();
-    for (unsigned int idx = 0; idx < m_tokenizedString.size (); idx++)
+    for (unsigned int idx = 0; idx < m_tokenizedString.size(); idx++)
     { 
         if (leftItr != m_leftLookUpTable.end() && leftItr->m_idx == idx)
         {
             // if there are unused emphasis, append them 
             if (leftItr->m_emphCnts)
             {
-                int startIdx = m_tokenizedString[idx].size () - leftItr->m_emphCnts;
-                html << m_tokenizedString[idx].substr (startIdx, std::string::npos);
+                int startIdx = m_tokenizedString[idx].size() - leftItr->m_emphCnts;
+                html << m_tokenizedString[idx].substr(startIdx, std::string::npos);
             }
             // append tags; since left delims, append it in the reverse order
             for (auto itr = leftItr->m_tags.rbegin(); itr != leftItr->m_tags.rend(); itr++)
@@ -227,8 +227,8 @@ std::string MarkDownParser::TransformToHtml()
             // if there are unused emphasis, append them 
             if (rightItr->m_emphCnts)
             {
-                int startIdx = m_tokenizedString[idx].size () - rightItr->m_emphCnts;
-                html << m_tokenizedString[idx].substr (startIdx, std::string::npos);
+                int startIdx = m_tokenizedString[idx].size() - rightItr->m_emphCnts;
+                html << m_tokenizedString[idx].substr(startIdx, std::string::npos);
             }
             rightItr++;
         }
@@ -238,7 +238,7 @@ std::string MarkDownParser::TransformToHtml()
         }
     }
 
-    return "<p>" + html.str () + "</p>";
+    return "<p>" + html.str() + "</p>";
 }
 
 void MarkDownParser::GetCh(char ch)
@@ -267,11 +267,11 @@ void MarkDownParser::PutBackCh()
     }
 }
 
-bool MarkDownParser::IsLeftEmphasisDelimiter () 
+bool MarkDownParser::IsLeftEmphasisDelimiter() 
 {
     return ((m_emphasisState & ~InsideEmphasis) && 
              m_delimiterCnts && 
-             !isspace (*m_curPos) && 
+             !isspace(*m_curPos) && 
              !(m_lookBehind == Alphanumeric && ispunct(*m_curPos)) && 
              !(m_lookBehind == Alphanumeric && m_currentDelimiterType == Underscore));
 }
@@ -291,9 +291,9 @@ bool MarkDownParser::PushLeftEmphasisToLookUpTableIfValid()
     return false;
 }
 
-bool MarkDownParser::IsRightEmphasisDelimiter ()
+bool MarkDownParser::IsRightEmphasisDelimiter()
 {
-    if (isspace (*m_curPos) && 
+    if (isspace(*m_curPos) && 
        (m_lookBehind != WhiteSpace) && 
        (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == Asterisk))
     {        
@@ -346,15 +346,15 @@ void MarkDownParser::SetText(const std::string & txt)
     m_text = txt;
 }
 
-bool MarkDownParser::IsMarkDownDelimiter (char ch)
+bool MarkDownParser::IsMarkDownDelimiter(char ch)
 {
     return ((ch == '*' || ch == '_') && (m_lookBehind != Escape));
 }
 
 // Updates Emphasis MarkDown State
-void MarkDownParser::UpdateState ()
+void MarkDownParser::UpdateState()
 {
-    if (IsMarkDownDelimiter (*m_curPos))
+    if (IsMarkDownDelimiter(*m_curPos))
     {
         m_emphasisState = (m_emphasisState & (OutsideEmphasis))?
             EmphasisStart : EmphasisRun;
@@ -404,7 +404,7 @@ void MarkDownParser::ResetCurrentEmphasisRunState(MarkDownParser::DelimiterType 
 // each time emphasis tokens are found, they are also added into a lookup table.
 // the look up table stores index of the corresponding token in the token vectors, and
 // emphasis count and its types that are used in html generation 
-void MarkDownParser::GenSymbolTable ()
+void MarkDownParser::GenSymbolTable()
 {
     while (m_curPos < m_text.end())
     {
@@ -455,7 +455,7 @@ void MarkDownParser::GenSymbolTable ()
         if (m_emphasisState & OutsideEmphasis)
         {
             //store ch and move itr
-            if (isspace (*m_curPos))
+            if (isspace(*m_curPos))
             {
                 m_lookBehind = WhiteSpace;
             }
