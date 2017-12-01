@@ -921,7 +921,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         HRESULT RenderAdaptiveCard([in] AdaptiveCard* adaptiveCard, [out, retval] RenderedAdaptiveCard** result);
 
         HRESULT RenderAdaptiveCardFromJsonString([in] HSTRING adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
-
         HRESULT RenderAdaptiveCardFromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
 
         [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** result);

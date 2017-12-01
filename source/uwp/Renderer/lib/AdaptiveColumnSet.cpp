@@ -4,7 +4,6 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "AdaptiveCardRendererComponent.h"
 #include "XamlHelpers.h"
 #include "AdaptiveColumn.h"
 

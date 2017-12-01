@@ -2,7 +2,6 @@
 #include "AdaptiveImage.h"
 
 #include "Util.h"
-#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

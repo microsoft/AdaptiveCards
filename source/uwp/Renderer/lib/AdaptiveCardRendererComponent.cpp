@@ -23,7 +23,6 @@
 #include "DefaultResourceDictionary.h"
 #include "InputItem.h"
 #include "RenderedAdaptiveCard.h"
-#include "XamlBuilder.h"
 #include "XamlHelpers.h"
 #include <windows.foundation.collections.h>
 #include <Windows.UI.Xaml.h>
@@ -49,6 +48,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
     {
+        m_xamlBuilder = std::make_shared<XamlBuilder>();
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
         RETURN_IF_FAILED(RegisterDefaultElementRenderers());
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
@@ -108,15 +108,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&renderedCard));
         renderedCard->SetOriginatingCard(adaptiveCard);
 
-        XamlBuilder xamlBuilder;
-
         if (adaptiveCard)
         {
             ComPtr<IUIElement> xamlTreeRoot;
 
             if (m_explicitDimensions)
             {
-                RETURN_IF_FAILED(xamlBuilder.SetFixedDimensions(m_desiredWidth, m_desiredHeight));
+                RETURN_IF_FAILED(m_xamlBuilder->SetFixedDimensions(m_desiredWidth, m_desiredHeight));
             }
 
             ComPtr<AdaptiveRenderContext> renderContext;
@@ -131,10 +129,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             // This path is used for synchronous Xaml card rendering, so we don't want
             // to manually download the image assets and instead just want xaml to do
             // that automatically
-            xamlBuilder.SetEnableXamlImageHandling(true);
+            m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
             {
-                xamlBuilder.BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderContext.Get());
+                m_xamlBuilder->BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderContext.Get());
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }
             catch (...)
@@ -294,7 +292,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Container").Get(), Make<AdaptiveContainerRenderer>().Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Date").Get(), Make<AdaptiveDateInputRenderer>().Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"FactSet").Get(), Make<AdaptiveFactSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(), Make<AdaptiveImageRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(), Make<AdaptiveImageRenderer>(m_xamlBuilder).Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ImageSet").Get(), Make<AdaptiveImageSetRenderer>().Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Number").Get(), Make<AdaptiveNumberInputRenderer>().Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"TextBlock").Get(), Make<AdaptiveTextBlockRenderer>().Get()));
@@ -302,6 +300,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(), Make<AdaptiveTimeInputRenderer>().Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(), Make<AdaptiveToggleInputRenderer>().Get()));
         return S_OK;
+    }
+
+    std::shared_ptr<XamlBuilder> AdaptiveCardRenderer::GetXamlBuilder()
+    {
+        return m_xamlBuilder;
     }
 
 }}}

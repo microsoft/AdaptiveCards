@@ -4,7 +4,6 @@
 #include "ImageLoadTracker.h"
 #include "IXamlBuilderListener.h"
 #include "IImageLoadTrackerListener.h"
-#include "AdaptiveCardRendererComponent.h"
 #include <windows.storage.h>
 #include "InputItem.h"
 #include "RenderedAdaptiveCard.h"

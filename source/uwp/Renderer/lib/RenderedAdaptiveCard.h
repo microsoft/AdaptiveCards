@@ -19,6 +19,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RenderedAdaptiveCard();
 
         HRESULT RuntimeClassInitialize();
+        HRESULT RuntimeClassInitialize(
+            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>* errors,
+            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>* warnings);
 
         // IRenderedAdaptiveCard
         IFACEMETHODIMP get_OriginatingCard(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** value);
