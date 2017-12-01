@@ -30,4 +30,3 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     ActivatableClass(AdaptiveRenderArgs);
 }}}
-#pragma once
