@@ -106,3 +106,9 @@ export enum ValidationError {
     UnknownElementType,
     UnsupportedCardVersion
 }
+
+export enum ContainerFitStatus {
+    FullyInContainer,
+    Overflowing,
+    FullyOutOfContainer
+}
