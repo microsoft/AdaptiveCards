@@ -1,5 +1,6 @@
 #include <iomanip>
 #include "LinkState.h"
+using namespace AdaptiveCards;
 
 void LinkState::UpdateState(int ch)
 { 
@@ -7,7 +8,7 @@ void LinkState::UpdateState(int ch)
     switch(ch)
     {
         case '[':
-            UpdateWithOpeningParenthesis(ch);
+            UpdateWithOpeningSqureBracket(ch);
             return;
         case ']':
             UpdateWithClosingSqureBracket(ch);

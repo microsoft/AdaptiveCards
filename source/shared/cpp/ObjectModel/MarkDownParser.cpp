@@ -200,7 +200,7 @@ std::string MarkDownParser::TransformToHtml()
     // append all processed tags
     std::ostringstream html;
     auto leftItr = m_leftLookUpTable.begin(), rightItr = m_rightLookUpTable.begin();
-    for (unsigned int idx = 0; idx < m_tokenizedString.size(); idx++)
+    for (unsigned int idx = 0; idx < m_tokenizedString.size (); idx++)
     { 
         if (leftItr != m_leftLookUpTable.end() && leftItr->m_idx == idx)
         {
@@ -349,11 +349,6 @@ void MarkDownParser::SetText(const std::string & txt)
 bool MarkDownParser::IsMarkDownDelimiter(char ch)
 {
     return ((ch == '*' || ch == '_') && (m_lookBehind != Escape));
-}
-
-bool MarkDownParser::IsLinkDelimiter (char ch)
-{
-    return (ch == '[' || ch == ']' || ch == '(' || ch == ')');
 }
 
 // Updates Emphasis MarkDown State

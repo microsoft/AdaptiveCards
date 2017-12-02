@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "MarkDownParser.h"
+#include "LinkState.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -309,6 +310,21 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             MarkDownParser parser5("**H *foo**bar***");
             Assert::AreEqual<string>("<p><strong>H *foo</strong>bar***</p>", parser5.TransformToHtml());
+        }
+    };
+
+    TEST_CLASS(LinkBasicValidationTest)
+    {
+        TEST_METHOD(CanDetectValidLinkTest)
+        {
+            LinkState linkState; 
+            string test_string = "[hello](www.naver.com)";
+            for (auto ch : test_string)
+            { 
+                linkState.UpdateState(ch);
+            }
+
+            Assert::AreEqual<bool>(true, linkState.IsItLink());
         }
     };
 }
