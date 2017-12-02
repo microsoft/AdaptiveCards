@@ -34,8 +34,10 @@ export class TimelineContainer extends HostContainer {
         element.style.overflow = "hidden";
         target.appendChild(element);
 
-        var renderedCard = adaptiveCard.render(element);
+        var renderedCard = adaptiveCard.render();
         renderedCard.style.height = "100%";
+        element.appendChild(renderedCard);
+        adaptiveCard.updateLayout();
 
         return element;
     }
