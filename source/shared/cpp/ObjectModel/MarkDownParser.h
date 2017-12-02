@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
+#include "LinkState.h"
 
 namespace AdaptiveCards
 {
@@ -90,5 +91,6 @@ private:
     std::list<Emphasis> m_leftLookUpTable;
     std::list<Emphasis> m_rightLookUpTable;
     std::vector<std::string> m_tokenizedString = std::vector<std::string>(1, "");
+    LinkState m_linkState;
 };
 }

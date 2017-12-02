@@ -351,6 +351,11 @@ bool MarkDownParser::IsMarkDownDelimiter(char ch)
     return ((ch == '*' || ch == '_') && (m_lookBehind != Escape));
 }
 
+bool MarkDownParser::IsLinkDelimiter (char ch)
+{
+    return (ch == '[' || ch == ']' || ch == '(' || ch == ')');
+}
+
 // Updates Emphasis MarkDown State
 void MarkDownParser::UpdateState()
 {
@@ -365,6 +370,7 @@ void MarkDownParser::UpdateState()
             EmphasisEnd : EmphasisNone;
     }
 
+    m_linkState.UpdateState(*m_curPos);
 }
 
 MarkDownParser::DelimiterType MarkDownParser::GetDelimiterTypeForCharAtCurrentPosition()
