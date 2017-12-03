@@ -361,11 +361,11 @@ void MarkDownParser::UpdateState()
     }
     else
     {
+        m_linkState.UpdateState(*m_curPos);
         m_emphasisState = (m_emphasisState & InsideEmphasis)?
             EmphasisEnd : EmphasisNone;
     }
 
-    m_linkState.UpdateState(*m_curPos);
 }
 
 MarkDownParser::DelimiterType MarkDownParser::GetDelimiterTypeForCharAtCurrentPosition()
@@ -407,14 +407,24 @@ void MarkDownParser::ResetCurrentEmphasisRunState(MarkDownParser::DelimiterType 
 // emphasis count and its types that are used in html generation 
 void MarkDownParser::GenSymbolTable()
 {
+    unsigned int linkStartIdx = 0;
     while (m_curPos < m_text.end())
     {
         UpdateState();
 
-        if (m_emphasisState & InsideEmphasis)
+        if ((m_emphasisState & InsideEmphasis) || 
+            (m_linkState.GetState() == LinkState::LinkTextStart) || 
+            (m_linkState.GetState() == LinkState::LinkDestinationStart))
         {
+            if(m_linkState.GetState() == LinkState::LinkTextStart)
+            {
+                linkStartIdx = m_currentWordIndex;
+            }
             // if new emphasis token found start capturing new token
-            if (m_curPos != m_text.begin() && (m_emphasisState & EmphasisStart))
+            if ((m_curPos != m_text.begin()) && 
+                ((m_emphasisState & EmphasisStart) || 
+                 (m_linkState.GetState() == LinkState::LinkTextStart ||
+                 (m_linkState.GetState() == LinkState::LinkDestinationStart))))
             { 
                 StartNewTokenCapture();
             }
@@ -434,7 +444,7 @@ void MarkDownParser::GenSymbolTable()
         }
 
         if ((m_emphasisState == EmphasisEnd) || 
-           ((m_emphasisState & InsideEmphasis) && (m_curPos + 1 == m_text.end())))
+            ((m_emphasisState & InsideEmphasis) && (m_curPos + 1 == m_text.end())))
         {
             if (PushRightEmphasisToLookUpTableIfValid() || PushLeftEmphasisToLookUpTableIfValid())
             {
@@ -451,6 +461,11 @@ void MarkDownParser::GenSymbolTable()
                 PutBackCh();
             }
             m_delimiterCnts = 0;
+        }
+
+        if (m_linkState.IsItLink())
+        {
+            m_linkLookUpTable.push_back(m_currentWordIndex);
         }
 
         if (m_emphasisState & OutsideEmphasis)

@@ -326,5 +326,29 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             Assert::AreEqual<bool>(true, linkState.IsItLink());
         }
+
+        TEST_METHOD(CanDetectInValidLinkTest)
+        {
+            LinkState linkState; 
+            string test_string = "[hello(www.naver.com)";
+            for (auto ch : test_string)
+            { 
+                linkState.UpdateState(ch);
+            }
+
+            Assert::AreEqual<bool>(false, linkState.IsItLink());
+        }
+
+        TEST_METHOD(CanDetectInvalidLinkDestinationWithSpaceTest)
+        {
+            LinkState linkState; 
+            string test_string = "[hello](www.na ver.com)";
+            for (auto ch : test_string)
+            { 
+                linkState.UpdateState(ch);
+            }
+
+            Assert::AreEqual<bool>(false, linkState.IsItLink());
+        }
     };
 }

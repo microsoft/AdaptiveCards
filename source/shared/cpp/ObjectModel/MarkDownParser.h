@@ -91,6 +91,7 @@ private:
     std::list<Emphasis> m_leftLookUpTable;
     std::list<Emphasis> m_rightLookUpTable;
     std::vector<std::string> m_tokenizedString = std::vector<std::string>(1, "");
+    std::vector<unsigned int> m_linkLookUpTable;
     LinkState m_linkState;
 };
 }

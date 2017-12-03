@@ -4,92 +4,57 @@ using namespace AdaptiveCards;
 
 void LinkState::UpdateState(int ch)
 { 
-    m_look_behind = ch;
-    switch(ch)
-    {
-        case '[':
-            UpdateWithOpeningSqureBracket(ch);
-            return;
-        case ']':
-            UpdateWithClosingSqureBracket(ch);
-            return;
-        case '(':
-            UpdateWithOpeningParenthesis(ch);
-            return;
-        case ')':
-            UpdateWithClosingParenthesis(ch);
-            return;
-        default:
-            if(isspace(ch))
-            {
-                UpdateWithWhiteSpace(ch);
-                break;
-            }
-            UpdateWithEverythingElse(ch);
-    }
+    state newState = m_stateMachine[m_current_state](ch);
+    m_current_state = newState;
 }
 
-void LinkState::UpdateWithOpeningSqureBracket(int ch)
+bool LinkState::IsItLink() 
 {
-    m_state = LinkTextOpening;
-    m_current_delimiter_type = Bracket;
+    return m_current_state == LinkDestinationEnd;
 }
 
-void LinkState::UpdateWithClosingSqureBracket(int ch)
+unsigned int LinkState::StateTransitionCheckAtLinkInit(int ch)
 {
-    m_state = (m_state == LinkTextDetecting && 
-            m_current_delimiter_type == Bracket)? LinkTextClosing : LinkInit;
+    return (ch == '[')?  LinkTextStart : LinkInit;
 }
 
-void LinkState::UpdateWithOpeningParenthesis(int ch)
+unsigned int LinkState::StateTransitionCheckAtLinkTextStart(int ch)
 {
-    m_state = (m_state == LinkTextClosing)? LinkDestinationOpening : LinkInit; 
-    if(m_state != LinkInit)
-    { 
-        m_current_delimiter_type = Parenthesis;
-    }
+    return (ch == ']')? LinkTextEnd : LinkTextStart;
 }
 
-void LinkState::UpdateWithClosingParenthesis(int ch)
+unsigned int LinkState::StateTransitionCheckAtLinkTextEnd(int ch)
 {
-    m_state = (m_state == LinkTextDetecting && 
-            m_current_delimiter_type == Parenthesis)? LinkDetected: LinkInit;
+    return (ch == '(')? LinkDestinationStart : LinkInit;
 }
 
-void LinkState::UpdateWithEverythingElse(int ch)
+unsigned int LinkState::StateTransitionCheckAtLinkDestinationStart(int ch)
 {
-    if (m_state != LinkInit && m_state != LinkTextClosing)
+    if (isspace(ch))
     {
-        m_state = LinkTextDetecting;
-        return;
+        return LinkDestinationStart;
     }
-    m_state = LinkInit;
+
+    if (iscntrl(ch))
+    {
+        return LinkInit;
+    }
+
+    return LinkInsideDestination;
 }
 
-void LinkState::UpdateWithWhiteSpace(int ch)
+unsigned int LinkState::StateTransitionCheckAtLinkInsideDestination(int ch)
 {
-    if (ch == '\n' || ch == '\r')
+    if(isspace(ch) || iscntrl(ch))
     {
-        m_state = LinkInit;
-        m_IsWhiteSpaceDetected = false;
-        return;
+        return LinkInit;
     }
 
-    if(m_state == LinkInit || m_state == LinkTextClosing)
+    if(ch == ')')
     {
-        m_IsWhiteSpaceDetected = false;
-        m_state = LinkInit;
-        return;
+        return LinkDestinationEnd;
     }
 
-    if(isspace(m_look_behind))
-    {
-        return;
-    }
-    
-    if(m_IsWhiteSpaceDetected)
-    {
-        m_state = LinkInit;
-        m_IsWhiteSpaceDetected = false;
-    }
+    return LinkInsideDestination;
 }
+

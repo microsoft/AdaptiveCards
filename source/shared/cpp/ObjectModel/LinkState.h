@@ -1,43 +1,43 @@
 #pragma once
 
 #include "BaseCardElement.h"
+#include <vector>
 
 namespace AdaptiveCards
 {
     class LinkState
     {
     public:
-        LinkState() : m_look_behind(0), m_state(LinkInit),
-            m_current_delimiter_type(None), m_IsWhiteSpaceDetected(false) {};
-        bool IsItNewToken() const { return m_state == LinkTextOpening; }
-        bool IsItLink() const { return m_state == LinkDetected; }
-        void UpdateState(int ch);
-    private:
         enum LinkStateEnum
         {
-            LinkInit,
-            LinkTextOpening = 0x1,
-            LinkTextDetecting,
-            LinkTextClosing = 0x4,
-            LinkDestinationOpening,
-            LinkDetected,
+            LinkInit = 0,
+            LinkTextStart = 1,
+            LinkTextEnd,
+            LinkDestinationStart,
+            LinkInsideDestination,
+            LinkDestinationEnd,
         };
-        enum DelimiterType
-        {
-            None,
-            Bracket,
-            Parenthesis,
-        };
+        typedef unsigned int state;
 
-        int m_look_behind;
-        int m_state;
-        int m_current_delimiter_type;
-        bool m_IsWhiteSpaceDetected;
-        void UpdateWithOpeningSqureBracket(int ch);
-        void UpdateWithClosingSqureBracket(int ch);
-        void UpdateWithEverythingElse(int ch);
-        void UpdateWithWhiteSpace(int ch);
-        void UpdateWithOpeningParenthesis(int ch);
-        void UpdateWithClosingParenthesis(int ch);
+        bool IsItLink(); 
+        void UpdateState(int ch);
+        state GetState() const { return m_current_state; }
+
+    private:
+        typedef unsigned int (* UpdateStateWithChar)(int ch);
+        static unsigned int StateTransitionCheckAtLinkInit(int ch);
+        static unsigned int StateTransitionCheckAtLinkTextStart(int ch);
+        static unsigned int StateTransitionCheckAtLinkTextEnd(int ch);
+        static unsigned int StateTransitionCheckAtLinkDestinationStart(int ch);
+        static unsigned int StateTransitionCheckAtLinkInsideDestination(int ch);
+        std::vector<UpdateStateWithChar> m_stateMachine = 
+            {
+                StateTransitionCheckAtLinkInit, 
+                StateTransitionCheckAtLinkTextStart,
+                StateTransitionCheckAtLinkTextEnd, 
+                StateTransitionCheckAtLinkDestinationStart,
+                StateTransitionCheckAtLinkInsideDestination,
+            };
+        state m_current_state = 0;
     };
 }
