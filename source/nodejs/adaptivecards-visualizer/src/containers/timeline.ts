@@ -73,23 +73,23 @@ export class TimelineContainer extends HostContainer {
                     backgroundColor: "#535454",
                     foregroundColors: {
                         default: {
-                            "normal": "#FFFFFF",
+                            "default": "#FFFFFF",
                             "subtle": "#9C9E9F"
                         },
                         accent: {
-                            "normal": "#2E89FC",
+                            "default": "#2E89FC",
                             "subtle": "#882E89FC"
                         },
                         attention: {
-                            "normal": "#FF0000",
+                            "default": "#FF0000",
                             "subtle": "#DDFF0000"
                         },
                         good: {
-                            "normal": "#00FF00",
+                            "default": "#00FF00",
                             "subtle": "#DD00FF00"
                         },
                         warning: {
-                            "normal": "#FFD800",
+                            "default": "#FFD800",
                             "subtle": "#DDFFD800"
                         }
                     }
@@ -98,23 +98,23 @@ export class TimelineContainer extends HostContainer {
                     backgroundColor: "#33000000",
                     foregroundColors: {
                         default: {
-                            "normal": "#FFFFFF",
+                            "default": "#FFFFFF",
                             "subtle": "#9C9E9F"
                         },
                         accent: {
-                            "normal": "#2E89FC",
+                            "default": "#2E89FC",
                             "subtle": "#882E89FC"
                         },
                         attention: {
-                            "normal": "#FF0000",
+                            "default": "#FF0000",
                             "subtle": "#DDFF0000"
                         },
                         good: {
-                            "normal": "#00FF00",
+                            "default": "#00FF00",
                             "subtle": "#DD00FF00"
                         },
                         warning: {
-                            "normal": "#FFD800",
+                            "default": "#FFD800",
                             "subtle": "#DDFFD800"
                         }
                     }
