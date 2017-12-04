@@ -443,7 +443,7 @@ export abstract class CardElement {
         // If the element is going to be hidden, reset any changes that were due
         // to overflow truncation (this ensures that if the element is later
         // un-hidden it has the right content)
-        if (!value) {
+        if (AdaptiveCard.useAdvancedCardBottomTruncation && !value) {
             this.undoOverflowTruncation();
         }
 
@@ -620,7 +620,8 @@ export class TextBlock extends CardElement {
                 element.style.whiteSpace = "nowrap";
             }
 
-            if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+            if (AdaptiveCard.useAdvancedTextBlockTruncation
+                || AdaptiveCard.useAdvancedCardBottomTruncation) {
                 this._originalInnerHtml = element.innerHTML;
             }
 
@@ -3575,6 +3576,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     static preExpandSingleShowCardAction: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
+    static useAdvancedCardBottomTruncation: boolean = false;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -3747,7 +3749,10 @@ export class AdaptiveCard extends ContainerWithActions {
 
     updateLayout(processChildren: boolean = true) {
         super.updateLayout(processChildren);
-        this.handleBottomOverflows();
+
+        if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+            this.handleBottomOverflows();
+        }
     }
 
     canContentBleed(): boolean {

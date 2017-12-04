@@ -27,6 +27,8 @@ export class TimelineContainer extends HostContainer {
     }
 
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
+        AdaptiveCard.useAdvancedCardBottomTruncation = true;
+
         var element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
