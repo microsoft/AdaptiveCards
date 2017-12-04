@@ -724,11 +724,16 @@ export class TextBlock extends CardElement {
         // paragraph -- since the maxLines calculation doesn't take into
         // account Markdown lists
         var children = this.renderedElement.children;
-        var truncationSupported = children.length == 1
+        var isTextOnly = !children.length;
+
+        var truncationSupported = isTextOnly || children.length == 1
             && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
 
         if (truncationSupported) {
-            var element = <HTMLElement>children[0];
+            var element = isTextOnly
+                ? this.renderedElement
+                : <HTMLElement>children[0];
+
             Utils.truncate(element, maxHeight, this._computedLineHeight);
             return true;
         }
