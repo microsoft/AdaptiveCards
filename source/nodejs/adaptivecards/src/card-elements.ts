@@ -3801,22 +3801,24 @@ export class AdaptiveCard extends ContainerWithActions {
         var handleElement = (cardElement: CardElement) => {
             let elt = cardElement.renderedElement;
 
-            switch (Utils.getFitStatus(elt, boundary)) {
-                case Enums.ContainerFitStatus.FullyInContainer:
-                    let sizeChanged = cardElement.resetOverflow();
-                    // If the element's size changed after resetting content,
-                    // we have to check if it still fits fully in the card
-                    if (sizeChanged) {
-                        handleElement(cardElement);
-                    }
-                    break;
-                case Enums.ContainerFitStatus.Overflowing:
-                    let maxHeight = boundary - elt.offsetTop;
-                    cardElement.handleOverflow(maxHeight);
-                    break;
-                case Enums.ContainerFitStatus.FullyOutOfContainer:
-                    cardElement.handleOverflow(0);
-                    break;
+            if (elt) {
+                switch (Utils.getFitStatus(elt, boundary)) {
+                    case Enums.ContainerFitStatus.FullyInContainer:
+                        let sizeChanged = cardElement.resetOverflow();
+                        // If the element's size changed after resetting content,
+                        // we have to check if it still fits fully in the card
+                        if (sizeChanged) {
+                            handleElement(cardElement);
+                        }
+                        break;
+                    case Enums.ContainerFitStatus.Overflowing:
+                        let maxHeight = boundary - elt.offsetTop;
+                        cardElement.handleOverflow(maxHeight);
+                        break;
+                    case Enums.ContainerFitStatus.FullyOutOfContainer:
+                        cardElement.handleOverflow(0);
+                        break;
+                }
             }
         };
 
