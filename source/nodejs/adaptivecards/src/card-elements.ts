@@ -3377,11 +3377,12 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
 
 function raiseElementVisibilityChangedEvent(element: CardElement,
                                             shouldUpdateLayout: boolean = true) {
+    let card = element.getRootElement() as AdaptiveCard;
+
     if (shouldUpdateLayout) {
-        element.getRootElement().updateLayout();
+        card.updateLayout();
     }
 
-    let card = element.getRootElement() as AdaptiveCard;
     let onElementVisibilityChangedHandler = (card && card.onElementVisibilityChanged) ? card.onElementVisibilityChanged : AdaptiveCard.onElementVisibilityChanged;
 
     if (onElementVisibilityChangedHandler != null) {
