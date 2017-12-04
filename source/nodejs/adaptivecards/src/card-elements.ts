@@ -708,6 +708,11 @@ export class TextBlock extends CardElement {
 
     protected undoOverflowTruncation() {
         this.restoreOriginalContent();
+
+        if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines) {
+            var maxHeight = this._computedLineHeight * this.maxLines;
+            this.truncateIfSupported(maxHeight);
+        }
     }
 
     private restoreOriginalContent() {
