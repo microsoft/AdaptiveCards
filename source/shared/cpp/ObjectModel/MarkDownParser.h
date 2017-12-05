@@ -51,15 +51,18 @@ public:
     {
         int m_emphCnts;
         unsigned m_idx;
+        bool isLeftAndRightEmphasis; 
+        DelimiterType type;
         std::vector<int> m_tags;
-        Emphasis(unsigned int empCnts, unsigned idx) : 
-            m_emphCnts(empCnts), m_idx(idx), m_tags(){};
+        Emphasis(unsigned int empCnts, unsigned idx, bool emp, DelimiterType type) : 
+            m_emphCnts(empCnts), m_idx(idx), isLeftAndRightEmphasis(emp), type(type), m_tags(){};
     };
 
     void SetText(const std::string & txt);
     std::string TransformToHtml();
 
 private:
+    bool IsMatch(std::list<Emphasis>::iterator &left, std::list<Emphasis>::iterator &right);
     bool IsLeftEmphasisDelimiter();
     bool IsRightEmphasisDelimiter();
     bool PushLeftEmphasisToLookUpTableIfValid();
@@ -84,7 +87,6 @@ private:
     int m_emphasisState = EmphasisNone;
     bool m_checkLookAhead = false;
     bool m_checkIntraWord = false;
-    int m_LeftEmphasisDetecting = 0;
 
     std::string m_text;
     std::string::iterator m_curPos;

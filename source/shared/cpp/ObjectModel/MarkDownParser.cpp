@@ -29,6 +29,21 @@ int MarkDownParser::AdjustEmphasisCounts(int leftOver, std::list<Emphasis>::iter
     return delimCnts;
 }
 
+//     left and right emphasis tokens are match if
+//     1. they are same types
+//     2. neither of the emphasis tokens are both left and right emphasis tokens, and 
+//        if either or both of them are, then their sum is not multipe of 3 
+bool MarkDownParser::IsMatch(std::list<Emphasis>::iterator &left, 
+                             std::list<Emphasis>::iterator &right)
+{
+    if (left->type == right->type)
+    {
+        // rule #9 & #10, sum of delim cnts can't be multipe of 3 
+        return !((left->isLeftAndRightEmphasis || right->isLeftAndRightEmphasis) &&
+            (((left->m_emphCnts + right->m_emphCnts) % 3) == 0));
+    }
+    return false;
+}
 // Following the rules speicified in CommonMark (http://spec.commonmark.org/0.27/)
 // It generally supports more stricker version of the rules
 // push left delims to stack, until matching right delim is found,
@@ -44,7 +59,6 @@ std::string MarkDownParser::TransformToHtml()
     std::vector<std::list<Emphasis>::iterator> DFSSearchStack;
     auto top_left = m_leftLookUpTable.begin(), top_right = m_rightLookUpTable.begin();
     auto curr_left_delim = top_left, right_token_idx = top_right;
-    int lookBehind = (m_tokenizedString[top_left->m_idx][0] == '*')? Asterisk : Underscore; 
     DFSSearchStack.push_back(top_left++);
 
     while (!DFSSearchStack.empty() && top_right != m_rightLookUpTable.end())
@@ -53,7 +67,6 @@ std::string MarkDownParser::TransformToHtml()
         if (top_left != m_leftLookUpTable.end() && top_left->m_idx < top_right->m_idx)
         {
             DFSSearchStack.push_back(top_left);
-            lookBehind |= (m_tokenizedString[top_left->m_idx][0] == '*')? Asterisk : Underscore; 
             ++top_left;
         }
         else
@@ -66,103 +79,94 @@ std::string MarkDownParser::TransformToHtml()
                 top_right++;
                 continue;
             }
-            int delimCnts = 0, leftOver = 0;
-            DelimiterType curr_left_delim_type = (m_tokenizedString[curr_left_delim->m_idx][0] == '*')? Asterisk : Underscore; 
-            DelimiterType curr_right_delim_type = (m_tokenizedString[top_right->m_idx][0] == '*')? Asterisk : Underscore; 
 
-            // found the left and right delimiter, gen string
-            if (curr_left_delim_type == curr_right_delim_type)
+            // check if matches are found
+            //     mataches are found with left and right emphasis tokens if
+            //     1. they are same types
+            //     2. neigher of the emphasis tokens are both left and right emphasis tokens, and 
+            //        if either or both of them are, then their sum is not multipe of 3 
+            //        
+            //     if matches are not found
+            //     1. search left emphasis tokens first for match because of rule 14 matches on the left side is preferred 
+            //        if match is found set left emphasis as the new left emphasis token and proceed to token processing
+            //        any non-matching left emphasis will be poped, in this way it always move forward
+            //        if still no match is found, 
+            //     2. search right
+            //        if the right emphasis can be left empahs search matching right emphasis tokens using the right emphasis
+            //        as left emphasis
+            //        else
+            //        use current left emphasis to search, and pop current right emphasis
+            if (!IsMatch(curr_left_delim, top_right))
             {
-                // rule #9 & #10, sum of delim cnts can't be multipe of 3 
-                if (!((curr_left_delim->m_emphCnts + top_right->m_emphCnts) % 3))
+                std::vector<std::list<Emphasis>::iterator> store;
+                bool isFound = false;
+                // search first if matching left emphasis can be found with the right delim
+                // if match found, set the new left emphasis token as current token, and
+                // process tokens and as of the result, any left emphasis tokens that were searched and not matching 
+                // will be no longer considerred in tag processing
+                // pop until matching delim is found
+                while (!DFSSearchStack.empty() && !isFound)//m_tokenizedString[curr_left_delim->m_idx][0] != ch)
                 {
-                      if (m_tokenizedString.size() != top_right->m_idx + 1)
-                      {
-                          // check adjcent char is space
-                          char right_ch = m_tokenizedString[top_right->m_idx + 1][0];
-                          // no need to check the right bound since it's right delim
-                          char left_ch =  m_tokenizedString[top_right->m_idx - 1][0];
-                          // check if right delim also can be left delim
-                          if (!isspace(right_ch) && 
-                             !(isalnum(left_ch) && ispunct(right_ch)) && 
-                             !(isalnum(left_ch) && curr_right_delim_type == Underscore))
-                          {
-                              std::vector<std::list<Emphasis>::iterator> store;
-                              bool isFound = false;
-                              while (!DFSSearchStack.empty() && !isFound)
-                              { 
-                                  auto leftdelim = DFSSearchStack.back();
-                                  DelimiterType left_delim_type = (m_tokenizedString[leftdelim->m_idx][0] == '*')? Asterisk : Underscore; 
-                                  // found left delim 
-                                  if ((leftdelim->m_emphCnts >= top_right->m_emphCnts) && 
-                                     ((leftdelim->m_emphCnts + top_right->m_emphCnts) % 3) &&
-                                     (left_delim_type == curr_right_delim_type))
-                                  { 
-                                      curr_left_delim = leftdelim;
-                                      isFound = true;
-                                  }
-                                  else
-                                  {
-                                      DFSSearchStack.pop_back();
-                                      store.push_back(leftdelim);
-                                  }
-                              }
-                              
-                              // if no left delim found
-                              if (!isFound)
-                              {
-                                  // put back everything
-                                  while (!isFound && !store.empty())
-                                  {
-                                      DFSSearchStack.push_back(store.back());
-                                      store.pop_back();
-                                  }
-
-                                  //right emphasis becomes left emphasis
-                                  auto elem_to_be_inserted = curr_left_delim;
-                                  elem_to_be_inserted++;
-                                  m_leftLookUpTable.insert(elem_to_be_inserted, *top_right);
-                                  curr_left_delim = --elem_to_be_inserted;
-                                  DFSSearchStack.push_back(curr_left_delim);
-
-                                  auto elem_to_erase = top_right;
-                                  // move to next token for right delim tokens
-                                  top_right++;
-                                  m_rightLookUpTable.erase(elem_to_erase);
-                                  // no maching found begin from the start
-                                  continue;
-                              }
-                          }
-                      }
-                }
-                // check which one will have leftover delims
-                leftOver = curr_left_delim->m_emphCnts - top_right->m_emphCnts;
-                delimCnts = AdjustEmphasisCounts(leftOver, curr_left_delim, top_right);
-                right_token_idx = top_right;
-                if (leftOver >= 0)
-                {
-                    lookBehind ^= curr_left_delim_type;
-                }
-            }
-            else
-            {
-                // Rule #14, when two overraps, prefer left side of the overrap
-                if (DFSSearchStack.size() > 1 && lookBehind & curr_right_delim_type) 
-                {
-                    char ch = (curr_right_delim_type == Asterisk)? '*' :'_';
-                    // pop until matching delim is found
-                    while (!DFSSearchStack.empty() && m_tokenizedString[curr_left_delim->m_idx][0] != ch)
+                    auto leftdelim = DFSSearchStack.back();
+                    //curr_left_delim = DFSSearchStack.back();
+                    // found left delim 
+                    if (IsMatch(leftdelim, top_right))
+                    {
+                        curr_left_delim = leftdelim;
+                        isFound = true;
+                    }
+                    else
                     {
                         DFSSearchStack.pop_back();
-                        curr_left_delim = DFSSearchStack.back();
+                        store.push_back(leftdelim);
+                    }
+                }
+
+                // if no match found from the left and the right emphasis is both left and right, 
+                // and the sum of their emphasises counts is divisible by 3,
+                // use current right emphasis as 
+                // left emphasis, make the right emphasis, as current left
+                // emphasis and start searching from there.
+                // during the search if no match found, 
+                // this emphasis tokens will be dropped
+                if (!isFound)
+                {
+                    // restore state
+                    while (!isFound && !store.empty())
+                    {
+                        DFSSearchStack.push_back(store.back());
+                        store.pop_back();
                     }
 
-                    leftOver = curr_left_delim->m_emphCnts - top_right->m_emphCnts;
-                    delimCnts = AdjustEmphasisCounts(leftOver, curr_left_delim, top_right);
-                    right_token_idx = top_right;
-                    lookBehind = 0;
+                    // check for the reason why we had to backtrack
+                    if (DFSSearchStack.back()->type == top_right->type)
+                    {
+                        //right emphasis becomes left emphasis
+                        auto elem_to_be_inserted = curr_left_delim;
+                        elem_to_be_inserted++;
+                        m_leftLookUpTable.insert(elem_to_be_inserted, *top_right);
+                        curr_left_delim = --elem_to_be_inserted;
+                        DFSSearchStack.push_back(curr_left_delim);
+
+                        auto elem_to_erase = top_right;
+                        top_right++;
+                        m_rightLookUpTable.erase(elem_to_erase);
+                    }
+                    else
+                    {
+                        // move to next token for right delim tokens
+                        top_right++;
+                    }
+                    // no maching found begin from the start
+                    continue;
                 }
             }
+
+            int delimCnts = 0, leftOver = 0;
+            // check which one has leftover delims
+            leftOver = curr_left_delim->m_emphCnts - top_right->m_emphCnts;
+            delimCnts = AdjustEmphasisCounts(leftOver, curr_left_delim, top_right);
+            right_token_idx = top_right;
 
             // emphasis found
             if (delimCnts % 2)
@@ -197,7 +201,7 @@ std::string MarkDownParser::TransformToHtml()
         }
     }
 
-    // append all processed tags
+    // process tags
     std::ostringstream html;
     auto leftItr = m_leftLookUpTable.begin(), rightItr = m_rightLookUpTable.begin();
     for (unsigned int idx = 0; idx < m_tokenizedString.size (); idx++)
@@ -284,8 +288,8 @@ bool MarkDownParser::PushLeftEmphasisToLookUpTableIfValid()
     if (IsLeftEmphasisDelimiter())
     {
         m_leftLookUpTable.push_back(
-            Emphasis(m_delimiterCnts, m_currentWordIndex)); 
-        m_LeftEmphasisDetecting += m_delimiterCnts;
+            Emphasis(m_delimiterCnts, m_currentWordIndex, 
+                false, m_currentDelimiterType)); 
         return true;
     }
     return false;
@@ -293,6 +297,11 @@ bool MarkDownParser::PushLeftEmphasisToLookUpTableIfValid()
 
 bool MarkDownParser::IsRightEmphasisDelimiter()
 {
+    if (m_leftLookUpTable.empty() && IsLeftEmphasisDelimiter())
+    {
+        return false;
+    }
+
     if (isspace(*m_curPos) && 
        (m_lookBehind != WhiteSpace) && 
        (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == Asterisk))
@@ -300,7 +309,7 @@ bool MarkDownParser::IsRightEmphasisDelimiter()
         return true;
     }
 
-    if (isalnum(*m_curPos) && m_lookBehind != WhiteSpace)
+    if (isalnum(*m_curPos) && m_lookBehind != WhiteSpace && m_currentWordIndex != 0)
     {
         if (!m_checkLookAhead && !m_checkIntraWord)
         {
@@ -330,13 +339,10 @@ bool MarkDownParser::PushRightEmphasisToLookUpTableIfValid()
 {
     if (IsRightEmphasisDelimiter())
     {
-        if (m_LeftEmphasisDetecting)
-        {
-            m_rightLookUpTable.push_back(
-                Emphasis(m_delimiterCnts, m_currentWordIndex)); 
-            m_LeftEmphasisDetecting -= m_delimiterCnts;
-            return true;
-        }
+        m_rightLookUpTable.push_back(
+            Emphasis(m_delimiterCnts, m_currentWordIndex, 
+                IsLeftEmphasisDelimiter(), m_currentDelimiterType)); 
+        return true;
     }
     return false;
 }
