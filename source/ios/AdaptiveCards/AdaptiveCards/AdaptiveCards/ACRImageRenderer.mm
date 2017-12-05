@@ -126,7 +126,7 @@
     NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
                                           encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:urlStr];
-
+  
     UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
     CGSize cgsize = [self getImageSize:imgElem withHostConfig:config];
