@@ -186,7 +186,7 @@
         
         NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
         NSArray<NSString *> *formats =
-        [NSArray arrayWithObjects:@"H:|-10-[view(<=scrollview)]-10-|", @"V:|-[view(>=scrollview)]-|",nil];
+        [NSArray arrayWithObjects:@"H:|-10-[view(<=scrollview)]-10-|", @"V:|-10-[view(<=scrollview)]-10-|",nil];
         [ViewController applyConstraints:formats variables:viewMap];
     }
 }
@@ -207,6 +207,15 @@
     {
         NSString *str = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
         NSLog(@"user response fetched: %@", str);
+    }
+}
+
+- (void)didFetchUserResponses:(NSData *)json data:(NSString *) data error:(NSError *)error
+{
+    if(!error && json && data)
+    {
+        NSString *str = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+        NSLog(@"user response fetched: %@ with %@", str, data);
     }
 }
 

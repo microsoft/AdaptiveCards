@@ -72,6 +72,10 @@
 		F42979471F322C9000E89914 /* ACRNumericTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F42979451F322C9000E89914 /* ACRNumericTextField.h */; };
 		F429794A1F323BA700E89914 /* ACRDateTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F42979481F323BA700E89914 /* ACRDateTextField.h */; };
 		F429794D1F32684900E89914 /* ACRDateTextField.mm in Sources */ = {isa = PBXBuildFile; fileRef = F429794C1F32684900E89914 /* ACRDateTextField.mm */; };
+		F42E51671FD77D37008F9642 /* ElementParserRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E51631FD77D36008F9642 /* ElementParserRegistration.h */; };
+		F42E51681FD77D37008F9642 /* ActionParserRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E51641FD77D36008F9642 /* ActionParserRegistration.h */; };
+		F42E51691FD77D37008F9642 /* ActionParserRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F42E51651FD77D37008F9642 /* ActionParserRegistration.cpp */; };
+		F42E516A1FD77D37008F9642 /* ElementParserRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F42E51661FD77D37008F9642 /* ElementParserRegistration.cpp */; };
 		F43110431F357487001AAE30 /* ACRChoiceSetView.h in Headers */ = {isa = PBXBuildFile; fileRef = F431103D1F357487001AAE30 /* ACRChoiceSetView.h */; };
 		F43110441F357487001AAE30 /* ACRChoiceSetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F431103E1F357487001AAE30 /* ACRChoiceSetView.mm */; };
 		F43110451F357487001AAE30 /* ACOHostConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = F431103F1F357487001AAE30 /* ACOHostConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -255,6 +259,10 @@
 		F42979451F322C9000E89914 /* ACRNumericTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRNumericTextField.h; sourceTree = "<group>"; };
 		F42979481F323BA700E89914 /* ACRDateTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRDateTextField.h; sourceTree = "<group>"; };
 		F429794C1F32684900E89914 /* ACRDateTextField.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRDateTextField.mm; sourceTree = "<group>"; };
+		F42E51631FD77D36008F9642 /* ElementParserRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ElementParserRegistration.h; path = ../../../../shared/cpp/ObjectModel/ElementParserRegistration.h; sourceTree = "<group>"; };
+		F42E51641FD77D36008F9642 /* ActionParserRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActionParserRegistration.h; path = ../../../../shared/cpp/ObjectModel/ActionParserRegistration.h; sourceTree = "<group>"; };
+		F42E51651FD77D37008F9642 /* ActionParserRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionParserRegistration.cpp; path = ../../../../shared/cpp/ObjectModel/ActionParserRegistration.cpp; sourceTree = "<group>"; };
+		F42E51661FD77D37008F9642 /* ElementParserRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ElementParserRegistration.cpp; path = ../../../../shared/cpp/ObjectModel/ElementParserRegistration.cpp; sourceTree = "<group>"; };
 		F431103D1F357487001AAE30 /* ACRChoiceSetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRChoiceSetView.h; sourceTree = "<group>"; };
 		F431103E1F357487001AAE30 /* ACRChoiceSetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetView.mm; sourceTree = "<group>"; };
 		F431103F1F357487001AAE30 /* ACOHostConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOHostConfig.h; sourceTree = "<group>"; };
