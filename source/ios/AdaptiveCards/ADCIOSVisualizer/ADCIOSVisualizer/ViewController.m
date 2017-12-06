@@ -200,6 +200,7 @@
 {
     self.hostconfig = payload;
 }
+
 - (void)didFetchUserResponses:(NSData *)json error:(NSError *)error
 {
     if(!error && json)
@@ -208,7 +209,6 @@
         NSLog(@"user response fetched: %@", str);
     }
 }
-
 
 - (void)didFetchUserResponses:(NSData *)json data:(NSString *) data error:(NSError *)error
 {

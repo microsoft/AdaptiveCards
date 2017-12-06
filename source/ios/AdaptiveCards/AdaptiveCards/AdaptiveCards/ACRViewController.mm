@@ -58,10 +58,10 @@ using namespace AdaptiveCards;
     UIView *view = self.view;
     view.frame = _guideFrame;
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
-    
+
     std::string backgroundImage = _adaptiveCard->GetBackgroundImage();
     NSString* imgUrl = nil;
-    if(backgroundImage.size())
+    if(!backgroundImage.empty())
         imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
     if (imgUrl)
     {
@@ -76,11 +76,10 @@ using namespace AdaptiveCards;
            [imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
            ]];
     }
-    
     ContainerStyle style = (_hostConfig->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : _hostConfig->actions.showCard.style;
     if(style != ContainerStyle::None)
     {
-        long num = 0;
+        unsigned long num = 0;
         if(style == ContainerStyle::Emphasis)
         {
             num = std::stoul(_hostConfig->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
@@ -94,7 +93,7 @@ using namespace AdaptiveCards;
                         green:((num & 0x0000FF00) >>  8) / 255.0
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
-    }    
+    }
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                              inputs:inputs
                                                      viewController:self
