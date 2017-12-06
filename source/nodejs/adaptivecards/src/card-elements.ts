@@ -2011,7 +2011,7 @@ class ActionCollection {
 
                 actionButton.state = ActionButtonState.Expanded;
 
-                this.showActionCard(actionButton.action);
+                this.showActionCard(actionButton.action,  !(this._owner.isAtTheVeryLeft() && this._owner.isAtTheVeryRight()));
             }
         }
     }
@@ -2404,7 +2404,7 @@ export class Container extends CardElement {
             var physicalMargin: HostConfig.SpacingDefinition = new HostConfig.SpacingDefinition();
             var physicalPadding: HostConfig.SpacingDefinition = new HostConfig.SpacingDefinition();
 
-            var useAutoPadding = (this.parent ? this.parent.canContentBleed() : false) && this.bleed;
+            var useAutoPadding = (this.parent ? this.parent.canContentBleed() : false) && (this.bleed || AdaptiveCard.useAutomaticContainerBleeding);
 
             if (useAutoPadding) {
                 var effectivePadding = this.getNonZeroPadding();
@@ -3456,6 +3456,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: Version = new Version(1, 0);
 
+    static useAutomaticContainerBleeding: boolean = false;
     static preExpandSingleShowCardAction: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
 
