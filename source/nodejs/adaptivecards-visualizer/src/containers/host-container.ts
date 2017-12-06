@@ -101,6 +101,7 @@ export abstract class HostContainer {
     public initialize() {
         AdaptiveCard.elementTypeRegistry.reset();
         AdaptiveCard.actionTypeRegistry.reset();
+        AdaptiveCard.useAutomaticContainerBleeding = false;
         AdaptiveCard.preExpandSingleShowCardAction = false;
     }
 
