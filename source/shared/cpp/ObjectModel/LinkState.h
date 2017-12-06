@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseCardElement.h"
-#include <vector>
+#include <list>
 
 namespace AdaptiveCards
 {
@@ -20,7 +20,7 @@ namespace AdaptiveCards
         typedef unsigned int state;
 
         bool IsItLink(); 
-        void UpdateState(int ch);
+        void UpdateState(int ch, std::list<std::string>::iterator& pos);
         state GetState() const { return m_current_state; }
 
     private:
@@ -38,6 +38,10 @@ namespace AdaptiveCards
                 StateTransitionCheckAtLinkDestinationStart,
                 StateTransitionCheckAtLinkInsideDestination,
             };
+
         state m_current_state = 0;
+        std::list<std::string>::iterator m_linkTextStartPos;
+        std::list<std::string>::iterator m_linkDestinationStartPos;
+        std::list<std::string>::iterator m_linkDestinationEndPos;
     };
 }

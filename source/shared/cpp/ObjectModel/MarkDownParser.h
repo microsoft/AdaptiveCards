@@ -50,12 +50,12 @@ public:
     struct Emphasis
     {
         int m_emphCnts;
-        unsigned m_idx;
+        unsigned int postionInTokenTable; 
         bool isLeftAndRightEmphasis; 
         DelimiterType type;
         std::vector<int> m_tags;
-        Emphasis(unsigned int empCnts, unsigned idx, bool emp, DelimiterType type) : 
-            m_emphCnts(empCnts), m_idx(idx), isLeftAndRightEmphasis(emp), type(type), m_tags(){};
+        Emphasis(unsigned int empCnts, unsigned int pos, bool emp, DelimiterType type) : 
+            m_emphCnts(empCnts), postionInTokenTable(pos), isLeftAndRightEmphasis(emp), type(type), m_tags(){};
     };
 
     void SetText(const std::string & txt);
@@ -81,7 +81,6 @@ private:
             std::list<Emphasis>::iterator right_itr);
 
     DelimiterType m_currentDelimiterType = Init;
-    unsigned int m_currentWordIndex = 0;
     int m_lookBehind = Init;
     int m_delimiterCnts = 0;
     int m_emphasisState = EmphasisNone;
@@ -92,8 +91,9 @@ private:
     std::string::iterator m_curPos;
     std::list<Emphasis> m_leftLookUpTable;
     std::list<Emphasis> m_rightLookUpTable;
-    std::vector<std::string> m_tokenizedString = std::vector<std::string>(1, "");
-    std::vector<unsigned int> m_linkLookUpTable;
+    std::list<std::string> m_tokenizedString = std::list<std::string>(1, "");
+    std::list<std::string>::iterator m_currentToken = m_tokenizedString.begin();
+    std::vector<std::list<std::string>::iterator> m_linkLookUpTable;
     LinkState m_linkState;
 };
 }
