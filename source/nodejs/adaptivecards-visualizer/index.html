@@ -6,8 +6,11 @@
     <title>Adaptive Card Visualizer</title>
 
     <link rel="stylesheet" href="css/app.css" type="text/css" />
-    
-    <script src="dist/visualizer-with-renderer.js"></script>
+    <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
+
+    <script src="node_modules/adaptivecards/dist/adaptivecards.js"></script>
+
+    <script src="dist/adaptivecards-visualizer.js"></script>
 </head>
 <body>
     <div class="uiRoot">
@@ -17,7 +20,7 @@
                 <div id="editConfig" class="button subdued" style="margin-left: 4px;">Configuration editor</div>
 			</div>
             <div style="flex: 1 1 50%;">
-                <span style="margin-right: 6px;">Select a container:</span>
+                <span style="margin-right: 6px;">Select a Host App:</span>
 				<select id="hostContainerPicker" class="select"></select>
 			</div>
         </div>
@@ -32,7 +35,7 @@
                 <div id="content" class="markupRender"></div>
             </div>
         </div>
-        <div class="uiHeader w3-container w3-display-container w3-display-bottommiddle" style="width: 100%">
+        <div class="uiHeader">
             <div style="flex: 1 1 50%;">
                 <div style="width: 0px; height: 0px; overflow: hidden">
                     <input type="file" id="filePicker">

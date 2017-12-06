@@ -30,9 +30,8 @@ namespace AdaptiveCards
         /// <summary>
         ///     How should this element be emphasized relative to previous element
         /// </summary>
-        [JsonIgnore]
         [Obsolete("Use Separator and Spacing instead")]
-#pragma warning disable 612, 618
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveSeparationStyle Separation
         {
             get
@@ -77,18 +76,5 @@ namespace AdaptiveCards
                 }
             }
         }
-#pragma warning restore 612, 618
-
-        // Allow deserializing but not serializing: https://stackoverflow.com/questions/11564091/making-a-property-deserialize-but-not-serialize-with-json-net
-        [JsonProperty("separation")]
-#pragma warning disable 612, 618
-        private AdaptiveSeparationStyle SeparationSetter
-        {
-            set
-            {
-                Separation = value;
-            }
-        }
-#pragma warning restore 612, 618
     }
 }

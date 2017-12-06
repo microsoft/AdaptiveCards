@@ -1,28 +1,45 @@
+var webpack = require("webpack");
+var path = require("path");
+
 module.exports = {
-    context: __dirname,
-    devtool: "inline-source-map",
-    entry: "./src/adaptivecards.ts",
+    //context: __dirname,
+    devtool: "source-map",
+    entry: {
+        "adaptivecards": ["./src/adaptivecards.ts"],
+        "adaptivecards.min": ["./src/adaptivecards.ts"]
+    },
     output: {
-        filename: "./dist/adaptivecards.js",
-        library: 'AdaptiveCards'
+        path: path.resolve(__dirname, "dist"),
+        filename: "[name].js",
+        library: "AdaptiveCards"
     },
-
     resolve: {
-        extensions: [".ts", ".js"]
+        extensions: [".ts", ".tsx", ".js"]
     },
-
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            sourceMap: true,
+            include: /\.min\.js$/,
+        })
+    ],
     module: {
         rules: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             {
                 test: /\.ts$/,
-                loader: "ts-loader",
+                loader: "awesome-typescript-loader",
+                exclude: /(node_modules|__tests__)/,
+                query: {
+                    declaration: false,
+                }
             },
             {
                 test: /\.json$/,
                 loader: "json-loader",
             }
-
         ]
     },
+    externals: {
+        "markdown-it": { var: 'markdownit' }
+    }
 };

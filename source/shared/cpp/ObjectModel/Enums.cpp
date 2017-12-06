@@ -166,6 +166,7 @@ static std::unordered_map<Spacing, std::string, EnumHash> SpacingEnumToName =
     { Spacing::Medium, "medium" },
     { Spacing::Large, "large" },
     { Spacing::ExtraLarge, "extraLarge" },
+    { Spacing::Padding, "padding" },
 };
 
 static std::unordered_map<std::string, Spacing, CaseInsensitiveHash, CaseInsensitiveEqualTo>

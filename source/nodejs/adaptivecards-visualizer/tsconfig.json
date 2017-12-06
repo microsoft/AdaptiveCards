@@ -9,9 +9,9 @@
         "sourceMap": true,
         "target": "es5",
         "allowJs": true,
-        "outDir": "built"
+        "outDir": "lib"
     },
     "include": [
-        "src/**/*"
+        "src"
     ]
 }

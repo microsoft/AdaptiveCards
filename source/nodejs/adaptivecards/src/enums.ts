@@ -37,6 +37,8 @@ export enum TextWeight {
 
 export enum TextColor {
     Default,
+    Dark,
+    Light,
     Accent,
     Good,
     Warning,

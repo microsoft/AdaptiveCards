@@ -7,7 +7,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class AdaptiveImageRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -17,6 +16,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveImageRenderer, BaseTrust)
 
     public:
+        AdaptiveImageRenderer();
+        AdaptiveImageRenderer(std::shared_ptr<AdaptiveCards::Rendering::Uwp::XamlBuilder> xamlBuilder);
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(
@@ -32,7 +33,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element);
 
     private:
-        AdaptiveCards::Rendering::Uwp::XamlBuilder m_xamlBuilder;
+        std::shared_ptr<AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
     };
 
     ActivatableClass(AdaptiveImageRenderer);

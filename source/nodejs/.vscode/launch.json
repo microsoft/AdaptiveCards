@@ -2,11 +2,21 @@
     "version": "0.1.0",
     "configurations": [
         {
-            "name": "Launch Visualizer",
-            "type": "chrome",
+            "type": "node",
             "request": "launch",
-            "file": "${workspaceRoot}/visualizer/dev.html",
-            "sourceMaps": true
+            "name": "Debug Tests",
+            "cwd": "${workspaceFolder}\\adaptivecards",
+            //"preLaunchTask": "buildDebug", // not working until https://github.com/Microsoft/vscode/issues/31217
+            "program": "${workspaceFolder}\\adaptivecards\\node_modules\\jest\\bin\\jest.js",
+            "args": [
+                "--runInBand",
+                "--config",
+                "${workspaceRoot}\\adaptivecards\\jest.debug.json"
+            ],
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/adaptivecards/build/*"
+            ]
         }
     ]
 }

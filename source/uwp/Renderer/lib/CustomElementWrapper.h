@@ -5,7 +5,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {
     public:

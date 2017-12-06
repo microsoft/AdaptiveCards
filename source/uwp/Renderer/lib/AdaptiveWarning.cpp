@@ -8,7 +8,6 @@ using namespace ABI::AdaptiveCards::Rendering::Uwp;
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
 
-
     HRESULT AdaptiveWarning::RuntimeClassInitialize()
     {
         return S_OK;

@@ -2,7 +2,6 @@
 #include "AdaptiveSeparator.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -13,7 +12,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveSeparator::RuntimeClassInitialize() noexcept try
     {
         m_sharedSeparator = std::make_shared<Separator>();

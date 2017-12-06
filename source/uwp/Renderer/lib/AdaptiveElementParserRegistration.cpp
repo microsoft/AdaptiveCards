@@ -10,7 +10,6 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration()
     {
     }
