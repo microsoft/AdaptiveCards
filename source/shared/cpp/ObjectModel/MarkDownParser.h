@@ -6,6 +6,7 @@
 #include "BaseCardElement.h"
 #include "Enums.h"
 #include "LinkState.h"
+#include "MarkDownHtmlGenerator.h"
 
 namespace AdaptiveCards
 {
@@ -13,17 +14,6 @@ class MarkDownParser
 {
 public:
     MarkDownParser(const std::string &txt); 
-
-    enum DelimiterType
-    {
-        Init,
-        Alphanumeric,
-        Puntuation,
-        Escape,
-        WhiteSpace,
-        Underscore = 0x8,
-        Asterisk   = 0x10,
-    };
 
     enum EmphasisType
     {
@@ -53,9 +43,12 @@ public:
         unsigned int postionInTokenTable; 
         bool isLeftAndRightEmphasis; 
         DelimiterType type;
-        std::vector<int> m_tags;
-        Emphasis(unsigned int empCnts, unsigned int pos, bool emp, DelimiterType type) : 
-            m_emphCnts(empCnts), postionInTokenTable(pos), isLeftAndRightEmphasis(emp), type(type), m_tags(){};
+        std::list<std::shared_ptr<MarkDownHtmlGenerator>>::iterator token;
+        Emphasis(unsigned int empCnts, unsigned int pos, bool emp, 
+                DelimiterType type, 
+                std::list<std::shared_ptr<MarkDownHtmlGenerator>>::iterator &token) :
+            m_emphCnts(empCnts), postionInTokenTable(pos), isLeftAndRightEmphasis(emp), 
+            type(type), token(token){};
     };
 
     void SetText(const std::string & txt);
@@ -65,18 +58,19 @@ private:
     bool IsMatch(std::list<Emphasis>::iterator &left, std::list<Emphasis>::iterator &right);
     bool IsLeftEmphasisDelimiter();
     bool IsRightEmphasisDelimiter();
-    bool PushLeftEmphasisToLookUpTableIfValid();
-    bool PushRightEmphasisToLookUpTableIfValid();
+    bool TryCapturingRightEmphasisToken();
+    bool TryCapturingLeftEmphasisToken();
     bool IsMarkDownDelimiter(char ch);
     DelimiterType GetDelimiterTypeForCharAtCurrentPosition();
-    bool IsEmphasisDelimiterRun(MarkDownParser::DelimiterType delimiterRunType);
-    void UpdateCurrentEmphasisRunState(MarkDownParser::DelimiterType emphasisType);
-    void ResetCurrentEmphasisRunState(MarkDownParser::DelimiterType emphasisType);
-    void StartNewTokenCapture();
+    bool IsEmphasisDelimiterRun(DelimiterType delimiterRunType);
+    void UpdateCurrentEmphasisRunState(DelimiterType emphasisType);
+    void ResetCurrentEmphasisRunState(DelimiterType emphasisType);
     void GetCh(char ch);
-    void PutBackCh();
-    void GenSymbolTable();
+    void CaptureCurrentCollectedStringAsRegularToken();
+    void StartNewTokenCapture();
+    void GenerateSymbolTable();
     void UpdateState();
+    std::string GenerateHtmlString();
     int AdjustEmphasisCounts(int leftOver, std::list<Emphasis>::iterator left_itr, 
             std::list<Emphasis>::iterator right_itr);
 
@@ -91,8 +85,8 @@ private:
     std::string::iterator m_curPos;
     std::list<Emphasis> m_leftLookUpTable;
     std::list<Emphasis> m_rightLookUpTable;
-    std::list<std::string> m_tokenizedString = std::list<std::string>(1, "");
-    std::list<std::string>::iterator m_currentToken = m_tokenizedString.begin();
+    std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_tokenizedString;
+    std::string m_currentToken = "";
     std::vector<std::list<std::string>::iterator> m_linkLookUpTable;
     LinkState m_linkState;
 };
