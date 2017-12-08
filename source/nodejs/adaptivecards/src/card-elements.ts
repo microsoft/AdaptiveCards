@@ -291,14 +291,13 @@ export abstract class CardElement {
         // Does nothing in base implementation
     }
 
-    handleOverflow(maxHeight: number) {
+    private handleOverflow(maxHeight: number) {
         if (this.isVisible || this.isHiddenDueToOverflow()) {
             var handled = this.truncateOverflows(maxHeight);
 
             // Even if we were unable to truncate the element to fit this time,
             // it still could have been previously truncated
-            this._truncatedDueToOverflow
-                = handled || this._truncatedDueToOverflow;
+            this._truncatedDueToOverflow = handled || this._truncatedDueToOverflow;
 
             if (!handled) {
                 this.hideElementDueToOverflow();
@@ -309,7 +308,7 @@ export abstract class CardElement {
         }
     }
 
-    resetOverflow(): boolean {
+    private resetOverflow(): boolean {
         var sizeChanged = false;
 
         if (this._truncatedDueToOverflow) {
@@ -325,8 +324,8 @@ export abstract class CardElement {
         return sizeChanged;
     }
 
-    isOnPage(): boolean {
-        return !!(this._renderedElement && this._renderedElement.offsetHeight);
+    isRendered(): boolean {
+        return this._renderedElement && this._renderedElement.offsetHeight > 0;
     }
 
     isAtTheVeryTop(): boolean {
@@ -688,8 +687,7 @@ export class TextBlock extends CardElement {
     }
 
     updateLayout(processChildren: boolean = false) {
-        if (AdaptiveCard.useAdvancedTextBlockTruncation
-            && this.maxLines && this.isOnPage()) {
+        if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines && this.isRendered()) {
             // Reset the element's innerHTML in case the available room for
             // content has increased
             this.restoreOriginalContent();
@@ -3377,12 +3375,13 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
 
 function raiseElementVisibilityChangedEvent(element: CardElement,
                                             shouldUpdateLayout: boolean = true) {
-    let card = element.getRootElement() as AdaptiveCard;
+    let rootElement = element.getRootElement();
 
     if (shouldUpdateLayout) {
-        card.updateLayout();
+        rootElement.updateLayout();
     }
 
+    let card = rootElement as AdaptiveCard;
     let onElementVisibilityChangedHandler = (card && card.onElementVisibilityChanged) ? card.onElementVisibilityChanged : AdaptiveCard.onElementVisibilityChanged;
 
     if (onElementVisibilityChangedHandler != null) {
@@ -3794,7 +3793,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private handleBottomOverflows() {
-        if (!this.isOnPage()) {
+        if (!this.isRendered()) {
             return;
         }
 
@@ -3810,7 +3809,7 @@ export class AdaptiveCard extends ContainerWithActions {
             if (elt) {
                 switch (Utils.getFitStatus(elt, boundary)) {
                     case Enums.ContainerFitStatus.FullyInContainer:
-                        let sizeChanged = cardElement.resetOverflow();
+                        let sizeChanged = cardElement['resetOverflow']();
                         // If the element's size changed after resetting content,
                         // we have to check if it still fits fully in the card
                         if (sizeChanged) {
@@ -3819,10 +3818,10 @@ export class AdaptiveCard extends ContainerWithActions {
                         break;
                     case Enums.ContainerFitStatus.Overflowing:
                         let maxHeight = boundary - elt.offsetTop;
-                        cardElement.handleOverflow(maxHeight);
+                        cardElement['handleOverflow'](maxHeight);
                         break;
                     case Enums.ContainerFitStatus.FullyOutOfContainer:
-                        cardElement.handleOverflow(0);
+                        cardElement['handleOverflow'](0);
                         break;
                 }
             }

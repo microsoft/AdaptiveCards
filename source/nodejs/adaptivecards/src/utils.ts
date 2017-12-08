@@ -239,8 +239,7 @@ function findNextCharacter(html: string, currIdx: number): number {
     return currIdx;
 }
 
-export function getFitStatus(element: HTMLElement,
-                             containerEnd: number): Enums.ContainerFitStatus {
+export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.ContainerFitStatus {
     var start = element.offsetTop;
     var end = start + element.clientHeight;
 
