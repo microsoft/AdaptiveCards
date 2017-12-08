@@ -86,23 +86,23 @@ export class WebChatContainer extends HostContainer {
                     backgroundColor: "#FFFFFF",
                     foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#c3ab23",
+                            default: "#c3ab23",
                             subtle: "#DDc3ab23"
                         }
                     }
@@ -111,23 +111,23 @@ export class WebChatContainer extends HostContainer {
                     backgroundColor: "#08000000",
                     foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#c3ab23",
+                            default: "#c3ab23",
                             subtle: "#DDc3ab23"
                         }
                     }
