@@ -9,26 +9,6 @@ MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_curPos(m
 {
 }
 
-// adjust number of emphasis counts after maching is done
-int MarkDownParser::AdjustEmphasisCounts(int leftOver, std::list<Emphasis>::iterator left_itr, 
-        std::list<Emphasis>::iterator right_itr)
-{
-    int delimCnts = 0;
-    if (leftOver >= 0)
-    {
-        delimCnts = left_itr->m_emphCnts - leftOver;
-        left_itr->m_emphCnts = leftOver;
-        right_itr->m_emphCnts = 0;
-    }
-    else
-    {
-        delimCnts = left_itr->m_emphCnts;
-        right_itr->m_emphCnts = leftOver * (-1);
-        left_itr->m_emphCnts = 0;
-    }
-    return delimCnts;
-}
-
 // Following the rules speicified in CommonMark (http://spec.commonmark.org/0.27/)
 // It generally supports more stricker version of the rules
 // push left delims to stack, until matching right delim is found,
@@ -36,34 +16,47 @@ int MarkDownParser::AdjustEmphasisCounts(int leftOver, std::list<Emphasis>::iter
 std::string MarkDownParser::TransformToHtml()
 {
     GenerateSymbolTable();
-    if (!m_leftLookUpTable.size() || !m_rightLookUpTable.size())
+
+    if (m_emphasisLookUpTable.empty())
     {
         return "<p>" + m_text + "</p>";
     }
 
-    std::vector<std::list<Emphasis>::iterator> DFSSearchStack;
-    auto top_left = m_leftLookUpTable.begin(), top_right = m_rightLookUpTable.begin();
-    auto curr_left_delim = top_left, right_token_idx = top_right;
-    DFSSearchStack.push_back(top_left++);
+    EmphasisSyntaxCheck(m_emphasisLookUpTable.begin(), m_emphasisLookUpTable.end());
 
-    while (!DFSSearchStack.empty() && top_right != m_rightLookUpTable.end())
+    return GenerateHtmlString();
+}
+
+void MarkDownParser::EmphasisSyntaxCheck(EmphasisListInterator begin, EmphasisListInterator end) 
+{
+    std::vector<std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>>::iterator> leftEmphasisToExplore;
+    auto currentEmphasis = begin; 
+
+    while (!(currentEmphasis == end))
     {
         // keep exploring left until right token is found
-        if (top_left != m_leftLookUpTable.end() && top_left->postionInTokenTable < top_right->postionInTokenTable)
+        if ((*currentEmphasis)->IsLeftEmphasis() || 
+            ((*currentEmphasis)->IsLeftAndRightEmphasis() && leftEmphasisToExplore.empty()))
         {
-            DFSSearchStack.push_back(top_left);
-            ++top_left;
+            if ((*currentEmphasis)->IsLeftAndRightEmphasis() && (*currentEmphasis)->IsRightEmphasis())
+            {
+                // Reverse Direction Type; right empahsis to left emphasis
+                (*currentEmphasis)->ReverseDirectionType();
+            }
+
+            leftEmphasisToExplore.push_back(currentEmphasis);
+            ++currentEmphasis;
         }
-        else
+        else if (!leftEmphasisToExplore.empty())
         {
-            curr_left_delim = DFSSearchStack.back();
+            auto currentLeftEmphasis = leftEmphasisToExplore.back();
             // because of rule #9 & #10 and multiple of 3 rule, left delim can jump ahead of right delim,
             // so need to check this condition.
-            if (curr_left_delim->postionInTokenTable > top_right->postionInTokenTable)
-            {
-                top_right++;
-                continue;
-            }
+            //if (curr_left_delim->postionInTokenTable > top_right->postionInTokenTable)
+            //{
+            //    top_right++;
+            //    continue;
+            //}
 
             // check if matches are found
             //     mataches are found with left and right emphasis tokens if
@@ -81,29 +74,29 @@ std::string MarkDownParser::TransformToHtml()
             //        as left emphasis
             //        else
             //        use current left emphasis to search, and pop current right emphasis
-            if (!(*curr_left_delim->token)->IsMatch(*top_right->token))
+            if (!(*currentLeftEmphasis)->IsMatch(*currentEmphasis))
             {
-                std::vector<std::list<Emphasis>::iterator> store;
+                std::vector<std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>>::iterator> store;
                 bool isFound = false;
                 // search first if matching left emphasis can be found with the right delim
                 // if match found, set the new left emphasis token as current token, and
                 // process tokens and as of the result, any left emphasis tokens that were searched and not matching 
                 // will be no longer considerred in tag processing
                 // pop until matching delim is found
-                while (!DFSSearchStack.empty() && !isFound)
+                while (!leftEmphasisToExplore.empty() && !isFound)
                 {
-                    auto leftdelim = DFSSearchStack.back();
-                    //curr_left_delim = DFSSearchStack.back();
+                    auto leftToken = leftEmphasisToExplore.back();
+                    //curr_left_delim = leftEmphasisToExplore.back();
                     // found left delim 
-                    if ((*leftdelim->token)->IsMatch(*top_right->token))
+                    if ((*leftToken)->IsMatch(*currentEmphasis))
                     {
-                        curr_left_delim = leftdelim;
+                        currentLeftEmphasis = leftToken;
                         isFound = true;
                     }
                     else
                     {
-                        DFSSearchStack.pop_back();
-                        store.push_back(leftdelim);
+                        leftEmphasisToExplore.pop_back();
+                        store.push_back(leftToken);
                     }
                 }
 
@@ -119,99 +112,56 @@ std::string MarkDownParser::TransformToHtml()
                     // restore state
                     while (!isFound && !store.empty())
                     {
-                        DFSSearchStack.push_back(store.back());
+                        leftEmphasisToExplore.push_back(store.back());
                         store.pop_back();
                     }
 
                     // check for the reason why we had to backtrack
-                    if (DFSSearchStack.back()->type == top_right->type)
+                    if ((*leftEmphasisToExplore.back())->IsSameType(*currentEmphasis))
                     {
                         //right emphasis becomes left emphasis
-                        auto elem_to_be_inserted = curr_left_delim;
-                        elem_to_be_inserted++;
-                        m_leftLookUpTable.insert(elem_to_be_inserted, *top_right);
-                        curr_left_delim = --elem_to_be_inserted;
-                        DFSSearchStack.push_back(curr_left_delim);
-
-                        auto elem_to_erase = top_right;
-                        top_right++;
-                        m_rightLookUpTable.erase(elem_to_erase);
+                        /// create new left empahsis html generator from right
+                        (*currentEmphasis)->ReverseDirectionType();
                     }
                     else
                     {
                         // move to next token for right delim tokens
-                        top_right++;
+                        currentEmphasis++;
                     }
                     // no maching found begin from the start
                     continue;
                 }
             }
 
-            int delimCnts = 0, leftOver = 0;
             // check which one has leftover delims
-            leftOver = curr_left_delim->m_emphCnts - top_right->m_emphCnts;
-            delimCnts = AdjustEmphasisCounts(leftOver, curr_left_delim, top_right);
-            right_token_idx = top_right;
-
-            // emphasis found
-            if (delimCnts % 2)
-            {
-                std::shared_ptr<MarkDownEmphasisHtmlGenerator>leftToken = std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(*(curr_left_delim->token));
-                if (leftToken)
-                {
-                    leftToken->PushItalicTag();
-                }
-                std::shared_ptr<MarkDownEmphasisHtmlGenerator>rightToken = std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(*(top_right->token));
-                if (rightToken)
-                {
-                    rightToken->PushItalicTag();
-                }
-            }
-
-            // strong emphasis found
-            for (int i = 0; i < delimCnts / 2; i++)
-            {
-                std::shared_ptr<MarkDownEmphasisHtmlGenerator>leftToken = std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(*(curr_left_delim->token));
-                if (leftToken)
-                {
-                    leftToken->PushBoldTag();
-                }
-                std::shared_ptr<MarkDownEmphasisHtmlGenerator>rightToken = std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(*(top_right->token));
-                if (rightToken)
-                {
-                    rightToken->PushBoldTag();
-                }
-            }
+            (*currentLeftEmphasis)->GenerateTags(*currentEmphasis);
 
             // all right delims used, move to next
-            if (leftOver >= 0)
+            if ((*currentEmphasis)->IsDone())
             {
-                top_right++;
+                currentEmphasis++;
             }
 
             // all left or right delims used, pop
-            if (leftOver == 0 || curr_left_delim->m_emphCnts == 0)
+            if ((*currentLeftEmphasis)->IsDone())
             { 
-                DFSSearchStack.pop_back();
-                if (DFSSearchStack.empty() && top_left != m_leftLookUpTable.end())
-                {
-                    DFSSearchStack.push_back(top_left);
-                    top_left++;
-                }
+                leftEmphasisToExplore.pop_back();
             }
         }
+        else
+        { 
+            currentEmphasis++;
+        }
     }
-
-    return GenerateHtmlString();
 }
 
-std::string MarkDownParser::GenerateHtmlString()
-{
-    // process tags
-    std::ostringstream html;
-    for (auto itr = m_tokenizedString.begin();  itr != m_tokenizedString.end(); itr++)
+std::string MarkDownParser::GenerateHtmlString() 
+{ 
+    // process tags 
+    std::ostringstream html; 
+    for (auto itr = m_tokenizedString.begin(); itr != m_tokenizedString.end(); itr++) 
     { 
-        html << (*itr)->generateHtmlString();
+        html << (*itr)->GenerateHtmlString();
     }
 
     return "<p>" + html.str() + "</p>";
@@ -220,7 +170,8 @@ std::string MarkDownParser::GenerateHtmlString()
 void MarkDownParser::GetCh(char ch)
 {
     // store chars unless it's escape
-    if (ch != '\\')
+    if (ch != '\\'  ||
+        (m_linkState.GetState() == LinkStateMachine::LinkTextStart))
     {
         m_currentToken += ch;
     }
@@ -231,13 +182,28 @@ void MarkDownParser::StartNewTokenCapture()
     m_currentToken.clear();
 }
 
+void MarkDownParser::CaptureLinkText()
+{
+    //std::shared_ptr<MarkDownLinkTextHtmlGenerator> codeGen = 
+    //    std::make_shared<MarkDownLinkTextHtmlGenerator>(m_tokenIterator);
+
+    //m_linkState.m_linkText = codeGen;
+    //m_linkLookUpTable.push_back(std::dynamic_pointer_cast<MarkDownLinkHtmlGenerator>(codeGen));
+    //m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+}
+
 void MarkDownParser::CaptureCurrentCollectedStringAsRegularToken()
 {
     if(m_currentToken.empty())
         return;
     std::shared_ptr<MarkDownStringHtmlGenerator> codeGen = 
         std::make_shared<MarkDownStringHtmlGenerator>(m_currentToken);
+
     m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+    if(m_linkState.GetState() == LinkStateMachine::LinkTextRun)
+    { 
+        CaptureLinkText();
+    }
 
     m_currentToken.clear();
 }
@@ -260,14 +226,12 @@ bool MarkDownParser::TryCapturingLeftEmphasisToken()
     {
         std::shared_ptr<MarkDownLeftEmphasisHtmlGenerator> codeGen = 
             std::make_shared<MarkDownLeftEmphasisHtmlGenerator>(m_currentToken, m_delimiterCnts, 
-                    false, m_currentDelimiterType);
+                    m_currentDelimiterType);
 
+        m_emphasisLookUpTable.push_back(std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(codeGen));
         m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
-        std::list<std::shared_ptr<MarkDownHtmlGenerator>>::iterator token = m_tokenizedString.end();
-        --token;
-        m_leftLookUpTable.push_back(
-            Emphasis(m_delimiterCnts, m_tokenizedString.size() - 1, 
-                false, m_currentDelimiterType, token)); 
+
+        m_currentToken.clear();
         return true;
     }
     return false;
@@ -275,11 +239,6 @@ bool MarkDownParser::TryCapturingLeftEmphasisToken()
 
 bool MarkDownParser::IsRightEmphasisDelimiter()
 {
-    if (m_leftLookUpTable.empty() && IsLeftEmphasisDelimiter())
-    {
-        return false;
-    }
-
     if (isspace(*m_curPos) && 
        (m_lookBehind != WhiteSpace) && 
        (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == Asterisk))
@@ -289,7 +248,7 @@ bool MarkDownParser::IsRightEmphasisDelimiter()
 
     if (isalnum(*m_curPos) && 
         m_lookBehind != WhiteSpace && 
-        m_tokenizedString.size() != 1)
+        m_tokenizedString.size() != 0)
     {
         if (!m_checkLookAhead && !m_checkIntraWord)
         {
@@ -317,18 +276,32 @@ bool MarkDownParser::IsRightEmphasisDelimiter()
 // return true, if right emphasis was detected and added
 bool MarkDownParser::TryCapturingRightEmphasisToken()
 {
+    if (m_curPos + 1 == m_text.end())
+    { 
+        GetCh(*m_curPos);
+    }
+
     if (IsRightEmphasisDelimiter())
     {
-        std::shared_ptr<MarkDownRightEmphasisHtmlGenerator> codeGen = 
-            std::make_shared<MarkDownRightEmphasisHtmlGenerator>(m_currentToken, m_delimiterCnts, 
-                    IsLeftEmphasisDelimiter(), m_currentDelimiterType);
+        std::shared_ptr<MarkDownRightEmphasisHtmlGenerator> codeGen = nullptr;
+        if (IsLeftEmphasisDelimiter())
+        {
+            codeGen = 
+                std::make_shared<MarkDownLeftAndRightEmphasisHtmlGenerator>(m_currentToken, m_delimiterCnts, 
+                        m_currentDelimiterType);
+        }
+        else
+        {
+            codeGen = 
+                std::make_shared<MarkDownRightEmphasisHtmlGenerator>(m_currentToken, m_delimiterCnts, 
+                        m_currentDelimiterType);
+        }
 
+        m_emphasisLookUpTable.push_back(std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(codeGen));
         m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
-        std::list<std::shared_ptr<MarkDownHtmlGenerator>>::iterator token = m_tokenizedString.end();
-        --token;
-        m_leftLookUpTable.push_back(
-            Emphasis(m_delimiterCnts, m_tokenizedString.size() - 1, 
-                false, m_currentDelimiterType, token)); 
+
+        m_currentToken.clear();
+
         return true;
     }
     return false;
@@ -357,7 +330,6 @@ void MarkDownParser::UpdateState()
         m_emphasisState = (m_emphasisState & InsideEmphasis)?
             EmphasisEnd : EmphasisNone;
     }
-
 }
 
 DelimiterType MarkDownParser::GetDelimiterTypeForCharAtCurrentPosition()
@@ -385,6 +357,7 @@ void MarkDownParser::ResetCurrentEmphasisRunState(DelimiterType emphasisType)
     m_emphasisState = EmphasisStart;
     m_delimiterCnts = 1;
 }
+
 // detects valid emphasis delimiters, when valid delimiters are found, they are added into
 // a new space. each new delimiters that are part of the run is appended, in that way,
 // it builds tokens of vectors
@@ -393,20 +366,20 @@ void MarkDownParser::ResetCurrentEmphasisRunState(DelimiterType emphasisType)
 // emphasis count and its types that are used in html generation 
 void MarkDownParser::GenerateSymbolTable()
 {
+
     while (m_curPos < m_text.end())
     {
         UpdateState();
 
         if ((m_emphasisState & InsideEmphasis) || 
-            (m_linkState.GetState() == LinkState::LinkTextStart) || 
-            (m_linkState.GetState() == LinkState::LinkDestinationStart))
+            (m_linkState.GetState() == LinkStateMachine::LinkTextStart) || 
+            (m_linkState.GetState() == LinkStateMachine::LinkDestinationStart))
         {
             // if new emphasis token found start capturing new token
             if ((m_emphasisState & EmphasisStart) || 
-                (m_linkState.GetState() == LinkState::LinkTextStart ||
-                (m_linkState.GetState() == LinkState::LinkDestinationStart)))
+                (m_linkState.GetState() == LinkStateMachine::LinkTextStart ||
+                (m_linkState.GetState() == LinkStateMachine::LinkDestinationStart)))
             { 
-
                 CaptureCurrentCollectedStringAsRegularToken();
             }
 
@@ -459,5 +432,10 @@ void MarkDownParser::GenerateSymbolTable()
 
         GetCh(*m_curPos);
         ++m_curPos; 
+    }
+
+    if (m_emphasisState & OutsideEmphasis && !m_currentToken.empty())
+    {
+        CaptureCurrentCollectedStringAsRegularToken();
     }
 }

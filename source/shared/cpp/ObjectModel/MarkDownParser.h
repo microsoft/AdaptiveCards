@@ -37,25 +37,21 @@ public:
         BeginOfWords = 0x20,
     };
 
-    struct Emphasis
-    {
-        int m_emphCnts;
-        unsigned int postionInTokenTable; 
-        bool isLeftAndRightEmphasis; 
-        DelimiterType type;
-        std::list<std::shared_ptr<MarkDownHtmlGenerator>>::iterator token;
-        Emphasis(unsigned int empCnts, unsigned int pos, bool emp, 
-                DelimiterType type, 
-                std::list<std::shared_ptr<MarkDownHtmlGenerator>>::iterator &token) :
-            m_emphCnts(empCnts), postionInTokenTable(pos), isLeftAndRightEmphasis(emp), 
-            type(type), token(token){};
-    };
+    typedef std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> EmphasisList;
+    typedef EmphasisList::iterator EmphasisListInterator;
+    typedef  std::list<std::shared_ptr<MarkDownHtmlGenerator>> TokenList;
+    typedef std::list<std::shared_ptr<MarkDownLinkHtmlGenerator>> LinkList;
+    //typedef LinkList::iterator LinkListInterator;
 
     void SetText(const std::string & txt);
     std::string TransformToHtml();
 
 private:
-    bool IsMatch(std::list<Emphasis>::iterator &left, std::list<Emphasis>::iterator &right);
+
+    void EmphasisSyntaxCheck(EmphasisListInterator begin, EmphasisListInterator end);
+    void GenerateSymbolTable();
+    std::string GenerateHtmlString();
+
     bool IsLeftEmphasisDelimiter();
     bool IsRightEmphasisDelimiter();
     bool TryCapturingRightEmphasisToken();
@@ -68,11 +64,8 @@ private:
     void GetCh(char ch);
     void CaptureCurrentCollectedStringAsRegularToken();
     void StartNewTokenCapture();
-    void GenerateSymbolTable();
+    void CaptureLinkText();
     void UpdateState();
-    std::string GenerateHtmlString();
-    int AdjustEmphasisCounts(int leftOver, std::list<Emphasis>::iterator left_itr, 
-            std::list<Emphasis>::iterator right_itr);
 
     DelimiterType m_currentDelimiterType = Init;
     int m_lookBehind = Init;
@@ -83,11 +76,11 @@ private:
 
     std::string m_text;
     std::string::iterator m_curPos;
-    std::list<Emphasis> m_leftLookUpTable;
-    std::list<Emphasis> m_rightLookUpTable;
-    std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_tokenizedString;
+    TokenList m_tokenizedString;
+    TokenList::iterator m_tokenIterator = m_tokenizedString.begin();
+    EmphasisList m_emphasisLookUpTable;
+    LinkList m_linkLookUpTable;
     std::string m_currentToken = "";
-    std::vector<std::list<std::string>::iterator> m_linkLookUpTable;
-    LinkState m_linkState;
+    LinkStateMachine m_linkState;
 };
 }

@@ -2,33 +2,38 @@
 #include "LinkState.h"
 using namespace AdaptiveCards;
 
-void LinkState::UpdateState(int ch)
+void LinkStateMachine::UpdateState(int ch)
 { 
     state newState = m_stateMachine[m_current_state](ch);
     m_current_state = newState;
 }
 
-bool LinkState::IsItLink() 
+bool LinkStateMachine::IsItLink() 
 {
     return m_current_state == LinkDestinationEnd;
 }
 
-unsigned int LinkState::StateTransitionCheckAtLinkInit(int ch)
+unsigned int LinkStateMachine::StateTransitionCheckAtLinkInit(int ch)
 {
     return (ch == '[')?  LinkTextStart : LinkInit;
 }
 
-unsigned int LinkState::StateTransitionCheckAtLinkTextStart(int ch)
+unsigned int LinkStateMachine::StateTransitionCheckAtLinkTextStart(int ch)
+{
+    return (ch == ']')? LinkTextEnd : LinkTextRun;
+}
+
+unsigned int LinkStateMachine::StateTransitionCheckAtLinkTextRun(int ch)
 {
     return (ch == ']')? LinkTextEnd : LinkTextStart;
 }
 
-unsigned int LinkState::StateTransitionCheckAtLinkTextEnd(int ch)
+unsigned int LinkStateMachine::StateTransitionCheckAtLinkTextEnd(int ch)
 {
     return (ch == '(')? LinkDestinationStart : LinkInit;
 }
 
-unsigned int LinkState::StateTransitionCheckAtLinkDestinationStart(int ch)
+unsigned int LinkStateMachine::StateTransitionCheckAtLinkDestinationStart(int ch)
 {
     if (isspace(ch))
     {
@@ -43,7 +48,7 @@ unsigned int LinkState::StateTransitionCheckAtLinkDestinationStart(int ch)
     return LinkInsideDestination;
 }
 
-unsigned int LinkState::StateTransitionCheckAtLinkInsideDestination(int ch)
+unsigned int LinkStateMachine::StateTransitionCheckAtLinkInsideDestination(int ch)
 {
     if(isspace(ch) || iscntrl(ch))
     {

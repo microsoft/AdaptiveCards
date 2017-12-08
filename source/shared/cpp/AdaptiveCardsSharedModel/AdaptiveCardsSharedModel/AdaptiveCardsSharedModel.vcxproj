@@ -131,6 +131,7 @@
     <ClCompile Include="..\..\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\jsoncpp.cpp" />
     <ClCompile Include="..\..\ObjectModel\LinkState.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp" />
     <ClCompile Include="..\..\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\OpenUrlAction.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="..\..\ObjectModel\Image.h" />
     <ClInclude Include="..\..\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\ObjectModel\LinkState.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownParser.h" />
     <ClInclude Include="..\..\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\ObjectModel\OpenUrlAction.h" />
