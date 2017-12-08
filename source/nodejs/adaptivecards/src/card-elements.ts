@@ -159,7 +159,7 @@ export abstract class CardElement {
      * maxHeight will be the amount of space still available on the card (0 if
      * the element is fully off the card).
      */
-    protected truncateOverflows(maxHeight: number): boolean {
+    protected truncateOverflow(maxHeight: number): boolean {
         // Child implementations should return true if the element was
         // truncated to fit within maxHeight, false otherwise
         return false;
@@ -293,7 +293,7 @@ export abstract class CardElement {
 
     private handleOverflow(maxHeight: number) {
         if (this.isVisible || this.isHiddenDueToOverflow()) {
-            var handled = this.truncateOverflows(maxHeight);
+            var handled = this.truncateOverflow(maxHeight);
 
             // Even if we were unable to truncate the element to fit this time,
             // it still could have been previously truncated
@@ -696,7 +696,7 @@ export class TextBlock extends CardElement {
         }
     }
 
-    protected truncateOverflows(maxHeight: number): boolean {
+    protected truncateOverflow(maxHeight: number): boolean {
         if (maxHeight >= this._computedLineHeight) {
             return this.truncateIfSupported(maxHeight);
         }
@@ -2724,6 +2724,49 @@ export class Container extends CardElement {
         return element;
     }
 
+    protected truncateOverflow(maxHeight: number): boolean {
+        // Add 1 to account for rounding differences between browsers
+        var boundary = this.renderedElement.offsetTop + maxHeight + 1;
+        this.handleBottomOverflow(boundary);
+        return true;
+    }
+
+    protected undoOverflowTruncation() {
+        for (let item of this._items) {
+            item['resetOverflow']();
+        }
+    }
+
+    protected handleBottomOverflow(boundary: number) {
+        var handleElement = (cardElement: CardElement) => {
+            let elt = cardElement.renderedElement;
+
+            if (elt) {
+                switch (Utils.getFitStatus(elt, boundary)) {
+                    case Enums.ContainerFitStatus.FullyInContainer:
+                        let sizeChanged = cardElement['resetOverflow']();
+                        // If the element's size changed after resetting content,
+                        // we have to check if it still fits fully in the card
+                        if (sizeChanged) {
+                            handleElement(cardElement);
+                        }
+                        break;
+                    case Enums.ContainerFitStatus.Overflowing:
+                        let maxHeight = boundary - elt.offsetTop;
+                        cardElement['handleOverflow'](maxHeight);
+                        break;
+                    case Enums.ContainerFitStatus.FullyOutOfContainer:
+                        cardElement['handleOverflow'](0);
+                        break;
+                }
+            }
+        };
+
+        for (let item of this._items) {
+            handleElement(item);
+        }
+    }
+
     protected get hasBackground(): boolean {
         var parentContainer = this.getParentContainer();
 
@@ -2975,10 +3018,6 @@ export class Container extends CardElement {
             invokeSetParent(this._selectAction, this);
         }
     }
-
-    get items(): Array<CardElement> {
-        return this._items;
-    }
 }
 
 export class Column extends Container {
@@ -3142,6 +3181,20 @@ export class ColumnSet extends CardElement {
         }
     }
 
+    protected truncateOverflow(maxHeight: number): boolean {
+        for (let column of this._columns) {
+            column['handleOverflow'](maxHeight);
+        }
+
+        return true;
+    }
+
+    protected undoOverflowTruncation() {
+        for (let column of this._columns) {
+            column['resetOverflow']();
+        }
+    }
+
     getJsonTypeName(): string {
         return "ColumnSet";
     }
@@ -3289,10 +3342,6 @@ export class ColumnSet extends CardElement {
         if (this._selectAction) {
             invokeSetParent(this._selectAction, this);
         }
-    }
-
-    get columns(): Array<Column> {
-        return this._columns;
     }
 }
 
@@ -3760,76 +3809,17 @@ export class AdaptiveCard extends ContainerWithActions {
     updateLayout(processChildren: boolean = true) {
         super.updateLayout(processChildren);
 
-        if (AdaptiveCard.useAdvancedCardBottomTruncation) {
-            this.handleBottomOverflows();
+        if (AdaptiveCard.useAdvancedCardBottomTruncation && this.isRendered()) {
+            var card = this.renderedElement;
+            var padding = this.hostConfig.getEffectivePadding(Enums.Padding.Default);
+            var boundary = card.offsetTop + card.offsetHeight - padding + 1;
+
+            this.handleBottomOverflow(boundary);
         }
     }
 
     canContentBleed(): boolean {
         return true;
-    }
-
-    private getChildElements(): Array<CardElement> {
-        var children = [];
-
-        var addChildren = (container: Container) => {
-            for (let item of container.items) {
-                if (item instanceof Container) {
-                    addChildren(item);
-                }
-                else if (item instanceof ColumnSet) {
-                    for (let column of (<ColumnSet>item).columns) {
-                        addChildren(column);
-                    }
-                }
-                else {
-                    children.push(item);
-                }
-            }
-        };
-
-        addChildren(this);
-        return children;
-    }
-
-    private handleBottomOverflows() {
-        if (!this.isRendered()) {
-            return;
-        }
-
-        var card = this.renderedElement;
-        var padding = this.hostConfig.getEffectivePadding(Enums.Padding.Default);
-
-        // Add 1 to account for rounding differences
-        var boundary = card.offsetTop + card.offsetHeight - padding + 1;
-
-        var handleElement = (cardElement: CardElement) => {
-            let elt = cardElement.renderedElement;
-
-            if (elt) {
-                switch (Utils.getFitStatus(elt, boundary)) {
-                    case Enums.ContainerFitStatus.FullyInContainer:
-                        let sizeChanged = cardElement['resetOverflow']();
-                        // If the element's size changed after resetting content,
-                        // we have to check if it still fits fully in the card
-                        if (sizeChanged) {
-                            handleElement(cardElement);
-                        }
-                        break;
-                    case Enums.ContainerFitStatus.Overflowing:
-                        let maxHeight = boundary - elt.offsetTop;
-                        cardElement['handleOverflow'](maxHeight);
-                        break;
-                    case Enums.ContainerFitStatus.FullyOutOfContainer:
-                        cardElement['handleOverflow'](0);
-                        break;
-                }
-            }
-        };
-
-        for (let item of this.getChildElements()) {
-            handleElement(item);
-        }
     }
 }
 
