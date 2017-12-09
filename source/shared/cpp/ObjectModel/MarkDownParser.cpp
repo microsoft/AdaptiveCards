@@ -27,6 +27,8 @@ std::string MarkDownParser::TransformToHtml()
     return GenerateHtmlString();
 }
 
+///void MarkDownParser::EmphasisSyntaxCheck(EmphasisListInterator begin, EmphasisListInterator end) 
+//// match and update emphasis  tokens
 void MarkDownParser::EmphasisSyntaxCheck(EmphasisListInterator begin, EmphasisListInterator end) 
 {
     std::vector<std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>>::iterator> leftEmphasisToExplore;
@@ -184,12 +186,16 @@ void MarkDownParser::StartNewTokenCapture()
 
 void MarkDownParser::CaptureLinkText()
 {
-    //std::shared_ptr<MarkDownLinkTextHtmlGenerator> codeGen = 
-    //    std::make_shared<MarkDownLinkTextHtmlGenerator>(m_tokenIterator);
+    std::shared_ptr<MarkDownLinkTextHtmlGenerator> codeGen = 
+        std::make_shared<MarkDownLinkTextHtmlGenerator>(m_tokenIterator);
 
-    //m_linkState.m_linkText = codeGen;
-    //m_linkLookUpTable.push_back(std::dynamic_pointer_cast<MarkDownLinkHtmlGenerator>(codeGen));
-    //m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+    m_linkState.m_linkText = codeGen;
+    m_linkLookUpTable.push_back(std::dynamic_pointer_cast<MarkDownLinkHtmlGenerator>(codeGen));
+    m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+    if (m_tokenizedString.size() == 1)
+        m_tokenIterator = m_tokenizedString.begin();
+    else
+        m_tokenIterator++;
 }
 
 void MarkDownParser::CaptureCurrentCollectedStringAsRegularToken()
@@ -200,6 +206,10 @@ void MarkDownParser::CaptureCurrentCollectedStringAsRegularToken()
         std::make_shared<MarkDownStringHtmlGenerator>(m_currentToken);
 
     m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+    if (m_tokenizedString.size() == 1)
+        m_tokenIterator = m_tokenizedString.begin();
+    else
+        m_tokenIterator++;
     if(m_linkState.GetState() == LinkStateMachine::LinkTextRun)
     { 
         CaptureLinkText();
@@ -230,6 +240,10 @@ bool MarkDownParser::TryCapturingLeftEmphasisToken()
 
         m_emphasisLookUpTable.push_back(std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(codeGen));
         m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+        if (m_tokenizedString.size() == 1)
+            m_tokenIterator = m_tokenizedString.begin();
+        else
+            m_tokenIterator++;
 
         m_currentToken.clear();
         return true;
@@ -293,12 +307,18 @@ bool MarkDownParser::TryCapturingRightEmphasisToken()
         else
         {
             codeGen = 
+                // tokenizedStrings ->  to more meaningful reflect what it actually do
                 std::make_shared<MarkDownRightEmphasisHtmlGenerator>(m_currentToken, m_delimiterCnts, 
                         m_currentDelimiterType);
         }
 
+        // use staic cast
         m_emphasisLookUpTable.push_back(std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(codeGen));
         m_tokenizedString.push_back(std::dynamic_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+        if (m_tokenizedString.size() == 1)
+            m_tokenIterator = m_tokenizedString.begin();
+        else
+            m_tokenIterator++;
 
         m_currentToken.clear();
 
@@ -329,6 +349,7 @@ void MarkDownParser::UpdateState()
     {
         m_emphasisState = (m_emphasisState & InsideEmphasis)?
             EmphasisEnd : EmphasisNone;
+        m_linkState.UpdateState(*m_curPos);
     }
 }
 
@@ -364,7 +385,8 @@ void MarkDownParser::ResetCurrentEmphasisRunState(DelimiterType emphasisType)
 // each time emphasis tokens are found, they are also added into a lookup table.
 // the look up table stores index of the corresponding token in the token vectors, and
 // emphasis count and its types that are used in html generation 
-void MarkDownParser::GenerateSymbolTable()
+// add comments -> what it does: generating  n supported features + 1 tokens --> capture them in token class
+void MarkDownParser::GenerateSymbolTable() // rename it to tokenize() // state machines
 {
 
     while (m_curPos < m_text.end())
@@ -372,12 +394,12 @@ void MarkDownParser::GenerateSymbolTable()
         UpdateState();
 
         if ((m_emphasisState & InsideEmphasis) || 
-            (m_linkState.GetState() == LinkStateMachine::LinkTextStart) || 
+            (m_linkState.GetState() == LinkStateMachine::LinkTextRun) || 
             (m_linkState.GetState() == LinkStateMachine::LinkDestinationStart))
         {
             // if new emphasis token found start capturing new token
             if ((m_emphasisState & EmphasisStart) || 
-                (m_linkState.GetState() == LinkStateMachine::LinkTextStart ||
+                (m_linkState.GetState() == LinkStateMachine::LinkTextRun ||
                 (m_linkState.GetState() == LinkStateMachine::LinkDestinationStart)))
             { 
                 CaptureCurrentCollectedStringAsRegularToken();

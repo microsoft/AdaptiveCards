@@ -76,7 +76,7 @@ private:
 
     std::string m_text;
     std::string::iterator m_curPos;
-    TokenList m_tokenizedString;
+    TokenList m_tokenizedString = TokenList();
     TokenList::iterator m_tokenIterator = m_tokenizedString.begin();
     EmphasisList m_emphasisLookUpTable;
     LinkList m_linkLookUpTable;

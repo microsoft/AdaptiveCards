@@ -52,11 +52,9 @@ int MarkDownEmphasisHtmlGenerator::AdjustEmphasisCounts(int leftOver, std::share
     return delimCnts;
 }
 
-void MarkDownEmphasisHtmlGenerator::GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &rightToken)
+void MarkDownEmphasisHtmlGenerator::GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token)
 {
     int delimCnts = 0, leftOver = 0;
-    std::shared_ptr<MarkDownEmphasisHtmlGenerator> token = 
-        std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(rightToken);
     leftOver = this->m_numberOfUnusedDelimiters - token->m_numberOfUnusedDelimiters;
     delimCnts = this->AdjustEmphasisCounts(leftOver, token);
 
