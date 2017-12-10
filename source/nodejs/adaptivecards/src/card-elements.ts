@@ -160,13 +160,14 @@ export abstract class CardElement {
      * the element is fully off the card).
      */
     protected truncateOverflow(maxHeight: number): boolean {
-        // Child implementations should return true if the element was
-        // truncated to fit within maxHeight, false otherwise
+        // Child implementations should return true if the element handled
+        // the truncation request such that its content fits within maxHeight,
+        // false if the element should fall back to being hidden
         return false;
     }
 
     /*
-     * This should reverse any changes performed in truncateOverflows().
+     * This should reverse any changes performed in truncateOverflow().
      */
     protected undoOverflowTruncation() {}
 
@@ -291,6 +292,7 @@ export abstract class CardElement {
         // Does nothing in base implementation
     }
 
+    // Marked private to emulate internal access
     private handleOverflow(maxHeight: number) {
         if (this.isVisible || this.isHiddenDueToOverflow()) {
             var handled = this.truncateOverflow(maxHeight);
@@ -308,6 +310,7 @@ export abstract class CardElement {
         }
     }
 
+    // Marked private to emulate internal access
     private resetOverflow(): boolean {
         var sizeChanged = false;
 
@@ -2727,17 +2730,7 @@ export class Container extends CardElement {
     protected truncateOverflow(maxHeight: number): boolean {
         // Add 1 to account for rounding differences between browsers
         var boundary = this.renderedElement.offsetTop + maxHeight + 1;
-        this.handleBottomOverflow(boundary);
-        return true;
-    }
 
-    protected undoOverflowTruncation() {
-        for (let item of this._items) {
-            item['resetOverflow']();
-        }
-    }
-
-    protected handleBottomOverflow(boundary: number) {
         var handleElement = (cardElement: CardElement) => {
             let elt = cardElement.renderedElement;
 
@@ -2764,6 +2757,14 @@ export class Container extends CardElement {
 
         for (let item of this._items) {
             handleElement(item);
+        }
+
+        return true;
+    }
+
+    protected undoOverflowTruncation() {
+        for (let item of this._items) {
+            item['resetOverflow']();
         }
     }
 
@@ -3812,9 +3813,8 @@ export class AdaptiveCard extends ContainerWithActions {
         if (AdaptiveCard.useAdvancedCardBottomTruncation && this.isRendered()) {
             var card = this.renderedElement;
             var padding = this.hostConfig.getEffectivePadding(Enums.Padding.Default);
-            var boundary = card.offsetTop + card.offsetHeight - padding + 1;
 
-            this.handleBottomOverflow(boundary);
+            this['handleOverflow'](card.offsetHeight - padding);
         }
     }
 
