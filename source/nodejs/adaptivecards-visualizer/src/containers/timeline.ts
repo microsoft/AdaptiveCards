@@ -27,6 +27,8 @@ export class TimelineContainer extends HostContainer {
     }
 
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
+        AdaptiveCard.useAdvancedCardBottomTruncation = true;
+
         var element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
@@ -34,8 +36,10 @@ export class TimelineContainer extends HostContainer {
         element.style.overflow = "hidden";
         target.appendChild(element);
 
-        var renderedCard = adaptiveCard.render(element);
+        var renderedCard = adaptiveCard.render();
         renderedCard.style.height = "100%";
+        element.appendChild(renderedCard);
+        adaptiveCard.updateLayout();
 
         return element;
     }

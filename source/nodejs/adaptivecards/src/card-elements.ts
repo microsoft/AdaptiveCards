@@ -58,10 +58,12 @@ export abstract class CardElement {
     private _hostConfig?: HostConfig.HostConfig = null;
     private _internalPadding: HostConfig.PaddingDefinition = null;
     private _parent: CardElement = null;
-    private _isVisibile: boolean = true;
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
     private _rootCard: AdaptiveCard;
+
+    private _isVisible: boolean = true;
+    private _truncatedDueToOverflow: boolean = false;
 
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
@@ -75,11 +77,27 @@ export abstract class CardElement {
 
     private updateRenderedElementVisibility() {
         if (this._renderedElement) {
-            this._renderedElement.style.visibility = this._isVisibile ? null : "collapse";
+            this._renderedElement.style.visibility = this._isVisible ? null : "collapse";
         }
 
         if (this._separatorElement) {
-            this._separatorElement.style.visibility = this._isVisibile ? null : "collapse";
+            this._separatorElement.style.visibility = this._isVisible ? null : "collapse";
+        }
+    }
+
+    private hideElementDueToOverflow() {
+        if (this._renderedElement && this._isVisible) {
+            this._renderedElement.style.visibility = 'hidden';
+            this._isVisible = false;
+            raiseElementVisibilityChangedEvent(this, false);
+        }
+    }
+
+    private showElementHiddenDueToOverflow() {
+        if (this._renderedElement && !this._isVisible) {
+            this._renderedElement.style.visibility = null;
+            this._isVisible = true;
+            raiseElementVisibilityChangedEvent(this, false);
         }
     }
 
@@ -135,6 +153,23 @@ export abstract class CardElement {
     }
 
     protected abstract internalRender(): HTMLElement;
+
+    /*
+     * Called when this element overflows the bottom of the card.
+     * maxHeight will be the amount of space still available on the card (0 if
+     * the element is fully off the card).
+     */
+    protected truncateOverflow(maxHeight: number): boolean {
+        // Child implementations should return true if the element handled
+        // the truncation request such that its content fits within maxHeight,
+        // false if the element should fall back to being hidden
+        return false;
+    }
+
+    /*
+     * This should reverse any changes performed in truncateOverflow().
+     */
+    protected undoOverflowTruncation() {}
 
     protected get allowCustomPadding(): boolean {
         return true;
@@ -257,6 +292,45 @@ export abstract class CardElement {
         // Does nothing in base implementation
     }
 
+    // Marked private to emulate internal access
+    private handleOverflow(maxHeight: number) {
+        if (this.isVisible || this.isHiddenDueToOverflow()) {
+            var handled = this.truncateOverflow(maxHeight);
+
+            // Even if we were unable to truncate the element to fit this time,
+            // it still could have been previously truncated
+            this._truncatedDueToOverflow = handled || this._truncatedDueToOverflow;
+
+            if (!handled) {
+                this.hideElementDueToOverflow();
+            }
+            else if (handled && !this._isVisible) {
+                this.showElementHiddenDueToOverflow();
+            }
+        }
+    }
+
+    // Marked private to emulate internal access
+    private resetOverflow(): boolean {
+        var sizeChanged = false;
+
+        if (this._truncatedDueToOverflow) {
+            this.undoOverflowTruncation();
+            this._truncatedDueToOverflow = false;
+            sizeChanged = true;
+        }
+
+        if (this.isHiddenDueToOverflow) {
+            this.showElementHiddenDueToOverflow();
+        }
+
+        return sizeChanged;
+    }
+
+    isRendered(): boolean {
+        return this._renderedElement && this._renderedElement.offsetHeight > 0;
+    }
+
     isAtTheVeryTop(): boolean {
         return this.parent ? this.parent.isFirstElement(this) && this.parent.isAtTheVeryTop() : true;
     }
@@ -287,6 +361,10 @@ export abstract class CardElement {
 
     isRightMostElement(element: CardElement): boolean {
         return true;
+    }
+
+    isHiddenDueToOverflow(): boolean {
+        return this._renderedElement && this._renderedElement.style.visibility == 'hidden';
     }
 
     canContentBleed(): boolean {
@@ -360,12 +438,19 @@ export abstract class CardElement {
     }
 
     get isVisible(): boolean {
-        return this._isVisibile;
+        return this._isVisible;
     }
 
     set isVisible(value: boolean) {
-        if (this._isVisibile != value) {
-            this._isVisibile = value;
+        // If the element is going to be hidden, reset any changes that were due
+        // to overflow truncation (this ensures that if the element is later
+        // un-hidden it has the right content)
+        if (AdaptiveCard.useAdvancedCardBottomTruncation && !value) {
+            this.undoOverflowTruncation();
+        }
+
+        if (this._isVisible != value) {
+            this._isVisible = value;
 
             this.updateRenderedElementVisibility();
 
@@ -537,7 +622,8 @@ export class TextBlock extends CardElement {
                 element.style.whiteSpace = "nowrap";
             }
 
-            if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+            if (AdaptiveCard.useAdvancedTextBlockTruncation
+                || AdaptiveCard.useAdvancedCardBottomTruncation) {
                 this._originalInnerHtml = element.innerHTML;
             }
 
@@ -604,29 +690,61 @@ export class TextBlock extends CardElement {
     }
 
     updateLayout(processChildren: boolean = false) {
-        if (AdaptiveCard.useAdvancedTextBlockTruncation) {
+        if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines && this.isRendered()) {
             // Reset the element's innerHTML in case the available room for
             // content has increased
-            this.renderedElement.innerHTML = this._originalInnerHtml;
-            this.truncateIfSupported();
+            this.restoreOriginalContent();
+            var maxHeight = this._computedLineHeight * this.maxLines;
+            this.truncateIfSupported(maxHeight);
         }
     }
 
-    private truncateIfSupported() {
-        if (this.maxLines && this.renderedElement.scrollHeight) {
-            // For now, only truncate TextBlocks that contain just a single
-            // paragraph -- since the maxLines calculation doesn't take into
-            // account Markdown lists
-            var children = this.renderedElement.children;
-            var truncationSupported = children.length == 1
-                && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
-
-            if (truncationSupported) {
-                var element = <HTMLElement>children[0];
-                var maxHeight = this._computedLineHeight * this.maxLines;
-                Utils.truncate(element, maxHeight, this._computedLineHeight);
-            }
+    protected truncateOverflow(maxHeight: number): boolean {
+        if (maxHeight >= this._computedLineHeight) {
+            return this.truncateIfSupported(maxHeight);
         }
+
+        return false;
+    }
+
+    protected undoOverflowTruncation() {
+        this.restoreOriginalContent();
+
+        if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines) {
+            var maxHeight = this._computedLineHeight * this.maxLines;
+            this.truncateIfSupported(maxHeight);
+        }
+    }
+
+    private restoreOriginalContent() {
+        var maxHeight = this.maxLines
+            ? (this._computedLineHeight * this.maxLines) + 'px'
+            : null;
+
+        this.renderedElement.style.maxHeight = maxHeight;
+        this.renderedElement.innerHTML = this._originalInnerHtml;
+    }
+
+    private truncateIfSupported(maxHeight: number): boolean {
+        // For now, only truncate TextBlocks that contain just a single
+        // paragraph -- since the maxLines calculation doesn't take into
+        // account Markdown lists
+        var children = this.renderedElement.children;
+        var isTextOnly = !children.length;
+
+        var truncationSupported = isTextOnly || children.length == 1
+            && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
+
+        if (truncationSupported) {
+            var element = isTextOnly
+                ? this.renderedElement
+                : <HTMLElement>children[0];
+
+            Utils.truncate(element, maxHeight, this._computedLineHeight);
+            return true;
+        }
+
+        return false;
     }
 }
 
@@ -2539,6 +2657,21 @@ export class Container extends CardElement {
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
+        if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+            // Forces the container to be at least as tall as its content.
+            //
+            // Fixes a quirk in Chrome where, for nested flex elements, the
+            // inner element's height would never exceed the outer element's
+            // height. This caused overflow truncation to break -- containers
+            // would always be measured as not overflowing, since their heights
+            // were constrained by their parents as opposed to truly reflecting
+            // the height of their content.
+            //
+            // See the "Browser Rendering Notes" section of this answer:
+            // https://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
+            element.style.minHeight = '-webkit-min-content';
+        }
+
         switch (this.verticalContentAlignment) {
             case Enums.VerticalAlignment.Center:
                 element.style.justifyContent = "center";
@@ -2607,6 +2740,47 @@ export class Container extends CardElement {
         }
 
         return element;
+    }
+
+    protected truncateOverflow(maxHeight: number): boolean {
+        // Add 1 to account for rounding differences between browsers
+        var boundary = this.renderedElement.offsetTop + maxHeight + 1;
+
+        var handleElement = (cardElement: CardElement) => {
+            let elt = cardElement.renderedElement;
+
+            if (elt) {
+                switch (Utils.getFitStatus(elt, boundary)) {
+                    case Enums.ContainerFitStatus.FullyInContainer:
+                        let sizeChanged = cardElement['resetOverflow']();
+                        // If the element's size changed after resetting content,
+                        // we have to check if it still fits fully in the card
+                        if (sizeChanged) {
+                            handleElement(cardElement);
+                        }
+                        break;
+                    case Enums.ContainerFitStatus.Overflowing:
+                        let maxHeight = boundary - elt.offsetTop;
+                        cardElement['handleOverflow'](maxHeight);
+                        break;
+                    case Enums.ContainerFitStatus.FullyOutOfContainer:
+                        cardElement['handleOverflow'](0);
+                        break;
+                }
+            }
+        };
+
+        for (let item of this._items) {
+            handleElement(item);
+        }
+
+        return true;
+    }
+
+    protected undoOverflowTruncation() {
+        for (let item of this._items) {
+            item['resetOverflow']();
+        }
     }
 
     protected get hasBackground(): boolean {
@@ -2962,6 +3136,11 @@ export class ColumnSet extends CardElement {
             element.className = "ac-columnSet";
             element.style.display = "flex";
 
+            if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+                // See comment in Container.internalRender()
+                element.style.minHeight = '-webkit-min-content';
+            }
+
             if (this.selectAction && this.hostConfig.supportsInteractivity) {
                 element.classList.add("ac-selectable");
 
@@ -3020,6 +3199,20 @@ export class ColumnSet extends CardElement {
         }
         else {
             return null;
+        }
+    }
+
+    protected truncateOverflow(maxHeight: number): boolean {
+        for (let column of this._columns) {
+            column['handleOverflow'](maxHeight);
+        }
+
+        return true;
+    }
+
+    protected undoOverflowTruncation() {
+        for (let column of this._columns) {
+            column['resetOverflow']();
         }
     }
 
@@ -3250,10 +3443,15 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
     }
 }
 
-function raiseElementVisibilityChangedEvent(element: CardElement) {
-    element.getRootElement().updateLayout();
+function raiseElementVisibilityChangedEvent(element: CardElement,
+                                            shouldUpdateLayout: boolean = true) {
+    let rootElement = element.getRootElement();
 
-    let card = element.getRootElement() as AdaptiveCard;
+    if (shouldUpdateLayout) {
+        rootElement.updateLayout();
+    }
+
+    let card = rootElement as AdaptiveCard;
     let onElementVisibilityChangedHandler = (card && card.onElementVisibilityChanged) ? card.onElementVisibilityChanged : AdaptiveCard.onElementVisibilityChanged;
 
     if (onElementVisibilityChangedHandler != null) {
@@ -3459,6 +3657,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static useAutomaticContainerBleeding: boolean = false;
     static preExpandSingleShowCardAction: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
+    static useAdvancedCardBottomTruncation: boolean = false;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -3520,6 +3719,19 @@ export class AdaptiveCard extends ContainerWithActions {
         this.renderedElement.style.paddingRight = effectivePadding.right + "px";
         this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
         this.renderedElement.style.paddingLeft = effectivePadding.left + "px";
+    }
+
+    protected internalRender(): HTMLElement {
+        var renderedElement = super.internalRender();
+
+        if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+            // Unlike containers, the root card element should be allowed to
+            // be shorter than its content (otherwise the overflow truncation
+            // logic would never get triggered)
+            renderedElement.style.minHeight = null;
+        }
+
+        return renderedElement;
     }
 
     protected get bypassVersionCheck(): boolean {
@@ -3626,6 +3838,17 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedCard;
+    }
+
+    updateLayout(processChildren: boolean = true) {
+        super.updateLayout(processChildren);
+
+        if (AdaptiveCard.useAdvancedCardBottomTruncation && this.isRendered()) {
+            var card = this.renderedElement;
+            var padding = this.hostConfig.getEffectivePadding(Enums.Padding.Default);
+
+            this['handleOverflow'](card.offsetHeight - padding);
+        }
     }
 
     canContentBleed(): boolean {
