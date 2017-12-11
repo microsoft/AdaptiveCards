@@ -7,7 +7,6 @@ using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize() noexcept try
     {
         ContainerStyleDefinition styleDefinition;

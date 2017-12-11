@@ -7,7 +7,6 @@ using namespace ABI::Windows::Data::Json;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize()
     {
         return S_OK;

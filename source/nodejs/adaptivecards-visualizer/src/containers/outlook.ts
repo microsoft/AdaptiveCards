@@ -111,23 +111,23 @@ export class OutlookContainer extends HostContainer {
                     backgroundColor: "#FFFFFF",
                     foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#cc3300",
+                            default: "#cc3300",
                             subtle: "#DDcc3300"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#e69500",
+                            default: "#e69500",
                             subtle: "#DDe69500"
                         }
                     }
@@ -136,23 +136,23 @@ export class OutlookContainer extends HostContainer {
                     backgroundColor: "#08000000",
                     foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#cc3300",
+                            default: "#cc3300",
                             subtle: "#DDcc3300"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#e69500",
+                            default: "#e69500",
                             subtle: "#DDe69500"
                         }
                     }

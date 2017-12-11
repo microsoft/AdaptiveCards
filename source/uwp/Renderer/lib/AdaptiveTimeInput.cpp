@@ -3,7 +3,6 @@
 
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -14,7 +13,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept try
     {
         m_sharedTimeInput = std::make_shared<TimeInput>();

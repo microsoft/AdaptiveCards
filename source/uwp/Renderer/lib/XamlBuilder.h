@@ -4,7 +4,6 @@
 #include "ImageLoadTracker.h"
 #include "IXamlBuilderListener.h"
 #include "IImageLoadTrackerListener.h"
-#include "AdaptiveCardRendererComponent.h"
 #include <windows.storage.h>
 #include "InputItem.h"
 #include "RenderedAdaptiveCard.h"
@@ -12,7 +11,6 @@
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     class AdaptiveCardRenderer;
 
     class XamlBuilder : public Microsoft::WRL::RuntimeClass<
@@ -20,7 +18,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         Microsoft::WRL::FtmBase,
         AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener>
     {
-        InspectableClass(L"AdaptiveCards.Uwp.XamlBuilder", BaseTrust)
+        InspectableClass(L"AdaptiveCards.Rendering.Uwp.XamlBuilder", BaseTrust)
     public:
         XamlBuilder();
 

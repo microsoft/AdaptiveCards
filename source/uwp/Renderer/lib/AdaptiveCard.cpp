@@ -21,7 +21,6 @@ using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {

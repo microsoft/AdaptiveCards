@@ -9,7 +9,6 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept try
     {
         m_sharedOpenUrlAction = std::make_shared<OpenUrlAction>();

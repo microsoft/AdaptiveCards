@@ -52,7 +52,7 @@
     
     NSData *json = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:&err];
 
-    [((ACRViewController *)_vc).acrActionDelegate didFetchUserResponses:json error:err];
+    [((ACRViewController *)_vc).acrActionDelegate didFetchUserResponses:json data:_data error:err];
 }
 
 @end

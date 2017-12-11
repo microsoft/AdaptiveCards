@@ -24,7 +24,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     RenderedAdaptiveCard::RenderedAdaptiveCard()
     {
     }
@@ -34,7 +33,18 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_errors = Make<Vector<IAdaptiveError*>>();
         m_warnings = Make<Vector<IAdaptiveWarning*>>();
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
-        m_events.reset(new ActionEventSource);
+        m_events = std::make_shared<ActionEventSource>();
+        return S_OK;
+    }
+
+    HRESULT RenderedAdaptiveCard::RuntimeClassInitialize(
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>* errors,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>* warnings)
+    {
+        m_errors = errors;
+        m_warnings = warnings;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
+        m_events = std::make_shared<ActionEventSource>();
         return S_OK;
     }
 

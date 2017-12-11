@@ -14,7 +14,6 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveContainerRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;

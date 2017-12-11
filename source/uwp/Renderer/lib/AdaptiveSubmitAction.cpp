@@ -8,7 +8,6 @@ using namespace ABI::Windows::Data::Json;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
     {
         m_sharedSubmitAction = std::make_shared<SubmitAction>();

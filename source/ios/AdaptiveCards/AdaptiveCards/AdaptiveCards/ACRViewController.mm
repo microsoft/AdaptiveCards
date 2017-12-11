@@ -59,6 +59,41 @@ using namespace AdaptiveCards;
     view.frame = _guideFrame;
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
 
+    std::string backgroundImage = _adaptiveCard->GetBackgroundImage();
+    NSString* imgUrl = nil;
+    if(!backgroundImage.empty())
+        imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
+    if (imgUrl)
+    {
+        NSURL *url = [NSURL URLWithString:imgUrl];
+        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
+        [view addSubview:imgView];
+        [view sendSubviewToBack:imgView];
+        [NSLayoutConstraint activateConstraints:
+         @[[imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
+           [imgView.topAnchor constraintEqualToAnchor:view.topAnchor],
+           [imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
+           ]];
+    }
+    ContainerStyle style = (_hostConfig->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : _hostConfig->actions.showCard.style;
+    if(style != ContainerStyle::None)
+    {
+        unsigned long num = 0;
+        if(style == ContainerStyle::Emphasis)
+        {
+            num = std::stoul(_hostConfig->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
+        }
+        else
+        {
+            num = std::stoul(_hostConfig->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
+        }
+        view.backgroundColor =
+        [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
+                        green:((num & 0x0000FF00) >>  8) / 255.0
+                         blue:((num & 0x000000FF)) / 255.0
+                        alpha:((num & 0xFF000000) >> 24) / 255.0];
+    }
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                              inputs:inputs
                                                      viewController:self

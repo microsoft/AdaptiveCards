@@ -3,9 +3,8 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "InputItem.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp 
 {
-
     class AdaptiveInputs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

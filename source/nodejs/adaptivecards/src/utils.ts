@@ -238,3 +238,18 @@ function findNextCharacter(html: string, currIdx: number): number {
 
     return currIdx;
 }
+
+export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.ContainerFitStatus {
+    var start = element.offsetTop;
+    var end = start + element.clientHeight;
+
+    if (end <= containerEnd) {
+        return Enums.ContainerFitStatus.FullyInContainer;
+    }
+    else if (start < containerEnd) {
+        return Enums.ContainerFitStatus.Overflowing;
+    }
+    else {
+        return Enums.ContainerFitStatus.FullyOutOfContainer;
+    }
+}

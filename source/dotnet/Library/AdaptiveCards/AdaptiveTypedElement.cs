@@ -29,6 +29,6 @@ namespace AdaptiveCards
         /// Additional properties not found on the default schema
         /// </summary>
         [JsonExtensionData]
-        public IDictionary<string, object> AdditionalProperties { get; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        public IDictionary<string, object> AdditionalProperties { get; set;  } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
     }
 }

@@ -10,7 +10,6 @@ using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     template <typename T>
     struct Wrap
     {
@@ -63,7 +62,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     template <class T>
     class Iterator : public RuntimeClass<IIterator<T>>
     {
-        InspectableClass(L"AdaptiveCards.AdaptiveCardReader.Iterator", BaseTrust)
+        InspectableClass(L"AdaptiveCards.Rendering.Uwp.Iterator", BaseTrust)
 
     private:
         typedef typename std::vector<typename Wrap<T>::type> WrappedVector;
@@ -148,7 +147,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IIterable<T>,
         Microsoft::WRL::FtmBase>
     {
-        InspectableClass(L"AdaptiveCards.AdaptiveCardReader.Vector", BaseTrust)
+        InspectableClass(L"AdaptiveCards.Rendering.Uwp.Vector", BaseTrust)
 
     private:
         typedef typename std::vector<typename Wrap<T>::type> WrappedVector;

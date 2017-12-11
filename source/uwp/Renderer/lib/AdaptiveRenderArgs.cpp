@@ -10,7 +10,6 @@ using namespace ABI::Windows::UI::Xaml;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize() noexcept
     {
         return S_OK;

@@ -6,9 +6,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
-
+namespace AdaptiveCards { namespace Rendering { namespace Uwp {
     AdaptiveElementRendererRegistration::AdaptiveElementRendererRegistration()
     {
     }
