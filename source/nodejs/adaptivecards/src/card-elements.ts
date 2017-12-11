@@ -2657,6 +2657,21 @@ export class Container extends CardElement {
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
+        if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+            // Forces the container to be at least as tall as its content.
+            //
+            // Fixes a quirk in Chrome where, for nested flex elements, the
+            // inner element's height would never exceed the outer element's
+            // height. This caused overflow truncation to break -- containers
+            // would always be measured as not overflowing, since their heights
+            // were constrained by their parents as opposed to truly reflecting
+            // the height of their content.
+            //
+            // See the "Browser Rendering Notes" section of this answer:
+            // https://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
+            element.style.minHeight = '-webkit-min-content';
+        }
+
         switch (this.verticalContentAlignment) {
             case Enums.VerticalAlignment.Center:
                 element.style.justifyContent = "center";
@@ -3120,6 +3135,11 @@ export class ColumnSet extends CardElement {
             var element = document.createElement("div");
             element.className = "ac-columnSet";
             element.style.display = "flex";
+
+            if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+                // See comment in Container.internalRender()
+                element.style.minHeight = '-webkit-min-content';
+            }
 
             if (this.selectAction && this.hostConfig.supportsInteractivity) {
                 element.classList.add("ac-selectable");
@@ -3698,6 +3718,19 @@ export class AdaptiveCard extends ContainerWithActions {
         this.renderedElement.style.paddingRight = effectivePadding.right + "px";
         this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
         this.renderedElement.style.paddingLeft = effectivePadding.left + "px";
+    }
+
+    protected internalRender(): HTMLElement {
+        var renderedElement = super.internalRender();
+
+        if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+            // Unlike containers, the root card element should be allowed to
+            // be shorter than its content (otherwise the overflow truncation
+            // logic would never get triggered)
+            renderedElement.style.minHeight = null;
+        }
+
+        return renderedElement;
     }
 
     protected get bypassVersionCheck(): boolean {
