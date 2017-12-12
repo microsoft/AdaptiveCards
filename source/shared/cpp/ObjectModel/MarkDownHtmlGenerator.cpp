@@ -14,7 +14,7 @@ std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 bool MarkDownEmphasisHtmlGenerator::IsMatch(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token)
 {
     std::shared_ptr<MarkDownEmphasisHtmlGenerator> emphasisToken = 
-        std::dynamic_pointer_cast<MarkDownEmphasisHtmlGenerator>(token);
+        std::static_pointer_cast<MarkDownEmphasisHtmlGenerator>(token);
     if(emphasisToken)
     {
         if (this->type == emphasisToken->type)

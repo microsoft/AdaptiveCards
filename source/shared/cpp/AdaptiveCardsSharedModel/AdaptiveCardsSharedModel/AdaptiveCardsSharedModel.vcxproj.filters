@@ -108,10 +108,10 @@
     <ClCompile Include="..\..\ObjectModel\ElementParserRegistration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ObjectModel\LinkState.cpp">
+    <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp">
+    <ClCompile Include="..\..\ObjectModel\MarkDownTokenizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

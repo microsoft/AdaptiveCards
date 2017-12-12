@@ -130,7 +130,7 @@
     <ClCompile Include="..\..\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\jsoncpp.cpp" />
-    <ClCompile Include="..\..\ObjectModel\LinkState.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownTokenizer.cpp" />
     <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp" />
     <ClCompile Include="..\..\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\ObjectModel\NumberInput.cpp" />
