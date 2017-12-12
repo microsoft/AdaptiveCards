@@ -357,38 +357,4 @@ GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyT
     }
     return result;
 }
-
-void InitializeAdaptiveCardSchemaKeyEnumMappings();
-
-void InitializeCardElementTypeEnumMappings();
-
-void InitializeActionTypeEnumMappings();
-
-void InitializeSpacingEnumMappings();
-
-void InitializeSeparatorThicknessEnumMappings();
-
-void InitializeImageStyleEnumMappings();
-
-void InitializeImageSizeEnumMappings();
-
-void InitializeHorizontalAlignmentEnumMappings();
-
-void InitializeColorEnumMappings();
-
-void InitializeTextWeightEnumMappings();
-
-void InitializeTextSizeEnumMappings();
-
-void InitializeActionsOrientationEnumMappings();
-
-void InitializeActionModeEnumMappings();
-
-void InitializeChoiceSetStyleEnumMappings();
-
-void InitializeTextInputStyleEnumMappings();
-
-void InitializeContainerStyleEnumMappings();
-
-void InitializeActionAlignmentEnumMappings();
 }
