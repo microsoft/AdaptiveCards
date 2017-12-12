@@ -817,6 +817,11 @@ const std::string TextInputStyleToString(TextInputStyle style)
 
 TextInputStyle TextInputStyleFromString(const std::string & style)
 {
+    if (TextInputStyleNameToEnum.empty())
+    {
+        InitializeTextInputStyleEnumMappings();
+    }
+
     if (TextInputStyleNameToEnum.find(style) == TextInputStyleNameToEnum.end())
     {
         throw std::out_of_range("Invalid TextInputStyle: " + style);
