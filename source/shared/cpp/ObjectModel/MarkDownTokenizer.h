@@ -9,14 +9,14 @@ namespace AdaptiveCards
     {
         public:
         MarkDownTokenizer(){};
-        static void CaptureCurrentCollectedStringAsRegularToken(std::string&currentToken, 
-                std::list<std::shared_ptr<MarkDownHtmlGenerator>> &tokensOfString);
-        virtual void UpdateState(int ch, std::string& currentToken) = 0;
+        virtual bool UpdateState(int ch, std::string& currentToken) = 0;
         virtual void Flush(std::string& currentToken) = 0;
         typedef unsigned int state;
         void AppendCodeGenTokens(std::list<std::shared_ptr<MarkDownHtmlGenerator>> &); 
-        void AppendEmphasisTokens(std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> &);
-        void AppendTokens(MarkDownTokenizer& tokenizer);
+        void AppendEmphasisTokens(std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> &); 
+        void AppendEmphasisTokens(MarkDownTokenizer &); 
+        void PushFront(std::shared_ptr<MarkDownHtmlGenerator> &token);
+        std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> &GetEmphasisTokens() {return m_emphasisLookUpTable;};
 
         protected:
         std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_codeGenTokens;
@@ -34,8 +34,10 @@ namespace AdaptiveCards
             EmphasisRun = 0x1,   
         };
 
-        void UpdateState(int ch, std::string& currentToken);
+        bool UpdateState(int ch, std::string& currentToken);
         void Flush(std::string& currentToken);
+        void MatchLeftAndRightEmphasises();
+        std::string GenerateHtmlString();
         bool IsMarkDownDelimiter(char ch);
         void CaptureCurrentCollectedStringAsRegularToken(std::string&currentToken); 
         void UpdateCurrentEmphasisRunState(DelimiterType emphasisType);
@@ -83,45 +85,40 @@ namespace AdaptiveCards
         enum LinkStateEnum
         {
             LinkInit = 0,
-            //LinkTextStart,
             LinkTextRun,
             LinkTextEnd,
             LinkDestinationStart,
-            LinkInsideDestination,
+            LinkDestinationRun,
             LinkDestinationEnd,
-            LinkRestart,
         };
         typedef unsigned int state;
 
         bool IsItLink(); 
-        void UpdateState(int ch, std::string& currentToken);
+        bool UpdateState(int ch, std::string& currentToken);
+        void Flush(std::string& currentToken) {};
         state GetState() const { return m_current_state; }
+        void Clear();
         MarkDownEmphasisTokenizer &GetLinkTextEmphasisTokenizer() { return m_linkTextEmphasisTokenizer; };
-        MarkDownEmphasisTokenizer &GetLinkDestinationEmphasisTokenizer() { return m_linkDestinationEmphasisTokenizer; };
-        MarkDownEmphasisTokenizer &GetTextBlockEmphasisTokenizer() { return m_textBlockEmphasisTokenizer; };
-        std::shared_ptr<MarkDownLinkTextHtmlGenerator> m_linkText = nullptr;
 
     private:
+        void CaptureLinkToken(int ch, std::string &currentToken);
         typedef unsigned int (* UpdateStateWithChar)(MarkDownLinkTokenizer &, int, std::string &);
         static unsigned int StateTransitionCheckAtLinkInit(MarkDownLinkTokenizer &, int , std::string &);
-        //static unsigned int StateTransitionCheckAtLinkTextStart(int ch);
         static unsigned int StateTransitionCheckAtLinkTextRun(MarkDownLinkTokenizer &, int, std::string &);
         static unsigned int StateTransitionCheckAtLinkTextEnd(MarkDownLinkTokenizer &, int, std::string &); 
         static unsigned int StateTransitionCheckAtLinkDestinationStart(MarkDownLinkTokenizer &, int, std::string &); 
-        static unsigned int StateTransitionCheckAtLinkInsideDestination(MarkDownLinkTokenizer &, int, std::string &); 
+        static unsigned int StateTransitionCheckAtLinkDestinationRun(MarkDownLinkTokenizer &linkTokenizer, int ch, std::string &currentToken);
+        static unsigned int LinkSyntaxCheckComplete(MarkDownLinkTokenizer &, int, std::string &); 
         std::vector<UpdateStateWithChar> m_stateMachine = 
             {
                 StateTransitionCheckAtLinkInit, 
-                //StateTransitionCheckAtLinkTextStart,
                 StateTransitionCheckAtLinkTextRun,
                 StateTransitionCheckAtLinkTextEnd, 
                 StateTransitionCheckAtLinkDestinationStart,
-                StateTransitionCheckAtLinkInsideDestination,
+                StateTransitionCheckAtLinkDestinationRun,
             };
 
         state m_current_state = 0;
         MarkDownEmphasisTokenizer m_linkTextEmphasisTokenizer;
-        MarkDownEmphasisTokenizer m_linkDestinationEmphasisTokenizer;
-        MarkDownEmphasisTokenizer m_textBlockEmphasisTokenizer;
     };
 }

@@ -22,6 +22,7 @@ enum DelimiterType
 class MarkDownHtmlGenerator
 {
     public:
+        MarkDownHtmlGenerator() : m_token(""){};
         MarkDownHtmlGenerator(std::string &token) : m_token(token){};
         virtual std::string GenerateHtmlString() = 0;
     protected:
@@ -124,56 +125,6 @@ class MarkDownLeftAndRightEmphasisHtmlGenerator : public MarkDownRightEmphasisHt
         bool IsLeftAndRightEmphasis() const { return true; };
         void PushItalicTag(); 
         void PushBoldTag(); 
-};
-
-class MarkDownLinkHtmlGenerator : public MarkDownHtmlGenerator
-{ 
-    public:        
-        typedef std::shared_ptr<MarkDownEmphasisHtmlGenerator> EmphasisCodeGeneratorPointerType;
-        typedef std::list<EmphasisCodeGeneratorPointerType> EmphasisCodeGeneratorPointerTypeList;
-        typedef std::shared_ptr<MarkDownHtmlGenerator> CodeGeneratorPointerType;
-        typedef std::list<CodeGeneratorPointerType> CodeGeneratorPointerTypeList;
-
-        MarkDownLinkHtmlGenerator(std::string token, 
-                CodeGeneratorPointerTypeList::iterator tokenPositionAsIterator) : 
-            MarkDownHtmlGenerator(token), m_tokenListBegin(tokenPositionAsIterator){};
-
-        bool IsLink() { return m_isLink; }
-        void ConfirmLink() { m_isLink = true; }
-        void SetEmphasisListBegin(std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>>::iterator &begin)
-        {
-            m_emphasisListBegin = begin;
-        }
-
-        void SetEmphasisListEnd(std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>>::iterator &end)
-        {
-            m_emphasisListEnd = end;
-        }
-
-        void SetTokenListEnd(std::list<std::shared_ptr<MarkDownHtmlGenerator>>::iterator &end)
-        {
-            m_tokenListEnd = end;
-        }
-
-        std::string GenerateHtmlString() { return m_token; };
-    protected:
-        bool m_isLink = false;
-        EmphasisCodeGeneratorPointerTypeList m_emphasisList = EmphasisCodeGeneratorPointerTypeList();
-        EmphasisCodeGeneratorPointerTypeList::iterator m_emphasisListBegin;
-        EmphasisCodeGeneratorPointerTypeList::iterator m_emphasisListEnd;
-
-        CodeGeneratorPointerTypeList::iterator m_tokenListBegin;
-        CodeGeneratorPointerTypeList::iterator m_tokenListEnd;
-};
-
-class MarkDownLinkTextHtmlGenerator : public MarkDownLinkHtmlGenerator
-{ 
-    public:        
-        MarkDownLinkTextHtmlGenerator(CodeGeneratorPointerTypeList::iterator tokenPositionAsIterator) : 
-            MarkDownLinkHtmlGenerator("[", tokenPositionAsIterator){};
-
-        std::string GenerateHtmlString() { return m_token; };
-    protected:
 };
 
 }
