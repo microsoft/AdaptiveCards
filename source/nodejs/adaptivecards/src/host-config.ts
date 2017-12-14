@@ -55,41 +55,6 @@ export class TextColorDefinition {
     }
 }
 
-export class ContainerStyleDefinition {
-    private getTextColorDefinitionOrDefault(obj: any, defaultValue: { default: string, subtle: string }) {
-        return new TextColorDefinition(obj ? obj : defaultValue);
-    }
-
-    backgroundColor?: string;
-    readonly foregroundColors = {
-        default: new TextColorDefinition(),
-        dark: new TextColorDefinition(),
-        light: new TextColorDefinition(),
-        accent: new TextColorDefinition(),
-        good: new TextColorDefinition(),
-        warning: new TextColorDefinition(),
-        attention: new TextColorDefinition()
-    };
-
-    constructor(obj?: any) {
-        if (obj) {
-            this.backgroundColor = obj["backgroundColor"];
-
-            if (obj.foregroundColors) {
-                this.foregroundColors = {
-                    default: this.getTextColorDefinitionOrDefault(obj.foregroundColors["default"], { default: "#333333", subtle: "#EE333333" }),
-                    dark: this.getTextColorDefinitionOrDefault(obj.foregroundColors["dark"], { default: "#000000", subtle: "#66000000" }),
-                    light: this.getTextColorDefinitionOrDefault(obj.foregroundColors["light"], { default: "#FFFFFF", subtle: "#33000000" }),
-                    accent: this.getTextColorDefinitionOrDefault(obj.foregroundColors["accent"], { default: "#2E89FC", subtle: "#882E89FC" }),
-                    good: this.getTextColorDefinitionOrDefault(obj.foregroundColors["good"], { default: "#54A254", subtle: "#DD54A254" }),
-                    warning: this.getTextColorDefinitionOrDefault(obj.foregroundColors["warning"], { default: "#E69500", subtle: "#DDE69500" }),
-                    attention: this.getTextColorDefinitionOrDefault(obj.foregroundColors["attention"], { default: "#CC3300", subtle: "#DDCC3300" })
-                }
-            }
-        }
-    }
-}
-
 export class AdaptiveCardConfig {
     allowCustomStyle: boolean = false;
 
@@ -177,13 +142,13 @@ export class FactSetConfig {
 export class ShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode = Enums.ShowCardActionMode.Inline;
     inlineTopMargin: number = 16;
-    style?: Enums.ContainerStyle = Enums.ContainerStyle.Emphasis;
-
+    style?: string = Enums.ContainerStyle.Emphasis;
+    
     constructor(obj?: any) {
         if (obj) {
             this.actionMode = Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
             this.inlineTopMargin = obj["inlineTopMargin"] != null ? obj["inlineTopMargin"] : this.inlineTopMargin;
-            this.style = Utils.parseHostConfigEnum(Enums.ContainerStyle, obj["style"], Enums.ContainerStyle.Emphasis);
+            this.style = obj["style"] && typeof obj["style"] === "string" ? obj["style"] : Enums.ContainerStyle.Emphasis;
         }
     }
 
@@ -191,7 +156,7 @@ export class ShowCardActionConfig {
         return {
             actionMode: Enums.ShowCardActionMode[this.actionMode],
             inlineTopMargin: this.inlineTopMargin,
-            style: Enums.ContainerStyle[this.style]
+            style: this.style
         }
     }
 }
@@ -230,17 +195,140 @@ export class ActionsConfig {
     }
 }
 
-export class ContainerStyleSet {
-    readonly default: ContainerStyleDefinition = new ContainerStyleDefinition();
-    readonly emphasis: ContainerStyleDefinition = new ContainerStyleDefinition();
+export class ContainerStyleDefinition {
+    private getTextColorDefinitionOrDefault(obj: any, defaultValue: { default: string, subtle: string }) {
+        return new TextColorDefinition(obj ? obj : defaultValue);
+    }
+
+    backgroundColor?: string;
+
+    readonly foregroundColors = {
+        default: new TextColorDefinition(),
+        dark: new TextColorDefinition(),
+        light: new TextColorDefinition(),
+        accent: new TextColorDefinition(),
+        good: new TextColorDefinition(),
+        warning: new TextColorDefinition(),
+        attention: new TextColorDefinition()
+    };
+
+    parse(obj: any) {
+        if (obj) {
+            this.backgroundColor = obj["backgroundColor"];
+
+            if (obj.foregroundColors) {
+                this.foregroundColors.default = this.getTextColorDefinitionOrDefault(obj.foregroundColors["default"], { default: "#333333", subtle: "#EE333333" });
+                this.foregroundColors.dark = this.getTextColorDefinitionOrDefault(obj.foregroundColors["dark"], { default: "#000000", subtle: "#66000000" });
+                this.foregroundColors.light = this.getTextColorDefinitionOrDefault(obj.foregroundColors["light"], { default: "#FFFFFF", subtle: "#33000000" });
+                this.foregroundColors.accent = this.getTextColorDefinitionOrDefault(obj.foregroundColors["accent"], { default: "#2E89FC", subtle: "#882E89FC" });
+                this.foregroundColors.good = this.getTextColorDefinitionOrDefault(obj.foregroundColors["good"], { default: "#54A254", subtle: "#DD54A254" });
+                this.foregroundColors.warning = this.getTextColorDefinitionOrDefault(obj.foregroundColors["warning"], { default: "#E69500", subtle: "#DDE69500" });
+                this.foregroundColors.attention = this.getTextColorDefinitionOrDefault(obj.foregroundColors["attention"], { default: "#CC3300", subtle: "#DDCC3300" });
+            }
+        }        
+    }
 
     constructor(obj?: any) {
-        this.emphasis.backgroundColor = "#EEEEEE";
+        this.parse(obj);
+    }
+}
+
+class NamedContainerStyleDefinition {
+    readonly isBuiltIn: boolean = false;
+    readonly name: string;
+    readonly style: ContainerStyleDefinition = new ContainerStyleDefinition();
+
+    constructor(name: string, isBuiltIn: boolean) {
+        this.name = name;
+        this.isBuiltIn = isBuiltIn;
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            style: this.style
+        }
+    }
+}
+
+export class ContainerStyleSet {
+    private _default = new NamedContainerStyleDefinition(Enums.ContainerStyle.Default, true);
+    private _emphasis = new NamedContainerStyleDefinition(Enums.ContainerStyle.Emphasis, true);
+    private _allStyles: Array<NamedContainerStyleDefinition> = [];
+
+    private findStyleByName(name: string): NamedContainerStyleDefinition {
+        for (var style of this._allStyles) {
+            if (style.name == name) {
+                return style;
+            }
+        }
+
+        return null;
+    }
+
+    constructor(obj?: any) {
+        this._allStyles.push(this._default);
+        this._allStyles.push(this._emphasis);
         
         if (obj) {
-            this.default = new ContainerStyleDefinition(obj["default"]);
-            this.emphasis = new ContainerStyleDefinition(obj["emphasis"])
+            this._default.style.parse(obj[Enums.ContainerStyle.Default]);
+            this._emphasis.style.parse(obj[Enums.ContainerStyle.Emphasis]);
+
+            var customStyleArray = obj["customStyles"];
+
+            if (customStyleArray && Array.isArray(customStyleArray)) {
+                for (var customStyle of customStyleArray) {
+                    if (customStyle) {
+                        var styleName = customStyle["name"];
+                        
+                        var styleDefinition = this.findStyleByName(styleName);
+
+                        if (!styleDefinition) {
+                            styleDefinition = new NamedContainerStyleDefinition(styleName, false);
+
+                            this._allStyles.push(styleDefinition);
+                        }
+
+                        styleDefinition.style.parse(customStyle["style"]);
+                    }
+                }
+            }
         }
+    }
+
+    toJSON() {
+        var customStyleArray: Array<any> = [];
+
+        for (var style of this._allStyles) {
+            if (!style.isBuiltIn) {
+                customStyleArray.push(style.style);
+            }
+        }
+
+        var result: any = {
+            default: this._default.style,
+            emphasis: this._emphasis.style
+        }
+
+        if (customStyleArray.length > 0) {
+            result.customStyles = customStyleArray;
+        }
+
+        return result;
+    }
+
+    getStyleByName(name: string, defaultValue: ContainerStyleDefinition = null): ContainerStyleDefinition {
+        var style = this.findStyleByName(name);
+
+        return style ? style.style : defaultValue;
+    }
+
+    get default(): ContainerStyleDefinition {
+        return this._default.style;
+    }
+
+    get emphasis(): ContainerStyleDefinition {
+        return this._emphasis.style;
     }
 }
 
@@ -372,14 +460,5 @@ export class HostConfig {
             bottom: this.getEffectivePadding(padding.bottom),
             left: this.getEffectivePadding(padding.left)
         })
-    }
-
-    getContainerStyleDefinition(containerStyle: Enums.ContainerStyle) {
-        switch (containerStyle) {
-            case Enums.ContainerStyle.Emphasis:
-                return this.containerStyles.emphasis;
-            default:
-                return this.containerStyles.default;
-        }
     }
 }
