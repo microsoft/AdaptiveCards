@@ -58,7 +58,8 @@ void MarkDownParser::Tokenize() // rename it to tokenize() // state machines
         GetCh(*m_curPos);
         if (*m_curPos == '[' || !IsLinkTokenizingDone)
         {
-            if (*m_curPos == '[')
+            // first detection of link, capture what has been processed
+            if (*m_curPos == '[' && IsLinkTokenizingDone)
             { 
                 m_currentToken.pop_back();
                 emphasisTokenizer.Flush(m_currentToken);
@@ -68,14 +69,21 @@ void MarkDownParser::Tokenize() // rename it to tokenize() // state machines
 
             IsLinkTokenizingDone = linkTokenizer.UpdateState(*m_curPos, m_currentToken);
 
-            if (IsLinkTokenizingDone)
+            if (IsLinkTokenizingDone || (!IsLinkTokenizingDone && m_curPos + 1 == m_text.end()))
             { 
                 if (!linkTokenizer.IsItLink())
                 {
+                    if (!IsLinkTokenizingDone && m_curPos + 1 == m_text.end())
+                    { 
+                        linkTokenizer.Flush(m_currentToken);
+                    }
                     linkTokenizer.AppendEmphasisTokens(emphasisTokenizer);
                 }
                 linkTokenizer.AppendCodeGenTokens(m_tokenizedString);
-                //linkTokenizer.Clear();
+                if (*m_curPos == '[')
+                {
+                    IsLinkTokenizingDone = false;
+                }
             }
         }
         else
@@ -84,7 +92,6 @@ void MarkDownParser::Tokenize() // rename it to tokenize() // state machines
         }
         ++m_curPos; 
     }
-
     emphasisTokenizer.Flush(m_currentToken);
     emphasisTokenizer.MatchLeftAndRightEmphasises();
     emphasisTokenizer.AppendCodeGenTokens(m_tokenizedString);

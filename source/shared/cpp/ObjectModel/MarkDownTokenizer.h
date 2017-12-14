@@ -15,7 +15,10 @@ namespace AdaptiveCards
         void AppendCodeGenTokens(std::list<std::shared_ptr<MarkDownHtmlGenerator>> &); 
         void AppendEmphasisTokens(std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> &); 
         void AppendEmphasisTokens(MarkDownTokenizer &); 
-        void PushFront(std::shared_ptr<MarkDownHtmlGenerator> &token);
+        void PushFrontToCodeGenList(std::shared_ptr<MarkDownHtmlGenerator> &token);
+        void PushBackToCodeGenList(std::shared_ptr<MarkDownHtmlGenerator> &token);
+        void PopFrontFromCodeGenList();
+        void PopBackFromCodeGenList();
         std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> &GetEmphasisTokens() {return m_emphasisLookUpTable;};
 
         protected:
@@ -36,6 +39,7 @@ namespace AdaptiveCards
 
         bool UpdateState(int ch, std::string& currentToken);
         void Flush(std::string& currentToken);
+        void Clear();
         void MatchLeftAndRightEmphasises();
         std::string GenerateHtmlString();
         bool IsMarkDownDelimiter(char ch);
@@ -85,6 +89,7 @@ namespace AdaptiveCards
         enum LinkStateEnum
         {
             LinkInit = 0,
+            LinkTextReinit,
             LinkTextRun,
             LinkTextEnd,
             LinkDestinationStart,
@@ -95,9 +100,11 @@ namespace AdaptiveCards
 
         bool IsItLink(); 
         bool UpdateState(int ch, std::string& currentToken);
-        void Flush(std::string& currentToken) {};
+        void Flush(std::string& currentToken);
         state GetState() const { return m_current_state; }
         void Clear();
+        void AddLinkDelimiterToFrontOfCodeGenList(int ch);
+        void AddLinkDelimiterToBackOfCodeGenList(int ch);
         MarkDownEmphasisTokenizer &GetLinkTextEmphasisTokenizer() { return m_linkTextEmphasisTokenizer; };
 
     private:
@@ -108,10 +115,11 @@ namespace AdaptiveCards
         static unsigned int StateTransitionCheckAtLinkTextEnd(MarkDownLinkTokenizer &, int, std::string &); 
         static unsigned int StateTransitionCheckAtLinkDestinationStart(MarkDownLinkTokenizer &, int, std::string &); 
         static unsigned int StateTransitionCheckAtLinkDestinationRun(MarkDownLinkTokenizer &linkTokenizer, int ch, std::string &currentToken);
-        static unsigned int LinkSyntaxCheckComplete(MarkDownLinkTokenizer &, int, std::string &); 
+
         std::vector<UpdateStateWithChar> m_stateMachine = 
             {
                 StateTransitionCheckAtLinkInit, 
+                StateTransitionCheckAtLinkTextRun,
                 StateTransitionCheckAtLinkTextRun,
                 StateTransitionCheckAtLinkTextEnd, 
                 StateTransitionCheckAtLinkDestinationStart,
