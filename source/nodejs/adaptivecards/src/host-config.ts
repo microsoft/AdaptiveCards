@@ -243,10 +243,6 @@ class BuiltInContainerStyleDefinition extends ContainerStyleDefinition {
     }
 }
 
-interface IStyleMap {
-    [name: string]: ContainerStyleDefinition;
-}
-
 export class ContainerStyleSet {
     private _allStyles = new Map<string, ContainerStyleDefinition>();
 
