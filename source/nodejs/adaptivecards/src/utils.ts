@@ -1,6 +1,11 @@
 import * as Enums from "./enums";
 import * as HostConfig from "./host-config";
 
+export const ContentTypes = {
+    applicationJson : "application/json",
+    applicationXWwwFormUrlencoded : "application/x-www-form-urlencoded"
+}
+
 export interface ISeparationDefinition {
     spacing: number,
     lineThickness?: number,
@@ -115,7 +120,7 @@ export class StringWithSubstitutions {
     private _original: string = null;
     private _processed: string = null;
 
-    substituteInputValues(inputs: Array<IInput>, contentType) {
+    substituteInputValues(inputs: Array<IInput>, contentType: string) {
         this._processed = this._original;
 
         var regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
@@ -138,11 +143,11 @@ export class StringWithSubstitutions {
                     valueForReplace = matchedInput.value;
                 }
 
-                if (contentType == "application/json") {
+                if (contentType === ContentTypes.applicationJson) {
                     valueForReplace = JSON.stringify(valueForReplace);
                     valueForReplace = valueForReplace.slice(1, -1);
                 }
-                else if (contentType == "application/x-www-form-urlencoded") {
+                else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
                     valueForReplace = encodeURIComponent(valueForReplace);
                 }
 

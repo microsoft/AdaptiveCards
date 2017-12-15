@@ -1872,7 +1872,7 @@ export class HttpHeader {
     name: string;
 
     prepare(inputs: Array<Input>) {
-        this._value.substituteInputValues(inputs, "application/x-www-form-urlencoded");
+        this._value.substituteInputValues(inputs, Utils.ContentTypes.applicationXWwwFormUrlencoded);
     }
 
     get value(): string {
@@ -1915,9 +1915,9 @@ export class HttpAction extends Action {
     }
 
     prepare(inputs: Array<Input>) {
-        this._url.substituteInputValues(inputs, "application/x-www-form-urlencoded");
+        this._url.substituteInputValues(inputs, Utils.ContentTypes.applicationXWwwFormUrlencoded);
         
-        let contentType = "application/json";
+        let contentType = Utils.ContentTypes.applicationJson;
 
         for (var i = 0; i < this._headers.length; i++) {
             this._headers[i].prepare(inputs);
