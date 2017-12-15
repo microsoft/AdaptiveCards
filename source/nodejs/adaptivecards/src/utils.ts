@@ -115,7 +115,7 @@ export class StringWithSubstitutions {
     private _original: string = null;
     private _processed: string = null;
 
-    substituteInputValues(inputs: Array<IInput>, contentType="application/json") {
+    substituteInputValues(inputs: Array<IInput>, contentType) {
         this._processed = this._original;
 
         var regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
@@ -130,17 +130,19 @@ export class StringWithSubstitutions {
                     break;
                 }
             }
+
             if (matchedInput) {
                 var valueForReplace = "";
-                if (matchedInput.value)
-                {
+
+                if (matchedInput.value) {
                     valueForReplace = matchedInput.value;
                 }
 
-                if (contentType == "application/json"){
+                if (contentType == "application/json") {
                     valueForReplace = JSON.stringify(valueForReplace);
                     valueForReplace = valueForReplace.slice(1, -1);
-                }else if(contentType == "application/x-www-form-urlencoded"){
+                }
+                else if (contentType == "application/x-www-form-urlencoded") {
                     valueForReplace = encodeURIComponent(valueForReplace);
                 }
 

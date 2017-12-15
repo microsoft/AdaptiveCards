@@ -1,7 +1,7 @@
 import { StringWithSubstitutions, IInput}  from "../../utils";
 import { TextInput } from "../../card-elements";
 
-test('default json encoding works', () => {
+test('application/json encoding works', () => {
     let v = new StringWithSubstitutions();
 
     let input1: IInput = {
@@ -13,7 +13,7 @@ test('default json encoding works', () => {
 
     v.set("key:{{input1.value}}")
 
-    v.substituteInputValues(inputs);
+    v.substituteInputValues(inputs, "application/json");
 
     expect(v.get()).toEqual("key:text:\\n\{value\}\\\"quote\\\"end");
 })
