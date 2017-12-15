@@ -87,8 +87,8 @@ export enum BackgroundImageMode {
 }
 
 export enum ContainerStyle {
-    Default,
-    Emphasis
+    Default = "default",
+    Emphasis = "emphasis"
 }
 
 export enum ValidationError {

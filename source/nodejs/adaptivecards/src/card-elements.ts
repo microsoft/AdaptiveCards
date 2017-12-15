@@ -531,7 +531,7 @@ export class TextBlock extends CardElement {
             element.style.lineHeight = this._computedLineHeight + "px";
 
             var parentContainer = this.getParentContainer();
-            var styleDefinition = this.hostConfig.getContainerStyleDefinition(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
+            var styleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default, this.hostConfig.containerStyles.default);
 
             var actualTextColor = this.color ? this.color : Enums.TextColor.Default;
             var colorDefinition: HostConfig.TextColorDefinition;
@@ -2493,8 +2493,8 @@ export class Container extends CardElement {
     }
 
     private _items: Array<CardElement> = [];
-    private _style?: Enums.ContainerStyle = null;
-
+    private _style?: string = null;
+    
     private get hasExplicitStyle(): boolean {
         return this._style != null;
     }
@@ -2689,7 +2689,7 @@ export class Container extends CardElement {
                 this.backgroundImage.apply(element);
             }
 
-            var styleDefinition = this.hostConfig.getContainerStyleDefinition(this.style);
+            var styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.default);
 
             if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
                 element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
@@ -2789,7 +2789,7 @@ export class Container extends CardElement {
         return this.backgroundImage != undefined || (this.hasExplicitStyle && (parentContainer ? parentContainer.style != this.style : false));
     }
 
-    protected get defaultStyle(): Enums.ContainerStyle {
+    protected get defaultStyle(): string {
         return Enums.ContainerStyle.Default;
     }
 
@@ -2801,16 +2801,16 @@ export class Container extends CardElement {
     bleed: boolean = false;
     verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 
-    get style(): Enums.ContainerStyle {
+    get style(): string {
         if (this.allowCustomStyle) {
-            return this._style ? this._style : this.defaultStyle;
+            return this._style && this.hostConfig.containerStyles.getStyleByName(this._style) ? this._style : this.defaultStyle;
         }
         else {
             return this.defaultStyle;
         }
     }
 
-    set style(value: Enums.ContainerStyle) {
+    set style(value: string) {
         this._style = value;
     }
 
@@ -2840,6 +2840,18 @@ export class Container extends CardElement {
 
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
+
+        if (this._style) {
+            var styleDefinition = this.hostConfig.containerStyles.getStyleByName(this._style);
+
+            if (!styleDefinition) {
+                result.push(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: "Unknown container style: " + this._style
+                    });
+            }
+        }
 
         for (var i = 0; i < this._items.length; i++) {
             if (!this.hostConfig.supportsInteractivity && this._items[i].isInteractive) {
@@ -2884,7 +2896,7 @@ export class Container extends CardElement {
 
         this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
 
-        this._style = Utils.getEnumValueOrDefault(Enums.ContainerStyle, json["style"], null);
+        this._style = json["style"];
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
@@ -3872,7 +3884,7 @@ class InlineAdaptiveCard extends AdaptiveCard {
         );
     }
 
-    protected get defaultStyle(): Enums.ContainerStyle {
+    protected get defaultStyle(): string {
         if (this.suppressStyle) {
             return Enums.ContainerStyle.Default;
         }
