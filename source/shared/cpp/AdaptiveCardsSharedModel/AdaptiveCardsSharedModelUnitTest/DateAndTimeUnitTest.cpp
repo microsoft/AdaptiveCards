@@ -228,7 +228,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             string testString = "{{DATE(2017-99-14T06:08:00Z)}}";
             blck.SetText(testString);
             Assert::AreEqual<string>("{{DATE(2017-99-14T06:08:00Z)}}", blck.GetText());
-
         }
         TEST_METHOD(InvalidTimeTest)
         {
@@ -236,7 +235,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             string testString = "{{TIME(2017-99-14T06:08:00Z)}}";
             blck.SetText(testString);
             Assert::AreEqual<string>("{{TIME(2017-99-14T06:08:00Z)}}", blck.GetText());
-
         }
         TEST_METHOD(LeapYearValidDayTest)
         {
@@ -245,7 +243,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             string testString = "{{DATE(1992-02-29T18:08:00Z)}}";
             blck.SetText(testString);
             Assert::AreEqual<string>("02/29/92", blck.GetText());
-
         }
         TEST_METHOD(LeapYearValidDayOnlyAtUTCTest)
         {
@@ -254,7 +251,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             string testString = "{{DATE(1992-02-29T07:59:00Z)}}";
             blck.SetText(testString);
             Assert::AreEqual<string>("02/28/92", blck.GetText());
-
         }
         TEST_METHOD(NoneLeapYearInvalidDayTest)
         {
@@ -262,7 +258,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             string testString = "{{DATE(1994-02-29T06:08:00Z)}}";
             blck.SetText(testString);
             Assert::AreEqual<string>("{{DATE(1994-02-29T06:08:00Z)}}", blck.GetText());
-
         }
     };
 }
