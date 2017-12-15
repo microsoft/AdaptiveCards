@@ -38,239 +38,78 @@ void MarkDownTokenizer::PushBackToCodeGenList(std::shared_ptr<MarkDownHtmlGenera
     m_codeGenTokens.push_back(token);
 }
 
-bool MarkDownLinkTokenizer::UpdateState(int ch, std::string &currentToken) 
+void EmphasisParser::Match(std::stringstream &stream)
 { 
-    state newState = m_stateMachine[m_current_state](*this, ch, currentToken);
-    m_current_state = newState;
-
-    if (newState == LinkDestinationEnd)
+    while (m_current_state != Captured)
     {
-        m_current_state = LinkInit;
+        m_current_state = m_stateMachine[m_current_state](*this, stream, m_current_token);
     }
-
-    if (newState == LinkInit || newState == LinkTextReinit) 
-    { 
-        m_linkTextEmphasisTokenizer.AppendEmphasisTokens(m_emphasisLookUpTable);
-        m_linkTextEmphasisTokenizer.AppendCodeGenTokens(m_codeGenTokens);
-        if (newState == LinkTextReinit)
-        {
-            AddLinkDelimiterToFrontOfCodeGenList(ch);
-            m_current_state = LinkTextRun;
-        }
-        return true;
-    }
-
-    return (newState == LinkDestinationEnd);
 }
 
-bool MarkDownLinkTokenizer::IsItLink() 
+unsigned int EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
-    return m_current_state == LinkDestinationEnd;
-}
-
-void MarkDownLinkTokenizer::Clear()
-{
-    m_current_state = LinkInit;
-    m_codeGenTokens.clear();
-    m_emphasisLookUpTable.clear();
-}
-
-unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkInit(MarkDownLinkTokenizer &linkTokenizer, 
-        int ch, std::string &currentToken)
-{
-    if (ch == '[')
-    {    
-        linkTokenizer.AddLinkDelimiterToFrontOfCodeGenList(ch);
-        return LinkTextRun;
-    }
-
-    return LinkInit;
-}
-
-unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkTextRun(MarkDownLinkTokenizer &linkTokenizer, 
-                int ch, std::string &currentToken)
-{ 
-    if (ch == ']')
+    if (stream.peek() == ']' || stream.peek() == ')' || stream.eof())
     {
-        currentToken.pop_back();
-        linkTokenizer.GetLinkTextEmphasisTokenizer().Flush(currentToken);
-        linkTokenizer.AddLinkDelimiterToBackOfCodeGenList(ch);
-        return LinkTextEnd;
-    }
-    else
-    {
-        if (ch =='[')
-        {
-            currentToken.pop_back();
-            linkTokenizer.GetLinkTextEmphasisTokenizer().Flush(currentToken);
-            return LinkTextReinit;
-        }
-        else
-        {
-            linkTokenizer.GetLinkTextEmphasisTokenizer().UpdateState(ch, currentToken);
-            return LinkTextRun;
-        }
-    }
-}
-
-unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkTextEnd(MarkDownLinkTokenizer &linkTokenizer,
-    int ch, std::string &currentToken)
-{
-    if (ch == '(')
-    { 
-        linkTokenizer.AddLinkDelimiterToBackOfCodeGenList(ch);
-        currentToken.pop_back();
-        return LinkDestinationStart;
-    } 
-    
-    return LinkInit;
-}
-
-unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkDestinationStart(MarkDownLinkTokenizer &linkTokenizer, 
-                int ch, std::string &currentToken)
-{
-    if (isspace(ch))
-    {
-        return LinkDestinationStart;
+        parser.Flush(token);
+        return Captured;
     }
 
-    if (iscntrl(ch))
-    {
-        return LinkInit;
-    }
-
-    if(ch == ')')
-    { 
-        currentToken.pop_back();
-        linkTokenizer.CaptureLinkToken(ch, currentToken);
-        return LinkDestinationEnd;
-    }
-
-    return LinkDestinationRun;
-}
-
-unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkDestinationRun(MarkDownLinkTokenizer &linkTokenizer, 
-                int ch, std::string &currentToken)
-{
-    if (isspace(ch) || iscntrl(ch))
-    { 
-        return LinkInit;
-    }
-
-    if(ch == ')')
-    { 
-        currentToken.pop_back();
-        linkTokenizer.CaptureLinkToken(ch, currentToken);
-        return LinkDestinationEnd;
-    }
-
-    return LinkDestinationRun;
-}
-
-void MarkDownLinkTokenizer::CaptureLinkToken(int ch, std::string &currentToken)
-{
-    std::ostringstream html; 
-    html << "<a href=\"";
-    html << MarkDownStringHtmlGenerator(currentToken).GenerateHtmlString();
-    currentToken.clear();
-    html << "\">";
-    m_linkTextEmphasisTokenizer.PopFrontFromCodeGenList();
-    m_linkTextEmphasisTokenizer.PopBackFromCodeGenList();
-    m_linkTextEmphasisTokenizer.PopBackFromCodeGenList();
-    m_linkTextEmphasisTokenizer.MatchLeftAndRightEmphasises();
-    html << m_linkTextEmphasisTokenizer.GenerateHtmlString();
-    html << "</a>";
-    std::shared_ptr<MarkDownStringHtmlGenerator> codeGen = 
-        std::make_shared<MarkDownStringHtmlGenerator>(html.str());
-
-    m_linkTextEmphasisTokenizer.Clear();
-    m_codeGenTokens.push_back(std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen));
-}
-
-void MarkDownLinkTokenizer::AddLinkDelimiterToFrontOfCodeGenList(int ch)
-{
-    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
-        std::make_shared<MarkDownStringHtmlGenerator>(std::string(1, ch));
-    std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken);
-    m_linkTextEmphasisTokenizer.PushFrontToCodeGenList(token);
-}
-
-void MarkDownLinkTokenizer::AddLinkDelimiterToBackOfCodeGenList(int ch)
-{
-    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
-        std::make_shared<MarkDownStringHtmlGenerator>(std::string(1, ch));
-    std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken);
-    m_linkTextEmphasisTokenizer.PushBackToCodeGenList(token);
-}
-
-void MarkDownLinkTokenizer::Flush(std::string& currentToken)
-{
-    m_linkTextEmphasisTokenizer.Flush(currentToken);
-    m_linkTextEmphasisTokenizer.AppendEmphasisTokens(m_emphasisLookUpTable);
-    m_linkTextEmphasisTokenizer.AppendCodeGenTokens(m_codeGenTokens);
-}
-
-bool MarkDownEmphasisTokenizer::UpdateState(int ch, std::string& currentToken)
-{ 
-    state newState = m_stateMachine[m_current_state](*this, ch, currentToken);
-    m_current_state = newState;
-    return true;
-}
-
-unsigned int MarkDownEmphasisTokenizer::MarkDownEmphasisStateNone(MarkDownEmphasisTokenizer &emphasisStateMachine, 
-        int ch, std::string &currentToken) 
-{
-    if(emphasisStateMachine.IsMarkDownDelimiter(ch))
+    if (parser.IsMarkDownDelimiter(stream.peek()))
     {
         // encounterred first emphasis delimiter
-        currentToken.pop_back();
-        emphasisStateMachine.CaptureCurrentCollectedStringAsRegularToken(currentToken);
-        currentToken.push_back(ch);
-        DelimiterType emphasisType = MarkDownEmphasisTokenizer::GetDelimiterTypeForCharAtCurrentPosition(ch); 
-        emphasisStateMachine.UpdateCurrentEmphasisRunState(emphasisType);
-        return MarkDownEmphasisTokenizer::EmphasisRun;
+        parser.CaptureCurrentCollectedStringAsRegularToken();
+        DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek()); 
+        parser.UpdateCurrentEmphasisRunState(emphasisType);
+        token += stream.get();
+        return Emphasis;
     }
     else
     {    
-        emphasisStateMachine.UpdateLookBehind(ch);
-        return MarkDownEmphasisTokenizer::EmphasisNone;
+        parser.UpdateLookBehind(stream.peek());
+        token += stream.get();
+        return Text;
     }
 }
 
-unsigned int MarkDownEmphasisTokenizer::MarkDownEmphasisStateRun(MarkDownEmphasisTokenizer &emphasisStateMachine, 
-        int ch, std::string &currentToken) 
+unsigned int EmphasisParser::MatchEmphasis(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
-    if (emphasisStateMachine.IsMarkDownDelimiter(ch))
+    if (stream.peek() == ']' || stream.peek() == ')' || stream.eof())
     {
-        DelimiterType emphasisType = MarkDownEmphasisTokenizer::GetDelimiterTypeForCharAtCurrentPosition(ch);
-        if (emphasisStateMachine.IsEmphasisDelimiterRun(emphasisType))
+        parser.Flush(token);
+        return Captured;
+    }
+
+    if (parser.IsMarkDownDelimiter(stream.peek()))
+    {
+        DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek());
+        if (parser.IsEmphasisDelimiterRun(emphasisType))
         {
-            emphasisStateMachine.UpdateCurrentEmphasisRunState(emphasisType);
+            parser.UpdateCurrentEmphasisRunState(emphasisType);
         }
     }
     else
     {
-        if (ch != '\\')
+        if (stream.peek() != '\\')
         {
-            currentToken.pop_back();
-            emphasisStateMachine.CaptureEmphasisToken(ch, currentToken);
-            currentToken.push_back(ch);
+            parser.CaptureEmphasisToken(stream.peek(), token);
         }
         else
         {
-            emphasisStateMachine.CaptureEmphasisToken(ch, currentToken);
+            parser.CaptureEmphasisToken(stream.peek(), token);
         }
 
-        emphasisStateMachine.ResetCurrentEmphasisState();
-        emphasisStateMachine.UpdateLookBehind(ch);
-        return MarkDownEmphasisTokenizer::EmphasisNone;
+        parser.ResetCurrentEmphasisState();
+        parser.UpdateLookBehind(stream.peek());
+        token += stream.get();
+
+        return Text;
     }
-    return MarkDownEmphasisTokenizer::EmphasisRun;
+    return Emphasis;
 }
 
-void MarkDownEmphasisTokenizer::Flush(std::string& currentToken)
+void EmphasisParser::Flush(std::string& currentToken)
 {
-    if (m_current_state != EmphasisNone)
+    if (m_current_state != Text)
     {
         CaptureEmphasisToken(currentToken[0], currentToken);
         m_delimiterCnts = 0;
@@ -282,12 +121,12 @@ void MarkDownEmphasisTokenizer::Flush(std::string& currentToken)
     currentToken.clear();
 }
 
-bool MarkDownEmphasisTokenizer::IsMarkDownDelimiter(char ch)
+bool EmphasisParser::IsMarkDownDelimiter(char ch)
 {
     return ((ch == '*' || ch == '_') && (m_lookBehind != Escape));
 }
 
-void MarkDownEmphasisTokenizer::CaptureCurrentCollectedStringAsRegularToken(std::string&currentToken) 
+void EmphasisParser::CaptureCurrentCollectedStringAsRegularToken(std::string&currentToken) 
 {
     if (currentToken.size() == 0)
         return;
@@ -299,7 +138,19 @@ void MarkDownEmphasisTokenizer::CaptureCurrentCollectedStringAsRegularToken(std:
     currentToken.clear();
 }
 
-void MarkDownEmphasisTokenizer::UpdateCurrentEmphasisRunState(DelimiterType emphasisType)
+void EmphasisParser::CaptureCurrentCollectedStringAsRegularToken() 
+{
+    if (m_current_token.empty())
+        return;
+    std::shared_ptr<MarkDownStringHtmlGenerator> codeGen = 
+        std::make_shared<MarkDownStringHtmlGenerator>(m_current_token);
+
+    m_codeGenTokens.push_back(std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+
+    m_current_token.clear();
+}
+
+void EmphasisParser::UpdateCurrentEmphasisRunState(DelimiterType emphasisType)
 {
     if (m_lookBehind != WhiteSpace)
     {
@@ -310,7 +161,7 @@ void MarkDownEmphasisTokenizer::UpdateCurrentEmphasisRunState(DelimiterType emph
     m_currentDelimiterType = emphasisType;
 }
 
-bool MarkDownEmphasisTokenizer::IsRightEmphasisDelimiter(int ch)
+bool EmphasisParser::IsRightEmphasisDelimiter(int ch)
 {
     if (isspace(ch) && 
        (m_lookBehind != WhiteSpace) && 
@@ -343,7 +194,7 @@ bool MarkDownEmphasisTokenizer::IsRightEmphasisDelimiter(int ch)
     return false;;
 }
 
-bool MarkDownEmphasisTokenizer::TryCapturingRightEmphasisToken(int ch, std::string &currentToken)
+bool EmphasisParser::TryCapturingRightEmphasisToken(int ch, std::string &currentToken)
 {
     if (IsRightEmphasisDelimiter(ch))
     {
@@ -373,7 +224,7 @@ bool MarkDownEmphasisTokenizer::TryCapturingRightEmphasisToken(int ch, std::stri
 
 // save left emphasis to look up table
 // return true, if left emphasis was detected and added
-bool MarkDownEmphasisTokenizer::TryCapturingLeftEmphasisToken(int ch, std::string &currentToken)
+bool EmphasisParser::TryCapturingLeftEmphasisToken(int ch, std::string &currentToken)
 {
     // left emphasis detected, save emphasis for later reference
     if (IsLeftEmphasisDelimiter(ch))
@@ -391,7 +242,7 @@ bool MarkDownEmphasisTokenizer::TryCapturingLeftEmphasisToken(int ch, std::strin
     return false;
 }
 
-void MarkDownEmphasisTokenizer::UpdateLookBehind(int ch)
+void EmphasisParser::UpdateLookBehind(int ch)
 {
     //store ch and move itr
     if (isspace(ch))
@@ -410,7 +261,7 @@ void MarkDownEmphasisTokenizer::UpdateLookBehind(int ch)
     }
 }
 
-void MarkDownEmphasisTokenizer::CaptureEmphasisToken(int ch, std::string &currentToken)
+void EmphasisParser::CaptureEmphasisToken(int ch, std::string &currentToken)
 {
     if (!TryCapturingRightEmphasisToken(ch, currentToken) && 
         !TryCapturingLeftEmphasisToken(ch, currentToken) &&
@@ -423,7 +274,7 @@ void MarkDownEmphasisTokenizer::CaptureEmphasisToken(int ch, std::string &curren
 }
 
 //// match and update emphasis  tokens
-void MarkDownEmphasisTokenizer::MatchLeftAndRightEmphasises() 
+void EmphasisParser::MatchLeftAndRightEmphasises() 
 {
     std::vector<std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>>::iterator> leftEmphasisToExplore;
     auto currentEmphasis = m_emphasisLookUpTable.begin(); 
@@ -543,7 +394,7 @@ void MarkDownEmphasisTokenizer::MatchLeftAndRightEmphasises()
     }
 }
 
-std::string MarkDownEmphasisTokenizer::GenerateHtmlString() 
+std::string EmphasisParser::GenerateHtmlString() 
 { 
     // process tags 
     std::ostringstream html; 
@@ -555,7 +406,7 @@ std::string MarkDownEmphasisTokenizer::GenerateHtmlString()
     return html.str();
 }
 
-void MarkDownEmphasisTokenizer::Clear()
+void EmphasisParser::Clear()
 {
     m_checkLookAhead = false;
     m_checkIntraWord = false;
@@ -566,3 +417,298 @@ void MarkDownEmphasisTokenizer::Clear()
     m_codeGenTokens.clear();
     m_emphasisLookUpTable.clear();
 }
+
+bool MarkDownLinkTokenizer::UpdateState(int ch, std::string &currentToken) 
+{ 
+    state newState = m_stateMachine[m_current_state](*this, ch, currentToken);
+    m_current_state = newState;
+
+    if (newState == LinkDestinationEnd)
+    {
+        m_current_state = LinkInit;
+    }
+
+    if (newState == LinkInit || newState == LinkTextReinit) 
+    { 
+        m_linkTextEmphasisTokenizer.AppendEmphasisTokens(m_emphasisLookUpTable);
+        m_linkTextEmphasisTokenizer.AppendCodeGenTokens(m_codeGenTokens);
+        if (newState == LinkTextReinit)
+        {
+            AddLinkDelimiterToFrontOfCodeGenList(ch);
+            m_current_state = LinkTextRun;
+        }
+        return true;
+    }
+
+    return (newState == LinkDestinationEnd);
+}
+
+void MarkDownTokenizer::Block(std::stringstream &stream) 
+{
+    switch(stream.peek())
+    {
+        case '[':
+        {
+            MarkDownLinkTokenizer linkParser;
+            linkParser.Match(stream);
+            break;
+        }
+        case ']': case ')':
+        // add these char as tokeni to code gen list
+        default:
+            EmphasisParser emphasisParser;
+            emphasisParser.Match(stream);
+    }
+}
+
+void MarkDownLinkTokenizer::Match(std::stringstream &stream) 
+{ 
+    if(MatchAtLinkInit(stream) && 
+       MatchAtLinkTextRun(stream) && 
+       MatchAtLinkTextEnd(stream) && 
+       MatchAtLinkDestinationStart(stream) && 
+       MatchAtLinkDestinationRun(stream))
+    {
+        //CaptureLinkToken(ch, currentToken);
+    }
+    else
+    {
+        // NotMatched, do counter measure
+        // return everything captured 
+    }
+}
+
+bool MarkDownLinkTokenizer::MatchAtLinkInit(std::stringstream &lookahead)
+{
+    if (lookahead.peek() == '[')
+    {    
+        AddLinkDelimiterToFrontOfCodeGenList(lookahead.get());
+        return true;
+    }
+
+    // this won't never happends if this method is used intentionally,
+    // this is added as safeguard, however.
+    return false;
+}
+
+bool MarkDownLinkTokenizer::MatchAtLinkTextRun(std::stringstream &lookahead)
+{ 
+    if (lookahead.peek() == ']')
+    {
+        AddLinkDelimiterToBackOfCodeGenList(lookahead.get());
+        return true;
+    }
+    else
+    {
+        if (lookahead.peek() =='[')
+        {
+            return false;
+        }
+        else
+        {
+            MarkDownTokenizer::Block(lookahead);
+            /// what should be returned?
+            /// link of link can't be returned
+            /// and link of link will never be returned because of the
+            /// above check
+            /// save it to link text
+            return true;
+        }
+    }
+}
+
+bool MarkDownLinkTokenizer::MatchAtLinkTextEnd(std::stringstream &lookahead)
+{
+    if (lookahead.peek() == '(')
+    { 
+        AddLinkDelimiterToBackOfCodeGenList(lookahead.get());
+        return true;
+    } 
+    
+    return false;
+}
+
+bool MarkDownLinkTokenizer::MatchAtLinkDestinationStart(std::stringstream &lookahead)
+{
+    if (iscntrl(lookahead.peek()))
+    {
+        return false;
+    }
+
+    if(lookahead.peek() == ')')
+    { 
+        lookahead.get();
+
+        return true;
+    }
+
+    Block(lookahead);
+    return true;
+}
+
+bool MarkDownLinkTokenizer::MatchAtLinkDestinationRun(std::stringstream &lookahead)
+{
+    if (isspace(lookahead.peek()) || iscntrl(lookahead.peek()))
+    { 
+        return false;
+    }
+
+    if(lookahead.peek() == ')')
+    { 
+        lookahead.get();
+        return true;
+    }
+
+    Block(lookahead);
+    return true;
+}
+
+bool MarkDownLinkTokenizer::IsItLink() 
+{
+    return m_current_state == LinkDestinationEnd;
+}
+
+void MarkDownLinkTokenizer::Clear()
+{
+    m_current_state = LinkInit;
+    m_codeGenTokens.clear();
+    m_emphasisLookUpTable.clear();
+}
+
+unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkInit(MarkDownLinkTokenizer &linkTokenizer, 
+        int ch, std::string &currentToken)
+{
+    if (ch == '[')
+    {    
+        linkTokenizer.AddLinkDelimiterToFrontOfCodeGenList(ch);
+        return LinkTextRun;
+    }
+
+    return LinkInit;
+}
+
+unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkTextRun(MarkDownLinkTokenizer &linkTokenizer, 
+                int ch, std::string &currentToken)
+{ 
+    if (ch == ']')
+    {
+        currentToken.pop_back();
+        linkTokenizer.GetLinkTextEmphasisTokenizer().Flush(currentToken);
+        linkTokenizer.AddLinkDelimiterToBackOfCodeGenList(ch);
+        return LinkTextEnd;
+    }
+    else
+    {
+        if (ch =='[')
+        {
+            currentToken.pop_back();
+            linkTokenizer.GetLinkTextEmphasisTokenizer().Flush(currentToken);
+            return LinkTextReinit;
+        }
+        else
+        {
+#if 0
+            linkTokenizer.GetLinkTextEmphasisTokenizer().UpdateState(ch, currentToken);
+#endif
+            return LinkTextRun;
+        }
+    }
+}
+
+unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkTextEnd(MarkDownLinkTokenizer &linkTokenizer,
+    int ch, std::string &currentToken)
+{
+    if (ch == '(')
+    { 
+        linkTokenizer.AddLinkDelimiterToBackOfCodeGenList(ch);
+        currentToken.pop_back();
+        return LinkDestinationStart;
+    } 
+    
+    return LinkInit;
+}
+
+unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkDestinationStart(MarkDownLinkTokenizer &linkTokenizer, 
+                int ch, std::string &currentToken)
+{
+    if (isspace(ch))
+    {
+        return LinkDestinationStart;
+    }
+
+    if (iscntrl(ch))
+    {
+        return LinkInit;
+    }
+
+    if(ch == ')')
+    { 
+        currentToken.pop_back();
+        linkTokenizer.CaptureLinkToken(ch, currentToken);
+        return LinkDestinationEnd;
+    }
+
+    return LinkDestinationRun;
+}
+
+unsigned int MarkDownLinkTokenizer::StateTransitionCheckAtLinkDestinationRun(MarkDownLinkTokenizer &linkTokenizer, 
+                int ch, std::string &currentToken)
+{
+    if (isspace(ch) || iscntrl(ch))
+    { 
+        return LinkInit;
+    }
+
+    if(ch == ')')
+    { 
+        currentToken.pop_back();
+        linkTokenizer.CaptureLinkToken(ch, currentToken);
+        return LinkDestinationEnd;
+    }
+
+    return LinkDestinationRun;
+}
+
+void MarkDownLinkTokenizer::CaptureLinkToken(int ch, std::string &currentToken)
+{
+    std::ostringstream html; 
+    html << "<a href=\"";
+    html << MarkDownStringHtmlGenerator(currentToken).GenerateHtmlString();
+    currentToken.clear();
+    html << "\">";
+    m_linkTextEmphasisTokenizer.PopFrontFromCodeGenList();
+    m_linkTextEmphasisTokenizer.PopBackFromCodeGenList();
+    m_linkTextEmphasisTokenizer.PopBackFromCodeGenList();
+    m_linkTextEmphasisTokenizer.MatchLeftAndRightEmphasises();
+    html << m_linkTextEmphasisTokenizer.GenerateHtmlString();
+    html << "</a>";
+    std::shared_ptr<MarkDownStringHtmlGenerator> codeGen = 
+        std::make_shared<MarkDownStringHtmlGenerator>(html.str());
+
+    m_linkTextEmphasisTokenizer.Clear();
+    m_codeGenTokens.push_back(std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen));
+}
+
+void MarkDownLinkTokenizer::AddLinkDelimiterToFrontOfCodeGenList(int ch)
+{
+    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
+        std::make_shared<MarkDownStringHtmlGenerator>(std::string(1, ch));
+    std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken);
+    m_linkTextEmphasisTokenizer.PushFrontToCodeGenList(token);
+}
+
+void MarkDownLinkTokenizer::AddLinkDelimiterToBackOfCodeGenList(int ch)
+{
+    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
+        std::make_shared<MarkDownStringHtmlGenerator>(std::string(1, ch));
+    std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken);
+    m_linkTextEmphasisTokenizer.PushBackToCodeGenList(token);
+}
+
+void MarkDownLinkTokenizer::Flush(std::string& currentToken)
+{
+    m_linkTextEmphasisTokenizer.Flush(currentToken);
+    m_linkTextEmphasisTokenizer.AppendEmphasisTokens(m_emphasisLookUpTable);
+    m_linkTextEmphasisTokenizer.AppendCodeGenTokens(m_codeGenTokens);
+}
+

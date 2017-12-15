@@ -15,7 +15,9 @@ MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_curPos(m
 // update emphasis counts and type to build string after search is complete
 std::string MarkDownParser::TransformToHtml()
 {
-    Tokenize();
+    //Tokenize();
+
+    ParseBlock();
 
     return GenerateHtmlString();
 }
@@ -50,7 +52,7 @@ void MarkDownParser::GetCh(char ch)
 // add comments -> what it does: generating  n supported features + 1 tokens --> capture them in token class
 void MarkDownParser::Tokenize() // rename it to tokenize() // state machines
 {
-    MarkDownEmphasisTokenizer emphasisTokenizer;
+    EmphasisParser EmphasisParser;
     MarkDownLinkTokenizer linkTokenizer;
     bool IsLinkTokenizingDone = true;
     while (m_curPos < m_text.end())
@@ -62,9 +64,9 @@ void MarkDownParser::Tokenize() // rename it to tokenize() // state machines
             if (*m_curPos == '[' && IsLinkTokenizingDone)
             { 
                 m_currentToken.pop_back();
-                emphasisTokenizer.Flush(m_currentToken);
-                emphasisTokenizer.AppendCodeGenTokens(m_tokenizedString);
-                emphasisTokenizer.UpdateLookBehind('a');
+                EmphasisParser.Flush(m_currentToken);
+                EmphasisParser.AppendCodeGenTokens(m_tokenizedString);
+                EmphasisParser.UpdateLookBehind('a');
             }
 
             IsLinkTokenizingDone = linkTokenizer.UpdateState(*m_curPos, m_currentToken);
@@ -77,7 +79,7 @@ void MarkDownParser::Tokenize() // rename it to tokenize() // state machines
                     { 
                         linkTokenizer.Flush(m_currentToken);
                     }
-                    linkTokenizer.AppendEmphasisTokens(emphasisTokenizer);
+                    linkTokenizer.AppendEmphasisTokens(EmphasisParser);
                 }
                 linkTokenizer.AppendCodeGenTokens(m_tokenizedString);
                 if (*m_curPos == '[')
@@ -86,13 +88,26 @@ void MarkDownParser::Tokenize() // rename it to tokenize() // state machines
                 }
             }
         }
+#if 0
         else
         {
-            emphasisTokenizer.UpdateState(*m_curPos, m_currentToken);
+            EmphasisParser.UpdateState(*m_curPos, m_currentToken);
         }
+#endif
         ++m_curPos; 
     }
-    emphasisTokenizer.Flush(m_currentToken);
-    emphasisTokenizer.MatchLeftAndRightEmphasises();
-    emphasisTokenizer.AppendCodeGenTokens(m_tokenizedString);
+    EmphasisParser.Flush(m_currentToken);
+    EmphasisParser.MatchLeftAndRightEmphasises();
+    EmphasisParser.AppendCodeGenTokens(m_tokenizedString);
 }
+
+void MarkDownParser::ParseBlock() // rename it to tokenize() // state machines
+{
+    std::stringstream stream(m_text);
+    EmphasisParser parser;
+    parser.Block(stream);
+    parser.AppendEmphasisTokens(m_emphasisLookUpTable);
+    parser.MatchLeftAndRightEmphasises();
+    parser.AppendCodeGenTokens(m_tokenizedString);
+}
+

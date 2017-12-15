@@ -26,6 +26,7 @@ private:
     void Tokenize();
     std::string GenerateHtmlString();
     void GetCh(char ch);
+    void ParseBlock();
 
     std::string m_text;
     std::string::iterator m_curPos;
