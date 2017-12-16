@@ -111,7 +111,10 @@
     <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ObjectModel\MarkDownTokenizer.cpp">
+    <ClCompile Include="..\..\ObjectModel\MarkDownBlockParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\MarkDownParsedResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -213,6 +216,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\MarkDownHtmlGenerator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\MarkDownBlockParser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
