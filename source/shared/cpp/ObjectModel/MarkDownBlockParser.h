@@ -91,10 +91,10 @@ namespace AdaptiveCards
 
     class LinkParser : public MarkDownBlockParser
     {
-    public:
+        public:
         void Match(std::stringstream &);
 
-    private:
+        private:
         void CaptureLinkToken();
 
         // Matches Initial sytax of link
@@ -110,5 +110,14 @@ namespace AdaptiveCards
 
         // holds intermidiate result of LinkText
         MarkDownParsedResult m_linkTextParsedResult;
+    };
+
+    class ListParser : public MarkDownBlockParser
+    {
+        public:
+        void Match(std::stringstream &);
+
+        private:
+        void CaptureListToken();
     };
 }

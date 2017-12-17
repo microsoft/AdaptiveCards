@@ -20,6 +20,12 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
             m_parsedResult.AddNewTokenToParsedResult(stream.get());
             break;
         }
+        case '-':
+        {
+            ListParser listParser;
+            listParser.Match(stream);
+            m_parsedResult.Append(listParser.GetParsedResult());
+        }
         default:
             EmphasisParser emphasisParser;
             emphasisParser.Match(stream);
@@ -323,7 +329,7 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream &lookahead)
         else
         {
             // Block() will process the inline items within Link Text block 
-            MarkDownBlockParser::ParseBlock(lookahead);
+            ParseBlock(lookahead);
             m_linkTextParsedResult.Append(m_parsedResult);
 
             if(lookahead.peek() == ']')
@@ -414,4 +420,40 @@ void LinkParser::CaptureLinkToken()
     m_parsedResult.Clear();
     std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen);
     m_parsedResult.Append(token);
+}
+
+void ListParser::Match(std::stringstream &stream) 
+{ 
+    if (stream.peek() == '-')
+    {
+        stream.get();
+        if (stream.peek() == ' ')
+        {
+            while(stream.peek() == ' ')
+            {
+                stream.get();
+            }
+            ParseBlock(stream);
+            CaptureListToken();
+        }
+    }
+}
+
+void ListParser::CaptureListToken()
+{
+    std::ostringstream html;
+    html << "<ul>\n";
+    html << "<li>";
+    html << m_parsedResult.GenerateHtmlString();
+    html << "</li>\n";
+    html << "</ul>";
+
+    std::string html_string = html.str();
+    std::shared_ptr<MarkDownStringHtmlGenerator> codeGen = 
+        std::make_shared<MarkDownStringHtmlGenerator>(html_string);
+
+    m_parsedResult.Clear();
+    std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen);
+    m_parsedResult.Append(token);
+
 }

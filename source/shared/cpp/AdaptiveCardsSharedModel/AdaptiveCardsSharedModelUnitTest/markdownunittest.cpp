@@ -413,4 +413,13 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<string>("<p><em>Hello</em> <em><a href=\"*www.naver.com*\"><em>hello</em></a></em>* Hello, <a href=\"www.microsoft.com\">second</a></p>", parser.TransformToHtml());
         }
     };
+
+    TEST_CLASS(ListTest)
+    {
+        TEST_METHOD(SimpleValidListTest)
+        {
+            MarkDownParser parser("- hello");
+            Assert::AreEqual<string>("<ul>\r<li>hello</li>\r</ul>", parser.TransformToHtml());
+        }
+    };
 }
