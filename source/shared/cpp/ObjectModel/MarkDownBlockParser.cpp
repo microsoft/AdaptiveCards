@@ -53,21 +53,21 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
 // at each transition of state, one token is captured
 void EmphasisParser::Match(std::stringstream &stream)
 { 
-    while (m_current_state != Captured)
+    while (m_current_state != EmphasisState::Captured)
     {
         m_current_state = m_stateMachine[m_current_state](*this, stream, m_current_token);
     }
 }
 
 /// captures text untill it see emphasis character. When it does, switch to Emphasis state
-unsigned int EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream &stream, std::string& token)
+EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
     /// MarkDown keywords
     if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '-' || stream.eof())
     {
         parser.Flush(token);
 
-        return Captured;
+        return EmphasisState::Captured;
     }
 
     if (parser.IsMarkDownDelimiter(stream.peek()))
@@ -88,14 +88,14 @@ unsigned int EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream
 }
 
 /// captures text untill it see none-emphasis character. When it does, switch to text state
-unsigned int EmphasisParser::MatchEmphasis(EmphasisParser &parser, std::stringstream &stream, std::string& token)
+EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
     // key word is encountered, flush what is being processed, and have those keyword
     // handled by ParseBlock()
     if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '-' || stream.eof())
     {
         parser.Flush(token);
-        return Captured;
+        return EmphasisState::Captured;
     }
 
     /// if another emphasis delimiter is encounterred, it is delimiter run
@@ -231,8 +231,7 @@ bool EmphasisParser::TryCapturingRightEmphasisToken(char ch, std::string &curren
 
         m_parsedResult.AppendToLookUpTable(codeGen);
 
-        std::shared_ptr<MarkDownHtmlGenerator> htmlToken = std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen);
-        m_parsedResult.AppendToTokens(htmlToken);
+        m_parsedResult.AppendToTokens(codeGen);
 
         currentToken.clear();
 
@@ -252,8 +251,7 @@ bool EmphasisParser::TryCapturingLeftEmphasisToken(char ch, std::string &current
 
         m_parsedResult.AppendToLookUpTable(codeGen);
 
-        std::shared_ptr<MarkDownHtmlGenerator> htmlToken = std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen);
-        m_parsedResult.AppendToTokens(htmlToken);
+        m_parsedResult.AppendToTokens(codeGen);
 
         currentToken.clear();
         return true;
@@ -502,6 +500,5 @@ void ListParser::CaptureListToken()
         std::make_shared<MarkDownListHtmlGenerator>(html_string);
 
     m_parsedResult.Clear();
-    std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen);
-    m_parsedResult.AppendToTokens(token);
+    m_parsedResult.AppendToTokens(codeGen);
 }

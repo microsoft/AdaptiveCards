@@ -19,12 +19,12 @@ namespace AdaptiveCards
         // Append contents of the given parsing result object
         void AppendParseResult(MarkDownParsedResult &);
         // Append html code gen object to parse result
-        void AppendToTokens(std::shared_ptr<MarkDownHtmlGenerator> &); 
+        void AppendToTokens(const std::shared_ptr<MarkDownHtmlGenerator> &); 
         // Append emphasis html code gen object to parse result
-        void AppendToLookUpTable(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &); 
+        void AppendToLookUpTable(const std::shared_ptr<MarkDownEmphasisHtmlGenerator> &); 
         // Take a char and convert it html code gen and append it to the result
         // It is used to store MarkDown keywords such as '[', ']', '(', ')'
-        void AddNewTokenToParsedResult(int ch);
+        void AddNewTokenToParsedResult(char ch);
         void PopFront();
         void PopBack();
         void Clear();

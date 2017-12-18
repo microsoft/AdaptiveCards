@@ -64,11 +64,11 @@ namespace AdaptiveCards
         void UpdateLookBehind(char ch);
         static DelimiterType GetDelimiterTypeForCharAtCurrentPosition(char ch) { return (ch == '*')? Asterisk : Underscore; };
 
-        typedef unsigned int (* MatchWithChar)(EmphasisParser&, std::stringstream &, std::string &);
+        typedef EmphasisState (* MatchWithChar)(EmphasisParser&, std::stringstream &, std::string &);
         // Callback function that handles the Text State
-        static unsigned int MatchText(EmphasisParser &, std::stringstream &, std::string &);
+        static EmphasisState MatchText(EmphasisParser &, std::stringstream &, std::string &);
         // Callback function that handles the Emphasis State
-        static unsigned int MatchEmphasis(EmphasisParser &, std::stringstream &, std::string &);
+        static EmphasisState MatchEmphasis(EmphasisParser &, std::stringstream &, std::string &);
 
         protected:
         bool m_checkLookAhead = false;

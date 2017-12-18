@@ -35,11 +35,17 @@ class MarkDownHtmlGenerator
     public:
         MarkDownHtmlGenerator() : m_token(""){};
         MarkDownHtmlGenerator(std::string &token) : m_token(token){};
+        void MakeItHead() { m_isHead = true; }
+        void MakeItTail() { m_isTail = true; }
+        void MakeItHeadOfNewBlock() { m_isTail = true; }
         virtual std::string GenerateHtmlString() = 0;
         virtual bool IsList() { return false; }; 
     protected:
         std::string m_token;
         std::ostringstream html;
+        bool m_isHead = false;
+        bool m_isTail = false;
+        bool m_isHeadOfNewBlock = false;
 };
 
 // - MarkDownStringHtmlGenerator 
@@ -158,6 +164,7 @@ class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator
 {
     public:
         MarkDownListHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token) {};
+        std::string GenerateHtmlString();
         bool IsList() { return true; }
 };
 

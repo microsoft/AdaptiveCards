@@ -4,6 +4,16 @@ using namespace AdaptiveCards;
 
 std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 {
+    if (m_isHead) 
+    {              
+        m_token = (m_isHeadOfNewBlock)? "\n<p>" + m_token :"<p>" + m_token;
+    }
+
+    if (m_isTail)
+    {
+        return m_token + "</p>";
+    }
+
     return m_token;
 }
 
@@ -96,6 +106,17 @@ std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
     { 
         html << *itr;
     }
+
+    if (m_isHead) 
+    {   
+        return (m_isHeadOfNewBlock)? "\n<p>" + html.str():"<p>" + html.str();
+    }
+
+    if (m_isTail)
+    {
+        return html.str() + "</p>";
+    }
+
     return html.str();
 }
 
@@ -124,6 +145,16 @@ std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
         html << m_token.substr(startIdx, std::string::npos);
     }
 
+    if (m_isHead) 
+    {
+        return (m_isHeadOfNewBlock)? "\n<p>" + html.str():"<p>" + html.str();
+    }
+
+    if (m_isTail)
+    {
+        return html.str() + "</p>";
+    }
+
     return html.str();
 }
 
@@ -149,4 +180,19 @@ void MarkDownLeftAndRightEmphasisHtmlGenerator::PushBoldTag()
     {
         m_tags.push_back("</strong>");
     }
+}
+
+std::string MarkDownListHtmlGenerator::GenerateHtmlString()
+{
+    if (m_isHead) 
+    {
+        m_token = (m_isHeadOfNewBlock)? "\n<ul>" + m_token :"<ul>" + m_token;
+    }
+
+    if (m_isTail)
+    {
+        return m_token + "\n</ul>";
+    }
+
+    return m_token;
 }
