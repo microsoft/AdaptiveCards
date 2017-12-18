@@ -25,6 +25,7 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
             ListParser listParser;
             listParser.Match(stream);
             m_parsedResult.Append(listParser.GetParsedResult());
+            break;
         }
         default:
             EmphasisParser emphasisParser;
@@ -49,9 +50,16 @@ void EmphasisParser::Match(std::stringstream &stream)
 unsigned int EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
     /// MarkDown keywords
-    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.eof())
+    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' ||
+        stream.peek() == '\r' || stream.peek() == '\n' || stream.eof())
     {
+        if (isspace(stream.peek()))
+        {
+            stream.get();
+        }
+
         parser.Flush(token);
+
         return Captured;
     }
 
@@ -75,8 +83,14 @@ unsigned int EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream
 /// captures text untill it see none-emphasis character. When it does, switch to text state
 unsigned int EmphasisParser::MatchEmphasis(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
-    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.eof())
+    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' ||
+        stream.peek() == '\r' || stream.peek() == '\n' || stream.eof())
     {
+        if (isspace(stream.peek()))
+        {
+            stream.get();
+        }
+
         parser.Flush(token);
         return Captured;
     }
@@ -442,18 +456,15 @@ void ListParser::Match(std::stringstream &stream)
 void ListParser::CaptureListToken()
 {
     std::ostringstream html;
-    html << "<ul>\n";
-    html << "<li>";
+    html << "\n<li>";
     html << m_parsedResult.GenerateHtmlString();
-    html << "</li>\n";
-    html << "</ul>";
+    html << "</li>";
 
     std::string html_string = html.str();
-    std::shared_ptr<MarkDownStringHtmlGenerator> codeGen = 
-        std::make_shared<MarkDownStringHtmlGenerator>(html_string);
+    std::shared_ptr<MarkDownListHtmlGenerator> codeGen = 
+        std::make_shared<MarkDownListHtmlGenerator>(html_string);
 
     m_parsedResult.Clear();
     std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(codeGen);
     m_parsedResult.Append(token);
-
 }

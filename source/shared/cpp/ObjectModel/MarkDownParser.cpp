@@ -16,7 +16,9 @@ std::string MarkDownParser::TransformToHtml()
 
     m_parsedResult.Translate();
 
-    return "<p>" + m_parsedResult.GenerateHtmlString() + "</p>";
+    m_parsedResult.AddBlockTags();
+
+    return m_parsedResult.GenerateHtmlString();
 }
 
 // MarkDown is consisted of Blocks, this methods parses blocks

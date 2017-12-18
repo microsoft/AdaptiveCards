@@ -25,6 +25,7 @@ class MarkDownHtmlGenerator
         MarkDownHtmlGenerator() : m_token(""){};
         MarkDownHtmlGenerator(std::string &token) : m_token(token){};
         virtual std::string GenerateHtmlString() = 0;
+        virtual bool IsList() { return false; }; 
     protected:
         std::string m_token;
         std::ostringstream html;
@@ -125,6 +126,13 @@ class MarkDownLeftAndRightEmphasisHtmlGenerator : public MarkDownRightEmphasisHt
         bool IsLeftAndRightEmphasis() const { return true; };
         void PushItalicTag(); 
         void PushBoldTag(); 
+};
+
+class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator 
+{
+    public:
+        MarkDownListHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token) {};
+        bool IsList() { return true; }
 };
 
 }

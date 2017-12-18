@@ -13,6 +13,7 @@ namespace AdaptiveCards
         // Translate Intermediate Parsing Result to a form that can be
         // written to html string
         void Translate();
+        void AddBlockTags();
         // Write to html string
         std::string GenerateHtmlString(); 
         // Append contents of the given parsing result object

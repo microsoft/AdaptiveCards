@@ -7,6 +7,21 @@ void MarkDownParsedResult::Translate()
     MatchLeftAndRightEmphasises();
 }
 
+void MarkDownParsedResult::AddBlockTags()
+{
+    std::string tags = (m_codeGenTokens.front()->IsList())? "<ul>" : "<p>";
+    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
+        std::make_shared<MarkDownStringHtmlGenerator>(tags);
+    std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken);
+    m_codeGenTokens.push_front(token);
+
+    std::string tags2 = (m_codeGenTokens.back()->IsList())? "\n</ul>" : "</p>";
+    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken2 =
+        std::make_shared<MarkDownStringHtmlGenerator>(tags2);
+    std::shared_ptr<MarkDownHtmlGenerator> token2 = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken2);
+    m_codeGenTokens.push_back(token2);
+}
+
 void MarkDownParsedResult::Append(MarkDownParsedResult &x)
 {
     m_codeGenTokens.splice(m_codeGenTokens.end(), x.m_codeGenTokens);
@@ -15,6 +30,17 @@ void MarkDownParsedResult::Append(MarkDownParsedResult &x)
 
 void MarkDownParsedResult::Append(std::shared_ptr<MarkDownHtmlGenerator> &x) 
 {
+    if (!m_codeGenTokens.empty() && 
+        m_codeGenTokens.back()->IsList() != x->IsList())
+    {
+        std::string tags = (x->IsList())? "</p>\n<ul>" : "</ul>\n<p>";
+
+        std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
+            std::make_shared<MarkDownStringHtmlGenerator>(tags);
+        std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken);
+        m_codeGenTokens.push_back(token);
+    }
+
     m_codeGenTokens.push_back(x);
 }
 
@@ -52,6 +78,7 @@ std::string MarkDownParsedResult::GenerateHtmlString()
 { 
     // process tags 
     std::ostringstream html; 
+
     for (auto itr = m_codeGenTokens.begin(); itr != m_codeGenTokens.end(); itr++) 
     { 
         html << (*itr)->GenerateHtmlString();

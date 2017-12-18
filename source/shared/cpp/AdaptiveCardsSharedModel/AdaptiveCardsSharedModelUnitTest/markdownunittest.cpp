@@ -419,7 +419,12 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(SimpleValidListTest)
         {
             MarkDownParser parser("- hello");
-            Assert::AreEqual<string>("<ul>\r<li>hello</li>\r</ul>", parser.TransformToHtml());
+            Assert::AreEqual<string>("<ul>\n<li>hello</li>\n</ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(MultipleSimpleValidListTest)
+        {
+            MarkDownParser parser("- hello\n- Hi");
+            Assert::AreEqual<string>("<ul>\n<li>hello</li>\n<li>Hi</li>\n</ul>", parser.TransformToHtml());
         }
     };
 }
