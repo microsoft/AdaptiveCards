@@ -10,7 +10,7 @@ std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 //     left and right emphasis tokens are match if
 //     1. they are same types
 //     2. neither of the emphasis tokens are both left and right emphasis tokens, and 
-//        if either or both of them are, then their sum is not multipe of 3 
+//        if either or both of them are, then their sum is not multiple of 3 
 bool MarkDownEmphasisHtmlGenerator::IsMatch(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token)
 {
     std::shared_ptr<MarkDownEmphasisHtmlGenerator> emphasisToken = 
@@ -19,7 +19,7 @@ bool MarkDownEmphasisHtmlGenerator::IsMatch(std::shared_ptr<MarkDownEmphasisHtml
     {
         if (this->type == emphasisToken->type)
         {
-            // rule #9 & #10, sum of delim cnts can't be multipe of 3 
+            // rule #9 & #10, sum of delimiter count can't be multiple of 3 
             return !((this->IsLeftAndRightEmphasis() || emphasisToken->IsLeftAndRightEmphasis()) &&
                 (((this->m_numberOfUnusedDelimiters+ emphasisToken->m_numberOfUnusedDelimiters) % 3) == 0));
         }
@@ -35,37 +35,38 @@ bool MarkDownEmphasisHtmlGenerator::IsSameType(std::shared_ptr<MarkDownEmphasisH
 // adjust number of emphasis counts after maching is done
 int MarkDownEmphasisHtmlGenerator::AdjustEmphasisCounts(int leftOver, std::shared_ptr<MarkDownEmphasisHtmlGenerator> rightToken)
 {
-    int delimCnts = 0;
+    int delimiterCount = 0;
     if (leftOver >= 0)
     {
-        delimCnts = this->m_numberOfUnusedDelimiters - leftOver;
+        delimiterCount = this->m_numberOfUnusedDelimiters - leftOver;
         this->m_numberOfUnusedDelimiters = leftOver;
         rightToken->m_numberOfUnusedDelimiters = 0;
     }
     else
     {
-        delimCnts = this->m_numberOfUnusedDelimiters;
+        delimiterCount = this->m_numberOfUnusedDelimiters;
         rightToken->m_numberOfUnusedDelimiters = leftOver * (-1);
         this->m_numberOfUnusedDelimiters = 0;
     }
-    return delimCnts;
+    return delimiterCount;
 }
 
+// generate bold and emphasis html tags
 void MarkDownEmphasisHtmlGenerator::GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token)
 {
-    int delimCnts = 0, leftOver = 0;
+    int delimiterCount = 0, leftOver = 0;
     leftOver = this->m_numberOfUnusedDelimiters - token->m_numberOfUnusedDelimiters;
-    delimCnts = this->AdjustEmphasisCounts(leftOver, token);
+    delimiterCount = this->AdjustEmphasisCounts(leftOver, token);
 
     // emphasis found
-    if (delimCnts % 2)
+    if (delimiterCount % 2)
     {
         this->PushItalicTag();
         token->PushItalicTag();
     }
 
     // strong emphasis found
-    for (int i = 0; i < delimCnts / 2; i++)
+    for (int i = 0; i < delimiterCount / 2; i++)
     {
         this->PushBoldTag();
         token->PushBoldTag();

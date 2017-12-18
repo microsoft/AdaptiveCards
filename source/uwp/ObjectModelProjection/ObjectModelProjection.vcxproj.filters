@@ -35,7 +35,8 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownTokenizer.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -76,7 +77,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownTokenizer.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

@@ -7,14 +7,17 @@ void MarkDownParsedResult::Translate()
     MatchLeftAndRightEmphasises();
 }
 
+// appends html block tags at head and tail of the list
 void MarkDownParsedResult::AddBlockTags()
 {
+    // if html list tag, add <ul>, otherwise <p> at the head of the list
     std::string tags = (m_codeGenTokens.front()->IsList())? "<ul>" : "<p>";
     std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
         std::make_shared<MarkDownStringHtmlGenerator>(tags);
     std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken);
     m_codeGenTokens.push_front(token);
 
+    // if html list tag, add </ul>, otherwise </p> at the tail of the list
     std::string tags2 = (m_codeGenTokens.back()->IsList())? "\n</ul>" : "</p>";
     std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken2 =
         std::make_shared<MarkDownStringHtmlGenerator>(tags2);
@@ -22,14 +25,17 @@ void MarkDownParsedResult::AddBlockTags()
     m_codeGenTokens.push_back(token2);
 }
 
-void MarkDownParsedResult::Append(MarkDownParsedResult &x)
+// append caller's parsed result to callee's parsed result
+void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult &x)
 {
     m_codeGenTokens.splice(m_codeGenTokens.end(), x.m_codeGenTokens);
     m_emphasisLookUpTable.splice(m_emphasisLookUpTable.end(), x.m_emphasisLookUpTable);
 }
 
-void MarkDownParsedResult::Append(std::shared_ptr<MarkDownHtmlGenerator> &x) 
+// append MarkDownHtmlGenerator object to callee's prased result
+void MarkDownParsedResult::AppendToTokens(std::shared_ptr<MarkDownHtmlGenerator> &x) 
 {
+    // if two different block types, then add closing tag followed by the opening tag of new type
     if (!m_codeGenTokens.empty() && 
         m_codeGenTokens.back()->IsList() != x->IsList())
     {
@@ -44,7 +50,7 @@ void MarkDownParsedResult::Append(std::shared_ptr<MarkDownHtmlGenerator> &x)
     m_codeGenTokens.push_back(x);
 }
 
-void MarkDownParsedResult::Append(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &x) 
+void MarkDownParsedResult::AppendToLookUpTable(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &x) 
 {
     m_emphasisLookUpTable.push_back(x);
 }
@@ -65,13 +71,14 @@ void MarkDownParsedResult::Clear()
     m_emphasisLookUpTable.clear();
 }
 
+// create and add new MarkDownStringHtmlGenerator object that has string of ch
 void MarkDownParsedResult::AddNewTokenToParsedResult(int ch)
 {
     std::string string_token = std::string(1, ch);
     std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
         std::make_shared<MarkDownStringHtmlGenerator>(string_token);
     std::shared_ptr<MarkDownHtmlGenerator> token = std::static_pointer_cast<MarkDownHtmlGenerator>(htmlToken);
-    Append(token);
+    AppendToTokens(token);
 }
 
 std::string MarkDownParsedResult::GenerateHtmlString() 

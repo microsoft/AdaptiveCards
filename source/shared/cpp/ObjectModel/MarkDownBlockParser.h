@@ -48,10 +48,10 @@ namespace AdaptiveCards
         // Check if current delimiter will be considererd as a delimiter run
         bool IsEmphasisDelimiterRun(DelimiterType emphasisType) { return m_currentDelimiterType == emphasisType; }
         void ResetCurrentEmphasisState() { m_delimiterCnts = 0; }
-        bool IsRightEmphasisDelimiter(int ch);
+        bool IsRightEmphasisDelimiter(char ch);
         // Attempt to capture current emphasis as right emphasis
-        bool TryCapturingRightEmphasisToken(int ch, std::string &currentToken);
-        bool IsLeftEmphasisDelimiter(int ch) 
+        bool TryCapturingRightEmphasisToken(char ch, std::string &currentToken);
+        bool IsLeftEmphasisDelimiter(char ch) 
         {
             return (m_delimiterCnts && 
                     !isspace(ch) && 
@@ -59,10 +59,10 @@ namespace AdaptiveCards
                     !(m_lookBehind == Alphanumeric && m_currentDelimiterType == Underscore));
         };
         // Attempt to capture current emphasis as right emphasis
-        bool TryCapturingLeftEmphasisToken(int ch, std::string &currentToken);
-        void CaptureEmphasisToken(int ch, std::string &currentToken);
-        void UpdateLookBehind(int ch);
-        static DelimiterType GetDelimiterTypeForCharAtCurrentPosition(int ch) { return (ch == '*')? Asterisk : Underscore; };
+        bool TryCapturingLeftEmphasisToken(char ch, std::string &currentToken);
+        void CaptureEmphasisToken(char ch, std::string &currentToken);
+        void UpdateLookBehind(char ch);
+        static DelimiterType GetDelimiterTypeForCharAtCurrentPosition(char ch) { return (ch == '*')? Asterisk : Underscore; };
 
         typedef unsigned int (* MatchWithChar)(EmphasisParser&, std::stringstream &, std::string &);
         // Callback function that handles the Text State
