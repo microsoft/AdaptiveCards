@@ -99,16 +99,22 @@
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="..\..\ObjectModel\MarkDownParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-=======
->>>>>>> 519d1c64f457d28e19b8be3e4068e7e0e1746ada
     <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\ObjectModel\ElementParserRegistration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\MarkDownBlockParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\MarkDownParsedResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -204,6 +210,18 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\ElementParserRegistration.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\LinkState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\MarkDownHtmlGenerator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\MarkDownBlockParser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
