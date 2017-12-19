@@ -129,6 +129,41 @@ namespace AdaptiveCards
         public string FallbackText { get; set; }
 
         /// <summary>
+        /// WS ServiceUrl for live cards
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string ServiceUrl { get; set; }
+
+        /// <summary>
+        /// Events to subscribe to for this element
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string[] Events { get; set; }
+
+        public void SetEvents()
+        {
+            List<string> events = new List<string>();
+            if (this.OnCardActivate != null)
+                events.Add(EventTypes.OnCardActivate);
+            if (this.OnCardDeactivate != null)
+                events.Add(EventTypes.OnCardDeactivate);
+            this.Events = events.ToArray();
+        }
+
+        public event EventHandler OnCardActivate;
+        public event EventHandler OnCardDeactivate;
+
+        public void Activate()
+        {
+            OnCardActivate?.Invoke(this, new EventArgs());
+        }
+
+        public void Deactivate()
+        {
+            OnCardDeactivate?.Invoke(this, new EventArgs());
+        }
+
+        /// <summary>
         ///  Serialize this Adaptive Card to JSON
         /// </summary>
         /// <returns></returns>

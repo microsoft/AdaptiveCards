@@ -5,134 +5,134 @@ namespace AdaptiveCards.Rendering
     /// </summary>
     public class AdaptiveVisitor
     {
-        public virtual void Visit(AdaptiveElement adaptiveElement)
+        public virtual void Visit(AdaptiveTypedElement parent, AdaptiveElement adaptiveElement)
         {
             if (adaptiveElement is AdaptiveImage)
-                Visit((AdaptiveImage) adaptiveElement);
+                Visit(parent, (AdaptiveImage) adaptiveElement);
 
             if (adaptiveElement is AdaptiveTextBlock)
-                Visit((AdaptiveTextBlock) adaptiveElement);
+                Visit(parent, (AdaptiveTextBlock) adaptiveElement);
 
             // includes Column
             if (adaptiveElement is AdaptiveContainer)
-                Visit((AdaptiveContainer)adaptiveElement);
+                Visit(parent, (AdaptiveContainer)adaptiveElement);
             
             if (adaptiveElement is AdaptiveColumnSet)
-                Visit((AdaptiveColumnSet) adaptiveElement);
+                Visit(parent, (AdaptiveColumnSet) adaptiveElement);
 
             if (adaptiveElement is AdaptiveImageSet)
-                Visit((AdaptiveImageSet) adaptiveElement);
+                Visit(parent, (AdaptiveImageSet) adaptiveElement);
 
             if (adaptiveElement is AdaptiveFactSet)
-                Visit((AdaptiveFactSet) adaptiveElement);
+                Visit(parent, (AdaptiveFactSet) adaptiveElement);
 
             if (adaptiveElement is AdaptiveChoiceSetInput)
-                Visit((AdaptiveChoiceSetInput) adaptiveElement);
+                Visit(parent, (AdaptiveChoiceSetInput) adaptiveElement);
 
             if (adaptiveElement is AdaptiveTextInput)
-                Visit((AdaptiveTextInput) adaptiveElement);
+                Visit(parent, (AdaptiveTextInput) adaptiveElement);
 
             if (adaptiveElement is AdaptiveNumberInput)
-                Visit((AdaptiveNumberInput) adaptiveElement);
+                Visit(parent, (AdaptiveNumberInput) adaptiveElement);
 
             if (adaptiveElement is AdaptiveDateInput)
-                Visit((AdaptiveDateInput) adaptiveElement);
+                Visit(parent, (AdaptiveDateInput) adaptiveElement);
 
             if (adaptiveElement is AdaptiveTimeInput)
-                Visit((AdaptiveTimeInput) adaptiveElement);
+                Visit(parent, (AdaptiveTimeInput) adaptiveElement);
 
             if (adaptiveElement is AdaptiveToggleInput)
-                Visit((AdaptiveToggleInput) adaptiveElement);
+                Visit(parent, (AdaptiveToggleInput) adaptiveElement);
         }
 
         public virtual void Visit(AdaptiveCard card)
         {
             foreach (var item in card.Body)
-                Visit(item);
+                Visit(card, item);
 
             foreach (var action in card.Actions)
-                Visit(action);
+                Visit(card, action);
         }
 
-        public virtual void Visit(AdaptiveContainer container)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveContainer container)
         {
             foreach (var item in container.Items)
-                Visit(item);
+                Visit(container, item);
         }
 
-        public virtual void Visit(AdaptiveColumnSet columnSet)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveColumnSet columnSet)
         {
             foreach (var column in columnSet.Columns)
-                Visit(column);
+                Visit(columnSet, column);
         }
 
-        public virtual void Visit(AdaptiveFactSet factSet)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveFactSet factSet)
         {
             foreach (var fact in factSet.Facts)
-                Visit(fact);
+                Visit(factSet, fact);
         }
 
-        public virtual void Visit(AdaptiveImageSet imageSet)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveImageSet imageSet)
         {
             foreach (var image in imageSet.Images)
-                Visit(image);
+                Visit(imageSet, image);
         }
 
-        public virtual void Visit(AdaptiveTextBlock textBlock)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveTextBlock textBlock)
         {
         }
 
-        public virtual void Visit(AdaptiveImage image)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveImage image)
         {
         }
 
-        public virtual void Visit(AdaptiveFact fact)
+        public virtual void Visit(AdaptiveFactSet parent, AdaptiveFact fact)
         {
         }
 
-        public virtual void Visit(AdaptiveTextInput inputText)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveTextInput inputText)
         {
         }
 
-        public virtual void Visit(AdaptiveDateInput inputDate)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveDateInput inputDate)
         {
         }
 
-        public virtual void Visit(AdaptiveNumberInput inputNumber)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveNumberInput inputNumber)
         {
         }
 
-        public virtual void Visit(AdaptiveTimeInput inputTime)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveTimeInput inputTime)
         {
         }
 
-        public virtual void Visit(AdaptiveToggleInput inputToggle)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveToggleInput inputToggle)
         {
         }
 
-        public virtual void Visit(AdaptiveChoiceSetInput adaptiveChoiceSetInput)
+        public virtual void Visit(AdaptiveContainer parent, AdaptiveChoiceSetInput adaptiveChoiceSetInput)
         {
         }
 
-        public virtual void Visit(AdaptiveAction action)
+        public virtual void Visit(AdaptiveTypedElement parent, AdaptiveAction action)
         {
             if (action is AdaptiveOpenUrlAction)
-                Visit((AdaptiveOpenUrlAction) action);
+                Visit(parent, (AdaptiveOpenUrlAction) action);
             if (action is AdaptiveSubmitAction)
-                Visit((AdaptiveSubmitAction) action);
+                Visit(parent, (AdaptiveSubmitAction) action);
             if (action is AdaptiveShowCardAction)
-                Visit((AdaptiveShowCardAction) action);
+                Visit(parent, (AdaptiveShowCardAction) action);
         }
 
-        public virtual void Visit(AdaptiveSubmitAction action)
+        public virtual void Visit(AdaptiveTypedElement parent, AdaptiveSubmitAction action)
         {
         }
 
-        public virtual void Visit(AdaptiveOpenUrlAction action)
+        public virtual void Visit(AdaptiveTypedElement parent, AdaptiveOpenUrlAction action)
         {
         }
 
-        public virtual void Visit(AdaptiveShowCardAction action)
+        public virtual void Visit(AdaptiveTypedElement parent, AdaptiveShowCardAction action)
         {
             Visit(action.Card);
         }

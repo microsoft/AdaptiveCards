@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace AdaptiveCards
 {
@@ -19,6 +20,27 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool Separator { get; set; }
+
+        /// <summary>
+        /// Events to subscribe to for this element
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string[] Events { get; set; }
+
+        public virtual void SetEvents(List<string> events = null)
+        {
+            if (events == null)
+                events = new List<string>();
+
+            if (this.OnClick != null)
+                events.Add(EventTypes.OnClick);
+            if (this.OnDoubleClick != null)
+                events.Add(EventTypes.OnDoubleClick);
+            if (this.OnMouseEnter != null)
+                events.Add(EventTypes.OnMouseEnter);
+            if (this.OnMouseLeave != null)
+                events.Add(EventTypes.OnMouseLeave);
+        }
 
         /// <summary>
         ///     SSML fragment for spoken interaction
@@ -90,5 +112,30 @@ namespace AdaptiveCards
             }
         }
 #pragma warning restore 612, 618
+
+        public event EventHandler OnClick;
+        public event EventHandler OnDoubleClick;
+        public event EventHandler OnMouseEnter;
+        public event EventHandler OnMouseLeave;
+
+        public void Click()
+        {
+            OnClick?.Invoke(this, new EventArgs());
+        }
+
+        public void DoubleClick()
+        {
+            OnDoubleClick?.Invoke(this, new EventArgs());
+        }
+
+        public void MouseEnter()
+        {
+            OnMouseEnter?.Invoke(this, new EventArgs());
+        }
+
+        public void MouseLeave()
+        {
+            OnMouseLeave?.Invoke(this, new EventArgs());
+        }
     }
 }

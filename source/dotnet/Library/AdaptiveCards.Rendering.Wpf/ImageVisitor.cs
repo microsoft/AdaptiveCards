@@ -57,10 +57,10 @@ namespace AdaptiveCards.Rendering.Wpf
             base.Visit(card);
         }
 
-        public override void Visit(AdaptiveImage image)
+        public override void Visit(AdaptiveContainer parent, AdaptiveImage image)
         {
             tasks.Add(GetImage(image.Url));
-            base.Visit(image);
+            base.Visit(parent, image);
         }
     }
 }
