@@ -77,13 +77,13 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, 
         DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek()); 
         parser.UpdateCurrentEmphasisRunState(emphasisType);
         token += stream.get();
-        return Emphasis;
+        return EmphasisState::Emphasis;
     }
     else
     {    
         parser.UpdateLookBehind(stream.peek());
         token += stream.get();
-        return Text;
+        return EmphasisState::Text;
     }
 }
 
@@ -123,16 +123,16 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
         parser.UpdateLookBehind(stream.peek());
         token += stream.get();
 
-        return Text;
+        return EmphasisState::Text;
     }
-    return Emphasis;
+    return EmphasisState::Emphasis;
 }
 
 // Captures remaining charaters in given token
 // and causes the emphasis parsing to terminate
 void EmphasisParser::Flush(std::string& currentToken)
 {
-    if (m_current_state != Text)
+    if (m_current_state != EmphasisState::Text)
     {
         CaptureEmphasisToken(currentToken[0], currentToken);
         m_delimiterCnts = 0;
@@ -491,7 +491,7 @@ void ListParser::CaptureListToken()
         htmlString.pop_back();
     }
 
-    html << "\n<li>";
+    html << "<li>";
     html << htmlString;
     html << "</li>";
 

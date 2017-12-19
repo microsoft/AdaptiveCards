@@ -29,10 +29,10 @@ void MarkDownParsedResult::AppendToTokens(const std::shared_ptr<MarkDownHtmlGene
 {
     // if two different block types, then add closing tag followed by the opening tag of new type
     if (!m_codeGenTokens.empty() && 
-        m_codeGenTokens.back()->IsList() != x->IsList())
+        m_codeGenTokens.back()->GetBlockType() != x->GetBlockType())
     {
         m_codeGenTokens.back()->MakeItTail();
-        x->MakeItHeadOfNewBlock();
+        x->MakeItHead();
     }
 
     m_codeGenTokens.push_back(x);

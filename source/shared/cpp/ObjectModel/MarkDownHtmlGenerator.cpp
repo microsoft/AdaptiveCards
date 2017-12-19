@@ -6,7 +6,7 @@ std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 {
     if (m_isHead) 
     {              
-        m_token = (m_isHeadOfNewBlock)? "\n<p>" + m_token :"<p>" + m_token;
+        m_token = "<p>" + m_token;
     }
 
     if (m_isTail)
@@ -21,18 +21,13 @@ std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 //     1. they are same types
 //     2. neither of the emphasis tokens are both left and right emphasis tokens, and 
 //        if either or both of them are, then their sum is not multiple of 3 
-bool MarkDownEmphasisHtmlGenerator::IsMatch(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token)
+bool MarkDownEmphasisHtmlGenerator::IsMatch(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &emphasisToken)
 {
-    std::shared_ptr<MarkDownEmphasisHtmlGenerator> emphasisToken = 
-        std::static_pointer_cast<MarkDownEmphasisHtmlGenerator>(token);
-    if(emphasisToken)
+    if (this->type == emphasisToken->type)
     {
-        if (this->type == emphasisToken->type)
-        {
-            // rule #9 & #10, sum of delimiter count can't be multiple of 3 
-            return !((this->IsLeftAndRightEmphasis() || emphasisToken->IsLeftAndRightEmphasis()) &&
-                (((this->m_numberOfUnusedDelimiters+ emphasisToken->m_numberOfUnusedDelimiters) % 3) == 0));
-        }
+        // rule #9 & #10, sum of delimiter count can't be multiple of 3 
+        return !((this->IsLeftAndRightEmphasis() || emphasisToken->IsLeftAndRightEmphasis()) &&
+            (((this->m_numberOfUnusedDelimiters+ emphasisToken->m_numberOfUnusedDelimiters) % 3) == 0));
     }
     return false;
 }
@@ -109,7 +104,7 @@ std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
 
     if (m_isHead) 
     {   
-        return (m_isHeadOfNewBlock)? "\n<p>" + html.str():"<p>" + html.str();
+        return "<p>" + html.str();
     }
 
     if (m_isTail)
@@ -147,7 +142,7 @@ std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
 
     if (m_isHead) 
     {
-        return (m_isHeadOfNewBlock)? "\n<p>" + html.str():"<p>" + html.str();
+        return "<p>" + html.str();
     }
 
     if (m_isTail)
@@ -186,12 +181,12 @@ std::string MarkDownListHtmlGenerator::GenerateHtmlString()
 {
     if (m_isHead) 
     {
-        m_token = (m_isHeadOfNewBlock)? "\n<ul>" + m_token :"<ul>" + m_token;
+        m_token = "<ul>" + m_token;
     }
 
     if (m_isTail)
     {
-        return m_token + "\n</ul>";
+        return m_token + "</ul>";
     }
 
     return m_token;
