@@ -7,6 +7,37 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="TextBoxUrl" Grid.Column="1"/>
+            <Button Name="AddButton" Grid.Column="2" Content="Add" Margin="2" Padding="8 2 8 2" Click="AddButton_Click"/>
+        </Grid>
+        <TabControl Grid.Row="1" ItemsSource="{Binding Cards}" SelectedItem="{Binding SelectedCard}" Background="Gray">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Url}"></TextBlock>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button Name="ActivateButton" Content="Activate" Width="100" Margin="2" Padding="8 2 8 2" Click="ActivateButton_Click"/>
+                        <ContentControl Content="{Binding Card}" Width="800" Grid.Row="1"  Background="White"></ContentControl>
+                    </Grid>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
         
     </Grid>
 </Window>

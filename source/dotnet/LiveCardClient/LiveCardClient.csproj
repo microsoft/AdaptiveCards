@@ -83,6 +83,7 @@
     <Compile Include="LiveCardClientAPI.cs" />
     <Compile Include="LiveCardServerAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamingWebSocket.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

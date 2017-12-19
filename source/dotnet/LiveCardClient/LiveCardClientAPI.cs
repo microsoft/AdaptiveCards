@@ -14,13 +14,11 @@ namespace LiveCardClient
     /// </summary>
     public class LiveCardClientAPI : ILiveCardClientAPI
     {
-        AdaptiveCard card;
-        Action<AdaptiveElement> binder;
+        LiveCard liveCard;
 
-        public LiveCardClientAPI(AdaptiveCard card, Action<AdaptiveElement> binder)
+        public LiveCardClientAPI(LiveCard card)
         {
-            this.card = card;
-            this.binder = binder;
+            this.liveCard = card;
         }
 
         /// <summary>
@@ -29,10 +27,11 @@ namespace LiveCardClient
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public Task InsertElement(string id, InsertPosition position, AdaptiveElement element)
+        public async virtual Task OnInsertElement(string id, InsertPosition position, AdaptiveElement element)
         {
-            this.binder(element);
-            return this.card.InsertElement(id, position, element);
+            await this.liveCard.Card.InsertElement(id, position, element);
+
+            await this.liveCard.OnElementChanged(element);
         }
 
         /// <summary>
@@ -41,10 +40,11 @@ namespace LiveCardClient
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public Task ReplaceElement(AdaptiveElement element)
+        public async virtual Task OnReplaceElement(AdaptiveElement element)
         {
-            this.binder(element);
-            return this.card.ReplaceElement(element);
+            await this.liveCard.Card.ReplaceElement(element);
+
+            await this.liveCard.OnElementChanged(element);
         }
 
         /// <summary>
@@ -52,9 +52,17 @@ namespace LiveCardClient
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task RemoveElement(string id)
+        public async virtual Task OnRemoveElement(string id)
         {
-            return this.card.RemoveElement(id);
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveElement element, out object parent))
+            {
+                await this.liveCard.Card.RemoveElement(id);
+
+                if (parent != null && parent is AdaptiveElement)
+                    await this.liveCard.OnElementChanged((AdaptiveElement)parent);
+                else
+                    await this.liveCard.OnCardChanged(this.liveCard.Card);
+            }
         }
 
         /// <summary>
@@ -63,27 +71,31 @@ namespace LiveCardClient
         /// <param name="id"></param>
         /// <param name="properties"></param>
         /// <returns></returns>
-        public Task SetProperties(string id, IEnumerable<SetProperty> properties)
+        public async virtual Task OnSetProperties(string id, IEnumerable<SetProperty> properties)
         {
-            return this.card.SetProperties(id, properties);
+            await this.liveCard.Card.SetProperties(id, properties);
+
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveElement element))
+                await this.liveCard.OnElementChanged(element);
         }
 
         /// <summary>
         /// Save the card
         /// </summary>
         /// <returns></returns>
-        public Task SaveCard(AdaptiveCard card = null)
+        public virtual Task SaveCard(AdaptiveCard card = null)
         {
-            return Task.CompletedTask;
+            return this.liveCard.SaveCard(card);
         }
 
         /// <summary>
         /// Close the card
         /// </summary>
         /// <returns></returns>
-        public Task CloseCard()
+        public async virtual Task CloseCard()
         {
-            return Task.CompletedTask;
+            await this.liveCard.CloseCard();
         }
+
     }
 }

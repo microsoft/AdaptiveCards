@@ -38,7 +38,7 @@ namespace LiveCardServerSample.Controllers
             AdaptiveTextBlock hover = (AdaptiveTextBlock)sender;
             Trace.WriteLine($"{hover.Id} MouseLeave");
             hover.Text = "No mouse";
-            await this.LiveCard.ReplaceElement(hover);
+            await this.LiveCard.OnReplaceElement(hover);
         }
 
         private async void Title_OnMouseEnter(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace LiveCardServerSample.Controllers
             AdaptiveTextBlock hover = (AdaptiveTextBlock)sender;
             Trace.WriteLine($"{hover.Id} MouseEnter");
             hover.Text = "Mouse Mouse Mouse";
-            await this.LiveCard.ReplaceElement(hover);
+            await this.LiveCard.OnReplaceElement(hover);
         }
 
         private async void Title_OnClick(object sender, EventArgs e)
@@ -57,7 +57,7 @@ namespace LiveCardServerSample.Controllers
                 title.Weight = AdaptiveTextWeight.Bolder;
             else
                 title.Weight = AdaptiveTextWeight.Default;
-            await this.LiveCard.ReplaceElement(title);
+            await this.LiveCard.OnReplaceElement(title);
         }
 
         private async void Title_OnDoubleClick(object sender, EventArgs e)
@@ -68,7 +68,7 @@ namespace LiveCardServerSample.Controllers
                 title.Color = AdaptiveTextColor.Default;
             else
                 title.Color = AdaptiveTextColor.Attention;
-            await this.LiveCard.ReplaceElement(title);
+            await this.LiveCard.OnReplaceElement(title);
         }
 
         private async void OnCardDeactivated(object sender, EventArgs e)
@@ -77,7 +77,7 @@ namespace LiveCardServerSample.Controllers
             if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
             {
                 activation.Text = "Deactivated";
-                await this.LiveCard.ReplaceElement(activation);
+                await this.LiveCard.OnReplaceElement(activation);
                 await this.LiveCard.SaveCard();
             }
         }
@@ -88,7 +88,7 @@ namespace LiveCardServerSample.Controllers
             if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
             {
                 activation.Text = "Activated";
-                await this.LiveCard.ReplaceElement(activation);
+                await this.LiveCard.OnReplaceElement(activation);
             }
         }
     }

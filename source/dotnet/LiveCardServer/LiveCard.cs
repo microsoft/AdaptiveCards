@@ -47,22 +47,22 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public async Task InsertElement(string id, InsertPosition position, AdaptiveElement element)
+        public async Task OnInsertElement(string id, InsertPosition position, AdaptiveElement element)
         {
             await this.Card.InsertElement(id, position, element);
-            await this.Client.InsertElement(id, position, element);
+            await this.Client.OnInsertElement(id, position, element);
         }
 
-        public async Task RemoveElement(string id)
+        public async Task OnRemoveElement(string id)
         {
             await this.Card.RemoveElement(id);
-            await this.Client.RemoveElement(id);
+            await this.Client.OnRemoveElement(id);
         }
 
-        public async Task ReplaceElement(AdaptiveElement element)
+        public async Task OnReplaceElement(AdaptiveElement element)
         {
             await this.Card.ReplaceElement(element);
-            await this.Client.ReplaceElement(element);
+            await this.Client.OnReplaceElement(element);
         }
 
         public async Task SaveCard(AdaptiveCard card = null)
@@ -70,10 +70,10 @@ namespace LiveCardServer
             await this.Client.SaveCard(card);
         }
 
-        public async Task SetProperties(string id, IEnumerable<SetProperty> properties)
+        public async Task OnSetProperties(string id, IEnumerable<SetProperty> properties)
         {
             await this.Card.SetProperties(id, properties);
-            await this.Client.SetProperties(id, properties);
+            await this.Client.OnSetProperties(id, properties);
         }
     }
 

@@ -31,7 +31,7 @@ namespace LiveCardServer
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public Task InsertElement(string id, InsertPosition position, AdaptiveElement element)
+        public Task OnInsertElement(string id, InsertPosition position, AdaptiveElement element)
         {
             return rpc.NotifyAsync(new object[] { id, position.ToString(), element });
         }
@@ -42,7 +42,7 @@ namespace LiveCardServer
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public Task ReplaceElement(AdaptiveElement element)
+        public Task OnReplaceElement(AdaptiveElement element)
         {
             return rpc.NotifyAsync(new object[] { element });
         }
@@ -52,7 +52,7 @@ namespace LiveCardServer
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task RemoveElement(string id)
+        public Task OnRemoveElement(string id)
         {
             return rpc.NotifyAsync(new object[] { id });
         }
@@ -63,7 +63,7 @@ namespace LiveCardServer
         /// <param name="id"></param>
         /// <param name="properties"></param>
         /// <returns></returns>
-        public Task SetProperties(string id, IEnumerable<SetProperty> properties)
+        public Task OnSetProperties(string id, IEnumerable<SetProperty> properties)
         {
             return rpc.NotifyAsync(new object[] { id, properties });
         }

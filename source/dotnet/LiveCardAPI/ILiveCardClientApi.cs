@@ -20,7 +20,7 @@ namespace LiveCardAPI
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        Task InsertElement(string id, InsertPosition position, AdaptiveElement element);
+        Task OnInsertElement(string id, InsertPosition position, AdaptiveElement element);
 
         /// <summary>
         /// Replace element
@@ -28,14 +28,14 @@ namespace LiveCardAPI
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        Task ReplaceElement(AdaptiveElement element);
+        Task OnReplaceElement(AdaptiveElement element);
 
         /// <summary>
         /// Remove element
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task RemoveElement(string id);
+        Task OnRemoveElement(string id);
 
         /// <summary>
         /// SetProperties on element
@@ -43,7 +43,7 @@ namespace LiveCardAPI
         /// <param name="id"></param>
         /// <param name="properties"></param>
         /// <returns></returns>
-        Task SetProperties(string id, IEnumerable<SetProperty> properties);
+        Task OnSetProperties(string id, IEnumerable<SetProperty> properties);
 
         /// <summary>
         /// Save the card
