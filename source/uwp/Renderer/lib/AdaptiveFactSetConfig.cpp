@@ -3,9 +3,9 @@
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept try
     {
@@ -23,26 +23,26 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig** titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig** titleTextConfig)
     {
         return m_title.CopyTo(titleTextConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig* titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig* titleTextConfig)
     {
         m_title = titleTextConfig;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig** valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig** valueTextConfig)
     {
         return m_value.CopyTo(valueTextConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig* valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig* valueTextConfig)
     {
         m_value = valueTextConfig;
         return S_OK;
@@ -61,5 +61,4 @@ namespace AdaptiveCards { namespace Uwp
         m_spacing = value;
         return S_OK;
     }
-}
-}
+}}}

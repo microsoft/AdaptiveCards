@@ -1,7 +1,9 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta7",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
+  "author": "AdaptiveCards <adaptivecardspkg@microsoft.com>",
+  "license": "MIT",
   "homepage": "http://adaptivecards.io",
   "keywords": [
     "adaptivecards",
@@ -10,19 +12,48 @@
     "microsoft",
     "bot"
   ],
-  "main": "built/adaptivecards.js",
-  "types": "built/adaptivecards.d.ts",
+  "main": "lib/adaptivecards.js",
+  "types": "lib/adaptivecards.d.ts",
+  "files": [
+    "lib",
+    "dist"
+  ],
   "scripts": {
-    "build-dist": "webpack",
-    "tsc": "tsc -p .",
-    "build": "npm run tsc && npm run build-dist && npm run dts",
+    "test": "jest --forceExit --runInBand",
+    "clean": "rimraf build lib dist",
+    "compile": "npm run clean && tsc",
+    "bundle": "cross-env NODE_ENV=production webpack",
+    "build": "npm run compile && npm run bundle",
+    "build:debug": "npm run clena && tsc -p ./tsconfig.debug.json && webpack",
     "watch": "webpack --watch",
-    "dts": "dts-generator --name adaptive-cards --project . --out dist/adaptivecards.d.ts",
-    "test": "jest --coverage"
+    "dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "version": "npm run build && npm test && npm run dts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://git@github.com/microsoft/AdaptiveCards.git"
+  },
+  "devDependencies": {
+    "@types/jest": "^21.1.8",
+    "@types/node": "0.0.2",
+    "ajv-cli": "1.1.1",
+    "awesome-typescript-loader": "^3.4.0",
+    "babel-jest": "^21.2.0",
+    "cross-env": "^5.1.1",
+    "dts-generator": "^2.1.0",
+    "jest": "^21.2.1",
+    "json-loader": "0.5.4",
+    "regenerator-runtime": "^0.11.0",
+    "ts-jest": "^21.2.3",
+    "tslint": "^4.4.2",
+    "typescript": "^2.6.1",
+    "webpack": "^3.8.1"
   },
   "jest": {
+    "rootDir": "src",
     "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
@@ -31,40 +62,6 @@
       "js",
       "jsx",
       "json"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "text-summary",
-      "html"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.ts"
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://git@github.com/microsoft/AdaptiveCards.git"
-  },
-  "dependencies": {
-    "markdown-it": "^8.2.2"
-  },
-  "devDependencies": {
-    "@types/jest": "^21.1.5",
-    "@types/markdown-it": "0.0.1",
-    "@types/node": "0.0.2",
-    "@types/vkbeautify": "^0.99.0",
-    "ajv-cli": "1.1.1",
-    "babel-jest": "^21.2.0",
-    "dts-generator": "^2.1.0",
-    "jest": "^21.2.1",
-    "json-loader": "0.5.4",
-    "regenerator-runtime": "^0.11.0",
-    "ts-jest": "^21.1.4",
-    "ts-loader": "^2.0.0",
-    "tslint": "^4.4.2",
-    "typescript": "^2.1.5",
-    "webpack": "^2.2.1"
-  },
-  "author": "Microsoft",
-  "license": "MIT"
+  }
 }

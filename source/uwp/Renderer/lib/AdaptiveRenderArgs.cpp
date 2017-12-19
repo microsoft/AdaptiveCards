@@ -4,11 +4,11 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize() noexcept
     {
@@ -16,7 +16,7 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(
-        ABI::AdaptiveCards::Uwp::ContainerStyle containerStyle,
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
         IInspectable* parentElement) noexcept try
     {
         m_containerStyle = containerStyle;
@@ -25,14 +25,14 @@ namespace AdaptiveCards { namespace Uwp
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderArgs::get_ContainerStyle(ABI::AdaptiveCards::Uwp::ContainerStyle *value)
+    HRESULT AdaptiveRenderArgs::get_ContainerStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle *value)
     {
         *value = m_containerStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveCards::Uwp::ContainerStyle value)
+    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle value)
     {
         m_containerStyle = value;
         return S_OK;
@@ -50,4 +50,4 @@ namespace AdaptiveCards { namespace Uwp
         m_parentElement = value;
         return S_OK;
     }
-}}
+}}}

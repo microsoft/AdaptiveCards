@@ -15,9 +15,9 @@ namespace AdaptiveCards
         /// <summary>
         /// The type name of the element 
         /// </summary>
-        [JsonProperty(Order = -10, Required = Required.Always)]
+        [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
         [JsonRequired]
-        public abstract string Type { get; }
+        public abstract string Type { get; set; } 
 
         /// <summary>
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
@@ -29,6 +29,6 @@ namespace AdaptiveCards
         /// Additional properties not found on the default schema
         /// </summary>
         [JsonExtensionData]
-        public IDictionary<string, object> AdditionalProperties { get; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        public IDictionary<string, object> AdditionalProperties { get; set;  } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
     }
 }

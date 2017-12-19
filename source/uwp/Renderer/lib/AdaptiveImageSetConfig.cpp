@@ -2,9 +2,9 @@
 #include "AdaptiveImageSetConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept try
     {
@@ -14,20 +14,20 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize(ImageSetConfig sharedImageSetConfig) noexcept
     {
-        m_imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(sharedImageSetConfig.imageSize);
+        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImageSetConfig.imageSize);
         m_maxImageHeight = sharedImageSetConfig.maxImageHeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::get_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImageSetConfig::get_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
@@ -46,5 +46,4 @@ namespace AdaptiveCards { namespace Uwp
         m_maxImageHeight = maxImageHeight;
         return S_OK;
     }
-}
-}
+}}}

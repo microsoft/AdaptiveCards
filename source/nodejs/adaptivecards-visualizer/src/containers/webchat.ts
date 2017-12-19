@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -12,36 +13,42 @@ import {
 } from "adaptivecards";
 
 export class WebChatContainer extends HostContainer {
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var outerElement = document.createElement("div");
         outerElement.className = "webChatOuterContainer";
 
-        window.addEventListener(
-            "resize",
-            () => {
-                if (outerElement.parentElement) {
-                    var bounds = outerElement.parentElement.getBoundingClientRect();
+        var resizeCard = () => {
+            if (outerElement.parentElement) {
+                var bounds = outerElement.parentElement.getBoundingClientRect();
 
-                    var newWidth: string = "216px";
+                var newWidth: string = "216px";
 
-                    if (bounds.width >= 500) {
-                        newWidth = "416px";
-                    }
-                    else if (bounds.width >= 400) {
-                        newWidth = "320px";
-                    }
-
-                    if (outerElement.style.width != newWidth) {
-                        outerElement.style.width = newWidth;
-                    }
+                if (bounds.width >= 500) {
+                    newWidth = "416px";
                 }
-            });
+                else if (bounds.width >= 400) {
+                    newWidth = "320px";
+                }
+
+                if (outerElement.style.width != newWidth) {
+                    outerElement.style.width = newWidth;
+                }
+
+                adaptiveCard.updateLayout();
+            }
+        };
+
+        window.addEventListener("resize", resizeCard);
 
         var innerElement = document.createElement("div");
         innerElement.className = "webChatInnerContainer";
 
-        innerElement.appendChild(renderedCard);
+        target.appendChild(outerElement);
         outerElement.appendChild(innerElement);
+
+        var renderedCard = adaptiveCard.render();
+        innerElement.appendChild(renderedCard);
+        resizeCard();
 
         return outerElement;
     }
@@ -77,50 +84,50 @@ export class WebChatContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#FFFFFF",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#c3ab23",
+                            default: "#c3ab23",
                             subtle: "#DDc3ab23"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#c3ab23",
+                            default: "#c3ab23",
                             subtle: "#DDc3ab23"
                         }
                     }

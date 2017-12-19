@@ -4,16 +4,15 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     AdaptiveFactSet::AdaptiveFactSet()
     {
@@ -36,7 +35,7 @@ namespace AdaptiveCards { namespace Uwp
 
         GenerateFactsProjection(sharedFactSet->GetFacts(), m_facts.Get());
         
-        m_spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(sharedFactSet->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedFactSet->GetSpacing());
         m_separator = sharedFactSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedFactSet->GetId(), m_id.GetAddressOf()));
 
@@ -57,14 +56,14 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
+    HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
+    HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -136,4 +135,4 @@ namespace AdaptiveCards { namespace Uwp
 
         return S_OK;
     }
-}}
+}}}

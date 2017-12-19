@@ -8,12 +8,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize() noexcept
     {
@@ -67,21 +67,21 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddError(ErrorStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode, HSTRING message)
     {
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Uwp::IAdaptiveError*>> errors;
+        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>> errors;
         RETURN_IF_FAILED(m_renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddWarning(WarningStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode, HSTRING message)
     {
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Uwp::IAdaptiveWarning*>> warnings;
+        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>> warnings;
         RETURN_IF_FAILED(m_renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }
@@ -110,4 +110,4 @@ namespace AdaptiveCards { namespace Uwp
 
         return S_OK;
     }
-}}
+}}}

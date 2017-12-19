@@ -1,15 +1,15 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include <windows.ui.xaml.shapes.h>
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-    class WholeItemsPanel : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Uwp::IWholeItemsPanel,
+    class WholeItemsPanel : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::Uwp::IWholeItemsPanel,
         ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
         Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
     {
-        InspectableClass(L"AdaptiveCards.Uwp.WholeItemsPanel", BaseTrust)
+        InspectableClass(L"AdaptiveCards.Rendering.Uwp.WholeItemsPanel", BaseTrust)
 
         public:
             HRESULT STDMETHODCALLTYPE RuntimeClassInitialize();
@@ -66,4 +66,4 @@ namespace AdaptiveCards { namespace Uwp
     };
 
     ActivatableClass(WholeItemsPanel);
-}}
+}}}

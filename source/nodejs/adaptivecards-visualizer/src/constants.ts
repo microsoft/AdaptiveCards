@@ -215,7 +215,7 @@ export const defaultPayload: string = `{
 								{
 									"type": "TextBlock",
 									"spacing": "none",
-									"text": "Created {{DATE(2017-02-14T06:08:39Z,Short)}}",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,SHORT)}}",
 									"isSubtle": true,
 									"wrap": true
 								}

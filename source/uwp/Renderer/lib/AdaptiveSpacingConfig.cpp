@@ -2,9 +2,9 @@
 #include "AdaptiveSpacingConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize() noexcept try
     {
@@ -106,5 +106,4 @@ namespace AdaptiveCards { namespace Uwp
         m_padding = paddingSpacing;
         return S_OK;
     }
-}
-}
+}}}

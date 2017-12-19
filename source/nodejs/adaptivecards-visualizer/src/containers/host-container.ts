@@ -101,6 +101,8 @@ export abstract class HostContainer {
     public initialize() {
         AdaptiveCard.elementTypeRegistry.reset();
         AdaptiveCard.actionTypeRegistry.reset();
+        AdaptiveCard.useAutomaticContainerBleeding = false;
+        AdaptiveCard.preExpandSingleShowCardAction = false;
     }
 
     public parseElement(element: CardElement, json: any) {
@@ -143,50 +145,50 @@ export abstract class HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#00000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FFD800",
+                            default: "#FFD800",
                             subtle: "#DDFFD800"
                         },
                         good: {
-                            normal: "#00FF00",
+                            default: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FFD800",
+                            default: "#FFD800",
                             subtle: "#DDFFD800"
                         },
                         good: {
-                            normal: "#00FF00",
+                            default: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         }
                     }
@@ -236,7 +238,7 @@ export abstract class HostContainer {
         });
     }
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         return null;
     }
 
@@ -303,22 +305,20 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
     }
 
-    render(renderedCard: HTMLElement, speechString: string, showSpeechXml: boolean = false): HTMLElement {
+    render(adaptiveCard: AdaptiveCard, target: HTMLElement, showSpeechXml: boolean = false): HTMLElement {
         var element = document.createElement("div");
+        target.appendChild(element);
 
-        if (renderedCard) {
-            var renderedContainer = this.renderContainer(renderedCard);
+        if (adaptiveCard) {
+            var renderedContainer = this.renderContainer(adaptiveCard, element);
 
             if (renderedContainer) {
-                element.appendChild(renderedContainer);
-
                 var separator = document.createElement("div");
                 separator.style.height = "20px";
-
                 element.appendChild(separator);
             }
 
-            var renderedSpeech = this.renderSpeech(speechString);
+            var renderedSpeech = this.renderSpeech(adaptiveCard.renderSpeech());
 
             if (renderedSpeech) {
                 element.appendChild(renderedSpeech);

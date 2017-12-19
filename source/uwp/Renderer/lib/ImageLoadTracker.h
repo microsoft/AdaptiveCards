@@ -1,9 +1,9 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     struct TrackedImageDetails
     {
@@ -38,4 +38,4 @@ namespace AdaptiveCards { namespace Uwp
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
     };
-}}
+}}}

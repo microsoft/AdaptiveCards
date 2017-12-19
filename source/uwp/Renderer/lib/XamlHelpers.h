@@ -1,8 +1,8 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     class XamlHelpers
     {
@@ -126,4 +126,4 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(contentControl->put_Content(content.Get()));
         }
     };
-}}
+}}}

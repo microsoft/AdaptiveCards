@@ -2,10 +2,10 @@
 #include "AdaptiveActionEventArgs.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize()
     {
@@ -30,4 +30,4 @@ namespace AdaptiveCards { namespace Uwp
     {
         return m_inputs.CopyTo(inputs);
     }
-}}
+}}}

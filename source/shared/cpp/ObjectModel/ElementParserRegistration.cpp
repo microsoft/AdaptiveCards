@@ -55,7 +55,7 @@ namespace AdaptiveCards
         }
         else
         {
-            throw AdaptiveCardParseException("Overriding known element parsers is unsupported");
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known element parsers is unsupported");
         }
     }
 
@@ -67,7 +67,7 @@ namespace AdaptiveCards
         }
         else
         {
-            throw AdaptiveCardParseException("Overriding known element parsers is unsupported");
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known element parsers is unsupported");
         }
     }
 

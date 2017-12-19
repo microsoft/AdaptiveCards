@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -25,16 +26,20 @@ export class TimelineContainer extends HostContainer {
         this.supportsActionBar = false;
     }
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
+        AdaptiveCard.useAdvancedCardBottomTruncation = true;
+
         var element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
         // element.style.backgroundColor = TimelineContainer.backgroundColor;
         element.style.overflow = "hidden";
+        target.appendChild(element);
 
+        var renderedCard = adaptiveCard.render();
         renderedCard.style.height = "100%";
-
         element.appendChild(renderedCard);
+        adaptiveCard.updateLayout();
 
         return element;
     }
@@ -70,50 +75,50 @@ export class TimelineContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#535454",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            "normal": "#FFFFFF",
+                            "default": "#FFFFFF",
                             "subtle": "#9C9E9F"
                         },
                         accent: {
-                            "normal": "#2E89FC",
+                            "default": "#2E89FC",
                             "subtle": "#882E89FC"
                         },
                         attention: {
-                            "normal": "#FF0000",
+                            "default": "#FF0000",
                             "subtle": "#DDFF0000"
                         },
                         good: {
-                            "normal": "#00FF00",
+                            "default": "#00FF00",
                             "subtle": "#DD00FF00"
                         },
                         warning: {
-                            "normal": "#FFD800",
+                            "default": "#FFD800",
                             "subtle": "#DDFFD800"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#33000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            "normal": "#FFFFFF",
+                            "default": "#FFFFFF",
                             "subtle": "#9C9E9F"
                         },
                         accent: {
-                            "normal": "#2E89FC",
+                            "default": "#2E89FC",
                             "subtle": "#882E89FC"
                         },
                         attention: {
-                            "normal": "#FF0000",
+                            "default": "#FF0000",
                             "subtle": "#DDFF0000"
                         },
                         good: {
-                            "normal": "#00FF00",
+                            "default": "#00FF00",
                             "subtle": "#DD00FF00"
                         },
                         warning: {
-                            "normal": "#FFD800",
+                            "default": "#FFD800",
                             "subtle": "#DDFFD800"
                         }
                     }

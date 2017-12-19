@@ -3,9 +3,9 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
 
     HRESULT AdaptiveError::RuntimeClassInitialize()
@@ -13,9 +13,8 @@ namespace AdaptiveCards { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveError::RuntimeClassInitialize(
-        ABI::AdaptiveCards::Uwp::ErrorStatusCode statusCode,
+        ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode,
         HSTRING message)
     {
         m_statusCode = statusCode;
@@ -24,14 +23,14 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveError::get_StatusCode(ABI::AdaptiveCards::Uwp::ErrorStatusCode* value)
+    HRESULT AdaptiveError::get_StatusCode(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode* value)
     {
         *value = m_statusCode;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveError::put_StatusCode(ABI::AdaptiveCards::Uwp::ErrorStatusCode value)
+    HRESULT AdaptiveError::put_StatusCode(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode value)
     {
         m_statusCode = value;
         return S_OK;
@@ -48,4 +47,4 @@ namespace AdaptiveCards { namespace Uwp
     {
         return m_message.Set(value);
     }
-}}
+}}}

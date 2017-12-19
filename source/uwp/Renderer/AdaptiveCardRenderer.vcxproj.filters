@@ -162,6 +162,6 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Uwp.idl" />
+    <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
   </ItemGroup>
 </Project>

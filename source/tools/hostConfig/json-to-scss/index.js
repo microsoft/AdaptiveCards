@@ -28,8 +28,7 @@ function indent(level) {
 function appendToLast(output, append) {
     output[output.length - 1] += append;
 }
-function convertToSCSS(x, varName) {
-    if (varName === void 0) { varName = '$hostConfig'; }
+function convertToSCSS(x, varName = '$hostConfig') {
     var output = [];
     function walk(prefix, node, indentLevel) {
         output.push(indent(indentLevel) + prefix + ': (');

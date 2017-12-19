@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize() noexcept try
     {
@@ -22,29 +22,28 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition ** value)
+    HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition ** value)
     {
         return m_default.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition * value)
+    HRESULT  AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition * value)
     {
         m_default = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition ** value)
+    HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition ** value)
     {
         return m_emphasis.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition * value)
+    HRESULT  AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition * value)
     {
         m_emphasis = value;
         return S_OK;
     }
-}
-}
+}}}

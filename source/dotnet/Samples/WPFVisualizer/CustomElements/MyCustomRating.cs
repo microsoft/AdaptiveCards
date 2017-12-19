@@ -7,7 +7,7 @@ namespace WpfVisualizer
 {
     public class MyCustomRating : AdaptiveElement
     {
-        public override string Type => "Rating";
+        public override string Type { get; set; } = "Rating";
 
         public double Rating { get; set; }
 
@@ -33,18 +33,22 @@ namespace WpfVisualizer
 
     public class MyCustomInput : AdaptiveInput
     {
-        public override string Type => "MyCustomInput";    
+        public override string Type { get; set; } = "MyCustomInput";
+
+        public string Value { get; set; }
 
         public static FrameworkElement Render(MyCustomInput input, AdaptiveRenderContext context)
         {
             var textBox = new TextBox();
-
-            context.InputBindings.Add(input.Id, () =>
-            {
-                return textBox.Text;
-            });
+            textBox.Text = input.Value;
+            context.InputBindings.Add(input.Id, () => textBox.Text);
 
             return textBox;
+        }
+
+        public override string GetNonInteractiveValue()
+        {
+            return Value;
         }
     }
 }

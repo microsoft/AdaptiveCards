@@ -19,14 +19,15 @@ import {
 } from "adaptivecards";
 
 export class OutlookContainer extends HostContainer {
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
         element.style.borderBottom = "1px solid #F1F1F1";
         element.style.border = "1px solid #F1F1F1"
+        target.appendChild(element);
 
-        element.appendChild(renderedCard);
+        adaptiveCard.render(element);
 
         return element;
     }
@@ -38,6 +39,9 @@ export class OutlookContainer extends HostContainer {
 
         AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
         AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
+
+        AdaptiveCard.useAutomaticContainerBleeding = true;
+        AdaptiveCard.preExpandSingleShowCardAction = true;
     }
 
     public parseElement(element: CardElement, json: any) {
@@ -71,20 +75,20 @@ export class OutlookContainer extends HostContainer {
 
     public getHostConfig(): HostConfig {
         return new HostConfig({
+            supportsInteractivity: true,
+            fontFamily: "Segoe UI",
             spacing: {
-                small: 3,
-                default: 8,
-                medium: 20,
-                large: 30,
-                extraLarge: 40,
+                small: 10,
+                default: 20,
+                medium: 30,
+                large: 40,
+                extraLarge: 50,
                 padding: 20
             },
             separator: {
                 lineThickness: 1,
                 lineColor: "#EEEEEE"
             },
-            supportsInteractivity: true,
-            fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
                 default: 14,
@@ -97,62 +101,62 @@ export class OutlookContainer extends HostContainer {
                 default: 400,
                 bolder: 600
             },
+            imageSizes: {
+                small: 40,
+                medium: 80,
+                large: 160
+            },
             containerStyles: {
                 default: {
                     backgroundColor: "#FFFFFF",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#cc3300",
+                            default: "#cc3300",
                             subtle: "#DDcc3300"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#e69500",
+                            default: "#e69500",
                             subtle: "#DDe69500"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#cc3300",
+                            default: "#cc3300",
                             subtle: "#DDcc3300"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#e69500",
+                            default: "#e69500",
                             subtle: "#DDe69500"
                         }
                     }
                 }
-            },
-            imageSizes: {
-                small: 40,
-                medium: 80,
-                large: 160
             },
             actions: {
                 maxActions: 5,

@@ -11,5 +11,7 @@
 
 - (void)didFetchUserResponses:(NSData *)json error:(NSError *)error;
 
+- (void)didFetchUserResponses:(NSData *)json data:(NSString *)data error:(NSError *)error;
+
 - (void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
 @end

@@ -1,47 +1,41 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class AdaptiveConfigBase
-    {
-        [JsonExtensionData]
-        public IDictionary<string, JToken> AdditionalData { get; set; } = new Dictionary<string, JToken>();
-    }
-
-
     public class AdaptiveHostConfig : AdaptiveConfigBase
     {
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ActionsConfig Actions { get; set; } = new ActionsConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public AdaptiveCardConfig AdaptiveCard { get; set; } = new AdaptiveCardConfig();
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ContainerStylesConfig ContainerStyles { get; set; } = new ContainerStylesConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ImageSizesConfig ImageSizes { get; set; } = new ImageSizesConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ImageSetConfig ImageSet { get; set; } = new ImageSetConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string FontFamily { get; set; } = "Segoe UI";
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public FontWeightsConfig FontWeights { get; set; } = new FontWeightsConfig();
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SpacingsConfig Spacing { get; set; } = new SpacingsConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SeparatorConfig Separator { get; set; } = new SeparatorConfig();
 
         /// <summary>
@@ -85,6 +79,7 @@ namespace AdaptiveCards.Rendering
             }
             catch (JsonException ex)
             {
+                Debugger.Break();
                 throw new AdaptiveSerializationException(ex.Message, ex);
             }
         }
@@ -98,5 +93,6 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
+
 }
 

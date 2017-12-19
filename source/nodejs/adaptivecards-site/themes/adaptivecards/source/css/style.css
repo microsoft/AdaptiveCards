@@ -34,7 +34,7 @@ h6{font-size:12px;}
     border: solid 1px lightgray;
     margin-top: 10px;
     margin-bottom: 5px;
-    
+    max-width: 300px;
 }
 
 .explorer .adaptivecard,

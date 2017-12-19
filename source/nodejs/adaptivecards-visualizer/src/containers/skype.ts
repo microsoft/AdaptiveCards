@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -14,7 +15,7 @@ import {
 export class SkypeContainer extends HostContainer {
     private _width: number;
 
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var element = document.createElement("div");
         element.className = "skypeContainer";
 
@@ -30,11 +31,14 @@ export class SkypeContainer extends HostContainer {
         botElementIn2.className = "hexagon-in2";
         botElementIn1.appendChild(botElementIn2);
 
+        var cardWrapper = document.createElement("div");
+        cardWrapper.style.width = this._width + "px";
+
         element.appendChild(botElement);
+        element.appendChild(cardWrapper);
+        target.appendChild(element);
 
-        renderedCard.style.width = this._width + "px";
-
-        element.appendChild(renderedCard);
+        var renderedCard = adaptiveCard.render(cardWrapper);
 
         return element;
     }
@@ -76,50 +80,50 @@ export class SkypeContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#EAEAEA",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#c3ab23",
+                            default: "#c3ab23",
                             subtle: "#DDc3ab23"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         },
                         good: {
-                            normal: "#54a254",
+                            default: "#54a254",
                             subtle: "#DD54a254"
                         },
                         warning: {
-                            normal: "#c3ab23",
+                            default: "#c3ab23",
                             subtle: "#DDc3ab23"
                         }
                     }

@@ -5,5 +5,5 @@
 #define VER_FILESUBTYPE             VFT2_UNKNOWN
 #define VER_FILEDESCRIPTION_STR     "Adaptive Cards UWP Renderer"
 #define VER_INTERNALNAME_STR        VER_FILEDESCRIPTION_STR
-#define VER_ORIGINALFILENAME_STR    "AdaptiveCards.Uwp.dll"
+#define VER_ORIGINALFILENAME_STR    "AdaptiveCards.Rendering.Uwp.dll"
 #include <common.ver>

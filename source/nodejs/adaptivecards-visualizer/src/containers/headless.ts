@@ -1,5 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
+    AdaptiveCard,
     HostConfig,
     Size,
     TextSize,
@@ -12,7 +13,7 @@ import {
 } from "adaptivecards";
 
 export class HeadlessContainer extends HostContainer {
-    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         var outerElement = document.createElement("div");
         outerElement.className = "headlessOuterContainer";
 
@@ -40,8 +41,9 @@ export class HeadlessContainer extends HostContainer {
         var innerElement = document.createElement("div");
         innerElement.className = "headlessInnerContainer";
 
-        innerElement.appendChild(renderedCard);
         outerElement.appendChild(innerElement);
+        target.appendChild(outerElement);
+        adaptiveCard.render(innerElement);
 
         return outerElement;
     }
@@ -77,50 +79,50 @@ export class HeadlessContainer extends HostContainer {
             containerStyles: {
                 default: {
                     backgroundColor: "#FFFFFF",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FFD800",
+                            default: "#FFD800",
                             subtle: "#DDFFD800"
                         },
                         good: {
-                            normal: "#00FF00",
+                            default: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         }
                     }
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
-                    fontColors: {
+                    foregroundColors: {
                         default: {
-                            normal: "#333333",
+                            default: "#333333",
                             subtle: "#EE333333"
                         },
                         accent: {
-                            normal: "#2E89FC",
+                            default: "#2E89FC",
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FFD800",
+                            default: "#FFD800",
                             subtle: "#DDFFD800"
                         },
                         good: {
-                            normal: "#00FF00",
+                            default: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            normal: "#FF0000",
+                            default: "#FF0000",
                             subtle: "#DDFF0000"
                         }
                     }

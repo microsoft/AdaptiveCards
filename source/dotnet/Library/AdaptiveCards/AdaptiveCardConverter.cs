@@ -1,23 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
-    public class AdaptiveCardConverter : JsonConverter
+    public class AdaptiveCardConverter : JsonConverter, ILogWarnings
     {
-        private readonly AdaptiveCardParseResult _parseResult;
-
-        public AdaptiveCardConverter() : this(new AdaptiveCardParseResult())
-        {
-            
-        }
-
-        public AdaptiveCardConverter(AdaptiveCardParseResult parseResult)
-        {
-            _parseResult = parseResult;
-        }
+        public IList<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -33,7 +24,7 @@ namespace AdaptiveCards
             if(jObject.Value<string>("type") != AdaptiveCard.TypeName)
                 throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveCard.TypeName}'");
 
-            var typedElementConverter = new AdaptiveTypedElementConverter(_parseResult);
+            var typedElementConverter = serializer.ContractResolver.ResolveContract(typeof(AdaptiveTypedElement)).Converter;
 
             var card = (AdaptiveCard)typedElementConverter.ReadJson(jObject.CreateReader(), objectType, existingValue, serializer);
 
@@ -41,7 +32,9 @@ namespace AdaptiveCards
             // The depth checks that cards within a Action.ShowCard don't require the version
             if (reader.Depth == 0 && card.Version == null)
             {
-                throw new AdaptiveSerializationException("Required property 'version' not found on AdaptiveCard");
+                // TODO: HACK for BF needing to deserialize legacy payloads that did not have a version
+                card.Version = "0.5";
+                //throw new AdaptiveSerializationException("Required property 'version' not found on AdaptiveCard");
             }
 
             return card;

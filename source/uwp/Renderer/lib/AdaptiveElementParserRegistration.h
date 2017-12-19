@@ -1,23 +1,23 @@
 #pragma once
 
-#include "AdaptiveCards.Uwp.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 #include "AdaptiveActionParserRegistration.h"
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     class DECLSPEC_UUID("fdf8457d-639f-4bbd-9e32-26c14bac3813") AdaptiveElementParserRegistration :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration>,
+        Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration>,
         Microsoft::WRL::CloakedIid<ITypePeek>,
         Microsoft::WRL::FtmBase>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveElementParserRegistration, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveElementParserRegistration, BaseTrust)
 
             typedef std::unordered_map<
             std::string,
-            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveElementParser>,
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser>,
             CaseInsensitiveHash,
             CaseInsensitiveEqualTo> RegistrationMap;
 
@@ -27,8 +27,8 @@ namespace AdaptiveCards { namespace Uwp
         HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ElementParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveElementParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Uwp::IAdaptiveElementParser* Parser);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveElementParser** result);
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser* Parser);
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser** result);
         IFACEMETHODIMP Remove(_In_ HSTRING type);
 
         // ITypePeek method
@@ -49,7 +49,7 @@ namespace AdaptiveCards { namespace Uwp
     class SharedModelElementParser : public AdaptiveCards::IBaseCardElementParser
     {
     public:
-        SharedModelElementParser(AdaptiveCards::Uwp::AdaptiveElementParserRegistration* parserRegistration) :
+        SharedModelElementParser(AdaptiveCards::Rendering::Uwp::AdaptiveElementParserRegistration* parserRegistration) :
             m_parserRegistration(parserRegistration)
         {}
 
@@ -60,7 +60,7 @@ namespace AdaptiveCards { namespace Uwp
             const Json::Value& value);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveCards::Uwp::AdaptiveElementParserRegistration> m_parserRegistration;
+        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveElementParserRegistration> m_parserRegistration;
     };
 
     template<
@@ -69,9 +69,9 @@ namespace AdaptiveCards { namespace Uwp
         typename TSharedModelParser>
         HRESULT FromJson(
             ABI::Windows::Data::Json::IJsonObject* jsonObject,
-            ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-            ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-            ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** element)
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element)
     {
         std::string jsonString;
         JsonObjectToString(jsonObject, jsonString);
@@ -105,4 +105,4 @@ namespace AdaptiveCards { namespace Uwp
 
         return S_OK;
     }
-}}
+}}}

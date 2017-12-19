@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
@@ -70,7 +69,7 @@ namespace ImageRendererServer.Controllers
                 // Timed out
                 return StatusCode((int)HttpStatusCode.RequestTimeout);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // TODO: log
                 throw;

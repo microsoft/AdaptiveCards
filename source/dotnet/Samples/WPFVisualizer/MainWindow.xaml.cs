@@ -129,7 +129,7 @@ namespace WpfVisualizer
         {
             if (e.Action is AdaptiveOpenUrlAction openUrlAction)
             {
-                Process.Start(openUrlAction.Url);
+                Process.Start(openUrlAction.Url.AbsoluteUri);
             }
             else if (e.Action is AdaptiveShowCardAction showCardAction)
             {
@@ -145,7 +145,10 @@ namespace WpfVisualizer
             else if (e.Action is AdaptiveSubmitAction submitAction)
             {
                 var inputs = sender.UserInputs.AsJson();
+
+                // Merge the Action.Submit Data property with the inputs
                 inputs.Merge(submitAction.Data);
+
                 MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
         }

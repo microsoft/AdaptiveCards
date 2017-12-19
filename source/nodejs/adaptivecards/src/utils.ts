@@ -1,9 +1,6 @@
 import * as Enums from "./enums";
 import * as HostConfig from "./host-config";
 
-import markdownIt = require("markdown-it");
-let markdownProcessor = new markdownIt();
-
 export interface ISeparationDefinition {
     spacing: number,
     lineThickness?: number,
@@ -13,10 +10,6 @@ export interface ISeparationDefinition {
 export interface IInput {
     id: string;
     value: string;
-}
-
-export function processMarkdown(text: string): any {
-    return markdownProcessor.render(text);
 }
 
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
@@ -158,5 +151,105 @@ export class StringWithSubstitutions {
     set(value: string) {
         this._original = value;
         this._isProcessed = false;
+    }
+}
+
+export function truncate(element: HTMLElement,
+                         maxHeight: number,
+                         lineHeight?: number) {
+    var fits = () => {
+        // Allow a one pixel overflow to account for rounding differences
+        // between browsers
+        return maxHeight - element.scrollHeight >= -1.0;
+    };
+
+    if (fits()) return;
+
+    var fullText = element.innerHTML;
+    var truncateAt = (idx) => {
+        element.innerHTML = fullText.substring(0, idx) + '...';
+    }
+
+    var breakableIndices = findBreakableIndices(fullText);
+    var lo = 0;
+    var hi = breakableIndices.length;
+    var bestBreakIdx = 0;
+
+    // Do a binary search for the longest string that fits
+    while (lo < hi) {
+        var mid = Math.floor((lo + hi) / 2);
+        truncateAt(breakableIndices[mid]);
+
+        if (fits()) {
+            bestBreakIdx = breakableIndices[mid];
+            lo = mid + 1;
+        }
+        else {
+            hi = mid;
+        }
+    }
+
+    truncateAt(bestBreakIdx);
+
+    // If we have extra room, try to expand the string letter by letter
+    // (covers the case where we have to break in the middle of a long word)
+    if (lineHeight && maxHeight - element.scrollHeight >= lineHeight - 1.0) {
+        let idx = findNextCharacter(fullText, bestBreakIdx);
+
+        while (idx < fullText.length) {
+            truncateAt(idx);
+
+            if (fits()) {
+                bestBreakIdx = idx;
+                idx = findNextCharacter(fullText, idx);
+            }
+            else {
+                break;
+            }
+        }
+
+        truncateAt(bestBreakIdx);
+    }
+}
+
+function findBreakableIndices(html: string): Array<number> {
+    var results: Array<number> = [];
+    var idx = findNextCharacter(html, -1);
+
+    while (idx < html.length) {
+        if (html[idx] == ' ') {
+            results.push(idx);
+        }
+
+        idx = findNextCharacter(html, idx);
+    }
+
+    return results;
+}
+
+function findNextCharacter(html: string, currIdx: number): number {
+    currIdx += 1;
+
+    // If we found the start of an HTML tag, keep advancing until we get
+    // past it, so we don't end up truncating in the middle of the tag
+    while (currIdx < html.length && html[currIdx] == '<') {
+        while (currIdx < html.length && html[currIdx++] != '>');
+    }
+
+    return currIdx;
+}
+
+export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.ContainerFitStatus {
+    var start = element.offsetTop;
+    var end = start + element.clientHeight;
+
+    if (end <= containerEnd) {
+        return Enums.ContainerFitStatus.FullyInContainer;
+    }
+    else if (start < containerEnd) {
+        return Enums.ContainerFitStatus.Overflowing;
+    }
+    else {
+        return Enums.ContainerFitStatus.FullyOutOfContainer;
     }
 }

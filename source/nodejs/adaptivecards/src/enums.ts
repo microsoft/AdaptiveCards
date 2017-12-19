@@ -37,6 +37,8 @@ export enum TextWeight {
 
 export enum TextColor {
     Default,
+    Dark,
+    Light,
     Accent,
     Good,
     Warning,
@@ -85,8 +87,8 @@ export enum BackgroundImageMode {
 }
 
 export enum ContainerStyle {
-    Default,
-    Emphasis
+    Default = "default",
+    Emphasis = "emphasis"
 }
 
 export enum ValidationError {
@@ -103,4 +105,10 @@ export enum ValidationError {
     UnknownActionType,
     UnknownElementType,
     UnsupportedCardVersion
+}
+
+export enum ContainerFitStatus {
+    FullyInContainer,
+    Overflowing,
+    FullyOutOfContainer
 }

@@ -2,9 +2,9 @@
 #include "AdaptiveImageConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize() noexcept try
     {
@@ -14,22 +14,21 @@ namespace AdaptiveCards { namespace Uwp
 
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize(ImageConfig sharedImageConfig) noexcept
     {
-        m_imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(sharedImageConfig.imageSize);
+        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImageConfig.imageSize);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageConfig::get_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImageConfig::get_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
     }
-}
-}
+}}}

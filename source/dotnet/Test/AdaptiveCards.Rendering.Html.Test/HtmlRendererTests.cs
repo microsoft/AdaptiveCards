@@ -8,9 +8,9 @@ namespace AdaptiveCards.Rendering.Html.Test
         [TestMethod]
         public void TextBlockRender_ParagraphElementStylesAdded()
         {
-            var renderContext = new AdaptiveRendererContext(
+            var renderContext = new AdaptiveRenderContext(
                 new AdaptiveHostConfig(),
-                new AdaptiveElementRenderers<HtmlTag, AdaptiveRendererContext>());
+                new AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext>());
 
             var textBlock = new AdaptiveTextBlock
             {
@@ -36,7 +36,7 @@ namespace AdaptiveCards.Rendering.Html.Test
             {
             }
 
-            public static HtmlTag CallTextBlockRender(AdaptiveTextBlock element, AdaptiveRendererContext context)
+            public static HtmlTag CallTextBlockRender(AdaptiveTextBlock element, AdaptiveRenderContext context)
             {
                 return TextBlockRender(element, context);
             }

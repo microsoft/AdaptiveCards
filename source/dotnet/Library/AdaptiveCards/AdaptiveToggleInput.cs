@@ -9,7 +9,7 @@ namespace AdaptiveCards
     {
         public const string TypeName = "Input.Toggle";
 
-        public override string Type => TypeName;
+        public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///     Title text for toggle
@@ -34,5 +34,11 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Value { get; set; }
+
+        public override string GetNonInteractiveValue()
+        {
+            var x = Value == ValueOn ? "X" : " ";
+            return $"[{x}] {Title}";
+        }
     }
 }

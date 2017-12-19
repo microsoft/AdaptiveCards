@@ -2,10 +2,10 @@
 #include "AdaptiveCardResourceResolvers.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards { namespace Uwp
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveCardResourceResolvers::RuntimeClassInitialize() noexcept try
     {
@@ -29,4 +29,4 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<IAdaptiveCardResourceResolver> resolverPtr = m_resourceResolvers[schemeString];
         return resolverPtr.CopyTo(resolver);
     }
-}}
+}}}
