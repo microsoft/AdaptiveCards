@@ -10,10 +10,10 @@ void MarkDownParsedResult::Translate()
 // appends html block tags at head and tail of the list
 void MarkDownParsedResult::AddBlockTags()
 {
-    // if html list tag, add <ul>, otherwise <p> at the head of the list
+    // Parsing is done, let code gen token know who is the head of the list
     m_codeGenTokens.front()->MakeItHead();
 
-    // if html list tag, add </ul>, otherwise </p> at the tail of the list
+    // Parsing is done, let code gen token know who is the tail of the list
     m_codeGenTokens.back()->MakeItTail();
 }
 
