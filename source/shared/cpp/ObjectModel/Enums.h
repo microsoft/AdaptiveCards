@@ -3,6 +3,9 @@
 
 #ifdef _WIN32
 #define strncasecmp _strnicmp
+#else
+#include <climits>
+#include <strings.h>
 #endif // _WIN32
 
 namespace AdaptiveCards
