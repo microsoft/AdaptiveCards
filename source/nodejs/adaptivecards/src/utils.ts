@@ -151,7 +151,7 @@ export class StringWithSubstitutions {
                     valueForReplace = encodeURIComponent(valueForReplace);
                 }
 
-                this._processed = this._processed.replace(matches[0], valueForReplace ? valueForReplace : "");
+                this._processed = this._processed.replace(matches[0], valueForReplace);
             }
         };
 

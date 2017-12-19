@@ -1922,7 +1922,7 @@ export class HttpAction extends Action {
         for (var i = 0; i < this._headers.length; i++) {
             this._headers[i].prepare(inputs);
 
-            if (this._headers[i].name.toLowerCase() == "content-type") {
+            if (this._headers[i].name && this._headers[i].name.toLowerCase() == "content-type") {
                 contentType = this._headers[i].value;
             }
         }
