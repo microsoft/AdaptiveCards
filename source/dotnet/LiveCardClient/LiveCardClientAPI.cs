@@ -10,15 +10,17 @@ using System.Web;
 namespace LiveCardClient
 {
     /// <summary>
-    /// 
+    /// api exposed to LiveCardServer so that it can manipulate the dom 
     /// </summary>
     public class LiveCardClientAPI : ILiveCardClientAPI
     {
         AdaptiveCard card;
+        Action<AdaptiveElement> binder;
 
-        public LiveCardClientAPI(AdaptiveCard card)
+        public LiveCardClientAPI(AdaptiveCard card, Action<AdaptiveElement> binder)
         {
             this.card = card;
+            this.binder = binder;
         }
 
         /// <summary>
@@ -29,6 +31,7 @@ namespace LiveCardClient
         /// <returns></returns>
         public Task InsertElement(string id, InsertPosition position, AdaptiveElement element)
         {
+            this.binder(element);
             return this.card.InsertElement(id, position, element);
         }
 
@@ -40,6 +43,7 @@ namespace LiveCardClient
         /// <returns></returns>
         public Task ReplaceElement(AdaptiveElement element)
         {
+            this.binder(element);
             return this.card.ReplaceElement(element);
         }
 

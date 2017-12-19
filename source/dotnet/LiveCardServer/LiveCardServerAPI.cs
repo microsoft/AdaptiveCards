@@ -56,7 +56,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnMouseClick(string id)
+        public Task OnClick(string id)
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
@@ -65,7 +65,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnMouseDoubleClick(string id)
+        public Task OnDoubleClick(string id)
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {

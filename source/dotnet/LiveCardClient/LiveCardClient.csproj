@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventBinder.cs" />
     <Compile Include="LiveCard.cs" />
     <Compile Include="LiveCardClientAPI.cs" />
     <Compile Include="LiveCardServerAPI.cs" />

@@ -18,9 +18,9 @@ namespace LiveCardAPI
 
         Task OnKey(string id, string key);
 
-        Task OnMouseClick(string id);
+        Task OnClick(string id);
 
-        Task OnMouseDoubleClick(string id);
+        Task OnDoubleClick(string id);
 
         Task OnTextChanged(string id, string text);
 

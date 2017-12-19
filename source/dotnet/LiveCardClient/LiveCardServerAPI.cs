@@ -43,12 +43,12 @@ namespace LiveCardClient
             return rpc.NotifyAsync(argument: new object[] { id, key });
         }
 
-        public Task OnMouseClick(string id)
+        public Task OnClick(string id)
         {
             return rpc.NotifyAsync(argument: id);
         }
 
-        public Task OnMouseDoubleClick(string id)
+        public Task OnDoubleClick(string id)
         {
             return rpc.NotifyAsync(argument: id);
         }

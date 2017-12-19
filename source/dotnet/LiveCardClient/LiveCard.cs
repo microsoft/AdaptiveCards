@@ -18,10 +18,12 @@ namespace LiveCardClient
         public LiveCard(AdaptiveCard card, JsonRpc rpc)
         {
             this.card = card;
-            this.Client = new LiveCardClientAPI(card);
+            this.Client = new LiveCardClientAPI(card, (element) => EventBinder.Bind(this.Server, element));
             this.Server = new LiveCardServerAPI(rpc);
+            EventBinder.Bind(this.Server, card);
             rpc.AddLocalRpcTarget(this.Client);
         }
+
 
         /// <summary>
         /// Class which exposes sending changes to the client
