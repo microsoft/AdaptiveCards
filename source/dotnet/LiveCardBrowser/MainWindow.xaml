@@ -4,8 +4,58 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LiveCardBrowser"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Loaded="Window_Loaded"
         Title="MainWindow" Height="350" Width="525">
+
+    <Window.Resources>
+
+        <Style x:Key="Warning" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Orange"/>
+        </Style>
+        <Style x:Key="Error" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="DarkRed"/>
+        </Style>
+
+        <Style x:Key="Hidden" TargetType="FrameworkElement">
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+                <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="0.7" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="1.0" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+
+            </Style.Triggers>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,8 +66,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Name="TextBoxUrl" Grid.Column="1"/>
-            <Button Name="AddButton" Grid.Column="2" Content="Add" Margin="2" Padding="8 2 8 2" Click="AddButton_Click"/>
+            <TextBox Name="TextBoxUrl" Grid.Column="0" Text="http://localhost:61059/api/helloworld"/>
+            <Button Name="AddButton" Grid.Column="1" Content="Add" Margin="2" Padding="8 2 8 2" Click="AddButton_Click" />
         </Grid>
         <TabControl Grid.Row="1" ItemsSource="{Binding Cards}" SelectedItem="{Binding SelectedCard}" Background="Gray">
             <TabControl.ItemTemplate>
@@ -33,11 +83,11 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Button Name="ActivateButton" Content="Activate" Width="100" Margin="2" Padding="8 2 8 2" Click="ActivateButton_Click"/>
-                        <ContentControl Content="{Binding Card}" Width="800" Grid.Row="1"  Background="White"></ContentControl>
+                        <ContentControl Content="{Binding CardContent}" Width="800" Grid.Row="1" ></ContentControl>
                     </Grid>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        
+
     </Grid>
 </Window>

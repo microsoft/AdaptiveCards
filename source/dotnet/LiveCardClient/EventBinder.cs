@@ -20,7 +20,7 @@ namespace LiveCardClient
 
         public static void Bind(ILiveCardServerAPI server, AdaptiveCard card)
         {
-            new EventBinder(server).Visit(card);
+            new EventBinder(server).VisitCard(card);
         }
 
         public static void Bind(ILiveCardServerAPI server, AdaptiveElement element)

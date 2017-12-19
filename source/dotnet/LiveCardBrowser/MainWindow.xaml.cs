@@ -1,6 +1,9 @@
-﻿using LiveCardClient;
+﻿using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Wpf;
+using LiveCardClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,14 +36,19 @@ namespace LiveCardBrowser
             {
                 var url = new Uri(this.TextBoxUrl.Text.Trim());
                 LiveCard liveCard = new LiveCard(url);
-                
+
                 // load deactivated card
                 await liveCard.LoadCard();
+                var renderer = new AdaptiveCardRenderer()
+                {
+                    Resources = Resources
+                };
 
                 var liveCardViewModel = new LiveCardViewModel()
                 {
                     Url = url.ToString(),
-                    LiveCard = liveCard
+                    LiveCard = liveCard,
+                    CardContent = renderer.RenderCard(liveCard.Card).FrameworkElement
                 };
 
                 appViewModel.Cards.Add(liveCardViewModel);
@@ -55,6 +63,11 @@ namespace LiveCardBrowser
             AppViewModel appViewModel = (AppViewModel)this.DataContext;
 
             await appViewModel.SelectedCard.LiveCard.Activate();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)sender).DataContext = new AppViewModel();
         }
     }
 }

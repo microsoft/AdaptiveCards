@@ -21,7 +21,7 @@ namespace LiveCardAPI
         public static bool TryGetElementById<ElementT>(this AdaptiveCard card, string id, out ElementT element, out object parent) where ElementT : AdaptiveTypedElement
         {
             ElementFinder finder = new ElementFinder(id);
-            finder.Visit(card);
+            finder.VisitCard(card);
             element = finder.Element as ElementT;
             parent = finder.Parent;
             return (element != null);
@@ -30,7 +30,7 @@ namespace LiveCardAPI
         public static bool TryGetElementById<ElementT>(this AdaptiveCard card, string id, out ElementT element) where ElementT : AdaptiveTypedElement
         {
             ElementFinder finder = new ElementFinder(id);
-            finder.Visit(card);
+            finder.VisitCard(card);
             element = finder.Element as ElementT;
             return (element != null);
         }

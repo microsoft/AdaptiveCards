@@ -26,7 +26,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <returns></returns>
         public async Task GetAllImages(AdaptiveCard card)
         {
-            Visit(card);
+            VisitCard(card);
 
             await Task.WhenAll(tasks.ToArray()).ConfigureAwait(false);
         }
@@ -50,17 +50,17 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public override void Visit(AdaptiveCard card)
+        public override void VisitCard(AdaptiveCard card)
         {
             if (card.BackgroundImage != null)
                 tasks.Add(GetImage(card.BackgroundImage));
-            base.Visit(card);
+            base.VisitCard(card);
         }
 
-        public override void Visit(AdaptiveContainer parent, AdaptiveImage image)
+        public override void VisitImage(AdaptiveContainer parent, AdaptiveImage image)
         {
             tasks.Add(GetImage(image.Url));
-            base.Visit(parent, image);
+            base.VisitImage(parent, image);
         }
     }
 }

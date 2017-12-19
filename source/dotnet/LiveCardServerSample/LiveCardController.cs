@@ -34,8 +34,8 @@ namespace LiveCardServerSample
 
                     // hooking up websocket activates the card
                     card.Activate();
-                    
                     // start processing of send/receive streams...
+                    rpc.StartListening();
                     return handler.StartAsync();
                 });
                 return Request.CreateResponse(HttpStatusCode.SwitchingProtocols);

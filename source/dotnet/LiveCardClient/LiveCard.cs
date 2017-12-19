@@ -15,7 +15,7 @@ using System.Web;
 namespace LiveCardClient
 {
 
-    public class LiveCard 
+    public class LiveCard
     {
         private AdaptiveCard card;
         private Uri uri;
@@ -32,7 +32,8 @@ namespace LiveCardClient
             HttpClient client = new HttpClient();
             if (json == null)
                 json = await client.GetStringAsync(uri);
-            this.card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
+            var parseResult = AdaptiveCard.FromJson(json);
+            this.card = parseResult.Card;
         }
 
         public ILiveCardClientAPI Client { get; set; }
@@ -62,27 +63,31 @@ namespace LiveCardClient
         /// <returns></returns>
         public virtual async Task Activate()
         {
-            // connect to service via WebSocket
-            this.socket = new ClientWebSocket();
-            await this.socket.ConnectAsync(this.uri, CancellationToken.None);
-            this.handler = new StreamingWebSocketHandler(this.socket);
+            if (this.socket == null)
+            {
+                // connect to service via WebSocket
+                this.socket = new ClientWebSocket();
+                var wsUri = new Uri(this.uri.ToString().Replace("http:", "ws:").Replace("https:", "wss:"));
+                await this.socket.ConnectAsync(wsUri, CancellationToken.None);
+                this.handler = new StreamingWebSocketHandler(this.socket);
 
-            // hook up JSON-RPC to websocket streams 
-            JsonRpc rpc = new JsonRpc(handler.SendStream, handler.ReceiveStream);
+                // hook up JSON-RPC to websocket streams 
+                JsonRpc rpc = new JsonRpc(handler.SendStream, handler.ReceiveStream);
 
-            // initialize livecard procies
-            this.Client = new LiveCardClientAPI(this);
-            this.Server = new LiveCardServerAPI(rpc);
-            rpc.AddLocalRpcTarget(this);
+                // initialize livecard procies
+                this.Client = new LiveCardClientAPI(this);
+                this.Server = new LiveCardServerAPI(rpc);
+                rpc.AddLocalRpcTarget(this);
 
-            EventBinder.Bind(this.Server, this.card);
+                EventBinder.Bind(this.Server, this.card);
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            this.handler.StartAsync();
+                this.handler.StartAsync();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            // tell server we activated the card
-            await this.Server.OnActivate();
+                // tell server we activated the card
+                await this.Server.OnActivate();
+            }
         }
 
         private async Task _closeSocket()
@@ -119,7 +124,7 @@ namespace LiveCardClient
             return Task.CompletedTask;
         }
 
-        public virtual Task SaveCard( AdaptiveCard card = null)
+        public virtual Task SaveCard(AdaptiveCard card = null)
         {
             return Task.CompletedTask;
         }

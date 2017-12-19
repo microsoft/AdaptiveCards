@@ -27,6 +27,6 @@ namespace LiveCardBrowser
         }
 
 
-        public FrameworkElement Card { get; set; }
+        public FrameworkElement CardContent { get; set; }
     }
 }
