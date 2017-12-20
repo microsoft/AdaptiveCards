@@ -20,6 +20,24 @@ void MarkDownParsedResult::AddBlockTags()
 // append caller's parsed result to callee's parsed result
 void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult &x)
 {
+    // if two different block types, then add closing tag followed by the opening tag of new type
+    if (!m_codeGenTokens.empty() && 
+        !x.m_codeGenTokens.empty() &&
+        m_codeGenTokens.back()->GetBlockType() != x.m_codeGenTokens.front()->GetBlockType())
+    {
+        if (m_codeGenTokens.back()->IsNewLine())
+        {
+            m_codeGenTokens.pop_back();
+        }
+
+        if(!m_codeGenTokens.empty())
+        {
+            m_codeGenTokens.back()->MakeItTail();
+        }
+
+        m_codeGenTokens.back()->MakeItTail();
+        x.m_codeGenTokens.front()->MakeItHead();
+    }
     m_codeGenTokens.splice(m_codeGenTokens.end(), x.m_codeGenTokens);
     m_emphasisLookUpTable.splice(m_emphasisLookUpTable.end(), x.m_emphasisLookUpTable);
 }
@@ -31,7 +49,15 @@ void MarkDownParsedResult::AppendToTokens(const std::shared_ptr<MarkDownHtmlGene
     if (!m_codeGenTokens.empty() && 
         m_codeGenTokens.back()->GetBlockType() != x->GetBlockType())
     {
-        m_codeGenTokens.back()->MakeItTail();
+        if (m_codeGenTokens.back()->IsNewLine())
+        {
+            m_codeGenTokens.pop_back();
+        }
+
+        if(!m_codeGenTokens.empty())
+        {
+            m_codeGenTokens.back()->MakeItTail();
+        }
         x->MakeItHead();
     }
 
@@ -65,6 +91,15 @@ void MarkDownParsedResult::AddNewTokenToParsedResult(char ch)
     std::string string_token = std::string(1, ch);
     std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
         std::make_shared<MarkDownStringHtmlGenerator>(string_token);
+    AppendToTokens(htmlToken);
+}
+
+// create and add new MarkDownSpaceHtmlGenerator object that has string of ch
+void MarkDownParsedResult::AddNewLineTokenToParsedResult(char ch)
+{
+    std::string string_token = std::string(1, ch);
+    std::shared_ptr<MarkDownHtmlGenerator> htmlToken =
+        std::make_shared<MarkDownNewLineHtmlGenerator>(string_token);
     AppendToTokens(htmlToken);
 }
 

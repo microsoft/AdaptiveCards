@@ -25,6 +25,9 @@ namespace AdaptiveCards
         // Take a char and convert it html code gen and append it to the result
         // It is used to store MarkDown keywords such as '[', ']', '(', ')'
         void AddNewTokenToParsedResult(char ch);
+        // Take a new line char and convert it html code gen and append it to the result
+        // It is used to store MarkDown keywords such as '\r', '\n'
+        void AddNewLineTokenToParsedResult(char ch);
         void PopFront();
         void PopBack();
         void Clear();

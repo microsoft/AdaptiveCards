@@ -250,12 +250,9 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             MarkDownParser parser5("*Hello* abc ***Hello* def *world***");
             Assert::AreEqual<string>("<p><em>Hello</em> abc <strong><em>Hello</em> def <em>world</em></strong></p>", parser5.TransformToHtml());
-        }
-        TEST_METHOD(TmpTest)
-        {
-            MarkDownParser parser1("*foo**bar**baz*");
-            Assert::AreEqual<string>("<p><em>foo<strong>bar</strong>baz</em></p>", parser1.TransformToHtml());
-            
+
+            MarkDownParser parser6("*foo**bar**baz*");
+            Assert::AreEqual<string>("<p><em>foo<strong>bar</strong>baz</em></p>", parser6.TransformToHtml());
         }
     };
     TEST_CLASS(Rule13Test)
@@ -441,10 +438,15 @@ namespace AdaptiveCardsSharedModelUnitTest
             MarkDownParser parser("- hello world - hello hello\r- ***winner* winner** chicken dinner");
             Assert::AreEqual<string>("<ul><li>hello world - hello hello</li><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser.TransformToHtml());
         }
-        TEST_METHOD(MultipleListWithLink)
+        TEST_METHOD(MultipleListWithLinkTest)
         {
             MarkDownParser parser("- hello world\r- hello hello\r- new site = [adaptive card](www.adaptivecards.io)");
             Assert::AreEqual<string>("<ul><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(PtagedBlockElementFollowedByListTest)
+        {
+            MarkDownParser parser("Hello\r- my list");
+            Assert::AreEqual<string>("<p>Hello</p><ul><li>my list</li></ul>", parser.TransformToHtml());
         }
     };
 }

@@ -20,10 +20,16 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
         }
         // handles special cases where these tokens are not encountered
         // as not part of link
-        case ']': case ')':
+        case ']': case ')': 
         {
             // add these char as token to code gen list
             m_parsedResult.AddNewTokenToParsedResult(stream.get());
+            break;
+        }
+        case '\n': case '\r':
+        {
+            // add new line char as token to code gen list
+            m_parsedResult.AddNewLineTokenToParsedResult(stream.get());
             break;
         }
         // handles list block
@@ -63,7 +69,7 @@ void EmphasisParser::Match(std::stringstream &stream)
 EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
     /// MarkDown keywords
-    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '-' || stream.eof())
+    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '\n' || stream.peek() == '\r' || stream.eof())
     {
         parser.Flush(stream.peek(), token);
         return EmphasisState::Captured;
@@ -98,7 +104,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
 {
     // key word is encountered, flush what is being processed, and have those keyword
     // handled by ParseBlock()
-    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '-' || stream.eof())
+    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '\n' || stream.peek() == '\r' || stream.eof())
     {
         parser.Flush(stream.peek(), token);
         return EmphasisState::Captured;
@@ -465,11 +471,7 @@ bool ListParser::IsMatch(std::stringstream &stream, std::function <bool (char)> 
     {
         if (stream.tellg())
         { 
-            stream.unget();
-            if (stream.peek() == '\r' || stream.peek() == '\n')
-            { 
-                isMatch = true;
-            }
+            isMatch = true;
             stream.get();
         }
         else
@@ -486,48 +488,69 @@ bool ListParser::IsMatch(std::stringstream &stream, std::function <bool (char)> 
 void ListParser::Match(std::stringstream &stream) 
 { 
     // check for the mendatory space
+    auto IsNewLineChar = [](char ch){ return (ch == '\r') || (ch == '\n');};
     auto IsHyphen = [](char ch){ return ch == '-';};
-    if (ListParser::IsMatch(stream, IsHyphen)) 
+    if (IsHyphen(stream.peek()))
     {
-        // remove space
-        do
+        stream.get();
+        if (stream.peek() == ' ')
         {
-            stream.get();
-        } while (stream.peek() == ' ');
-
-        // at this point, syntax check is complete, 
-        // thus any other spaces are ignored
-        ParseBlock(stream);
-
-        // parse block that follows
-        while (!stream.eof()) 
-        { 
-            if (stream.peek() == '-')
+            // remove space
+            do
             {
-                if (ListParser::IsMatch(stream, IsHyphen))
+                stream.get();
+            } while (stream.peek() == ' ');
+
+            // at this point, syntax check is complete, 
+            // thus any other spaces are ignored
+            ParseBlock(stream);
+
+            // parse block that follows
+            // if what we encounter is one of items such as start of new list, list item, or new block element,
+            // we do not include in the current block, we return, and have it handled at the one up
+            while (!stream.eof()) 
+            { 
+                if (IsNewLineChar(stream.peek()))
                 {
-                    stream.get();
-                    if (stream.peek() == ' ')
+                    int newLineChar = stream.get();
+                    // check if it is the start of new list item
+                    if (IsHyphen(stream.peek()))
                     {
+                        stream.get();
+                        if (stream.peek() == ' ')
+                        {
+                            stream.unget();
+                            break;
+                        }
                         stream.unget();
+                    }
+                    // check if it is start of new block element 
+                    // we consider it as new block element if they are seperated by
+                    // more than two new line chars
+                    else if(IsNewLineChar(stream.peek()))
+                    {
+                        do
+                        {
+                            stream.get();
+                        } while(IsNewLineChar(stream.peek()));
+
                         break;
                     }
-                    stream.unget();
-                }
-                m_parsedResult.AddNewTokenToParsedResult('-');
-                stream.get();
-            }
-            ParseBlock(stream);
-        }
 
-        // capture list token
-        CaptureListToken();
-    }
-    else
-    {
-        // if incorrect syntax, capture what was thrown as a new token.
-        m_parsedResult.AddNewTokenToParsedResult('-');
-        stream.get();
+                    m_parsedResult.AddNewTokenToParsedResult(newLineChar);
+                }
+                ParseBlock(stream);
+            }
+
+            // capture list token
+            CaptureListToken();
+        }
+        else
+        {
+            // if incorrect syntax, capture what was thrown as a new token.
+            m_parsedResult.AddNewTokenToParsedResult('-');
+            stream.get();
+        }
     }
 }
 

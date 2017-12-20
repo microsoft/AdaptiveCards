@@ -44,6 +44,7 @@ class MarkDownHtmlGenerator
         MarkDownHtmlGenerator(std::string &token) : m_token(token){};
         void MakeItHead() { m_isHead = true; }
         void MakeItTail() { m_isTail = true; }
+        virtual bool IsNewLine() { return false; }
         virtual std::string GenerateHtmlString() = 0;
         virtual MarkDownBlockType GetBlockType() const { return ContainerBlock; }; 
     protected:
@@ -61,6 +62,15 @@ class MarkDownStringHtmlGenerator : public MarkDownHtmlGenerator
     public:
         MarkDownStringHtmlGenerator(std::string &token) : MarkDownHtmlGenerator(token){};
         std::string GenerateHtmlString();
+};
+
+// - MarkDownSpaceHtmlGenerator 
+//   it contains new line chars
+class MarkDownNewLineHtmlGenerator : public MarkDownStringHtmlGenerator 
+{ 
+    public:
+        MarkDownNewLineHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token){};
+        bool IsNewLine() { return true; }
 };
 
 // - MarkDownEmphasisHtmlGenerator 
