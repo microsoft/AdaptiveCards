@@ -27,8 +27,8 @@ enum DelimiterType
 //   it knows how to handle bold and italic html
 //   tags and apply those to its text when asked to generate html string
 // - MarkDownListHtmlGenerator
-//   it functions simmilary as MarkDownStringHtmlGenerator, but its IsList() returns
-//   true, this is used in generating html block tags
+//   it functions simmilary as MarkDownStringHtmlGenerator, but its GetBlockType() returns
+//   MarkDownBlockType, this is used in generating html block tags
 //   list uses block tag of <ul> all others use <p>
 class MarkDownHtmlGenerator
 {
@@ -64,7 +64,7 @@ class MarkDownStringHtmlGenerator : public MarkDownHtmlGenerator
         std::string GenerateHtmlString();
 };
 
-// - MarkDownSpaceHtmlGenerator 
+// - MarkDownNewLineHtmlGenerator 
 //   it contains new line chars
 class MarkDownNewLineHtmlGenerator : public MarkDownStringHtmlGenerator 
 { 
@@ -172,9 +172,8 @@ class MarkDownLeftAndRightEmphasisHtmlGenerator : public MarkDownRightEmphasisHt
 };
 
 // - MarkDownListHtmlGenerator
-//   it functions simmilary as MarkDownStringHtmlGenerator, but its IsList() returns
-//   UnorderedList type, this is used in generating html block tags
-//   list uses block tag of <ul>
+//   it functions simmilary as MarkDownStringHtmlGenerator, but its GetBlockType() returns
+//   UnorderedList type, this is used in generating html block tags <ul>
 class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator 
 {
     public:
@@ -184,9 +183,8 @@ class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator
 };
 
 // - MarkDownUnorderedListHtmlGenerator
-//   it functions simmilary as MarkDownStringHtmlGenerator, but its IsList() returns
-//   OrderedList type, this is used in generating html block tags
-//   list uses block tag of <ol>
+//   it functions simmilary as MarkDownStringHtmlGenerator, but its GetBlockType() returns
+//   OrderedList type, this is used in generating html block tags <ol>
 class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator 
 {
     public:

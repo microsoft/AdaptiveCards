@@ -473,8 +473,8 @@ void LinkParser::CaptureLinkToken()
     m_parsedResult.AppendToTokens(codeGen);
 }
 
-
-// list items have form of ^-\s+ or \r-\s+
+// list marker have form of ^-\s+ or \r-\s+
+// this method matches -\s
 bool ListParser::MatchNewListItem(std::stringstream &stream)
 {
     if (IsHyphen(stream.peek()))
@@ -491,7 +491,11 @@ bool ListParser::MatchNewListItem(std::stringstream &stream)
 }
 
 // if lines are seperated by more than two new lines,
-// they are new block item
+// they are new block items
+// caller of this method is expected to have matched new line char 
+// before calling this method
+// this method will return true, after it mataches new line char
+// at least once.
 bool ListParser::MatchNewBlock(std::stringstream &stream)
 {
     if (IsNewLine(stream.peek()))
@@ -507,6 +511,8 @@ bool ListParser::MatchNewBlock(std::stringstream &stream)
     return false;
 }
 
+// ordered list marker has form of ^\d+\.\s* or [\r,\n]\d+\.\s*, and this method checks the syntax
+// this method matches \d+\.
 bool ListParser::MatchNewOrderedListItem(std::stringstream &stream, std::string &number_string)
 {
     do
@@ -523,6 +529,7 @@ bool ListParser::MatchNewOrderedListItem(std::stringstream &stream, std::string 
 
     return false;
 }
+
 // parse blocks that wasn't captured
 // if what we encounter is one of following items, start of new list, list item, or new block element,
 // we do not include in the current block, we return, and have it handled by the caller
@@ -556,11 +563,10 @@ void ListParser::ParseSubBlocks(std::stringstream &stream)
         ParseBlock(stream);
     }
 }
-// list has form of -\s+ markdown block and a line break
-// this method checks such syntax
+// list marker has a form of ^-\s+ or [\r, \n]-\s+, and this method checks the syntax
 void ListParser::Match(std::stringstream &stream) 
 { 
-    // check for the mendatory space
+    // check for the mandatory space
     if (IsHyphen(stream.peek()))
     {
         stream.get();
@@ -607,8 +613,7 @@ void ListParser::CaptureListToken()
     m_parsedResult.AppendToTokens(codeGen);
 }
 
-// list has form of -\s+ markdown block and a line break
-// this method checks such syntax
+// ordered list marker has form of ^\d+\.\s* or [\r,\n]\d+\.\s*, and this method checks the syntax
 void OrderedListParser::Match(std::stringstream &stream) 
 { 
     // used to capture digit char
