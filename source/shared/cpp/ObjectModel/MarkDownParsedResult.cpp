@@ -17,26 +17,29 @@ void MarkDownParsedResult::AddBlockTags()
     m_codeGenTokens.back()->MakeItTail();
 }
 
-// append caller's parsed result to callee's parsed result
-void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult &x)
-{
-    // if two different block types, then add closing tag followed by the opening tag of new type
-    if (!m_codeGenTokens.empty() && 
-        !x.m_codeGenTokens.empty() &&
-        m_codeGenTokens.back()->GetBlockType() != x.m_codeGenTokens.front()->GetBlockType())
+void MarkDownParsedResult::MarkTags(const std::shared_ptr<MarkDownHtmlGenerator> &x)
+{ 
+    if (m_codeGenTokens.back()->GetBlockType() != x->GetBlockType())
     {
         if (m_codeGenTokens.back()->IsNewLine())
         {
             m_codeGenTokens.pop_back();
         }
 
-        if(!m_codeGenTokens.empty())
+        if (!m_codeGenTokens.empty())
         {
             m_codeGenTokens.back()->MakeItTail();
         }
-
-        m_codeGenTokens.back()->MakeItTail();
-        x.m_codeGenTokens.front()->MakeItHead();
+        x->MakeItHead();
+    }
+}
+// append caller's parsed result to callee's parsed result
+void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult &x)
+{
+    if (!m_codeGenTokens.empty() && !x.m_codeGenTokens.empty())
+    {
+        // check if two different block types, then add closing tag followed by the opening tag of new type
+        MarkTags(x.m_codeGenTokens.front());
     }
     m_codeGenTokens.splice(m_codeGenTokens.end(), x.m_codeGenTokens);
     m_emphasisLookUpTable.splice(m_emphasisLookUpTable.end(), x.m_emphasisLookUpTable);
@@ -45,22 +48,11 @@ void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult &x)
 // append MarkDownHtmlGenerator object to callee's prased result
 void MarkDownParsedResult::AppendToTokens(const std::shared_ptr<MarkDownHtmlGenerator> &x) 
 {
-    // if two different block types, then add closing tag followed by the opening tag of new type
-    if (!m_codeGenTokens.empty() && 
-        m_codeGenTokens.back()->GetBlockType() != x->GetBlockType())
+    if (!m_codeGenTokens.empty()) 
     {
-        if (m_codeGenTokens.back()->IsNewLine())
-        {
-            m_codeGenTokens.pop_back();
-        }
-
-        if(!m_codeGenTokens.empty())
-        {
-            m_codeGenTokens.back()->MakeItTail();
-        }
-        x->MakeItHead();
+        // check if two different block types, then add closing tag followed by the opening tag of new type
+        MarkTags(x);
     }
-
     m_codeGenTokens.push_back(x);
 }
 
@@ -91,6 +83,14 @@ void MarkDownParsedResult::AddNewTokenToParsedResult(char ch)
     std::string string_token = std::string(1, ch);
     std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
         std::make_shared<MarkDownStringHtmlGenerator>(string_token);
+    AppendToTokens(htmlToken);
+}
+
+// create and add new MarkDownStringHtmlGenerator object that has string word
+void MarkDownParsedResult::AddNewTokenToParsedResult(std::string &word)
+{
+    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
+        std::make_shared<MarkDownStringHtmlGenerator>(word);
     AppendToTokens(htmlToken);
 }
 

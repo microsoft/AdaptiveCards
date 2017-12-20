@@ -117,9 +117,16 @@ namespace AdaptiveCards
     {
         public:
         void Match(std::stringstream &);
-        static bool IsMatch(std::stringstream &stream, std::function <bool (char)>);
+        bool MatchNewListItem(std::stringstream &);
+        bool MatchNewBlock(std::stringstream &);
+        bool MatchNewOrderedListItem(std::stringstream &, std::string &);
+        static bool IsHyphen(int ch) { return ch == '-'; };
+        static bool IsNewLine(int ch){ return (ch == '\r') || (ch == '\n');};
 
         protected:
+        void ParseSubBlocks(std::stringstream &);
+
+        private:
         void CaptureListToken();
     };
 
@@ -127,5 +134,8 @@ namespace AdaptiveCards
     {
         public:
         void Match(std::stringstream &);
+
+        private:
+        void CaptureOrderedListToken(std::string&);
     };
 }

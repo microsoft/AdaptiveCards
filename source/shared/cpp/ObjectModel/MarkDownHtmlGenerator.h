@@ -173,14 +173,29 @@ class MarkDownLeftAndRightEmphasisHtmlGenerator : public MarkDownRightEmphasisHt
 
 // - MarkDownListHtmlGenerator
 //   it functions simmilary as MarkDownStringHtmlGenerator, but its IsList() returns
-//   true, this is used in generating html block tags
-//   list uses block tag of <ul> all others use <p>
+//   UnorderedList type, this is used in generating html block tags
+//   list uses block tag of <ul>
 class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator 
 {
     public:
         MarkDownListHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token) {};
         std::string GenerateHtmlString();
         MarkDownBlockType GetBlockType() const { return UnorderedList; }; 
+};
+
+// - MarkDownUnorderedListHtmlGenerator
+//   it functions simmilary as MarkDownStringHtmlGenerator, but its IsList() returns
+//   OrderedList type, this is used in generating html block tags
+//   list uses block tag of <ol>
+class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator 
+{
+    public:
+        MarkDownOrderedListHtmlGenerator(std::string &token, std::string &number_string) : 
+            MarkDownStringHtmlGenerator(token), m_numberString(number_string) {};
+        std::string GenerateHtmlString();
+        MarkDownBlockType GetBlockType() const { return OrderedList; }; 
+    private:
+        std::string m_numberString;
 };
 
 }

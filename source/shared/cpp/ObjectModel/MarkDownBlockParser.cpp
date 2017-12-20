@@ -42,6 +42,16 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
             m_parsedResult.AppendParseResult(listParser.GetParsedResult());
             break;
         }
+        case '0': case '1': case '2': case '3': case'4':
+        case '5': case '6': case '7': case '8': case'9':
+        {
+            OrderedListParser orderedListParser;
+            // do syntax check of list
+            orderedListParser.Match(stream);
+            // append list result to the rest
+            m_parsedResult.AppendParseResult(orderedListParser.GetParsedResult());
+            break;
+        }
         // everything else is treated as normal text + emphasis
         default:
             EmphasisParser emphasisParser;
@@ -463,33 +473,94 @@ void LinkParser::CaptureLinkToken()
     m_parsedResult.AppendToTokens(codeGen);
 }
 
-bool ListParser::IsMatch(std::stringstream &stream, std::function <bool (char)> CheckIfMatch)
+
+// list items have form of ^-\s+ or \r-\s+
+bool ListParser::MatchNewListItem(std::stringstream &stream)
 {
-    bool isMatch = false;
-
-    if (CheckIfMatch(stream.peek()))
+    if (IsHyphen(stream.peek()))
     {
-        if (stream.tellg())
-        { 
-            isMatch = true;
-            stream.get();
-        }
-        else
+        stream.get();
+        if (stream.peek() == ' ')
         {
-            isMatch = true;
+            stream.unget();
+            return true;
         }
+        stream.unget();
     }
-
-    return isMatch;
+    return false;
 }
 
+// if lines are seperated by more than two new lines,
+// they are new block item
+bool ListParser::MatchNewBlock(std::stringstream &stream)
+{
+    if (IsNewLine(stream.peek()))
+    {
+        do
+        {
+            stream.get();
+        } while (IsNewLine(stream.peek()));
+
+        return true;
+    }
+
+    return false;
+}
+
+bool ListParser::MatchNewOrderedListItem(std::stringstream &stream, std::string &number_string)
+{
+    do
+    {
+        number_string += stream.get();
+    } while (isdigit(stream.peek()));
+
+    if (stream.peek() == '.')
+    {
+        // ordered list syntax check complete
+        stream.unget();
+        return true;
+    }
+
+    return false;
+}
+// parse blocks that wasn't captured
+// if what we encounter is one of following items, start of new list, list item, or new block element,
+// we do not include in the current block, we return, and have it handled by the caller
+void ListParser::ParseSubBlocks(std::stringstream &stream)
+{
+    while (!stream.eof()) 
+    { 
+        if (IsNewLine(stream.peek()))
+        {
+            int newLineChar = stream.get();
+            // check if it is the start of new block items
+            if (isdigit(stream.peek()))
+            {
+                std::string number_string = "";
+                if (MatchNewOrderedListItem(stream, number_string))
+                {
+                    break;
+                }
+                else
+                { 
+                    m_parsedResult.AddNewTokenToParsedResult(number_string);
+                }
+            }
+            else if (MatchNewListItem(stream) || MatchNewBlock(stream))
+            {
+                break;
+            }
+
+            m_parsedResult.AddNewTokenToParsedResult(newLineChar);
+        }
+        ParseBlock(stream);
+    }
+}
 // list has form of -\s+ markdown block and a line break
 // this method checks such syntax
 void ListParser::Match(std::stringstream &stream) 
 { 
     // check for the mendatory space
-    auto IsNewLineChar = [](char ch){ return (ch == '\r') || (ch == '\n');};
-    auto IsHyphen = [](char ch){ return ch == '-';};
     if (IsHyphen(stream.peek()))
     {
         stream.get();
@@ -504,44 +575,8 @@ void ListParser::Match(std::stringstream &stream)
             // at this point, syntax check is complete, 
             // thus any other spaces are ignored
             ParseBlock(stream);
-
-            // parse block that follows
-            // if what we encounter is one of items such as start of new list, list item, or new block element,
-            // we do not include in the current block, we return, and have it handled at the one up
-            while (!stream.eof()) 
-            { 
-                if (IsNewLineChar(stream.peek()))
-                {
-                    int newLineChar = stream.get();
-                    // check if it is the start of new list item
-                    if (IsHyphen(stream.peek()))
-                    {
-                        stream.get();
-                        if (stream.peek() == ' ')
-                        {
-                            stream.unget();
-                            break;
-                        }
-                        stream.unget();
-                    }
-                    // check if it is start of new block element 
-                    // we consider it as new block element if they are seperated by
-                    // more than two new line chars
-                    else if(IsNewLineChar(stream.peek()))
-                    {
-                        do
-                        {
-                            stream.get();
-                        } while(IsNewLineChar(stream.peek()));
-
-                        break;
-                    }
-
-                    m_parsedResult.AddNewTokenToParsedResult(newLineChar);
-                }
-                ParseBlock(stream);
-            }
-
+            // parse blocks that follows
+            ParseSubBlocks(stream);
             // capture list token
             CaptureListToken();
         }
@@ -559,12 +594,6 @@ void ListParser::CaptureListToken()
     std::ostringstream html;
     m_parsedResult.Translate();
     std::string htmlString = m_parsedResult.GenerateHtmlString();
-    // list item has form of <li>block</li>
-    // New line character at the end of block is dropped
-    if (htmlString.back() == '\r' || htmlString.back() == '\n')
-    {
-        htmlString.pop_back();
-    }
 
     html << "<li>";
     html << htmlString;
@@ -582,13 +611,10 @@ void ListParser::CaptureListToken()
 // this method checks such syntax
 void OrderedListParser::Match(std::stringstream &stream) 
 { 
-    // check for the mendatory space
-    auto IsDigit = [](char ch){ return isdigit(ch);};
-
-    if (ListParser::IsMatch(stream, IsDigit))
+    // used to capture digit char
+    std::string number_string = "";
+    if (isdigit(stream.peek()))
     {
-        // capture digits
-        std::string number_string = "";
         do
         {
             number_string += stream.get();
@@ -596,6 +622,7 @@ void OrderedListParser::Match(std::stringstream &stream)
 
         if (stream.peek() == '.')
         {
+            // ordered list syntax check complete
             stream.get();
             if (stream.peek() == ' ')
             {
@@ -608,37 +635,34 @@ void OrderedListParser::Match(std::stringstream &stream)
                 // at this point, syntax check is complete, 
                 // thus any other spaces are ignored
                 ParseBlock(stream);
-
-                // parse block that follows
-                while (!stream.eof()) 
-                { 
-                    if (stream.peek() == '-')
-                    {
-                        if (ListParser::IsMatch(stream, IsDigit))
-                        {
-                            stream.get();
-                            if (stream.peek() == ' ')
-                            {
-                                stream.unget();
-                                break;
-                            }
-                            stream.unget();
-                        }
-                        m_parsedResult.AddNewTokenToParsedResult('-');
-                        stream.get();
-                    }
-                    ParseBlock(stream);
-                }
+                // parse blocks that wasn't captured
+                ParseSubBlocks(stream);
                 // capture list token
-                CaptureListToken();
+                CaptureOrderedListToken(number_string);
             }
+        }
+        else
+        {
+            // if incorrect syntax, capture as a new token.
+            m_parsedResult.AddNewTokenToParsedResult(number_string);
         }
 
     }
-    else
-    {
-        // if incorrect syntax, capture what was thrown as a new token.
-        m_parsedResult.AddNewTokenToParsedResult('-');
-        stream.get();
-    }
+}
+void OrderedListParser::CaptureOrderedListToken(std::string &number_string)
+{
+    std::ostringstream html;
+    m_parsedResult.Translate();
+    std::string htmlString = m_parsedResult.GenerateHtmlString();
+
+    html << "<li>";
+    html << htmlString;
+    html << "</li>";
+
+    std::string html_string = html.str();
+    std::shared_ptr<MarkDownOrderedListHtmlGenerator> codeGen = 
+        std::make_shared<MarkDownOrderedListHtmlGenerator>(html_string, number_string);
+
+    m_parsedResult.Clear();
+    m_parsedResult.AppendToTokens(codeGen);
 }
