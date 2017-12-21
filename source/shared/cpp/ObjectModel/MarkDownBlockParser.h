@@ -121,10 +121,12 @@ namespace AdaptiveCards
         bool MatchNewBlock(std::stringstream &);
         bool MatchNewOrderedListItem(std::stringstream &, std::string &);
         static bool IsHyphen(int ch) { return ch == '-'; };
+        static bool IsDot(int ch) { return ch == '.'; };
         static bool IsNewLine(int ch){ return (ch == '\r') || (ch == '\n');};
 
         protected:
         void ParseSubBlocks(std::stringstream &);
+        bool CompleteListParsing(std::stringstream &stream);
 
         private:
         void CaptureListToken();

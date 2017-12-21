@@ -75,7 +75,7 @@ void EmphasisParser::Match(std::stringstream &stream)
     }
 }
 
-/// captures text untill it see emphasis character. When it does, switch to Emphasis state
+/// captures text until it see emphasis character. When it does, switch to Emphasis state
 EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
     /// MarkDown keywords
@@ -316,10 +316,10 @@ void LinkParser::Match(std::stringstream &stream)
 { 
     // link syntax check, match keyword at each stage
     if (MatchAtLinkInit(stream) && 
-       MatchAtLinkTextRun(stream) && 
-       MatchAtLinkTextEnd(stream) && 
-       MatchAtLinkDestinationStart(stream) && 
-       MatchAtLinkDestinationRun(stream))
+        MatchAtLinkTextRun(stream) && 
+        MatchAtLinkTextEnd(stream) && 
+        MatchAtLinkDestinationStart(stream) && 
+        MatchAtLinkDestinationRun(stream))
     {
         /// Link is in correct syntax, capture it as link
         CaptureLinkToken();
@@ -563,27 +563,38 @@ void ListParser::ParseSubBlocks(std::stringstream &stream)
         ParseBlock(stream);
     }
 }
+
+bool ListParser::CompleteListParsing(std::stringstream &stream)
+{
+    // check for - of -\s+ list marker
+    if (stream.peek() == ' ')
+    {
+        // at this point, syntax check is complete, 
+        // thus any other spaces are ignored
+        // remove space
+        do
+        {
+            stream.get();
+        } while (stream.peek() == ' ');
+
+        ParseBlock(stream);
+        // parse blocks that follows
+        ParseSubBlocks(stream);
+
+        return true;
+    }
+    return false;
+}
+
 // list marker has a form of ^-\s+ or [\r, \n]-\s+, and this method checks the syntax
 void ListParser::Match(std::stringstream &stream) 
 { 
-    // check for the mandatory space
+    // check for - of -\s+ list marker
     if (IsHyphen(stream.peek()))
     {
         stream.get();
-        if (stream.peek() == ' ')
+        if(CompleteListParsing(stream)) 
         {
-            // remove space
-            do
-            {
-                stream.get();
-            } while (stream.peek() == ' ');
-
-            // at this point, syntax check is complete, 
-            // thus any other spaces are ignored
-            ParseBlock(stream);
-            // parse blocks that follows
-            ParseSubBlocks(stream);
-            // capture list token
             CaptureListToken();
         }
         else
@@ -625,25 +636,18 @@ void OrderedListParser::Match(std::stringstream &stream)
             number_string += stream.get();
         } while (isdigit(stream.peek()));
 
-        if (stream.peek() == '.')
+        if (IsDot(stream.peek()))
         {
             // ordered list syntax check complete
             stream.get();
-            if (stream.peek() == ' ')
+            if (CompleteListParsing(stream))
             {
-                do 
-                {
-                    stream.get();
-                }
-                while (stream.peek() == ' ');
-
-                // at this point, syntax check is complete, 
-                // thus any other spaces are ignored
-                ParseBlock(stream);
-                // parse blocks that wasn't captured
-                ParseSubBlocks(stream);
-                // capture list token
                 CaptureOrderedListToken(number_string);
+            }
+            else
+            {
+                number_string += '.';
+                m_parsedResult.AddNewTokenToParsedResult(number_string);
             }
         }
         else
@@ -654,6 +658,7 @@ void OrderedListParser::Match(std::stringstream &stream)
 
     }
 }
+
 void OrderedListParser::CaptureOrderedListToken(std::string &number_string)
 {
     std::ostringstream html;
