@@ -8,6 +8,7 @@
 #import "ACRTextBlockRenderer.h"
 #import "ACRContentHoldingUIView.h"
 #import "TextBlock.h"
+#import "MarkDownParser.h"
 
 @implementation ACRTextBlockRenderer
 
@@ -29,30 +30,37 @@
 {
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel *lab = [[UILabel alloc] init];
-    NSString *textBlockStr = [NSString stringWithCString:txtBlck->GetText().c_str()
-                                                encoding:NSUTF8StringEncoding];
+    std::shared_ptr<MarkDownParser> parser = std::make_shared<MarkDownParser>(txtBlck->GetText().c_str());
+    NSString *parsedString = [NSString stringWithCString:parser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+
     ContainerStyle style = [viewGroup getStyle];
 
     ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)?
         config->containerStyles.emphasisPalette.foregroundColors:
         config->containerStyles.defaultPalette.foregroundColors;
 
-    NSMutableAttributedString *content =
-    [[NSMutableAttributedString alloc] initWithString:textBlockStr
-                                           attributes:@{NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],
-                                                            NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]}];
+    UIFontDescriptor *dec = lab.font.fontDescriptor;
+    UIFont *_font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]];
+    parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%fpx;}</style>",
+                                                          @"verdana",
+                                                          _font.pointSize]];
+
+    NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+    NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
+        NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     para.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
     para.alignment = [self getTextBlockAlignment:txtBlck withHostConfig:config];
-    [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
-    lab.attributedText = content;
+    
+
+    [content addAttributes:@{NSParagraphStyleAttributeName:para, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
+        lab.attributedText = content;
     lab.numberOfLines = int(txtBlck->GetMaxLines());
     if(!lab.numberOfLines and !txtBlck->GetWrap())
     {
         lab.numberOfLines = 1;
     }
-    UIFontDescriptor *dec = lab.font.fontDescriptor;
-    lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]];
 
     CGSize intrinsicSz = [lab intrinsicContentSize];
 
