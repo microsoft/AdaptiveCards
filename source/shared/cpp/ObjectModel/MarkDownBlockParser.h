@@ -39,7 +39,7 @@ namespace AdaptiveCards
         virtual void Match(std::stringstream &);
         // Captures remaining charaters in given token
         // and causes the emphasis parsing to terminate
-        void Flush(std::string& currentToken);
+        void Flush(int ch, std::string& currentToken);
         // check if given character is * or _
         bool IsMarkDownDelimiter(char ch);
         void CaptureCurrentCollectedStringAsRegularToken(std::string&currentToken); 
@@ -48,20 +48,21 @@ namespace AdaptiveCards
         // Check if current delimiter will be considererd as a delimiter run
         bool IsEmphasisDelimiterRun(DelimiterType emphasisType) { return m_currentDelimiterType == emphasisType; }
         void ResetCurrentEmphasisState() { m_delimiterCnts = 0; }
-        bool IsRightEmphasisDelimiter(char ch);
+        bool IsRightEmphasisDelimiter(int ch);
         // Attempt to capture current emphasis as right emphasis
-        bool TryCapturingRightEmphasisToken(char ch, std::string &currentToken);
-        bool IsLeftEmphasisDelimiter(char ch) 
+        bool TryCapturingRightEmphasisToken(int ch, std::string &currentToken);
+        bool IsLeftEmphasisDelimiter(int ch) 
         {
             return (m_delimiterCnts && 
+                    ch != EOF &&
                     !isspace(ch) && 
                     !(m_lookBehind == Alphanumeric && ispunct(ch)) && 
                     !(m_lookBehind == Alphanumeric && m_currentDelimiterType == Underscore));
         };
         // Attempt to capture current emphasis as right emphasis
-        bool TryCapturingLeftEmphasisToken(char ch, std::string &currentToken);
-        void CaptureEmphasisToken(char ch, std::string &currentToken);
-        void UpdateLookBehind(char ch);
+        bool TryCapturingLeftEmphasisToken(int ch, std::string &currentToken);
+        void CaptureEmphasisToken(int ch, std::string &currentToken);
+        void UpdateLookBehind(int ch);
         static DelimiterType GetDelimiterTypeForCharAtCurrentPosition(char ch) { return (ch == '*')? Asterisk : Underscore; };
 
         typedef EmphasisState (* MatchWithChar)(EmphasisParser&, std::stringstream &, std::string &);
@@ -116,8 +117,27 @@ namespace AdaptiveCards
     {
         public:
         void Match(std::stringstream &);
+        bool MatchNewListItem(std::stringstream &);
+        bool MatchNewBlock(std::stringstream &);
+        bool MatchNewOrderedListItem(std::stringstream &, std::string &);
+        static bool IsHyphen(int ch) { return ch == '-'; };
+        static bool IsDot(int ch) { return ch == '.'; };
+        static bool IsNewLine(int ch){ return (ch == '\r') || (ch == '\n');};
+
+        protected:
+        void ParseSubBlocks(std::stringstream &);
+        bool CompleteListParsing(std::stringstream &stream);
 
         private:
         void CaptureListToken();
+    };
+
+    class OrderedListParser : public ListParser
+    {
+        public:
+        void Match(std::stringstream &);
+
+        private:
+        void CaptureOrderedListToken(std::string&);
     };
 }

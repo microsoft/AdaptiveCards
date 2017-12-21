@@ -20,10 +20,16 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
         }
         // handles special cases where these tokens are not encountered
         // as not part of link
-        case ']': case ')':
+        case ']': case ')': 
         {
             // add these char as token to code gen list
             m_parsedResult.AddNewTokenToParsedResult(stream.get());
+            break;
+        }
+        case '\n': case '\r':
+        {
+            // add new line char as token to code gen list
+            m_parsedResult.AddNewLineTokenToParsedResult(stream.get());
             break;
         }
         // handles list block
@@ -34,6 +40,16 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
             listParser.Match(stream);
             // append list result to the rest
             m_parsedResult.AppendParseResult(listParser.GetParsedResult());
+            break;
+        }
+        case '0': case '1': case '2': case '3': case'4':
+        case '5': case '6': case '7': case '8': case'9':
+        {
+            OrderedListParser orderedListParser;
+            // do syntax check of list
+            orderedListParser.Match(stream);
+            // append list result to the rest
+            m_parsedResult.AppendParseResult(orderedListParser.GetParsedResult());
             break;
         }
         // everything else is treated as normal text + emphasis
@@ -59,14 +75,13 @@ void EmphasisParser::Match(std::stringstream &stream)
     }
 }
 
-/// captures text untill it see emphasis character. When it does, switch to Emphasis state
+/// captures text until it see emphasis character. When it does, switch to Emphasis state
 EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, std::stringstream &stream, std::string& token)
 {
     /// MarkDown keywords
-    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '-' || stream.eof())
+    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '\n' || stream.peek() == '\r' || stream.eof())
     {
-        parser.Flush(token);
-
+        parser.Flush(stream.peek(), token);
         return EmphasisState::Captured;
     }
 
@@ -75,6 +90,13 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, 
         // encounterred first emphasis delimiter
         parser.CaptureCurrentCollectedStringAsRegularToken();
         DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek()); 
+        // get previous character and update the look behind if it was captured before 
+        if (stream.tellg())
+        {
+            stream.unget();
+            parser.UpdateLookBehind(stream.get());
+        }
+
         parser.UpdateCurrentEmphasisRunState(emphasisType);
         token += stream.get();
         return EmphasisState::Emphasis;
@@ -92,9 +114,9 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
 {
     // key word is encountered, flush what is being processed, and have those keyword
     // handled by ParseBlock()
-    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '-' || stream.eof())
+    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '\n' || stream.peek() == '\r' || stream.eof())
     {
-        parser.Flush(token);
+        parser.Flush(stream.peek(), token);
         return EmphasisState::Captured;
     }
 
@@ -106,6 +128,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
         {
             parser.UpdateCurrentEmphasisRunState(emphasisType);
         }
+
         token += stream.get();
     }
     /// delimiter run is ended, capture the current accumulated token as emphasis
@@ -122,7 +145,6 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
         parser.ResetCurrentEmphasisState();
         parser.UpdateLookBehind(stream.peek());
         token += stream.get();
-
         return EmphasisState::Text;
     }
     return EmphasisState::Emphasis;
@@ -130,11 +152,11 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
 
 // Captures remaining charaters in given token
 // and causes the emphasis parsing to terminate
-void EmphasisParser::Flush(std::string& currentToken)
+void EmphasisParser::Flush(int ch, std::string& currentToken)
 {
-    if (m_current_state != EmphasisState::Text)
+    if (m_current_state == EmphasisState::Emphasis)
     {
-        CaptureEmphasisToken(currentToken[0], currentToken);
+        CaptureEmphasisToken(ch, currentToken);
         m_delimiterCnts = 0;
     }
     else
@@ -177,9 +199,9 @@ void EmphasisParser::UpdateCurrentEmphasisRunState(DelimiterType emphasisType)
     m_currentDelimiterType = emphasisType;
 }
 
-bool EmphasisParser::IsRightEmphasisDelimiter(char ch)
+bool EmphasisParser::IsRightEmphasisDelimiter(int ch)
 {
-    if (isspace(ch) && 
+    if ((isspace(ch) || (ch == EOF)) && 
        (m_lookBehind != WhiteSpace) && 
        (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == Asterisk))
     {        
@@ -209,7 +231,7 @@ bool EmphasisParser::IsRightEmphasisDelimiter(char ch)
     return false;;
 }
 
-bool EmphasisParser::TryCapturingRightEmphasisToken(char ch, std::string &currentToken)
+bool EmphasisParser::TryCapturingRightEmphasisToken(int ch, std::string &currentToken)
 {
     if (IsRightEmphasisDelimiter(ch))
     {
@@ -240,7 +262,7 @@ bool EmphasisParser::TryCapturingRightEmphasisToken(char ch, std::string &curren
     return false;
 }
 
-bool EmphasisParser::TryCapturingLeftEmphasisToken(char ch, std::string &currentToken)
+bool EmphasisParser::TryCapturingLeftEmphasisToken(int ch, std::string &currentToken)
 {
     // left emphasis detected, save emphasis for later reference
     if (IsLeftEmphasisDelimiter(ch))
@@ -259,7 +281,7 @@ bool EmphasisParser::TryCapturingLeftEmphasisToken(char ch, std::string &current
     return false;
 }
 
-void EmphasisParser::UpdateLookBehind(char ch)
+void EmphasisParser::UpdateLookBehind(int ch)
 {
     //store ch and move itr
     if (isspace(ch))
@@ -278,7 +300,7 @@ void EmphasisParser::UpdateLookBehind(char ch)
     }
 }
 
-void EmphasisParser::CaptureEmphasisToken(char ch, std::string &currentToken)
+void EmphasisParser::CaptureEmphasisToken(int ch, std::string &currentToken)
 {
     if (!TryCapturingRightEmphasisToken(ch, currentToken) && 
         !TryCapturingLeftEmphasisToken(ch, currentToken) &&
@@ -294,10 +316,10 @@ void LinkParser::Match(std::stringstream &stream)
 { 
     // link syntax check, match keyword at each stage
     if (MatchAtLinkInit(stream) && 
-       MatchAtLinkTextRun(stream) && 
-       MatchAtLinkTextEnd(stream) && 
-       MatchAtLinkDestinationStart(stream) && 
-       MatchAtLinkDestinationRun(stream))
+        MatchAtLinkTextRun(stream) && 
+        MatchAtLinkTextEnd(stream) && 
+        MatchAtLinkDestinationStart(stream) && 
+        MatchAtLinkDestinationRun(stream))
     {
         /// Link is in correct syntax, capture it as link
         CaptureLinkToken();
@@ -451,31 +473,135 @@ void LinkParser::CaptureLinkToken()
     m_parsedResult.AppendToTokens(codeGen);
 }
 
-// list has form of -\s+ markdown block and a line break
-// this method checks such syntax
-void ListParser::Match(std::stringstream &stream) 
-{ 
-    if (stream.peek() == '-')
+// list marker have form of ^-\s+ or \r-\s+
+// this method matches -\s
+bool ListParser::MatchNewListItem(std::stringstream &stream)
+{
+    if (IsHyphen(stream.peek()))
     {
         stream.get();
-        // check for the mendatory space
         if (stream.peek() == ' ')
         {
-            // at this point, syntax check is complete, 
-            // thus any other spaces are ignored
-            while (stream.peek() == ' ')
+            stream.unget();
+            return true;
+        }
+        stream.unget();
+    }
+    return false;
+}
+
+// if lines are seperated by more than two new lines,
+// they are new block items
+// caller of this method is expected to have matched new line char 
+// before calling this method
+// this method will return true, after it mataches new line char
+// at least once.
+bool ListParser::MatchNewBlock(std::stringstream &stream)
+{
+    if (IsNewLine(stream.peek()))
+    {
+        do
+        {
+            stream.get();
+        } while (IsNewLine(stream.peek()));
+
+        return true;
+    }
+
+    return false;
+}
+
+// ordered list marker has form of ^\d+\.\s* or [\r,\n]\d+\.\s*, and this method checks the syntax
+// this method matches \d+\.
+bool ListParser::MatchNewOrderedListItem(std::stringstream &stream, std::string &number_string)
+{
+    do
+    {
+        number_string += stream.get();
+    } while (isdigit(stream.peek()));
+
+    if (stream.peek() == '.')
+    {
+        // ordered list syntax check complete
+        stream.unget();
+        return true;
+    }
+
+    return false;
+}
+
+// parse blocks that wasn't captured
+// if what we encounter is one of following items, start of new list, list item, or new block element,
+// we do not include in the current block, we return, and have it handled by the caller
+void ListParser::ParseSubBlocks(std::stringstream &stream)
+{
+    while (!stream.eof()) 
+    { 
+        if (IsNewLine(stream.peek()))
+        {
+            int newLineChar = stream.get();
+            // check if it is the start of new block items
+            if (isdigit(stream.peek()))
             {
-                stream.get();
+                std::string number_string = "";
+                if (MatchNewOrderedListItem(stream, number_string))
+                {
+                    break;
+                }
+                else
+                { 
+                    m_parsedResult.AddNewTokenToParsedResult(number_string);
+                }
             }
-            // parse block that follows
-            ParseBlock(stream);
-            // capture list token
+            else if (MatchNewListItem(stream) || MatchNewBlock(stream))
+            {
+                break;
+            }
+
+            m_parsedResult.AddNewTokenToParsedResult(newLineChar);
+        }
+        ParseBlock(stream);
+    }
+}
+
+bool ListParser::CompleteListParsing(std::stringstream &stream)
+{
+    // check for - of -\s+ list marker
+    if (stream.peek() == ' ')
+    {
+        // at this point, syntax check is complete, 
+        // thus any other spaces are ignored
+        // remove space
+        do
+        {
+            stream.get();
+        } while (stream.peek() == ' ');
+
+        ParseBlock(stream);
+        // parse blocks that follows
+        ParseSubBlocks(stream);
+
+        return true;
+    }
+    return false;
+}
+
+// list marker has a form of ^-\s+ or [\r, \n]-\s+, and this method checks the syntax
+void ListParser::Match(std::stringstream &stream) 
+{ 
+    // check for - of -\s+ list marker
+    if (IsHyphen(stream.peek()))
+    {
+        stream.get();
+        if(CompleteListParsing(stream)) 
+        {
             CaptureListToken();
         }
         else
         {
             // if incorrect syntax, capture what was thrown as a new token.
             m_parsedResult.AddNewTokenToParsedResult('-');
+            stream.get();
         }
     }
 }
@@ -483,13 +609,8 @@ void ListParser::Match(std::stringstream &stream)
 void ListParser::CaptureListToken()
 {
     std::ostringstream html;
+    m_parsedResult.Translate();
     std::string htmlString = m_parsedResult.GenerateHtmlString();
-    // list item has form of <li>block</li>
-    // New line character at the end of block is dropped
-    if (htmlString.back() == '\r' || htmlString.back() == '\n')
-    {
-        htmlString.pop_back();
-    }
 
     html << "<li>";
     html << htmlString;
@@ -498,6 +619,59 @@ void ListParser::CaptureListToken()
     std::string html_string = html.str();
     std::shared_ptr<MarkDownListHtmlGenerator> codeGen = 
         std::make_shared<MarkDownListHtmlGenerator>(html_string);
+
+    m_parsedResult.Clear();
+    m_parsedResult.AppendToTokens(codeGen);
+}
+
+// ordered list marker has form of ^\d+\.\s* or [\r,\n]\d+\.\s*, and this method checks the syntax
+void OrderedListParser::Match(std::stringstream &stream) 
+{ 
+    // used to capture digit char
+    std::string number_string = "";
+    if (isdigit(stream.peek()))
+    {
+        do
+        {
+            number_string += stream.get();
+        } while (isdigit(stream.peek()));
+
+        if (IsDot(stream.peek()))
+        {
+            // ordered list syntax check complete
+            stream.get();
+            if (CompleteListParsing(stream))
+            {
+                CaptureOrderedListToken(number_string);
+            }
+            else
+            {
+                number_string += '.';
+                m_parsedResult.AddNewTokenToParsedResult(number_string);
+            }
+        }
+        else
+        {
+            // if incorrect syntax, capture as a new token.
+            m_parsedResult.AddNewTokenToParsedResult(number_string);
+        }
+
+    }
+}
+
+void OrderedListParser::CaptureOrderedListToken(std::string &number_string)
+{
+    std::ostringstream html;
+    m_parsedResult.Translate();
+    std::string htmlString = m_parsedResult.GenerateHtmlString();
+
+    html << "<li>";
+    html << htmlString;
+    html << "</li>";
+
+    std::string html_string = html.str();
+    std::shared_ptr<MarkDownOrderedListHtmlGenerator> codeGen = 
+        std::make_shared<MarkDownOrderedListHtmlGenerator>(html_string, number_string);
 
     m_parsedResult.Clear();
     m_parsedResult.AppendToTokens(codeGen);

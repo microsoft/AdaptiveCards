@@ -260,4 +260,5 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<string>("{{DATE(1994-02-29T06:08:00Z)}}", blck.GetText());
         }
     };
+
 }

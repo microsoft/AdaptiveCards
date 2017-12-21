@@ -36,4 +36,3 @@ void MarkDownParser::ParseBlock()
     }
     m_parsedResult.AppendParseResult(parser.GetParsedResult());
 }
-

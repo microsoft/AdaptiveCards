@@ -191,3 +191,18 @@ std::string MarkDownListHtmlGenerator::GenerateHtmlString()
 
     return m_token;
 }
+
+std::string MarkDownOrderedListHtmlGenerator::GenerateHtmlString()
+{
+    if (m_isHead) 
+    {
+        m_token = "<ol start=\"" + m_numberString + "\">" + m_token;
+    }
+
+    if (m_isTail)
+    {
+        return m_token + "</ol>";
+    }
+
+    return m_token;
+}

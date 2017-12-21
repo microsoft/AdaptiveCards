@@ -250,12 +250,9 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             MarkDownParser parser5("*Hello* abc ***Hello* def *world***");
             Assert::AreEqual<string>("<p><em>Hello</em> abc <strong><em>Hello</em> def <em>world</em></strong></p>", parser5.TransformToHtml());
-        }
-        TEST_METHOD(TmpTest)
-        {
-            MarkDownParser parser1("*foo**bar**baz*");
-            Assert::AreEqual<string>("<p><em>foo<strong>bar</strong>baz</em></p>", parser1.TransformToHtml());
-            
+
+            MarkDownParser parser6("*foo**bar**baz*");
+            Assert::AreEqual<string>("<p><em>foo<strong>bar</strong>baz</em></p>", parser6.TransformToHtml());
         }
     };
     TEST_CLASS(Rule13Test)
@@ -425,6 +422,94 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("- hello\n- Hi");
             Assert::AreEqual<string>("<ul><li>hello</li><li>Hi</li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(ListTestsWithInterHyphen)
+        {
+            MarkDownParser parser("- hello world - hello hello");
+            Assert::AreEqual<string>("<ul><li>hello world - hello hello</li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(MultipleListWithHyphenTests)
+        {
+            MarkDownParser parser("- hello world - hello hello\r- winner winner chicken dinner");
+            Assert::AreEqual<string>("<ul><li>hello world - hello hello</li><li>winner winner chicken dinner</li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(MultipleListWithHyphenAndEmphasisTests)
+        {
+            MarkDownParser parser("- hello world - hello hello\r- ***winner* winner** chicken dinner");
+            Assert::AreEqual<string>("<ul><li>hello world - hello hello</li><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(MultipleListWithLinkTest)
+        {
+            MarkDownParser parser("- hello world\r- hello hello\r- new site = [adaptive card](www.adaptivecards.io)");
+            Assert::AreEqual<string>("<ul><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(PtagedBlockElementFollowedByListTest)
+        {
+            MarkDownParser parser("Hello\r- my list");
+            Assert::AreEqual<string>("<p>Hello</p><ul><li>my list</li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(ListFollowedByPtagedBlockElementTest)
+        {
+            MarkDownParser parser("- my list\r\rHello");
+            Assert::AreEqual<string>("<ul><li>my list</li></ul><p>Hello</p>", parser.TransformToHtml());
+        }
+        TEST_METHOD(ListFollowedWithNewLineCharTest)
+        {
+            MarkDownParser parser("- my list\rHello");
+            Assert::AreEqual<string>("<ul><li>my list\rHello</li></ul>", parser.TransformToHtml());
+        }
+    };
+    TEST_CLASS(OrderedListTest)
+    {
+        TEST_METHOD(SimpleValidListTest)
+        {
+            MarkDownParser parser("1. hello");
+            Assert::AreEqual<string>("<ol start=\"1\"><li>hello</li></ol>", parser.TransformToHtml());
+        }
+        TEST_METHOD(MultipleSimpleValidListTest)
+        {
+            MarkDownParser parser("1. hello\n2. Hi");
+            Assert::AreEqual<string>("<ol start=\"1\"><li>hello</li><li>Hi</li></ol>", parser.TransformToHtml());
+        }
+        TEST_METHOD(ListTestsWithInterHyphen)
+        {
+            MarkDownParser parser("1. hello world - hello hello");
+            Assert::AreEqual<string>("<ol start=\"1\"><li>hello world - hello hello</li></ol>", parser.TransformToHtml());
+        }
+        TEST_METHOD(MultipleListWithHyphenTests)
+        {
+            MarkDownParser parser("1. hello world - hello hello\r2. winner winner chicken dinner");
+            Assert::AreEqual<string>("<ol start=\"1\"><li>hello world - hello hello</li><li>winner winner chicken dinner</li></ol>", parser.TransformToHtml());
+        }
+        TEST_METHOD(MultipleListWithHyphenAndEmphasisTests)
+        {
+            MarkDownParser parser("1. hello world - hello hello\r- ***winner* winner** chicken dinner");
+            Assert::AreEqual<string>("<ol start=\"1\"><li>hello world - hello hello</li></ol><ul><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(MultipleListWithLinkTest)
+        {
+            MarkDownParser parser("1. hello world\r2. hello hello\r3. new site = [adaptive card](www.adaptivecards.io)");
+            Assert::AreEqual<string>("<ol start=\"1\"><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ol>", parser.TransformToHtml());
+        }
+        TEST_METHOD(PtagedBlockElementFollowedByListTest)
+        {
+            MarkDownParser parser("Hello\r1. my list");
+            Assert::AreEqual<string>("<p>Hello</p><ol start=\"1\"><li>my list</li></ol>", parser.TransformToHtml());
+        }
+        TEST_METHOD(ListFollowedByPtagedBlockElementTest)
+        {
+            MarkDownParser parser("1. my list\r\rHello");
+            Assert::AreEqual<string>("<ol start=\"1\"><li>my list</li></ol><p>Hello</p>", parser.TransformToHtml());
+        }
+        TEST_METHOD(ListFollowedWithNewLineCharTest)
+        {
+            MarkDownParser parser("1. my list\rHello");
+            Assert::AreEqual<string>("<ol start=\"1\"><li>my list\rHello</li></ol>", parser.TransformToHtml());
+        }
+        TEST_METHOD(ListStartsWithRandomNumberTest)
+        {
+            MarkDownParser parser("777. my list\rHello");
+            Assert::AreEqual<string>("<ol start=\"777\"><li>my list\rHello</li></ol>", parser.TransformToHtml());
         }
     };
 }

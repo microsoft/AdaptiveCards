@@ -25,10 +25,16 @@ namespace AdaptiveCards
         // Take a char and convert it html code gen and append it to the result
         // It is used to store MarkDown keywords such as '[', ']', '(', ')'
         void AddNewTokenToParsedResult(char ch);
+        // Take string and convert it html code gen and append it to the result
+        void AddNewTokenToParsedResult(std::string &word);
+        // Take a new line char and convert it html code gen and append it to the result
+        // It is used to store MarkDown keywords such as '\r', '\n'
+        void AddNewLineTokenToParsedResult(char ch);
         void PopFront();
         void PopBack();
         void Clear();
         private:
+        void MarkTags(const std::shared_ptr<MarkDownHtmlGenerator> &);
         std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_codeGenTokens;
         std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> m_emphasisLookUpTable;
         // take m_emphasisLookUpTable and matches left and right emphasises

@@ -27,8 +27,8 @@ enum DelimiterType
 //   it knows how to handle bold and italic html
 //   tags and apply those to its text when asked to generate html string
 // - MarkDownListHtmlGenerator
-//   it functions simmilary as MarkDownStringHtmlGenerator, but its IsList() returns
-//   true, this is used in generating html block tags
+//   it functions simmilary as MarkDownStringHtmlGenerator, but its GetBlockType() returns
+//   MarkDownBlockType, this is used in generating html block tags
 //   list uses block tag of <ul> all others use <p>
 class MarkDownHtmlGenerator
 {
@@ -44,6 +44,7 @@ class MarkDownHtmlGenerator
         MarkDownHtmlGenerator(std::string &token) : m_token(token){};
         void MakeItHead() { m_isHead = true; }
         void MakeItTail() { m_isTail = true; }
+        virtual bool IsNewLine() { return false; }
         virtual std::string GenerateHtmlString() = 0;
         virtual MarkDownBlockType GetBlockType() const { return ContainerBlock; }; 
     protected:
@@ -61,6 +62,15 @@ class MarkDownStringHtmlGenerator : public MarkDownHtmlGenerator
     public:
         MarkDownStringHtmlGenerator(std::string &token) : MarkDownHtmlGenerator(token){};
         std::string GenerateHtmlString();
+};
+
+// - MarkDownNewLineHtmlGenerator 
+//   it contains new line chars
+class MarkDownNewLineHtmlGenerator : public MarkDownStringHtmlGenerator 
+{ 
+    public:
+        MarkDownNewLineHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token){};
+        bool IsNewLine() { return true; }
 };
 
 // - MarkDownEmphasisHtmlGenerator 
@@ -162,15 +172,28 @@ class MarkDownLeftAndRightEmphasisHtmlGenerator : public MarkDownRightEmphasisHt
 };
 
 // - MarkDownListHtmlGenerator
-//   it functions simmilary as MarkDownStringHtmlGenerator, but its IsList() returns
-//   true, this is used in generating html block tags
-//   list uses block tag of <ul> all others use <p>
+//   it functions simmilary as MarkDownStringHtmlGenerator, but its GetBlockType() returns
+//   UnorderedList type, this is used in generating html block tags <ul>
 class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator 
 {
     public:
         MarkDownListHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token) {};
         std::string GenerateHtmlString();
         MarkDownBlockType GetBlockType() const { return UnorderedList; }; 
+};
+
+// - MarkDownUnorderedListHtmlGenerator
+//   it functions simmilary as MarkDownStringHtmlGenerator, but its GetBlockType() returns
+//   OrderedList type, this is used in generating html block tags <ol>
+class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator 
+{
+    public:
+        MarkDownOrderedListHtmlGenerator(std::string &token, std::string &number_string) : 
+            MarkDownStringHtmlGenerator(token), m_numberString(number_string) {};
+        std::string GenerateHtmlString();
+        MarkDownBlockType GetBlockType() const { return OrderedList; }; 
+    private:
+        std::string m_numberString;
 };
 
 }
