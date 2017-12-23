@@ -31,9 +31,9 @@ namespace LiveCardServer
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public Task OnInsertElement(string id, InsertPosition position, AdaptiveElement element)
+        public Task OnInsertElement(InsertPosition position, string id, AdaptiveElement element)
         {
-            return rpc.NotifyAsync(new object[] { id, position.ToString(), element });
+            return rpc.NotifyAsync(new object[] { position.ToString(), id, element });
         }
 
         /// <summary>

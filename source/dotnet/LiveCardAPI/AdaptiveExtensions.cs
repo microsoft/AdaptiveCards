@@ -18,7 +18,7 @@ namespace LiveCardAPI
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public static bool TryGetElementById<ElementT>(this AdaptiveCard card, string id, out ElementT element, out object parent) where ElementT : AdaptiveTypedElement
+        public static bool TryGetElementById<ElementT>(this AdaptiveCard card, string id, out ElementT element, out AdaptiveTypedElement parent) where ElementT : AdaptiveTypedElement
         {
             ElementFinder finder = new ElementFinder(id);
             finder.VisitCard(card);
@@ -41,7 +41,7 @@ namespace LiveCardAPI
         /// <param name="id">id of element to insert before or after</param>
         /// <param name="newElement"></param>
         /// <returns></returns>
-        public static Task InsertElement(this AdaptiveCard card, string id, InsertPosition position, AdaptiveElement newElement)
+        public static async Task<AdaptiveTypedElement> InsertElement(this AdaptiveCard card, InsertPosition position, string id, AdaptiveElement newElement)
         {
             setEventsVisitor.Visit(null, newElement);
             if (id == null)
@@ -50,17 +50,16 @@ namespace LiveCardAPI
                 {
                     case InsertPosition.FirstChild:
                         card.Body.Insert(0, newElement);
-                        break;
+                        return card;
                     case InsertPosition.LastChild:
                         card.Body.Add(newElement);
-                        break;
+                        return card;
                     default:
                         throw new ArgumentException($"Can't add before or after card");
                 }
-                return Task.CompletedTask;
             }
 
-            if (card.TryGetElementById(id, out AdaptiveElement targetElement, out object parent))
+            if (card.TryGetElementById(id, out AdaptiveElement targetElement, out AdaptiveTypedElement parent))
             {
                 if (position == InsertPosition.Before || position == InsertPosition.After)
                 {
@@ -72,12 +71,11 @@ namespace LiveCardAPI
                         {
                             case InsertPosition.Before:
                                 card.Body.Insert(index, newElement);
-                                break;
+                                return card;
                             case InsertPosition.After:
                                 card.Body.Insert(index + 1, newElement);
-                                break;
+                                return card;
                         }
-                        return Task.CompletedTask;
                     }
                     else if (parent is AdaptiveContainer)
                     {
@@ -87,12 +85,11 @@ namespace LiveCardAPI
                         {
                             case InsertPosition.Before:
                                 container.Items.Insert(index, newElement);
-                                break;
+                                return container;
                             case InsertPosition.After:
                                 container.Items.Insert(index + 1, newElement);
-                                break;
+                                return container;
                         }
-                        return Task.CompletedTask;
                     }
                     else if (parent is AdaptiveColumnSet)
                     {
@@ -102,12 +99,11 @@ namespace LiveCardAPI
                         {
                             case InsertPosition.Before:
                                 container.Columns.Insert(index, (AdaptiveColumn)newElement);
-                                break;
+                                return container;
                             case InsertPosition.After:
                                 container.Columns.Insert(index + 1, (AdaptiveColumn)newElement);
-                                break;
+                                return container;
                         }
-                        return Task.CompletedTask;
                     }
                 }
                 else if (position == InsertPosition.LastChild || position == InsertPosition.FirstChild)
@@ -119,12 +115,11 @@ namespace LiveCardAPI
                         {
                             case InsertPosition.FirstChild:
                                 container.Items.Insert(0, newElement);
-                                break;
+                                return container;
                             case InsertPosition.LastChild:
                                 container.Items.Add(newElement);
-                                break;
+                                return container;
                         }
-                        return Task.CompletedTask;
                     }
                     else if (targetElement is AdaptiveColumnSet)
                     {
@@ -133,12 +128,11 @@ namespace LiveCardAPI
                         {
                             case InsertPosition.FirstChild:
                                 container.Columns.Insert(0, (AdaptiveColumn)newElement);
-                                break;
+                                return container;
                             case InsertPosition.LastChild:
                                 container.Columns.Add((AdaptiveColumn)newElement);
-                                break;
+                                return container;
                         }
-                        return Task.CompletedTask;
                     }
                     throw new ArgumentException($"trying to add to non collection type: {targetElement.Type}");
                 }
@@ -152,31 +146,33 @@ namespace LiveCardAPI
         /// <param name="id"></param>
         /// <param name="newElement"></param>
         /// <returns></returns>
-        public static Task ReplaceElement(this AdaptiveCard card, AdaptiveElement newElement)
+        public static async Task<AdaptiveTypedElement> ReplaceElement(this AdaptiveCard card, AdaptiveElement newElement)
         {
-            if (card.TryGetElementById(newElement.Id, out AdaptiveElement oldElement, out object parent))
+            if (card.TryGetElementById(newElement.Id, out AdaptiveElement oldElement, out AdaptiveTypedElement parent))
             {
                 setEventsVisitor.Visit(null, newElement);
 
                 if (parent is AdaptiveCard)
                 {
-                    var index = card.Body.IndexOf(oldElement);
-                    card.Body[index] = newElement;
-                    return Task.CompletedTask;
+                    var parentCard = parent as AdaptiveCard;
+                    var index = parentCard.Body.IndexOf(oldElement);
+                    if (index >= 0)
+                        parentCard.Body[index] = newElement;
+                    return parentCard;
                 }
                 else if (parent is AdaptiveContainer)
                 {
                     var container = parent as AdaptiveContainer;
                     var index = container.Items.IndexOf(oldElement);
                     container.Items[index] = newElement;
-                    return Task.CompletedTask;
+                    return parent;
                 }
                 else if (parent is AdaptiveColumnSet)
                 {
                     var container = parent as AdaptiveColumnSet;
                     var index = container.Columns.IndexOf((AdaptiveColumn)oldElement);
                     container.Columns[index] = (AdaptiveColumn)newElement;
-                    return Task.CompletedTask;
+                    return parent;
                 }
             }
             throw new KeyNotFoundException(newElement.Id);
@@ -187,26 +183,27 @@ namespace LiveCardAPI
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Task RemoveElement(this AdaptiveCard card, string id)
+        public static async Task<AdaptiveTypedElement> RemoveElement(this AdaptiveCard card, string id)
         {
-            if (card.TryGetElementById(id, out AdaptiveElement oldElement, out object parent))
+            if (card.TryGetElementById(id, out AdaptiveElement oldElement, out AdaptiveTypedElement parent))
             {
                 if (parent is AdaptiveCard)
                 {
-                    card.Body.Remove(oldElement);
-                    return Task.CompletedTask;
+                    AdaptiveCard parentCard = (AdaptiveCard)parent;
+                    parentCard.Body.Remove(oldElement);
+                    return parent;
                 }
                 else if (parent is AdaptiveContainer)
                 {
                     var container = parent as AdaptiveContainer;
                     container.Items.Remove(oldElement);
-                    return Task.CompletedTask;
+                    return parent;
                 }
                 else if (parent is AdaptiveColumnSet)
                 {
                     var container = parent as AdaptiveColumnSet;
                     container.Columns.Remove((AdaptiveColumn)oldElement);
-                    return Task.CompletedTask;
+                    return parent;
                 }
             }
             throw new KeyNotFoundException(id);
@@ -214,11 +211,11 @@ namespace LiveCardAPI
 
         public static Task SetProperties(this AdaptiveCard card, string id, IEnumerable<SetProperty> properties)
         {
-            if (card.TryGetElementById(id, out AdaptiveElement element, out object parent))
+            if (card.TryGetElementById(id, out AdaptiveElement element, out AdaptiveTypedElement parent))
             {
-                foreach(var property in properties)
+                foreach (var property in properties)
                 {
-                    
+
                 }
                 return Task.CompletedTask;
             }

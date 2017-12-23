@@ -17,7 +17,7 @@ namespace LiveCardAPI
             this.id = id;
         }
 
-        public object Parent { get; set; }
+        public AdaptiveTypedElement Parent { get; set; }
 
         public AdaptiveElement Element { get; set; }
 

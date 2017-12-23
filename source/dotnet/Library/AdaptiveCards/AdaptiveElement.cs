@@ -40,6 +40,7 @@ namespace AdaptiveCards
                 events.Add(EventTypes.OnMouseEnter);
             if (this.OnMouseLeave != null)
                 events.Add(EventTypes.OnMouseLeave);
+            this.Events = events.ToArray();
         }
 
         /// <summary>

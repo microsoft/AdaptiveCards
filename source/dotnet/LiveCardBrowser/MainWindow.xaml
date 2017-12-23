@@ -65,9 +65,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Name="TextBoxUrl" Grid.Column="0" Text="http://localhost:61059/api/helloworld"/>
+            <TextBox Name="TextBoxUrl" Grid.Column="0" Text="http://localhost:61061/api/helloworld"/>
             <Button Name="AddButton" Grid.Column="1" Content="Add" Margin="2" Padding="8 2 8 2" Click="AddButton_Click" />
+            <Button Name="ActivateButton" Content="Activate" Width="100" Margin="2" Padding="8 2 8 2" Click="ActivateButton_Click"/>
         </Grid>
         <TabControl Grid.Row="1" ItemsSource="{Binding Cards}" SelectedItem="{Binding SelectedCard}" Background="Gray">
             <TabControl.ItemTemplate>
@@ -77,14 +79,7 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Button Name="ActivateButton" Content="Activate" Width="100" Margin="2" Padding="8 2 8 2" Click="ActivateButton_Click"/>
-                        <ContentControl Content="{Binding CardContent}" Width="800" Grid.Row="1" ></ContentControl>
-                    </Grid>
+                        <ContentControl Content="{Binding CardContent}" Width="800" ></ContentControl>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

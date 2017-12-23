@@ -1,6 +1,7 @@
 ﻿using Nerdbank;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
@@ -53,9 +54,16 @@ namespace LiveCardServerSample
             {
                 while (webSocket.State == WebSocketState.Open)
                 {
-                    var result = await webSocket.ReceiveAsync(buffer, this.cancelationSource.Token).ConfigureAwait(false);
-                    var line = Encoding.UTF8.GetString(buffer.Array, 0, result.Count);
-                    await receiveWriter.WriteLineAsync(line);
+                    try
+                    {
+                        var result = await webSocket.ReceiveAsync(buffer, this.cancelationSource.Token).ConfigureAwait(false);
+                        var line = Encoding.UTF8.GetString(buffer.Array, 0, result.Count);
+                        await receiveWriter.WriteLineAsync(line);
+                    }
+                    catch (Exception err)
+                    {
+                        Trace.TraceError(err.ToString());
+                    }
                 }
             }
         }
@@ -66,10 +74,18 @@ namespace LiveCardServerSample
             {
                 while (webSocket.State == WebSocketState.Open)
                 {
-                    var line = await sendReader.ReadLineAsync();
-                    var buffer = Encoding.UTF8.GetBytes(line);
-                    await this.webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, this.cancelationSource.Token)
-                        .ConfigureAwait(false);
+                    try
+                    {
+
+                        var line = await sendReader.ReadLineAsync();
+                        var buffer = Encoding.UTF8.GetBytes(line);
+                        await this.webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, this.cancelationSource.Token)
+                            .ConfigureAwait(false);
+                    }
+                    catch (Exception err)
+                    {
+                        Trace.TraceError(err.ToString());
+                    }
                 }
             }
         }

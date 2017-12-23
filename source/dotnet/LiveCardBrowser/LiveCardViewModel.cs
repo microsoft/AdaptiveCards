@@ -22,11 +22,21 @@ namespace LiveCardBrowser
             get { return liveCard; }
             set
             {
-                liveCard = value; Notify();
+                liveCard = value;
+                Notify();
             }
         }
 
+        FrameworkElement content;
+        public FrameworkElement CardContent
+        {
+            get { return content; }
+            set
+            {
+                content = value;
+                Notify();
+            }
+        }
 
-        public FrameworkElement CardContent { get; set; }
     }
 }

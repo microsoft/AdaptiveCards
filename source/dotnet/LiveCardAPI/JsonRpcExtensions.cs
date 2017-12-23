@@ -11,6 +11,11 @@ namespace LiveCardAPI
 
     public static class JsonRpcExtensions
     {
+        public static Task InvokeAsync(this JsonRpc rpc, [CallerMemberName] string targetName = null)
+        {
+            return rpc.InvokeAsync(targetName);
+        }
+
         public static Task InvokeAsync(this JsonRpc rpc, object argument, [CallerMemberName] string targetName = null)
         {
             return rpc.InvokeAsync(targetName, argument);
@@ -31,7 +36,12 @@ namespace LiveCardAPI
             return rpc.InvokeAsync<TResult>(targetName, arguments);
         }
 
-        public static Task NotifyAsync(this JsonRpc rpc, object argument = null, [CallerMemberName] string targetName = null)
+        public static Task NotifyAsync(this JsonRpc rpc, [CallerMemberName] string targetName = null)
+        {
+            return rpc.NotifyAsync(targetName);
+        }
+
+        public static Task NotifyAsync(this JsonRpc rpc, object argument, [CallerMemberName] string targetName = null)
         {
             return rpc.NotifyAsync(targetName, argument);
         }
@@ -41,7 +51,7 @@ namespace LiveCardAPI
             return rpc.NotifyAsync(targetName, arguments);
         }
 
-        public static Task NotifyWithParameterObjectAsync(this JsonRpc rpc, object argument = null, [CallerMemberName] string targetName = null)
+        public static Task NotifyWithParameterObjectAsync(this JsonRpc rpc, object argument, [CallerMemberName] string targetName = null)
         {
             return rpc.NotifyWithParameterObjectAsync(targetName, argument);
         }

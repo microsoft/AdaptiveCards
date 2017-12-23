@@ -57,7 +57,7 @@ namespace AdaptiveCards.Rendering.Wpf
             base.VisitCard(card);
         }
 
-        public override void VisitImage(AdaptiveContainer parent, AdaptiveImage image)
+        public override void VisitImage(AdaptiveTypedElement parent, AdaptiveImage image)
         {
             tasks.Add(GetImage(image.Url));
             base.VisitImage(parent, image);

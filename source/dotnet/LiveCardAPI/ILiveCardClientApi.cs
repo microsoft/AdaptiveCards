@@ -20,7 +20,7 @@ namespace LiveCardAPI
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        Task OnInsertElement(string id, InsertPosition position, AdaptiveElement element);
+        Task OnInsertElement(InsertPosition position, string id, AdaptiveElement element);
 
         /// <summary>
         /// Replace element

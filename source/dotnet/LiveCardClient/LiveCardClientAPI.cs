@@ -27,11 +27,14 @@ namespace LiveCardClient
         /// <param name="id"></param>
         /// <param name="element"></param>
         /// <returns></returns>
-        public async virtual Task OnInsertElement(string id, InsertPosition position, AdaptiveElement element)
+        public async virtual Task OnInsertElement(InsertPosition position, string id, AdaptiveElement element)
         {
-            await this.liveCard.Card.InsertElement(id, position, element);
+            var parent = await this.liveCard.Card.InsertElement(position, id, element);
 
-            await this.liveCard.OnElementChanged(element);
+            if (parent is AdaptiveElement)
+                await this.liveCard.FireElementChanged((AdaptiveElement)parent);
+            else
+                await this.liveCard.FireCardChanged((AdaptiveCard)parent);
         }
 
         /// <summary>
@@ -44,7 +47,7 @@ namespace LiveCardClient
         {
             await this.liveCard.Card.ReplaceElement(element);
 
-            await this.liveCard.OnElementChanged(element);
+            await this.liveCard.FireElementChanged(element);
         }
 
         /// <summary>
@@ -54,15 +57,12 @@ namespace LiveCardClient
         /// <returns></returns>
         public async virtual Task OnRemoveElement(string id)
         {
-            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveElement element, out object parent))
-            {
-                await this.liveCard.Card.RemoveElement(id);
+            var parent = await this.liveCard.Card.RemoveElement(id);
 
-                if (parent != null && parent is AdaptiveElement)
-                    await this.liveCard.OnElementChanged((AdaptiveElement)parent);
-                else
-                    await this.liveCard.OnCardChanged(this.liveCard.Card);
-            }
+            if (parent is AdaptiveElement)
+                await this.liveCard.FireElementChanged((AdaptiveElement)parent);
+            else
+                await this.liveCard.FireCardChanged((AdaptiveCard)parent);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace LiveCardClient
             await this.liveCard.Card.SetProperties(id, properties);
 
             if (this.liveCard.Card.TryGetElementById(id, out AdaptiveElement element))
-                await this.liveCard.OnElementChanged(element);
+                await this.liveCard.FireElementChanged(element);
         }
 
         /// <summary>

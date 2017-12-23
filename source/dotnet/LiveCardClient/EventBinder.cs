@@ -18,6 +18,14 @@ namespace LiveCardClient
             this.server = server;
         }
 
+        public static void Bind(ILiveCardServerAPI server, AdaptiveTypedElement el)
+        {
+            if (el is AdaptiveCard)
+                Bind(server, (AdaptiveCard)el);
+            else
+                Bind(server, (AdaptiveElement)el);
+        }
+
         public static void Bind(ILiveCardServerAPI server, AdaptiveCard card)
         {
             new EventBinder(server).VisitCard(card);
@@ -42,16 +50,16 @@ namespace LiveCardClient
                 {
                     switch (eventName)
                     {
-                        case "OnClick":
+                        case "onClick":
                             element.OnClick += Element_OnClick;
                             break;
-                        case "OnDoubleClick":
+                        case "onDoubleClick":
                             element.OnDoubleClick += Element_OnDoubleClick;
                             break;
-                        case "OnMouseEnter":
+                        case "onMouseEnter":
                             element.OnMouseEnter += Element_OnMouseEnter;
                             break;
-                        case "OnMouseLeave":
+                        case "onMouseLeave":
                             element.OnMouseLeave += Element_OnMouseLeave;
                             break;
                         default:
@@ -60,22 +68,28 @@ namespace LiveCardClient
                                 AdaptiveInput input = element as AdaptiveInput;
                                 switch (eventName)
                                 {
-                                    case "OnKey":
+                                    case "onKey":
                                         input.OnKey += Input_OnKey;
                                         break;
-                                    case "OnTextchanged":
+                                    case "onTextchanged":
                                         input.OnTextChanged += Input_OnTextChanged;
                                         break;
-                                    case "OnSelectionChanged":
+                                    case "onSelectionChanged":
                                         input.OnSelectionChanged += Input_OnSelectionChanged;
                                         break;
-                                    case "OnFocus":
+                                    case "onFocus":
                                         input.OnFocus += Input_OnFocus;
                                         break;
-                                    case "OnBlur":
+                                    case "onBlur":
                                         input.OnBlur += Input_OnBlur;
                                         break;
+                                    default:
+                                        throw new ArgumentException($"{eventName} is not known");
                                 }
+                            }
+                            else
+                            {
+                                throw new ArgumentException($"{eventName} is not known");
                             }
                             break;
                     }

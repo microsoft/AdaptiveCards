@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,9 +25,19 @@ namespace LiveCardBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static AdaptiveCardRenderer renderer;
+
         public MainWindow()
         {
             InitializeComponent();
+            renderer = new AdaptiveCardRenderer()
+            {
+                Resources = Resources
+            };
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)sender).DataContext = new AppViewModel();
         }
 
         private async void AddButton_Click(object sender, RoutedEventArgs e)
@@ -36,13 +47,11 @@ namespace LiveCardBrowser
             {
                 var url = new Uri(this.TextBoxUrl.Text.Trim());
                 LiveCard liveCard = new LiveCard(url);
+                liveCard.OnCardChanged += LiveCard_OnCardChanged;
+                liveCard.OnElementChanged += LiveCard_OnElementChanged;
 
                 // load deactivated card
                 await liveCard.LoadCard();
-                var renderer = new AdaptiveCardRenderer()
-                {
-                    Resources = Resources
-                };
 
                 var liveCardViewModel = new LiveCardViewModel()
                 {
@@ -58,16 +67,33 @@ namespace LiveCardBrowser
             }
         }
 
+        private void LiveCard_OnCardChanged(object sender, CardChangedArgs e)
+        {
+            this.Dispatcher.InvokeAsync(() =>
+            {
+                AppViewModel appViewModel = (AppViewModel)this.DataContext;
+                appViewModel.SelectedCard.CardContent = renderer.RenderCard(appViewModel.SelectedCard.LiveCard.Card).FrameworkElement;
+            });
+        }
+
+        private void LiveCard_OnElementChanged(object sender, ElementChangedArgs e)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                AppViewModel appViewModel = (AppViewModel)this.DataContext;
+                appViewModel.SelectedCard.CardContent = renderer.RenderCard(appViewModel.SelectedCard.LiveCard.Card).FrameworkElement;
+            });
+        }
+
         private async void ActivateButton_Click(object sender, RoutedEventArgs e)
         {
             AppViewModel appViewModel = (AppViewModel)this.DataContext;
-
-            await appViewModel.SelectedCard.LiveCard.Activate();
+            if (appViewModel.SelectedCard != null)
+            {
+                await appViewModel.SelectedCard.LiveCard.StartListening();
+                await appViewModel.SelectedCard.LiveCard.Activate();
+            }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((MainWindow)sender).DataContext = new AppViewModel();
-        }
     }
 }
