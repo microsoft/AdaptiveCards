@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
@@ -73,7 +74,7 @@ namespace AdaptiveCards
                 throw new AdaptiveSerializationException(ex.Message, ex);
             }
 
-            return parseResult;            
+            return parseResult;
         }
 
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
@@ -82,72 +83,80 @@ namespace AdaptiveCards
         /// The Body elements for this card
         /// </summary>
         [JsonProperty(Order = -3)]
-        public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
+        public ObservableCollection<AdaptiveElement> Body { get { return _Body; } set { SetValue(ref _Body, value); } }
+        private ObservableCollection<AdaptiveElement> _Body = new ObservableCollection<AdaptiveElement>();
 
         /// <summary>
         ///     Actions for the card
         /// </summary>
         [JsonProperty(Order = -2)]
-        public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
+        public ObservableCollection<AdaptiveAction> Actions { get { return _Actions; } set { SetValue(ref _Actions, value); } }
+        private ObservableCollection<AdaptiveAction> _Actions = new ObservableCollection<AdaptiveAction>();
 
         /// <summary>
         ///     Speak annotation for the card
         /// </summary>
         [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
-        public string Speak { get; set; }
+        public string Speak { get { return _Speak; } set { SetValue(ref _Speak, value); } }
+        private string _Speak;
 
         /// <summary>
         ///     Title for the card (used when displayed in a dialog)
         /// </summary>
         [JsonProperty(Order = -5, NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("The Title property is not officially supported right now and should not be used")]
-        public string Title { get; set; }
+        public string Title { get { return _Title; } set { SetValue(ref _Title, value); } }
+        private string _Title;
 
         /// <summary>
         ///     Background image for card
         /// </summary>
         [JsonProperty(Order = -4, NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundImage { get; set; } // TODO: Should this be Uri?
+        public string BackgroundImage { get { return _BackgroundImage; } set { SetValue(ref _BackgroundImage, value); } } // TODO: Should this be Uri?
+        private string _BackgroundImage;
 
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
         [JsonProperty(Order = -9, NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveSchemaVersion Version { get; set; }
+        public AdaptiveSchemaVersion Version { get { return _Version; } set { SetValue(ref _Version, value); } }
+        private AdaptiveSchemaVersion _Version;
 
         /// <summary>
         ///     if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not
         ///     supported are safe to ignore
         /// </summary>
         [JsonProperty(Order = -8, NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveSchemaVersion MinVersion { get; set; }
+        public AdaptiveSchemaVersion MinVersion { get { return _MinVersion; } set { SetValue(ref _MinVersion, value); } }
+        private AdaptiveSchemaVersion _MinVersion;
 
         /// <summary>
         ///     if a client is not able to show the card, show fallbackText to the user. This can be in markdown format.
         /// </summary>
         [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
-        public string FallbackText { get; set; }
+        public string FallbackText { get { return _FallbackText; } set { SetValue(ref _FallbackText, value); } }
+        private string _FallbackText;
 
         /// <summary>
         /// WS ServiceUrl for live cards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string ServiceUrl { get; set; }
+        public string ServiceUrl { get { return _ServiceUrl; } set { SetValue(ref _ServiceUrl, value); } }
+        private string _ServiceUrl;
 
         /// <summary>
         /// Events to subscribe to for this element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string[] Events { get; set; }
+        public ObservableCollection<string> Events { get { return _events; } set { _events = value; FirePropertyChanged(); } }
+        private ObservableCollection<string> _events = new ObservableCollection<string>();
 
         public void SetEvents()
         {
-            List<string> events = new List<string>();
             if (this.OnCardActivate != null)
-                events.Add(EventTypes.OnCardActivate);
+                _events.Add(EventTypes.OnCardActivate);
             if (this.OnCardDeactivate != null)
-                events.Add(EventTypes.OnCardDeactivate);
-            this.Events = events.ToArray();
+                _events.Add(EventTypes.OnCardDeactivate);
         }
 
         public event EventHandler OnCardActivate;

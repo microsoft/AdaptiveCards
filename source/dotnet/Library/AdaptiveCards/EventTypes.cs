@@ -44,12 +44,6 @@ namespace AdaptiveCards
         public const string OnClick = "onClick";
 
         /// <summary>
-        /// Sent when element is double clicked
-        /// { "type":"onDoubleClick"  "id":"elementId"}
-        /// </summary>
-        public const string OnDoubleClick = "onDoubleClick";
-
-        /// <summary>
         /// Sent when keystroke happens
         /// {"type":"onKey""id":"elementId","key":"keyValue"}
         /// </summary>

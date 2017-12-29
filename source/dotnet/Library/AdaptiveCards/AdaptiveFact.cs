@@ -9,7 +9,7 @@ namespace AdaptiveCards
     ///     Represents one "fact" in a FactSet element.
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class AdaptiveFact
+    public class AdaptiveFact : ObservableObject
     {
         public AdaptiveFact(string title, string value)
         {
@@ -21,19 +21,23 @@ namespace AdaptiveCards
         ///     The facts label
         /// </summary>
         [JsonRequired]
-        public string Title { get; set; }
+        public string Title { get { return _Title; } set { SetValue(ref _Title, value); } }
+        private string _Title;
 
         /// <summary>
         ///     The fact's value
         /// </summary>
         [JsonRequired]
-        public string Value { get; set; }
+        public string Value { get { return _Value; } set { SetValue(ref _Value, value); } }
+        private string _Value;
 
         /// <summary>
         ///     (Optional) Specifies what should be spoken for this entire element. This is simple text or SSML fragment
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("FactSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
-        public string Speak { get; set; }
+        public string Speak { get { return _Speak; } set { SetValue(ref _Speak, value); } }
+        private string _Speak;
+
     }
 }

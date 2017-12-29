@@ -13,7 +13,8 @@ namespace AdaptiveCards
         ///     Title of the action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Title { get; set; }
+        public string Title { get { return _Title; } set { SetValue(ref _Title, value); } }
+        private string _Title;
 
         // TODO: Title should be required is NOT a selectAction
 
@@ -22,7 +23,8 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("ActionBase.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
-        public string Speak { get; set; }
+        public string Speak { get { return _Speak; } set { SetValue(ref _Speak, value); } }
+        private string _Speak;
     }
 
 }

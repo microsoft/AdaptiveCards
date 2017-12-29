@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public abstract class AdaptiveTypedElement
+    public abstract class AdaptiveTypedElement : ObservableObject
     {
         /// <summary>
         /// The type name of the element 
@@ -18,8 +20,8 @@ namespace AdaptiveCards
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string Id { get; set; }
-
+        public string Id { get { return _Id; } set { SetValue(ref _Id, value); } }
+        private string _Id;
 
         protected TENum? GetEnum<TENum>(string value)
             where TENum : struct

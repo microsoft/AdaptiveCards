@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards
@@ -16,18 +17,22 @@ namespace AdaptiveCards
         ///     Elements of the container
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
+        public ObservableCollection<AdaptiveElement> Items { get { return _Items; } set { SetValue(ref _Items, value); } }
+        private ObservableCollection<AdaptiveElement> _Items = new ObservableCollection<AdaptiveElement>();
 
         /// <summary>
         ///     Action for this container (this allows a default action at the container level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveAction SelectAction { get; set; }
+        public AdaptiveAction SelectAction { get { return _SelectAction; } set { SetValue(ref _SelectAction, value); } }
+        private AdaptiveAction _SelectAction;
 
         /// <summary>
         ///     The style in which the image is displayed.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveContainerStyle Style { get; set; }
+        public AdaptiveContainerStyle Style { get { return _Style; } set { SetValue(ref _Style, value); } }
+        private AdaptiveContainerStyle _Style;
+
     }
 }

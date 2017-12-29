@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
 
@@ -17,24 +18,28 @@ namespace AdaptiveCards
         ///      Comma separated string of selected Choice values
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Value { get; set; }
+        public string Value { get { return _Value; } set { SetValue(ref _Value, value); } }
+        private string _Value;
 
         /// <summary>
         ///     Style for choice
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveChoiceInputStyle Style { get; set; }
+        public AdaptiveChoiceInputStyle Style { get { return _Style; } set { SetValue(ref _Style, value); } }
+        private AdaptiveChoiceInputStyle _Style;
 
         /// <summary>
         ///     allow multiple choices to be selected (default false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool IsMultiSelect { get; set; }
+        public bool IsMultiSelect { get { return _IsMultiSelect; } set { SetValue(ref _IsMultiSelect, value); } }
+        private bool _IsMultiSelect;
 
         /// <summary>
         ///     the choice options
         /// </summary>
         [JsonRequired]
-        public List<AdaptiveChoice> Choices { get; set; } = new List<AdaptiveChoice>();
+        public ObservableCollection<AdaptiveChoice> Choices { get { return _Choices; } set { SetValue(ref _Choices, value); } }
+        private ObservableCollection<AdaptiveChoice> _Choices = new ObservableCollection<AdaptiveChoice>();
     }
 }

@@ -17,26 +17,27 @@ namespace AdaptiveCards
         public event EventHandler<KeyEventArgs> OnKey;
         public event EventHandler<SelectionChangedEventArgs> OnSelectionChanged;
 
-        public void Focus()
+        public void FireFocus()
         {
             OnFocus?.Invoke(this, new EventArgs());
         }
 
-        public void Blur()
+        public void FireBlur()
         {
             OnBlur?.Invoke(this, new EventArgs());
         }
 
-        public void TextChanged(string text)
+        public void FireTextChanged(string text)
         {
             OnTextChanged?.Invoke(this, new TextChangedEventArgs() { Text = text });
         }
 
-        public void Key(string key)
+        public void FireKey(string key)
         {
             OnKey?.Invoke(this, new KeyEventArgs() { Key = key });
         }
-        public void SelectionChanged(int[] selections)
+
+        public void FireSelectionChanged(int[] selections)
         {
             OnSelectionChanged?.Invoke(this, new SelectionChangedEventArgs() { Selection = selections });
         }
@@ -62,7 +63,9 @@ namespace AdaptiveCards
         ///     The input must have a value for it to be part of a Submit or Http action
         /// </summary>
         [Obsolete("Ths IsRequired property is not supported in Adaptive Cards yet and will be ignored")]
-        public bool IsRequired { get; set; }
+        public bool IsRequired { get { return _IsRequired; } set { SetValue(ref _IsRequired, value); } }
+        private bool _IsRequired;
+
     }
 
 }

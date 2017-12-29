@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
 
@@ -10,20 +11,22 @@ namespace AdaptiveCards
     public class AdaptiveImageSet : AdaptiveElement
     {
         public const string TypeName = "ImageSet";
-    
+
         public override string Type => TypeName;
 
         /// <summary>
         ///     Collection of images to display together
         /// </summary>
         [JsonRequired]
-        public List<AdaptiveImage> Images { get; set; } = new List<AdaptiveImage>();
+        public ObservableCollection<AdaptiveImage> Images { get { return _Images; } set { SetValue(ref _Images, value); } }
+        private ObservableCollection<AdaptiveImage> _Images = new ObservableCollection<AdaptiveImage>();
 
         /// <summary>
         ///     Specifies the horizontal size of each image in the set
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveImageSize ImageSize { get; set; }
+        public AdaptiveImageSize ImageSize { get { return _ImageSize; } set { _ImageSize = value; FirePropertyChanged(); } }
+        private AdaptiveImageSize _ImageSize;
 
         public bool ShouldSerializeImageSize()
         {

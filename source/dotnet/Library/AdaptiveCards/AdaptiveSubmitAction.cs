@@ -18,7 +18,8 @@ namespace AdaptiveCards
         ///     {"id":"123123123"}
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public object Data { get; set; }
+        public object Data { get { return _Data; } set { SetValue(ref _Data, value); } }
+        private object _Data;
 
         [JsonIgnore]
         public string DataJson
@@ -35,6 +36,7 @@ namespace AdaptiveCards
                     Data = null;
                 else
                     Data = JsonConvert.DeserializeObject(value);
+                FirePropertyChanged();
             }
         }
     }

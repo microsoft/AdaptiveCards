@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards
@@ -16,6 +17,7 @@ namespace AdaptiveCards
         ///     The facts to be displayed.
         /// </summary>
         [JsonRequired]
-        public List<AdaptiveFact> Facts { get; set; } = new List<AdaptiveFact>();
+        public ObservableCollection<AdaptiveFact> Facts { get { return _Facts; } set { SetValue(ref _Facts, value); } }
+        private ObservableCollection<AdaptiveFact> _Facts = new ObservableCollection<AdaptiveFact>();
     }
 }

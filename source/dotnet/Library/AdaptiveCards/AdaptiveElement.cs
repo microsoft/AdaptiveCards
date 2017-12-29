@@ -13,13 +13,15 @@ namespace AdaptiveCards
         /// The amount of space the element should be separated from the previous element. Default value is <see cref="Spacing.Default"/>.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public AdaptiveSpacing Spacing { get; set; }
+        public AdaptiveSpacing Spacing { get { return _Spacing; } set { SetValue(ref _Spacing, value); } }
+        private AdaptiveSpacing _Spacing;
 
         /// <summary>
         /// Indicates whether there should be a visible separator (e.g. a line) between the element and the one before it.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public bool Separator { get; set; }
+        public bool Separator { get { return _Separator; } set { SetValue(ref _Separator, value); } }
+        private bool _Separator;
 
         /// <summary>
         /// Events to subscribe to for this element
@@ -34,8 +36,6 @@ namespace AdaptiveCards
 
             if (this.OnClick != null)
                 events.Add(EventTypes.OnClick);
-            if (this.OnDoubleClick != null)
-                events.Add(EventTypes.OnDoubleClick);
             if (this.OnMouseEnter != null)
                 events.Add(EventTypes.OnMouseEnter);
             if (this.OnMouseLeave != null)
@@ -48,7 +48,8 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("CardElement.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
-        public string Speak { get; set; }
+        public string Speak { get { return _Speak; } set { SetValue(ref _Speak, value); } }
+        private string _Speak;
 
         /// <summary>
         ///     How should this element be emphasized relative to previous element
@@ -98,6 +99,7 @@ namespace AdaptiveCards
                     default:
                         throw new NotImplementedException();
                 }
+                FirePropertyChanged();
             }
         }
 #pragma warning restore 612, 618
@@ -115,26 +117,20 @@ namespace AdaptiveCards
 #pragma warning restore 612, 618
 
         public event EventHandler OnClick;
-        public event EventHandler OnDoubleClick;
         public event EventHandler OnMouseEnter;
         public event EventHandler OnMouseLeave;
 
-        public void Click()
+        public void FireClick()
         {
             OnClick?.Invoke(this, new EventArgs());
         }
 
-        public void DoubleClick()
-        {
-            OnDoubleClick?.Invoke(this, new EventArgs());
-        }
-
-        public void MouseEnter()
+        public void FireMouseEnter()
         {
             OnMouseEnter?.Invoke(this, new EventArgs());
         }
 
-        public void MouseLeave()
+        public void FireMouseLeave()
         {
             OnMouseLeave?.Invoke(this, new EventArgs());
         }
