@@ -17,19 +17,19 @@ namespace LiveCardServer
             this.card = card;
         }
 
-        public Task OnActivate()
+        public Task FireActivate()
         {
-            this.card.Activate();
+            this.card.FireActivate();
             return Task.CompletedTask;
         }
 
-        public Task OnDeactivate()
+        public Task FireDeactivate()
         {
-            this.card.Deactivate();
+            this.card.FireDeactivate();
             return Task.CompletedTask;
         }
 
-        public Task OnFocus(string id)
+        public Task FireFocus(string id)
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
@@ -38,7 +38,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnBlur(string id)
+        public Task FireBlur(string id)
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
@@ -47,7 +47,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnKey(string id, string key)
+        public Task FireKey(string id, string key)
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
@@ -56,7 +56,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnClick(string id)
+        public Task FireClick(string id)
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
@@ -65,7 +65,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnTextChanged(string id, string text)
+        public Task FireTextChanged(string id, string text)
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
@@ -74,7 +74,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnSelectionChanged(string id, int[] selectedIndices)
+        public Task FireSelectionChanged(string id, int[] selectedIndices)
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
@@ -83,7 +83,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnMouseEnter(string id)
+        public Task FireMouseEnter(string id)
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
@@ -92,7 +92,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task OnMouseLeave(string id)
+        public Task FireMouseLeave(string id)
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {

@@ -165,12 +165,12 @@ namespace AdaptiveCards
             remove { _OnCardDeactivate -= value; this.Events.Remove(EventTypes.OnCardDeactivate); }
         }
 
-        public void Activate()
+        public void FireActivate()
         {
             _OnCardActivate?.Invoke(this, new EventArgs());
         }
 
-        public void Deactivate()
+        public void FireDeactivate()
         {
             _OnCardDeactivate?.Invoke(this, new EventArgs());
         }

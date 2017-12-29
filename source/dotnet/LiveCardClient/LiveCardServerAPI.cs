@@ -18,32 +18,32 @@ namespace LiveCardClient
             this.rpc = rpc;
         }
 
-        public Task OnActivate()
+        public Task FireActivate()
         {
             return rpc.NotifyAsync();
         }
 
-        public Task OnDeactivate()
+        public Task FireDeactivate()
         {
             return rpc.NotifyAsync();
         }
 
-        public Task OnFocus(string id)
+        public Task FireFocus(string id)
         {
             return rpc.NotifyAsync(argument: id);
         }
 
-        public Task OnBlur(string id)
+        public Task FireBlur(string id)
         {
             return rpc.NotifyAsync(argument: id);
         }
 
-        public Task OnKey(string id, string key)
+        public Task FireKey(string id, string key)
         {
             return rpc.NotifyAsync(argument: new object[] { id, key });
         }
 
-        public Task OnClick(string id)
+        public Task FireClick(string id)
         {
             return rpc.NotifyAsync(argument: id);
         }
@@ -53,22 +53,22 @@ namespace LiveCardClient
             return rpc.NotifyAsync(argument: id);
         }
 
-        public Task OnTextChanged(string id, string text)
+        public Task FireTextChanged(string id, string text)
         {
             return rpc.NotifyAsync(argument: new object[] { id, text });
         }
 
-        public Task OnSelectionChanged(string id, int[] selectedIndices)
+        public Task FireSelectionChanged(string id, int[] selectedIndices)
         {
             return rpc.NotifyAsync(argument: new object[] { id, selectedIndices });
         }
 
-        public Task OnMouseEnter(string id)
+        public Task FireMouseEnter(string id)
         {
             return rpc.NotifyAsync(argument: id);
         }
 
-        public Task OnMouseLeave(string id)
+        public Task FireMouseLeave(string id)
         {
             return rpc.NotifyAsync(argument: id);
         }

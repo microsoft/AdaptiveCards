@@ -97,49 +97,49 @@ namespace LiveCardClient
         private async void Input_OnBlur(object sender, EventArgs e)
         {
             AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnBlur(element.Id);
+            await this.server.FireBlur(element.Id);
         }
 
         private async void Input_OnFocus(object sender, EventArgs e)
         {
             AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnFocus(element.Id);
+            await this.server.FireFocus(element.Id);
         }
 
         private async void Input_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnSelectionChanged(element.Id, e.Selection);
+            await this.server.FireSelectionChanged(element.Id, e.Selection);
         }
 
         private async void Input_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnTextChanged(element.Id, e.Text);
+            await this.server.FireTextChanged(element.Id, e.Text);
         }
 
         private async void Input_OnKey(object sender, KeyEventArgs e)
         {
             AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnKey(element.Id, e.Key);
+            await this.server.FireKey(element.Id, e.Key);
         }
 
         private async void Element_OnMouseLeave(object sender, EventArgs e)
         {
             AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnMouseLeave(element.Id);
+            await this.server.FireMouseLeave(element.Id);
         }
 
         private async void Element_OnMouseEnter(object sender, EventArgs e)
         {
             AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnMouseEnter(element.Id);
+            await this.server.FireMouseEnter(element.Id);
         }
 
         private async void Element_OnClick(object sender, EventArgs e)
         {
             AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnClick(element.Id);
+            await this.server.FireClick(element.Id);
         }
 
     }

@@ -8,24 +8,24 @@ namespace LiveCardAPI
 {
     public interface ILiveCardServerAPI
     {
-        Task OnActivate();
+        Task FireActivate();
 
-        Task OnDeactivate();
+        Task FireDeactivate();
 
-        Task OnFocus(string id);
+        Task FireFocus(string id);
 
-        Task OnBlur(string id);
+        Task FireBlur(string id);
 
-        Task OnKey(string id, string key);
+        Task FireKey(string id, string key);
 
-        Task OnClick(string id);
+        Task FireClick(string id);
 
-        Task OnTextChanged(string id, string text);
+        Task FireTextChanged(string id, string text);
 
-        Task OnSelectionChanged(string id, int[] selectedIndices);
+        Task FireSelectionChanged(string id, int[] selectedIndices);
 
-        Task OnMouseEnter(string id);
+        Task FireMouseEnter(string id);
 
-        Task OnMouseLeave(string id);
+        Task FireMouseLeave(string id);
     }
 }

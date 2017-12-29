@@ -93,7 +93,7 @@ namespace LiveCardClient
         public virtual async Task Activate()
         {
             // tell server we activated the card
-            await this.Server.OnActivate();
+            await this.Server.FireActivate();
         }
 
         private async Task _closeSocket()
@@ -112,7 +112,7 @@ namespace LiveCardClient
         public virtual async Task DeActivate()
         {
             // tell server we are deactivating
-            await this.Server.OnDeactivate();
+            await this.Server.FireDeactivate();
             await _closeSocket();
         }
 
