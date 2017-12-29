@@ -4,6 +4,8 @@ using LiveCardAPI;
 using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
@@ -16,10 +18,14 @@ namespace LiveCardServer
         private AdaptiveCard card;
         private WebSocket webSocket;
         private JsonRpc rpc;
+        private HashSet<string> monitoredElements = new HashSet<string>();
 
         public LiveCard(AdaptiveCard card, WebSocket webSocket)
         {
             this.card = card;
+            card.Body.CollectionChanged += Body_CollectionChanged;
+            ProxyChangesToClient();
+
             this.Server = new LiveCardServerAPI(card);
             this.rpc = new JsonRpc(new WebSocketMessageHandler(webSocket), this.Server);
             this.Client = new LiveCardClientAPI(rpc);
@@ -50,7 +56,7 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public Task ListeningTask {  get { return this.rpc.ListeningTask; } }
+        public Task ListeningTask { get { return this.rpc.ListeningTask; } }
 
         public Task CloseCard()
         {
@@ -58,38 +64,107 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        //public async Task InsertElement(InsertPosition position, string id, AdaptiveElement element)
-        //{
-        //    new SetEventsVisitor().Visit(null, element);
-        //    await this.Card.InsertElement(position, id, element);
-        //}
+        /// <summary>
+        /// send property changes to client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Element_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            AdaptiveElement element = (AdaptiveElement)sender;
+            var value = element.GetType().GetProperty(e.PropertyName).GetValue(element);
+            await this.Client.SetProperty(element.Id, e.PropertyName, value);
+        }
 
-        //public async Task RemoveElement(string id)
-        //{
-        //    await this.Card.RemoveElement(id);
-        //    await this.Client.OnRemoveElement(id);
-        //}
+        /// <summary>
+        /// send collection changes to client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            // TODO optomize this
+            var container = this.Card.GetAllElements()
+                .Where(el => el is AdaptiveContainer)
+                .Cast<AdaptiveContainer>()
+                .Where(c => c.Items == sender)
+                .FirstOrDefault();
+            await sendCollectionChanges(container.Id, e);
+        }
 
-        //public async Task ReplaceElement(AdaptiveElement element)
-        //{
-        //    new SetEventsVisitor().Visit(null, element);
 
-        //    await this.Card.ReplaceElement(element);
-        //    await this.Client.OnReplaceElement(element);
-        //}
+        /// <summary>
+        /// Send collection changes to client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Body_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            // TODO this is not doing cards correctly, will only work for root card and needs to be mo better
+            await sendCollectionChanges(this.card.Id, e);
+        }
 
-        //public async Task SaveCard(AdaptiveCard card = null)
-        //{
-        //    new SetEventsVisitor().VisitCard(card);
-        //    await this.Client.SaveCard(card);
-        //}
+        /// <summary>
+        /// Send collection changes to client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            // TODO optomize this
+            var columnSet = this.Card.GetAllElements()
+                .Where(el => el is AdaptiveColumnSet)
+                .Cast<AdaptiveColumnSet>()
+                .Where(cs => cs.Columns == sender)
+                .FirstOrDefault();
+            if (columnSet != null)
+               await sendCollectionChanges(columnSet.Id, e);
+        }
 
-        //public async Task SetProperties(string id, IEnumerable<SetProperty> properties)
-        //{
-        //    await this.Card.SetProperties(id, properties);
-        //    await this.Client.OnSetProperties(id, properties);
-        //}
+        private async Task sendCollectionChanges(string containerId, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    await this.Client.AddElements(containerId, e.NewStartingIndex, e.NewItems.Cast<AdaptiveElement>().ToArray());
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    await this.Client.RemoveElements(containerId, e.OldItems.Cast<AdaptiveElement>().Select(it => it.Id).ToArray());
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    await this.Client.ReplaceElements(containerId, e.NewItems.Cast<AdaptiveElement>().ToArray());
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    await this.Client.Reset(containerId);
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    //TODO
+                    break;
+            }
+        }
+
+        private void ProxyChangesToClient()
+        {
+            foreach (var element in card.GetAllElements())
+            {
+                string elid = $"{element.Id}-{element.GetHashCode()}";
+                if (!this.monitoredElements.Contains(elid))
+                {
+                    element.PropertyChanged += Element_PropertyChanged;
+
+                    if (element is AdaptiveContainer)
+                    {
+                        AdaptiveContainer container = element as AdaptiveContainer;
+                        container.Items.CollectionChanged += Items_CollectionChanged;
+                    }
+                    else if (element is AdaptiveColumnSet)
+                    {
+                        AdaptiveColumnSet columnSet = element as AdaptiveColumnSet;
+                        columnSet.Columns.CollectionChanged += Columns_CollectionChanged;
+                    }
+                    this.monitoredElements.Add(elid);
+                }
+            }
+        }
     }
-
-
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
@@ -44,5 +45,20 @@ namespace AdaptiveCards
                 return val;
             return null;
         }
+
+        public virtual IEnumerable<AdaptiveElement> GetAllElements()
+        {
+            yield break;
+        }
+
+        /// <summary>
+        /// If this is a container (container, columnset, card) then this is the active list of child elements
+        /// </summary>
+        /// <returns></returns>
+        public virtual IList<AdaptiveElement> GetChildElements()
+        {
+            return null;
+        }
+
     }
 }

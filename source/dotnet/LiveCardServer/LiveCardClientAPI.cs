@@ -25,25 +25,58 @@ namespace LiveCardServer
         /// <summary>
         /// Tell client that property value changed
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="elementId"></param>
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public Task PropertyChanged(string id, string name, object value)
+        public Task SetProperty(string elementId, string name, object value)
         {
-            return rpc.NotifyAsync(new object[] { id, name, value });
+            return rpc.NotifyAsync(new object[] { elementId, name, value });
         }
 
         /// <summary>
-        /// Tell client that collection has changed.
+        /// Add elements to collection
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="changes"></param>
+        /// <param name="elementId"></param>
+        /// <param name="insertIndex"></param>
+        /// <param name="newItems"></param>
         /// <returns></returns>
-        public Task CollectionChanged(string id, string name, NotifyCollectionChangedEventArgs changes)
+        public Task AddElements(string elementId, int insertIndex, IEnumerable<AdaptiveElement> newItems)
         {
-            return rpc.NotifyAsync(new object[] { id, name, changes });
+            return rpc.NotifyAsync(new object[] { elementId, insertIndex, newItems });
+        }
+
+        /// <summary>
+        /// Remove elements from collection
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="elementIds"></param>
+        /// <returns></returns>
+        public Task RemoveElements(string elementId, IEnumerable<string> elementIds)
+        {
+            return rpc.NotifyAsync(new object[] { elementId, elementIds});
+        }
+
+        /// <summary>
+        /// Replace elements in collection
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="elementIds"></param>
+        /// <returns></returns>
+        public Task ReplaceElements(string elementId, IEnumerable<AdaptiveElement> elements)
+        {
+            return rpc.NotifyAsync(new object[] { elementId, elements});
+        }
+
+
+        /// <summary>
+        /// Reset collection
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <returns></returns>
+        public Task Reset(string elementId)
+        {
+            return rpc.NotifyAsync(elementId);
         }
 
         /// <summary>

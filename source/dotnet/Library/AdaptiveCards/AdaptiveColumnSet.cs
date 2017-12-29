@@ -27,5 +27,20 @@ namespace AdaptiveCards
         public AdaptiveAction SelectAction { get { return _SelectAction; } set { SetPropertyValue(ref _SelectAction, value); } }
         private AdaptiveAction _SelectAction;
 
+        public override IEnumerable<AdaptiveElement> GetAllElements()
+        {
+            foreach (var element in this.Columns)
+            {
+                yield return element;
+                foreach (var subElement in element.GetAllElements())
+                    yield return subElement;
+            }
+        }
+
+        public override IList<AdaptiveElement> GetChildElements()
+        {
+            return (IList<AdaptiveElement>)this.Columns;
+        }
+
     }
 }

@@ -20,11 +20,10 @@ namespace LiveCardServerSample.Controllers
         [HttpGet]
         public async Task<AdaptiveCard> Get()
         {
-            var helloCard = new AdaptiveCard();
+            var helloCard = new AdaptiveCard() { Id = "HelloWorld" };
             var title = new AdaptiveTextBlock() { Id = "Title", Text = "Hello World", Size = AdaptiveTextSize.Large };
-            // title.OnClick += Title_OnClick;
-            var activatation = new AdaptiveTextBlock() { Id = "Activation", Text = $"Deactivated" };
             helloCard.Body.Add(title);
+            var activatation = new AdaptiveTextBlock() { Id = "Activation", Text = $"Deactivated" };
             helloCard.Body.Add(activatation);
 
             // hook up code behind

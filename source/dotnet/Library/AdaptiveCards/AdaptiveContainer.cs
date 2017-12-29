@@ -34,5 +34,20 @@ namespace AdaptiveCards
         public AdaptiveContainerStyle Style { get { return _Style; } set { SetPropertyValue(ref _Style, value); } }
         private AdaptiveContainerStyle _Style;
 
+        public override IEnumerable<AdaptiveElement> GetAllElements()
+        {
+            foreach (var element in this.Items)
+            {
+                yield return element;
+                foreach (var subElement in element.GetAllElements())
+                    yield return subElement;
+            }
+        }
+
+        public override IList<AdaptiveElement> GetChildElements()
+        {
+            return this.Items;
+        }
+
     }
 }

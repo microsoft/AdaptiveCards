@@ -26,39 +26,137 @@ namespace LiveCardClient
         /// <summary>
         /// apply remote property change
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="elementId"></param>
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public Task PropertyChanged(string id, string name, object value)
+        public Task SetProperty(string elementId, string name, object value)
         {
-            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveTypedElement el))
+            lock (this.liveCard.Card)
             {
-                var propertyInfo = el.GetType().GetProperty(name);
-                propertyInfo.SetValue(el, value);
+                if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement el))
+                {
+                    var propertyInfo = el.GetType().GetProperty(name);
+                    propertyInfo.SetValue(el, value);
+                }
             }
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// apply Remote collection change
+        /// Add elements to collection
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="changes"></param>
+        /// <param name="elementId"></param>
+        /// <param name="insertIndex"></param>
+        /// <param name="newItems"></param>
         /// <returns></returns>
-        public Task CollectionChanged(string id, string name, NotifyCollectionChangedEventArgs changes)
+        public Task AddElements(string elementId, int insertIndex, IEnumerable<AdaptiveElement> newItems)
         {
-            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveTypedElement el))
+            lock (this.liveCard.Card)
             {
-                var propertyInfo = el.GetType().GetProperty(name);
-                object objs = propertyInfo.GetValue(el);
+                if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
+                {
+                    IList<AdaptiveElement> elements = element.GetChildElements();
+                    if (elements == null)
+                        throw new ArgumentNullException("This is not an collection of elements");
+                    int pos = insertIndex;
+                    foreach (var newItem in newItems)
+                    {
+                        if (pos == -1)
+                            elements.Add(newItem);
+                        else
+                            elements.Insert(pos++, newItem);
+                    }
+                }
+            }
+            return Task.CompletedTask;
+        }
 
-                if (objs is IList<AdaptiveElement>)
-                    ApplyCollectionChanges<AdaptiveElement>(changes, objs, (item) => item.Id);
-                else if (objs is IList<AdaptiveAction>)
-                    ApplyCollectionChanges<AdaptiveAction>(changes, objs, (item) => item.Id);
-                // TODO handle other collections
+
+        /// <summary>
+        /// Remove elements from collection
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="elementIds"></param>
+        /// <returns></returns>
+        public Task RemoveElements(string elementId, IEnumerable<string> elementIds)
+        {
+            lock (this.liveCard.Card)
+            {
+                if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
+                {
+                    IList<AdaptiveElement> elements = element.GetChildElements();
+                    if (elements == null)
+                        throw new ArgumentNullException("This is not an collection of elements");
+
+                    foreach (var removeId in elementIds)
+                    {
+                        int pos = 0;
+                        foreach (var el in elements)
+                        {
+                            if (el.Id == removeId)
+                            {
+                                elements.RemoveAt(pos);
+                                break;
+                            }
+                            pos++;
+                        }
+                    }
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Replace Elements in collection
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="newElements"></param>
+        /// <returns></returns>
+        public Task ReplaceElements(string elementId, IEnumerable<AdaptiveElement> newElements)
+        {
+            lock (this.liveCard.Card)
+            {
+                if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
+                {
+                    IList<AdaptiveElement> elements = element.GetChildElements();
+                    if (elements == null)
+                        throw new ArgumentNullException("This is not an collection of elements");
+
+                    foreach (var newElement in newElements)
+                    {
+                        int pos = 0;
+                        foreach (var el in elements)
+                        {
+                            if (el.Id == newElement.Id)
+                            {
+                                elements[pos] = newElement;
+                                break;
+                            }
+                            pos++;
+                        }
+                    }
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Reset collection
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <returns></returns>
+        public Task Reset(string elementId)
+        {
+            lock (this.liveCard.Card)
+            {
+                if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
+                {
+                    IList<AdaptiveElement> elements = element.GetChildElements();
+                    if (elements == null)
+                        throw new ArgumentNullException("This is not an collection of elements");
+                    elements.Clear();
+                }
             }
             return Task.CompletedTask;
         }
@@ -80,64 +178,6 @@ namespace LiveCardClient
         {
             await this.liveCard.CloseCard();
         }
-
-        private static void ApplyCollectionChanges<T>(NotifyCollectionChangedEventArgs changes, object objs, Func<T, object> selectIdentity)
-        {
-            var items = (ObservableCollection<T>)objs;
-            switch (changes.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    AddNewItems(changes, items);
-                    break;
-
-                case NotifyCollectionChangedAction.Replace:
-                    RemoveItems(changes, items, selectIdentity);
-                    AddNewItems(changes, items);
-                    break;
-
-                case NotifyCollectionChangedAction.Remove:
-                    RemoveItems(changes, items, selectIdentity);
-                    break;
-
-                case NotifyCollectionChangedAction.Reset:
-                    items.Clear();
-                    break;
-
-                case NotifyCollectionChangedAction.Move:
-                    // TODO
-                    break;
-            }
-        }
-
-        private static void RemoveItems<T>(NotifyCollectionChangedEventArgs changes, IList<T> items, Func<T, object> selectIdentity)
-        {
-            foreach (var oldItemId in changes.OldItems.Cast<T>().Select(selectIdentity))
-            {
-                int pos = 0;
-                foreach (var item in items)
-                {
-                    if (selectIdentity(item) == oldItemId)
-                    {
-                        items.RemoveAt(pos);
-                        break;
-                    }
-                    pos++;
-                }
-            }
-        }
-
-        private static void AddNewItems<T>(NotifyCollectionChangedEventArgs changes, IList<T> items)
-        {
-            int pos = changes.NewStartingIndex;
-            foreach (var newItem in changes.NewItems.Cast<T>())
-            {
-                if (pos == -1)
-                    items.Add(newItem);
-                else
-                    items.Insert(pos++, newItem);
-            }
-        }
-
 
     }
 }

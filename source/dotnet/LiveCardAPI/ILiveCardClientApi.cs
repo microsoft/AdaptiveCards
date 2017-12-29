@@ -1,5 +1,6 @@
 ﻿using AdaptiveCards;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -13,20 +14,43 @@ namespace LiveCardAPI
         /// <summary>
         /// Called when a Property is changed
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="elementId"></param>
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        Task PropertyChanged(string id, string name, object value);
+        Task SetProperty(string elementId, string name, object value);
 
         /// <summary>
-        /// called when a collection is modified
+        /// Add elements to collection
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="changes"></param>
+        /// <param name="elementId">collection element Id</param>
+        /// <param name="insertIndex">use -1 to append</param>
+        /// <param name="newItems"></param>
         /// <returns></returns>
-        Task CollectionChanged(string id, string name, NotifyCollectionChangedEventArgs changes);
+        Task AddElements(string elementId, int insertIndex, IEnumerable<AdaptiveElement> newItems);
+
+        /// <summary>
+        /// Remove elements from collection
+        /// </summary>
+        /// <param name="elementId">collection element Id</param>
+        /// <param name="elementIds"></param>
+        /// <returns></returns>
+        Task RemoveElements(string elementId, IEnumerable<string> elementIds);
+
+        /// <summary>
+        /// Replace elements in collection
+        /// </summary>
+        /// <param name="elementId">collection element Id</param>
+        /// <param name="elements"></param>
+        /// <returns></returns>
+        Task ReplaceElements(string elementId, IEnumerable<AdaptiveElement> elements);
+
+        /// <summary>
+        /// Reset element to default
+        /// </summary>
+        /// <param name="elementId">collection element Id</param>
+        /// <returns></returns>
+        Task Reset(string elementId);
 
         /// <summary>
         /// Save the card

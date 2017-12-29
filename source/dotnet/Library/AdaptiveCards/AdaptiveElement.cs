@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AdaptiveCards
 {
@@ -27,7 +28,8 @@ namespace AdaptiveCards
         /// Events to subscribe to for this element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> Events { get; set; } = new List<string>();
+        public ObservableCollection<string> Events { get { return _Events; }  set { SetPropertyValue(ref _Events, value); } } 
+        private ObservableCollection<string> _Events = new ObservableCollection<string>();
 
         /// <summary>
         ///     SSML fragment for spoken interaction

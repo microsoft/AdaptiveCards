@@ -183,5 +183,20 @@ namespace AdaptiveCards
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
+
+        public override IEnumerable<AdaptiveElement> GetAllElements()
+        {
+            foreach(var element in this.Body)
+            {
+                yield return element;
+                foreach (var subElement in element.GetAllElements())
+                    yield return subElement;
+            }
+        }
+
+        public override IList<AdaptiveElement> GetChildElements()
+        {
+            return this.Body;
+        }
     }
 }
