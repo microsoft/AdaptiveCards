@@ -16,25 +16,25 @@ namespace AdaptiveCards
         ///     Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Placeholder { get { return _Placeholder; } set { SetValue(ref _Placeholder, value); } }
+        public string Placeholder { get { return _Placeholder; } set { SetPropertyValue(ref _Placeholder, value); } }
         private string _Placeholder;
 
         /// <summary>
         ///     The initial value for the field
         /// </summary>
-        public double Value { get { return _Value; } set { SetValue(ref _Value, value); } }
+        public double Value { get { return _Value; } set { SetPropertyValue(ref _Value, value); } }
         private double _Value = double.NaN;
 
         /// <summary>
         ///     hint of minimum value(may be ignored by some clients)
         /// </summary>
-        public double Min { get { return _Min; } set { SetValue(ref _Min, value); } }
+        public double Min { get { return _Min; } set { SetPropertyValue(ref _Min, value); } }
         private double _Min = double.NaN;
 
         /// <summary>
         ///     hint of maximum value(may be ignored by some clients)
         /// </summary>
-        public double Max { get { return _Max; } set { SetValue(ref _Max, value); } }
+        public double Max { get { return _Max; } set { SetPropertyValue(ref _Max, value); } }
         private double _Max = double.NaN;
 
     }

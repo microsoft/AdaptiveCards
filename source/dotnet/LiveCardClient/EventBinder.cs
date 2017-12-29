@@ -53,9 +53,6 @@ namespace LiveCardClient
                         case "onClick":
                             element.OnClick += Element_OnClick;
                             break;
-                        case "onDoubleClick":
-                            element.OnDoubleClick += Element_OnDoubleClick;
-                            break;
                         case "onMouseEnter":
                             element.OnMouseEnter += Element_OnMouseEnter;
                             break;
@@ -137,12 +134,6 @@ namespace LiveCardClient
         {
             AdaptiveElement element = (AdaptiveElement)sender;
             await this.server.OnMouseEnter(element.Id);
-        }
-
-        private async void Element_OnDoubleClick(object sender, EventArgs e)
-        {
-            AdaptiveElement element = (AdaptiveElement)sender;
-            await this.server.OnDoubleClick(element.Id);
         }
 
         private async void Element_OnClick(object sender, EventArgs e)

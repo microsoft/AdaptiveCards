@@ -53,17 +53,22 @@ namespace LiveCardBrowser
                 // load deactivated card
                 await liveCard.LoadCard();
 
-                var liveCardViewModel = new LiveCardViewModel()
+                lock (liveCard.Card)
                 {
-                    Url = url.ToString(),
-                    LiveCard = liveCard,
-                    CardContent = renderer.RenderCard(liveCard.Card).FrameworkElement
-                };
+                    RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
 
-                appViewModel.Cards.Add(liveCardViewModel);
-                appViewModel.SelectedCard = liveCardViewModel;
+                    var liveCardViewModel = new LiveCardViewModel()
+                    {
+                        Url = url.ToString(),
+                        LiveCard = liveCard,
+                        CardContent = renderedCard.FrameworkElement
+                    };
 
-                this.TextBoxUrl.Text = null;
+                    appViewModel.Cards.Add(liveCardViewModel);
+                    appViewModel.SelectedCard = liveCardViewModel;
+
+                    this.TextBoxUrl.Text = null;
+                }
             }
         }
 
@@ -72,7 +77,10 @@ namespace LiveCardBrowser
             this.Dispatcher.InvokeAsync(() =>
             {
                 AppViewModel appViewModel = (AppViewModel)this.DataContext;
-                appViewModel.SelectedCard.CardContent = renderer.RenderCard(appViewModel.SelectedCard.LiveCard.Card).FrameworkElement;
+                lock (appViewModel.SelectedCard.LiveCard.Card)
+                {
+                    appViewModel.SelectedCard.CardContent = renderer.RenderCard(appViewModel.SelectedCard.LiveCard.Card).FrameworkElement;
+                }
             });
         }
 
@@ -81,7 +89,10 @@ namespace LiveCardBrowser
             this.Dispatcher.Invoke(() =>
             {
                 AppViewModel appViewModel = (AppViewModel)this.DataContext;
-                appViewModel.SelectedCard.CardContent = renderer.RenderCard(appViewModel.SelectedCard.LiveCard.Card).FrameworkElement;
+                lock (appViewModel.SelectedCard.LiveCard.Card)
+                {
+                    appViewModel.SelectedCard.CardContent = renderer.RenderCard(appViewModel.SelectedCard.LiveCard.Card).FrameworkElement;
+                }
             });
         }
 

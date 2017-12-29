@@ -30,7 +30,7 @@ namespace LiveCardClient
         {
             this.uri = uri;
         }
-        
+
         public ILiveCardClientAPI Client { get; set; }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace LiveCardClient
 
         public event EventHandler<CardChangedArgs> OnCardChanged;
         public event EventHandler<ElementChangedArgs> OnElementChanged;
- 
+
         public async Task LoadCard(string json = null)
         {
             HttpClient client = new HttpClient();
@@ -118,8 +118,8 @@ namespace LiveCardClient
 
         public virtual Task FireElementChanged(AdaptiveElement element)
         {
-            EventBinder.Bind(this.Server, element);
-            this.OnElementChanged(element, new ElementChangedArgs() { Element = element });
+            //EventBinder.Bind(this.Server, element);
+            //this.OnElementChanged(element, new ElementChangedArgs() { Element = element });
             return Task.CompletedTask;
         }
 

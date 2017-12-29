@@ -15,7 +15,7 @@ namespace AdaptiveCards
         ///     Container card to show when the action is invoked
         /// </summary>
         [JsonProperty(Required = Required.Always)]
-        public AdaptiveCard Card { get { return _Card; } set { SetValue(ref _Card, value); } }
+        public AdaptiveCard Card { get { return _Card; } set { SetPropertyValue(ref _Card, value); } }
         private AdaptiveCard _Card;
 
     }

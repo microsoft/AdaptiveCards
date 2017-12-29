@@ -33,7 +33,7 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.Focus();
+                element.FireFocus();
             }
             return Task.CompletedTask;
         }
@@ -42,7 +42,7 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.Blur();
+                element.FireBlur();
             }
             return Task.CompletedTask;
         }
@@ -51,7 +51,7 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.Key(key);
+                element.FireKey(key);
             }
             return Task.CompletedTask;
         }
@@ -60,16 +60,7 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
-                element.Click();
-            }
-            return Task.CompletedTask;
-        }
-
-        public Task OnDoubleClick(string id)
-        {
-            if (this.card.TryGetElementById(id, out AdaptiveElement element))
-            {
-                element.DoubleClick();
+                element.FireClick();
             }
             return Task.CompletedTask;
         }
@@ -78,7 +69,7 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.TextChanged(text);
+                element.FireTextChanged(text);
             }
             return Task.CompletedTask;
         }
@@ -87,7 +78,7 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.SelectionChanged(selectedIndices);
+                element.FireSelectionChanged(selectedIndices);
             }
             return Task.CompletedTask;
         }
@@ -96,7 +87,7 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
-                element.MouseEnter();
+                element.FireMouseEnter();
             }
             return Task.CompletedTask;
         }
@@ -105,7 +96,7 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
-                element.MouseLeave();
+                element.FireMouseLeave();
             }
             return Task.CompletedTask;
         }

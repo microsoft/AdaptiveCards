@@ -3,6 +3,7 @@ using LiveCardAPI;
 using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -21,51 +22,28 @@ namespace LiveCardServer
             this.rpc = rpc;
         }
 
-        protected class LocalLiveCard
+        /// <summary>
+        /// Tell client that property value changed
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public Task PropertyChanged(string id, string name, object value)
         {
+            return rpc.NotifyAsync(new object[] { id, name, value });
         }
 
         /// <summary>
-        /// Insert new element
+        /// Tell client that collection has changed.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="element"></param>
+        /// <param name="name"></param>
+        /// <param name="changes"></param>
         /// <returns></returns>
-        public Task OnInsertElement(InsertPosition position, string id, AdaptiveElement element)
+        public Task CollectionChanged(string id, string name, NotifyCollectionChangedEventArgs changes)
         {
-            return rpc.NotifyAsync(new object[] { position.ToString(), id, element });
-        }
-
-        /// <summary>
-        /// Replace element
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="element"></param>
-        /// <returns></returns>
-        public Task OnReplaceElement(AdaptiveElement element)
-        {
-            return rpc.NotifyAsync(new object[] { element });
-        }
-
-        /// <summary>
-        /// Remove element
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Task OnRemoveElement(string id)
-        {
-            return rpc.NotifyAsync(new object[] { id });
-        }
-
-        /// <summary>
-        /// SetProperties on element
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="properties"></param>
-        /// <returns></returns>
-        public Task OnSetProperties(string id, IEnumerable<SetProperty> properties)
-        {
-            return rpc.NotifyAsync(new object[] { id, properties });
+            return rpc.NotifyAsync(new object[] { id, name, changes });
         }
 
         /// <summary>
@@ -85,5 +63,6 @@ namespace LiveCardServer
         {
             return rpc.NotifyAsync();
         }
+
     }
 }

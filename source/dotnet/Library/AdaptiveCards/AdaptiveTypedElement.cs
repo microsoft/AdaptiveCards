@@ -20,8 +20,8 @@ namespace AdaptiveCards
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string Id { get { return _Id; } set { SetValue(ref _Id, value); } }
-        private string _Id;
+        public string Id { get { return _Id; } set { SetPropertyValue(ref _Id, value); } }
+        private string _Id = Guid.NewGuid().ToString("n");
 
         protected TENum? GetEnum<TENum>(string value)
             where TENum : struct

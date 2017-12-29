@@ -25,9 +25,9 @@ namespace AdaptiveCards
         /// <param name="target"></param>
         /// <param name="value"></param>
         /// <param name="caller"></param>
-        protected void SetValue<T>(ref T target, T value, [CallerMemberName] string caller = "")
+        protected void SetPropertyValue<T>(ref T target, T value, [CallerMemberName] string caller = "")
         {
-            if (target.Equals(value))
+            if (target == null || !target.Equals(value))
             {
                 target = value;
                 if (PropertyChanged != null)

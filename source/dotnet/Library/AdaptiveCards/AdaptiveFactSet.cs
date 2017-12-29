@@ -17,7 +17,7 @@ namespace AdaptiveCards
         ///     The facts to be displayed.
         /// </summary>
         [JsonRequired]
-        public ObservableCollection<AdaptiveFact> Facts { get { return _Facts; } set { SetValue(ref _Facts, value); } }
+        public ObservableCollection<AdaptiveFact> Facts { get { return _Facts; } set { SetPropertyValue(ref _Facts, value); } }
         private ObservableCollection<AdaptiveFact> _Facts = new ObservableCollection<AdaptiveFact>();
     }
 }

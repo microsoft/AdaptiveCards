@@ -1,49 +1,32 @@
 ﻿using AdaptiveCards;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LiveCardAPI
 {
-    public enum InsertPosition
-    {
-        Before, After, FirstChild, LastChild
-    }
-
     public interface ILiveCardClientAPI
     {
         /// <summary>
-        /// Insert new element
+        /// Called when a Property is changed
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="element"></param>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        Task OnInsertElement(InsertPosition position, string id, AdaptiveElement element);
+        Task PropertyChanged(string id, string name, object value);
 
         /// <summary>
-        /// Replace element
+        /// called when a collection is modified
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="element"></param>
+        /// <param name="name"></param>
+        /// <param name="changes"></param>
         /// <returns></returns>
-        Task OnReplaceElement(AdaptiveElement element);
-
-        /// <summary>
-        /// Remove element
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task OnRemoveElement(string id);
-
-        /// <summary>
-        /// SetProperties on element
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="properties"></param>
-        /// <returns></returns>
-        Task OnSetProperties(string id, IEnumerable<SetProperty> properties);
+        Task CollectionChanged(string id, string name, NotifyCollectionChangedEventArgs changes);
 
         /// <summary>
         /// Save the card

@@ -20,8 +20,6 @@ namespace LiveCardAPI
 
         Task OnClick(string id);
 
-        Task OnDoubleClick(string id);
-
         Task OnTextChanged(string id, string text);
 
         Task OnSelectionChanged(string id, int[] selectedIndices);

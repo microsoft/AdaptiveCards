@@ -21,14 +21,14 @@ namespace AdaptiveCards
         ///     The facts label
         /// </summary>
         [JsonRequired]
-        public string Title { get { return _Title; } set { SetValue(ref _Title, value); } }
+        public string Title { get { return _Title; } set { SetPropertyValue(ref _Title, value); } }
         private string _Title;
 
         /// <summary>
         ///     The fact's value
         /// </summary>
         [JsonRequired]
-        public string Value { get { return _Value; } set { SetValue(ref _Value, value); } }
+        public string Value { get { return _Value; } set { SetPropertyValue(ref _Value, value); } }
         private string _Value;
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("FactSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
-        public string Speak { get { return _Speak; } set { SetValue(ref _Speak, value); } }
+        public string Speak { get { return _Speak; } set { SetPropertyValue(ref _Speak, value); } }
         private string _Speak;
 
     }

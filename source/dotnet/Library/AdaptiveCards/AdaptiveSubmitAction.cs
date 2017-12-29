@@ -18,7 +18,7 @@ namespace AdaptiveCards
         ///     {"id":"123123123"}
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public object Data { get { return _Data; } set { SetValue(ref _Data, value); } }
+        public object Data { get { return _Data; } set { SetPropertyValue(ref _Data, value); } }
         private object _Data;
 
         [JsonIgnore]

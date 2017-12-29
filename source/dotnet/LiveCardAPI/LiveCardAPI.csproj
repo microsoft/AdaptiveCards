@@ -40,8 +40,8 @@
     <Reference Include="Nerdbank.FullDuplexStream, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cac503e1823ce71c, processorArchitecture=MSIL">
       <HintPath>..\packages\Nerdbank.FullDuplexStream.1.0.9\lib\dotnet\Nerdbank.FullDuplexStream.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,15 +60,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdaptiveExtensions.cs" />
+    <Compile Include="AsyncLock.cs" />
+    <Compile Include="AsyncQueue.cs" />
     <Compile Include="ElementFinder.cs" />
     <Compile Include="ILiveCard.cs" />
     <Compile Include="ILiveCardClientAPI.cs" />
     <Compile Include="ILiveCardServerAPI.cs" />
     <Compile Include="JsonRpcExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetEventsVisitor.cs" />
     <Compile Include="SetProperty.cs" />
-    <Compile Include="StreamingWebSocket.cs" />
     <Compile Include="WebSocketMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>

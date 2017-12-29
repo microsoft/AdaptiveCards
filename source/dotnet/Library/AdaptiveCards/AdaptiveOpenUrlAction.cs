@@ -16,7 +16,7 @@ namespace AdaptiveCards
         ///     Url to open using default operating system browser
         /// </summary>
         [JsonRequired]
-        public string Url { get { return _Url; } set { SetValue(ref _Url, value); } }
+        public string Url { get { return _Url; } set { SetPropertyValue(ref _Url, value); } }
         private string _Url;
 
     }

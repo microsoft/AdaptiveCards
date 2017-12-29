@@ -11,59 +11,72 @@ namespace AdaptiveCards
     /// </summary>
     public abstract class AdaptiveInput : AdaptiveElement
     {
-        public event EventHandler OnFocus;
-        public event EventHandler OnBlur;
-        public event EventHandler<TextChangedEventArgs> OnTextChanged;
-        public event EventHandler<KeyEventArgs> OnKey;
-        public event EventHandler<SelectionChangedEventArgs> OnSelectionChanged;
+        private event EventHandler _OnFocus;
+        public event EventHandler OnFocus
+        {
+            add { _OnFocus += value; this.Events.Add(EventTypes.OnFocus); }
+            remove { _OnFocus -= value; this.Events.Remove(EventTypes.OnFocus); }
+        }
+
+        private event EventHandler _OnBlur;
+        public event EventHandler OnBlur
+        {
+            add { _OnBlur += value; this.Events.Add(EventTypes.OnBlur); }
+            remove { _OnBlur -= value; this.Events.Remove(EventTypes.OnBlur); }
+        }
+
+        private event EventHandler<TextChangedEventArgs> _OnTextChanged;
+        public event EventHandler<TextChangedEventArgs> OnTextChanged
+        {
+            add { _OnTextChanged += value; this.Events.Add(EventTypes.OnTextChanged); }
+            remove { _OnTextChanged -= value; this.Events.Add(EventTypes.OnTextChanged); }
+        }
+
+        private event EventHandler<KeyEventArgs> _OnKey;
+        public event EventHandler<KeyEventArgs> OnKey
+        {
+            add { _OnKey += value; this.Events.Add(EventTypes.OnKey); }
+            remove { _OnKey -= value; this.Events.Add(EventTypes.OnKey); }
+        }
+
+        private event EventHandler<SelectionChangedEventArgs> _OnSelectionChanged;
+        public event EventHandler<SelectionChangedEventArgs> OnSelectionChanged
+        {
+            add { _OnSelectionChanged += value; this.Events.Add(EventTypes.OnSelectionChanged); }
+            remove { _OnSelectionChanged -= value; this.Events.Add(EventTypes.OnSelectionChanged); }
+        }
 
         public void FireFocus()
         {
-            OnFocus?.Invoke(this, new EventArgs());
+            _OnFocus?.Invoke(this, new EventArgs());
         }
 
         public void FireBlur()
         {
-            OnBlur?.Invoke(this, new EventArgs());
+            _OnBlur?.Invoke(this, new EventArgs());
         }
 
         public void FireTextChanged(string text)
         {
-            OnTextChanged?.Invoke(this, new TextChangedEventArgs() { Text = text });
+            _OnTextChanged?.Invoke(this, new TextChangedEventArgs() { Text = text });
         }
 
         public void FireKey(string key)
         {
-            OnKey?.Invoke(this, new KeyEventArgs() { Key = key });
+            _OnKey?.Invoke(this, new KeyEventArgs() { Key = key });
         }
 
         public void FireSelectionChanged(int[] selections)
         {
-            OnSelectionChanged?.Invoke(this, new SelectionChangedEventArgs() { Selection = selections });
+            _OnSelectionChanged?.Invoke(this, new SelectionChangedEventArgs() { Selection = selections });
         }
 
-        public override void SetEvents(List<string> events = null)
-        {
-            if (events == null)
-                events = new List<string>();
-            if (this.OnFocus != null)
-                events.Add(EventTypes.OnFocus);
-            if (this.OnBlur != null)
-                events.Add(EventTypes.OnBlur);
-            if (this.OnTextChanged != null)
-                events.Add(EventTypes.OnTextChanged);
-            if (this.OnKey != null)
-                events.Add(EventTypes.OnKey);
-            if (this.OnSelectionChanged != null)
-                events.Add(EventTypes.OnSelectionChanged);
-            base.SetEvents(events);
-        }
 
         /// <summary>
         ///     The input must have a value for it to be part of a Submit or Http action
         /// </summary>
         [Obsolete("Ths IsRequired property is not supported in Adaptive Cards yet and will be ignored")]
-        public bool IsRequired { get { return _IsRequired; } set { SetValue(ref _IsRequired, value); } }
+        public bool IsRequired { get { return _IsRequired; } set { SetPropertyValue(ref _IsRequired, value); } }
         private bool _IsRequired;
 
     }

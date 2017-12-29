@@ -25,17 +25,15 @@ namespace LiveCardServer
             this.Client = new LiveCardClientAPI(rpc);
         }
 
-
         /// <summary>
-        /// Class which exposes sending changes to the client
+        /// Class which exposes Client methods to server
         /// </summary>
         public ILiveCardClientAPI Client { get; set; }
 
         /// <summary>
-        /// Class which handles client events -> code behind
+        /// Class which exposes Server methods to client
         /// </summary>
         public ILiveCardServerAPI Server { get; set; }
-
 
         /// <summary>
         /// Card which is being worked on
@@ -60,38 +58,37 @@ namespace LiveCardServer
             return Task.CompletedTask;
         }
 
-        public async Task InsertElement(InsertPosition position, string id, AdaptiveElement element)
-        {
-            new SetEventsVisitor().Visit(null, element);
-            await this.Card.InsertElement(position, id, element);
-            await this.Client.OnInsertElement(position, id, element);
-        }
+        //public async Task InsertElement(InsertPosition position, string id, AdaptiveElement element)
+        //{
+        //    new SetEventsVisitor().Visit(null, element);
+        //    await this.Card.InsertElement(position, id, element);
+        //}
 
-        public async Task RemoveElement(string id)
-        {
-            await this.Card.RemoveElement(id);
-            await this.Client.OnRemoveElement(id);
-        }
+        //public async Task RemoveElement(string id)
+        //{
+        //    await this.Card.RemoveElement(id);
+        //    await this.Client.OnRemoveElement(id);
+        //}
 
-        public async Task ReplaceElement(AdaptiveElement element)
-        {
-            new SetEventsVisitor().Visit(null, element);
+        //public async Task ReplaceElement(AdaptiveElement element)
+        //{
+        //    new SetEventsVisitor().Visit(null, element);
 
-            await this.Card.ReplaceElement(element);
-            await this.Client.OnReplaceElement(element);
-        }
+        //    await this.Card.ReplaceElement(element);
+        //    await this.Client.OnReplaceElement(element);
+        //}
 
-        public async Task SaveCard(AdaptiveCard card = null)
-        {
-            new SetEventsVisitor().VisitCard(card);
-            await this.Client.SaveCard(card);
-        }
+        //public async Task SaveCard(AdaptiveCard card = null)
+        //{
+        //    new SetEventsVisitor().VisitCard(card);
+        //    await this.Client.SaveCard(card);
+        //}
 
-        public async Task SetProperties(string id, IEnumerable<SetProperty> properties)
-        {
-            await this.Card.SetProperties(id, properties);
-            await this.Client.OnSetProperties(id, properties);
-        }
+        //public async Task SetProperties(string id, IEnumerable<SetProperty> properties)
+        //{
+        //    await this.Card.SetProperties(id, properties);
+        //    await this.Client.OnSetProperties(id, properties);
+        //}
     }
 
 

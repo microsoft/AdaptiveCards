@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AdaptiveCards.Test
@@ -12,7 +13,7 @@ namespace AdaptiveCards.Test
         {
             var card = new AdaptiveCard
             {
-                Body = new List<AdaptiveElement>()
+                Body = new ObservableCollection<AdaptiveElement>()
                 {
                     new AdaptiveTextBlock()
                     {

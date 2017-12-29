@@ -18,7 +18,7 @@ namespace AdaptiveCards
         ///     Collection of images to display together
         /// </summary>
         [JsonRequired]
-        public ObservableCollection<AdaptiveImage> Images { get { return _Images; } set { SetValue(ref _Images, value); } }
+        public ObservableCollection<AdaptiveImage> Images { get { return _Images; } set { SetPropertyValue(ref _Images, value); } }
         private ObservableCollection<AdaptiveImage> _Images = new ObservableCollection<AdaptiveImage>();
 
         /// <summary>

@@ -13,42 +13,28 @@ namespace AdaptiveCards
         /// The amount of space the element should be separated from the previous element. Default value is <see cref="Spacing.Default"/>.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public AdaptiveSpacing Spacing { get { return _Spacing; } set { SetValue(ref _Spacing, value); } }
+        public AdaptiveSpacing Spacing { get { return _Spacing; } set { SetPropertyValue(ref _Spacing, value); } }
         private AdaptiveSpacing _Spacing;
 
         /// <summary>
         /// Indicates whether there should be a visible separator (e.g. a line) between the element and the one before it.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public bool Separator { get { return _Separator; } set { SetValue(ref _Separator, value); } }
+        public bool Separator { get { return _Separator; } set { SetPropertyValue(ref _Separator, value); } }
         private bool _Separator;
 
         /// <summary>
         /// Events to subscribe to for this element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string[] Events { get; set; }
-
-        public virtual void SetEvents(List<string> events = null)
-        {
-            if (events == null)
-                events = new List<string>();
-
-            if (this.OnClick != null)
-                events.Add(EventTypes.OnClick);
-            if (this.OnMouseEnter != null)
-                events.Add(EventTypes.OnMouseEnter);
-            if (this.OnMouseLeave != null)
-                events.Add(EventTypes.OnMouseLeave);
-            this.Events = events.ToArray();
-        }
+        public List<string> Events { get; set; } = new List<string>();
 
         /// <summary>
         ///     SSML fragment for spoken interaction
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("CardElement.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
-        public string Speak { get { return _Speak; } set { SetValue(ref _Speak, value); } }
+        public string Speak { get { return _Speak; } set { SetPropertyValue(ref _Speak, value); } }
         private string _Speak;
 
         /// <summary>
@@ -116,23 +102,40 @@ namespace AdaptiveCards
         }
 #pragma warning restore 612, 618
 
-        public event EventHandler OnClick;
-        public event EventHandler OnMouseEnter;
-        public event EventHandler OnMouseLeave;
+        private event EventHandler _OnClick;
+        public event EventHandler OnClick
+        {
+            add { _OnClick += value; this.Events.Add(EventTypes.OnClick); }
+            remove { _OnClick -= value; this.Events.Remove(EventTypes.OnClick); }
+        }
+
+        private event EventHandler _OnMouseEnter;
+        public event EventHandler OnMouseEnter
+        {
+            add { _OnMouseEnter += value; this.Events.Add(EventTypes.OnMouseEnter); }
+            remove { _OnMouseEnter -= value; this.Events.Remove(EventTypes.OnMouseEnter); }
+        }
+
+        private event EventHandler _OnMouseLeave;
+        public event EventHandler OnMouseLeave
+        {
+            add { _OnMouseLeave += value; this.Events.Add(EventTypes.OnMouseLeave); }
+            remove { _OnMouseLeave -= value; this.Events.Remove(EventTypes.OnMouseLeave); }
+        }
 
         public void FireClick()
         {
-            OnClick?.Invoke(this, new EventArgs());
+            _OnClick?.Invoke(this, new EventArgs());
         }
 
         public void FireMouseEnter()
         {
-            OnMouseEnter?.Invoke(this, new EventArgs());
+            _OnMouseEnter?.Invoke(this, new EventArgs());
         }
 
         public void FireMouseLeave()
         {
-            OnMouseLeave?.Invoke(this, new EventArgs());
+            _OnMouseLeave?.Invoke(this, new EventArgs());
         }
     }
 }

@@ -17,56 +17,56 @@ namespace AdaptiveCards
         ///     The size of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveTextSize Size { get { return _Size; } set { SetValue(ref _Size, value); } }
+        public AdaptiveTextSize Size { get { return _Size; } set { SetPropertyValue(ref _Size, value); } }
         private AdaptiveTextSize _Size;
 
         /// <summary>
         ///     The weight of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveTextWeight Weight { get { return _Weight; } set { SetValue(ref _Weight, value); } }
+        public AdaptiveTextWeight Weight { get { return _Weight; } set { SetPropertyValue(ref _Weight, value); } }
         private AdaptiveTextWeight _Weight;
 
         /// <summary>
         ///     The color of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveTextColor Color { get { return _Color; } set { SetValue(ref _Color, value); } }
+        public AdaptiveTextColor Color { get { return _Color; } set { SetPropertyValue(ref _Color, value); } }
         private AdaptiveTextColor _Color;
 
         /// <summary>
         ///     Should it be subtle?
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool IsSubtle { get { return _IsSubtle; } set { SetValue(ref _IsSubtle, value); } }
+        public bool IsSubtle { get { return _IsSubtle; } set { SetPropertyValue(ref _IsSubtle, value); } }
         private bool _IsSubtle;
 
         /// <summary>
         ///     The text to display
         /// </summary>
         [JsonRequired]
-        public string Text { get { return _Text; } set { SetValue(ref _Text, value); } }
+        public string Text { get { return _Text; } set { SetPropertyValue(ref _Text, value); } }
         private string _Text;
 
         /// <summary>
         ///     Horizontal alignment for element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public AdaptiveHorizontalAlignment HorizontalAlignment { get { return _HorizontalAlignment; } set { SetValue(ref _HorizontalAlignment, value); } }
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get { return _HorizontalAlignment; } set { SetPropertyValue(ref _HorizontalAlignment, value); } }
         private AdaptiveHorizontalAlignment _HorizontalAlignment;
 
         /// <summary>
         ///     Is it allowed for the text to wrap
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool Wrap { get { return _Wrap; } set { SetValue(ref _Wrap, value); } }
+        public bool Wrap { get { return _Wrap; } set { SetPropertyValue(ref _Wrap, value); } }
         private bool _Wrap;
 
         /// <summary>
         ///     When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int MaxLines { get { return _MaxLines; } set { SetValue(ref _MaxLines, value); } }
+        public int MaxLines { get { return _MaxLines; } set { SetPropertyValue(ref _MaxLines, value); } }
         private int _MaxLines;
 
         public bool ShouldSerializeSize()
