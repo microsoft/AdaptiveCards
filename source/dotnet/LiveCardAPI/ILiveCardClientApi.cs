@@ -27,7 +27,7 @@ namespace LiveCardAPI
         /// <param name="insertIndex">use -1 to append</param>
         /// <param name="newItems"></param>
         /// <returns></returns>
-        Task AddElements(string elementId, int insertIndex, IEnumerable<AdaptiveElement> newItems);
+        Task AddElements(string elementId, int insertIndex, AdaptiveElement[] newItems);
 
         /// <summary>
         /// Remove elements from collection
@@ -35,7 +35,7 @@ namespace LiveCardAPI
         /// <param name="elementId">collection element Id</param>
         /// <param name="elementIds"></param>
         /// <returns></returns>
-        Task RemoveElements(string elementId, IEnumerable<string> elementIds);
+        Task RemoveElements(string elementId, string[] elementIds);
 
         /// <summary>
         /// Replace elements in collection
@@ -43,7 +43,7 @@ namespace LiveCardAPI
         /// <param name="elementId">collection element Id</param>
         /// <param name="elements"></param>
         /// <returns></returns>
-        Task ReplaceElements(string elementId, IEnumerable<AdaptiveElement> elements);
+        Task ReplaceElements(string elementId, AdaptiveElement[] elements);
 
         /// <summary>
         /// Reset element to default

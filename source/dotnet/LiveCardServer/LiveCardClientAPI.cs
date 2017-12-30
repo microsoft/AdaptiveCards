@@ -41,7 +41,7 @@ namespace LiveCardServer
         /// <param name="insertIndex"></param>
         /// <param name="newItems"></param>
         /// <returns></returns>
-        public Task AddElements(string elementId, int insertIndex, IEnumerable<AdaptiveElement> newItems)
+        public Task AddElements(string elementId, int insertIndex, AdaptiveElement[] newItems)
         {
             return rpc.NotifyAsync(new object[] { elementId, insertIndex, newItems });
         }
@@ -52,7 +52,7 @@ namespace LiveCardServer
         /// <param name="elementId"></param>
         /// <param name="elementIds"></param>
         /// <returns></returns>
-        public Task RemoveElements(string elementId, IEnumerable<string> elementIds)
+        public Task RemoveElements(string elementId, string[] elementIds)
         {
             return rpc.NotifyAsync(new object[] { elementId, elementIds});
         }
@@ -63,7 +63,7 @@ namespace LiveCardServer
         /// <param name="elementId"></param>
         /// <param name="elementIds"></param>
         /// <returns></returns>
-        public Task ReplaceElements(string elementId, IEnumerable<AdaptiveElement> elements)
+        public Task ReplaceElements(string elementId, AdaptiveElement[] elements)
         {
             return rpc.NotifyAsync(new object[] { elementId, elements});
         }

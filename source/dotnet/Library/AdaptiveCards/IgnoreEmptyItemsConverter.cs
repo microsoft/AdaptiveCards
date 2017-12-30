@@ -23,10 +23,10 @@ namespace AdaptiveCards
                 .Select(obj => serializer.Deserialize(obj.CreateReader(), typeof(T)))
                 .Where(value => value != null)
                 .Select(value => (T)value);
-            if (objectType == typeof(ObservableCollection<T>))
-                return new ObservableCollection<T>(items);
-            else
-                return items.ToList();
+            if (objectType.IsArray)
+                return items.ToArray();
+
+            return Activator.CreateInstance(objectType, items);
         }
 
         public override bool CanWrite => false;

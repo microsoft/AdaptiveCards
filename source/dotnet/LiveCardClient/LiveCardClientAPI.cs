@@ -50,7 +50,7 @@ namespace LiveCardClient
         /// <param name="insertIndex"></param>
         /// <param name="newItems"></param>
         /// <returns></returns>
-        public Task AddElements(string elementId, int insertIndex, IEnumerable<AdaptiveElement> newItems)
+        public Task AddElements(string elementId, int insertIndex, AdaptiveElement[] newItems)
         {
             lock (this.liveCard.Card)
             {
@@ -79,7 +79,7 @@ namespace LiveCardClient
         /// <param name="elementId"></param>
         /// <param name="elementIds"></param>
         /// <returns></returns>
-        public Task RemoveElements(string elementId, IEnumerable<string> elementIds)
+        public Task RemoveElements(string elementId, string[] elementIds)
         {
             lock (this.liveCard.Card)
             {
@@ -113,7 +113,7 @@ namespace LiveCardClient
         /// <param name="elementId"></param>
         /// <param name="newElements"></param>
         /// <returns></returns>
-        public Task ReplaceElements(string elementId, IEnumerable<AdaptiveElement> newElements)
+        public Task ReplaceElements(string elementId, AdaptiveElement[] newElements)
         {
             lock (this.liveCard.Card)
             {
