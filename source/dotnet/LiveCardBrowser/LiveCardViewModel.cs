@@ -115,26 +115,38 @@ namespace LiveCardBrowser
 
         private void _updateNativeElement(AdaptiveElement element)
         {
-            var oldElement = (UIElement)this.NativeCard.FindName(element.Id);
-            var parent = VisualTreeHelper.GetParent(oldElement);
-            var newElement = renderer.RenderElement(GetNameScope(oldElement), element);
-            if (parent is ContentControl)
+
+            var oldUiElement = (FrameworkElement)this.NativeCard.FindName(element.Id);
+            var parentUiElement = VisualTreeHelper.GetParent(oldUiElement);
+            var nameScope = GetNameScope(oldUiElement);
+            var newUiElement = renderer.RenderElement(nameScope, element);
+
+            // patch up names
+            if (newUiElement.Name != null)
             {
-                ContentControl cc = (ContentControl)parent;
-                cc.Content = newElement;
+                try { nameScope.UnregisterName(newUiElement.Name); } catch { }
+                try { nameScope.RegisterName(newUiElement.Name, newUiElement); } catch { }
             }
-            else if (parent is Panel)
+
+
+            if (parentUiElement is ContentControl)
             {
-                Panel panel = (Panel)parent;
-                var index = panel.Children.IndexOf(oldElement);
+                ContentControl cc = (ContentControl)parentUiElement;
+                cc.Content = newUiElement;
+            }
+            else if (parentUiElement is Panel)
+            {
+                Panel panel = (Panel)parentUiElement;
+                var index = panel.Children.IndexOf(oldUiElement);
                 // transfer grid properties
-                Grid.SetRow(newElement, Grid.GetRow(oldElement));
-                Grid.SetRowSpan(newElement, Grid.GetRowSpan(oldElement));
-                Grid.SetColumn(newElement, Grid.GetColumn(oldElement));
-                Grid.SetColumnSpan(newElement, Grid.GetColumnSpan(oldElement));
+                Grid.SetRow(newUiElement, Grid.GetRow(oldUiElement));
+                Grid.SetRowSpan(newUiElement, Grid.GetRowSpan(oldUiElement));
+                Grid.SetColumn(newUiElement, Grid.GetColumn(oldUiElement));
+                Grid.SetColumnSpan(newUiElement, Grid.GetColumnSpan(oldUiElement));
+                newUiElement.Margin = oldUiElement.Margin;
 
                 panel.Children.RemoveAt(index);
-                panel.Children.Insert(index, newElement);
+                panel.Children.Insert(index, newUiElement);
             }
             else
                 throw new Exception("Unknown parent type");
