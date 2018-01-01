@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdaptiveElementMemory.cs" />
     <Compile Include="AdaptiveExtensions.cs" />
     <Compile Include="AsyncLock.cs" />
     <Compile Include="AsyncQueue.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="ILiveCardClientAPI.cs" />
     <Compile Include="ILiveCardServerAPI.cs" />
     <Compile Include="JsonRpcExtensions.cs" />
+    <Compile Include="ProcessedMemory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetProperty.cs" />
     <Compile Include="WebSocketMessageHandler.cs" />

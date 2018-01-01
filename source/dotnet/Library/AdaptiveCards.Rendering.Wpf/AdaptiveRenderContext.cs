@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -35,6 +36,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public AdaptiveElementRenderers<FrameworkElement, AdaptiveRenderContext> ElementRenderers { get; set; }
 
+        public INameScope Namescope { get; set; }
 
         public BitmapImage ResolveImageSource(string url)
         {
@@ -112,7 +114,9 @@ namespace AdaptiveCards.Rendering.Wpf
             if (renderer != null)
             {
                 var frameworkElement = renderer.Invoke(element, this);
+                // set dataContext to source object
                 frameworkElement.DataContext = element;
+                frameworkElement.Name = element.Id;
 
                 if (element is AdaptiveElement)
                 {

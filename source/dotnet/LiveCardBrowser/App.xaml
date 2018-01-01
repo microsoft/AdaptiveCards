@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:LiveCardBrowser"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <local:VisToBool x:Key="VisibleIfTrue" Inverted="True" Not="False" />
+        <local:VisToBool x:Key="VisibleIfNotTrue" Inverted="True" Not="True" />
     </Application.Resources>
 </Application>

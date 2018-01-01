@@ -25,16 +25,12 @@ namespace LiveCardBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static AdaptiveCardRenderer renderer;
 
         public MainWindow()
         {
             InitializeComponent();
-            renderer = new AdaptiveCardRenderer()
-            {
-                Resources = Resources
-            };
         }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ((MainWindow)sender).DataContext = new AppViewModel();
@@ -47,21 +43,16 @@ namespace LiveCardBrowser
             {
                 var url = new Uri(this.TextBoxUrl.Text.Trim());
                 LiveCard liveCard = new LiveCard(url);
-                liveCard.OnCardChanged += LiveCard_OnCardChanged;
-                liveCard.OnElementChanged += LiveCard_OnElementChanged;
 
                 // load deactivated card
                 await liveCard.LoadCard();
 
                 lock (liveCard.Card)
                 {
-                    RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
-
-                    var liveCardViewModel = new LiveCardViewModel()
+                    var liveCardViewModel = new LiveCardViewModel(this.Dispatcher, this.Resources)
                     {
                         Url = url.ToString(),
-                        LiveCard = liveCard,
-                        CardContent = renderedCard.FrameworkElement
+                        LiveCard = liveCard
                     };
 
                     appViewModel.Cards.Add(liveCardViewModel);
@@ -70,30 +61,6 @@ namespace LiveCardBrowser
                     this.TextBoxUrl.Text = null;
                 }
             }
-        }
-
-        private void LiveCard_OnCardChanged(object sender, CardChangedArgs e)
-        {
-            this.Dispatcher.InvokeAsync(() =>
-            {
-                AppViewModel appViewModel = (AppViewModel)this.DataContext;
-                lock (appViewModel.SelectedCard.LiveCard.Card)
-                {
-                    appViewModel.SelectedCard.CardContent = renderer.RenderCard(appViewModel.SelectedCard.LiveCard.Card).FrameworkElement;
-                }
-            });
-        }
-
-        private void LiveCard_OnElementChanged(object sender, ElementChangedArgs e)
-        {
-            this.Dispatcher.Invoke(() =>
-            {
-                AppViewModel appViewModel = (AppViewModel)this.DataContext;
-                lock (appViewModel.SelectedCard.LiveCard.Card)
-                {
-                    appViewModel.SelectedCard.CardContent = renderer.RenderCard(appViewModel.SelectedCard.LiveCard.Card).FrameworkElement;
-                }
-            });
         }
 
         private async void ActivateButton_Click(object sender, RoutedEventArgs e)
@@ -106,5 +73,9 @@ namespace LiveCardBrowser
             }
         }
 
+        private void DectivateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

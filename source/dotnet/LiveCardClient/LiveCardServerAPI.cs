@@ -48,11 +48,6 @@ namespace LiveCardClient
             return rpc.NotifyAsync(argument: id);
         }
 
-        public Task OnDoubleClick(string id)
-        {
-            return rpc.NotifyAsync(argument: id);
-        }
-
         public Task FireTextChanged(string id, string text)
         {
             return rpc.NotifyAsync(argument: new object[] { id, text });

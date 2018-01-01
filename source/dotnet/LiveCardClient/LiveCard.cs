@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Net.WebSockets;
@@ -19,7 +21,7 @@ namespace LiveCardClient
     /// <summary>
     /// LiveCard for clients, exposes clientAPI to remote server 
     /// </summary>
-    public class LiveCard : ILiveCard
+    public class LiveCard : ObservableObject, ILiveCard
     {
         private AdaptiveCard card;
         private Uri uri;
@@ -44,8 +46,10 @@ namespace LiveCardClient
         public AdaptiveCard Card
         {
             get { return this.card; }
-            set { this.card = value; }
+            set { this.SetPropertyValue(ref card, value); }
         }
+
+        public bool Active { get { return this.webSocket?.State == WebSocketState.Open; } }
 
         public async Task StartListening()
         {
@@ -66,16 +70,21 @@ namespace LiveCardClient
                 this.rpc.JsonSerializer.Converters.Add(new AdaptiveTypedElementConverter());
                 this.rpc.JsonSerializer.Converters.Add(new IgnoreEmptyItemsConverter<AdaptiveAction>());
                 this.rpc.JsonSerializer.Converters.Add(new IgnoreEmptyItemsConverter<AdaptiveElement>());
+                this.rpc.Disconnected += Rpc_Disconnected;
+                FirePropertyChanged("Active");
 
                 this.Server = new LiveCardServerAPI(rpc);
 
-                EventBinder.Bind(this.Server, this.card);
+                // bind events for Client->server notifications
+                BindServerEvents();
                 this.rpc.StartListening();
             }
         }
 
-        public event EventHandler<CardChangedArgs> OnCardChanged;
-        public event EventHandler<ElementChangedArgs> OnElementChanged;
+        private void Rpc_Disconnected(object sender, JsonRpcDisconnectedEventArgs e)
+        {
+            FirePropertyChanged("Active");
+        }
 
         public async Task LoadCard(string json = null)
         {
@@ -83,7 +92,7 @@ namespace LiveCardClient
             if (json == null)
                 json = await client.GetStringAsync(uri);
             var parseResult = AdaptiveCard.FromJson(json);
-            this.card = parseResult.Card;
+            this.Card = parseResult.Card;
         }
 
         /// <summary>
@@ -109,25 +118,11 @@ namespace LiveCardClient
         /// Deactive live card
         /// </summary>
         /// <returns></returns>
-        public virtual async Task DeActivate()
+        public virtual async Task Deactivate()
         {
             // tell server we are deactivating
             await this.Server.FireDeactivate();
             await _closeSocket();
-        }
-
-        public virtual Task FireElementChanged(AdaptiveElement element)
-        {
-            //EventBinder.Bind(this.Server, element);
-            //this.OnElementChanged(element, new ElementChangedArgs() { Element = element });
-            return Task.CompletedTask;
-        }
-
-        public virtual Task FireCardChanged(AdaptiveCard card)
-        {
-            EventBinder.Bind(this.Server, card);
-            this.OnCardChanged(card, new CardChangedArgs() { Card = card });
-            return Task.CompletedTask;
         }
 
         public virtual Task SaveCard(AdaptiveCard card = null)
@@ -140,5 +135,60 @@ namespace LiveCardClient
             await _closeSocket();
         }
 
+        private void BindServerEvents()
+        {
+            foreach (var element in this.Card.GetAllElements())
+            {
+                if (element.Events != null)
+                {
+                    foreach (var eventName in element.Events)
+                    {
+                        switch (eventName)
+                        {
+                            case "onClick":
+                                element.OnClick += async (sender, e) => await this.Server.FireClick(element.Id);
+                                break;
+                            case "onMouseEnter":
+                                element.OnMouseEnter += async (sender, e) => await this.Server.FireMouseEnter(element.Id);
+                                break;
+                            case "onMouseLeave":
+                                element.OnMouseLeave += async (sender, e) => await this.Server.FireMouseLeave(element.Id);
+                                break;
+                            default:
+                                if (element is AdaptiveInput)
+                                {
+                                    AdaptiveInput input = element as AdaptiveInput;
+                                    switch (eventName)
+                                    {
+                                        case "onKey":
+                                            input.OnKey += async (sender, e) => await this.Server.FireKey(element.Id, e.Key);
+                                            break;
+                                        case "onTextchanged":
+                                            input.OnTextChanged += async (sender, e) => await this.Server.FireTextChanged(element.Id, e.Text);
+                                            break;
+                                        case "onSelectionChanged":
+                                            input.OnSelectionChanged += async (sender, e) => await this.Server.FireSelectionChanged(element.Id, e.Selection);
+                                            break;
+                                        case "onFocus":
+                                            input.OnFocus += async (sender, e) => await this.Server.FireFocus(element.Id);
+                                            break;
+                                        case "onBlur":
+                                            input.OnBlur += async (sender, e) => await this.Server.FireBlur(element.Id);
+                                            break;
+                                        default:
+                                            throw new ArgumentException($"{eventName} is not known");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new ArgumentException($"{eventName} is not known");
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+
+        }
     }
 }

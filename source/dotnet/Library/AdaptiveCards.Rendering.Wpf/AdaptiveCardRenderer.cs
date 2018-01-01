@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -54,10 +55,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public AdaptiveActionHandlers ActionHandlers { get; } = new AdaptiveActionHandlers();
 
-
         public static FrameworkElement RenderAdaptiveCardWrapper(AdaptiveCard card, AdaptiveRenderContext context)
         {
             var outerGrid = new Grid();
+            context.Namescope = new NameScope();
+            NameScope.SetNameScope(outerGrid, context.Namescope);
             outerGrid.Style = context.GetStyle("Adaptive.Card");
 
             outerGrid.Background = context.GetColorBrush(context.Config.ContainerStyles.Default.BackgroundColor);
@@ -65,16 +67,15 @@ namespace AdaptiveCards.Rendering.Wpf
             outerGrid.SetBackgroundSource(card.BackgroundImage, context);
 
             var grid = new Grid();
+            outerGrid.Children.Add(grid);
             grid.Style = context.GetStyle("Adaptive.InnerCard");
             grid.Margin = new Thickness(context.Config.Spacing.Padding);
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
-            outerGrid.Children.Add(grid);
             return outerGrid;
         }
 
@@ -103,12 +104,30 @@ namespace AdaptiveCards.Rendering.Wpf
                 ElementRenderers = ElementRenderers
             };
 
-            var element = context.Render(card);
+            var frameworkElement = context.Render(card);
 
-            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings);
+            renderCard = new RenderedAdaptiveCard(frameworkElement, card, context.Warnings);
             renderCard.InputBindings = context.InputBindings;
 
             return renderCard;
+        }
+
+        public FrameworkElement RenderElement(INameScope namescope, AdaptiveElement element)
+        {
+            void Callback(object sender, AdaptiveActionEventArgs args)
+            {
+            }
+
+            var context = new AdaptiveRenderContext(Callback, null)
+            {
+                ActionHandlers = ActionHandlers,
+                Config = HostConfig ?? new AdaptiveHostConfig(),
+                Resources = Resources,
+                ElementRenderers = ElementRenderers,
+                Namescope = namescope
+            };
+
+            return context.Render(element);
         }
     }
 }

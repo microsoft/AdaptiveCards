@@ -29,7 +29,7 @@ namespace LiveCardAPI
         {
             if (id == card.Id)
                 element = card as ElementT;
-            else 
+            else
                 element = card.GetAllElements().Where(el => el.Id == id).Cast<ElementT>().FirstOrDefault();
             return (element != null);
         }
@@ -107,5 +107,8 @@ namespace LiveCardAPI
                 throw new KeyNotFoundException(id);
             }
         }
+
+
     }
+
 }

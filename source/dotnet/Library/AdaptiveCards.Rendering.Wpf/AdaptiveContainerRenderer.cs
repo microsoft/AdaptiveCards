@@ -41,13 +41,19 @@ namespace AdaptiveCards.Rendering.Wpf
                 FrameworkElement uiElement = context.Render(cardElement);
                 if (uiElement != null)
                 {
+                    if (uiElement.Name != null)
+                    {
+                        try { context.Namescope.UnregisterName(uiElement.Name); } catch { }
+                        try { context.Namescope.RegisterName(uiElement.Name, uiElement); } catch { }
+                    }
+
                     if (cardElement.Separator && uiContainer.Children.Count > 0)
                     {
                         AddSeperator(context, cardElement, uiContainer);
                     }
                     else if (uiContainer.Children.Count > 0)
                     {
-                        var spacing = context.Config.GetSpacing(cardElement.Spacing);                        
+                        var spacing = context.Config.GetSpacing(cardElement.Spacing);
                         uiElement.Margin = new Thickness(0, spacing, 0, 0);
                     }
 
@@ -68,11 +74,11 @@ namespace AdaptiveCards.Rendering.Wpf
             int spacing = context.Config.GetSpacing(element.Spacing);
 
             SeparatorConfig sepStyle = context.Config.Separator;
-            
+
             uiSep.Margin = new Thickness(0, (spacing - sepStyle.LineThickness) / 2, 0, 0);
             uiSep.SetHeight(sepStyle.LineThickness);
-            if(!string.IsNullOrWhiteSpace(sepStyle.LineColor))
-                uiSep.SetBackgroundColor(sepStyle.LineColor,context);
+            if (!string.IsNullOrWhiteSpace(sepStyle.LineColor))
+                uiSep.SetBackgroundColor(sepStyle.LineColor, context);
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);

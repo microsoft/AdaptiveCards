@@ -69,7 +69,6 @@
             </Grid.ColumnDefinitions>
             <TextBox Name="TextBoxUrl" Grid.Column="0" Text="http://localhost:61061/api/helloworld"/>
             <Button Name="AddButton" Grid.Column="1" Content="Add" Margin="2" Padding="8 2 8 2" Click="AddButton_Click" />
-            <Button Name="ActivateButton" Content="Activate" Width="100" Margin="2" Padding="8 2 8 2" Click="ActivateButton_Click"/>
         </Grid>
         <TabControl Grid.Row="1" ItemsSource="{Binding Cards}" SelectedItem="{Binding SelectedCard}" Background="Gray">
             <TabControl.ItemTemplate>
@@ -79,7 +78,15 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                        <ContentControl Content="{Binding CardContent}" Width="800" ></ContentControl>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button Name="ActivateButton" Content="Activate card" Width="100" Margin="2" Padding="8 2 8 2" Click="ActivateButton_Click" Visibility="{Binding LiveCard.Active, Converter={StaticResource VisibleIfNotTrue}, FallbackValue=Visible}"/>
+                        <Button Name="DectivateButton" Content="Deactivate card" Width="100" Margin="2" Padding="8 2 8 2" Click="DectivateButton_Click" Visibility="{Binding LiveCard.Active, Converter={StaticResource VisibleIfTrue}, FallbackValue=Hidden}"/>
+                        <ContentControl Grid.Row="1" Content="{Binding NativeCard}" Width="800" ></ContentControl>
+                    </Grid>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

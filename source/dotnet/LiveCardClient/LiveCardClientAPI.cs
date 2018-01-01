@@ -64,6 +64,8 @@ namespace LiveCardClient
                     {
                         if (pos == -1)
                             elements.Add(newItem);
+                        else if (pos > elements.Count)
+                            elements.Add(newItem);
                         else
                             elements.Insert(pos++, newItem);
                     }

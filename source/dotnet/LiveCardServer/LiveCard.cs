@@ -18,13 +18,12 @@ namespace LiveCardServer
         private AdaptiveCard card;
         private WebSocket webSocket;
         private JsonRpc rpc;
-        private HashSet<string> monitoredElements = new HashSet<string>();
+        private AdaptiveElementMemory domChanges = new AdaptiveElementMemory();
 
         public LiveCard(AdaptiveCard card, WebSocket webSocket)
         {
             this.card = card;
-            card.Body.CollectionChanged += Body_CollectionChanged;
-            ProxyChangesToClient();
+            MonitorDomChanges();
 
             this.Server = new LiveCardServerAPI(card);
             this.rpc = new JsonRpc(new WebSocketMessageHandler(webSocket), this.Server);
@@ -118,7 +117,7 @@ namespace LiveCardServer
                 .Where(cs => cs.Columns == sender)
                 .FirstOrDefault();
             if (columnSet != null)
-               await sendCollectionChanges(columnSet.Id, e);
+                await sendCollectionChanges(columnSet.Id, e);
         }
 
         private async Task sendCollectionChanges(string containerId, NotifyCollectionChangedEventArgs e)
@@ -143,26 +142,27 @@ namespace LiveCardServer
             }
         }
 
-        private void ProxyChangesToClient()
+        private void MonitorDomChanges()
         {
-            foreach (var element in card.GetAllElements())
+            if (this.domChanges.UnProcessed(this.Card))
             {
-                string elid = $"{element.Id}-{element.GetHashCode()}";
-                if (!this.monitoredElements.Contains(elid))
-                {
-                    element.PropertyChanged += Element_PropertyChanged;
+                this.Card.Body.CollectionChanged += Body_CollectionChanged;
+                this.domChanges.Processed(this.Card);
+            }
 
-                    if (element is AdaptiveContainer)
-                    {
-                        AdaptiveContainer container = element as AdaptiveContainer;
-                        container.Items.CollectionChanged += Items_CollectionChanged;
-                    }
-                    else if (element is AdaptiveColumnSet)
-                    {
-                        AdaptiveColumnSet columnSet = element as AdaptiveColumnSet;
-                        columnSet.Columns.CollectionChanged += Columns_CollectionChanged;
-                    }
-                    this.monitoredElements.Add(elid);
+            foreach (var element in card.GetAllElements().UnProcessed(this.domChanges))
+            {
+                element.PropertyChanged += Element_PropertyChanged;
+
+                if (element is AdaptiveContainer)
+                {
+                    AdaptiveContainer container = element as AdaptiveContainer;
+                    container.Items.CollectionChanged += Items_CollectionChanged;
+                }
+                else if (element is AdaptiveColumnSet)
+                {
+                    AdaptiveColumnSet columnSet = element as AdaptiveColumnSet;
+                    columnSet.Columns.CollectionChanged += Columns_CollectionChanged;
                 }
             }
         }

@@ -1,16 +1,37 @@
-﻿using LiveCardClient;
+﻿using AdaptiveCards;
+using AdaptiveCards.Rendering.Wpf;
+using LiveCardAPI;
+using LiveCardClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace LiveCardBrowser
 {
     public class LiveCardViewModel : ObservableObject
     {
+        private AdaptiveElementMemory memory = new AdaptiveElementMemory();
+        private AdaptiveCardRenderer renderer;
+        private Dispatcher dispatcher;
+        private Grid grid = new Grid();
+
+        public LiveCardViewModel(Dispatcher dispatcher, ResourceDictionary resources)
+        {
+            this.dispatcher = dispatcher;
+            renderer = new AdaptiveCardRenderer()
+            {
+                Resources = resources
+            };
+        }
 
         private string url;
         public string Url { get { return url; } set { url = value; Notify(); } }
@@ -23,20 +44,200 @@ namespace LiveCardBrowser
             set
             {
                 liveCard = value;
+                MonitorDomChanges();
+                RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
+                this.NativeCard = renderedCard.FrameworkElement;
                 Notify();
             }
         }
 
-        FrameworkElement content;
-        public FrameworkElement CardContent
+        FrameworkElement nativeCard;
+        public FrameworkElement NativeCard
         {
-            get { return content; }
-            set
+            get { return nativeCard; }
+            protected set
             {
-                content = value;
+                nativeCard = value;
                 Notify();
             }
         }
 
+
+        private void MonitorDomChanges()
+        {
+            if (memory.UnProcessed(this.LiveCard.Card))
+            {
+                this.LiveCard.Card.Body.CollectionChanged += Body_CollectionChanged;
+                memory.Processed(this.LiveCard.Card);
+            }
+
+            foreach (var element in this.LiveCard.Card.GetAllElements().UnProcessed(memory))
+            {
+                element.PropertyChanged += Element_PropertyChanged;
+
+                if (element is AdaptiveContainer)
+                {
+                    AdaptiveContainer container = element as AdaptiveContainer;
+                    container.Items.CollectionChanged += Items_CollectionChanged; ;
+                }
+                else if (element is AdaptiveColumnSet)
+                {
+                    AdaptiveColumnSet columnSet = element as AdaptiveColumnSet;
+                    columnSet.Columns.CollectionChanged += Columns_CollectionChanged; ;
+                }
+            }
+        }
+
+        /// <summary>
+        /// send property changes to client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Element_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.dispatcher.Invoke(() =>
+            {
+                // render element and replace in element tree
+                // TODO add logic to keep focus and input state
+                if (sender is AdaptiveElement)
+                {
+                    AdaptiveElement element = (AdaptiveElement)sender;
+                    _updateNativeElement(element);
+                }
+                else if (sender is AdaptiveCard)
+                {
+                    RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
+                    this.NativeCard = renderedCard.FrameworkElement;
+                }
+            });
+        }
+
+        private void _updateNativeElement(AdaptiveElement element)
+        {
+            var oldElement = (UIElement)this.NativeCard.FindName(element.Id);
+            var parent = VisualTreeHelper.GetParent(oldElement);
+            var newElement = renderer.RenderElement(GetNameScope(oldElement), element);
+            if (parent is ContentControl)
+            {
+                ContentControl cc = (ContentControl)parent;
+                cc.Content = newElement;
+            }
+            else if (parent is Panel)
+            {
+                Panel panel = (Panel)parent;
+                var index = panel.Children.IndexOf(oldElement);
+                panel.Children.RemoveAt(index);
+                panel.Children.Insert(index, newElement);
+            }
+            else
+                throw new Exception("Unknown parent type");
+        }
+
+        private static INameScope GetNameScope(UIElement oldElement)
+        {
+            var anscestor = (DependencyObject)oldElement;
+            INameScope ns;
+            do
+            {
+                anscestor = VisualTreeHelper.GetParent(anscestor);
+                ns = NameScope.GetNameScope(anscestor);
+            } while (ns == null && anscestor != null);
+            return ns;
+        }
+
+        /// <summary>
+        /// send collection changes to client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.dispatcher.Invoke(() =>
+            {
+                // render element and replace in element tree
+                // special logic to keep focus and input state
+                // TODO optomize this
+                var container = this.LiveCard.Card.GetAllElements()
+                .Where(el => el is AdaptiveContainer)
+                .Cast<AdaptiveContainer>()
+                .Where(c => c.Items == sender)
+                .FirstOrDefault();
+                processCollectionChange(container.Id, e);
+            });
+
+        }
+
+
+        /// <summary>
+        /// Send collection changes to client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Body_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.dispatcher.Invoke(() =>
+            {
+                // TODO this is not doing cards correctly, will only work for root card and needs to be mo better
+                processCollectionChange(this.LiveCard.Card.Id, e);
+            });
+        }
+
+        /// <summary>
+        /// Send collection changes to client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.dispatcher.Invoke(() =>
+            {
+                // TODO optomize this
+                var columnSet = this.LiveCard.Card.GetAllElements()
+                    .Where(el => el is AdaptiveColumnSet)
+                    .Cast<AdaptiveColumnSet>()
+                    .Where(cs => cs.Columns == sender)
+                    .FirstOrDefault();
+                if (columnSet != null)
+                    processCollectionChange(columnSet.Id, e);
+            });
+        }
+
+        private void processCollectionChange(string containerId, NotifyCollectionChangedEventArgs e)
+        {
+            MonitorDomChanges();
+            if (this.LiveCard.Card.TryGetElementById(containerId, out AdaptiveTypedElement sender))
+            {
+                if (sender is AdaptiveElement)
+                {
+                    AdaptiveElement element = (AdaptiveElement)sender;
+                    _updateNativeElement(element);
+                }
+                else if (sender is AdaptiveCard)
+                {
+                    RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
+                    this.NativeCard = renderedCard.FrameworkElement;
+                }
+            }
+
+            ////FrameworkElement nativeCollection = this.NativeCard.FindName(containerId);
+            //switch (e.Action)
+            //{
+            //    case NotifyCollectionChangedAction.Add:
+            //        await this.Client.AddElements(containerId, e.NewStartingIndex, e.NewItems.Cast<AdaptiveElement>().ToArray());
+            //        break;
+            //    case NotifyCollectionChangedAction.Remove:
+            //        await this.Client.RemoveElements(containerId, e.OldItems.Cast<AdaptiveElement>().Select(it => it.Id).ToArray());
+            //        break;
+            //    case NotifyCollectionChangedAction.Replace:
+            //        await this.Client.ReplaceElements(containerId, e.NewItems.Cast<AdaptiveElement>().ToArray());
+            //        break;
+            //    case NotifyCollectionChangedAction.Reset:
+            //        await this.Client.Reset(containerId);
+            //        break;
+            //    case NotifyCollectionChangedAction.Move:
+            //        //TODO
+            //        break;
+            //}
+        }
     }
 }
