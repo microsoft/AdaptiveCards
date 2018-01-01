@@ -28,7 +28,7 @@ namespace AdaptiveCards
         /// Events to subscribe to for this element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ObservableCollection<string> Events { get { return _Events; }  set { SetPropertyValue(ref _Events, value); } } 
+        public ObservableCollection<string> Events { get { return _Events; } set { SetPropertyValue(ref _Events, value); } }
         private ObservableCollection<string> _Events = new ObservableCollection<string>();
 
         /// <summary>
@@ -109,25 +109,31 @@ namespace AdaptiveCards
                 this.Events.Add(name);
         }
 
+        protected void removeEvent(string name)
+        {
+            if (this.Events.Contains(name))
+                this.Events.Remove(name);
+        }
+
         private event EventHandler _OnClick;
         public event EventHandler OnClick
         {
             add { _OnClick += value; addEvent(EventTypes.OnClick); }
-            remove { _OnClick -= value; this.Events.Remove(EventTypes.OnClick); }
+            remove { _OnClick -= value; removeEvent(EventTypes.OnClick); }
         }
 
         private event EventHandler _OnMouseEnter;
         public event EventHandler OnMouseEnter
         {
             add { _OnMouseEnter += value; addEvent(EventTypes.OnMouseEnter); }
-            remove { _OnMouseEnter -= value; this.Events.Remove(EventTypes.OnMouseEnter); }
+            remove { _OnMouseEnter -= value; removeEvent(EventTypes.OnMouseEnter); }
         }
 
         private event EventHandler _OnMouseLeave;
         public event EventHandler OnMouseLeave
         {
             add { _OnMouseLeave += value; addEvent(EventTypes.OnMouseLeave); }
-            remove { _OnMouseLeave -= value; this.Events.Remove(EventTypes.OnMouseLeave); }
+            remove { _OnMouseLeave -= value; removeEvent(EventTypes.OnMouseLeave); }
         }
 
         public void FireClick()

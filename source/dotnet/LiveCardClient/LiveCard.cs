@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.WebSockets;
@@ -136,6 +137,12 @@ namespace LiveCardClient
             await _closeSocket();
         }
 
+        public void BindEvent(AdaptiveTypedElement element)
+        {
+            this.serverEvents.Reset(element);
+            BindEvents();
+        }
+
         public void BindEvents()
         {
             lock (this.Card)
@@ -143,6 +150,8 @@ namespace LiveCardClient
                 // foreach unprocessed element
                 foreach (var element in this.Card.GetAllElements().Where(item => this.serverEvents.UnProcessed(item)))
                 {
+                    Trace.TraceInformation($"[{element.Type}] {element.Id} Events={String.Join(",", element.Events)}");
+
                     // mark it as processed 
                     this.serverEvents.MarkProcessed(element);
 
@@ -196,7 +205,6 @@ namespace LiveCardClient
                     }
                 }
             }
-
         }
     }
 }

@@ -74,7 +74,7 @@ namespace LiveCardServer
         /// </summary>
         /// <param name="elementId"></param>
         /// <returns></returns>
-        public Task Reset(string elementId)
+        public Task ResetElements(string elementId)
         {
             return rpc.NotifyAsync(elementId);
         }

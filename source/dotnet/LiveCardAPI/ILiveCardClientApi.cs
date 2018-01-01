@@ -50,8 +50,8 @@ namespace LiveCardAPI
         /// </summary>
         /// <param name="elementId">collection element Id</param>
         /// <returns></returns>
-        Task Reset(string elementId);
-
+        Task ResetElements(string elementId);
+       
         /// <summary>
         /// Save the card
         /// </summary>

@@ -91,7 +91,6 @@ namespace LiveCardServer
             await processCollectionChanges(container.Id, e);
         }
 
-
         /// <summary>
         /// Send collection changes to client
         /// </summary>
@@ -123,6 +122,7 @@ namespace LiveCardServer
         private async Task processCollectionChanges(string containerId, NotifyCollectionChangedEventArgs e)
         {
             BindDomChanges();
+
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -135,7 +135,7 @@ namespace LiveCardServer
                     await this.Client.ReplaceElements(containerId, e.NewItems.Cast<AdaptiveElement>().ToArray());
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    await this.Client.Reset(containerId);
+                    await this.Client.ResetElements(containerId);
                     break;
                 case NotifyCollectionChangedAction.Move:
                     //TODO
@@ -147,6 +147,7 @@ namespace LiveCardServer
         {
             if (this.domEvents.UnProcessed(this.Card))
             {
+                this.Card.PropertyChanged += Element_PropertyChanged;
                 this.Card.Body.CollectionChanged += Body_CollectionChanged;
                 this.domEvents.MarkProcessed(this.Card);
             }

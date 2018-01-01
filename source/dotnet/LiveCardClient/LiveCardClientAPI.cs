@@ -1,10 +1,12 @@
 ﻿using AdaptiveCards;
 using LiveCardAPI;
+using Newtonsoft.Json.Linq;
 using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -34,10 +36,25 @@ namespace LiveCardClient
         {
             lock (this.liveCard.Card)
             {
-                if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement el))
+                if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
                 {
-                    var propertyInfo = el.GetType().GetProperty(name);
-                    propertyInfo.SetValue(el, value);
+                    try
+                    {
+
+                        var propertyInfo = element.GetType().GetProperty(name);
+                        if (value is JArray)
+                            propertyInfo.SetValue(element, ((JArray)value).ToObject(propertyInfo.PropertyType));
+                        else if (value is JObject)
+                            propertyInfo.SetValue(element, ((JObject)value).ToObject(propertyInfo.PropertyType));
+                        else if (propertyInfo.PropertyType.IsEnum)
+                            propertyInfo.SetValue(element, Enum.Parse(propertyInfo.PropertyType, ((string)value) ?? "0", true));
+                        else
+                            propertyInfo.SetValue(element, Convert.ChangeType(value, propertyInfo.PropertyType));
+                    }
+                    catch (Exception err)
+                    {
+                        Trace.TraceError(err.ToString());
+                    }
                 }
             }
             return Task.CompletedTask;
@@ -152,7 +169,7 @@ namespace LiveCardClient
         /// </summary>
         /// <param name="elementId"></param>
         /// <returns></returns>
-        public Task Reset(string elementId)
+        public Task ResetElements(string elementId)
         {
             lock (this.liveCard.Card)
             {
@@ -184,6 +201,5 @@ namespace LiveCardClient
         {
             await this.liveCard.CloseCard();
         }
-
     }
 }
