@@ -20,15 +20,7 @@ namespace LiveCardServerSample.Controllers
         [HttpGet]
         public async Task<AdaptiveCard> Get()
         {
-            var helloCard = new AdaptiveCard() { Id = "HelloWorld" };
-            var title = new AdaptiveTextBlock() { Id = "Title", Text = "Hello World", Size = AdaptiveTextSize.Large };
-            helloCard.Body.Add(title);
-            var activatation = new AdaptiveTextBlock() { Id = "Activation", Text = $"Deactivated" };
-            helloCard.Body.Add(activatation);
-
-            // hook up code behind
-            helloCard.OnCardActivate += OnCardActivated;
-            helloCard.OnCardDeactivate += OnCardDeactivated;
+            AdaptiveCard helloCard = CreateStaticCard();
 
             // start with deactivated card, but if client hooks up WebSocket then it becomes activated live card
             if (this.HttpContext.WebSockets.IsWebSocketRequest)
@@ -46,6 +38,47 @@ namespace LiveCardServerSample.Controllers
                 await this.LiveCard.ListeningTask;
             }
             return helloCard;
+        }
+
+        private AdaptiveCard CreateStaticCard()
+        {
+            var helloCard = new AdaptiveCard() { Id = "HelloWorld" };
+            var title = new AdaptiveTextBlock() { Id = "Title", Text = "Hello World", Size = AdaptiveTextSize.Large };
+            helloCard.Body.Add(title);
+            var activatation = new AdaptiveTextBlock() { Id = "Activation", Text = $"Deactivated" };
+            helloCard.Body.Add(activatation);
+
+            // hook up code behind
+            helloCard.OnCardActivate += OnCardActivated;
+            helloCard.OnCardDeactivate += OnCardDeactivated;
+            return helloCard;
+        }
+
+        private async void OnCardActivated(object sender, EventArgs e)
+        {
+            using (await new AsyncLock().LockAsync())
+            {
+                Trace.WriteLine("Card Activate");
+                if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
+                {
+                    activation.Text = "Activated";
+                }
+                if (this.LiveCard.Card.TryGetElementById("Title", out AdaptiveTextBlock title))
+                {
+                    title.OnClick += Title_OnClick;
+                    title.OnMouseEnter += Title_OnMouseEnter;
+                    title.OnMouseLeave += Title_OnMouseLeave;
+                }
+                AdaptiveTextInput input = new AdaptiveTextInput() { Id = "Input", Placeholder = "Enter some stuff" };
+                input.OnFocus += Input_OnFocus;
+                input.OnBlur += Input_OnBlur;
+                input.OnTextChanged += Input_OnTextChanged;
+                this.LiveCard.Card.Body.Add(input);
+                this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "FocusLabel", Text = "Focus" });
+                this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "TextLabel", Text = "Text" });
+                var hover = new AdaptiveTextBlock() { Id = "Hover", Text = $"No mouse" };
+                this.LiveCard.Card.Body.Add(hover);
+            }
         }
 
         private async void Input_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -140,32 +173,12 @@ namespace LiveCardServerSample.Controllers
                 if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
                 {
                     activation.Text = "Deactivated";
-                    await this.LiveCard.Client.SaveCard();
+                    await this.LiveCard.Client.SaveCard(CreateStaticCard());
                 }
             }
         }
 
-        private async void OnCardActivated(object sender, EventArgs e)
-        {
-            using (await new AsyncLock().LockAsync())
-            {
-                Trace.WriteLine("Card Activate");
 
-                if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
-                {
-                    activation.Text = "Activated";
-                }
-                AdaptiveTextInput input = new AdaptiveTextInput() { Id = "Input", Placeholder = "Enter some stuff" };
-                input.OnFocus += Input_OnFocus;
-                input.OnBlur += Input_OnBlur;
-                input.OnTextChanged += Input_OnTextChanged;
-                var hover = new AdaptiveTextBlock() { Id = "Hover", Text = $"No mouse" };
-                this.LiveCard.Card.Body.Add(hover);
-                this.LiveCard.Card.Body.Add(input);
-                this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "FocusLabel", Text = "Focus" });
-                this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "TextLabel", Text = "Text" });
-            }
-        }
     }
 
 }

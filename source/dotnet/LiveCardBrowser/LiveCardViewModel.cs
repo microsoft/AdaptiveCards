@@ -127,6 +127,12 @@ namespace LiveCardBrowser
             {
                 Panel panel = (Panel)parent;
                 var index = panel.Children.IndexOf(oldElement);
+                // transfer grid properties
+                Grid.SetRow(newElement, Grid.GetRow(oldElement));
+                Grid.SetRowSpan(newElement, Grid.GetRowSpan(oldElement));
+                Grid.SetColumn(newElement, Grid.GetColumn(oldElement));
+                Grid.SetColumnSpan(newElement, Grid.GetColumnSpan(oldElement));
+
                 panel.Children.RemoveAt(index);
                 panel.Children.Insert(index, newElement);
             }
@@ -159,11 +165,13 @@ namespace LiveCardBrowser
                 // special logic to keep focus and input state
                 // TODO optomize this
                 var container = this.LiveCard.Card.GetAllElements()
-                .Where(el => el is AdaptiveContainer)
-                .Cast<AdaptiveContainer>()
-                .Where(c => c.Items == sender)
-                .FirstOrDefault();
-                processCollectionChange(container.Id, e);
+                    .Where(el => el is AdaptiveContainer)
+                    .Cast<AdaptiveContainer>()
+                    .Where(c => c.Items == sender)
+                    .FirstOrDefault();
+
+                if (container != null)
+                    processCollectionChange(container.Id, e);
             });
 
         }
