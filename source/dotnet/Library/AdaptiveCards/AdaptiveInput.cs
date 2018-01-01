@@ -14,36 +14,36 @@ namespace AdaptiveCards
         private event EventHandler _OnFocus;
         public event EventHandler OnFocus
         {
-            add { _OnFocus += value; this.Events.Add(EventTypes.OnFocus); }
+            add { _OnFocus += value; addEvent(EventTypes.OnFocus); }
             remove { _OnFocus -= value; this.Events.Remove(EventTypes.OnFocus); }
         }
 
         private event EventHandler _OnBlur;
         public event EventHandler OnBlur
         {
-            add { _OnBlur += value; this.Events.Add(EventTypes.OnBlur); }
+            add { _OnBlur += value; addEvent(EventTypes.OnBlur); }
             remove { _OnBlur -= value; this.Events.Remove(EventTypes.OnBlur); }
         }
 
         private event EventHandler<TextChangedEventArgs> _OnTextChanged;
         public event EventHandler<TextChangedEventArgs> OnTextChanged
         {
-            add { _OnTextChanged += value; this.Events.Add(EventTypes.OnTextChanged); }
-            remove { _OnTextChanged -= value; this.Events.Add(EventTypes.OnTextChanged); }
+            add { _OnTextChanged += value; addEvent(EventTypes.OnTextChanged); }
+            remove { _OnTextChanged -= value; this.Events.Remove(EventTypes.OnTextChanged); }
         }
 
         private event EventHandler<KeyEventArgs> _OnKey;
         public event EventHandler<KeyEventArgs> OnKey
         {
-            add { _OnKey += value; this.Events.Add(EventTypes.OnKey); }
-            remove { _OnKey -= value; this.Events.Add(EventTypes.OnKey); }
+            add { _OnKey += value; addEvent(EventTypes.OnKey); }
+            remove { _OnKey -= value; this.Events.Remove(EventTypes.OnKey); }
         }
 
         private event EventHandler<SelectionChangedEventArgs> _OnSelectionChanged;
         public event EventHandler<SelectionChangedEventArgs> OnSelectionChanged
         {
-            add { _OnSelectionChanged += value; this.Events.Add(EventTypes.OnSelectionChanged); }
-            remove { _OnSelectionChanged -= value; this.Events.Add(EventTypes.OnSelectionChanged); }
+            add { _OnSelectionChanged += value; addEvent(EventTypes.OnSelectionChanged); }
+            remove { _OnSelectionChanged -= value; this.Events.Remove(EventTypes.OnSelectionChanged); }
         }
 
         public void FireFocus()

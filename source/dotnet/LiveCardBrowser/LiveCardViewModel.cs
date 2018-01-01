@@ -19,7 +19,7 @@ namespace LiveCardBrowser
 {
     public class LiveCardViewModel : ObservableObject
     {
-        private AdaptiveElementMemory memory = new AdaptiveElementMemory();
+        private AdaptiveElementMemory domChanges = new AdaptiveElementMemory();
         private AdaptiveCardRenderer renderer;
         private Dispatcher dispatcher;
         private Grid grid = new Grid();
@@ -44,7 +44,7 @@ namespace LiveCardBrowser
             set
             {
                 liveCard = value;
-                MonitorDomChanges();
+                BindEvents();
                 RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
                 this.NativeCard = renderedCard.FrameworkElement;
                 Notify();
@@ -63,16 +63,17 @@ namespace LiveCardBrowser
         }
 
 
-        private void MonitorDomChanges()
+        private void BindEvents()
         {
-            if (memory.UnProcessed(this.LiveCard.Card))
+            if (domChanges.UnProcessed(this.LiveCard.Card))
             {
                 this.LiveCard.Card.Body.CollectionChanged += Body_CollectionChanged;
-                memory.Processed(this.LiveCard.Card);
+                domChanges.MarkProcessed(this.LiveCard.Card);
             }
 
-            foreach (var element in this.LiveCard.Card.GetAllElements().UnProcessed(memory))
+            foreach (var element in this.LiveCard.Card.GetAllElements().Where(item => domChanges.UnProcessed(item)))
             {
+                domChanges.MarkProcessed(element);
                 element.PropertyChanged += Element_PropertyChanged;
 
                 if (element is AdaptiveContainer)
@@ -204,7 +205,7 @@ namespace LiveCardBrowser
 
         private void processCollectionChange(string containerId, NotifyCollectionChangedEventArgs e)
         {
-            MonitorDomChanges();
+            BindEvents();
             if (this.LiveCard.Card.TryGetElementById(containerId, out AdaptiveTypedElement sender))
             {
                 if (sender is AdaptiveElement)

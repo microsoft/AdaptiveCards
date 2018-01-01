@@ -103,25 +103,30 @@ namespace AdaptiveCards
             }
         }
 #pragma warning restore 612, 618
+        protected void addEvent(string name)
+        {
+            if (this.Events.Contains(name) == false)
+                this.Events.Add(name);
+        }
 
         private event EventHandler _OnClick;
         public event EventHandler OnClick
         {
-            add { _OnClick += value; this.Events.Add(EventTypes.OnClick); }
+            add { _OnClick += value; addEvent(EventTypes.OnClick); }
             remove { _OnClick -= value; this.Events.Remove(EventTypes.OnClick); }
         }
 
         private event EventHandler _OnMouseEnter;
         public event EventHandler OnMouseEnter
         {
-            add { _OnMouseEnter += value; this.Events.Add(EventTypes.OnMouseEnter); }
+            add { _OnMouseEnter += value; addEvent(EventTypes.OnMouseEnter); }
             remove { _OnMouseEnter -= value; this.Events.Remove(EventTypes.OnMouseEnter); }
         }
 
         private event EventHandler _OnMouseLeave;
         public event EventHandler OnMouseLeave
         {
-            add { _OnMouseLeave += value; this.Events.Add(EventTypes.OnMouseLeave); }
+            add { _OnMouseLeave += value; addEvent(EventTypes.OnMouseLeave); }
             remove { _OnMouseLeave -= value; this.Events.Remove(EventTypes.OnMouseLeave); }
         }
 

@@ -151,7 +151,7 @@ namespace AdaptiveCards.Rendering.Wpf
                                 BindEvent(frameworkElement, evt, "TextChanged");
                                 break;
                             case EventTypes.OnSelectionChanged:
-                                //                                BindEvent(frameworkElement, evt, "TextChanged");
+                                // BindEvent(frameworkElement, evt, "TextChanged");
                                 break;
                         }
                     }
@@ -201,7 +201,7 @@ namespace AdaptiveCards.Rendering.Wpf
             AdaptiveInput element = ((FrameworkElement)sender).DataContext as AdaptiveInput;
             if (element != null)
             {
-                var tb = sender as TextBlock;
+                var tb = sender as TextBox;
                 if (tb != null)
                     element.FireTextChanged(tb.Text);
             }

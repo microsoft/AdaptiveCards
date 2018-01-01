@@ -18,12 +18,12 @@ namespace LiveCardServer
         private AdaptiveCard card;
         private WebSocket webSocket;
         private JsonRpc rpc;
-        private AdaptiveElementMemory domChanges = new AdaptiveElementMemory();
+        private AdaptiveElementMemory domEvents = new AdaptiveElementMemory();
 
         public LiveCard(AdaptiveCard card, WebSocket webSocket)
         {
             this.card = card;
-            MonitorDomChanges();
+            BindDomChanges();
 
             this.Server = new LiveCardServerAPI(card);
             this.rpc = new JsonRpc(new WebSocketMessageHandler(webSocket), this.Server);
@@ -88,7 +88,7 @@ namespace LiveCardServer
                 .Cast<AdaptiveContainer>()
                 .Where(c => c.Items == sender)
                 .FirstOrDefault();
-            await sendCollectionChanges(container.Id, e);
+            await processCollectionChanges(container.Id, e);
         }
 
 
@@ -100,7 +100,7 @@ namespace LiveCardServer
         private async void Body_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // TODO this is not doing cards correctly, will only work for root card and needs to be mo better
-            await sendCollectionChanges(this.card.Id, e);
+            await processCollectionChanges(this.card.Id, e);
         }
 
         /// <summary>
@@ -117,11 +117,12 @@ namespace LiveCardServer
                 .Where(cs => cs.Columns == sender)
                 .FirstOrDefault();
             if (columnSet != null)
-                await sendCollectionChanges(columnSet.Id, e);
+                await processCollectionChanges(columnSet.Id, e);
         }
 
-        private async Task sendCollectionChanges(string containerId, NotifyCollectionChangedEventArgs e)
+        private async Task processCollectionChanges(string containerId, NotifyCollectionChangedEventArgs e)
         {
+            BindDomChanges();
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -142,16 +143,17 @@ namespace LiveCardServer
             }
         }
 
-        private void MonitorDomChanges()
+        private void BindDomChanges()
         {
-            if (this.domChanges.UnProcessed(this.Card))
+            if (this.domEvents.UnProcessed(this.Card))
             {
                 this.Card.Body.CollectionChanged += Body_CollectionChanged;
-                this.domChanges.Processed(this.Card);
+                this.domEvents.MarkProcessed(this.Card);
             }
 
-            foreach (var element in card.GetAllElements().UnProcessed(this.domChanges))
+            foreach (var element in card.GetAllElements().Where(item => this.domEvents.UnProcessed(item)))
             {
+                this.domEvents.MarkProcessed(element);
                 element.PropertyChanged += Element_PropertyChanged;
 
                 if (element is AdaptiveContainer)

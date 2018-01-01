@@ -69,6 +69,9 @@ namespace LiveCardClient
                         else
                             elements.Insert(pos++, newItem);
                     }
+
+                    // make sure serverEvents are subscribed
+                    this.liveCard.BindEvents();
                 }
             }
             return Task.CompletedTask;
@@ -138,6 +141,7 @@ namespace LiveCardClient
                             pos++;
                         }
                     }
+                    this.liveCard.BindEvents();
                 }
             }
             return Task.CompletedTask;

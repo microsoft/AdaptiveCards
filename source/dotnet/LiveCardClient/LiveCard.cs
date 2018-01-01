@@ -27,6 +27,7 @@ namespace LiveCardClient
         private Uri uri;
         private ClientWebSocket webSocket;
         private JsonRpc rpc;
+        private AdaptiveElementMemory serverEvents = new AdaptiveElementMemory();
 
         public LiveCard(Uri uri)
         {
@@ -76,7 +77,7 @@ namespace LiveCardClient
                 this.Server = new LiveCardServerAPI(rpc);
 
                 // bind events for Client->server notifications
-                BindServerEvents();
+                BindEvents();
                 this.rpc.StartListening();
             }
         }
@@ -135,55 +136,62 @@ namespace LiveCardClient
             await _closeSocket();
         }
 
-        private void BindServerEvents()
+        public void BindEvents()
         {
-            foreach (var element in this.Card.GetAllElements())
+            lock (this.Card)
             {
-                if (element.Events != null)
+                // foreach unprocessed element
+                foreach (var element in this.Card.GetAllElements().Where(item => this.serverEvents.UnProcessed(item)))
                 {
-                    foreach (var eventName in element.Events)
+                    // mark it as processed 
+                    this.serverEvents.MarkProcessed(element);
+
+                    if (element.Events != null)
                     {
-                        switch (eventName)
+                        foreach (var eventName in element.Events)
                         {
-                            case "onClick":
-                                element.OnClick += async (sender, e) => await this.Server.FireClick(element.Id);
-                                break;
-                            case "onMouseEnter":
-                                element.OnMouseEnter += async (sender, e) => await this.Server.FireMouseEnter(element.Id);
-                                break;
-                            case "onMouseLeave":
-                                element.OnMouseLeave += async (sender, e) => await this.Server.FireMouseLeave(element.Id);
-                                break;
-                            default:
-                                if (element is AdaptiveInput)
-                                {
-                                    AdaptiveInput input = element as AdaptiveInput;
-                                    switch (eventName)
+                            switch (eventName)
+                            {
+                                case "onClick":
+                                    element.OnClick += async (sender, e) => await this.Server.FireClick(element.Id);
+                                    break;
+                                case "onMouseEnter":
+                                    element.OnMouseEnter += async (sender, e) => await this.Server.FireMouseEnter(element.Id);
+                                    break;
+                                case "onMouseLeave":
+                                    element.OnMouseLeave += async (sender, e) => await this.Server.FireMouseLeave(element.Id);
+                                    break;
+                                default:
+                                    if (element is AdaptiveInput)
                                     {
-                                        case "onKey":
-                                            input.OnKey += async (sender, e) => await this.Server.FireKey(element.Id, e.Key);
-                                            break;
-                                        case "onTextchanged":
-                                            input.OnTextChanged += async (sender, e) => await this.Server.FireTextChanged(element.Id, e.Text);
-                                            break;
-                                        case "onSelectionChanged":
-                                            input.OnSelectionChanged += async (sender, e) => await this.Server.FireSelectionChanged(element.Id, e.Selection);
-                                            break;
-                                        case "onFocus":
-                                            input.OnFocus += async (sender, e) => await this.Server.FireFocus(element.Id);
-                                            break;
-                                        case "onBlur":
-                                            input.OnBlur += async (sender, e) => await this.Server.FireBlur(element.Id);
-                                            break;
-                                        default:
-                                            throw new ArgumentException($"{eventName} is not known");
+                                        AdaptiveInput input = element as AdaptiveInput;
+                                        switch (eventName)
+                                        {
+                                            case "onKey":
+                                                input.OnKey += async (sender, e) => await this.Server.FireKey(element.Id, e.Key);
+                                                break;
+                                            case "onTextChanged":
+                                                input.OnTextChanged += async (sender, e) => await this.Server.FireTextChanged(element.Id, e.Text);
+                                                break;
+                                            case "onSelectionChanged":
+                                                input.OnSelectionChanged += async (sender, e) => await this.Server.FireSelectionChanged(element.Id, e.Selection);
+                                                break;
+                                            case "onFocus":
+                                                input.OnFocus += async (sender, e) => await this.Server.FireFocus(element.Id);
+                                                break;
+                                            case "onBlur":
+                                                input.OnBlur += async (sender, e) => await this.Server.FireBlur(element.Id);
+                                                break;
+                                            default:
+                                                throw new ArgumentException($"{eventName} is not known");
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    throw new ArgumentException($"{eventName} is not known");
-                                }
-                                break;
+                                    else
+                                    {
+                                        throw new ArgumentException($"{eventName} is not known");
+                                    }
+                                    break;
+                            }
                         }
                     }
                 }

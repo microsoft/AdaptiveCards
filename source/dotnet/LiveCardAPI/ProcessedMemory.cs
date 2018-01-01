@@ -21,7 +21,7 @@ namespace LiveCardAPI
             return !memory.Contains(this.identity(item));
         }
 
-        public void Processed(T item)
+        public void MarkProcessed(T item)
         {
             memory.Add(this.identity(item));
         }
@@ -37,19 +37,19 @@ namespace LiveCardAPI
         }
     }
 
-    public static class OnceExtensions
-    {
-        public static IEnumerable<T> UnProcessed<T>(this IEnumerable<T> items, ProcessedMemory<T> once)
-        {
-            foreach (var item in items)
-            {
-                if (once.UnProcessed(item))
-                {
-                    once.Processed(item);
-                    yield return item;
-                }
-            }
-            yield break;
-        }
-    }
+    //public static class OnceExtensions
+    //{
+    //    public static IEnumerable<T> UnProcessed<T>(this IEnumerable<T> items, ProcessedMemory<T> once)
+    //    {
+    //        foreach (var item in items)
+    //        {
+    //            if (once.UnProcessed(item))
+    //            {
+    //                once.Processed(item);
+    //                yield return item;
+    //            }
+    //        }
+    //        yield break;
+    //    }
+    //}
 }
