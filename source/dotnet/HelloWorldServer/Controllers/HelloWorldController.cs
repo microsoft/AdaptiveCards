@@ -63,12 +63,14 @@ namespace LiveCardServerSample.Controllers
                 {
                     activation.Text = "Activated";
                 }
+
                 if (this.LiveCard.Card.TryGetElementById("Title", out AdaptiveTextBlock title))
                 {
                     title.OnClick += Title_OnClick;
                     title.OnMouseEnter += Title_OnMouseEnter;
                     title.OnMouseLeave += Title_OnMouseLeave;
                 }
+
                 AdaptiveTextInput input = new AdaptiveTextInput() { Id = "Input", Placeholder = "Enter some stuff" };
                 input.OnFocus += Input_OnFocus;
                 input.OnBlur += Input_OnBlur;
@@ -89,7 +91,7 @@ namespace LiveCardServerSample.Controllers
                 Trace.WriteLine($"{input.Id} OnTextChanged");
                 if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("TextLabel", out AdaptiveTextBlock label))
                 {
-                    label.Text = e.Text;
+                    label.Text = $"Input.Text={e.Text}";
                 }
             }
         }
@@ -150,18 +152,6 @@ namespace LiveCardServerSample.Controllers
                     title.Weight = AdaptiveTextWeight.Bolder;
                 else
                     title.Weight = AdaptiveTextWeight.Default;
-            }
-        }
-        private async void Title_OnDoubleClick(object sender, EventArgs e)
-        {
-            using (await new AsyncLock().LockAsync())
-            {
-                AdaptiveTextBlock title = (AdaptiveTextBlock)sender;
-                Trace.WriteLine($"{title.Id} Double Click");
-                if (title.Color == AdaptiveTextColor.Attention)
-                    title.Color = AdaptiveTextColor.Default;
-                else
-                    title.Color = AdaptiveTextColor.Attention;
             }
         }
 

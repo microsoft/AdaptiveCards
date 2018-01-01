@@ -40,7 +40,7 @@ namespace LiveCardClient
 
         public Task FireKey(string id, string key)
         {
-            return rpc.NotifyAsync(argument: new object[] { id, key });
+            return rpc.NotifyAsync("FireKey", id, key);
         }
 
         public Task FireClick(string id)
@@ -50,12 +50,12 @@ namespace LiveCardClient
 
         public Task FireTextChanged(string id, string text)
         {
-            return rpc.NotifyAsync(argument: new object[] { id, text });
+            return rpc.NotifyAsync("FireTextChanged", id, text);
         }
 
         public Task FireSelectionChanged(string id, int[] selectedIndices)
         {
-            return rpc.NotifyAsync(argument: new object[] { id, selectedIndices });
+            return rpc.NotifyAsync("FireSelectionChanged", id, selectedIndices);
         }
 
         public Task FireMouseEnter(string id)

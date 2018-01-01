@@ -153,6 +153,8 @@ namespace AdaptiveCards.Rendering.Wpf
                             case EventTypes.OnSelectionChanged:
                                 // BindEvent(frameworkElement, evt, "TextChanged");
                                 break;
+                            default:
+                                throw new Exception(evt);
                         }
                     }
                 }
