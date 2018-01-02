@@ -170,15 +170,6 @@ namespace AdaptiveCards.Rendering.Wpf
         private void MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             UIElement uie = sender as UIElement;
-            if (uie != null)
-            {
-                uie.CaptureMouse();
-            }
-        }
-
-        private void MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            UIElement uie = sender as UIElement;
             if (uie != null && uie.IsMouseCaptured)
             {
                 uie.ReleaseMouseCapture();
@@ -188,6 +179,15 @@ namespace AdaptiveCards.Rendering.Wpf
                     AdaptiveElement element = ((FrameworkElement)sender).DataContext as AdaptiveElement;
                     element.FireClick();
                 }
+            }
+        }
+
+        private void MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            UIElement uie = sender as UIElement;
+            if (uie != null)
+            {
+                uie.CaptureMouse();
             }
         }
 
