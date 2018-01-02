@@ -162,13 +162,13 @@ namespace LiveCardClient
                             switch (eventName)
                             {
                                 case "onClick":
-                                    element.OnClick += async (sender, e) => await this.Server.FireClick(element.Id);
+                                    element.OnClick += (sender, e) => this.Server.FireClick(element.Id);
                                     break;
                                 case "onMouseEnter":
-                                    element.OnMouseEnter += async (sender, e) => await this.Server.FireMouseEnter(element.Id);
+                                    element.OnMouseEnter += (sender, e) => this.Server.FireMouseEnter(element.Id);
                                     break;
                                 case "onMouseLeave":
-                                    element.OnMouseLeave += async (sender, e) => await this.Server.FireMouseLeave(element.Id);
+                                    element.OnMouseLeave += (sender, e) => this.Server.FireMouseLeave(element.Id);
                                     break;
                                 default:
                                     if (element is AdaptiveInput)
@@ -177,19 +177,19 @@ namespace LiveCardClient
                                         switch (eventName)
                                         {
                                             case "onKey":
-                                                input.OnKey += async (sender, e) => await this.Server.FireKey(element.Id, e.Key);
+                                                input.OnKey += (sender, e) => this.Server.FireKey(element.Id, e.Key);
                                                 break;
                                             case "onTextChanged":
-                                                input.OnTextChanged += async (sender, e) => await this.Server.FireTextChanged(element.Id, e.Text);
+                                                input.OnTextChanged += (sender, e) => this.Server.FireTextChanged(element.Id, e.Text);
                                                 break;
                                             case "onSelectionChanged":
-                                                input.OnSelectionChanged += async (sender, e) => await this.Server.FireSelectionChanged(element.Id, e.Selection);
+                                                input.OnSelectionChanged += (sender, e) => this.Server.FireSelectionChanged(element.Id, e.Selection);
                                                 break;
                                             case "onFocus":
-                                                input.OnFocus += async (sender, e) => await this.Server.FireFocus(element.Id);
+                                                input.OnFocus += (sender, e) => this.Server.FireFocus(element.Id);
                                                 break;
                                             case "onBlur":
-                                                input.OnBlur += async (sender, e) => await this.Server.FireBlur(element.Id);
+                                                input.OnBlur += (sender, e) => this.Server.FireBlur(element.Id);
                                                 break;
                                             default:
                                                 throw new ArgumentException($"{eventName} is not known");
