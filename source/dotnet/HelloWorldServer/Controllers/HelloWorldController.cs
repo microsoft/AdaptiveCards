@@ -76,14 +76,25 @@ namespace LiveCardServerSample.Controllers
                     while (!this.LiveCard.ListeningTask.IsCompleted)
                     {
                         await Task.Delay(500);
-                        if (title2.Weight == AdaptiveTextWeight.Default)
-                            title2.Weight = AdaptiveTextWeight.Bolder;
-                        else
-                            title2.Weight = AdaptiveTextWeight.Default;
+                        if (this.flash)
+                        {
+                            if (title2.Weight == AdaptiveTextWeight.Default)
+                                title2.Weight = AdaptiveTextWeight.Bolder;
+                            else
+                                title2.Weight = AdaptiveTextWeight.Default;
+                        }
                     }
                 });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
+
+            AdaptiveTextBlock boldButton = new AdaptiveTextBlock()
+            {
+                Id = "BoldButton",
+                Text = "Flash"
+            };
+            boldButton.OnClick += BoldButton_OnClick;
+            this.LiveCard.Card.Body.Add(boldButton);
             AdaptiveTextInput input = new AdaptiveTextInput() { Id = "Input", Placeholder = "Enter some stuff" };
             input.OnFocus += Input_OnFocus;
             input.OnBlur += Input_OnBlur;
@@ -94,6 +105,12 @@ namespace LiveCardServerSample.Controllers
             var hover = new AdaptiveTextBlock() { Id = "HoverLabel", Text = $"No mouse" };
             this.LiveCard.Card.Body.Add(hover);
 
+        }
+
+        private bool flash = false;
+        private void BoldButton_OnClick(object sender, EventArgs e)
+        {
+            this.flash = !this.flash;
         }
 
         private void Input_OnTextChanged(object sender, TextChangedEventArgs e)

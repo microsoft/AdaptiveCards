@@ -51,11 +51,19 @@ namespace LiveCardServer
 
         public Task StartListening()
         {
+            this.listeningTask = new TaskCompletionSource<bool>();
             rpc.StartListening();
+            rpc.Disconnected += Rpc_Disconnected;
             return Task.CompletedTask;
         }
 
-        public Task ListeningTask { get { return this.rpc.ListeningTask; } }
+        private void Rpc_Disconnected(object sender, JsonRpcDisconnectedEventArgs e)
+        {
+            this.listeningTask.SetResult(false);
+        }
+
+        private TaskCompletionSource<bool> listeningTask;
+        public Task ListeningTask { get { return listeningTask.Task; } }
 
         public Task CloseCard()
         {
