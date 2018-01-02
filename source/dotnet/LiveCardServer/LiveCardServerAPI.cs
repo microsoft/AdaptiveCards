@@ -19,13 +19,15 @@ namespace LiveCardServer
 
         public Task FireActivate()
         {
-            this.card.FireActivate();
+            lock (this.card)
+                this.card.FireActivate();
             return Task.CompletedTask;
         }
 
         public Task FireDeactivate()
         {
-            this.card.FireDeactivate();
+            lock (this.card)
+                this.card.FireDeactivate();
             return Task.CompletedTask;
         }
 
@@ -33,7 +35,8 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.FireFocus();
+                lock (this.card)
+                    element.FireFocus();
             }
             return Task.CompletedTask;
         }
@@ -42,7 +45,8 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.FireBlur();
+                lock (this.card)
+                    element.FireBlur();
             }
             return Task.CompletedTask;
         }
@@ -51,7 +55,8 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.FireKey(key);
+                lock (this.card)
+                    element.FireKey(key);
             }
             return Task.CompletedTask;
         }
@@ -60,7 +65,8 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
-                element.FireClick();
+                lock (this.card)
+                    element.FireClick();
             }
             return Task.CompletedTask;
         }
@@ -69,7 +75,8 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.FireTextChanged(text);
+                lock (this.card)
+                    element.FireTextChanged(text);
             }
             return Task.CompletedTask;
         }
@@ -78,7 +85,8 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveInput element))
             {
-                element.FireSelectionChanged(selectedIndices);
+                lock (this.card)
+                    element.FireSelectionChanged(selectedIndices);
             }
             return Task.CompletedTask;
         }
@@ -87,7 +95,8 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
-                element.FireMouseEnter();
+                lock (this.card)
+                    element.FireMouseEnter();
             }
             return Task.CompletedTask;
         }
@@ -96,7 +105,8 @@ namespace LiveCardServer
         {
             if (this.card.TryGetElementById(id, out AdaptiveElement element))
             {
-                element.FireMouseLeave();
+                lock (this.card)
+                    element.FireMouseLeave();
             }
             return Task.CompletedTask;
         }

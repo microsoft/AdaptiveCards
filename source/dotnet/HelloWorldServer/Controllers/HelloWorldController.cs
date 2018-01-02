@@ -55,143 +55,116 @@ namespace LiveCardServerSample.Controllers
             return helloCard;
         }
 
-        private async void OnCardActivated(object sender, EventArgs e)
+        private void OnCardActivated(object sender, EventArgs e)
         {
-            using (await new AsyncLock().LockAsync())
+            Trace.WriteLine("Card Activate");
+            if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
             {
-                Trace.WriteLine("Card Activate");
-                if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
-                {
-                    activation.Text = "Activated";
-                }
-                if (this.LiveCard.Card.TryGetElementById("Title", out AdaptiveTextBlock title))
-                {
-                    var title2 = JsonConvert.DeserializeObject<AdaptiveTextBlock>(JsonConvert.SerializeObject(title));
-                    title2.Text = "Hello World - Click on me";
-                    title2.OnClick += Title_OnClick;
-                    title2.OnMouseEnter += Title_OnMouseEnter;
-                    title2.OnMouseLeave += Title_OnMouseLeave;
-                    this.LiveCard.Card.ReplaceElement(title2);
+                activation.Text = "Activated";
+            }
+            if (this.LiveCard.Card.TryGetElementById("Title", out AdaptiveTextBlock title))
+            {
+                var title2 = JsonConvert.DeserializeObject<AdaptiveTextBlock>(JsonConvert.SerializeObject(title));
+                title2.Text = "Hello World - Click on me";
+                title2.OnClick += Title_OnClick;
+                title2.OnMouseEnter += Title_OnMouseEnter;
+                title2.OnMouseLeave += Title_OnMouseLeave;
+                this.LiveCard.Card.ReplaceElement(title2);
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    Task.Run(async () =>
+                Task.Run(async () =>
+                {
+                    while (!this.LiveCard.ListeningTask.IsCompleted)
                     {
-                        while (!this.LiveCard.ListeningTask.IsCompleted)
-                        {
-                            await Task.Delay(500);
-                            if (title2.Weight == AdaptiveTextWeight.Default)
-                                title2.Weight = AdaptiveTextWeight.Bolder;
-                            else
-                                title2.Weight = AdaptiveTextWeight.Default;
-                        }
-                    });
+                        await Task.Delay(500);
+                        if (title2.Weight == AdaptiveTextWeight.Default)
+                            title2.Weight = AdaptiveTextWeight.Bolder;
+                        else
+                            title2.Weight = AdaptiveTextWeight.Default;
+                    }
+                });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                }
-                AdaptiveTextInput input = new AdaptiveTextInput() { Id = "Input", Placeholder = "Enter some stuff" };
-                input.OnFocus += Input_OnFocus;
-                input.OnBlur += Input_OnBlur;
-                input.OnTextChanged += Input_OnTextChanged;
-                this.LiveCard.Card.Body.Add(input);
-                this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "FocusLabel", Text = "Focus" });
-                this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "TextLabel", Text = "Text" });
-                var hover = new AdaptiveTextBlock() { Id = "HoverLabel", Text = $"No mouse" };
-                this.LiveCard.Card.Body.Add(hover);
+            }
+            AdaptiveTextInput input = new AdaptiveTextInput() { Id = "Input", Placeholder = "Enter some stuff" };
+            input.OnFocus += Input_OnFocus;
+            input.OnBlur += Input_OnBlur;
+            input.OnTextChanged += Input_OnTextChanged;
+            this.LiveCard.Card.Body.Add(input);
+            this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "FocusLabel", Text = "Focus" });
+            this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "TextLabel", Text = "Text" });
+            var hover = new AdaptiveTextBlock() { Id = "HoverLabel", Text = $"No mouse" };
+            this.LiveCard.Card.Body.Add(hover);
 
+        }
+
+        private void Input_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var input = (AdaptiveTextInput)sender;
+            Trace.WriteLine($"{input.Id} OnTextChanged");
+            if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("TextLabel", out AdaptiveTextBlock label))
+            {
+                label.Text = $"Input.Text={e.Text}";
             }
         }
 
-        private async void Input_OnTextChanged(object sender, TextChangedEventArgs e)
+        private void Input_OnBlur(object sender, EventArgs e)
         {
-            using (await new AsyncLock().LockAsync())
+            var input = (AdaptiveElement)sender;
+            Trace.WriteLine($"{input.Id} OnBlur");
+            if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("FocusLabel", out AdaptiveTextBlock label))
             {
-                var input = (AdaptiveTextInput)sender;
-                Trace.WriteLine($"{input.Id} OnTextChanged");
-                if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("TextLabel", out AdaptiveTextBlock label))
-                {
-                    label.Text = $"Input.Text={e.Text}";
-                }
+                label.Text = "input does not have focus";
             }
         }
 
-        private async void Input_OnBlur(object sender, EventArgs e)
+        private void Input_OnFocus(object sender, EventArgs e)
         {
-            using (await new AsyncLock().LockAsync())
+            var input = (AdaptiveInput)sender;
+            Trace.WriteLine($"{input.Id} OnFocus");
+            if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("FocusLabel", out AdaptiveTextBlock label))
             {
-                var input = (AdaptiveElement)sender;
-                Trace.WriteLine($"{input.Id} OnBlur");
-                if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("FocusLabel", out AdaptiveTextBlock label))
-                {
-                    label.Text = "input does not have focus";
-                }
+                label.Text = "Input has focus";
             }
         }
 
-        private async void Input_OnFocus(object sender, EventArgs e)
+        private void Title_OnMouseLeave(object sender, EventArgs e)
         {
-            using (await new AsyncLock().LockAsync())
+            AdaptiveTextBlock title = (AdaptiveTextBlock)sender;
+            Trace.WriteLine($"{title.Id} MouseLeave");
+            if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("HoverLabel", out AdaptiveTextBlock label))
             {
-                var input = (AdaptiveInput)sender;
-                Trace.WriteLine($"{input.Id} OnFocus");
-                if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("FocusLabel", out AdaptiveTextBlock label))
-                {
-                    label.Text = "Input has focus";
-                }
+                label.Text = "Title-Mouse Leave";
             }
         }
 
-        private async void Title_OnMouseLeave(object sender, EventArgs e)
+        private void Title_OnMouseEnter(object sender, EventArgs e)
         {
-            using (await new AsyncLock().LockAsync())
+            AdaptiveTextBlock title = (AdaptiveTextBlock)sender;
+            Trace.WriteLine($"{title.Id} MouseEnter");
+            if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("HoverLabel", out AdaptiveTextBlock label))
             {
-                AdaptiveTextBlock title = (AdaptiveTextBlock)sender;
-                Trace.WriteLine($"{title.Id} MouseLeave");
-                if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("HoverLabel", out AdaptiveTextBlock label))
-                {
-                    label.Text = "Title-Mouse Leave";
-                }
+                label.Text = "Title-Mouse entered";
             }
         }
 
-        private async void Title_OnMouseEnter(object sender, EventArgs e)
+        private void Title_OnClick(object sender, EventArgs e)
         {
-            using (await new AsyncLock().LockAsync())
-            {
-                AdaptiveTextBlock title = (AdaptiveTextBlock)sender;
-                Trace.WriteLine($"{title.Id} MouseEnter");
-                if (this.LiveCard.Card.TryGetElementById<AdaptiveTextBlock>("HoverLabel", out AdaptiveTextBlock label))
-                {
-                    label.Text = "Title-Mouse entered";
-                }
-            }
-        }
+            AdaptiveTextBlock title = (AdaptiveTextBlock)sender;
+            Trace.WriteLine($"{title.Id} Click");
 
-        private async void Title_OnClick(object sender, EventArgs e)
-        {
-            using (await new AsyncLock().LockAsync())
-            {
-                AdaptiveTextBlock title = (AdaptiveTextBlock)sender;
-                Trace.WriteLine($"{title.Id} Click");
-
-                if (title.Size == AdaptiveTextSize.ExtraLarge)
-                    title.Size = AdaptiveTextSize.Small;
-                else
-                    title.Size += 1;
-            }
+            if (title.Size == AdaptiveTextSize.ExtraLarge)
+                title.Size = AdaptiveTextSize.Small;
+            else
+                title.Size += 1;
         }
 
         private async void OnCardDeactivated(object sender, EventArgs e)
         {
-            using (await new AsyncLock().LockAsync())
+            Trace.WriteLine("Card Deactivated");
+            if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
             {
-                Trace.WriteLine("Card Deactivated");
-                if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
-                {
-                    activation.Text = "Deactivated";
-                    await this.LiveCard.Client.SaveCard(CreateCard());
-                }
+                activation.Text = "Deactivated";
+                await this.LiveCard.Client.SaveCard(CreateCard());
             }
         }
-
-
     }
-
 }

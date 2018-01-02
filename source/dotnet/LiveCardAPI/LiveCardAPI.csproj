@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="AdaptiveElementMemory.cs" />
     <Compile Include="AdaptiveExtensions.cs" />
-    <Compile Include="AsyncLock.cs" />
     <Compile Include="AsyncQueue.cs" />
     <Compile Include="ElementFinder.cs" />
     <Compile Include="ILiveCard.cs" />
