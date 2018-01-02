@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-#include "enums.h"
+#include "Enums.h"
 
 namespace AdaptiveCards
 {

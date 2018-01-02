@@ -130,6 +130,10 @@
     <ClCompile Include="..\..\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\jsoncpp.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownBlockParser.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownParsedResult.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\OpenUrlAction.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseUtil.cpp" />
@@ -161,6 +165,11 @@
     <ClInclude Include="..\..\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\ObjectModel\Image.h" />
     <ClInclude Include="..\..\ObjectModel\ImageSet.h" />
+    <ClInclude Include="..\..\ObjectModel\LinkState.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownBlockParser.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownHtmlGenerator.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownParser.h" />
     <ClInclude Include="..\..\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\ObjectModel\OpenUrlAction.h" />
     <ClInclude Include="..\..\ObjectModel\ParseUtil.h" />
