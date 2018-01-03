@@ -1562,10 +1562,10 @@ export class NumberInput extends Input {
 
     protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
-        this._numberInputElement.type = "number";
+        this._numberInputElement.setAttribute('type',"number");
         this._numberInputElement.className = "ac-input ac-numberInput";
-        this._numberInputElement.min = this.min;
-        this._numberInputElement.max = this.max;
+        this._numberInputElement.setAttribute('min', this.min);
+        this._numberInputElement.setAttribute('max', this.max);
         this._numberInputElement.style.width = "100%";
         this._numberInputElement.tabIndex = 0;
 
@@ -1608,7 +1608,7 @@ export class DateInput extends Input {
 
     protected internalRender(): HTMLElement {
         this._dateInputElement = document.createElement("input");
-        this._dateInputElement.type = "date";
+        this._dateInputElement.setAttribute('type',"date");
         this._dateInputElement.className = "ac-input ac-dateInput";
         this._dateInputElement.style.width = "100%";
 
@@ -1633,7 +1633,7 @@ export class TimeInput extends Input {
 
     protected internalRender(): HTMLElement {
         this._timeInputElement = document.createElement("input");
-        this._timeInputElement.type = "time";
+        this._timeInputElement.setAttribute('type',"time");
         this._timeInputElement.className = "ac-input ac-timeInput";
         this._timeInputElement.style.width = "100%";
 
