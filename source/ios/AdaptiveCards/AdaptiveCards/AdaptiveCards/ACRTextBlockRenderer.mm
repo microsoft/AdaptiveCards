@@ -36,11 +36,8 @@
     NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
     // Font and text size are applied as CSS style by appending it to the html string -- font is hard coded for now
-    UIFontDescriptor *dec = lab.font.fontDescriptor;
-    UIFont *labelFont = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]];
-    parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%fpx;}</style>",
-                                                          @"verdana",
-                                                          labelFont.pointSize]];
+    parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx;}</style>",
+                                                          @"verdana", [ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]]];
     // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
     NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
     NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
