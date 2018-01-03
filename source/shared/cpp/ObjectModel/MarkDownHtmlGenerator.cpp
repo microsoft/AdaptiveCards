@@ -92,7 +92,7 @@ std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
 {
     if (m_numberOfUnusedDelimiters)
     {
-        int startIdx = m_token.size() - m_numberOfUnusedDelimiters;
+        unsigned long startIdx = m_token.size() - m_numberOfUnusedDelimiters;
         html << m_token.substr(startIdx, std::string::npos);
     }
 
@@ -136,7 +136,7 @@ std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
     // if there are unused emphasis, append them 
     if (m_numberOfUnusedDelimiters)
     {
-        int startIdx = m_token.size() - m_numberOfUnusedDelimiters;
+        unsigned long startIdx = m_token.size() - m_numberOfUnusedDelimiters;
         html << m_token.substr(startIdx, std::string::npos);
     }
 
