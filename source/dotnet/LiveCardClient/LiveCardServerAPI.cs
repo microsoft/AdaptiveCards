@@ -20,22 +20,22 @@ namespace LiveCardClient
 
         public Task FireActivate()
         {
-            return rpc.NotifyAsync();
+            return rpc.NotifyAsync("FireActivate");
         }
 
         public Task FireDeactivate()
         {
-            return rpc.NotifyAsync();
+            return rpc.NotifyAsync("FireDeactivate");
         }
 
         public Task FireFocus(string id)
         {
-            return rpc.NotifyAsync(argument: id);
+            return rpc.NotifyAsync("FireFocus", id);
         }
 
         public Task FireBlur(string id)
         {
-            return rpc.NotifyAsync(argument: id);
+            return rpc.NotifyAsync("FireBlur", id);
         }
 
         public Task FireKey(string id, string key)
@@ -45,7 +45,7 @@ namespace LiveCardClient
 
         public Task FireClick(string id)
         {
-            return rpc.NotifyAsync(argument: id);
+            return rpc.NotifyAsync("FireClick", id);
         }
 
         public Task FireTextChanged(string id, string text)
@@ -60,12 +60,12 @@ namespace LiveCardClient
 
         public Task FireMouseEnter(string id)
         {
-            return rpc.NotifyAsync(argument: id);
+            return rpc.NotifyAsync("FireMouseEnter", id);
         }
 
         public Task FireMouseLeave(string id)
         {
-            return rpc.NotifyAsync(argument: id);
+            return rpc.NotifyAsync("FireMouseLeave", id);
         }
     }
 

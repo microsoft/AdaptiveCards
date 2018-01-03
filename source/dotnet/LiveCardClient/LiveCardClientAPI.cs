@@ -1,5 +1,6 @@
 ﻿using AdaptiveCards;
 using LiveCardAPI;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StreamJsonRpc;
 using System;
@@ -40,14 +41,11 @@ namespace LiveCardClient
                 {
                     try
                     {
-
                         var propertyInfo = element.GetType().GetProperty(name);
-                        if (value is JArray)
-                            propertyInfo.SetValue(element, ((JArray)value).ToObject(propertyInfo.PropertyType));
-                        else if (value is JObject)
-                            propertyInfo.SetValue(element, ((JObject)value).ToObject(propertyInfo.PropertyType));
-                        else if (propertyInfo.PropertyType.IsEnum)
+                        if (propertyInfo.PropertyType.IsEnum)
                             propertyInfo.SetValue(element, Enum.Parse(propertyInfo.PropertyType, ((string)value) ?? "0", true));
+                        else if (value is JToken)
+                            propertyInfo.SetValue(element, ((JToken)value).ToObject(propertyInfo.PropertyType));
                         else
                             propertyInfo.SetValue(element, Convert.ChangeType(value, propertyInfo.PropertyType));
                     }

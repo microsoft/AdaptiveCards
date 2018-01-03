@@ -67,6 +67,7 @@ namespace LiveCardBrowser
         {
             if (domChanges.UnProcessed(this.LiveCard.Card))
             {
+                //this.LiveCard.Card.PropertyChanged += Card_PropertyChanged;
                 this.LiveCard.Card.Body.CollectionChanged += Body_CollectionChanged;
                 domChanges.MarkProcessed(this.LiveCard.Card);
             }
@@ -88,6 +89,17 @@ namespace LiveCardBrowser
                 }
             }
         }
+
+        //private void Card_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //    BindEvents();
+
+        //    this.dispatcher.Invoke(() =>
+        //    {
+        //        RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
+        //        this.NativeCard = renderedCard.FrameworkElement;
+        //    });
+        //}
 
         /// <summary>
         /// send property changes to client

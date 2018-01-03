@@ -81,7 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElementChangedArgs.cs" />
     <Compile Include="LiveCard.cs" />
     <Compile Include="LiveCardClientAPI.cs" />
     <Compile Include="LiveCardServerAPI.cs" />

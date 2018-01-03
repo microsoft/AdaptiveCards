@@ -78,7 +78,7 @@ namespace LiveCardServer
         /// <param name="e"></param>
         private async void Element_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            AdaptiveElement element = (AdaptiveElement)sender;
+            AdaptiveTypedElement element = (AdaptiveTypedElement)sender;
             var value = element.GetType().GetProperty(e.PropertyName).GetValue(element);
             await this.Client.SetProperty(element.Id, e.PropertyName, value);
         }

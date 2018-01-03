@@ -70,21 +70,9 @@ namespace LiveCardServerSample.Controllers
                 title2.OnMouseEnter += Title_OnMouseEnter;
                 title2.OnMouseLeave += Title_OnMouseLeave;
                 this.LiveCard.Card.ReplaceElement(title2);
+
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                Task.Run(async () =>
-                {
-                    while (!this.LiveCard.ListeningTask.IsCompleted)
-                    {
-                        await Task.Delay(500);
-                        if (this.flash)
-                        {
-                            if (title2.Weight == AdaptiveTextWeight.Default)
-                                title2.Weight = AdaptiveTextWeight.Bolder;
-                            else
-                                title2.Weight = AdaptiveTextWeight.Default;
-                        }
-                    }
-                });
+                BackgroundFlash(title2);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
 
@@ -105,6 +93,24 @@ namespace LiveCardServerSample.Controllers
             var hover = new AdaptiveTextBlock() { Id = "HoverLabel", Text = $"No mouse" };
             this.LiveCard.Card.Body.Add(hover);
 
+        }
+
+        private void BackgroundFlash(AdaptiveTextBlock title2)
+        {
+            Task.Run(async () =>
+            {
+                while (!this.LiveCard.ListeningTask.IsCompleted)
+                {
+                    await Task.Delay(1500);
+                    if (this.flash)
+                    {
+                        if (title2.Weight == AdaptiveTextWeight.Default)
+                            title2.Weight = AdaptiveTextWeight.Bolder;
+                        else
+                            title2.Weight = AdaptiveTextWeight.Default;
+                    }
+                }
+            });
         }
 
         private bool flash = false;

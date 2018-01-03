@@ -1,6 +1,8 @@
-﻿using AdaptiveCards.Rendering;
+﻿using AdaptiveCards;
+using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using LiveCardClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +30,18 @@ namespace LiveCardBrowser
 
         public MainWindow()
         {
+            var parseResult = new AdaptiveCardParseResult();
+            var settings = new JsonSerializerSettings
+            {
+                Converters =
+                                {
+                                    new AdaptiveCardConverter(parseResult),
+                                    new AdaptiveTypedElementConverter(parseResult),
+                                    new IgnoreEmptyItemsConverter<AdaptiveAction>(),
+                                    new IgnoreEmptyItemsConverter<AdaptiveElement>()
+                                }
+            };
+            JsonConvert.DefaultSettings = () => settings;
             InitializeComponent();
         }
 

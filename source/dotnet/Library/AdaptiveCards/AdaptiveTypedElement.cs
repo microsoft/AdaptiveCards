@@ -22,7 +22,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Id { get { return _Id; } set { SetPropertyValue(ref _Id, value); } }
-        private string _Id = Guid.NewGuid().ToString("n");
+        private string _Id = "Z"+Guid.NewGuid().ToString("n");
 
         protected TENum? GetEnum<TENum>(string value)
             where TENum : struct

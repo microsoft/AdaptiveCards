@@ -31,7 +31,7 @@ namespace LiveCardServer
         /// <returns></returns>
         public Task SetProperty(string elementId, string name, object value)
         {
-            return rpc.NotifyAsync(new object[] { elementId, name, value });
+            return rpc.NotifyAsync("SetProperty", elementId, name, value);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace LiveCardServer
         /// <returns></returns>
         public Task AddElements(string elementId, int insertIndex, AdaptiveElement[] newItems)
         {
-            return rpc.NotifyAsync(new object[] { elementId, insertIndex, newItems });
+            return rpc.NotifyAsync("AddElements", elementId, insertIndex, newItems);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace LiveCardServer
         /// <returns></returns>
         public Task RemoveElements(string elementId, string[] elementIds)
         {
-            return rpc.NotifyAsync(new object[] { elementId, elementIds});
+            return rpc.NotifyAsync("RemoveElements", elementId, elementIds);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace LiveCardServer
         /// <returns></returns>
         public Task ReplaceElements(string elementId, AdaptiveElement[] elements)
         {
-            return rpc.NotifyAsync(new object[] { elementId, elements});
+            return rpc.NotifyAsync("ReplaceElements", elementId, elements );
         }
 
 
@@ -76,7 +76,7 @@ namespace LiveCardServer
         /// <returns></returns>
         public Task ResetElements(string elementId)
         {
-            return rpc.NotifyAsync(elementId);
+            return rpc.NotifyAsync("ResetElements", elementId);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace LiveCardServer
         /// <returns></returns>
         public Task SaveCard(AdaptiveCard card = null)
         {
-            return rpc.NotifyAsync(card);
+            return rpc.NotifyAsync("SaveCard", card);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace LiveCardServer
         /// <returns></returns>
         public Task CloseCard()
         {
-            return rpc.NotifyAsync();
+            return rpc.NotifyAsync("CloseCard");
         }
 
     }
