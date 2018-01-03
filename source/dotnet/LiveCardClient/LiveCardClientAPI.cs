@@ -48,6 +48,9 @@ namespace LiveCardClient
                             propertyInfo.SetValue(element, ((JToken)value).ToObject(propertyInfo.PropertyType));
                         else
                             propertyInfo.SetValue(element, Convert.ChangeType(value, propertyInfo.PropertyType));
+
+                        // make sure serverEvents are subscribed
+                        this.liveCard.BindEvents();
                     }
                     catch (Exception err)
                     {

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using StreamJsonRpc;
 using System.Net;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace LiveCardServerSample.Controllers
 {
@@ -72,7 +73,7 @@ namespace LiveCardServerSample.Controllers
                 this.LiveCard.Card.ReplaceElement(title2);
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                BackgroundFlash(title2);
+                BackgroundFlash(activation);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
 
@@ -92,7 +93,6 @@ namespace LiveCardServerSample.Controllers
             this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "TextLabel", Text = "Text" });
             var hover = new AdaptiveTextBlock() { Id = "HoverLabel", Text = $"No mouse" };
             this.LiveCard.Card.Body.Add(hover);
-
         }
 
         private void BackgroundFlash(AdaptiveTextBlock title2)
