@@ -33,21 +33,22 @@ npm install adaptivecards --save
 ### Import the module
 
 ```js
-// import the module
+// Import the module:
 import * as AdaptiveCards from "adaptivecards";
 
-// or require it
+// Or require it:
 var AdaptiveCards = require("adaptivecards");
 
-// or use the global variable if loaded from CDN
-AdaptiveCards.renderCard(...);
+// If you referenced the library from CDN, the global AdaptiveCards variable is already
+// defined and can be used directly:
+var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 ```
 
 ### Render a card
 
 ```js
-// author a card
-// in practice you'll probably get this from a service
+// Author a card
+// In practice you'll probably get this from a service
 // see http://adaptivecards.io/samples/ for inspiration
 var card = {
     "type": "AdaptiveCard",
@@ -76,28 +77,35 @@ var card = {
     ]
 };
 
-// define your render options
-var renderOptions = {
+// Create an AdaptiveCard instance
+var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 
-    // a Host Config defines the style and behavior of all cards
-    hostConfig: {
-        "fontFamily": "Segoe UI, Helvetica Nue, sans-serif"
-    },
+// Set its hostConfig property unless you want to use the default Host Config
+// Host Config defines the style and behavior of a card
+adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(
+    {
+        fontFamily: "Segoe UI, Helvetica Nue, sans-serif"
+        // More host config options
+    }
+)
 
-    // the action handler is invoked when actions are pressed
-    onExecuteAction: function (action) { alert("Ow!"); },
+// Set the adaptive card's event handlers. onExecuteAction is invoked
+// whenever an action is clicked in the card
+adaptiveCard.onExecuteAction = function(action) { alert("Ow!"); }
 
-    // For markdown support you need a third-party library
-    // E.g., to use markdown-it include the script and add the following:
-    // <!-- <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script> -->
-    //processMarkdown: function (text) { return markdownit().render(text); }
-};
+// For markdown support you need a third-party library
+// E.g., to use markdown-it, include in your HTML page:
+//     <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script>
+// And add this code to replace the default markdown handler:
+//     AdaptiveCards.processMarkdown = function(text) { return markdownit().render(text); }
 
+// Parse the card payload
+adaptiveCard.parse(card);
 
-// render the card to HTML
-var renderedCard = AdaptiveCards.renderCard(card, renderOptions);
+// Render the card to an HTML element:
+var renderedCard = adaptiveCard.render();
 
-// now put it somewhere!
+// And finally insert it somewhere in your page:
 document.body.appendChild(renderedCard);
 ```
 
