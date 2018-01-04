@@ -169,7 +169,7 @@ export abstract class CardElement {
     /*
      * This should reverse any changes performed in truncateOverflow().
      */
-    protected undoOverflowTruncation() {}
+    protected undoOverflowTruncation() { }
 
     protected get allowCustomPadding(): boolean {
         return true;
@@ -1608,7 +1608,7 @@ export class DateInput extends Input {
 
     protected internalRender(): HTMLElement {
         this._dateInputElement = document.createElement("input");
-        this._dateInputElement.setAttribute("type","date");
+        this._dateInputElement.setAttribute("type", "date");
         this._dateInputElement.className = "ac-input ac-dateInput";
         this._dateInputElement.style.width = "100%";
 
@@ -1633,7 +1633,7 @@ export class TimeInput extends Input {
 
     protected internalRender(): HTMLElement {
         this._timeInputElement = document.createElement("input");
-        this._timeInputElement.setAttribute("type","time");
+        this._timeInputElement.setAttribute("type", "time");
         this._timeInputElement.className = "ac-input ac-timeInput";
         this._timeInputElement.style.width = "100%";
 
@@ -1916,7 +1916,7 @@ export class HttpAction extends Action {
 
     prepare(inputs: Array<Input>) {
         this._url.substituteInputValues(inputs, Utils.ContentTypes.applicationXWwwFormUrlencoded);
-        
+
         let contentType = Utils.ContentTypes.applicationJson;
 
         for (var i = 0; i < this._headers.length; i++) {
@@ -2136,7 +2136,7 @@ class ActionCollection {
 
                 actionButton.state = ActionButtonState.Expanded;
 
-                this.showActionCard(actionButton.action,  !(this._owner.isAtTheVeryLeft() && this._owner.isAtTheVeryRight()));
+                this.showActionCard(actionButton.action, !(this._owner.isAtTheVeryLeft() && this._owner.isAtTheVeryRight()));
             }
         }
     }
@@ -2501,7 +2501,7 @@ export class Container extends CardElement {
 
     private _items: Array<CardElement> = [];
     private _style?: string = null;
-    
+
     private get hasExplicitStyle(): boolean {
         return this._style != null;
     }
@@ -3438,7 +3438,7 @@ export class Version {
 function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement): boolean {
     let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
-    
+
     return onAnchorClickedHandler != null ? onAnchorClickedHandler(anchor) : false;
 }
 
@@ -3463,7 +3463,7 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
 }
 
 function raiseElementVisibilityChangedEvent(element: CardElement,
-                                            shouldUpdateLayout: boolean = true) {
+    shouldUpdateLayout: boolean = true) {
     let rootElement = element.getRootElement();
 
     if (shouldUpdateLayout) {
@@ -3785,7 +3785,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     onParseElement: (element: CardElement, json: any) => void = null;
-    
+
     version?: Version = new Version(1, 0);
     fallbackText: string;
 
@@ -3916,140 +3916,140 @@ class InlineAdaptiveCard extends AdaptiveCard {
 }
 
 const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
-{
-    supportsInteractivity: true,
-    fontFamily: "Segoe UI",
-    spacing: {
-        small: 10,
-        default: 20,
-        medium: 30,
-        large: 40,
-        extraLarge: 50,
-        padding: 20
-    },
-    separator: {
-        lineThickness: 1,
-        lineColor: "#EEEEEE"
-    },
-    fontSizes: {
-        small: 12,
-        default: 14,
-        medium: 17,
-        large: 21,
-        extraLarge: 26
-    },
-    fontWeights: {
-        lighter: 200,
-        default: 400,
-        bolder: 600
-    },
-    imageSizes: {
-        small: 40,
-        medium: 80,
-        large: 160
-    },
-    containerStyles: {
-        default: {
-            backgroundColor: "#FFFFFF",
-            foregroundColors: {
-                default: {
-                    default: "#333333",
-                    subtle: "#EE333333"
-                },
-                dark: {
-                    default: "#000000",
-                    subtle: "#66000000"
-                },
-                light: {
-                    default: "#FFFFFF",
-                    subtle: "#33000000"
-                },
-                accent: {
-                    default: "#2E89FC",
-                    subtle: "#882E89FC"
-                },
-                attention: {
-                    default: "#cc3300",
-                    subtle: "#DDcc3300"
-                },
-                good: {
-                    default: "#54a254",
-                    subtle: "#DD54a254"
-                },
-                warning: {
-                    default: "#e69500",
-                    subtle: "#DDe69500"
+    {
+        supportsInteractivity: true,
+        fontFamily: "Segoe UI",
+        spacing: {
+            small: 10,
+            default: 20,
+            medium: 30,
+            large: 40,
+            extraLarge: 50,
+            padding: 20
+        },
+        separator: {
+            lineThickness: 1,
+            lineColor: "#EEEEEE"
+        },
+        fontSizes: {
+            small: 12,
+            default: 14,
+            medium: 17,
+            large: 21,
+            extraLarge: 26
+        },
+        fontWeights: {
+            lighter: 200,
+            default: 400,
+            bolder: 600
+        },
+        imageSizes: {
+            small: 40,
+            medium: 80,
+            large: 160
+        },
+        containerStyles: {
+            default: {
+                backgroundColor: "#FFFFFF",
+                foregroundColors: {
+                    default: {
+                        default: "#333333",
+                        subtle: "#EE333333"
+                    },
+                    dark: {
+                        default: "#000000",
+                        subtle: "#66000000"
+                    },
+                    light: {
+                        default: "#FFFFFF",
+                        subtle: "#33000000"
+                    },
+                    accent: {
+                        default: "#2E89FC",
+                        subtle: "#882E89FC"
+                    },
+                    attention: {
+                        default: "#cc3300",
+                        subtle: "#DDcc3300"
+                    },
+                    good: {
+                        default: "#54a254",
+                        subtle: "#DD54a254"
+                    },
+                    warning: {
+                        default: "#e69500",
+                        subtle: "#DDe69500"
+                    }
+                }
+            },
+            emphasis: {
+                backgroundColor: "#08000000",
+                foregroundColors: {
+                    default: {
+                        default: "#333333",
+                        subtle: "#EE333333"
+                    },
+                    dark: {
+                        default: "#000000",
+                        subtle: "#66000000"
+                    },
+                    light: {
+                        default: "#FFFFFF",
+                        subtle: "#33000000"
+                    },
+                    accent: {
+                        default: "#2E89FC",
+                        subtle: "#882E89FC"
+                    },
+                    attention: {
+                        default: "#cc3300",
+                        subtle: "#DDcc3300"
+                    },
+                    good: {
+                        default: "#54a254",
+                        subtle: "#DD54a254"
+                    },
+                    warning: {
+                        default: "#e69500",
+                        subtle: "#DDe69500"
+                    }
                 }
             }
         },
-        emphasis: {
-            backgroundColor: "#08000000",
-            foregroundColors: {
-                default: {
-                    default: "#333333",
-                    subtle: "#EE333333"
-                },
-                dark: {
-                    default: "#000000",
-                    subtle: "#66000000"
-                },
-                light: {
-                    default: "#FFFFFF",
-                    subtle: "#33000000"
-                },
-                accent: {
-                    default: "#2E89FC",
-                    subtle: "#882E89FC"
-                },
-                attention: {
-                    default: "#cc3300",
-                    subtle: "#DDcc3300"
-                },
-                good: {
-                    default: "#54a254",
-                    subtle: "#DD54a254"
-                },
-                warning: {
-                    default: "#e69500",
-                    subtle: "#DDe69500"
-                }
-            }
+        actions: {
+            maxActions: 5,
+            spacing: Enums.Spacing.Default,
+            buttonSpacing: 10,
+            showCard: {
+                actionMode: Enums.ShowCardActionMode.Inline,
+                inlineTopMargin: 16
+            },
+            actionsOrientation: Enums.Orientation.Horizontal,
+            actionAlignment: Enums.ActionAlignment.Left
+        },
+        adaptiveCard: {
+            allowCustomStyle: false
+        },
+        imageSet: {
+            imageSize: Enums.Size.Medium,
+            maxImageHeight: 100
+        },
+        factSet: {
+            title: {
+                color: Enums.TextColor.Default,
+                size: Enums.TextSize.Default,
+                isSubtle: false,
+                weight: Enums.TextWeight.Bolder,
+                wrap: true,
+                maxWidth: 150,
+            },
+            value: {
+                color: Enums.TextColor.Default,
+                size: Enums.TextSize.Default,
+                isSubtle: false,
+                weight: Enums.TextWeight.Default,
+                wrap: true,
+            },
+            spacing: 10
         }
-    },
-    actions: {
-        maxActions: 5,
-        spacing: Enums.Spacing.Default,
-        buttonSpacing: 10,
-        showCard: {
-            actionMode: Enums.ShowCardActionMode.Inline,
-            inlineTopMargin: 16
-        },
-        actionsOrientation: Enums.Orientation.Horizontal,
-        actionAlignment: Enums.ActionAlignment.Left
-    },
-    adaptiveCard: {
-        allowCustomStyle: false
-    },
-    imageSet: {
-        imageSize: Enums.Size.Medium,
-        maxImageHeight: 100
-    },
-    factSet: {
-        title: {
-            color: Enums.TextColor.Default,
-            size: Enums.TextSize.Default,
-            isSubtle: false,
-            weight: Enums.TextWeight.Bolder,
-            wrap: true,
-            maxWidth: 150,
-        },
-        value: {
-            color: Enums.TextColor.Default,
-            size: Enums.TextSize.Default,
-            isSubtle: false,
-            weight: Enums.TextWeight.Default,
-            wrap: true,
-        },
-        spacing: 10
-    }
-});
+    });
