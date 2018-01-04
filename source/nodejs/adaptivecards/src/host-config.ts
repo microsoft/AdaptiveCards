@@ -244,17 +244,17 @@ class BuiltInContainerStyleDefinition extends ContainerStyleDefinition {
 }
 
 export class ContainerStyleSet {
-    private _allStyles = new Map<string, ContainerStyleDefinition>();
+    private _allStyles: object = {};
 
     constructor(obj?: any) {
-        this._allStyles.set(Enums.ContainerStyle.Default, new BuiltInContainerStyleDefinition());
-        this._allStyles.set(Enums.ContainerStyle.Emphasis, new BuiltInContainerStyleDefinition());
-        
+        this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Emphasis] = new BuiltInContainerStyleDefinition();
+
         if (obj) {
-            this._allStyles.get(Enums.ContainerStyle.Default).parse(obj[Enums.ContainerStyle.Default]);
-            this._allStyles.get(Enums.ContainerStyle.Emphasis).parse(obj[Enums.ContainerStyle.Emphasis]);
-    
-            var customStyleArray = obj["customStyles"];
+            this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
+            this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
+
+            const customStyleArray = obj["customStyles"];
 
             if (customStyleArray && Array.isArray(customStyleArray)) {
                 for (var customStyle of customStyleArray) {
@@ -262,11 +262,11 @@ export class ContainerStyleSet {
                         var styleName = customStyle["name"];
 
                         if (styleName && typeof styleName === "string") {
-                            if (this._allStyles.has(styleName)) {
-                                this._allStyles.get(styleName).parse(customStyle["style"]);
+                            if (this._allStyles.hasOwnProperty(styleName)) {
+                                this._allStyles[styleName].parse(customStyle["style"]);
                             }
                             else {
-                                this._allStyles.set(styleName, new ContainerStyleDefinition(customStyle["style"]));
+                                this._allStyles[styleName] = new ContainerStyleDefinition(customStyle["style"]);
                             }
                         }
                     }
@@ -278,17 +278,15 @@ export class ContainerStyleSet {
     toJSON() {
         var customStyleArray: Array<any> = [];
 
-        this._allStyles.forEach(
-            (value, key, map) => {
-                if (!value.isBuiltIn) {
-                    customStyleArray.push(
-                        {
-                            name: key,
-                            style: value
-                        });
+        Object.keys(this._allStyles).forEach(
+            (key) => {
+                if (!this._allStyles[key].isBuiltIn) {
+                    customStyleArray.push({
+                        name: key,
+                        style: this._allStyles[key]
+                    });
                 }
-            }
-        );
+            });
 
         var result: any = {
             default: this.default,
@@ -303,15 +301,15 @@ export class ContainerStyleSet {
     }
 
     getStyleByName(name: string, defaultValue: ContainerStyleDefinition = null): ContainerStyleDefinition {
-        return this._allStyles.has(name) ? this._allStyles.get(name) : defaultValue;
+        return this._allStyles.hasOwnProperty(name) ? this._allStyles[name] : defaultValue;
     }
 
     get default(): ContainerStyleDefinition {
-        return this._allStyles.get(Enums.ContainerStyle.Default);
+        return this._allStyles[Enums.ContainerStyle.Default];
     }
 
     get emphasis(): ContainerStyleDefinition {
-        return this._allStyles.get(Enums.ContainerStyle.Emphasis);
+        return this._allStyles[Enums.ContainerStyle.Emphasis];
     }
 }
 
