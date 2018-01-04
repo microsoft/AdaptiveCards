@@ -264,7 +264,8 @@ export class ContainerStyleSet {
                         if (styleName && typeof styleName === "string") {
                             if (this._allStyles.hasOwnProperty(styleName)) {
                                 this._allStyles[styleName].parse(customStyle["style"]);
-                            }else {
+                            }
+                            else {
                                 this._allStyles[styleName] = new ContainerStyleDefinition(customStyle["style"]);
                             }
                         }
@@ -277,14 +278,15 @@ export class ContainerStyleSet {
     toJSON() {
         var customStyleArray: Array<any> = [];
 
-        Object.keys(this._allStyles).forEach((key) => {
-            if (!this._allStyles[key].isBuiltIn) {
-                customStyleArray.push({
-                    name: key,
-                    style: this._allStyles[key]
-                });
-            }
-        });
+        Object.keys(this._allStyles).forEach(
+            (key) => {
+                if (!this._allStyles[key].isBuiltIn) {
+                    customStyleArray.push({
+                        name: key,
+                        style: this._allStyles[key]
+                    });
+                }
+            });
 
         var result: any = {
             default: this.default,
