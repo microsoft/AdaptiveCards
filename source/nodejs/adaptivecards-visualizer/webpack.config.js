@@ -25,8 +25,7 @@ var visualizer = {
         ]
     },
     externals: {
-        "adaptivecards": { var: "AdaptiveCards" },
-        "markdown-it": { var: 'markdownit' }
+        "adaptivecards": { var: "AdaptiveCards" }
     }
 };
 

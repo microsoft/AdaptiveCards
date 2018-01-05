@@ -14,9 +14,36 @@ import {
     Image,
     Container,
     Column,
+    Action,
     ActionSet,
     HttpAction
 } from "adaptivecards";
+
+export class ToggleVisibilityAction extends Action {
+    targetElementIds: Array<string> = [];
+
+    getJsonTypeName(): string {
+        return "Action.ToggleVisibility";
+    }
+
+    execute() {
+        if (this.targetElementIds) {
+            for (var i = 0; i < this.targetElementIds.length; i++) {
+                var targetElement = this.parent.getRootElement().getElementById(this.targetElementIds[i]);
+
+                if (targetElement) {
+                    targetElement.isVisible = !targetElement.isVisible;
+                }
+            }
+        }
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.targetElementIds = json["targetElementIds"] as Array<string>;
+    }
+}
 
 export class OutlookContainer extends HostContainer {
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
@@ -39,6 +66,7 @@ export class OutlookContainer extends HostContainer {
 
         AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
         AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 
         AdaptiveCard.useAutomaticContainerBleeding = true;
         AdaptiveCard.preExpandSingleShowCardAction = true;

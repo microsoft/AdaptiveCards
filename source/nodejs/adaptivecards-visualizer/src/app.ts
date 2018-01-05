@@ -1,4 +1,5 @@
 ﻿import * as AdaptiveCards from "adaptivecards";
+import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";
 
 import { HostContainer } from "./containers/host-container";
@@ -10,13 +11,8 @@ import { TimelineContainer } from "./containers/timeline";
 import { OutlookContainer } from "./containers/outlook";
 import { BotFrameworkImageContainer } from "./containers/bf-image";
 
-import * as ace from "brace";
-import "brace/mode/json";
-import "brace/theme/chrome";
 import * as vkbeautify from "vkbeautify";
 
-
-var editor: ace.Editor;
 var hostContainerOptions: Array<HostContainerOption> = [];
 var hostContainerPicker: HTMLSelectElement;
 var lastValidationErrors: Array<AdaptiveCards.IValidationError> = [];
@@ -78,10 +74,6 @@ function openFilePicker() {
     document.getElementById("filePicker").click();
 }
 
-function setEditorText(text: string) {
-    editor.session.setValue(text);
-}
-
 function filePickerChanged(evt) {
     var filePicker = document.getElementById("filePicker") as HTMLInputElement;
 
@@ -123,7 +115,7 @@ function loadStyleSheetAndConfig() {
     currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), null, '\t');
 
     if (!isCardEditor) {
-        setEditorText(currentConfigPayload);
+        monacoEditor.setValue(currentConfigPayload);
     }
 }
 
@@ -158,59 +150,6 @@ class HostContainerOption {
 
 var currentCardPayload: string = "";
 var currentConfigPayload: string = "";
-
-function setupEditor() {
-    editor = ace.edit("editor");
-    editor.setTheme("ace/theme/chrome");
-    editor.setOptions(
-        {
-            showPrintMargin: false,
-            displayIndentGuides: false,
-            showFoldWidgets: true,
-            highlightSelectedWord: false,
-            fontSize: "14px"
-        });
-    editor.getSession().setMode("ace/mode/json");
-    editor.getSession().on(
-        "change",
-        function (e) {
-            if (isCardEditor) {
-                currentCardPayload = editor.getValue();
-            }
-            else {
-                currentConfigPayload = editor.getValue();
-            }
-
-            tryRenderCard();
-        });
-
-    // Load the cached payload if the user had one
-    try {
-        var cachedPayload = sessionStorage.getItem("AdaptivePayload");
-        var cardUrl = document.location.search.substring(1).split('card=')[1];
-
-        if (cardUrl) {
-            currentCardPayload = "";
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                currentCardPayload = xhttp.responseText;
-                setEditorText(currentCardPayload);
-            };
-
-            xhttp.open("GET", cardUrl, true);
-            xhttp.send();
-        }
-        else if (cachedPayload) {
-            currentCardPayload = cachedPayload;
-        }
-        else {
-            currentCardPayload = Constants.defaultPayload;
-        }
-    }
-    catch (e) {
-        currentCardPayload = Constants.defaultPayload;
-    }
-}
 
 function setupContainerPicker() {
 
@@ -405,8 +344,8 @@ function switchToCardEditor() {
     document.getElementById("editCard").classList.remove("subdued");
     document.getElementById("editConfig").classList.add("subdued");
 
-    setEditorText(currentCardPayload);
-    editor.focus();
+    monacoEditor.setValue(currentCardPayload);
+    monacoEditor.focus();
 }
 
 function switchToConfigEditor() {
@@ -415,8 +354,8 @@ function switchToConfigEditor() {
     document.getElementById("editCard").classList.add("subdued");
     document.getElementById("editConfig").classList.remove("subdued");
 
-    setEditorText(currentConfigPayload);
-    editor.focus();
+    monacoEditor.setValue(currentConfigPayload);
+    monacoEditor.focus();
 }
 
 function inlineCardExpanded(action: AdaptiveCards.ShowCardAction, isExpanded: boolean) {
@@ -427,90 +366,109 @@ function elementVisibilityChanged(element: AdaptiveCards.CardElement) {
     alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
 }
 
-export class ToggleVisibilityAction extends AdaptiveCards.Action {
-    targetElementIds: Array<string> = [];
-
-    getJsonTypeName(): string {
-        return "Action.ToggleVisibility";
-    }
-
-    execute() {
-        if (this.targetElementIds) {
-            for (var i = 0; i < this.targetElementIds.length; i++) {
-                var targetElement = this.parent.getRootElement().getElementById(this.targetElementIds[i]);
-
-                if (targetElement) {
-                    targetElement.isVisible = !targetElement.isVisible;
-                }
-            }
-        }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.targetElementIds = json["targetElementIds"] as Array<string>;
-    }
-}
-
-var betaFeaturesEnabled: boolean = false;
+declare function loadMonacoEditor(callback: () => void);
+declare var monacoEditor: any;
 
 window.onload = () => {
-    betaFeaturesEnabled = location.search.indexOf("beta=true") >= 0;
-
-    AdaptiveCards.AdaptiveCard.onParseElement = (element: AdaptiveCards.CardElement, json: any) => {
-        getSelectedHostContainer().parseElement(element, json);
+    AdaptiveCards.AdaptiveCard.processMarkdown = (text: string) => {
+        return new MarkdownIt().render(text);
     }
 
-    AdaptiveCards.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
-        return getSelectedHostContainer().anchorClicked(anchor);
-    }
+    // Monaco loads asynchronously via a call to require() from index.html
+    // App initialization needs to happen after.
+    loadMonacoEditor(
+        () => {
+            AdaptiveCards.AdaptiveCard.onParseElement = (element: AdaptiveCards.CardElement, json: any) => {
+                getSelectedHostContainer().parseElement(element, json);
+            }
 
-    if (betaFeaturesEnabled) {
-        AdaptiveCards.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
-    }
+            AdaptiveCards.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
+                return getSelectedHostContainer().anchorClicked(anchor);
+            }
 
-    currentConfigPayload = Constants.defaultConfigPayload;
+            currentConfigPayload = Constants.defaultConfigPayload;
 
-    document.getElementById("editCard").onclick = (e) => {
-        switchToCardEditor();
-    };
+            document.getElementById("editCard").onclick = (e) => {
+                switchToCardEditor();
+            };
 
-    document.getElementById("editConfig").onclick = (e) => {
-        switchToConfigEditor();
-    };
+            document.getElementById("editConfig").onclick = (e) => {
+                switchToConfigEditor();
+            };
 
-    AdaptiveCards.AdaptiveCard.onExecuteAction = actionExecuted;
-    // Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
+            AdaptiveCards.AdaptiveCard.onExecuteAction = actionExecuted;
+            // Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
 
-    /*
-    Test additional events:
+            /*
+            Test additional events:
 
-    Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
-    Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
-    */
+            Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
+            Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
+            */
 
-    // Uncomment to test the onInlineCardExpanded event:
-    // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
+            // Uncomment to test the onInlineCardExpanded event:
+            // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
 
-    AdaptiveCards.AdaptiveCard.onParseError = (error: AdaptiveCards.IValidationError) => {
-        lastValidationErrors.push(error);
-    }
+            AdaptiveCards.AdaptiveCard.onParseError = (error: AdaptiveCards.IValidationError) => {
+                lastValidationErrors.push(error);
+            }
 
-    hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
+            hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
-    setupContainerPicker();
-    setContainerAppFromUrl();
-    setupFilePicker();
-    loadStyleSheetAndConfig();
-    setupEditor();
-
-    switchToCardEditor();
-
-    // Handle Back and Forward after the Container app drop down is changed
-    window.addEventListener(
-        "popstate",
-        function (e) {
+            setupContainerPicker();
             setContainerAppFromUrl();
-        });
+            setupFilePicker();
+            loadStyleSheetAndConfig();
+
+            // Handle Back and Forward after the Container app drop down is changed
+            window.addEventListener(
+                "popstate",
+                function (e) {
+                    setContainerAppFromUrl();
+                });
+
+            // Load the cached payload if the user had one
+            try {
+                var cachedPayload = sessionStorage.getItem("AdaptivePayload");
+                var cardUrl = document.location.search.substring(1).split('card=')[1];
+
+                if (cardUrl) {
+                    currentCardPayload = "";
+
+                    var xhttp = new XMLHttpRequest();
+
+                    xhttp.onload = function () {
+                        currentCardPayload = xhttp.responseText;
+                        monacoEditor.setValue(currentCardPayload);
+                    };
+
+                    xhttp.open("GET", cardUrl, true);
+                    xhttp.send();
+                }
+                else if (cachedPayload) {
+                    currentCardPayload = cachedPayload;
+                }
+                else {
+                    currentCardPayload = Constants.defaultPayload;
+                }
+            }
+            catch (e) {
+                currentCardPayload = Constants.defaultPayload;
+            }
+
+            monacoEditor.onDidChangeModelContent(
+                function (e) {
+                    if (isCardEditor) {
+                        currentCardPayload = monacoEditor.getValue();
+                    }
+                    else {
+                        currentConfigPayload = monacoEditor.getValue();
+                    }
+        
+                    tryRenderCard();
+                });    
+
+            switchToCardEditor();
+        }
+    );
 };

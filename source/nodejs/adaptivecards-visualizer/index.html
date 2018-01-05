@@ -6,11 +6,45 @@
     <title>Adaptive Card Visualizer</title>
 
     <link rel="stylesheet" href="css/app.css" type="text/css" />
-    <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
+
+    <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
 
     <script src="node_modules/adaptivecards/dist/adaptivecards.js"></script>
 
     <script src="dist/adaptivecards-visualizer.js"></script>
+
+    <script>
+        function loadMonacoEditor(callback) {
+            require.config(
+                {
+                    paths: {
+                        'vs': './node_modules/monaco-editor/min/vs'
+                    }
+                }
+            );
+            require(
+                ['vs/editor/editor.main'],
+                function() {
+                    monacoEditor = monaco.editor.create(
+                        document.getElementById('editor'),
+                        {
+                            folding: true,
+                            language: 'json',
+                            minimap: {
+                                enabled: false
+                            }
+                        }
+                    );
+    
+                    window.addEventListener('resize', function () {
+                        monacoEditor.layout();
+                    });
+    
+                    callback();
+                }
+            );
+        }
+    </script>
 </head>
 <body>
     <div class="uiRoot">
@@ -26,12 +60,12 @@
         </div>
         <div class="cardEditor">
             <div class="leftPane">
-                <div id="editor">
+                <div id="editor" style="overflow: hidden;">
 
                 </div>
             </div>
             <div class="rightPane">
-                <div id="errorContainer" class="errorContainer"></div>
+                <div id="errorContainer" class="errorContainer" hidden="true"></div>
                 <div id="content" class="markupRender"></div>
             </div>
         </div>
