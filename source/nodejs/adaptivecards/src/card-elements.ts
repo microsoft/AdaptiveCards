@@ -3902,8 +3902,8 @@ class InlineAdaptiveCard extends AdaptiveCard {
 
     suppressStyle: boolean = false;
 
-    render() {
-        var renderedCard = super.render();
+    render(target?: HTMLElement) {
+        var renderedCard = super.render(target);
         renderedCard.setAttribute("aria-live", "polite");
         renderedCard.removeAttribute("tabindex");
 
