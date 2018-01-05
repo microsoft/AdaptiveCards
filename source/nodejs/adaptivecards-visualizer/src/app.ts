@@ -151,7 +151,15 @@ class HostContainerOption {
 var currentCardPayload: string = "";
 var currentConfigPayload: string = "";
 
+function hostContainerPickerChanged() {
+    history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, "index.html" + `?hostApp=${hostContainerPicker.value}`);
+
+    loadStyleSheetAndConfig();
+    tryRenderCard();
+}
+
 function setupContainerPicker() {
+    hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -188,36 +196,29 @@ function setupContainerPicker() {
             "Windows Timeline",
             new TimelineContainer(320, 176, "css/timeline.css")));
 
-    if (hostContainerPicker) {
-        hostContainerPicker.addEventListener(
-            "change", () => {
-                // Update the query string
-                var htmlFileName = location.pathname.indexOf("dev.html") >= 0 ? "dev.html" : "index.html";
+    hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
 
-                history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, htmlFileName + `?hostApp=${hostContainerPicker.value}`);
+    for (var i = 0; i < hostContainerOptions.length; i++) {
+        var option = document.createElement("option");
+        option.value = hostContainerOptions[i].name;
+        option.text = hostContainerOptions[i].name;
 
-                loadStyleSheetAndConfig();
-                tryRenderCard();
-            });
-
-        for (var i = 0; i < hostContainerOptions.length; i++) {
-            var option = document.createElement("option");
-            option.value = hostContainerOptions[i].name;
-            option.text = hostContainerOptions[i].name;
-
-            hostContainerPicker.appendChild(option);
-        }
+        hostContainerPicker.appendChild(option);
     }
 }
 
 function setContainerAppFromUrl() {
     var requestedHostApp = getParameterByName("hostApp", null);
 
-    if (requestedHostApp) {
-        console.log(`Setting host app to ${requestedHostApp}`);
-
-        hostContainerPicker.value = requestedHostApp;
+    if (!requestedHostApp) {
+        requestedHostApp = hostContainerOptions[0].name;
     }
+
+    console.log(`Setting host app to ${requestedHostApp}`);
+
+    hostContainerPicker.value = requestedHostApp;
+
+    hostContainerPickerChanged();
 }
 
 function setupFilePicker() {
@@ -412,8 +413,6 @@ window.onload = () => {
             AdaptiveCards.AdaptiveCard.onParseError = (error: AdaptiveCards.IValidationError) => {
                 lastValidationErrors.push(error);
             }
-
-            hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
             setupContainerPicker();
             setContainerAppFromUrl();
