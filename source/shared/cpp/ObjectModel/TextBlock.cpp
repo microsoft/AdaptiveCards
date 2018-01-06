@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <regex>
 #include <iostream>
+#include <locale>
 #include "TextBlock.h"
 #include "ParseUtil.h"
 
@@ -286,6 +287,7 @@ std::string TextBlock::ParseDateTime() const
 
                 if (isDate)
                 {
+                    parsedostr.imbue(std::locale("de_DE"));
                     switch (formatStyle)
                     {
                         // SHORT Style

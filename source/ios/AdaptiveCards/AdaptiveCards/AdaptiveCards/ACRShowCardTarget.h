@@ -18,4 +18,6 @@
                                   vc:(UIViewController *)vc;
 
 - (IBAction)showCard:(UIButton *)sender;
+- (IBAction)showCard;
+
 @end

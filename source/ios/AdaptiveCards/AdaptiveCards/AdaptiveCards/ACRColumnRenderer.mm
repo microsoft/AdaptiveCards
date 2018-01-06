@@ -25,6 +25,7 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+            rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -51,6 +52,7 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:style hostConfig:config];
     [viewGroup addArrangedSubview:column];
     [ACRRenderer render:column
+     rootViewController:vc
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:config];

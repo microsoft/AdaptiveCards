@@ -26,10 +26,14 @@ using namespace AdaptiveCards;
     return self;
 }
 
+// This interface is exposed to outside, and returns ACRRenderResult object
+// This object contains a viewController instance which defer rendering adaptiveCard untill viewDidLoad is called.
 + (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
 
+    // Initializes ACRViewController instance with HostConfig and AdaptiveCard
+    // ACRViewController does not render adaptiveCard untill viewDidLoad calls render
     ACRViewController *viewcontroller = [[ACRViewController alloc] init:card
                                                              hostconfig:config
                                                                   frame:frame];
@@ -38,7 +42,7 @@ using namespace AdaptiveCards;
     result.succeeded = YES;
     return result;
 }
-
+// transforms (i.e. renders) an adaptiveCard to a new UIView instance
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs
                      viewController:(UIViewController *)vc
@@ -53,12 +57,12 @@ using namespace AdaptiveCards;
     {
          verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
 
-        [ACRRenderer render:verticalView inputs:inputs withCardElems:body andHostConfig:config];
+        [ACRRenderer render:verticalView rootViewController:vc inputs:inputs withCardElems:body andHostConfig:config];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
 
         [ACRSeparator renderActionsSeparator:verticalView hostConfig:config];
-
+        // renders buttons and their associated actions
         UIView<ACRIContentHoldingView> *actionChildView = [ACRRenderer renderButton:vc inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
         [verticalView addArrangedSubview:actionChildView];
     }
@@ -118,6 +122,7 @@ using namespace AdaptiveCards;
 }
 
 + (UIView *)render:(UIView<ACRIContentHoldingView> *)view
+            rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
      withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -137,7 +142,7 @@ using namespace AdaptiveCards;
             continue;
         }
 
-        [renderer render:view inputs:inputs withCardElem:elem andHostConfig:config];
+        [renderer render:view rootViewController:vc inputs:inputs withCardElem:elem andHostConfig:config];
     }
 
     return view;

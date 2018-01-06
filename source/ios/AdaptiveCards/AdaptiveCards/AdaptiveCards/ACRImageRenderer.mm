@@ -9,6 +9,11 @@
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACROpenURLTarget.h"
+#import "ACRShowCardTarget.h"
+#import "OpenUrlAction.h"
+#import "ACRShowCardTarget.h"
+#import "ShowCardAction.h"
 
 @implementation ACRImageRenderer
 
@@ -23,7 +28,7 @@
     return CardElementType::Image;
 }
 
-- (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem 
+- (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem
         withHostConfig:(std::shared_ptr<HostConfig> const &)hostConfig
 {
     float sz = hostConfig->imageSizes.smallSize;
@@ -49,12 +54,12 @@
     CGSize cgSize = CGSizeMake(sz, sz);
     return cgSize;
 }
-// code clean-up in progress 
+// code clean-up in progress
 - (NSArray *)setImageAlignment:(HorizontalAlignment)alignment
                  withSuperview:(UIView *)superview
                         toView:(UIView *)view
 {
-    NSMutableArray *constraints = [[NSMutableArray alloc] init]; 
+    NSMutableArray *constraints = [[NSMutableArray alloc] init];
     [constraints addObject:
         [NSLayoutConstraint constraintWithItem:superview
                                      attribute:NSLayoutAttributeCenterY
@@ -118,6 +123,7 @@
     return constraints;
 }
 - (UIView *)render:(UIView *)viewGroup
+            rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -126,9 +132,9 @@
     NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
                                           encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:urlStr];
-  
+
     UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    
+
     CGSize cgsize = [self getImageSize:imgElem withHostConfig:config];
 
     UIGraphicsBeginImageContext(cgsize);
@@ -138,7 +144,7 @@
     img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     view.image = img;
-    
+
     //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
     view.contentMode = UIViewContentModeScaleAspectFit;
     view.clipsToBounds = NO;
@@ -147,16 +153,62 @@
         [imgLayer setCornerRadius:cgsize.width/2];
         [imgLayer setMasksToBounds:YES];
     }
-    
+
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
     [wrappingview addSubview:view];
-    
+
 
     if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
 
     [wrappingview addConstraints:[self setImageAlignment:imgElem->GetHorizontalAlignment()
                                            withSuperview:wrappingview
                                                   toView:view]];
+
+    std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
+    if(selectAction != nullptr)
+    {
+        switch(selectAction->GetElementType())
+        {
+            case ActionType::Submit:
+            {
+                break;
+            }
+            case ActionType::ShowCard:
+            {
+                std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(selectAction);
+
+                ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:showCardAction->GetCard()
+                                                                                     config:config
+                                                                                  superview:(UIView<ACRIContentHoldingView> *)viewGroup
+                                                                                         vc:vc];
+                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:target action:@selector(showCard)];
+                [view addGestureRecognizer:tapGesture];
+                view.userInteractionEnabled = YES;
+                [(UIView<ACRIContentHoldingView> *) viewGroup addTarget:target];
+                break;
+            }
+            case ActionType::OpenUrl:
+            {
+                std::shared_ptr<OpenUrlAction> openUrlAction = std::dynamic_pointer_cast<OpenUrlAction>(selectAction);
+                NSString *urlStr = [NSString stringWithCString:openUrlAction->GetUrl().c_str()
+                                              encoding:[NSString defaultCStringEncoding]];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                ACROpenURLTarget *target = [[ACROpenURLTarget alloc] initWithURL:url viewController:vc];
+                UITapGestureRecognizer *tapGesture =
+                [[UITapGestureRecognizer alloc] initWithTarget:target action:@selector(openURL)];
+
+                [view addGestureRecognizer:tapGesture];
+                view.userInteractionEnabled = YES;
+                [(UIView<ACRIContentHoldingView> *) viewGroup addTarget:target];
+
+                break;
+            }
+            case ActionType::Unsupported: case ActionType::Custom:
+            default:
+            {
+            }
+        }
+    }
 
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
