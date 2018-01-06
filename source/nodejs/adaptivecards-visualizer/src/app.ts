@@ -375,6 +375,34 @@ window.onload = () => {
         return new MarkdownIt().render(text);
     }
 
+    // Load the cached payload if the user had one
+    try {
+        var cachedPayload = sessionStorage.getItem("AdaptivePayload");
+        var cardUrl = document.location.search.substring(1).split('card=')[1];
+
+        if (cardUrl) {
+            currentCardPayload = "";
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onload = function () {
+                currentCardPayload = xhttp.responseText;
+            };
+
+            xhttp.open("GET", cardUrl, true);
+            xhttp.send();
+        }
+        else if (cachedPayload) {
+            currentCardPayload = cachedPayload;
+        }
+        else {
+            currentCardPayload = Constants.defaultPayload;
+        }
+    }
+    catch (e) {
+        currentCardPayload = Constants.defaultPayload;
+    }
+
     // Monaco loads asynchronously via a call to require() from index.html
     // App initialization needs to happen after.
     loadMonacoEditor(
@@ -425,35 +453,6 @@ window.onload = () => {
                 function (e) {
                     setContainerAppFromUrl();
                 });
-
-            // Load the cached payload if the user had one
-            try {
-                var cachedPayload = sessionStorage.getItem("AdaptivePayload");
-                var cardUrl = document.location.search.substring(1).split('card=')[1];
-
-                if (cardUrl) {
-                    currentCardPayload = "";
-
-                    var xhttp = new XMLHttpRequest();
-
-                    xhttp.onload = function () {
-                        currentCardPayload = xhttp.responseText;
-                        monacoEditor.setValue(currentCardPayload);
-                    };
-
-                    xhttp.open("GET", cardUrl, true);
-                    xhttp.send();
-                }
-                else if (cachedPayload) {
-                    currentCardPayload = cachedPayload;
-                }
-                else {
-                    currentCardPayload = Constants.defaultPayload;
-                }
-            }
-            catch (e) {
-                currentCardPayload = Constants.defaultPayload;
-            }
 
             monacoEditor.onDidChangeModelContent(
                 function (e) {
