@@ -35,7 +35,7 @@ namespace LiveCardClient
         /// <returns></returns>
         public Task SetProperty(string elementId, string name, object value)
         {
-            lock (this.liveCard.Card)
+            lock (this.liveCard)
             {
                 if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
                 {
@@ -70,7 +70,7 @@ namespace LiveCardClient
         /// <returns></returns>
         public Task AddElements(string elementId, int insertIndex, AdaptiveElement[] newItems)
         {
-            lock (this.liveCard.Card)
+            lock (this.liveCard)
             {
                 if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
                 {
@@ -104,7 +104,7 @@ namespace LiveCardClient
         /// <returns></returns>
         public Task RemoveElements(string elementId, string[] elementIds)
         {
-            lock (this.liveCard.Card)
+            lock (this.liveCard)
             {
                 if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
                 {
@@ -138,7 +138,7 @@ namespace LiveCardClient
         /// <returns></returns>
         public Task ReplaceElements(string elementId, AdaptiveElement[] newElements)
         {
-            lock (this.liveCard.Card)
+            lock (this.liveCard)
             {
                 if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
                 {
@@ -172,7 +172,7 @@ namespace LiveCardClient
         /// <returns></returns>
         public Task ResetElements(string elementId)
         {
-            lock (this.liveCard.Card)
+            lock (this.liveCard)
             {
                 if (this.liveCard.Card.TryGetElementById(elementId, out AdaptiveTypedElement element))
                 {
@@ -201,6 +201,15 @@ namespace LiveCardClient
         public async virtual Task CloseCard()
         {
             await this.liveCard.CloseCard();
+        }
+
+        public Task ReplaceCard(AdaptiveCard card)
+        {
+            lock (this.liveCard)
+            {
+                this.liveCard.Card = card;
+            }
+            return Task.CompletedTask;
         }
     }
 }

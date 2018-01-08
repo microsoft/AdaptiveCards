@@ -10,32 +10,32 @@ namespace LiveCardServer
 {
     public class LiveCardServerAPI : ILiveCardServerAPI
     {
-        private AdaptiveCard card;
+        private LiveCard liveCard;
 
-        public LiveCardServerAPI(AdaptiveCard card)
+        public LiveCardServerAPI(LiveCard liveCard)
         {
-            this.card = card;
+            this.liveCard = liveCard;
         }
 
         public Task FireActivate()
         {
-            lock (this.card)
-                this.card.FireActivate();
+            lock (this.liveCard)
+                this.liveCard.Card.FireActivate();
             return Task.CompletedTask;
         }
 
         public Task FireDeactivate()
         {
-            lock (this.card)
-                this.card.FireDeactivate();
+            lock (this.liveCard)
+                this.liveCard.Card.FireDeactivate();
             return Task.CompletedTask;
         }
 
         public Task FireFocus(string id)
         {
-            if (this.card.TryGetElementById(id, out AdaptiveInput element))
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveInput element))
             {
-                lock (this.card)
+                lock (this.liveCard)
                     element.FireFocus();
             }
             return Task.CompletedTask;
@@ -43,9 +43,9 @@ namespace LiveCardServer
 
         public Task FireBlur(string id)
         {
-            if (this.card.TryGetElementById(id, out AdaptiveInput element))
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveInput element))
             {
-                lock (this.card)
+                lock (this.liveCard)
                     element.FireBlur();
             }
             return Task.CompletedTask;
@@ -53,9 +53,9 @@ namespace LiveCardServer
 
         public Task FireKey(string id, string key)
         {
-            if (this.card.TryGetElementById(id, out AdaptiveInput element))
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveInput element))
             {
-                lock (this.card)
+                lock (this.liveCard)
                     element.FireKey(key);
             }
             return Task.CompletedTask;
@@ -63,9 +63,9 @@ namespace LiveCardServer
 
         public Task FireClick(string id)
         {
-            if (this.card.TryGetElementById(id, out AdaptiveElement element))
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveElement element))
             {
-                lock (this.card)
+                lock (this.liveCard)
                     element.FireClick();
             }
             return Task.CompletedTask;
@@ -73,9 +73,9 @@ namespace LiveCardServer
 
         public Task FireTextChanged(string id, string text)
         {
-            if (this.card.TryGetElementById(id, out AdaptiveInput element))
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveInput element))
             {
-                lock (this.card)
+                lock (this.liveCard)
                     element.FireTextChanged(text);
             }
             return Task.CompletedTask;
@@ -83,9 +83,9 @@ namespace LiveCardServer
 
         public Task FireSelectionChanged(string id, int[] selectedIndices)
         {
-            if (this.card.TryGetElementById(id, out AdaptiveInput element))
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveInput element))
             {
-                lock (this.card)
+                lock (this.liveCard)
                     element.FireSelectionChanged(selectedIndices);
             }
             return Task.CompletedTask;
@@ -93,9 +93,9 @@ namespace LiveCardServer
 
         public Task FireMouseEnter(string id)
         {
-            if (this.card.TryGetElementById(id, out AdaptiveElement element))
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveElement element))
             {
-                lock (this.card)
+                lock (this.liveCard)
                     element.FireMouseEnter();
             }
             return Task.CompletedTask;
@@ -103,9 +103,9 @@ namespace LiveCardServer
 
         public Task FireMouseLeave(string id)
         {
-            if (this.card.TryGetElementById(id, out AdaptiveElement element))
+            if (this.liveCard.Card.TryGetElementById(id, out AdaptiveElement element))
             {
-                lock (this.card)
+                lock (this.liveCard)
                     element.FireMouseLeave();
             }
             return Task.CompletedTask;

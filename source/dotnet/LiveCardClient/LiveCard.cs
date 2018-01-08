@@ -48,7 +48,11 @@ namespace LiveCardClient
         public AdaptiveCard Card
         {
             get { return this.card; }
-            set { this.SetPropertyValue(ref card, value); }
+            set
+            {
+                this.SetPropertyValue(ref card, value);
+                this.BindEvents();
+            }
         }
 
         public bool Active { get { return this.webSocket?.State == WebSocketState.Open; } }

@@ -44,10 +44,25 @@ namespace LiveCardBrowser
             set
             {
                 liveCard = value;
+                liveCard.PropertyChanged += LiveCard_PropertyChanged;
                 BindEvents();
                 RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
                 this.NativeCard = renderedCard.FrameworkElement;
                 Notify();
+            }
+        }
+
+        private void LiveCard_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Card")
+            {
+                BindEvents();
+
+                this.dispatcher.Invoke(() =>
+                {
+                    RenderedAdaptiveCard renderedCard = renderer.RenderCard(liveCard.Card);
+                    this.NativeCard = renderedCard.FrameworkElement;
+                });
             }
         }
 

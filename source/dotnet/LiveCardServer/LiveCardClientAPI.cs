@@ -80,6 +80,16 @@ namespace LiveCardServer
         }
 
         /// <summary>
+        /// Replace entire card
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns></returns>
+        public Task ReplaceCard(AdaptiveCard card)
+        {
+            return rpc.NotifyAsync("ReplaceCard", card);
+        }
+
+        /// <summary>
         /// Save the card
         /// </summary>
         /// <returns></returns>

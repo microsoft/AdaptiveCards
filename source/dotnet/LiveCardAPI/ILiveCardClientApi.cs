@@ -51,7 +51,14 @@ namespace LiveCardAPI
         /// <param name="elementId">collection element Id</param>
         /// <returns></returns>
         Task ResetElements(string elementId);
-       
+
+        /// <summary>
+        /// Replace the entire card with a new card
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns></returns>
+        Task ReplaceCard(AdaptiveCard card);
+        
         /// <summary>
         /// Save the card
         /// </summary>

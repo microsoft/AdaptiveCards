@@ -59,22 +59,26 @@ namespace LiveCardServerSample.Controllers
         private void OnCardActivated(object sender, EventArgs e)
         {
             Trace.WriteLine("Card Activate");
-            if (this.LiveCard.Card.TryGetElementById("Activation", out AdaptiveTextBlock activation))
+
+            // clone card
+            AdaptiveCard newCard = CreateCard();
+
+            if (newCard.TryGetElementById("Activation", out AdaptiveTextBlock activation))
             {
                 activation.Text = "Activated";
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                BackgroundFlash(activation);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
-            if (this.LiveCard.Card.TryGetElementById("Title", out AdaptiveTextBlock title))
+            if (newCard.TryGetElementById("Title", out AdaptiveTextBlock title))
             {
                 var title2 = JsonConvert.DeserializeObject<AdaptiveTextBlock>(JsonConvert.SerializeObject(title));
                 title2.Text = "Hello World - Click on me";
                 title2.OnClick += Title_OnClick;
                 title2.OnMouseEnter += Title_OnMouseEnter;
                 title2.OnMouseLeave += Title_OnMouseLeave;
-                this.LiveCard.Card.ReplaceElement(title2);
+                newCard.ReplaceElement(title2);
 
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                BackgroundFlash(activation);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
 
             AdaptiveTextBlock boldButton = new AdaptiveTextBlock()
@@ -83,16 +87,16 @@ namespace LiveCardServerSample.Controllers
                 Text = "Flash"
             };
             boldButton.OnClick += BoldButton_OnClick;
-            this.LiveCard.Card.Body.Add(boldButton);
+            newCard.Body.Add(boldButton);
             AdaptiveTextInput input = new AdaptiveTextInput() { Id = "Input", Placeholder = "Enter some stuff" };
             input.OnFocus += Input_OnFocus;
             input.OnBlur += Input_OnBlur;
             input.OnTextChanged += Input_OnTextChanged;
-            this.LiveCard.Card.Body.Add(input);
-            this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "FocusLabel", Text = "Focus" });
-            this.LiveCard.Card.Body.Add(new AdaptiveTextBlock() { Id = "TextLabel", Text = "Text" });
+            newCard.Body.Add(input);
+            newCard.Body.Add(new AdaptiveTextBlock() { Id = "FocusLabel", Text = "Focus" });
+            newCard.Body.Add(new AdaptiveTextBlock() { Id = "TextLabel", Text = "Text" });
             var hover = new AdaptiveTextBlock() { Id = "HoverLabel", Text = $"No mouse" };
-            this.LiveCard.Card.Body.Add(hover);
+            this.LiveCard.Card = newCard;
         }
 
         private void BackgroundFlash(AdaptiveTextBlock title2)

@@ -25,7 +25,7 @@ namespace LiveCardServer
             this.card = card;
             BindDomChanges();
 
-            this.Server = new LiveCardServerAPI(card);
+            this.Server = new LiveCardServerAPI(this);
             this.rpc = new JsonRpc(new WebSocketMessageHandler(webSocket), this.Server);
             this.Client = new LiveCardClientAPI(rpc);
         }
@@ -46,7 +46,12 @@ namespace LiveCardServer
         public AdaptiveCard Card
         {
             get { return this.card; }
-            set { this.card = value; }
+            set
+            {
+                this.card = value;
+                this.BindDomChanges();
+                this.Client.ReplaceCard(this.card);
+            }
         }
 
         public Task StartListening()

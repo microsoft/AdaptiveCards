@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AdaptiveCards;
 using LiveCardServer;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HelloWorldServer.Controllers
 {
@@ -61,8 +62,7 @@ namespace HelloWorldServer.Controllers
 
         private void StaticForm_OnCardActivate(object sender, EventArgs e)
         {
-            AdaptiveCard card = (AdaptiveCard)sender;
-            card.Body.Clear();
+            AdaptiveCard card = new AdaptiveCard();
 
             card.Body.Add(new AdaptiveTextBlock() { Text = $"First Name" });
             card.Body.Add(new AdaptiveTextInput()
@@ -87,6 +87,7 @@ namespace HelloWorldServer.Controllers
                 Placeholder = "Enter birthday",
                 Value = this.MyData.Birthday.ToString("r")
             });
+            this.LiveCard.Card = card;
         }
 
     }
