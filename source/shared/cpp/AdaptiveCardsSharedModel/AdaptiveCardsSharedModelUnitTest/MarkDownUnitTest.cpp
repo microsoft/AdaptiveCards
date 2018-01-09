@@ -33,12 +33,12 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(LeftDelimiterFalseCaseWithAlphaNumericInfrontAndPuntuationBehind)
         {
             MarkDownParser parser("a*\"foo\"*");
-            Assert::AreEqual<string>("<p>a*\"foo\"*</p>", parser.TransformToHtml());
+            Assert::AreEqual<string>("<p>a*&quot;foo&quot;*</p>", parser.TransformToHtml());
         }
         TEST_METHOD(UnderscoreLeftDelimiterFalseCaseWithAlphaNumericInfrontAndPuntuationBehind)
         {
             MarkDownParser parser("a_\"foo\"_");
-            Assert::AreEqual<string>("<p>a_\"foo\"_</p>", parser.TransformToHtml());
+            Assert::AreEqual<string>("<p>a_&quot;foo&quot;_</p>", parser.TransformToHtml());
         }
         TEST_METHOD(LeftDelimiterIntraWordEmphasis)
         {
@@ -138,9 +138,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(DelimiterSurroundingPuntuationInvalidCaseTest)
         {
             MarkDownParser parser("a**\"foo bar\"**");
-            Assert::AreEqual<string>("<p>a**\"foo bar\"**</p>", parser.TransformToHtml());
+            Assert::AreEqual<string>("<p>a**&quot;foo bar&quot;**</p>", parser.TransformToHtml());
             MarkDownParser parser2("a__\"foo bar\"__");
-            Assert::AreEqual<string>("<p>a__\"foo bar\"__</p>", parser2.TransformToHtml());
+            Assert::AreEqual<string>("<p>a__&quot;foo bar&quot;__</p>", parser2.TransformToHtml());
         }
         TEST_METHOD(IntraWordTest)
         {
@@ -510,6 +510,30 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("777. my list\rHello");
             Assert::AreEqual<string>("<ol start=\"777\"><li>my list\rHello</li></ol>", parser.TransformToHtml());
+        }
+    };
+
+    TEST_CLASS(EscapeHtmlCharactersTest)
+    {
+        TEST_METHOD(GreaterThanTest)
+        {
+            MarkDownParser parser("5>3");
+            Assert::AreEqual<string>("<p>5&gt;3</p>", parser.TransformToHtml());
+        }
+        TEST_METHOD(LessThanTest)
+        {
+            MarkDownParser parser("3<5");
+            Assert::AreEqual<string>("<p>3&lt;5</p>", parser.TransformToHtml());
+        }
+        TEST_METHOD(QuotationTest)
+        {
+            MarkDownParser parser("\"Hello World!\"");
+            Assert::AreEqual<string>("<p>&quot;Hello World!&quot;</p>", parser.TransformToHtml());
+        }
+        TEST_METHOD(AmpersandTest)
+        {
+            MarkDownParser parser("Green Eggs & Ham");
+            Assert::AreEqual<string>("<p>Green Eggs &amp; Ham</p>", parser.TransformToHtml());
         }
     };
 }

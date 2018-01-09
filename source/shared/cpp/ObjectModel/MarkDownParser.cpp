@@ -26,13 +26,42 @@ std::string MarkDownParser::TransformToHtml()
 }
 
 // MarkDown is consisted of Blocks, this methods parses blocks
-void MarkDownParser::ParseBlock() 
+void MarkDownParser::ParseBlock()
 {
-    std::stringstream stream(m_text);
+    std::stringstream stream(EscapeText());
     EmphasisParser parser;
     while (!stream.eof())
     {
         parser.ParseBlock(stream);
     }
     m_parsedResult.AppendParseResult(parser.GetParsedResult());
+}
+
+std::string MarkDownParser::EscapeText()
+{
+    std::string escaped;
+
+    for (std::string::size_type i = 0; i < m_text.length(); i++)
+    {
+        switch (m_text[i])
+        {
+        case '<':
+            escaped += "&lt;";
+            break;
+        case '>':
+            escaped += "&gt;";
+            break;
+        case '"':
+            escaped += "&quot;";
+            break;
+        case '&':
+            escaped += "&amp;";
+            break;
+        default:
+            escaped += m_text[i];
+            break;
+        }
+    }
+
+    return escaped;
 }
