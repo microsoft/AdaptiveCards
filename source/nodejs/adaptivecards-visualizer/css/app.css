@@ -92,7 +92,6 @@ body {
     -webkit-box-flex: 1;
         -ms-flex: 1 1 45%;
             flex: 1 1 45%;
-    min-width: 350px;
     overflow: auto;
     margin-left: 10px;
 }
