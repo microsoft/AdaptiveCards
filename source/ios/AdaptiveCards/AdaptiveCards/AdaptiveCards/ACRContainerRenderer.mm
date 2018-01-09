@@ -10,6 +10,7 @@
 #import "ACRRendererPrivate.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
+#import "ACRTapGestureRecognizerFactory.h"
 
 @implementation ACRContainerRenderer
 
@@ -47,6 +48,20 @@ rootViewController:(UIViewController *)vc
           withCardElems:containerElem->GetItems()
           andHostConfig:config];
     [viewGroup addArrangedSubview:container];
+
+    std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
+    // instantiate and add tap gesture recognizer
+    UITapGestureRecognizer * tapGestureRecognizer =
+        [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
+                                             rootViewController:vc
+                                                  actionElement:selectAction
+                                                         inputs:inputs
+                                                     hostConfig:config];
+    if(tapGestureRecognizer)
+    {
+        [container addGestureRecognizer:tapGestureRecognizer];
+        container.userInteractionEnabled = YES;
+    }
     return viewGroup;
 }
 

@@ -9,11 +9,7 @@
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
-#import "ACROpenURLTarget.h"
-#import "ACRShowCardTarget.h"
-#import "OpenUrlAction.h"
-#import "ACRShowCardTarget.h"
-#import "ShowCardAction.h"
+#import "ACRTapGestureRecognizerFactory.h"
 
 @implementation ACRImageRenderer
 
@@ -122,7 +118,7 @@
     }
     return constraints;
 }
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
@@ -165,51 +161,18 @@
                                                   toView:view]];
 
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
-    if(selectAction != nullptr)
+    // instantiate and add tap gesture recognizer
+    UITapGestureRecognizer * tapGestureRecognizer =
+        [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
+                                             rootViewController:vc
+                                                  actionElement:selectAction
+                                                         inputs:inputs
+                                                     hostConfig:config];
+    if(tapGestureRecognizer)
     {
-        switch(selectAction->GetElementType())
-        {
-            case ActionType::Submit:
-            {
-                break;
-            }
-            case ActionType::ShowCard:
-            {
-                std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(selectAction);
-
-                ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:showCardAction->GetCard()
-                                                                                     config:config
-                                                                                  superview:(UIView<ACRIContentHoldingView> *)viewGroup
-                                                                                         vc:vc];
-                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:target action:@selector(showCard)];
-                [view addGestureRecognizer:tapGesture];
-                view.userInteractionEnabled = YES;
-                [(UIView<ACRIContentHoldingView> *) viewGroup addTarget:target];
-                break;
-            }
-            case ActionType::OpenUrl:
-            {
-                std::shared_ptr<OpenUrlAction> openUrlAction = std::dynamic_pointer_cast<OpenUrlAction>(selectAction);
-                NSString *urlStr = [NSString stringWithCString:openUrlAction->GetUrl().c_str()
-                                              encoding:[NSString defaultCStringEncoding]];
-                NSURL *url = [NSURL URLWithString:urlStr];
-                ACROpenURLTarget *target = [[ACROpenURLTarget alloc] initWithURL:url viewController:vc];
-                UITapGestureRecognizer *tapGesture =
-                [[UITapGestureRecognizer alloc] initWithTarget:target action:@selector(openURL)];
-
-                [view addGestureRecognizer:tapGesture];
-                view.userInteractionEnabled = YES;
-                [(UIView<ACRIContentHoldingView> *) viewGroup addTarget:target];
-
-                break;
-            }
-            case ActionType::Unsupported: case ActionType::Custom:
-            default:
-            {
-            }
-        }
+        [view addGestureRecognizer:tapGestureRecognizer];
+        view.userInteractionEnabled = YES;
     }
-
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     return wrappingview;

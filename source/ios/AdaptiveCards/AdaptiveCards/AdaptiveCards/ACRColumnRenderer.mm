@@ -10,6 +10,7 @@
 #import "ACRRendererPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
+#import "ACRTapGestureRecognizerFactory.h"
 
 @implementation ACRColumnRenderer
 
@@ -65,6 +66,20 @@
     }
 
     [column adjustHuggingForLastElement];
+
+    std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
+    // instantiate and add tap gesture recognizer
+    UITapGestureRecognizer * tapGestureRecognizer =
+        [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
+                                             rootViewController:vc
+                                                  actionElement:selectAction
+                                                         inputs:inputs
+                                                     hostConfig:config];
+    if(tapGestureRecognizer)
+    {
+        [column addGestureRecognizer:tapGestureRecognizer];
+        column.userInteractionEnabled = YES;
+    }
 
     return column;
 }
