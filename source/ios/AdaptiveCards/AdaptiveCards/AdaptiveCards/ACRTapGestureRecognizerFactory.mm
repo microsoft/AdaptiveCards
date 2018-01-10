@@ -14,8 +14,9 @@
 #import "SubmitAction.h"
 
 @implementation ACRTapGestureRecognizerFactory
-/// instantiates a target for UITapGestureRecognizer object
-/// and instantiate a tap gesture reconginizer with target, and return it
+// instantiates a target for UITapGestureRecognizer object
+// and instantiate a tap gesture reconginizer with target, and return it
+// when failed, nil is returned
 + (UITapGestureRecognizer *)getTapGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
                                  rootViewController:(UIViewController *)vc
                                       actionElement:(std::shared_ptr<BaseActionElement> const &)action
@@ -28,6 +29,7 @@
         NSObject *target;
         switch(action->GetElementType())
         {
+            // instantiates a target that handles Submit action
             case ActionType::Submit:
             {
                 std::shared_ptr<SubmitAction> submitAction = std::dynamic_pointer_cast<SubmitAction>(action);
@@ -37,6 +39,7 @@
                 actionToPerform = @selector(submit:);
                 break;
             }
+            // instantiates a target that handles ShowCard action
             case ActionType::ShowCard:
             {
                 std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
@@ -45,6 +48,7 @@
                 actionToPerform = @selector(showCard);
                 break;
             }
+            // instantiates a target that handles OpenUrl action
             case ActionType::OpenUrl:
             {
                 std::shared_ptr<OpenUrlAction> openUrlAction = std::dynamic_pointer_cast<OpenUrlAction>(action);
@@ -55,6 +59,7 @@
                 actionToPerform = @selector(openURL);
                 break;
             }
+            // everything else is not valid request
             case ActionType::Unsupported: case ActionType::Custom:
             default:
             {

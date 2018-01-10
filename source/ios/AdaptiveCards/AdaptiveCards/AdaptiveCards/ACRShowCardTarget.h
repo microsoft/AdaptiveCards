@@ -17,7 +17,6 @@
                            superview:(UIView<ACRIContentHoldingView> *)superview
                                   vc:(UIViewController *)vc;
 
-- (IBAction)showCard:(UIButton *)sender;
 - (IBAction)showCard;
 
 @end

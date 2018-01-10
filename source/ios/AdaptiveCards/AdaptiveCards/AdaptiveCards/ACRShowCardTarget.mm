@@ -50,7 +50,7 @@
                                                 guideFrame:_superview.frame
                                                 hostconfig:_config];
     unsigned int padding = 0;
-    
+
     switch (_config->actions.spacing)
     {
         case Spacing::ExtraLarge:
@@ -98,16 +98,16 @@
     [wrappingView addConstraints:horzConst];
     [wrappingView addConstraints:vertConst];
     _adcView = wrappingView;
-    
+
     ContainerStyle style = (_config->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : _config->actions.showCard.style;
-    
+
     long num = 0;
-    
+
     if(style == ContainerStyle::None)
     {
         style = [_superview getStyle];
     }
-    
+
     if(style == ContainerStyle::Emphasis)
     {
         num = std::stoul(_config->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
@@ -116,7 +116,7 @@
     {
         num = std::stoul(_config->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
     }
-    
+
     wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingView.backgroundColor =
     [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
@@ -126,6 +126,7 @@
     [wrappingView setAlignmentForSubview:AdaptiveCards::HorizontalAlignment::Center];
     [_superview addArrangedSubview:_adcView];
 }
+
 - (IBAction)showCard
 {
     if(YES == _isItCurrentlyShown)
@@ -143,27 +144,6 @@
         {
             [self createShowCard];
         }
-        _isItCurrentlyShown = YES;
-    }
-}
-- (IBAction)showCard:(UIButton *)sender
-{
-    if(YES == [sender isSelected])
-    {
-        _adcView.hidden = YES;
-        sender.selected = NO;
-    }
-    else
-    {
-        if(_adcView)
-        {
-            _adcView.hidden = NO;
-        }
-        else
-        {
-            [self createShowCard];
-        }
-        sender.selected = YES;
         _isItCurrentlyShown = YES;
     }
 }
