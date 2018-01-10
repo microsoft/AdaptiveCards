@@ -12,23 +12,9 @@
       "type": "Image",
       "url": "http://adaptivecards.io/content/cats/1.png",
       "selectAction": {
-           "type": "Action.ShowCard",
-           "title": "Set due date",
-           "card": {
-           "type": "AdaptiveCard",
-           "body": [
-                    {
-                    "type": "Input.Date",
-                    "id": "dueDate"
-                    }
-                    ],
-           "actions": [
-                       {
-                       "type": "Action.Submit",
-                       "title": "OK"
-                       }
-                       ]
-           }
+        "type": "Action.OpenUrl",
+        "title": "cool link",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
       }
     }
   ]

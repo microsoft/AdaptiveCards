@@ -39,7 +39,7 @@
                     "selectAction": {
                         "type": "Action.OpenUrl",
                         "title": "cool link",
-                        "url": "https://www.google.com"
+                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                     }
                 },
                 {
@@ -57,7 +57,7 @@
                     "selectAction": {
                         "type": "Action.OpenUrl",
                         "title": "cool link",
-                        "url": "https://www.kotaku.com"
+                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                     }
                 }
             ]
