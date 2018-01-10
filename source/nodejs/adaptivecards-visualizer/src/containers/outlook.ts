@@ -42,6 +42,7 @@ export class OutlookContainer extends HostContainer {
 
         AdaptiveCard.useAutomaticContainerBleeding = true;
         AdaptiveCard.preExpandSingleShowCardAction = true;
+        AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
     }
 
     public parseElement(element: CardElement, json: any) {
