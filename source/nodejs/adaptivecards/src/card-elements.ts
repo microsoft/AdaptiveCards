@@ -477,6 +477,7 @@ export class TextBlock extends CardElement {
     isSubtle: boolean = false;
     wrap: boolean = false;
     maxLines: number;
+    useMarkdown: boolean = true;
 
     private _computedLineHeight: number;
     private _originalInnerHtml: string;
@@ -580,7 +581,7 @@ export class TextBlock extends CardElement {
 
             var formattedText = TextFormatters.formatText(this.text);
 
-            element.innerHTML = AdaptiveCard.processMarkdown(formattedText);
+            element.innerHTML = this.useMarkdown ? AdaptiveCard.processMarkdown(formattedText) : formattedText;
 
             if (element.firstElementChild instanceof HTMLElement) {
                 var firstElementChild = <HTMLElement>element.firstElementChild;
@@ -1288,6 +1289,7 @@ export class ToggleInput extends Input {
         var label = new TextBlock();
         label.hostConfig = this.hostConfig;
         label.text = this.title;
+        label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
         var labelElement = label.render();
         labelElement.style.display = "inline-block";
@@ -1400,6 +1402,7 @@ export class ChoiceSetInput extends Input {
                     var label = new TextBlock();
                     label.hostConfig = this.hostConfig;
                     label.text = this.choices[i].title;
+                    label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
                     var labelElement = label.render();
                     labelElement.style.display = "inline-block";
@@ -1449,6 +1452,7 @@ export class ChoiceSetInput extends Input {
                 var label = new TextBlock();
                 label.hostConfig = this.hostConfig;
                 label.text = this.choices[i].title;
+                label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
                 var labelElement = label.render();
                 labelElement.style.display = "inline-block";
@@ -3677,6 +3681,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static preExpandSingleShowCardAction: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
+    static useMarkdownInRadioButtonAndCheckbox: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -3902,8 +3907,8 @@ class InlineAdaptiveCard extends AdaptiveCard {
 
     suppressStyle: boolean = false;
 
-    render() {
-        var renderedCard = super.render();
+    render(target?: HTMLElement) {
+        var renderedCard = super.render(target);
         renderedCard.setAttribute("aria-live", "polite");
         renderedCard.removeAttribute("tabindex");
 

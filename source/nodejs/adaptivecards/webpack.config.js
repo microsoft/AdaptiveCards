@@ -38,8 +38,5 @@ module.exports = {
                 loader: "json-loader",
             }
         ]
-    },
-    externals: {
-        "markdown-it": { var: 'markdownit' }
     }
 };

@@ -23,6 +23,7 @@
                          hostconfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
 
 + (UIView<ACRIContentHoldingView> *)render:(UIView *)view
+                        rootViewController:(UIViewController *)vc
                                     inputs:(NSMutableArray *)inputs
                              withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
                              andHostConfig:(std::shared_ptr<HostConfig> const &)config;

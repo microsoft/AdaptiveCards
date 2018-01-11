@@ -30,12 +30,12 @@ using namespace AdaptiveCards;
         imgSet = imageSet;
         config = hostConfig;
         CGSize sz = [self getImageSize];
-   
+
         ((UICollectionViewFlowLayout* )self.collectionViewLayout).itemSize = sz;
         ((UICollectionViewFlowLayout* )self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
-   
+
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        CGSize target = [view systemLayoutSizeFittingSize:sz];        
+        CGSize target = [view systemLayoutSizeFittingSize:sz];
         self.frame = CGRectMake(0, 0, (target.width / sz.width) * sz.width, sz.height);
     }
     return self;
@@ -54,17 +54,18 @@ using namespace AdaptiveCards;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"cellId";
-    
+
     for(auto img :imgSet->GetImages())
     {
         img->SetImageSize(imgSet->GetImageSize());
     }
-    
+
     UIView* content = [[ACRImageRenderer getInstance] render:nil
+                                          rootViewController:nil
                                                       inputs:nil
                                                 withCardElem:imgSet->GetImages()[indexPath.row]
                                                andHostConfig:config];
-    
+
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell)
     {
@@ -91,12 +92,12 @@ using namespace AdaptiveCards;
             sz = config->imageSizes.mediumSize;
             break;
         }
-            
+
         case ImageSize::Small:{
             sz = config->imageSizes.smallSize;
             break;
         }
-            
+
         default:{
             NSLog(@"unimplemented");
         }

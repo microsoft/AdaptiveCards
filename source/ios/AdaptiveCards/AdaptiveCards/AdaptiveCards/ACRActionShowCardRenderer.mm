@@ -40,7 +40,7 @@
                                                                       superview:superview
                                                                              vc:vc];
     [button addTarget:target
-               action:@selector(showCard:)
+               action:@selector(toggleVisibilityOfShowCard)
      forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];

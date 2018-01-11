@@ -131,12 +131,14 @@
     view.translatesAutoresizingMaskIntoConstraints = NO;
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, view, scrollview, buttonLayout);
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, scrollview, buttonLayout);
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]-[scrollview(>=100)]-|",
+                              @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]-[scrollview]|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
     [ViewController applyConstraints:formats variables:viewMap];
+    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -173,7 +175,6 @@
         self.curView = adcVc.view;
         self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
         
-        //self.curView.frame = CGRectMake(0, 0, 0, 0);
         [self addChildViewController:adcVc];
         [self.scrView addSubview:adcVc.view];
         [adcVc didMoveToParentViewController:self];
@@ -185,8 +186,8 @@
         scrollview.translatesAutoresizingMaskIntoConstraints = NO;
         
         NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
-        NSArray<NSString *> *formats =
-        [NSArray arrayWithObjects:@"H:|[view(<=scrollview)]|", @"V:|[view(>=scrollview)]|",nil];
+        NSArray<NSString *> *formats = [NSArray arrayWithObjects:@"H:|[view(<=scrollview)]|", @"V:|[view(>=scrollview)]|",nil];
+     
         [ViewController applyConstraints:formats variables:viewMap];
     }
 }

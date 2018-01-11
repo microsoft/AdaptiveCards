@@ -31,6 +31,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
+// Initializes ACRViewController instance with HostConfig and AdaptiveCard
 - (instancetype)init:(ACOAdaptiveCard *)card
           hostconfig:(ACOHostConfig *)config
                frame:(CGRect)frame
@@ -94,14 +95,15 @@ using namespace AdaptiveCards;
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
+    // transforms (i.e. renders) an adaptiveCard to a new UIView instance
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                              inputs:inputs
                                                      viewController:self
                                                          guideFrame:_guideFrame
                                                          hostconfig:_hostConfig];
-
+    // new rendered adaptiveCard view is added as a sub view
     [view addSubview:newView];
-
+    // affix the left margin of the rendered adaptiveCard to current view
     NSLayoutConstraint *constraint =
     [NSLayoutConstraint constraintWithItem:view
                                  attribute:NSLayoutAttributeLeading
@@ -111,7 +113,7 @@ using namespace AdaptiveCards;
                                 multiplier:1.0
                                   constant:0];
     [view addConstraint:constraint];
-
+    // affix the right margin of the rendered adaptiveCard to current view
     constraint =
     [NSLayoutConstraint constraintWithItem:view
                                  attribute:NSLayoutAttributeTrailing

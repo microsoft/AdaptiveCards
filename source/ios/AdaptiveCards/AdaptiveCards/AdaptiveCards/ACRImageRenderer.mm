@@ -9,6 +9,7 @@
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRTapGestureRecognizerFactory.h"
 
 @implementation ACRImageRenderer
 
@@ -23,7 +24,7 @@
     return CardElementType::Image;
 }
 
-- (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem 
+- (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem
         withHostConfig:(std::shared_ptr<HostConfig> const &)hostConfig
 {
     float sz = hostConfig->imageSizes.smallSize;
@@ -49,12 +50,12 @@
     CGSize cgSize = CGSizeMake(sz, sz);
     return cgSize;
 }
-// code clean-up in progress 
+// code clean-up in progress
 - (NSArray *)setImageAlignment:(HorizontalAlignment)alignment
                  withSuperview:(UIView *)superview
                         toView:(UIView *)view
 {
-    NSMutableArray *constraints = [[NSMutableArray alloc] init]; 
+    NSMutableArray *constraints = [[NSMutableArray alloc] init];
     [constraints addObject:
         [NSLayoutConstraint constraintWithItem:superview
                                      attribute:NSLayoutAttributeCenterY
@@ -117,7 +118,8 @@
     }
     return constraints;
 }
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+            rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -126,9 +128,9 @@
     NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
                                           encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:urlStr];
-  
+
     UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    
+
     CGSize cgsize = [self getImageSize:imgElem withHostConfig:config];
 
     UIGraphicsBeginImageContext(cgsize);
@@ -138,7 +140,7 @@
     img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     view.image = img;
-    
+
     //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
     view.contentMode = UIViewContentModeScaleAspectFit;
     view.clipsToBounds = NO;
@@ -147,10 +149,10 @@
         [imgLayer setCornerRadius:cgsize.width/2];
         [imgLayer setMasksToBounds:YES];
     }
-    
+
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
     [wrappingview addSubview:view];
-    
+
 
     if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
 
@@ -158,6 +160,19 @@
                                            withSuperview:wrappingview
                                                   toView:view]];
 
+    std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
+    // instantiate and add tap gesture recognizer
+    UITapGestureRecognizer * tapGestureRecognizer =
+        [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
+                                             rootViewController:vc
+                                                  actionElement:selectAction
+                                                         inputs:inputs
+                                                     hostConfig:config];
+    if(tapGestureRecognizer)
+    {
+        [view addGestureRecognizer:tapGestureRecognizer];
+        view.userInteractionEnabled = YES;
+    }
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     return wrappingview;
