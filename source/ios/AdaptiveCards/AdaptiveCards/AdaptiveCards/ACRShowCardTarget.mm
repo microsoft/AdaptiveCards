@@ -20,7 +20,6 @@
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak UIViewController *_vc;
     __weak UIView *_adcView;
-    bool _isItCurrentlyShown;
 }
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
@@ -36,7 +35,6 @@
         _superview = superview;
         _vc = vc;
         _adcView = nil;
-        _isItCurrentlyShown = NO;
     }
     return self;
 }
@@ -127,24 +125,15 @@
     [_superview addArrangedSubview:_adcView];
 }
 
-- (IBAction)showCard
+- (IBAction)toggleVisibilityOfShowCard
 {
-    if(YES == _isItCurrentlyShown)
+    // if there is no ShowCard UIView, create one
+    if(!_adcView)
     {
-        _adcView.hidden = YES;
-        _isItCurrentlyShown = NO;
+        [self createShowCard];
+        return;
     }
-    else
-    {
-        if(_adcView)
-        {
-            _adcView.hidden = NO;
-        }
-        else
-        {
-            [self createShowCard];
-        }
-        _isItCurrentlyShown = YES;
-    }
+    // Toggle the visibility of a ShowCard UIView
+    _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
 }
 @end

@@ -45,7 +45,7 @@
                 std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
                 // instantiate a ShowCardTarget
                 target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:showCardAction->GetCard() config:config superview:viewGroup vc:vc];
-                actionToPerform = @selector(showCard);
+                actionToPerform = @selector(toggleVisibilityOfShowCard);
                 break;
             }
             // instantiates a target that handles OpenUrl action
@@ -67,7 +67,6 @@
                 return nil;
             }
         }
-
         // add the target to the viewGroup; life time of the target is as long as the viewGroup
         [viewGroup addTarget:target];
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:target action:actionToPerform];
