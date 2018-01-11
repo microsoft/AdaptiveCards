@@ -20,6 +20,7 @@ public:
 
 private:
     void ParseBlock();
+    std::string EscapeText();
     std::string m_text;
     MarkDownParsedResult m_parsedResult;
 };
