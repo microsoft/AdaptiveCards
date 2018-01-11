@@ -12,5 +12,7 @@
 @interface ACOAdaptiveCardParseResult:ACOParseResult
 
 @property ACOAdaptiveCard *card;
+@property NSString *errorMessage;
+@property NSNumber *errorCode
 
 @end    

@@ -14,6 +14,7 @@
     if(self)
     {
         self.IsValid = NO;
+        self.errorMessage = nil;
     }
     return self;
 }

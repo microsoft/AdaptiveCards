@@ -10,5 +10,7 @@
 @interface ACOParseResult:NSObject
 
 @property BOOL IsValid;
+@property NSString *errorMessage;
+@property NSNumber *errorCode
 
 @end    

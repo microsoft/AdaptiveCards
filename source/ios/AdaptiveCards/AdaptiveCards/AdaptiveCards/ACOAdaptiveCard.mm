@@ -8,6 +8,7 @@
 #import "ACOAdaptiveCardParseResult.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOAdaptiveCardPrivate.h"
+#import "AdaptiveCardParseException.h"
 
 using namespace AdaptiveCards;
 
@@ -29,8 +30,15 @@ using namespace AdaptiveCards;
             result.card = card;
             result.IsValid = YES;
         }
-        catch(...)
+        catch(const AdaptiveCardParseException& e)
         {
+            HString errorMessage;
+            ErrorStatusCode statusCode = e.GetStatusCode();
+            std::string errorMessage = e.GetMessage();
+            ComPtr<IAdaptiveError> adaptiveError;
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
+            RETURN_IF_FAILED(errors->Append(adaptiveError.Get()));
+            return adaptiveParseResult.CopyTo(parseResult);
             result.IsValid = NO;
         }
     }
