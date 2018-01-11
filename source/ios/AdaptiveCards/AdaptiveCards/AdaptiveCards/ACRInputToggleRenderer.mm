@@ -26,14 +26,15 @@
 }
 
 - (UIView *)render:(UIView *)viewGroup
+rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
-    
+
     ACRToggleInputView *inputView = [[ACRToggleInputView alloc] initWithInputToggle:toggleBlck WithHostConfig:config WithSuperview:viewGroup];
-    
+
     if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:inputView];
 
     [inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
@@ -54,9 +55,9 @@
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1.0
                                    constant:0]];
-    
+
     [inputs addObject:inputView];
-    
+
     return inputView;
 }
 

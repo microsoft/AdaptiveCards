@@ -24,6 +24,7 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -68,7 +69,7 @@
             break;
         }
     }
- 
+
     [viewGroup addArrangedSubview: txtInput];
 
     txtInput.translatesAutoresizingMaskIntoConstraints = false;
@@ -76,7 +77,7 @@
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
 
     NSDictionary *viewsMap = NSDictionaryOfVariableBindings(txtInput);
-    
+
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
     [inputs addObject:txtInput];
