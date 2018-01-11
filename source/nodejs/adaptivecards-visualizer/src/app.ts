@@ -1,4 +1,5 @@
 ﻿import * as AdaptiveCards from "adaptivecards";
+import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";
 
 import { HostContainer } from "./containers/host-container";
@@ -10,13 +11,8 @@ import { TimelineContainer } from "./containers/timeline";
 import { OutlookContainer } from "./containers/outlook";
 import { BotFrameworkImageContainer } from "./containers/bf-image";
 
-import * as ace from "brace";
-import "brace/mode/json";
-import "brace/theme/chrome";
-import * as vkbeautify from "vkbeautify";
+import { adaptiveCardSchema } from "./adaptive-card-schema";
 
-
-var editor: ace.Editor;
 var hostContainerOptions: Array<HostContainerOption> = [];
 var hostContainerPicker: HTMLSelectElement;
 var lastValidationErrors: Array<AdaptiveCards.IValidationError> = [];
@@ -78,10 +74,6 @@ function openFilePicker() {
     document.getElementById("filePicker").click();
 }
 
-function setEditorText(text: string) {
-    editor.session.setValue(text);
-}
-
 function filePickerChanged(evt) {
     var filePicker = document.getElementById("filePicker") as HTMLInputElement;
 
@@ -123,7 +115,7 @@ function loadStyleSheetAndConfig() {
     currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), null, '\t');
 
     if (!isCardEditor) {
-        setEditorText(currentConfigPayload);
+        monacoEditor.setValue(currentConfigPayload);
     }
 }
 
@@ -159,60 +151,15 @@ class HostContainerOption {
 var currentCardPayload: string = "";
 var currentConfigPayload: string = "";
 
-function setupEditor() {
-    editor = ace.edit("editor");
-    editor.setTheme("ace/theme/chrome");
-    editor.setOptions(
-        {
-            showPrintMargin: false,
-            displayIndentGuides: false,
-            showFoldWidgets: true,
-            highlightSelectedWord: false,
-            fontSize: "14px"
-        });
-    editor.getSession().setMode("ace/mode/json");
-    editor.getSession().on(
-        "change",
-        function (e) {
-            if (isCardEditor) {
-                currentCardPayload = editor.getValue();
-            }
-            else {
-                currentConfigPayload = editor.getValue();
-            }
+function hostContainerPickerChanged() {
+    history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, "index.html" + `?hostApp=${hostContainerPicker.value}`);
 
-            tryRenderCard();
-        });
-
-    // Load the cached payload if the user had one
-    try {
-        var cachedPayload = sessionStorage.getItem("AdaptivePayload");
-        var cardUrl = document.location.search.substring(1).split('card=')[1];
-
-        if (cardUrl) {
-            currentCardPayload = "";
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                currentCardPayload = xhttp.responseText;
-                setEditorText(currentCardPayload);
-            };
-
-            xhttp.open("GET", cardUrl, true);
-            xhttp.send();
-        }
-        else if (cachedPayload) {
-            currentCardPayload = cachedPayload;
-        }
-        else {
-            currentCardPayload = Constants.defaultPayload;
-        }
-    }
-    catch (e) {
-        currentCardPayload = Constants.defaultPayload;
-    }
+    loadStyleSheetAndConfig();
+    tryRenderCard();
 }
 
 function setupContainerPicker() {
+    hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -249,36 +196,29 @@ function setupContainerPicker() {
             "Windows Timeline",
             new TimelineContainer(320, 176, "css/timeline.css")));
 
-    if (hostContainerPicker) {
-        hostContainerPicker.addEventListener(
-            "change", () => {
-                // Update the query string
-                var htmlFileName = location.pathname.indexOf("dev.html") >= 0 ? "dev.html" : "index.html";
+    hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
 
-                history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, htmlFileName + `?hostApp=${hostContainerPicker.value}`);
+    for (var i = 0; i < hostContainerOptions.length; i++) {
+        var option = document.createElement("option");
+        option.value = hostContainerOptions[i].name;
+        option.text = hostContainerOptions[i].name;
 
-                loadStyleSheetAndConfig();
-                tryRenderCard();
-            });
-
-        for (var i = 0; i < hostContainerOptions.length; i++) {
-            var option = document.createElement("option");
-            option.value = hostContainerOptions[i].name;
-            option.text = hostContainerOptions[i].name;
-
-            hostContainerPicker.appendChild(option);
-        }
+        hostContainerPicker.appendChild(option);
     }
 }
 
 function setContainerAppFromUrl() {
     var requestedHostApp = getParameterByName("hostApp", null);
 
-    if (requestedHostApp) {
-        console.log(`Setting host app to ${requestedHostApp}`);
-
-        hostContainerPicker.value = requestedHostApp;
+    if (!requestedHostApp) {
+        requestedHostApp = hostContainerOptions[0].name;
     }
+
+    console.log(`Setting host app to ${requestedHostApp}`);
+
+    hostContainerPicker.value = requestedHostApp;
+
+    hostContainerPickerChanged();
 }
 
 function setupFilePicker() {
@@ -405,8 +345,8 @@ function switchToCardEditor() {
     document.getElementById("editCard").classList.remove("subdued");
     document.getElementById("editConfig").classList.add("subdued");
 
-    setEditorText(currentCardPayload);
-    editor.focus();
+    monacoEditor.setValue(currentCardPayload);
+    monacoEditor.focus();
 }
 
 function switchToConfigEditor() {
@@ -415,8 +355,8 @@ function switchToConfigEditor() {
     document.getElementById("editCard").classList.add("subdued");
     document.getElementById("editConfig").classList.remove("subdued");
 
-    setEditorText(currentConfigPayload);
-    editor.focus();
+    monacoEditor.setValue(currentConfigPayload);
+    monacoEditor.focus();
 }
 
 function inlineCardExpanded(action: AdaptiveCards.ShowCardAction, isExpanded: boolean) {
@@ -427,47 +367,19 @@ function elementVisibilityChanged(element: AdaptiveCards.CardElement) {
     alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
 }
 
-export class ToggleVisibilityAction extends AdaptiveCards.Action {
-    targetElementIds: Array<string> = [];
+declare var monacoEditor: any;
 
-    getJsonTypeName(): string {
-        return "Action.ToggleVisibility";
-    }
+// Monaco loads asynchronously via a call to require() from index.html
+// App initialization needs to happen after.
+declare function loadMonacoEditor(schema: any, callback: () => void);
 
-    execute() {
-        if (this.targetElementIds) {
-            for (var i = 0; i < this.targetElementIds.length; i++) {
-                var targetElement = this.parent.getRootElement().getElementById(this.targetElementIds[i]);
-
-                if (targetElement) {
-                    targetElement.isVisible = !targetElement.isVisible;
-                }
-            }
-        }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.targetElementIds = json["targetElementIds"] as Array<string>;
-    }
-}
-
-var betaFeaturesEnabled: boolean = false;
-
-window.onload = () => {
-    betaFeaturesEnabled = location.search.indexOf("beta=true") >= 0;
-
+function monacoEditorLoaded() {
     AdaptiveCards.AdaptiveCard.onParseElement = (element: AdaptiveCards.CardElement, json: any) => {
         getSelectedHostContainer().parseElement(element, json);
     }
 
     AdaptiveCards.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
         return getSelectedHostContainer().anchorClicked(anchor);
-    }
-
-    if (betaFeaturesEnabled) {
-        AdaptiveCards.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
     }
 
     currentConfigPayload = Constants.defaultConfigPayload;
@@ -497,15 +409,10 @@ window.onload = () => {
         lastValidationErrors.push(error);
     }
 
-    hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
-
     setupContainerPicker();
     setContainerAppFromUrl();
     setupFilePicker();
     loadStyleSheetAndConfig();
-    setupEditor();
-
-    switchToCardEditor();
 
     // Handle Back and Forward after the Container app drop down is changed
     window.addEventListener(
@@ -513,4 +420,55 @@ window.onload = () => {
         function (e) {
             setContainerAppFromUrl();
         });
+
+    monacoEditor.onDidChangeModelContent(
+        function (e) {
+            if (isCardEditor) {
+                currentCardPayload = monacoEditor.getValue();
+            }
+            else {
+                currentConfigPayload = monacoEditor.getValue();
+            }
+
+            tryRenderCard();
+        });    
+
+    switchToCardEditor();
+}
+
+window.onload = () => {
+    AdaptiveCards.AdaptiveCard.processMarkdown = (text: string) => {
+        return new MarkdownIt().render(text);
+    }
+
+    // Load the cached payload if the user had one
+    try {
+        var cachedPayload = sessionStorage.getItem("AdaptivePayload");
+        var cardUrl = document.location.search.substring(1).split('card=')[1];
+
+        if (cardUrl) {
+            currentCardPayload = "";
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onload = function () {
+                currentCardPayload = JSON.parse(xhttp.responseText);
+            };
+
+            xhttp.open("GET", cardUrl, true);
+            xhttp.send();
+        }
+        else if (cachedPayload) {
+            currentCardPayload = cachedPayload;
+        }
+        else {
+            currentCardPayload = Constants.defaultPayload;
+        }
+    }
+    catch (e) {
+        currentCardPayload = Constants.defaultPayload;
+    }
+
+    loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
+
 };
