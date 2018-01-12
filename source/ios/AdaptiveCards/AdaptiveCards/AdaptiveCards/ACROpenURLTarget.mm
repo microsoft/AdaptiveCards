@@ -21,6 +21,7 @@
     self = [self initWithURL:url viewController:vc targetView:nil];
     return self;
 }
+
 - (instancetype)initWithURL:(NSURL *)url viewController:(UIViewController *)vc targetView:(UIView *)view
 {
     self = [super init];
@@ -29,7 +30,6 @@
         _vc = vc;
         _url = url;
         _view = view;
-        
     }
     return self;
 }
@@ -43,6 +43,8 @@
 
 - (IBAction)openURL:(UILongPressGestureRecognizer *) recognizer
 {
+    // background color of a UIView object is changed to provide visual cue
+    // that the object is activated
     if(recognizer.state == UIGestureRecognizerStateBegan)
     {
         _backgroundColor = _view.backgroundColor;
@@ -54,7 +56,7 @@
         _view.backgroundColor = _backgroundColor;
     }
 }
-
+// delegate that is called when safariViewController is finished
 - (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
 {
     if(_view)
@@ -62,4 +64,5 @@
         _view.backgroundColor = _backgroundColor;
     }
 }
+
 @end

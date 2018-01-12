@@ -55,7 +55,8 @@
 - (IBAction)submitWithRecognizer:(UILongPressGestureRecognizer *) recognizer
 {
     [self gatherInput];
-
+    // background color of a UIView object is changed to provide visual cue
+    // that the object is activated
     if(recognizer.state == UIGestureRecognizerStateBegan)
     {
         _backgroundColor = _targetView.backgroundColor;

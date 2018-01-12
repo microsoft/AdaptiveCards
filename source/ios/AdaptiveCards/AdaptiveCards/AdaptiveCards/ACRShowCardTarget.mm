@@ -158,6 +158,8 @@
 {
     if(recognizer.state == UIGestureRecognizerStateBegan)
     {
+        // background color of a UIView object is changed to provide visual cue
+        // that the object is activated
         _backgroundColor = _targetView.backgroundColor;
         _targetView.backgroundColor = UIColor.grayColor;
         [self toggleVisibilityOfShowCard];
