@@ -15,6 +15,8 @@
     if(self)
     {
         self.config = nil;
+        self.IsValid = NO;
+        self.parseErrors = [[NSMutableArray alloc] init];
     }
     return self;
 }

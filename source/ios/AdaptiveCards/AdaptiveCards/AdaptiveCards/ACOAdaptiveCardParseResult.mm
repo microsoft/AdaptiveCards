@@ -15,6 +15,8 @@
     if(self)
     {
         self.card = nil;
+        self.IsValid = NO;
+        self.parseErrors = [[NSMutableArray alloc] init];
     }
     return self;
 }

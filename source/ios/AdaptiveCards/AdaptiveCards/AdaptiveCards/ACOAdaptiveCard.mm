@@ -32,13 +32,13 @@ using namespace AdaptiveCards;
         }
         catch(const AdaptiveCardParseException& e)
         {
-            HString errorMessage;
-            ErrorStatusCode statusCode = e.GetStatusCode();
-            std::string errorMessage = e.GetMessage();
-            ComPtr<IAdaptiveError> adaptiveError;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
-            RETURN_IF_FAILED(errors->Append(adaptiveError.Get()));
-            return adaptiveParseResult.CopyTo(parseResult);
+            // covert AdaptiveCardParseException to ACOParseError
+            ErrorStatusCode errorStatusCode = e.GetStatusCode();
+            NSNumber* errorCode = [NSNumber numberWithInt:(int)errorStatusCode];
+            NSString *errorMessage= [NSString stringWithCString:e.GetMessage().c_str()
+                                                  encoding:[NSString defaultCStringEncoding]];
+            ACOParseError *parseError = [[ACOParseError alloc] init:errorMessage errorCode:errorCode];
+            [result.parseErrors addObject:parseError];
             result.IsValid = NO;
         }
     }
