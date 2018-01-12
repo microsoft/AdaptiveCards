@@ -27,6 +27,7 @@ using namespace AdaptiveCards;
 }
 
 - (UIView *)render:(UIView *)viewGroup
+rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -36,7 +37,7 @@ using namespace AdaptiveCards;
                                                                    WithHostConfig:config
                                                                     WithSuperview:viewGroup];
     [view registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"cellId"];
-    
+
     [(UIStackView *)viewGroup addArrangedSubview:view];
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:view

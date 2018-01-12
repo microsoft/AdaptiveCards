@@ -24,13 +24,14 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel *lab = [[UILabel alloc] init];
-    
+
     // MarkDownParser transforms text with MarkDown to a html string
     std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(txtBlck->GetText().c_str());
     NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
@@ -47,16 +48,16 @@
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
     paragraphStyle.alignment = [self getTextBlockAlignment:txtBlck withHostConfig:config];
-    
+
     // Obtain text color to apply to the attributed string
     ContainerStyle style = [viewGroup getStyle];
     ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? config->containerStyles.emphasisPalette.foregroundColors:
                                                                      config->containerStyles.defaultPalette.foregroundColors;
-    
+
     // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
     [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
         lab.attributedText = content;
-    
+
     lab.numberOfLines = int(txtBlck->GetMaxLines());
     if(!lab.numberOfLines and !txtBlck->GetWrap())
     {

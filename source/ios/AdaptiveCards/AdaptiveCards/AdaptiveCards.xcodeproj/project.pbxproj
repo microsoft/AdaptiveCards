@@ -80,6 +80,8 @@
 		F42E51781FEC3840008F9642 /* MarkDownHtmlGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F42E51701FEC383F008F9642 /* MarkDownHtmlGenerator.cpp */; };
 		F42E51791FEC3840008F9642 /* MarkDownParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E51711FEC383F008F9642 /* MarkDownParser.h */; };
 		F42E517A1FEC3840008F9642 /* MarkDownParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F42E51721FEC3840008F9642 /* MarkDownParser.cpp */; };
+		F42E517D2005835B008F9642 /* ACRTapGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E517B2005835A008F9642 /* ACRTapGestureRecognizerFactory.h */; };
+		F42E517E2005835B008F9642 /* ACRTapGestureRecognizerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = F42E517C2005835B008F9642 /* ACRTapGestureRecognizerFactory.mm */; };
 		F43110431F357487001AAE30 /* ACRChoiceSetView.h in Headers */ = {isa = PBXBuildFile; fileRef = F431103D1F357487001AAE30 /* ACRChoiceSetView.h */; };
 		F43110441F357487001AAE30 /* ACRChoiceSetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F431103E1F357487001AAE30 /* ACRChoiceSetView.mm */; };
 		F43110451F357487001AAE30 /* ACOHostConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = F431103F1F357487001AAE30 /* ACOHostConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -271,6 +273,8 @@
 		F42E51701FEC383F008F9642 /* MarkDownHtmlGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MarkDownHtmlGenerator.cpp; path = ../../../../shared/cpp/ObjectModel/MarkDownHtmlGenerator.cpp; sourceTree = "<group>"; };
 		F42E51711FEC383F008F9642 /* MarkDownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarkDownParser.h; path = ../../../../shared/cpp/ObjectModel/MarkDownParser.h; sourceTree = "<group>"; };
 		F42E51721FEC3840008F9642 /* MarkDownParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MarkDownParser.cpp; path = ../../../../shared/cpp/ObjectModel/MarkDownParser.cpp; sourceTree = "<group>"; };
+		F42E517B2005835A008F9642 /* ACRTapGestureRecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTapGestureRecognizerFactory.h; sourceTree = "<group>"; };
+		F42E517C2005835B008F9642 /* ACRTapGestureRecognizerFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTapGestureRecognizerFactory.mm; sourceTree = "<group>"; };
 		F431103D1F357487001AAE30 /* ACRChoiceSetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRChoiceSetView.h; sourceTree = "<group>"; };
 		F431103E1F357487001AAE30 /* ACRChoiceSetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetView.mm; sourceTree = "<group>"; };
 		F431103F1F357487001AAE30 /* ACOHostConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOHostConfig.h; sourceTree = "<group>"; };
@@ -621,6 +625,8 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
+				F42E517B2005835A008F9642 /* ACRTapGestureRecognizerFactory.h */,
+				F42E517C2005835B008F9642 /* ACRTapGestureRecognizerFactory.mm */,
 				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
 				F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */,
 				F4CAE7811F75AB9000545555 /* ACOAdaptiveCardPrivate.h */,
@@ -757,6 +763,7 @@
 				F43110431F357487001AAE30 /* ACRChoiceSetView.h in Headers */,
 				F42979421F322C3E00E89914 /* ACRErrors.h in Headers */,
 				F4C1F5EE1F2BB2810018CB78 /* ACRIContentHoldingView.h in Headers */,
+				F42E517D2005835B008F9642 /* ACRTapGestureRecognizerFactory.h in Headers */,
 				F429794A1F323BA700E89914 /* ACRDateTextField.h in Headers */,
 				F44873081EE2261F00FCAFAE /* DateInput.h in Headers */,
 				F44872FC1EE2261F00FCAFAE /* BaseInputElement.h in Headers */,
@@ -990,6 +997,7 @@
 				F4D402121F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm in Sources */,
 				F4C1F5E21F266D480018CB78 /* ACRInputControlPickerView.mm in Sources */,
 				F43110441F357487001AAE30 /* ACRChoiceSetView.mm in Sources */,
+				F42E517E2005835B008F9642 /* ACRTapGestureRecognizerFactory.mm in Sources */,
 				F4C1F5E41F2A62190018CB78 /* ACRActionOpenURLRenderer.mm in Sources */,
 				F4071C7F1FCCBAEF00AF4FEA /* ElementParserRegistration.cpp in Sources */,
 				F4C1F5EC1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.mm in Sources */,
