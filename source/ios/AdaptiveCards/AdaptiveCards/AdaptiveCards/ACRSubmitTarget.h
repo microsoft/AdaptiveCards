@@ -14,7 +14,14 @@
 
 - (instancetype)initWithDataString:(NSString *)data
                             inputs:(NSArray *)inputs
+                                vc:(UIViewController *)vc
+                        targetView:(UIView *)targetView;
+
+- (instancetype)initWithDataString:(NSString *)data
+                            inputs:(NSArray *)inputs
                                 vc:(UIViewController *)vc;
 
 - (IBAction)submit:(UIButton *)sender;
+
+- (IBAction)submitWithRecognizer:(UILongPressGestureRecognizer *) recognizer;
 @end

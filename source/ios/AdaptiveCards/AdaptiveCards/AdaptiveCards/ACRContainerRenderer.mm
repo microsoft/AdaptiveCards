@@ -51,15 +51,16 @@ rootViewController:(UIViewController *)vc
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UITapGestureRecognizer * tapGestureRecognizer =
+    UILongPressGestureRecognizer * gestureRecognizer =
         [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
                                              rootViewController:vc
+                                                     targetView:container
                                                   actionElement:selectAction
                                                          inputs:inputs
                                                      hostConfig:config];
-    if(tapGestureRecognizer)
+    if(gestureRecognizer)
     {
-        [container addGestureRecognizer:tapGestureRecognizer];
+        [container addGestureRecognizer:gestureRecognizer];
         container.userInteractionEnabled = YES;
     }
     return viewGroup;

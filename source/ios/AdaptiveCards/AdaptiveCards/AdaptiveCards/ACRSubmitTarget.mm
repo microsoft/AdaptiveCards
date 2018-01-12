@@ -15,12 +15,15 @@
 {
     NSString *_data;
     NSArray *_inputs;
+    UIColor *_backgroundColor;
     __weak UIViewController *_vc;
+    __weak UIView *_targetView;
 }
 
 - (instancetype)initWithDataString:(NSString *)data
                             inputs:(NSArray *)inputs
                                 vc:(UIViewController *)vc
+                        targetView:(UIView *)targetView
 {
     self = [super init];
     if(self)
@@ -28,11 +31,44 @@
         _data = data;
         _inputs = inputs;
         _vc = vc;
+        _targetView = targetView;
     }
     return self;
 }
 
+- (instancetype)initWithDataString:(NSString *)data
+                            inputs:(NSArray *)inputs
+                                vc:(UIViewController *)vc
+{
+    self = [self initWithDataString:data
+                             inputs:inputs
+                                 vc:vc
+                         targetView:nil];
+    return self;
+}
+
 - (IBAction)submit:(UIButton *)sender
+{
+    [self gatherInput];
+}
+
+- (IBAction)submitWithRecognizer:(UILongPressGestureRecognizer *) recognizer
+{
+    [self gatherInput];
+
+    if(recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        _backgroundColor = _targetView.backgroundColor;
+        _targetView.backgroundColor = UIColor.grayColor;
+        [self gatherInput];
+    }
+    else if(recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        _targetView.backgroundColor = _backgroundColor;
+    }
+}
+
+- (void)gatherInput
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     NSError *err = nil;
@@ -49,7 +85,7 @@
     }
 
     err = nil;
-    
+
     NSData *json = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:&err];
 
     [((ACRViewController *)_vc).acrActionDelegate didFetchUserResponses:json data:_data error:err];

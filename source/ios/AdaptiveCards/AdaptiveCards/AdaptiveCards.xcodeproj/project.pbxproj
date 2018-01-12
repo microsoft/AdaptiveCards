@@ -601,6 +601,8 @@
 		F42979331F30079D00E89914 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				F42E517B2005835A008F9642 /* ACRTapGestureRecognizerFactory.h */,
+				F42E517C2005835B008F9642 /* ACRTapGestureRecognizerFactory.mm */,
 				F4C1F5E71F2ABB3C0018CB78 /* ACRIBaseActionElementRenderer.h */,
 				F4C1F5E91F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.h */,
 				F4C1F5EA1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.mm */,
@@ -625,8 +627,6 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
-				F42E517B2005835A008F9642 /* ACRTapGestureRecognizerFactory.h */,
-				F42E517C2005835B008F9642 /* ACRTapGestureRecognizerFactory.mm */,
 				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
 				F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */,
 				F4CAE7811F75AB9000545555 /* ACOAdaptiveCardPrivate.h */,

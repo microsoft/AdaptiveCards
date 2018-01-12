@@ -5,30 +5,61 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <SafariServices/SafariServices.h>
 #import "ACROpenURLTarget.h"
 
 @implementation ACROpenURLTarget
 {
     __weak UIViewController *_vc;
+    // view on that target will applies its action
+    __weak UIView *_view;
+    UIColor *_backgroundColor;
     NSURL *_url;
 }
 
 - (instancetype)initWithURL:(NSURL *)url viewController:(UIViewController *)vc
+{
+    self = [self initWithURL:url viewController:vc targetView:nil];
+    return self;
+}
+- (instancetype)initWithURL:(NSURL *)url viewController:(UIViewController *)vc targetView:(UIView *)view
 {
     self = [super init];
     if(self)
     {
         _vc = vc;
         _url = url;
+        _view = view;
+        
     }
     return self;
 }
 
 - (IBAction)openURL
-{ 
+{
     SFSafariViewController* svc = [[SFSafariViewController alloc] initWithURL:_url];
+    svc.delegate = self;
     [_vc presentViewController:svc animated:YES completion:nil];
 }
 
+- (IBAction)openURL:(UILongPressGestureRecognizer *) recognizer
+{
+    if(recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        _backgroundColor = _view.backgroundColor;
+        _view.backgroundColor = UIColor.grayColor;
+        [self openURL];
+    }
+    else if(recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        _view.backgroundColor = _backgroundColor;
+    }
+}
+
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
+{
+    if(_view)
+    {
+        _view.backgroundColor = _backgroundColor;
+    }
+}
 @end

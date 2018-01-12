@@ -69,15 +69,16 @@
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UITapGestureRecognizer * tapGestureRecognizer =
+    UILongPressGestureRecognizer * gestureRecognizer =
         [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
                                              rootViewController:vc
+                                                     targetView:column
                                                   actionElement:selectAction
                                                          inputs:inputs
                                                      hostConfig:config];
-    if(tapGestureRecognizer)
+    if(gestureRecognizer)
     {
-        [column addGestureRecognizer:tapGestureRecognizer];
+        [column addGestureRecognizer:gestureRecognizer];
         column.userInteractionEnabled = YES;
     }
 

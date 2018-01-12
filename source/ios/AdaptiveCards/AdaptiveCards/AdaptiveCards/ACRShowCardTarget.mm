@@ -17,15 +17,18 @@
 {
     std::shared_ptr<AdaptiveCards::AdaptiveCard> _adaptiveCard;
     std::shared_ptr<AdaptiveCards::HostConfig> _config;
+    UIColor *_backgroundColor;
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak UIViewController *_vc;
     __weak UIView *_adcView;
+    __weak UIView *_targetView;
 }
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                               config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                                   vc:(UIViewController *)vc
+                          targetView:(UIView *)targetView
 {
     self = [super init];
     if(self)
@@ -35,7 +38,21 @@
         _superview = superview;
         _vc = vc;
         _adcView = nil;
+        _targetView = targetView;
     }
+    return self;
+}
+
+- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
+                              config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
+                           superview:(UIView<ACRIContentHoldingView> *)superview
+                                  vc:(UIViewController *)vc
+{
+    self = [self initWithAdaptiveCard:adaptiveCard
+                               config:config
+                            superview:superview
+                                   vc:vc
+                           targetView:nil];
     return self;
 }
 
@@ -136,4 +153,19 @@
     // Toggle the visibility of a ShowCard UIView
     _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
 }
+
+- (IBAction)toggleVisibilityOfShowCard:(UILongPressGestureRecognizer *) recognizer
+{
+    if(recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        _backgroundColor = _targetView.backgroundColor;
+        _targetView.backgroundColor = UIColor.grayColor;
+        [self toggleVisibilityOfShowCard];
+    }
+    else if(recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        _targetView.backgroundColor = _backgroundColor;
+    }
+}
+
 @end

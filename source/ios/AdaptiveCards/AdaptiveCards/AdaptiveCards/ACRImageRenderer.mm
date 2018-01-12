@@ -162,15 +162,16 @@
 
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UITapGestureRecognizer * tapGestureRecognizer =
+    UILongPressGestureRecognizer * gestureRecognizer =
         [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
                                              rootViewController:vc
+                                                     targetView:wrappingview
                                                   actionElement:selectAction
                                                          inputs:inputs
                                                      hostConfig:config];
-    if(tapGestureRecognizer)
+    if(gestureRecognizer)
     {
-        [view addGestureRecognizer:tapGestureRecognizer];
+        [view addGestureRecognizer:gestureRecognizer];
         view.userInteractionEnabled = YES;
     }
     view.translatesAutoresizingMaskIntoConstraints = NO;
