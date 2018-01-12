@@ -25,11 +25,11 @@
     "node-sass": "^4.7.2",
     "postcss": "^5.2.18",
     "postcss-cli": "^3.1.1",
-    "ts-loader": "^3.1.1",
+    "ts-loader": "^3.2.0",
     "tslint": "^4.4.2",
     "typescript": "^2.6.2",
     "vkbeautify": "^0.99.3",
-    "webpack": "^3.8.1"
+    "webpack": "^3.10.0"
   },
   "dependencies": {
     "adaptivecards": "^1.0.0-0",
