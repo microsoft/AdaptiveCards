@@ -29,6 +29,8 @@
 <%- js('js/adaptivecards.js') %>
 
 <% if(is_current("visualizer")) { %>
+  <%- js("visualizer/node_modules/monaco-editor/min/vs/loader.js") %>
+  <%- js("visualizer/monaco-loader.js") %>
   <%- js("visualizer/adaptivecards-visualizer.js") %>
 <% } %>  
 

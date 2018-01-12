@@ -8,14 +8,14 @@
     "build-and-generate": "npm run build-all && hexo generate"
   },
   "hexo": {
-    "version": "3.4.2"
+    "version": "3.4.4"
   },
   "dependencies": {
     "adaptivecards": "^1.0.0-0",
     "adaptivecards-visualizer": "^1.0.0-0",
     "change-case": "^3.0.1",
     "glob": "^7.1.2",
-    "hexo": "^3.4.2",
+    "hexo": "^3.4.4",
     "hexo-browsersync": "^0.2.0",
     "hexo-cli": "^1.0.4",
     "hexo-fs": "^0.2.2",
@@ -24,10 +24,11 @@
     "hexo-generator-index": "^0.2.0",
     "hexo-generator-tag": "^0.2.0",
     "hexo-renderer-ejs": "^0.3.0",
-    "hexo-renderer-marked": "^0.3.0",
+    "hexo-renderer-marked": "^0.3.2",
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.2.0",
     "marked-schema": "^0.1.1",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "monaco-editor": "^0.10.1"
   }
 }
