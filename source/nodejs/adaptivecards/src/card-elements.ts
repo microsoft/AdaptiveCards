@@ -61,9 +61,9 @@ export abstract class CardElement {
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
     private _rootCard: AdaptiveCard;
-
     private _isVisible: boolean = true;
     private _truncatedDueToOverflow: boolean = false;
+    private _defaultRenderedElementDisplayMode: string = null;
 
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
@@ -77,11 +77,11 @@ export abstract class CardElement {
 
     private updateRenderedElementVisibility() {
         if (this._renderedElement) {
-            this._renderedElement.style.visibility = this._isVisible ? null : "collapse";
+            this._renderedElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
         }
 
         if (this._separatorElement) {
-            this._separatorElement.style.visibility = this._isVisible ? null : "collapse";
+            this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
         }
     }
 
@@ -279,6 +279,7 @@ export abstract class CardElement {
 
         if (this._renderedElement) {
             this._renderedElement.style.boxSizing = "border-box";
+            this._defaultRenderedElementDisplayMode = this._renderedElement.style.display;
 
             this.adjustRenderedElementSize(this._renderedElement);
             this.updateLayout(false);
