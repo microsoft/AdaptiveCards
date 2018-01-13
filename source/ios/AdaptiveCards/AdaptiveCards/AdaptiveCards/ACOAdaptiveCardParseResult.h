@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ACOParseError.h"
 
 @class ACOAdaptiveCard;
 
@@ -14,6 +13,6 @@
 
 @property ACOAdaptiveCard *card;
 @property BOOL IsValid;
-@property NSMutableArray<ACOParseError *> *parseErrors;
+@property NSMutableArray<NSError *> *parseErrors;
 
 @end

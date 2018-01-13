@@ -7,6 +7,8 @@
 #import <Foundation/Foundation.h>
 #import "ACOHostConfig.h"
 #import "HostConfig.h"
+#import "AdaptiveCardParseException.h"
+#import "ACRErrors.h"
 
 using namespace AdaptiveCards;
 
@@ -35,8 +37,18 @@ using namespace AdaptiveCards;
             result.config = config;
             result.IsValid = YES;
         }
-        catch(...)
+        catch(const AdaptiveCardParseException& e)
         {
+            // covert AdaptiveCardParseException to ACOParseError
+            ErrorStatusCode errorStatusCode = e.GetStatusCode();
+            NSInteger errorCode = (long)errorStatusCode;
+            NSString *errorMessage= [NSString stringWithCString:e.GetMessage().c_str()
+                                                       encoding:[NSString defaultCStringEncoding]];
+            NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
+                                                      code:errorCode
+                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:errorMessage}];
+            [result.parseErrors addObject:parseError];
+            
             result.IsValid = NO;
         }
     }

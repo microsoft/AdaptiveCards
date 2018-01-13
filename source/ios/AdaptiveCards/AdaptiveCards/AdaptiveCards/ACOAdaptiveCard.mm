@@ -9,6 +9,7 @@
 #import "SharedAdaptiveCard.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "AdaptiveCardParseException.h"
+#import "ACRErrors.h"
 
 using namespace AdaptiveCards;
 
@@ -34,10 +35,12 @@ using namespace AdaptiveCards;
         {
             // covert AdaptiveCardParseException to ACOParseError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
-            NSNumber* errorCode = [NSNumber numberWithInt:(int)errorStatusCode];
+            NSInteger errorCode = (long)errorStatusCode;
             NSString *errorMessage= [NSString stringWithCString:e.GetMessage().c_str()
                                                   encoding:[NSString defaultCStringEncoding]];
-            ACOParseError *parseError = [[ACOParseError alloc] init:errorMessage errorCode:errorCode];
+            NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
+                                                      code:errorCode
+                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:errorMessage}];
             [result.parseErrors addObject:parseError];
             result.IsValid = NO;
         }

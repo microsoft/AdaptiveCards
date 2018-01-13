@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOParseError.h"
+#import <Foundation/Foundation.h>
 
 @class ACOHostConfig;
 
@@ -13,6 +13,6 @@
 
 @property ACOHostConfig *config;
 @property BOOL IsValid;
-@property NSMutableArray<ACOParseError *> *parseErrors;
+@property NSMutableArray<NSError *> *parseErrors;
 
 @end    

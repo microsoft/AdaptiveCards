@@ -6,6 +6,7 @@
 //
 
 extern NSString *const ACRInputErrorDomain;
+extern NSString *const ACRParseErrorDomain;
 
 typedef NS_ENUM(NSUInteger, ACRInputError)
 {
