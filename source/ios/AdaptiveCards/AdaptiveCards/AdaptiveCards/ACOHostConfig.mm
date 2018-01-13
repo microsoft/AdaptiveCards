@@ -39,7 +39,7 @@ using namespace AdaptiveCards;
         }
         catch(const AdaptiveCardParseException& e)
         {
-            // covert AdaptiveCardParseException to ACOParseError
+            // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
             NSString *errorMessage= [NSString stringWithCString:e.GetMessage().c_str()
@@ -48,7 +48,7 @@ using namespace AdaptiveCards;
                                                       code:errorCode
                                                   userInfo:@{NSLocalizedFailureReasonErrorKey:errorMessage}];
             [result.parseErrors addObject:parseError];
-            
+
             result.IsValid = NO;
         }
     }
