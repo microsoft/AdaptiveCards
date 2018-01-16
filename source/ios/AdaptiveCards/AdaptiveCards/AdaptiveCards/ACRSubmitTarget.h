@@ -10,7 +10,7 @@
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
 
-@interface ACRSubmitTarget:NSObject
+@interface ACRSubmitTarget:NSObject<UIGestureRecognizerDelegate>
 
 - (instancetype)initWithDataString:(NSString *)data
                             inputs:(NSArray *)inputs

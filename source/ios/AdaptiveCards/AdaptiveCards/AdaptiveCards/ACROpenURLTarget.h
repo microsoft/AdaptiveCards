@@ -7,7 +7,7 @@
 #import <SafariServices/SafariServices.h>
 #import <UIKit/UIKit.h>
 
-@interface ACROpenURLTarget:NSObject<SFSafariViewControllerDelegate>
+@interface ACROpenURLTarget:NSObject<SFSafariViewControllerDelegate, UIGestureRecognizerDelegate>
 
 - (instancetype)initWithURL:(NSURL *)url viewController:(UIViewController *)vc;
 

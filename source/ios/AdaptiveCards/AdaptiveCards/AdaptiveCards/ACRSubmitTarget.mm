@@ -60,7 +60,9 @@
     if(recognizer.state == UIGestureRecognizerStateBegan)
     {
         _backgroundColor = _targetView.backgroundColor;
-        _targetView.backgroundColor = UIColor.grayColor;
+        _targetView.backgroundColor = [UIColor colorWithRed:0xD4 green:0xD4 blue:0xD4 alpha:0xD4];
+        [UIColor colorwith]
+;
         [self gatherInput];
     }
     else if(recognizer.state == UIGestureRecognizerStateEnded)
@@ -90,6 +92,16 @@
     NSData *json = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:&err];
 
     [((ACRViewController *)_vc).acrActionDelegate didFetchUserResponses:json data:_data error:err];
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+       shouldReceiveTouch:(UITouch *)touch
+{
+    if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]])
+    {
+        return NO;
+    }
+    return YES;
 }
 
 @end

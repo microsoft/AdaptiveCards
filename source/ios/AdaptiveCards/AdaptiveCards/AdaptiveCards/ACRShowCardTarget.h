@@ -10,7 +10,7 @@
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
 
-@interface ACRShowCardTarget:NSObject
+@interface ACRShowCardTarget:NSObject<UIGestureRecognizerDelegate>
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard 
                               config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config

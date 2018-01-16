@@ -161,13 +161,23 @@
         // background color of a UIView object is changed to provide visual cue
         // that the object is activated
         _backgroundColor = _targetView.backgroundColor;
-        _targetView.backgroundColor = UIColor.grayColor;
+        _targetView.backgroundColor = [UIColor colorWithRed:0xD4 green:0xD4 blue:0xD4 alpha:0xD4];
         [self toggleVisibilityOfShowCard];
     }
     else if(recognizer.state == UIGestureRecognizerStateEnded)
     {
         _targetView.backgroundColor = _backgroundColor;
     }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+       shouldReceiveTouch:(UITouch *)touch
+{
+    if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]])
+    {
+        return NO;
+    }
+    return YES;
 }
 
 @end

@@ -48,7 +48,8 @@
     if(recognizer.state == UIGestureRecognizerStateBegan)
     {
         _backgroundColor = _view.backgroundColor;
-        _view.backgroundColor = UIColor.grayColor;
+        _view.backgroundColor = [UIColor colorWithRed:0xD4 green:0xD4 blue:0xD4 alpha:0xD4];
+;
         [self openURL];
     }
     else if(recognizer.state == UIGestureRecognizerStateEnded)
@@ -65,4 +66,13 @@
     }
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+       shouldReceiveTouch:(UITouch *)touch
+{
+    if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]])
+    {
+        return NO;
+    }
+    return YES;
+}
 @end

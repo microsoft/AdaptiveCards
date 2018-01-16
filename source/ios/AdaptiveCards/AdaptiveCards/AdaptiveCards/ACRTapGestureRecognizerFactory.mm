@@ -27,7 +27,7 @@
     if(action != nullptr)
     {
         SEL actionToPerform;
-        NSObject *target;
+        NSObject<UIGestureRecognizerDelegate> *target;
         switch(action->GetElementType())
         {
             // instantiates a target that handles Submit action
@@ -71,6 +71,7 @@
         // add the target to the viewGroup; life time of the target is as long as the viewGroup
         [viewGroup addTarget:target];
         UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:target action:actionToPerform];
+        recognizer.delegate = target;
         recognizer.minimumPressDuration = 0.01;
         return recognizer;
     }
