@@ -20,16 +20,14 @@ using namespace AdaptiveCards;
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 {
-    ACOAdaptiveCardParseResult *result = [[ACOAdaptiveCardParseResult alloc] init];
-
+    ACOAdaptiveCardParseResult *result = nil;
     if(payload)
     {
         try
         {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
             card->_adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]));
-            result.card = card;
-            result.IsValid = YES;
+            result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil];
         }
         catch(const AdaptiveCardParseException& e)
         {
@@ -38,11 +36,14 @@ using namespace AdaptiveCards;
             NSInteger errorCode = (long)errorStatusCode;
             NSString *errorMessage= [NSString stringWithCString:e.GetMessage().c_str()
                                                   encoding:[NSString defaultCStringEncoding]];
+            
+            NSString *description = NSLocalizedString(errorMessage, @"");
+            
             NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
                                                       code:errorCode
-                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:errorMessage}];
-            [result.parseErrors addObject:parseError];
-            result.IsValid = NO;
+                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:description}];
+            NSArray<NSError *> *errors = @[parseError];
+            result = [[ACOAdaptiveCardParseResult alloc] init:nil errors:errors];
         }
     }
     return result;

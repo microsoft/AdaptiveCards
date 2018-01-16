@@ -11,8 +11,10 @@
 
 @interface ACOAdaptiveCardParseResult:NSObject
 
-@property ACOAdaptiveCard *card;
-@property BOOL IsValid;
-@property NSMutableArray<NSError *> *parseErrors;
+@property(readonly) ACOAdaptiveCard *card;
+@property(readonly) BOOL isValid;
+@property(readonly) NSArray<NSError *> *parseErrors;
+
+- (instancetype)init:(ACOAdaptiveCard *)card errors:(NSArray<NSError *> *)errors;
 
 @end

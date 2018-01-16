@@ -151,7 +151,7 @@
     ACRRenderResult *renderResult;
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
-    if(cardParseResult.IsValid)
+    if(cardParseResult.isValid)
     {
         renderResult = [ACRRenderer render:cardParseResult.card
                                     config:hostconfigParseResult.config

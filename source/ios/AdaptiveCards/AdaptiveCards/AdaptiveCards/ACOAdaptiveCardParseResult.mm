@@ -9,14 +9,14 @@
 
 @implementation ACOAdaptiveCardParseResult
 
-- (instancetype)init
+- (instancetype)init:(ACOAdaptiveCard *)card errors:(NSArray<NSError *> *)errors
 {
     self = [super init];
     if(self)
     {
-        self.card = nil;
-        self.IsValid = NO;
-        self.parseErrors = [[NSMutableArray alloc] init];
+        _card = card;
+        _isValid = (_card)? YES : NO;
+        _parseErrors = errors;
     }
     return self;
 }

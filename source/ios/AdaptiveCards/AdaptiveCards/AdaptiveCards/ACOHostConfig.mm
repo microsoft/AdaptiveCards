@@ -26,7 +26,7 @@ using namespace AdaptiveCards;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 {
-    ACOHostConfigParseResult *result = [[ACOHostConfigParseResult alloc] init];
+    ACOHostConfigParseResult *result = nil;
 
     if(payload)
     {
@@ -34,8 +34,7 @@ using namespace AdaptiveCards;
         {
             ACOHostConfig *config= [[ACOHostConfig alloc] init];
             *config->_config.get() = AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String]));
-            result.config = config;
-            result.IsValid = YES;
+            result = [[ACOHostConfigParseResult alloc] init:config errors:nil];
         }
         catch(const AdaptiveCardParseException& e)
         {
@@ -44,12 +43,12 @@ using namespace AdaptiveCards;
             NSInteger errorCode = (long)errorStatusCode;
             NSString *errorMessage= [NSString stringWithCString:e.GetMessage().c_str()
                                                        encoding:[NSString defaultCStringEncoding]];
+            NSString *localizedDescription = NSLocalizedString(errorMessage, @"");
             NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
                                                       code:errorCode
-                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:errorMessage}];
-            [result.parseErrors addObject:parseError];
-
-            result.IsValid = NO;
+                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:localizedDescription}];
+            NSArray<NSError *> *errors = @[parseError];
+            result = [[ACOHostConfigParseResult alloc] init:nil errors:errors];
         }
     }
     return result;
