@@ -86,6 +86,7 @@ protected:
             m_renderer->GetXamlBuilder()->AddListener(this);
             try
             {
+                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&m_renderResult));
                 ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration> elementRenderers;
                 THROW_IF_FAILED(m_renderer->get_ElementRenderers(&elementRenderers));
                 ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers> resourceResolvers;
