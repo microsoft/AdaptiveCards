@@ -48,7 +48,7 @@
     if(recognizer.state == UIGestureRecognizerStateBegan)
     {
         _backgroundColor = _view.backgroundColor;
-        _view.backgroundColor = [UIColor colorWithRed:0xD4 green:0xD4 blue:0xD4 alpha:0xD4];
+        _view.backgroundColor = [UIColor colorWithRed:0xD4/255.0 green:0xD4/255.0 blue:0xD4/255.0 alpha:0x1];
 ;
         [self openURL];
     }

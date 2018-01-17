@@ -60,9 +60,7 @@
     if(recognizer.state == UIGestureRecognizerStateBegan)
     {
         _backgroundColor = _targetView.backgroundColor;
-        _targetView.backgroundColor = [UIColor colorWithRed:0xD4 green:0xD4 blue:0xD4 alpha:0xD4];
-        [UIColor colorwith]
-;
+        _targetView.backgroundColor = [UIColor colorWithRed:0xD4/255.0 green:0xD4/255.0 blue:0xD4/255.0 alpha:0x1];
         [self gatherInput];
     }
     else if(recognizer.state == UIGestureRecognizerStateEnded)
