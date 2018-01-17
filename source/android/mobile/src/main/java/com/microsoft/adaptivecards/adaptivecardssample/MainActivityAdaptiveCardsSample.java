@@ -11,8 +11,6 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
@@ -26,12 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -229,7 +225,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     @Override
     public void onSubmit(SubmitAction submitAction, Map<String, String> keyValueMap)
     {
-        try
+        showToast("Submit: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+
+        /*try
         {
             JSONObject jsonObject = new JSONObject();
             for (Map.Entry<String, String> entry : keyValueMap.entrySet())
@@ -242,8 +240,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         catch (JSONException jsonExcep)
         {
             showToast("Submit: Failed to extract input content", Toast.LENGTH_LONG);
-        }
+        }*/
     }
 
-    private List<File> m_jsonFileList = new ArrayList<File>();
 }

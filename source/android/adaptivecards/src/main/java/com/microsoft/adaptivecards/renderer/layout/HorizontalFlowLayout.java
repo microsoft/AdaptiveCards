@@ -50,9 +50,9 @@ public class HorizontalFlowLayout extends RelativeLayout {
 //     *
 //     * TODO: uncomment this constructor once the minimum API level of this project is changed to 21 (Lollipop).
 //     */
-//    public HorizontalFlowLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//    }
+    public HorizontalFlowLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
