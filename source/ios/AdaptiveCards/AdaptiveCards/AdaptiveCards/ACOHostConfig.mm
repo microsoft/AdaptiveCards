@@ -7,6 +7,8 @@
 #import <Foundation/Foundation.h>
 #import "ACOHostConfig.h"
 #import "HostConfig.h"
+#import "AdaptiveCardParseException.h"
+#import "ACRErrors.h"
 
 using namespace AdaptiveCards;
 
@@ -24,7 +26,7 @@ using namespace AdaptiveCards;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 {
-    ACOHostConfigParseResult *result = [[ACOHostConfigParseResult alloc] init];
+    ACOHostConfigParseResult *result = nil;
 
     if(payload)
     {
@@ -32,12 +34,18 @@ using namespace AdaptiveCards;
         {
             ACOHostConfig *config= [[ACOHostConfig alloc] init];
             *config->_config.get() = AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String]));
-            result.config = config;
-            result.IsValid = YES;
+            result = [[ACOHostConfigParseResult alloc] init:config errors:nil];
         }
-        catch(...)
+        catch(const AdaptiveCardParseException& e)
         {
-            result.IsValid = NO;
+            // converts AdaptiveCardParseException to NSError
+            ErrorStatusCode errorStatusCode = e.GetStatusCode();
+            NSInteger errorCode = (long)errorStatusCode;
+            NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
+                                                      code:errorCode
+                                                  userInfo:nil];
+            NSArray<NSError *> *errors = @[parseError];
+            result = [[ACOHostConfigParseResult alloc] init:nil errors:errors];
         }
     }
     return result;

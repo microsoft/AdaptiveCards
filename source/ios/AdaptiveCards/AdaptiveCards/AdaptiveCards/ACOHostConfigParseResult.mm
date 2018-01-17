@@ -9,12 +9,14 @@
 
 @implementation ACOHostConfigParseResult
 
-- (instancetype)init
+- (instancetype)init:(ACOHostConfig *)config errors:(NSArray<NSError *> *)errors
 {
     self = [super init];
     if(self)
     {
-        self.config = nil;
+        _config = config;
+        _isValid = (_config)? YES : NO;
+        _parseErrors = errors;
     }
     return self;
 }

@@ -8,6 +8,8 @@
 #import "ACOAdaptiveCardParseResult.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOAdaptiveCardPrivate.h"
+#import "AdaptiveCardParseException.h"
+#import "ACRErrors.h"
 
 using namespace AdaptiveCards;
 
@@ -18,20 +20,26 @@ using namespace AdaptiveCards;
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 {
-    ACOAdaptiveCardParseResult *result = [[ACOAdaptiveCardParseResult alloc] init];
-
+    ACOAdaptiveCardParseResult *result = nil;
     if(payload)
     {
         try
         {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
             card->_adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]));
-            result.card = card;
-            result.IsValid = YES;
+            result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil];
         }
-        catch(...)
+        catch(const AdaptiveCardParseException& e)
         {
-            result.IsValid = NO;
+            // converts AdaptiveCardParseException to NSError
+            ErrorStatusCode errorStatusCode = e.GetStatusCode();
+            NSInteger errorCode = (long)errorStatusCode;
+            
+            NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
+                                                      code:errorCode
+                                                  userInfo:nil];
+            NSArray<NSError *> *errors = @[parseError];
+            result = [[ACOAdaptiveCardParseResult alloc] init:nil errors:errors];
         }
     }
     return result;

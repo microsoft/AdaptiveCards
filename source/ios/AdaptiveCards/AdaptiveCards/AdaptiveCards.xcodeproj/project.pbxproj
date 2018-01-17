@@ -154,8 +154,6 @@
 		F49683541F6CA24600DF0D3A /* ACRRenderResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F49683501F6CA24600DF0D3A /* ACRRenderResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F49683551F6CA24600DF0D3A /* ACRRenderResult.mm in Sources */ = {isa = PBXBuildFile; fileRef = F49683511F6CA24600DF0D3A /* ACRRenderResult.mm */; };
 		F4A5CABA1F623F4500242D62 /* AdaptiveCardsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */; };
-		F4A799C71F6A0FC500C838F8 /* ACOParseResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F4A799C31F6A0FC500C838F8 /* ACOParseResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F4A799C81F6A0FC500C838F8 /* ACOParseResult.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4A799C41F6A0FC500C838F8 /* ACOParseResult.mm */; };
 		F4C1F5D51F2187900018CB78 /* ACRInputDateRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */; };
 		F4C1F5D61F2187900018CB78 /* ACRInputDateRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */; };
 		F4C1F5D91F218ABC0018CB78 /* ACRInputTimeRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */; };
@@ -349,8 +347,6 @@
 		F49683501F6CA24600DF0D3A /* ACRRenderResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRenderResult.h; sourceTree = "<group>"; };
 		F49683511F6CA24600DF0D3A /* ACRRenderResult.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRenderResult.mm; sourceTree = "<group>"; };
 		F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdaptiveCardsTests.m; sourceTree = "<group>"; };
-		F4A799C31F6A0FC500C838F8 /* ACOParseResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOParseResult.h; sourceTree = "<group>"; };
-		F4A799C41F6A0FC500C838F8 /* ACOParseResult.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOParseResult.mm; sourceTree = "<group>"; };
 		F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputDateRenderer.h; sourceTree = "<group>"; };
 		F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputDateRenderer.mm; sourceTree = "<group>"; };
 		F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputTimeRenderer.h; sourceTree = "<group>"; };
@@ -471,8 +467,6 @@
 				F431103F1F357487001AAE30 /* ACOHostConfig.h */,
 				F43110401F357487001AAE30 /* ACOHostConfig.mm */,
 				6B1147D01F32E53A008846EC /* ACRActionDelegate.h */,
-				F4A799C31F6A0FC500C838F8 /* ACOParseResult.h */,
-				F4A799C41F6A0FC500C838F8 /* ACOParseResult.mm */,
 				F42979401F322C3E00E89914 /* ACRErrors.h */,
 				F42979411F322C3E00E89914 /* ACRErrors.mm */,
 				F423C0B91EE1FBAA00905679 /* Info.plist */,
@@ -697,7 +691,6 @@
 				F4D33EA71F06F44C00941E44 /* ACRSeparator.h in Headers */,
 				F4071C7C1FCCBAEF00AF4FEA /* json-forwards.h in Headers */,
 				F43110451F357487001AAE30 /* ACOHostConfig.h in Headers */,
-				F4A799C71F6A0FC500C838F8 /* ACOParseResult.h in Headers */,
 				F42E51771FEC3840008F9642 /* MarkDownBlockParser.h in Headers */,
 				F4F2556C1F98246000A80D39 /* ACOBaseActionElement.h in Headers */,
 				F4CAE7821F75AB9000545555 /* ACOAdaptiveCard.h in Headers */,
@@ -1001,7 +994,6 @@
 				F4C1F5E41F2A62190018CB78 /* ACRActionOpenURLRenderer.mm in Sources */,
 				F4071C7F1FCCBAEF00AF4FEA /* ElementParserRegistration.cpp in Sources */,
 				F4C1F5EC1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.mm in Sources */,
-				F4A799C81F6A0FC500C838F8 /* ACOParseResult.mm in Sources */,
 				F4D402141F7DAC2C00D0356B /* ACOHostConfigParseResult.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

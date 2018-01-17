@@ -5,12 +5,16 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOParseResult.h"
+#import <Foundation/Foundation.h>
 
 @class ACOHostConfig;
 
-@interface ACOHostConfigParseResult:ACOParseResult
+@interface ACOHostConfigParseResult:NSObject
 
-@property ACOHostConfig *config;
+@property(readonly) ACOHostConfig *config;
+@property(readonly) BOOL isValid;
+@property(readonly) NSArray<NSError *> *parseErrors;
+
+- (instancetype)init:(ACOHostConfig *)config errors:(NSArray<NSError *> *)errors;
 
 @end    
