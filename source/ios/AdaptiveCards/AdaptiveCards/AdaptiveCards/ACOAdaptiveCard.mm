@@ -37,11 +37,11 @@ using namespace AdaptiveCards;
             NSString *errorMessage= [NSString stringWithCString:e.GetMessage().c_str()
                                                   encoding:[NSString defaultCStringEncoding]];
             
-            NSString *description = NSLocalizedString(errorMessage, @"");
+            NSString *localizedDescription = NSLocalizedString(errorMessage, @"");
             
             NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
                                                       code:errorCode
-                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:description}];
+                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:localizedDescription}];
             NSArray<NSError *> *errors = @[parseError];
             result = [[ACOAdaptiveCardParseResult alloc] init:nil errors:errors];
         }
