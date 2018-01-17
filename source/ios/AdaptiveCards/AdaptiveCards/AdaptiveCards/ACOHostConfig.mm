@@ -41,12 +41,9 @@ using namespace AdaptiveCards;
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
-            NSString *errorMessage= [NSString stringWithCString:e.GetMessage().c_str()
-                                                       encoding:[NSString defaultCStringEncoding]];
-            NSString *localizedDescription = NSLocalizedString(errorMessage, @"");
             NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
                                                       code:errorCode
-                                                  userInfo:@{NSLocalizedFailureReasonErrorKey:localizedDescription}];
+                                                  userInfo:nil];
             NSArray<NSError *> *errors = @[parseError];
             result = [[ACOHostConfigParseResult alloc] init:nil errors:errors];
         }
