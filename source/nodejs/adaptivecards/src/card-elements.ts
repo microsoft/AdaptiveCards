@@ -622,6 +622,7 @@ export class TextBlock extends CardElement {
             }
             else {
                 element.style.whiteSpace = "nowrap";
+                element.style.textOverflow = "ellipsis";
             }
 
             if (AdaptiveCard.useAdvancedTextBlockTruncation
