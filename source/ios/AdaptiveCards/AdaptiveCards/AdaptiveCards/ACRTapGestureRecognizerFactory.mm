@@ -72,7 +72,8 @@
         [viewGroup addTarget:target];
         UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:target action:actionToPerform];
         recognizer.delegate = target;
-        recognizer.minimumPressDuration = 0.01;
+        recognizer.minimumPressDuration = 0.1;
+        recognizer.allowableMovement = 1;
         return recognizer;
     }
     return nil;
