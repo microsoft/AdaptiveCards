@@ -1425,7 +1425,7 @@ export class ChoiceSetInput extends Input {
         }
         else {
             // Render as a list of toggle inputs
-            var defaultValues = this.defaultValue ? this.defaultValue.split(",") : null;
+            var defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : null;
 
             var element = document.createElement("div");
             element.className = "ac-input";
@@ -1551,7 +1551,7 @@ export class ChoiceSetInput extends Input {
             for (var i = 0; i < this._toggleInputs.length; i++) {
                 if (this._toggleInputs[i].checked) {
                     if (result != "") {
-                        result += ";";
+                        result += this.hostConfig.choiceSetInputValueSeparator;
                     }
 
                     result += this._toggleInputs[i].value;

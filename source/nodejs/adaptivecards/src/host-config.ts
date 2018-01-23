@@ -314,6 +314,7 @@ export class ContainerStyleSet {
 }
 
 export class HostConfig {
+    choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
 
     fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
@@ -362,6 +363,7 @@ export class HostConfig {
                 obj = JSON.parse(obj as string);
             }
 
+            this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
             this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
             this.fontFamily = obj["fontFamily"] || this.fontFamily;
             this.fontSizes = {

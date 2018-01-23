@@ -104,7 +104,7 @@ export abstract class HostContainer {
         AdaptiveCard.useAutomaticContainerBleeding = false;
         AdaptiveCard.preExpandSingleShowCardAction = false;
         AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
-}
+    }
 
     public parseElement(element: CardElement, json: any) {
         // Do nothing in base implementation
