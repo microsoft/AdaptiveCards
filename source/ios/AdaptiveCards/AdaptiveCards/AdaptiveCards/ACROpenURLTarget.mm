@@ -27,7 +27,6 @@
 - (IBAction)openURL
 {
     SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:_url];
-    svc.delegate = self;
     [_vc presentViewController:svc animated:YES completion:nil];
 }
 
