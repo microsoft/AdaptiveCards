@@ -177,6 +177,9 @@
 		F4C1F5F81F2BF3ED0018CB78 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4C1F5F71F2BF3ED0018CB78 /* SafariServices.framework */; };
 		F4C1F5FE1F2C235E0018CB78 /* ACRActionShowCardRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5FD1F2C235E0018CB78 /* ACRActionShowCardRenderer.mm */; };
 		F4C1F6001F2C23FD0018CB78 /* ACRActionShowCardRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5FF1F2C23FD0018CB78 /* ACRActionShowCardRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4CA74A02016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4CA749E2016B3B8002041DF /* ACRLongPressGestureRecognizerEventHandler.mm */; };
+		F4CA74A12016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = F4CA749F2016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.h */; };
+		F4CA74A420181B52002041DF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CA74A320181B52002041DF /* QuartzCore.framework */; };
 		F4CAE77B1F7325DF00545555 /* Separator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4CAE7791F7325DF00545555 /* Separator.cpp */; };
 		F4CAE77C1F7325DF00545555 /* Separator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4CAE77A1F7325DF00545555 /* Separator.h */; };
 		F4CAE77E1F748AF200545555 /* ACOHostConfigPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = F4CAE77D1F748AF200545555 /* ACOHostConfigPrivate.h */; };
@@ -372,6 +375,9 @@
 		F4C1F5F71F2BF3ED0018CB78 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		F4C1F5FD1F2C235E0018CB78 /* ACRActionShowCardRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRActionShowCardRenderer.mm; sourceTree = "<group>"; };
 		F4C1F5FF1F2C23FD0018CB78 /* ACRActionShowCardRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionShowCardRenderer.h; sourceTree = "<group>"; };
+		F4CA749E2016B3B8002041DF /* ACRLongPressGestureRecognizerEventHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRLongPressGestureRecognizerEventHandler.mm; sourceTree = "<group>"; };
+		F4CA749F2016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRLongPressGestureRecognizerEventHandler.h; sourceTree = "<group>"; };
+		F4CA74A320181B52002041DF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F4CAE7791F7325DF00545555 /* Separator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Separator.cpp; path = ../../../../shared/cpp/ObjectModel/Separator.cpp; sourceTree = "<group>"; };
 		F4CAE77A1F7325DF00545555 /* Separator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Separator.h; path = ../../../../shared/cpp/ObjectModel/Separator.h; sourceTree = "<group>"; };
 		F4CAE77D1F748AF200545555 /* ACOHostConfigPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOHostConfigPrivate.h; sourceTree = "<group>"; };
@@ -401,6 +407,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4CA74A420181B52002041DF /* QuartzCore.framework in Frameworks */,
 				F4C1F5F81F2BF3ED0018CB78 /* SafariServices.framework in Frameworks */,
 				F45A071F1EF4BD67007C6503 /* UIKit.framework in Frameworks */,
 			);
@@ -601,6 +608,8 @@
 		F42979331F30079D00E89914 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				F4CA749F2016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.h */,
+				F4CA749E2016B3B8002041DF /* ACRLongPressGestureRecognizerEventHandler.mm */,
 				F42E517B2005835A008F9642 /* ACRTapGestureRecognizerFactory.h */,
 				F42E517C2005835B008F9642 /* ACRTapGestureRecognizerFactory.mm */,
 				F4C1F5E71F2ABB3C0018CB78 /* ACRIBaseActionElementRenderer.h */,
@@ -678,6 +687,7 @@
 		F45A07191EF4BC44007C6503 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4CA74A320181B52002041DF /* QuartzCore.framework */,
 				F4C1F5F71F2BF3ED0018CB78 /* SafariServices.framework */,
 				F45A071E1EF4BD67007C6503 /* UIKit.framework */,
 				F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */,
@@ -770,6 +780,7 @@
 				F43A94101F1D60E30001920B /* ACRFactSetRenderer.h in Headers */,
 				F427410A1EF864A900399FBB /* ACRBaseCardElementRenderer.h in Headers */,
 				F4CAE77C1F7325DF00545555 /* Separator.h in Headers */,
+				F4CA74A12016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.h in Headers */,
 				F4C1F5F11F2BC6840018CB78 /* ACRButton.h in Headers */,
 				F448730F1EE2261F00FCAFAE /* HostConfig.h in Headers */,
 				F44873151EE2261F00FCAFAE /* ImageSet.h in Headers */,
@@ -984,6 +995,7 @@
 				F448731A1EE2261F00FCAFAE /* OpenUrlAction.cpp in Sources */,
 				F4CAE7831F75AB9000545555 /* ACOAdaptiveCard.mm in Sources */,
 				6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */,
+				F4CA74A02016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.mm in Sources */,
 				F42741171EF895AB00399FBB /* ACRTextBlockRenderer.mm in Sources */,
 				F44873231EE2261F00FCAFAE /* TextBlock.cpp in Sources */,
 				F44872F91EE2261F00FCAFAE /* BaseCardElement.cpp in Sources */,

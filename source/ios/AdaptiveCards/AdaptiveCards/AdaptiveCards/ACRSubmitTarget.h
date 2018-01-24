@@ -9,13 +9,9 @@
 #import "ACRIContentHoldingView.h"
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 
-@interface ACRSubmitTarget:NSObject<UIGestureRecognizerDelegate>
-
-- (instancetype)initWithDataString:(NSString *)data
-                            inputs:(NSArray *)inputs
-                                vc:(UIViewController *)vc
-                        targetView:(UIView *)targetView;
+@interface ACRSubmitTarget:NSObject<ACRSelectActionDelegate>
 
 - (instancetype)initWithDataString:(NSString *)data
                             inputs:(NSArray *)inputs
@@ -23,5 +19,4 @@
 
 - (IBAction)submit:(UIButton *)sender;
 
-- (IBAction)submitWithRecognizer:(UILongPressGestureRecognizer *) recognizer;
 @end

@@ -6,15 +6,12 @@
 //
 #import <SafariServices/SafariServices.h>
 #import <UIKit/UIKit.h>
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 
-@interface ACROpenURLTarget:NSObject<SFSafariViewControllerDelegate, UIGestureRecognizerDelegate>
+@interface ACROpenURLTarget:NSObject<SFSafariViewControllerDelegate, ACRSelectActionDelegate>
 
 - (instancetype)initWithURL:(NSURL *)url viewController:(UIViewController *)vc;
 
-- (instancetype)initWithURL:(NSURL *)url viewController:(UIViewController *)vc targetView:(UIView *)view;
-
 - (IBAction)openURL;
-
-- (IBAction)openURL:(UILongPressGestureRecognizer *) recognizer;
 
 @end

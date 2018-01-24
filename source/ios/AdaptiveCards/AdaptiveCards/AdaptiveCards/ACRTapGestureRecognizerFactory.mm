@@ -6,6 +6,7 @@
 //
 
 #import "ACRTapGestureRecognizerFactory.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACROpenURLTarget.h"
 #import "OpenUrlAction.h"
 #import "ACRShowCardTarget.h"
@@ -26,8 +27,8 @@
 {
     if(action != nullptr)
     {
-        SEL actionToPerform;
-        NSObject<UIGestureRecognizerDelegate> *target;
+        NSObject<ACRSelectActionDelegate> *target;
+        ACRLongPressGestureRecognizerEventHandler *handler = [[ACRLongPressGestureRecognizerEventHandler alloc] init];
         switch(action->GetElementType())
         {
             // instantiates a target that handles Submit action
@@ -36,8 +37,7 @@
                 std::shared_ptr<SubmitAction> submitAction = std::dynamic_pointer_cast<SubmitAction>(action);
                 NSString *data = [NSString stringWithCString:submitAction->GetDataJson().c_str()
                                                     encoding:NSUTF8StringEncoding];
-                target = [[ACRSubmitTarget alloc] initWithDataString:data inputs:inputs vc:vc targetView:view];
-                actionToPerform = @selector(submitWithRecognizer:);
+                target = [[ACRSubmitTarget alloc] initWithDataString:data inputs:inputs vc:vc];
                 break;
             }
             // instantiates a target that handles ShowCard action
@@ -45,8 +45,7 @@
             {
                 std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
                 // instantiate a ShowCardTarget
-                target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:showCardAction->GetCard() config:config superview:viewGroup vc:vc targetView:view];
-                actionToPerform = @selector(toggleVisibilityOfShowCard:);
+                target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:showCardAction->GetCard() config:config superview:viewGroup vc:vc];
                 break;
             }
             // instantiates a target that handles OpenUrl action
@@ -56,8 +55,7 @@
                 NSString *urlStr = [NSString stringWithCString:openUrlAction->GetUrl().c_str()
                                               encoding:[NSString defaultCStringEncoding]];
                 NSURL *url = [NSURL URLWithString:urlStr];
-                target = [[ACROpenURLTarget alloc] initWithURL:url viewController:vc targetView:view];
-                actionToPerform = @selector(openURL:);
+                target = [[ACROpenURLTarget alloc] initWithURL:url viewController:vc];
                 break;
             }
             // everything else is not valid request
@@ -68,13 +66,20 @@
                 return nil;
             }
         }
-        // add the target to the viewGroup; life time of the target is as long as the viewGroup
-        [viewGroup addTarget:target];
-        UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:target action:actionToPerform];
-        recognizer.delegate = target;
-        recognizer.minimumPressDuration = 0.1;
-        recognizer.allowableMovement = 1;
-        return recognizer;
+
+        if(target && handler)
+        {
+            // add the target to the viewGroup; life time of the target is as long as the viewGroup
+            // add the handler to the viewGroup; life time of the target is as long as the viewGroup
+            [viewGroup addTarget:target];
+            [viewGroup addTarget:handler];
+            UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:handler action:@selector(processLongPressGesture:)];
+            handler.delegate = target;
+            recognizer.delegate = handler;
+            recognizer.minimumPressDuration = 0.01;
+            recognizer.allowableMovement = 1;
+            return recognizer;
+        }
     }
     return nil;
 }

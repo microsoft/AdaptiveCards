@@ -17,18 +17,15 @@
 {
     std::shared_ptr<AdaptiveCards::AdaptiveCard> _adaptiveCard;
     std::shared_ptr<AdaptiveCards::HostConfig> _config;
-    UIColor *_backgroundColor;
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak UIViewController *_vc;
     __weak UIView *_adcView;
-    __weak UIView *_targetView;
 }
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                               config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                                   vc:(UIViewController *)vc
-                          targetView:(UIView *)targetView
 {
     self = [super init];
     if(self)
@@ -38,21 +35,7 @@
         _superview = superview;
         _vc = vc;
         _adcView = nil;
-        _targetView = targetView;
     }
-    return self;
-}
-
-- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
-                              config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
-                           superview:(UIView<ACRIContentHoldingView> *)superview
-                                  vc:(UIViewController *)vc
-{
-    self = [self initWithAdaptiveCard:adaptiveCard
-                               config:config
-                            superview:superview
-                                   vc:vc
-                           targetView:nil];
     return self;
 }
 
@@ -154,29 +137,9 @@
     _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
 }
 
-- (IBAction)toggleVisibilityOfShowCard:(UILongPressGestureRecognizer *) recognizer
+- (void)doSelectAction
 {
-    if(recognizer.state == UIGestureRecognizerStateBegan)
-    {
-        // background color of a UIView object is changed to provide visual cue
-        // that the object is activated
-        _backgroundColor = _targetView.backgroundColor;
-        _targetView.backgroundColor = [UIColor colorWithRed:0xD4/255.0 green:0xD4/255.0 blue:0xD4/255.0 alpha:0x1];
-        [self toggleVisibilityOfShowCard];
-    }
-    else if(recognizer.state == UIGestureRecognizerStateEnded)
-    {
-        _targetView.backgroundColor = _backgroundColor;
-    }
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]])
-    {
-        return YES;
-    }
-    return NO;
+    [self toggleVisibilityOfShowCard];
 }
 
 @end
