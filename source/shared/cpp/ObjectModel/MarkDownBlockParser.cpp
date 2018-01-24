@@ -94,7 +94,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, 
         if (stream.tellg())
         {
             stream.unget();
-            parser.UpdateLookBehind(static_cast<char>(stream.get()));
+            parser.UpdateLookBehind(stream.get());
         }
 
         parser.UpdateCurrentEmphasisRunState(emphasisType);
@@ -139,7 +139,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
         if (stream.peek() == '\\')
         {
             // skips escape char
-            static_cast<char>(stream.get());
+            stream.get();
         }
 
         parser.ResetCurrentEmphasisState();
@@ -479,7 +479,7 @@ bool ListParser::MatchNewListItem(std::stringstream &stream)
 {
     if (IsHyphen(stream.peek()))
     {
-        static_cast<char>(stream.get());
+        stream.get();
         if (stream.peek() == ' ')
         {
             stream.unget();
@@ -539,7 +539,7 @@ void ListParser::ParseSubBlocks(std::stringstream &stream)
     {
         if (IsNewLine(stream.peek()))
         {
-            int newLineChar = static_cast<char>(stream.get());
+            int newLineChar = stream.get();
             // check if it is the start of new block items
             if (isdigit(stream.peek()))
             {
@@ -574,7 +574,7 @@ bool ListParser::CompleteListParsing(std::stringstream &stream)
         // remove space
         do
         {
-            static_cast<char>(stream.get());
+            stream.get();
         } while (stream.peek() == ' ');
 
         ParseBlock(stream);
@@ -592,7 +592,7 @@ void ListParser::Match(std::stringstream &stream)
     // check for - of -\s+ list marker
     if (IsHyphen(stream.peek()))
     {
-        static_cast<char>(stream.get());
+        stream.get();
         if (CompleteListParsing(stream))
         {
             CaptureListToken();
@@ -601,7 +601,7 @@ void ListParser::Match(std::stringstream &stream)
         {
             // if incorrect syntax, capture what was thrown as a new token.
             m_parsedResult.AddNewTokenToParsedResult('-');
-            static_cast<char>(stream.get());
+            stream.get();
         }
     }
 }
@@ -639,7 +639,7 @@ void OrderedListParser::Match(std::stringstream &stream)
         if (IsDot(stream.peek()))
         {
             // ordered list syntax check complete
-            static_cast<char>(stream.get());
+            stream.get();
             if (CompleteListParsing(stream))
             {
                 CaptureOrderedListToken(number_string);
