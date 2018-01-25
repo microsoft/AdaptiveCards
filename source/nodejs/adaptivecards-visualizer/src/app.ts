@@ -453,22 +453,22 @@ window.onload = () => {
 
             xhttp.onload = function () {
                 currentCardPayload = JSON.parse(xhttp.responseText);
+
+                loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
             };
 
             xhttp.open("GET", cardUrl, true);
             xhttp.send();
         }
-        else if (cachedPayload) {
-            currentCardPayload = cachedPayload;
-        }
         else {
-            currentCardPayload = Constants.defaultPayload;
+            currentCardPayload = cachedPayload ? cachedPayload : Constants.defaultPayload;
+
+            loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
         }
     }
     catch (e) {
         currentCardPayload = Constants.defaultPayload;
+
+        loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
     }
-
-    loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
-
 };
