@@ -1544,8 +1544,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     ]
     interface IAdaptiveSubmitAction : IInspectable
     {
-        [propget] HRESULT DataJson([out, retval] Windows.Data.Json.JsonObject** value);
-        [propput] HRESULT DataJson([in] Windows.Data.Json.JsonObject* value);
+        [propget] HRESULT DataJson([out, retval] Windows.Data.Json.JsonValue** value);
+        [propput] HRESULT DataJson([in] Windows.Data.Json.JsonValue* value);
     };
 
     [
