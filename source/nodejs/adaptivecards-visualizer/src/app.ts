@@ -41,7 +41,6 @@ function renderCard(target: HTMLElement): HTMLElement {
 
     adaptiveCard.parse(json);
 
-
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
     showValidationErrors();
@@ -433,7 +432,50 @@ function monacoEditorLoaded() {
             tryRenderCard();
         });    
 
-    switchToCardEditor();
+    currentCardPayload = Constants.defaultPayload;
+
+    var initialCardLaodedAsynchronously = false;
+    var cardUrl = document.location.search.substring(1).split('card=')[1];
+
+    if (cardUrl) {
+        initialCardLaodedAsynchronously = true;
+
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onload = function () {
+            if (xhttp.responseText && xhttp.responseText != "") {
+                currentCardPayload = xhttp.responseText;
+            }
+
+            switchToCardEditor();
+        };
+
+        try {
+            xhttp.open("GET", cardUrl, true);
+            xhttp.send();
+        }
+        catch {
+            initialCardLaodedAsynchronously = false;
+        }
+    }
+    else {
+        var cachedPayload;
+
+        try {
+            cachedPayload = sessionStorage.getItem("AdaptivePayload");
+        }
+        catch {
+            // Session storage is not accessible
+        }
+
+        if (cachedPayload && cachedPayload != "") {
+            currentCardPayload = cachedPayload;
+        }
+    }
+
+    if (!initialCardLaodedAsynchronously) {
+        switchToCardEditor();
+    }
 }
 
 window.onload = () => {
@@ -441,34 +483,5 @@ window.onload = () => {
         return new MarkdownIt().render(text);
     }
 
-    // Load the cached payload if the user had one
-    try {
-        var cachedPayload = sessionStorage.getItem("AdaptivePayload");
-        var cardUrl = document.location.search.substring(1).split('card=')[1];
-
-        if (cardUrl) {
-            currentCardPayload = "";
-
-            var xhttp = new XMLHttpRequest();
-
-            xhttp.onload = function () {
-                currentCardPayload = JSON.parse(xhttp.responseText);
-
-                loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
-            };
-
-            xhttp.open("GET", cardUrl, true);
-            xhttp.send();
-        }
-        else {
-            currentCardPayload = cachedPayload ? cachedPayload : Constants.defaultPayload;
-
-            loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
-        }
-    }
-    catch (e) {
-        currentCardPayload = Constants.defaultPayload;
-
-        loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
-    }
+    loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 };
