@@ -152,7 +152,7 @@ var currentCardPayload: string = "";
 var currentConfigPayload: string = "";
 
 function hostContainerPickerChanged() {
-    history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, "index.html" + `?hostApp=${hostContainerPicker.value}`);
+    // history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, "index.html" + `?hostApp=${hostContainerPicker.value}`);
 
     loadStyleSheetAndConfig();
     tryRenderCard();
