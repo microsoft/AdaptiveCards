@@ -38,17 +38,18 @@ rootViewController:(UIViewController *)vc
         inputView = [[ACRInputControlPickerView alloc] initWithInputChoiceSet:choiceSet
                                                                    hostConfig:config
                                                                     superview:viewGroup];
-
         [(ACRInputControlPickerView *)inputView setDefaultView];
     }
     else
     {
-
-        inputView = [[ACRChoiceSetView alloc] initWithInputChoiceSet:choiceSet hostConfig:config superview:viewGroup];
+        inputView = [[ACRChoiceSetView alloc] initWithInputChoiceSet:choiceSet hostConfig:config superview:viewGroup viewController:vc];
         [(UITableView *)inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
     }
 
-    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:inputView];
+    if(viewGroup)
+    {
+        [(UIStackView *)viewGroup addArrangedSubview:inputView];
+    }
 
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:inputView

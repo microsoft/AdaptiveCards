@@ -72,6 +72,7 @@
 		F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D33E851F04705800941E44 /* ACVTableViewController.m */; };
 		F4D402161F7DB0BF00D0356B /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D402151F7DB0BF00D0356B /* sample.json */; };
 		F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
+		F4FA2726201FC847005989F9 /* kojiw-adc.json in Resources */ = {isa = PBXBuildFile; fileRef = F4FA2725201FC847005989F9 /* kojiw-adc.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,6 +181,7 @@
 		F4D402151F7DB0BF00D0356B /* sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sample.json; path = resources/sample.json; sourceTree = "<group>"; };
 		F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionOpenURLRenderer.mm; sourceTree = "<group>"; };
 		F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionOpenURLRenderer.h; sourceTree = "<group>"; };
+		F4FA2725201FC847005989F9 /* kojiw-adc.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "kojiw-adc.json"; path = "../../../../../../kojiw-adc.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +282,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				F4FA2725201FC847005989F9 /* kojiw-adc.json */,
 				F4071C821FD63D5300AF4FEA /* Solitaire.json */,
 				F4D402151F7DB0BF00D0356B /* sample.json */,
 				F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */,
@@ -482,6 +485,7 @@
 				F4933CC91F79852C00F6EBFD /* Column.Width.json in Resources */,
 				F4933CE51F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json in Resources */,
 				F4933CFF1F79853B00F6EBFD /* FlightUpdate.json in Resources */,
+				F4FA2726201FC847005989F9 /* kojiw-adc.json in Resources */,
 				F4933D071F79853B00F6EBFD /* WeatherCompact.json in Resources */,
 				F4933CE11F79852C00F6EBFD /* Input.Time.json in Resources */,
 				F4933CEB1F79852C00F6EBFD /* TextBlock.Spacing.json in Resources */,

@@ -96,6 +96,8 @@
 		F43A94151F1EED6D0001920B /* ACRInputRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F43A94131F1EED6D0001920B /* ACRInputRenderer.mm */; };
 		F43A94181F20502D0001920B /* ACRInputToggleRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F43A94161F20502D0001920B /* ACRInputToggleRenderer.h */; };
 		F43A94191F20502D0001920B /* ACRInputToggleRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F43A94171F20502D0001920B /* ACRInputToggleRenderer.mm */; };
+		F443E7482019446E00EA87CE /* ACRInputTableViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F443E7462019446D00EA87CE /* ACRInputTableViewController.mm */; };
+		F443E7492019446E00EA87CE /* ACRInputTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F443E7472019446E00EA87CE /* ACRInputTableViewController.h */; };
 		F44872F51EE2261F00FCAFAE /* AdaptiveCardParseException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F44872BD1EE2261F00FCAFAE /* AdaptiveCardParseException.cpp */; };
 		F44872F61EE2261F00FCAFAE /* AdaptiveCardParseException.h in Headers */ = {isa = PBXBuildFile; fileRef = F44872BE1EE2261F00FCAFAE /* AdaptiveCardParseException.h */; };
 		F44872F71EE2261F00FCAFAE /* BaseActionElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F44872BF1EE2261F00FCAFAE /* BaseActionElement.cpp */; };
@@ -287,6 +289,8 @@
 		F43A94131F1EED6D0001920B /* ACRInputRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputRenderer.mm; sourceTree = "<group>"; };
 		F43A94161F20502D0001920B /* ACRInputToggleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputToggleRenderer.h; sourceTree = "<group>"; };
 		F43A94171F20502D0001920B /* ACRInputToggleRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputToggleRenderer.mm; sourceTree = "<group>"; };
+		F443E7462019446D00EA87CE /* ACRInputTableViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputTableViewController.mm; sourceTree = "<group>"; };
+		F443E7472019446E00EA87CE /* ACRInputTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputTableViewController.h; sourceTree = "<group>"; };
 		F44872BD1EE2261F00FCAFAE /* AdaptiveCardParseException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveCardParseException.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp; sourceTree = "<group>"; };
 		F44872BE1EE2261F00FCAFAE /* AdaptiveCardParseException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveCardParseException.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h; sourceTree = "<group>"; };
 		F44872BF1EE2261F00FCAFAE /* BaseActionElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseActionElement.cpp; path = ../../../../shared/cpp/ObjectModel/BaseActionElement.cpp; sourceTree = "<group>"; };
@@ -453,13 +457,13 @@
 				F423C0B81EE1FBAA00905679 /* ACFramework.h */,
 				F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */,
 				F423C1481EE1FFF100905679 /* ACRViewController.h */,
+				F423C1491EE1FFF100905679 /* ACRViewController.mm */,
 				F4CAE77F1F75AB9000545555 /* ACOAdaptiveCard.h */,
 				F4CAE7801F75AB9000545555 /* ACOAdaptiveCard.mm */,
 				F4D4020D1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.h */,
 				F4D4020E1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm */,
 				F4D4020F1F7DAC2C00D0356B /* ACOHostConfigParseResult.h */,
 				F4D402101F7DAC2C00D0356B /* ACOHostConfigParseResult.mm */,
-				F423C1491EE1FFF100905679 /* ACRViewController.mm */,
 				F496834E1F6CA24600DF0D3A /* ACRRenderer.h */,
 				F496834F1F6CA24600DF0D3A /* ACRRenderer.mm */,
 				F49683501F6CA24600DF0D3A /* ACRRenderResult.h */,
@@ -561,6 +565,8 @@
 		F42979321F30074900E89914 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				F443E7472019446E00EA87CE /* ACRInputTableViewController.h */,
+				F443E7462019446D00EA87CE /* ACRInputTableViewController.mm */,
 				F42979361F31438900E89914 /* ACRIBaseInputHandler.h */,
 				F429793C1F3155EF00E89914 /* ACRTextField.h */,
 				F429793D1F3155EF00E89914 /* ACRTextField.mm */,
@@ -756,6 +762,7 @@
 				F43110431F357487001AAE30 /* ACRChoiceSetView.h in Headers */,
 				F42979421F322C3E00E89914 /* ACRErrors.h in Headers */,
 				F4C1F5EE1F2BB2810018CB78 /* ACRIContentHoldingView.h in Headers */,
+				F443E7492019446E00EA87CE /* ACRInputTableViewController.h in Headers */,
 				F42E517D2005835B008F9642 /* ACRTapGestureRecognizerFactory.h in Headers */,
 				F429794A1F323BA700E89914 /* ACRDateTextField.h in Headers */,
 				F44873081EE2261F00FCAFAE /* DateInput.h in Headers */,
@@ -958,6 +965,7 @@
 				F4071C7E1FCCBAEF00AF4FEA /* ActionParserRegistration.cpp in Sources */,
 				F4FE456B1F196F3D0071D9E5 /* ACRContentStackView.mm in Sources */,
 				F429793F1F3155EF00E89914 /* ACRTextField.mm in Sources */,
+				F443E7482019446E00EA87CE /* ACRInputTableViewController.mm in Sources */,
 				F43A94191F20502D0001920B /* ACRInputToggleRenderer.mm in Sources */,
 				F44873271EE2261F00FCAFAE /* TimeInput.cpp in Sources */,
 				F42E51741FEC3840008F9642 /* MarkDownBlockParser.cpp in Sources */,

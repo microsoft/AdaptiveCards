@@ -7,37 +7,60 @@
 
 #import <Foundation/Foundation.h>
 #import "ACRChoiceSetView.h"
-#import "ChoiceSetInput.h"
+#import "ACRInputTableViewController.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRChoiceSetView
 {
-    std::shared_ptr<ChoiceSetInput> choiceSetDataSource;
-    std::shared_ptr<HostConfig> config;
-    BOOL isMultichoiceAllowed;
+    std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
+    std::shared_ptr<HostConfig> _config;
+    BOOL _isMultichoicesAllowed;
+    ACRInputTableViewController *_tableViewController;
+    NSIndexPath *_indexPath;
+}
+
+- (instancetype)initWithInputChoiceSet:(std::shared_ptr<ChoiceSetInput> const&)choiceSet
+                            hostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
+                             superview:(UIView *)view
+                        viewController:(UIViewController *)vc
+{
+    self = [super initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height) style:UITableViewStyleGrouped ];
+    if(self)
+    {
+        self.dataSource = self;
+        self.delegate = self;
+        self.backgroundColor = UIColor.clearColor;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.isSelected = NO;
+        self.vc = vc;
+        self.id = [[NSString alloc]initWithCString:choiceSet->GetId().c_str()
+                                           encoding:NSUTF8StringEncoding];
+        _isMultichoicesAllowed = choiceSet->GetIsMultiSelect();
+        _tableViewController = nil;
+        _choiceSetDataSource = choiceSet;
+        _config = hostConfig;
+        _indexPath = nil;
+        self.results = [[NSMutableDictionary alloc] init];
+    }
+    return self;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<ChoiceSetInput> const&)choiceSet
                             hostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
                              superview:(UIView *)view
 {
-    self = [super initWithFrame:view.frame style:UITableViewStyleGrouped];
-    if(self)
-    {
-        choiceSetDataSource = choiceSet;
-        config = hostConfig;
-        super.id = [[NSString alloc]initWithCString:choiceSetDataSource->GetId().c_str()
-                                     encoding:NSUTF8StringEncoding];
-        isMultichoiceAllowed = choiceSetDataSource->GetIsMultiSelect();
-        super.results = [[NSMutableDictionary alloc]init];
-    }
-    return self;
+    return [self initWithInputChoiceSet:choiceSet
+                             hostConfig:hostConfig
+                              superview:view
+                         viewController:nil];
 }
 
+// ChoiceSetView is a parent view that leads to child view that handles input selection
+// so the size is always 1 when there are more than one choices
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return choiceSetDataSource->GetChoices().size();
+    return (_choiceSetDataSource->GetChoices().size() > 0) ? 1 : 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -50,25 +73,53 @@ using namespace AdaptiveCards;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
     }
-
-    NSString *title = nil;
-
-    title = [NSString stringWithCString:choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
-                               encoding:NSUTF8StringEncoding];
-
+    NSString *title = @"Make Choices";
     cell.textLabel.text = title;
-
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if(isMultichoiceAllowed == NO)
+    return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return nil;
+}
+- (void)handleUIBarButtonSystemItemDoneEvent
+{
+    [_tableViewController dismissViewControllerAnimated:YES completion:nil];
+    if(_indexPath)
     {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType =
-        UITableViewCellAccessoryNone;
-        self.results[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+        [self cellForRowAtIndexPath:_indexPath].selected = NO;
+        _indexPath = nil;
     }
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(self.vc)
+    {
+        _tableViewController = [[ACRInputTableViewController alloc] initWithInputChoiceSet:_choiceSetDataSource style:UITableViewStyleGrouped];
+        _indexPath = indexPath;
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_tableViewController];
+        _tableViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleUIBarButtonSystemItemDoneEvent)];
+        [self.vc presentViewController:navController animated:YES completion:nil];
+    }
+}
+
+- (CGSize)intrinsicContentSize
+{
+    [self layoutIfNeeded];
+    return self.contentSize;
+}
+
+- (BOOL)validate:(NSError **)error
+{
+    // no need to validate
+    return YES;
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
@@ -79,7 +130,7 @@ using namespace AdaptiveCards;
         if([self.results[[NSNumber numberWithInteger:i]] boolValue] == YES)
         {
             [values addObject:
-             [NSString stringWithCString:choiceSetDataSource->GetChoices()[i]->GetValue().c_str()
+             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[i]->GetValue().c_str()
                                 encoding:NSUTF8StringEncoding]];
 
         }
