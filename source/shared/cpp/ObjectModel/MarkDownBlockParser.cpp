@@ -601,7 +601,6 @@ void ListParser::Match(std::stringstream &stream)
         {
             // if incorrect syntax, capture what was thrown as a new token.
             m_parsedResult.AddNewTokenToParsedResult('-');
-            stream.get();
         }
     }
 }

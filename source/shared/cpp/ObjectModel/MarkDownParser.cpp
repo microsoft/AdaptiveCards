@@ -12,6 +12,10 @@ MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt)
 // transforms string to html
 std::string MarkDownParser::TransformToHtml()
 {
+    if (m_text.empty())
+    {
+        return "<p></p>";
+    }
     // begin parsing html blocks
     ParseBlock();
 
