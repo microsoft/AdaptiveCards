@@ -4,8 +4,8 @@ using namespace AdaptiveCards;
 
 std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 {
-    if (m_isHead) 
-    {              
+    if (m_isHead)
+    {
         m_token = "<p>" + m_token;
     }
 
@@ -27,7 +27,7 @@ bool MarkDownEmphasisHtmlGenerator::IsMatch(std::shared_ptr<MarkDownEmphasisHtml
     {
         // rule #9 & #10, sum of delimiter count can't be multiple of 3 
         return !((this->IsLeftAndRightEmphasis() || emphasisToken->IsLeftAndRightEmphasis()) &&
-            (((this->m_numberOfUnusedDelimiters+ emphasisToken->m_numberOfUnusedDelimiters) % 3) == 0));
+            (((this->m_numberOfUnusedDelimiters + emphasisToken->m_numberOfUnusedDelimiters) % 3) == 0));
     }
     return false;
 }
@@ -78,32 +78,32 @@ void MarkDownEmphasisHtmlGenerator::GenerateTags(std::shared_ptr<MarkDownEmphasi
     }
 }
 
-void MarkDownEmphasisHtmlGenerator::PushItalicTag() 
+void MarkDownEmphasisHtmlGenerator::PushItalicTag()
 {
     m_tags.push_back("<em>");
 }
 
-void MarkDownEmphasisHtmlGenerator::PushBoldTag() 
+void MarkDownEmphasisHtmlGenerator::PushBoldTag()
 {
     m_tags.push_back("<strong>");
 }
 
-std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString() 
+std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
 {
     if (m_numberOfUnusedDelimiters)
     {
-        unsigned long startIdx = m_token.size() - m_numberOfUnusedDelimiters;
+        unsigned long startIdx = static_cast<unsigned long>(m_token.size()) - m_numberOfUnusedDelimiters;
         html << m_token.substr(startIdx, std::string::npos);
     }
 
     // append tags; since left delims, append it in the reverse order
     for (auto itr = m_tags.rbegin(); itr != m_tags.rend(); itr++)
-    { 
+    {
         html << *itr;
     }
 
-    if (m_isHead) 
-    {   
+    if (m_isHead)
+    {
         return "<p>" + html.str();
     }
 
@@ -115,32 +115,32 @@ std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
     return html.str();
 }
 
-void MarkDownRightEmphasisHtmlGenerator::PushItalicTag() 
+void MarkDownRightEmphasisHtmlGenerator::PushItalicTag()
 {
     m_tags.push_back("</em>");
 }
 
-void MarkDownRightEmphasisHtmlGenerator::PushBoldTag() 
+void MarkDownRightEmphasisHtmlGenerator::PushBoldTag()
 {
     m_tags.push_back("</strong>");
 }
 
-std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString() 
+std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
 {
     // append tags; 
     for (auto itr = m_tags.begin(); itr != m_tags.end(); itr++)
-    { 
+    {
         html << *itr;
     }
 
     // if there are unused emphasis, append them 
     if (m_numberOfUnusedDelimiters)
     {
-        unsigned long startIdx = m_token.size() - m_numberOfUnusedDelimiters;
+        unsigned long startIdx = static_cast<unsigned long>(m_token.size()) - m_numberOfUnusedDelimiters;
         html << m_token.substr(startIdx, std::string::npos);
     }
 
-    if (m_isHead) 
+    if (m_isHead)
     {
         return "<p>" + html.str();
     }
@@ -153,7 +153,7 @@ std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
     return html.str();
 }
 
-void MarkDownLeftAndRightEmphasisHtmlGenerator::PushItalicTag() 
+void MarkDownLeftAndRightEmphasisHtmlGenerator::PushItalicTag()
 {
     if (m_directionType == Left)
     {
@@ -165,7 +165,7 @@ void MarkDownLeftAndRightEmphasisHtmlGenerator::PushItalicTag()
     }
 }
 
-void MarkDownLeftAndRightEmphasisHtmlGenerator::PushBoldTag() 
+void MarkDownLeftAndRightEmphasisHtmlGenerator::PushBoldTag()
 {
     if (m_directionType == Left)
     {
@@ -179,7 +179,7 @@ void MarkDownLeftAndRightEmphasisHtmlGenerator::PushBoldTag()
 
 std::string MarkDownListHtmlGenerator::GenerateHtmlString()
 {
-    if (m_isHead) 
+    if (m_isHead)
     {
         m_token = "<ul>" + m_token;
     }
@@ -194,7 +194,7 @@ std::string MarkDownListHtmlGenerator::GenerateHtmlString()
 
 std::string MarkDownOrderedListHtmlGenerator::GenerateHtmlString()
 {
-    if (m_isHead) 
+    if (m_isHead)
     {
         m_token = "<ol start=\"" + m_numberString + "\">" + m_token;
     }

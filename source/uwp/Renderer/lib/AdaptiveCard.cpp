@@ -106,7 +106,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                         RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
                         HString errorMessage;
                         ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode>(e.GetStatusCode());
-                        RETURN_IF_FAILED(UTF8ToHString(e.GetMessage(), errorMessage.GetAddressOf()));
+                        RETURN_IF_FAILED(UTF8ToHString(e.GetReason(), errorMessage.GetAddressOf()));
                         ComPtr<IAdaptiveError> adaptiveError;
                         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
                         RETURN_IF_FAILED(errors->Append(adaptiveError.Get()));
