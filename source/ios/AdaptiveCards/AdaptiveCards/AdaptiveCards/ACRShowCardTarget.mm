@@ -136,4 +136,10 @@
     // Toggle the visibility of a ShowCard UIView
     _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
 }
+
+- (void)doSelectAction
+{
+    [self toggleVisibilityOfShowCard];
+}
+
 @end

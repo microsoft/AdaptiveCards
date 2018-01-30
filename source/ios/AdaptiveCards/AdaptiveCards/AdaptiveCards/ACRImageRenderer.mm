@@ -9,7 +9,7 @@
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
-#import "ACRTapGestureRecognizerFactory.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 
 @implementation ACRImageRenderer
 
@@ -118,6 +118,7 @@
     }
     return constraints;
 }
+
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
@@ -162,15 +163,16 @@
 
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UITapGestureRecognizer * tapGestureRecognizer =
-        [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
-                                             rootViewController:vc
-                                                  actionElement:selectAction
-                                                         inputs:inputs
-                                                     hostConfig:config];
-    if(tapGestureRecognizer)
+    UILongPressGestureRecognizer * gestureRecognizer =
+        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
+                                                         rootViewController:vc
+                                                                 targetView:wrappingview
+                                                              actionElement:selectAction
+                                                                     inputs:inputs
+                                                                 hostConfig:config];
+    if(gestureRecognizer)
     {
-        [view addGestureRecognizer:tapGestureRecognizer];
+        [view addGestureRecognizer:gestureRecognizer];
         view.userInteractionEnabled = YES;
     }
     view.translatesAutoresizingMaskIntoConstraints = NO;
