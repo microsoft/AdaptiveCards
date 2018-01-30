@@ -32,10 +32,6 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 import java.io.IOException;
 import java.util.Vector;
 
-/**
- * Created by bekao on 4/27/2017.
- */
-
 public class ImageRenderer extends BaseCardElementRenderer
 {
     private ImageRenderer()
@@ -125,22 +121,22 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else if (imageSize.swigValue() == ImageSize.Stretch.swigValue())
         {
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if (imageSize.swigValue() == ImageSize.Small.swigValue())
         {
             imageView.setMaxWidth((int)imageSizesConfig.getSmallSize());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
         }
         else if (imageSize.swigValue() == ImageSize.Medium.swigValue())
         {
             imageView.setMaxWidth((int)imageSizesConfig.getMediumSize());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
         }
         else if (imageSize.swigValue() == ImageSize.Large.swigValue())
         {
             imageView.setMaxWidth((int)imageSizesConfig.getLargeSize());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
         }
         else
         {
@@ -202,7 +198,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         ImageLoaderAsync imageLoaderAsync = new ImageLoaderAsync(context, imageView, image.GetImageStyle());
         imageLoaderAsync.execute(image.GetUrl());
         setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, true /* horizontal line */);
         viewGroup.addView(setHorizontalAlignment(context, imageView, image.GetHorizontalAlignment()));
         return imageView;

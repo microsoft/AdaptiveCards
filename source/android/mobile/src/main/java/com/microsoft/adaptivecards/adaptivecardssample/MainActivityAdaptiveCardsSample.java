@@ -79,7 +79,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             private Timer m_timer=new Timer();
-            private final long DELAY = 500; // milliseconds
+            private final long DELAY = 1000; // milliseconds
         });
     }
 
