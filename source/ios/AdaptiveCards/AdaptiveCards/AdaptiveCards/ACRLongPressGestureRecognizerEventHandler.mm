@@ -8,21 +8,7 @@
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 
 @implementation ACRLongPressGestureRecognizerEventHandler
-{
-    // backgroundColor is one of the cues that provides
-    // users that action is triggered
-    UIColor *_backgroundColor;
-}
 
-- (instancetype)init
-{
-    self = [super init];
-    if(self)
-    {
-        _backgroundColor = nil;
-    }
-    return self;
-}
 // this method does the followings
 // 1. it provides users with cue that select action is about to be initiated
 // 2. execute select action by calling its delegate
@@ -31,17 +17,17 @@
     // activate it when fingers lifts off
     if(recognizer.state == UIGestureRecognizerStateBegan)
     {
-        _backgroundColor = recognizer.view.backgroundColor;
+        UIColor *backgroundColor = recognizer.view.backgroundColor;
         // set up animation as visual cue
         UIViewPropertyAnimator *animation = [UIViewPropertyAnimator runningPropertyAnimatorWithDuration:0.25
                                                                                                   delay:0
                                                                                                 options:UIViewAnimationCurveEaseOut
                                                                                              animations:^{recognizer.view.backgroundColor =
                                                                                                  [UIColor colorWithRed:0xD4/255.0 green:0xD4/255.0 blue:0xD4/255.0 alpha:0x1];}
-                                                                                             completion:^(UIViewAnimatingPosition finalPosition){recognizer.view.backgroundColor = _backgroundColor;}];
+                                                                                             completion:^(UIViewAnimatingPosition finalPosition){recognizer.view.backgroundColor = backgroundColor;}];
         [animation startAnimation];
     }
-    
+
     if(recognizer.state == UIGestureRecognizerStateEnded)
     {
         if(_delegate)
