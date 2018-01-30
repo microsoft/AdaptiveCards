@@ -226,21 +226,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     public void onSubmit(SubmitAction submitAction, Map<String, String> keyValueMap)
     {
         showToast("Submit: " + keyValueMap.toString(), Toast.LENGTH_LONG);
-
-        /*try
-        {
-            JSONObject jsonObject = new JSONObject();
-            for (Map.Entry<String, String> entry : keyValueMap.entrySet())
-            {
-                jsonObject.put(entry.getKey(), entry.getValue());
-            }
-
-            showToast("Submit: " + jsonObject.toString(), Toast.LENGTH_LONG);
-        }
-        catch (JSONException jsonExcep)
-        {
-            showToast("Submit: Failed to extract input content", Toast.LENGTH_LONG);
-        }*/
     }
 
 }

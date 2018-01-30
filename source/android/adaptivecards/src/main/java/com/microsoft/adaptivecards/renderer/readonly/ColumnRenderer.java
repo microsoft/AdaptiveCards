@@ -80,7 +80,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
             {
                 int columnWeight = Integer.parseInt(columnSize);
                 //GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index, (float)columnWeight));
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.width = 0;
                 layoutParams.weight = columnWeight;
                 returnedView.setLayoutParams(layoutParams);
             }
