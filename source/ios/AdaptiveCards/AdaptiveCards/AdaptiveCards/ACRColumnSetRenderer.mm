@@ -9,7 +9,7 @@
 #import "ACRColumnSetView.h"
 #import "ACRRegistration.h"
 #import "ColumnSet.h"
-#import "ACRTapGestureRecognizerFactory.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRSeparator.h"
 
@@ -93,14 +93,14 @@
     [viewGroup addArrangedSubview:columnSetView];
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
-    // instantiate and add tap gesture recognizer
+    // instantiate and add long press gesture recognizer
     UILongPressGestureRecognizer * gestureRecognizer =
-        [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
-                                             rootViewController:vc
-                                                     targetView:columnSetView
-                                                  actionElement:selectAction
-                                                         inputs:inputs
-                                                     hostConfig:config];
+        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
+                                                         rootViewController:vc
+                                                                 targetView:columnSetView
+                                                              actionElement:selectAction
+                                                                     inputs:inputs
+                                                                 hostConfig:config];
     if(gestureRecognizer)
     {
         [columnSetView addGestureRecognizer:gestureRecognizer];

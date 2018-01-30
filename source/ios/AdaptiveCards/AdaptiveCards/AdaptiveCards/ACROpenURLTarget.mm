@@ -6,6 +6,7 @@
 //
 
 #import "ACROpenURLTarget.h"
+#import <SafariServices/SafariServices.h>
 
 @implementation ACROpenURLTarget
 {
@@ -30,7 +31,7 @@
     [_vc presentViewController:svc animated:YES completion:nil];
 }
 
-- (void) doSelectAction;
+- (void) doSelectAction
 {
     [self openURL];
 }

@@ -4,7 +4,6 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import <SafariServices/SafariServices.h>
 #import <UIKit/UIKit.h>
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 

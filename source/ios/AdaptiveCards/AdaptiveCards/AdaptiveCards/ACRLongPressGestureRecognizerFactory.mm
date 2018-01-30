@@ -1,11 +1,11 @@
 //
-//  ACRTapGestureRecognizerFactory
-//  ACRTapGestureRecognizerFactory.mm
+//  ACRLongPressGestureRecognizerFactory
+//  ACRLongPressGestureRecognizerFactory.mm
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRTapGestureRecognizerFactory.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACROpenURLTarget.h"
 #import "OpenUrlAction.h"
@@ -14,16 +14,16 @@
 #import "ACRSubmitTarget.h"
 #import "SubmitAction.h"
 
-@implementation ACRTapGestureRecognizerFactory
-// instantiates a target for UITapGestureRecognizer object
+@implementation ACRLongPressGestureRecognizerFactory
+// instantiates a target for UILongPressGestureRecognizer object
 // and instantiate a tap gesture reconginizer with target, and return it
 // when failed, nil is returned
-+ (UILongPressGestureRecognizer *)getTapGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
-                                       rootViewController:(UIViewController *)vc
-                                               targetView:(UIView *)view
-                                            actionElement:(std::shared_ptr<BaseActionElement> const &)action
-                                                   inputs:(NSMutableArray *)inputs
-                                               hostConfig:(std::shared_ptr<HostConfig> const &)config
++ (UILongPressGestureRecognizer *)getLongPressGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
+                                             rootViewController:(UIViewController *)vc
+                                                     targetView:(UIView *)view
+                                                  actionElement:(std::shared_ptr<BaseActionElement> const &)action
+                                                         inputs:(NSMutableArray *)inputs
+                                                     hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     if(action != nullptr)
     {

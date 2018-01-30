@@ -10,7 +10,7 @@
 #import "ACRRendererPrivate.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
-#import "ACRTapGestureRecognizerFactory.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 
 @implementation ACRContainerRenderer
 
@@ -52,12 +52,12 @@ rootViewController:(UIViewController *)vc
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
     UILongPressGestureRecognizer * gestureRecognizer =
-        [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
-                                             rootViewController:vc
-                                                     targetView:container
-                                                  actionElement:selectAction
-                                                         inputs:inputs
-                                                     hostConfig:config];
+        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
+                                                         rootViewController:vc
+                                                                 targetView:container
+                                                              actionElement:selectAction
+                                                                     inputs:inputs
+                                                                 hostConfig:config];
     if(gestureRecognizer)
     {
         [container addGestureRecognizer:gestureRecognizer];
