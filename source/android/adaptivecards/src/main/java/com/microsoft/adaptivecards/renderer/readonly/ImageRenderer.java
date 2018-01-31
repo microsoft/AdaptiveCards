@@ -110,13 +110,10 @@ public class ImageRenderer extends BaseCardElementRenderer
         private Context m_context;
         private ImageView m_imageView;
         private ImageStyle m_imageStyle;
-        private String errorString;
     }
 
     private static void setImageSize(ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
-        if (imageSize.swigValue() == ImageSize.Auto.swigValue()) {
-            return;
-        } else if (imageSize.swigValue() == ImageSize.Stretch.swigValue()) {
+        if (imageSize.swigValue() == ImageSize.Stretch.swigValue()) {
             //ImageView must match parent for stretch to work
             imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
@@ -126,7 +123,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setMaxWidth((int) imageSizesConfig.getMediumSize());
         } else if (imageSize.swigValue() == ImageSize.Large.swigValue()) {
             imageView.setMaxWidth((int) imageSizesConfig.getLargeSize());
-        } else {
+        } else if (imageSize.swigValue() != ImageSize.Auto.swigValue()){
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
 
