@@ -2,6 +2,8 @@
 #include "AdaptiveCardParseException.h"
 #include "ElementParserRegistration.h"
 #include "ActionParserRegistration.h"
+#include "TextBlock.h"
+#include "Container.h"
 
 namespace AdaptiveCards
 {
@@ -310,7 +312,8 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
-    bool isRequired)
+    bool isRequired,
+    const std::locale& dateLanguage)
 {
     auto elementArray = GetArray(json, key, isRequired);
 
@@ -334,6 +337,23 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
         {
             // Use the parser that maps to the type
             elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
+            if (elements.back()->GetElementType() == CardElementType::TextBlock)
+            {
+                auto textBlock = std::dynamic_pointer_cast<TextBlock>(elements.back()); 
+                if (textBlock != nullptr)
+                {
+                    textBlock->SetLanguage(dateLanguage);
+                }
+            }
+
+            if (elements.back()->GetElementType() == CardElementType::Container)
+            {
+                auto container = std::dynamic_pointer_cast<Container>(elements.back());
+                if (container != nullptr)
+                {
+                    container->SetLanguage(dateLanguage);
+                }
+            }
         }
     }
 
