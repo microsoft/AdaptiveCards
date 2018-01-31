@@ -21,7 +21,7 @@ import com.microsoft.adaptivecards.objectmodel.SpacingConfig;
 
 public abstract class BaseCardElementRenderer implements IBaseCardElementRenderer
 {
-    protected static int getSpacingSize(Spacing spacing, SpacingConfig defauiltSpacingConfig)
+    protected static int getSpacingSize(Spacing spacing, SpacingConfig defaultSpacingConfig)
     {
         long spacingSize = 0;
         if (spacing.swigValue() == Spacing.None.swigValue())
@@ -30,27 +30,27 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         }
         else if (spacing.swigValue() == Spacing.Default.swigValue())
         {
-            spacingSize = defauiltSpacingConfig.getDefaultSpacing();
+            spacingSize = defaultSpacingConfig.getDefaultSpacing();
         }
         else if (spacing.swigValue() == Spacing.ExtraLarge.swigValue())
         {
-            spacingSize = defauiltSpacingConfig.getExtraLargeSpacing();
+            spacingSize = defaultSpacingConfig.getExtraLargeSpacing();
         }
         else if (spacing.swigValue() == Spacing.Large.swigValue())
         {
-            spacingSize = defauiltSpacingConfig.getLargeSpacing();
+            spacingSize = defaultSpacingConfig.getLargeSpacing();
         }
         else if (spacing.swigValue() == Spacing.Medium.swigValue())
         {
-            spacingSize = defauiltSpacingConfig.getMediumSpacing();
+            spacingSize = defaultSpacingConfig.getMediumSpacing();
         }
         else if (spacing.swigValue() == Spacing.Small.swigValue())
         {
-            spacingSize = defauiltSpacingConfig.getSmallSpacing();
+            spacingSize = defaultSpacingConfig.getSmallSpacing();
         }
 //        else if (spacing.swigValue() == Spacing.Padding.swigValue())
 //        {
-//            spacingSize = defauiltSpacingConfig.getSmallSpacing();
+//            spacingSize = defaultSpacingConfig.getSmallSpacing();
 //        }
         else
         {

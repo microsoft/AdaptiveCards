@@ -661,6 +661,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long HostConfig_DeserializeFromString(String jarg1);
   public final static native long new_HostConfig();
   public final static native void delete_HostConfig(long jarg1);
+  public final static native long new_MarkDownParser(String jarg1);
+  public final static native String MarkDownParser_TransformToHtml(long jarg1, MarkDownParser jarg1_);
+  public final static native void delete_MarkDownParser(long jarg1);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long Container_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ContainerParser_SWIGSmartPtrUpcast(long jarg1);

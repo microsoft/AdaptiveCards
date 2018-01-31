@@ -50,6 +50,10 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/HostConfig.cpp
              ../../shared/cpp/ObjectModel/ActionParserRegistration.cpp
              ../../shared/cpp/ObjectModel/ElementParserRegistration.cpp
+             ../../shared/cpp/ObjectModel/MarkDownParser.cpp
+             ../../shared/cpp/ObjectModel/MarkDownParsedResult.cpp
+             ../../shared/cpp/ObjectModel/MarkDownBlockParser.cpp
+             ../../shared/cpp/ObjectModel/MarkDownHtmlGenerator.cpp
              src/main/cpp/objectmodel_wrap.cpp
              )
 

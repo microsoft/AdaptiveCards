@@ -75,6 +75,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             ((ColumnRenderer)columnRenderer).render(context, fragmentManager, layout, column, i, inputActionHandlerList, hostConfig);
         }
 
+        //setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, false);
+
         viewGroup.addView(layout);
         return layout;
     }
