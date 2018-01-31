@@ -14,7 +14,7 @@ public:
 
     virtual const char* what() const throw();
     const AdaptiveCards::ErrorStatusCode GetStatusCode() const;
-    const std::string& GetMessage() const;
+    const std::string& GetReason() const;
 
 private:
     const AdaptiveCards::ErrorStatusCode m_statusCode;

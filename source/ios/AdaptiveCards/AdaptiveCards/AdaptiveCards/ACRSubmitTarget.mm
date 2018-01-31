@@ -34,6 +34,17 @@
 
 - (IBAction)submit:(UIButton *)sender
 {
+    [sender setSelected:YES];
+    [self gatherInput];
+}
+
+- (IBAction)doSelectAction
+{
+    [self gatherInput];
+}
+
+- (void)gatherInput
+{
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     NSError *err = nil;
     for(id<ACRIBaseInputHandler> input in _inputs)
@@ -49,7 +60,7 @@
     }
 
     err = nil;
-    
+
     NSData *json = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:&err];
 
     [((ACRViewController *)_vc).acrActionDelegate didFetchUserResponses:json data:_data error:err];

@@ -30,6 +30,10 @@ npm install adaptivecards --save
 
 ## Usage
 
+> **NOTE: BREAKING CHANGE**
+>
+> The standalone `renderCard()` helper function was removed as it was redundant with the class methods. Please use `adaptiveCard.render()` as described below.
+
 ### Import the module
 
 ```js

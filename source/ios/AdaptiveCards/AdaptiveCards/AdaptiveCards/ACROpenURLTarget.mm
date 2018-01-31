@@ -5,12 +5,13 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <SafariServices/SafariServices.h>
 #import "ACROpenURLTarget.h"
+#import <SafariServices/SafariServices.h>
 
 @implementation ACROpenURLTarget
 {
     __weak UIViewController *_vc;
+    // view where this action is being executed
     NSURL *_url;
 }
 
@@ -24,11 +25,14 @@
     }
     return self;
 }
-
 - (IBAction)openURL
-{ 
-    SFSafariViewController* svc = [[SFSafariViewController alloc] initWithURL:_url];
+{
+    SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:_url];
     [_vc presentViewController:svc animated:YES completion:nil];
 }
 
+- (void) doSelectAction
+{
+    [self openURL];
+}
 @end

@@ -8,6 +8,15 @@ using namespace std;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
+    TEST_CLASS(MarkDownBasicSanityTest)
+    {
+        TEST_METHOD(CanHandleEmptyStringTest)
+        {
+            MarkDownParser parser("");
+            Assert::AreEqual<string>("<p></p>", parser.TransformToHtml());
+        }
+    };
+
     TEST_CLASS(EmphasisLeftDelimterTest)
     {
         TEST_METHOD(LeftDelimiterTest)
@@ -457,6 +466,11 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("- my list\rHello");
             Assert::AreEqual<string>("<ul><li>my list\rHello</li></ul>", parser.TransformToHtml());
+        }
+        TEST_METHOD(InvalidListStringReturnedUnchangedTest)
+        {
+            MarkDownParser parser("023-34-567");
+            Assert::AreEqual<string>("<p>023-34-567</p>", parser.TransformToHtml());
         }
     };
     TEST_CLASS(OrderedListTest)

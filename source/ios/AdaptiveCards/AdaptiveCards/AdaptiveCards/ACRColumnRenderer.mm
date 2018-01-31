@@ -10,7 +10,7 @@
 #import "ACRRendererPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
-#import "ACRTapGestureRecognizerFactory.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 
 @implementation ACRColumnRenderer
 
@@ -69,15 +69,16 @@
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UITapGestureRecognizer * tapGestureRecognizer =
-        [ACRTapGestureRecognizerFactory getTapGestureRecognizer:viewGroup
-                                             rootViewController:vc
-                                                  actionElement:selectAction
-                                                         inputs:inputs
-                                                     hostConfig:config];
-    if(tapGestureRecognizer)
+    UILongPressGestureRecognizer * gestureRecognizer =
+        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
+                                                         rootViewController:vc
+                                                                 targetView:column
+                                                              actionElement:selectAction
+                                                                     inputs:inputs
+                                                                 hostConfig:config];
+    if(gestureRecognizer)
     {
-        [column addGestureRecognizer:tapGestureRecognizer];
+        [column addGestureRecognizer:gestureRecognizer];
         column.userInteractionEnabled = YES;
     }
 
