@@ -1,4 +1,5 @@
 #include "Container.h"
+#include "TextBlock.h"
 
 using namespace AdaptiveCards;
 
@@ -54,6 +55,26 @@ std::shared_ptr<BaseActionElement> Container::GetSelectAction() const
 void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 {
     m_selectAction = action;
+}
+
+void Container::SetLanguage(const std::locale& value)
+{
+    for (auto& item : m_items)
+    {
+        CardElementType elementType = item->GetElementType();
+
+        if (elementType == CardElementType::Container)
+        {
+            auto element = std::dynamic_pointer_cast<Container>(item);
+            element->SetLanguage(value);
+        }
+
+        if (elementType == CardElementType::TextBlock)
+        {
+            auto element = std::dynamic_pointer_cast<TextBlock>(item);
+            element->SetLanguage(value);
+        }
+    }
 }
 
 Json::Value Container::SerializeToJsonValue()
