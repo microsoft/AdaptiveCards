@@ -22,7 +22,8 @@ public:
         bool isSubtle,
         bool wrap,
         int maxLines,
-        HorizontalAlignment hAlignment);
+        HorizontalAlignment hAlignment,
+        std::string language);
 
     virtual Json::Value SerializeToJsonValue() override;
 
@@ -50,6 +51,8 @@ public:
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
+    void SetLanguage(const std::locale& value);
+
 private:
     std::string m_text;
     TextSize m_textSize;
@@ -59,6 +62,8 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
+    std::locale m_language;
+
     std::string ParseDateTime() const;
     static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
 };

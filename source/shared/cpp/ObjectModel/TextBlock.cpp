@@ -20,7 +20,8 @@ TextBlock::TextBlock() :
     m_isSubtle(false),
     m_wrap(false),
     m_hAlignment(HorizontalAlignment::Left),
-    m_maxLines(0)
+    m_maxLines(0),
+    m_language()
 {
 }
 
@@ -34,7 +35,8 @@ TextBlock::TextBlock(
     bool isSubtle,
     bool wrap,
     int maxLines,
-    HorizontalAlignment hAlignment) :
+    HorizontalAlignment hAlignment,
+    std::string language) :
     BaseCardElement(CardElementType::TextBlock, spacing, separator),
     m_text(text),
     m_textSize(textSize),
@@ -43,7 +45,8 @@ TextBlock::TextBlock(
     m_isSubtle(isSubtle),
     m_wrap(wrap),
     m_maxLines(maxLines),
-    m_hAlignment(hAlignment)
+    m_hAlignment(hAlignment),
+    m_language(language.c_str())
 {
 }
 
@@ -143,6 +146,11 @@ HorizontalAlignment TextBlock::GetHorizontalAlignment() const
 void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
 {
     m_hAlignment = value;
+}
+
+void TextBlock::SetLanguage(const std::locale& value)
+{
+    m_language = value;
 }
 
 bool TextBlock::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
@@ -290,10 +298,12 @@ std::string TextBlock::ParseDateTime() const
                     {
                         // SHORT Style
                     case 'S':
+                        parsedostr.imbue(m_language);
                         parsedostr << std::put_time(&result, "%a, %b %e, %Y");
                         break;
                         // LONG Style
                     case 'L':
+                        parsedostr.imbue(m_language);
                         parsedostr << std::put_time(&result, "%A, %B %e, %Y");
                         break;
                         // COMPACT or DEFAULT Style
