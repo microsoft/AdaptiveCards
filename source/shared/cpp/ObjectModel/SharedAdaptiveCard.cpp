@@ -12,13 +12,17 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string fallbackText,
     std::string backgroundImage,
     ContainerStyle style,
-    std::string speak) :
+    std::string speak,
+    std::string language,
+    std::string region) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
     m_style(style),
-    m_speak(speak)
+    m_speak(speak),
+    m_language(language),
+    m_region(region)
 {
 }
 
@@ -28,6 +32,8 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string backgroundImage,
     ContainerStyle style,
     std::string speak,
+    std::string language,
+    std::string region,
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_minVersion(minVersion),
@@ -35,6 +41,8 @@ AdaptiveCard::AdaptiveCard(std::string version,
     m_backgroundImage(backgroundImage),
     m_style(style),
     m_speak(speak),
+    m_language(language),
+    m_region(region),
     m_body(body),
     m_actions(actions)
 {
@@ -86,6 +94,25 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
 
+    std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language, true /* isRequired */);
+    std::string region = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Region, true /* isRequired */);
+
+    std::string localeString = language;
+    std::locale locale;
+#ifdef _WIN32
+    localeString += "-" + region;
+#else 
+    localeString += "_" + region;
+#endif // __WINDOWS__
+    try
+    {
+        locale = std::locale(localeString);
+    }
+    catch (std::runtime_error error)
+    {
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Pair lang-region " + localeString + " is invalid.");
+    }
+
     if (elementParserRegistration == nullptr)
     {
         elementParserRegistration.reset(new ElementParserRegistration());
@@ -96,12 +123,12 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     }
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false);
+    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false, locale);
 
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions);
 
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, language, region, body, actions);
     return result;
 }
 
@@ -129,6 +156,8 @@ Json::Value AdaptiveCard::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText)] = GetFallbackText();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = GetBackgroundImage();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Language)] = GetLanguage();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Region)] = GetRegion();
 
     ContainerStyle style = GetStyle();
     if (style != ContainerStyle::None)
@@ -217,6 +246,26 @@ ContainerStyle AdaptiveCards::AdaptiveCard::GetStyle() const
 void AdaptiveCards::AdaptiveCard::SetStyle(const ContainerStyle value)
 {
     m_style = value;
+}
+
+std::string AdaptiveCard::GetLanguage() const
+{
+    return m_language;
+}
+
+void AdaptiveCard::SetLanguage(const std::string value)
+{
+    m_language = value;
+}
+
+std::string AdaptiveCard::GetRegion() const
+{
+    return m_region;
+}
+
+void AdaptiveCard::SetRegion(const std::string value)
+{
+    m_region = value;
 }
 
 const CardElementType AdaptiveCard::GetElementType() const
