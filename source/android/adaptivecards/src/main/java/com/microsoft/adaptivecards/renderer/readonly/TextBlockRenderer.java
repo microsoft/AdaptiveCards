@@ -28,10 +28,6 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 import java.util.HashMap;
 import java.util.Vector;
 
-/**
- * Created by bekao on 2/11/2017.
- */
-
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
     private TextBlockRenderer()
@@ -139,11 +135,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         String textString = markDownParser.TransformToHtml();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            textView.setText(Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT));
+            textView.setText(Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT).toString().trim());
         }
         else
         {
-            textView.setText(Html.fromHtml(textString));
+            textView.setText(Html.fromHtml(textString).toString().trim());
         }
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());
