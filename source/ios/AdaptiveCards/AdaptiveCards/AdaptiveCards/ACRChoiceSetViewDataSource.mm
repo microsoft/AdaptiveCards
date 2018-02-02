@@ -47,9 +47,7 @@ using namespace AdaptiveCards;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"tabCellId";
-
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:identifier];
-
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell)
     {
@@ -66,6 +64,8 @@ using namespace AdaptiveCards;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // if this tableView was used before for gathering input,
+    // load the tableView with user selection
     if([_userSelections count] &&
        [_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] &&
        [[_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] boolValue] == YES)
@@ -100,7 +100,9 @@ using namespace AdaptiveCards;
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
     }
 
-    if(_lastSelectedIndexPath.row != indexPath.row)
+    // didDeselectRowAtIndexPath doesn't get called for the cells that was already selected before the tableView came to view
+    // if multi choice is not allowed, then uncheck pre-selection
+    if(_isMultiChoicesAllowed == NO && _lastSelectedIndexPath.row != indexPath.row)
     {
         [tableView cellForRowAtIndexPath:_lastSelectedIndexPath].accessoryType = UITableViewCellAccessoryNone;
         _userSelections[[NSNumber numberWithInteger:_lastSelectedIndexPath.row]] = [NSNumber numberWithBool:NO];
@@ -109,6 +111,7 @@ using namespace AdaptiveCards;
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
+    // uncheck selection if multi choice is not allowed
     if(_isMultiChoicesAllowed == NO)
     {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;

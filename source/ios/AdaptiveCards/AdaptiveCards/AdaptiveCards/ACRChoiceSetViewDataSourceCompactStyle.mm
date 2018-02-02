@@ -45,8 +45,7 @@ using namespace AdaptiveCards;
 {
     return self = [self initWithInputChoiceSet:choiceSet viewController:nil];
 }
-// ChoiceSetView is a parent view that leads to child view that handles input selection
-// so the size is always 1 when there are more than one choices
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return (_choiceSetInput->GetChoices().size() > 0) ? 1 : 0;
@@ -56,11 +55,10 @@ using namespace AdaptiveCards;
 {
     return 1;
 }
-
+// creates top view that hides selection table
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"tabCellId";
-
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell)
     {
@@ -84,6 +82,7 @@ using namespace AdaptiveCards;
     return nil;
 }
 
+// when cell is selected, create a tableView with a navigator control bar.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(self.vc)
@@ -91,10 +90,10 @@ using namespace AdaptiveCards;
         _indexPath = indexPath;
         _tableView = tableView;
         _tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        //_tableViewController.clearsSelectionOnViewWillAppear = YES;
         _tableViewController.tableView.dataSource = _dataSource;
         _tableViewController.tableView.delegate = _delegate;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_tableViewController];
+        // button on the right of navigation bar that exits the table view when pressed
         _tableViewController.navigationItem.rightBarButtonItem =
             [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                           target:self
@@ -122,6 +121,7 @@ using namespace AdaptiveCards;
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
+    // gets inputs from datasource of the table view
     [_dataSource getInput:dictionary];
 }
 

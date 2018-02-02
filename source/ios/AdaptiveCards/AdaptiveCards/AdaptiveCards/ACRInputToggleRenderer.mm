@@ -40,10 +40,11 @@ rootViewController:(UIViewController *)vc
     inputView.dataSource = dataSource;
     inputView.delegate = (NSObject<UITableViewDelegate> *)dataSource;
 
-    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:inputView];
-
+    if(viewGroup)
+    {
+        [(UIStackView *)viewGroup addArrangedSubview:inputView];
+    }
     [inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
-
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:inputView
                                   attribute:NSLayoutAttributeLeading
@@ -60,7 +61,6 @@ rootViewController:(UIViewController *)vc
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1.0
                                    constant:0]];
-
     return inputView;
 }
 

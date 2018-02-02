@@ -2,7 +2,7 @@
 //  ACRInputChoiceSetRenderer
 //  ACRInputChoiceSetRenderer.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
 //
 
 #import "ACRInputChoiceSetRenderer.h"
@@ -31,6 +31,7 @@ rootViewController:(UIViewController *)vc
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
+    // creates a tableview with pre-defined style
     ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
@@ -42,7 +43,6 @@ rootViewController:(UIViewController *)vc
     {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
     }
-
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
     [inputs addObject:dataSource];

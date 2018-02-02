@@ -2,7 +2,7 @@
 //  ACRToggleInputDataSource.mm
 //  ACRToggleInputDataSource
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -63,18 +63,14 @@ using namespace AdaptiveCards;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"tabCellId";
-
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
     }
-
-    NSString *title = nil;
-
-    title = [NSString stringWithCString:toggleInputDataSource->GetTitle().c_str()
-                       encoding:NSUTF8StringEncoding];
+    NSString *title = [NSString stringWithCString:toggleInputDataSource->GetTitle().c_str()
+                                         encoding:NSUTF8StringEncoding];
     if(self.isSelected)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
