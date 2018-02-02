@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <regex>
 #include <iostream>
+#include <codecvt>
 #include "TextBlock.h"
 #include "ParseUtil.h"
 
@@ -62,12 +63,12 @@ Json::Value TextBlock::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines)] = GetMaxLines();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = GetIsSubtle();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = GetWrap();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = WstringToString(GetText());
 
     return root;
 }
 
-std::string TextBlock::GetText() const
+std::wstring TextBlock::GetText() const
 {
     return ParseDateTime();
 }
@@ -153,6 +154,36 @@ void TextBlock::SetLanguage(const std::locale& value)
     m_language = value;
 }
 
+std::wstring TextBlock::StringToWstring(const std::string& in) const
+{
+#ifdef _WIN32
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+    return utfConverter.from_bytes(in);
+#else
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+    return utfConverter.from_bytes(input);
+#endif
+}
+
+std::string TextBlock::WstringToString(const std::wstring& input) const
+{
+#ifdef _WIN32
+    if (sizeof(wchar_t) == 2)
+    {
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+        return utfConverter.to_bytes(input);
+    }
+    else
+    {
+        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utfConverter;
+        return utfConverter.to_bytes(input);
+    }
+#else
+    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utfConverter;
+    return utfConverter.to_bytes(input);
+#endif
+}
+
 bool TextBlock::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
 {
     if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 && 
@@ -178,12 +209,12 @@ bool TextBlock::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int min
     return false;
 }
 
-std::string TextBlock::ParseDateTime() const
+std::wstring TextBlock::ParseDateTime() const
 {
-    std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
-    std::smatch matches;
-    std::string text = m_text;
-    std::ostringstream parsedostr;
+    std::wregex pattern(L"\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
+    std::wsmatch matches;
+    std::wstring text = StringToWstring(m_text);
+    std::wostringstream parsedostr;
     enum MatchIndex
     {
         IsDate = 2,
@@ -254,7 +285,7 @@ std::string TextBlock::ParseDateTime() const
                 minutes *= 60;
                 offset = hours + minutes;
 
-                char zone = matches[TimeZone].str()[0];
+                wchar_t zone = matches[TimeZone].str()[0];
                 // time zone offset calculation 
                 if (zone == '+')
                 { 
@@ -274,10 +305,10 @@ std::string TextBlock::ParseDateTime() const
                 parsedostr << matches[0];
             }
 
-            char tzOffsetBuff[6] = { 0 };
+            wchar_t tzOffsetBuff[6] = { 0 };
             // gets local time zone offset
-            strftime(tzOffsetBuff, 6, "%z", &parsedTm);
-            std::string localTimeZoneOffsetStr(tzOffsetBuff);
+            wcsftime(tzOffsetBuff, 6, L"%z", &parsedTm);
+            std::wstring localTimeZoneOffsetStr(tzOffsetBuff);
             int nTzOffset = std::stoi(localTimeZoneOffsetStr);
             offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
             // add offset to utc
@@ -299,22 +330,22 @@ std::string TextBlock::ParseDateTime() const
                         // SHORT Style
                     case 'S':
                         parsedostr.imbue(m_language);
-                        parsedostr << std::put_time(&result, "%a, %b %e, %Y");
+                        parsedostr << std::put_time(&result, L"%a, %b %e, %Y");
                         break;
                         // LONG Style
                     case 'L':
                         parsedostr.imbue(m_language);
-                        parsedostr << std::put_time(&result, "%A, %B %e, %Y");
+                        parsedostr << std::put_time(&result, L"%A, %B %e, %Y");
                         break;
                         // COMPACT or DEFAULT Style
                     case 'C': default:
-                        parsedostr << std::put_time(&result, "%Ex");
+                        parsedostr << std::put_time(&result, L"%Ex");
                         break;
                     }
                 }
                 else
                 {
-                    parsedostr << std::put_time(&result, "%I:%M %p");
+                    parsedostr << std::put_time(&result, L"%I:%M %p");
                 }
             }
         }
