@@ -27,7 +27,7 @@ public:
 
     virtual Json::Value SerializeToJsonValue() override;
 
-    std::string GetText() const;
+    std::wstring GetText() const;
     void SetText(const std::string value);
 
     TextSize GetTextSize() const;
@@ -53,6 +53,9 @@ public:
 
     void SetLanguage(const std::locale& value);
 
+    std::wstring StringToWstring(const std::string& in) const;
+    std::string WstringToString(const std::wstring& in) const;
+
 private:
     std::string m_text;
     TextSize m_textSize;
@@ -64,7 +67,7 @@ private:
     HorizontalAlignment m_hAlignment;
     std::locale m_language;
 
-    std::string ParseDateTime() const;
+    std::wstring ParseDateTime() const;
     static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
 };
 
