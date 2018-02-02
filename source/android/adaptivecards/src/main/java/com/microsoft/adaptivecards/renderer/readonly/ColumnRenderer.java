@@ -62,14 +62,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
         if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeAuto))
         {
-            //GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index));
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
             returnedView.setLayoutParams(layoutParams);
         }
         else if (columnSize.equals(g_columnSizeStretch))
         {
-            //GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index, 1f));
-            //layoutParams.columnSpec = GridLayout.spec(index, 1f);
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             layoutParams.weight = 1;
             returnedView.setLayoutParams(layoutParams);
@@ -79,7 +76,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
             try
             {
                 int columnWeight = Integer.parseInt(columnSize);
-                //GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index, (float)columnWeight));
                 layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.width = 0;
                 layoutParams.weight = columnWeight;

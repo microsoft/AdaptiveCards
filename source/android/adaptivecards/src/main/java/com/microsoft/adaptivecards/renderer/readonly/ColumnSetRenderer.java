@@ -65,17 +65,13 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
         LinearLayout layout = new LinearLayout(context);
-        //GridLayout gridLayout = new GridLayout(context);
         layout.setTag(columnSet);
         layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
-            //setSeparationConfig(context, gridLayout, columnSet.GetSeparationStyle(), hostConfig.getContainer().getSeparation(), hostConfig.getStrongSeparation(), false /* horizontal line */);
             ((ColumnRenderer)columnRenderer).render(context, fragmentManager, layout, column, i, inputActionHandlerList, hostConfig);
         }
-
-        //setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, false);
 
         viewGroup.addView(layout);
         return layout;
