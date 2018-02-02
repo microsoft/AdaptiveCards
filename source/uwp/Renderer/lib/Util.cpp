@@ -41,6 +41,15 @@ using namespace AdaptiveCards::Rendering::Uwp;
 using namespace Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
+HRESULT WStringToHString(const std::wstring& in, HSTRING* out)
+{
+    if (out == nullptr)
+    {
+        return E_INVALIDARG;
+    }
+    return WindowsCreateString(in.c_str(), static_cast<UINT32>(in.length()), out);
+}
+
 HRESULT UTF8ToHString(const string& in, HSTRING* out)
 {
     if (out == nullptr)
