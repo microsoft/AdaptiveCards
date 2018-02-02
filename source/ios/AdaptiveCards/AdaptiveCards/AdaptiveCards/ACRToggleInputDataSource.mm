@@ -1,43 +1,27 @@
 //
-//  ACRToggleInputView.mm
-//  ACRToggleInputView
+//  ACRToggleInputDataSource.mm
+//  ACRToggleInputDataSource
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "ACRToggleInputView.h"
+#import "ACRToggleInputDataSource.h"
 #import "ToggleInput.h"
+#import "ACRIBaseCardElementRenderer.h"
 
 using namespace AdaptiveCards;
 
-@implementation ACRToggleInputView
+@implementation ACRToggleInputDataSource
 {
     std::shared_ptr<ToggleInput> toggleInputDataSource;
     std::shared_ptr<HostConfig> config;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
-                        style:(UITableViewStyle)style
-{
-    self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) style:style];
-    if(self)
-    {
-        self.dataSource = self;
-        self.delegate = self;
-        self.backgroundColor = UIColor.clearColor;
-        self.translatesAutoresizingMaskIntoConstraints = NO;
-        super.isSelected = NO;
-        super.results = nil;
-    }
-    return self;
-}
-
 - (instancetype)initWithInputToggle:(std::shared_ptr<ToggleInput> const&)toggleInput
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-       WithSuperview:(UIView *)view
 {
-    self = [self initWithFrame:view.frame style:UITableViewStylePlain];
+    self = [super init];
     if(self)
     {
         toggleInputDataSource = toggleInput;
@@ -54,6 +38,16 @@ using namespace AdaptiveCards;
                                            encoding:NSUTF8StringEncoding];
     }
     return self;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -91,10 +85,21 @@ using namespace AdaptiveCards;
     return cell;
 }
 
-- (CGSize)intrinsicContentSize
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self layoutIfNeeded];
-    return self.contentSize;
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+    if([tableView cellForRowAtIndexPath:indexPath].accessoryType ==
+       UITableViewCellAccessoryCheckmark)
+    {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        self.isSelected = NO;
+    }
+    else
+    {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType =
+        UITableViewCellAccessoryCheckmark;
+        self.isSelected = YES;
+    }
 }
 
 - (BOOL)validate:(NSError **)error

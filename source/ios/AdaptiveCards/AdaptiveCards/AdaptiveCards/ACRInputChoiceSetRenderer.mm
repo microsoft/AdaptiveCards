@@ -6,9 +6,10 @@
 //
 
 #import "ACRInputChoiceSetRenderer.h"
-#import "ACRChoiceSetView.h"
-#import "ACRInputControlPickerView.h"
+#import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
+#import "ACRChoiceSetViewDataSource.h"
+#import "ACRChoiceSetViewDataSourceCompactStyle.h"
 
 @implementation ACRInputChoiceSetRenderer
 
@@ -30,21 +31,23 @@ rootViewController:(UIViewController *)vc
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
-    UIView *inputView = nil;
+    ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
+    NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact &&
-       !choiceSet->GetIsMultiSelect())
+    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact)
     {
-        inputView = [[ACRInputControlPickerView alloc] initWithInputChoiceSet:choiceSet
-                                                                   hostConfig:config
-                                                                    superview:viewGroup];
-        [(ACRInputControlPickerView *)inputView setDefaultView];
+        dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet viewController:vc];
     }
     else
     {
-        inputView = [[ACRChoiceSetView alloc] initWithInputChoiceSet:choiceSet hostConfig:config superview:viewGroup viewController:vc];
-        [(UITableView *)inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
+        dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
     }
+
+    choiceSetView.delegate = dataSource;
+    choiceSetView.dataSource = dataSource;
+    [inputs addObject:dataSource];
+
+    UIView *inputView = (UIView *)choiceSetView;
 
     if(viewGroup)
     {
@@ -67,8 +70,6 @@ rootViewController:(UIViewController *)vc
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1.0
                                    constant:0]];
-
-    [inputs addObject:inputView];
 
     return inputView;
 }

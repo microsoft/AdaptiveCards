@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.7)
+cmake_minimum_required (VERSION 3.5)
 set(CMAKE_OSX_SYSROOT iphonesimulator11.2)
 add_compile_options(-std=c++14 -Wall)
 project (AdaptiveCardsLib)
