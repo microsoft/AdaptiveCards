@@ -15,10 +15,6 @@ import com.microsoft.adaptivecards.objectmodel.SeparatorThickness;
 import com.microsoft.adaptivecards.objectmodel.Spacing;
 import com.microsoft.adaptivecards.objectmodel.SpacingConfig;
 
-/**
- * Created by bekao on 5/11/2017.
- */
-
 public abstract class BaseCardElementRenderer implements IBaseCardElementRenderer
 {
     protected static int getSpacingSize(Spacing spacing, SpacingConfig defaultSpacingConfig)
@@ -122,9 +118,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         }
         else
         {
-            params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : LinearLayout.LayoutParams.WRAP_CONTENT,
-                    horizontalLine ? LinearLayout.LayoutParams.WRAP_CONTENT : LinearLayout.LayoutParams.MATCH_PARENT);
+            return;
         }
         params.setMargins(
                 horizontalLine ? 0 : spacingSize /* left */,

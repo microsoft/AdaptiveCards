@@ -114,6 +114,7 @@ public class AdaptiveCardRenderer
         layout.setTag(adaptiveCard);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         layout.setOrientation(LinearLayout.VERTICAL);
+
         Vector<IInputHandler> inputHandlerList = new Vector<IInputHandler>();
 
         BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
