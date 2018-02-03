@@ -6,7 +6,8 @@
 //
 
 #import "ACRInputToggleRenderer.h"
-#import "ACRToggleInputView.h"
+#import "ACRInputTableView.h"
+#import "ACRToggleInputDataSource.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRSeparator.h"
 #import "ToggleInput.h"
@@ -33,12 +34,17 @@ rootViewController:(UIViewController *)vc
 {
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
 
-    ACRToggleInputView *inputView = [[ACRToggleInputView alloc] initWithInputToggle:toggleBlck WithHostConfig:config WithSuperview:viewGroup];
+    ACRInputTableView *inputView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
+    ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
+    [inputs addObject:dataSource];
+    inputView.dataSource = dataSource;
+    inputView.delegate = (NSObject<UITableViewDelegate> *)dataSource;
 
-    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:inputView];
-
+    if(viewGroup)
+    {
+        [(UIStackView *)viewGroup addArrangedSubview:inputView];
+    }
     [inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
-
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:inputView
                                   attribute:NSLayoutAttributeLeading
@@ -55,9 +61,6 @@ rootViewController:(UIViewController *)vc
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1.0
                                    constant:0]];
-
-    [inputs addObject:inputView];
-
     return inputView;
 }
 

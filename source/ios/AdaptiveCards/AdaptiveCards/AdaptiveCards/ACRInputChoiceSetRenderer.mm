@@ -2,13 +2,14 @@
 //  ACRInputChoiceSetRenderer
 //  ACRInputChoiceSetRenderer.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
 //
 
 #import "ACRInputChoiceSetRenderer.h"
-#import "ACRChoiceSetView.h"
-#import "ACRInputControlPickerView.h"
+#import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
+#import "ACRChoiceSetViewDataSource.h"
+#import "ACRChoiceSetViewDataSourceCompactStyle.h"
 
 @implementation ACRInputChoiceSetRenderer
 
@@ -30,26 +31,29 @@ rootViewController:(UIViewController *)vc
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
-    UIView *inputView = nil;
+    // creates a tableview with pre-defined style
+    ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
+    NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact &&
-       !choiceSet->GetIsMultiSelect())
+    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact)
     {
-        inputView = [[ACRInputControlPickerView alloc] initWithInputChoiceSet:choiceSet
-                                                                   hostConfig:config
-                                                                    superview:viewGroup];
-
-        [(ACRInputControlPickerView *)inputView setDefaultView];
+        dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet viewController:vc];
     }
     else
     {
+        dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
+    }
+    choiceSetView.delegate = dataSource;
+    choiceSetView.dataSource = dataSource;
+    [inputs addObject:dataSource];
 
-        inputView = [[ACRChoiceSetView alloc] initWithInputChoiceSet:choiceSet hostConfig:config superview:viewGroup];
-        [(UITableView *)inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
+    UIView *inputView = (UIView *)choiceSetView;
+
+    if(viewGroup)
+    {
+        [(UIStackView *)viewGroup addArrangedSubview:inputView];
     }
 
-    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:inputView];
-
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:inputView
                                   attribute:NSLayoutAttributeLeading
@@ -66,8 +70,6 @@ rootViewController:(UIViewController *)vc
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1.0
                                    constant:0]];
-
-    [inputs addObject:inputView];
 
     return inputView;
 }
