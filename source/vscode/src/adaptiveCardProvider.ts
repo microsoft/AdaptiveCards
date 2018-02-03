@@ -48,13 +48,13 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
         <html>
             <head>
                 <link rel="stylesheet" type="text/css" href="${this.getPath('media/export.css')}">
-                <script src="${this.getPath('node_modules/microsoft-adaptivecards/dist/adaptive-cards.js')}"></script>
+                <script src="${this.getPath('node_modules/adaptivecards/dist/adaptivecards.js')}"></script>
             </head>
             <body>
                 <h1>Adaptive Card Preview</h1>
                 <div id='previewDiv' style="background-color:white;margin:8px 0px 20px 0px;"></div>
                 <script>
-                    AdaptiveCards.setHostConfig({
+                    AdaptiveCards.HostConfig({
                         supportsInteractivity: true,
                         strongSeparation: {
                             spacing: 40,
@@ -226,7 +226,7 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                             }
                         }
                     });
-
+            
                     var adaptiveCard = new AdaptiveCards.AdaptiveCard();
                     adaptiveCard.parse(${json});
                     var renderedCard = adaptiveCard.render();

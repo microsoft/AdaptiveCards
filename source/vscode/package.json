@@ -2,10 +2,10 @@
   "name": "vscode-adaptivecards",
   "displayName": "Adaptive Card Viewer",
   "description": "Adaptive Card Viewer for Visual Studio Code.",
-  "version": "1.0.7",
+  "version": "1.1.3",
   "publisher": "tomlm",
   "engines": {
-    "vscode": "^1.9.0"
+    "vscode": "^1.19.0"
   },
   "categories": [
     "Other"
@@ -55,18 +55,20 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+},
   "devDependencies": {
-    "@types/mocha": "2.2.39",
-    "@types/node": "^7.0.5",
-    "typescript": "^2.2.1",
-    "vscode": "^1.0.4"
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6",
+    "@types/node": "^7.0.43",
+    "@types/mocha": "^2.2.42"
   },
   "dependencies": {
-    "microsoft-adaptivecards": "^0.5.4"
+    "adaptivecards": "^1.0.0-beta10"
   },
   "repository": {
     "type": "git",
@@ -74,10 +76,6 @@
   },
   "license": "MIT",
   "icon": "icon.png",
-  "galleryBanner": {
-    "color": "#93E4D5",
-    "theme": "light"
-  },
   "bugs": {
     "url": "https://github.com/Microsoft/AdaptiveCards/issues"
   },
@@ -90,7 +88,7 @@
     "preview"
   ],
   "galleryBanner": {
-    "color":"#404040",
-    "theme":"dark"
+    "color": "#404040",
+    "theme": "dark"
   }
 }
