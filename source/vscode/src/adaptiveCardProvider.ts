@@ -38,23 +38,25 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                     ${error}
                 </body>`;
     }
-
+ 
     private getPath(p: string): string {
         return path.join(this._context.extensionPath, p);
     }
 
     private snippet(fileName, json): string {
-        return `<!DOCTYPE html>
+        let snippet = `<!DOCTYPE html>
         <html>
             <head>
                 <link rel="stylesheet" type="text/css" href="${this.getPath('media/export.css')}">
-                <script src="${this.getPath('node_modules/adaptive-cards/dist/adaptive-cards.js')}"></script>
+                <script src="${this.getPath('node_modules/adaptivecards/dist/adaptivecards.js')}"></script>
             </head>
             <body>
                 <h1>Adaptive Card Preview</h1>
                 <div id='previewDiv' style="background-color:white;margin:8px 0px 20px 0px;"></div>
                 <script>
-                    document.getElementById('previewDiv').appendChild(new AdaptiveCards.JsonParser().parse(${json}).render());
+                    let card = new AdaptiveCards.AdaptiveCard();
+                    card.parse(${json});
+                    var el = document.getElementById('previewDiv').appendChild(card.render());
                     AdaptiveCards.AdaptiveCard.onExecuteAction = function(action) 
                     {
                         alert(JSON.stringify(action));
@@ -62,5 +64,6 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                 </script>
             </body>
         </html>`;
+        return snippet;
     }
 }
