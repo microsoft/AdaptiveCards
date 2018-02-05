@@ -89,7 +89,6 @@ void InitializeAdaptiveCardSchemaKeyEnumMappings()
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
-        // { AdaptiveCardSchemaKey::Region, "region" },
         { AdaptiveCardSchemaKey::Right, "right" },
         { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
         { AdaptiveCardSchemaKey::Separator, "separator" },
