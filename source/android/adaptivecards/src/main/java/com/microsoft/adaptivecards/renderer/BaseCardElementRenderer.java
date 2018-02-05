@@ -103,6 +103,11 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             HostConfig hostConfig,
             boolean horizontalLine)
     {
+        if (viewGroup.getChildCount() <= 0)
+        {
+            //Do not add space to the first element of a viewgroup
+            return;
+        }
         int spacingSize = getSpacingSize(spacing, hostConfig.getSpacing());
         int separatorThickness = (int)hostConfig.getSeparator().getLineThickness();
         int separatorColor = android.graphics.Color.parseColor(hostConfig.getSeparator().getLineColor());
