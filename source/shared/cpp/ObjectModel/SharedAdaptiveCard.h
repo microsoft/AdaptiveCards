@@ -20,8 +20,7 @@ public:
         std::string backgroundImage,
         ContainerStyle style,
         std::string speak,
-        std::string language,
-        std::string region);
+        std::string language);
     AdaptiveCard(
         std::string version,
         std::string minVersion,
@@ -30,7 +29,6 @@ public:
         ContainerStyle style,
         std::string speak,
         std::string language,
-        std::string region,
         std::vector<std::shared_ptr<BaseCardElement>>& body,
         std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
@@ -48,8 +46,6 @@ public:
     void SetStyle(const ContainerStyle value);
     std::string GetLanguage() const;
     void SetLanguage(const std::string value);
-    std::string GetRegion() const;
-    void SetRegion(const std::string value);
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
@@ -90,7 +86,6 @@ private:
     std::string m_speak;
     ContainerStyle m_style;
     std::string m_language;
-    std::string m_region;
 
     std::vector<std::shared_ptr<BaseCardElement>> m_body;
     std::vector<std::shared_ptr<BaseActionElement>> m_actions;
