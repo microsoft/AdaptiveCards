@@ -105,7 +105,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(TransformDateToMultipleLanguagesShort)
         {
             TextBlock blck;
-            string testString = "{{DATE(2017-02-14T06:08:00Z, SHORT)}}";
+            string testString = "{{DATE(2017-02-14T20:08:00Z, SHORT)}}";
             blck.SetText(testString);
 
             std::vector<std::string> languagesArray = {
@@ -116,33 +116,29 @@ namespace AdaptiveCardsSharedModelUnitTest
                 "ar-EG",  // Arabic
                 "id-ID",  // Indonesian
                 "fr-FR",  // French
-                "bn-BD", // Bengali
-                "pt-BR", // Portuguese
+                "bn-BD",  // Bengali
+                "pt-BR",  // Portuguese
                 "ru-RU",  // Russian
                 "de-DE",  // German
                 "ja-JP",  // Japanese
-                "pa-PK",  // Punjabi
-                "te-IN",  // Telugu
                 "ko-KR"   // Korean 
             };
 
             std::vector<std::wstring> expectedResultsArray =
             {
-                L"周一, 2月 13, 2017",
-                L"Mon, Feb 13, 2017",
-                L"lun., feb. 13, 2017",
-                L"सोम., फरवरी 13, 2017",
-                L"الإثنين, فبراير 13, 2017",
-                L"Sen, Feb 13, 2017",
-                L"lun., févr. 13, 2017",
-                L"সোম, ফেব্রুয়ারী 13, 2017",
-                L"seg, fev 13, 2017",
-                L"Пн, фев 13, 2017",
-                L"Mo, Feb 13, 2017",
-                L"月, 2 13, 2017",
-                L"ਸੋਮ., ਫ਼ਰਵਰੀ 13, 2017",
-                L"సోమ., ఫిబ్రవరి 13, 2017", // May be wrong, check
-                L"월, 2 13, 2017"
+                L"周二, 2月 14, 2017",
+                L"Tue, Feb 14, 2017",
+                L"mar., feb. 14, 2017",
+                L"मंगल., फरवरी 14, 2017",
+                L"الثلاثاء, فبراير 14, 2017",
+                L"Sel, Feb 14, 2017",
+                L"mar., févr. 14, 2017",
+                L"মঙ্গল, ফেব্রুয়ারী 14, 2017",
+                L"ter, fev 14, 2017",
+                L"Вт, фев 14, 2017",
+                L"Di, Feb 14, 2017",
+                L"火, 2 14, 2017",
+                L"화, 2 14, 2017"
             };
 
             for (size_t i{}; i < languagesArray.size(); ++i)
@@ -156,8 +152,48 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(TransformDateToMultipleLanguagesLong)
         {
             TextBlock blck;
-            string testString = "{{DATE(2017-10-27T22:27:00Z, LONG)}}";
+            string testString = "{{DATE(2017-02-14T20:08:00Z, LONG)}}";
             blck.SetText(testString);
+
+            std::vector<std::string> languagesArray = {
+                "zh-CN",  // Mandarin
+                "en-US",  // English
+                "es-MX",  // Spanish
+                "hi-IN",  // Hindi
+                "ar-EG",  // Arabic
+                "id-ID",  // Indonesian
+                "fr-FR",  // French
+                "bn-BD",  // Bengali
+                "pt-BR",  // Portuguese
+                "ru-RU",  // Russian
+                "de-DE",  // German
+                "ja-JP",  // Japanese
+                "ko-KR"   // Korean 
+            };
+
+            std::vector<std::wstring> expectedResultsArray =
+            {
+                L"星期二, 二月 14, 2017",
+                L"Tuesday, February 14, 2017",
+                L"martes, febrero 14, 2017",
+                L"मंगलवार, फरवरी 14, 2017",
+                L"الثلاثاء, فبراير 14, 2017",
+                L"Selasa, Februari 14, 2017",
+                L"mardi, février 14, 2017",
+                L"মঙ্গলবার, ফেব্রুয়ারী 14, 2017",
+                L"terça-feira, fevereiro 14, 2017",
+                L"вторник, Февраль 14, 2017",
+                L"Dienstag, Februar 14, 2017",
+                L"火曜日, 2月 14, 2017",
+                L"화요일, 2월 14, 2017"
+            };
+
+            for (size_t i{}; i < languagesArray.size(); ++i)
+            {
+                std::locale lang = std::locale(languagesArray[i]);
+                blck.SetLanguage(lang);
+                Assert::AreEqual<wstring>(expectedResultsArray[i], blck.GetText());
+            }
         }
     };
     TEST_CLASS(TimeAndDateInputTest)
