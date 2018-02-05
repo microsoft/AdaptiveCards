@@ -15,10 +15,6 @@ import com.microsoft.adaptivecards.renderer.inputhandler.NumberInputHandler;
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 6/25/2017.
- */
-
 public class NumberInputRenderer extends TextInputRenderer
 {
     private NumberInputRenderer()
@@ -53,6 +49,7 @@ public class NumberInputRenderer extends TextInputRenderer
         {
             throw new InternalError("Unable to convert BaseCardElement to NumberInput object model.");
         }
+        setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
         EditText editText = renderInternal(
@@ -65,7 +62,6 @@ public class NumberInputRenderer extends TextInputRenderer
                 inputActionHandlerList,
                 hostConfig);
         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-        setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         return editText;
     }

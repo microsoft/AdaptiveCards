@@ -115,16 +115,18 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             params = new LinearLayout.LayoutParams(
                     horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : separatorThickness,
                     horizontalLine ? separatorThickness : LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(
+                    horizontalLine ? 0 : spacingSize / 2 /* left */,
+                    horizontalLine ? spacingSize / 2 : 0 /* top */,
+                    horizontalLine ? 0 : spacingSize / 2 /* right */,
+                    horizontalLine ? spacingSize / 2 : 0 /* bottom */);
         }
         else
         {
-            return;
+            params = new LinearLayout.LayoutParams(
+                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : spacingSize,
+                    horizontalLine ? spacingSize : LinearLayout.LayoutParams.MATCH_PARENT);
         }
-        params.setMargins(
-                horizontalLine ? 0 : spacingSize /* left */,
-                horizontalLine ? spacingSize : 0 /* top */,
-                horizontalLine ? 0 : spacingSize /* right */,
-                horizontalLine ? spacingSize : 0 /* bottom */);
         view.setLayoutParams(params);
         viewGroup.addView(view);
     }

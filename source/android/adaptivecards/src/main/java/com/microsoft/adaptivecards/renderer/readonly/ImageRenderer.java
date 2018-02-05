@@ -139,6 +139,18 @@ public class ImageRenderer extends BaseCardElementRenderer
             Vector<IInputHandler> inputActionHandlerList,
             HostConfig hostConfig)
     {
+        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, hostConfig, false);
+    }
+
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig,
+            boolean isPartOfImageSet)
+    {
         Image image;
         if (baseCardElement instanceof Image)
         {
@@ -179,7 +191,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setLayoutParams(layoutParams);
 
         setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
-        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, true /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isPartOfImageSet /* horizontal line */);
 
         viewGroup.addView(imageView);
         return imageView;

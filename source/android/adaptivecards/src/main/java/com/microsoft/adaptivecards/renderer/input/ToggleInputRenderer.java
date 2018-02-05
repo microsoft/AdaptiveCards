@@ -17,10 +17,6 @@ import com.microsoft.adaptivecards.renderer.inputhandler.ToggleInputHandler;
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 6/25/2017.
- */
-
 public class ToggleInputRenderer extends BaseCardElementRenderer
 {
     private ToggleInputRenderer()
@@ -55,6 +51,8 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         {
             throw new InternalError("Unable to convert BaseCardElement to ToggleInput object model.");
         }
+
+        setSpacingAndSeparator(context, viewGroup, toggleInput.GetSpacing(), toggleInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);
