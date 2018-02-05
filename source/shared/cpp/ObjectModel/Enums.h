@@ -114,7 +114,6 @@ enum class AdaptiveCardSchemaKey
     NumberInput,
     Padding,
     Placeholder,
-    // Region,
     Right,
     SelectAction,
     Separator,
