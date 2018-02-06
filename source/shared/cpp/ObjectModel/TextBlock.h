@@ -53,6 +53,9 @@ public:
 
     void SetLanguage(const std::locale& value);
 
+    std::u16string ToU16String(const std::string& in) const;
+    std::u16string ToU16String(const std::wstring& in) const;
+
     std::wstring StringToWstring(const std::string& in) const;
     std::string WstringToString(const std::wstring& in) const;
 

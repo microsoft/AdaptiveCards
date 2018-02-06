@@ -8,6 +8,7 @@
 #include <regex>
 #include <iostream>
 #include <codecvt>
+#include <algorithm>
 #include "TextBlock.h"
 #include "ParseUtil.h"
 
@@ -138,7 +139,6 @@ void TextBlock::SetMaxLines(const unsigned int value)
     m_maxLines = value;
 }
 
-
 HorizontalAlignment TextBlock::GetHorizontalAlignment() const
 {
     return m_hAlignment;
@@ -154,6 +154,22 @@ void TextBlock::SetLanguage(const std::locale& value)
     m_language = value;
 }
 
+std::u16string TextBlock::ToU16String(const std::string& in) const
+{
+#ifdef _WIN32
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+    return ToU16String(utfConverter.from_bytes(in));
+#else
+    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utfConverter;
+    return utfConverter.from_bytes(in);
+#endif // _WIN32
+}
+
+std::u16string TextBlock::ToU16String(const std::wstring& in) const
+{
+    return {in.begin(), in.end()};
+}
+
 std::wstring TextBlock::StringToWstring(const std::string& in) const
 {
 #ifdef _WIN32
@@ -161,7 +177,7 @@ std::wstring TextBlock::StringToWstring(const std::string& in) const
     return utfConverter.from_bytes(in);
 #else
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-    return utfConverter.from_bytes(input);
+    return utfConverter.from_bytes(in);
 #endif
 }
 
@@ -180,7 +196,7 @@ std::string TextBlock::WstringToString(const std::wstring& input) const
     }
 #else
     std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utfConverter;
-    return utfConverter.to_bytes(input);
+    return utfConverter.to_bytes(ToU16String(input));
 #endif
 }
 
