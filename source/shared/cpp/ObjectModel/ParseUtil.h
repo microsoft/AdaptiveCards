@@ -82,7 +82,8 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        bool isRequired = false);
+        bool isRequired = false,
+        const std::locale& dateLanguage = std::locale());
 
     template <typename T>
     static T ExtractJsonValueAndMergeWithDefault(
