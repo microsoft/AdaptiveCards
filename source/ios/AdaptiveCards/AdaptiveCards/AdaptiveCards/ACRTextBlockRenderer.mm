@@ -34,15 +34,18 @@ rootViewController:(UIViewController *)vc
 
     // MarkDownParser transforms text with MarkDown to a html string
     std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(txtBlck->GetText().c_str());
-    NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+    //NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+    NSString *parsedString = [NSString stringWithCString:txtBlck->GetText().c_str() encoding:NSUTF8StringEncoding];
 
     // Font and text size are applied as CSS style by appending it to the html string -- font is hard coded for now
-    parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx;}</style>",
-                                                          @"verdana", [ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]]];
+    //parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx;}</style>",
+    //                                                      @"verdana", [ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]]];
     // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
-    NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-    NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-    NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+    //NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+    //NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
+    //NSAttributedString *content = [[NSAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+
+    NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithString:parsedString];
 
     // Set paragraph style such as line break mode and alignment
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
