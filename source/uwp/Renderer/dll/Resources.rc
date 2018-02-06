@@ -3,7 +3,7 @@
 
 #define VER_FILETYPE                VFT_DLL
 #define VER_FILESUBTYPE             VFT2_UNKNOWN
-#define VER_FILEDESCRIPTION_STR     "Adaptive Cards Xaml Renderer"
+#define VER_FILEDESCRIPTION_STR     "Adaptive Cards UWP Renderer"
 #define VER_INTERNALNAME_STR        VER_FILEDESCRIPTION_STR
-#define VER_ORIGINALFILENAME_STR    "AdaptiveCards.XamlRenderer.dll"
+#define VER_ORIGINALFILENAME_STR    "AdaptiveCards.Rendering.Uwp.dll"
 #include <common.ver>

@@ -4,10 +4,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept try
     {
@@ -18,6 +18,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
     {
+        if (sharedOpenUrlAction == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedOpenUrlAction = sharedOpenUrlAction;
         return S_OK;
     }
@@ -73,24 +78,60 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::OpenUrl;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveOpenUrlAction::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedOpenUrlAction->GetSpeak(), speak);
+        return UTF8ToHString(m_sharedOpenUrlAction->GetId(), id);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::put_Speak(HSTRING speak)
+    HRESULT AdaptiveOpenUrlAction::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedOpenUrlAction->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedOpenUrlAction->SetId(out);
         return S_OK;
     }
-}}
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::get_ActionTypeString(HSTRING* type)
+    {
+        ::ActionType typeEnum;
+        RETURN_IF_FAILED(get_ActionType(&typeEnum));
+        return ProjectedActionTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return JsonCppToJsonObject(m_sharedOpenUrlAction->GetAdditionalProperties(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    {
+        Json::Value jsonCpp;
+        RETURN_IF_FAILED(JsonObjectToJsonCpp(jsonObject, &jsonCpp));
+        m_sharedOpenUrlAction->SetAdditionalProperties(jsonCpp);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedOpenUrlAction->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedModel)
+    {
+        sharedModel = m_sharedOpenUrlAction;
+        return S_OK;
+    }
+}}}

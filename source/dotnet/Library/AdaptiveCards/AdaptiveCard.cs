@@ -1,112 +1,151 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
-using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Adaptive card which has flexible container
     /// </summary>
-    public class AdaptiveCard : TypedElement
+    [JsonConverter(typeof(AdaptiveCardConverter))]
+    public class AdaptiveCard : AdaptiveTypedElement
+#if WINDOWS_UWP
+      // TODO: uncomment when I figure out the Windows build
+       //   , Windows.UI.Shell.IAdaptiveCard
+#endif
     {
-        public const string TYPE = "AdaptiveCard";
-
-        public AdaptiveCard()
-        {
-            Type = TYPE;
-        }
-
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
-#if NET452
-        [XmlElement(typeof(TextBlock))]
-        [XmlElement(typeof(Image))]
-        [XmlElement(typeof(Container))]
-        [XmlElement(typeof(ColumnSet))]
-        [XmlElement(typeof(ImageSet))]
-        [XmlElement(typeof(FactSet))]
-        [XmlElement(typeof(ActionSet))]
-        [XmlElement(typeof(TextInput), ElementName = TextInput.TYPE)]
-        [XmlElement(typeof(DateInput), ElementName = DateInput.TYPE)]
-        [XmlElement(typeof(TimeInput), ElementName = TimeInput.TYPE)]
-        [XmlElement(typeof(NumberInput), ElementName = NumberInput.TYPE)]
-        [XmlElement(typeof(ToggleInput), ElementName = ToggleInput.TYPE)]
-        [XmlElement(typeof(ChoiceSet), ElementName = ChoiceSet.TYPE)]
-#endif
-        public List<CardElement> Body { get; set; } = new List<CardElement>();
+        public const string TypeName = "AdaptiveCard";
+
+        public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        ///     Actions for this container
+        /// The latest known schema version supported by this library
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = OpenUrlAction.TYPE, Type = typeof(OpenUrlAction))]
-        [XmlArrayItem(ElementName = ShowCardAction.TYPE, Type = typeof(ShowCardAction))]
-        [XmlArrayItem(ElementName = SubmitAction.TYPE, Type = typeof(SubmitAction))]
-        [XmlArrayItem(ElementName = HttpAction.TYPE, Type = typeof(HttpAction))]
-#endif
-        public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
+        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 0);
+
+        /// <summary>
+        /// Creates an AdaptiveCard using a specific schema version
+        /// </summary>
+        /// <param name="schemaVersion">The schema version to use</param>
+        public AdaptiveCard(AdaptiveSchemaVersion schemaVersion)
+        {
+            Version = schemaVersion;
+        }
+
+        /// <inheritdoc />
+        /// <param name="schemaVersion">The schema version to use</param>
+        public AdaptiveCard(string schemaVersion) : this(new AdaptiveSchemaVersion(schemaVersion)) { }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Creates an AdaptiveCard using the <see cref="F:AdaptiveCards.AdaptiveCard.KnownSchemaVersion" /> of this library
+        /// </summary>
+        public AdaptiveCard() : this(KnownSchemaVersion) { }
+
+        /// <summary>
+        /// The Body elements for this card
+        /// </summary>
+        [JsonProperty(Order = -3)]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
+        public IList<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
+
+        public bool ShouldSerializeBody() => Body?.Count > 0;
+
+        /// <summary>
+        ///     Actions for the card
+        /// </summary>
+        [JsonProperty(Order = -2)]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
+        public IList<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
+
+        public bool ShouldSerializeActions() => Actions?.Count > 0;
 
         /// <summary>
         ///     Speak annotation for the card
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlElement]
-#endif
+        [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
 
         /// <summary>
         ///     Title for the card (used when displayed in a dialog)
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
+        [JsonProperty(Order = -5, NullValueHandling = NullValueHandling.Ignore)]
+        [Obsolete("The Title property is not officially supported right now and should not be used")]
         public string Title { get; set; }
 
         /// <summary>
         ///     Background image for card
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
-        public string BackgroundImage { get; set; }
+        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Uri BackgroundImage { get; set; }
 
         /// <summary>
-        ///     version of schema that this card was authored
+        ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
-        public string Version { get; set; }
+        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
+        public AdaptiveSchemaVersion Version { get; set; }
 
         /// <summary>
         ///     if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not
         ///     supported are safe to ignore
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
-        public string MinVersion { get; set; }
+        [JsonProperty(Order = -8, NullValueHandling = NullValueHandling.Ignore)]
+        public AdaptiveSchemaVersion MinVersion { get; set; }
 
         /// <summary>
         ///     if a client is not able to show the card, show fallbackText to the user. This can be in markdown format.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
+        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
         public string FallbackText { get; set; }
 
-        public bool ShouldSerializeActions()
+        /// <summary>
+        /// Parse an AdaptiveCard from a JSON string
+        /// </summary>
+        /// <param name="json">A JSON-serialized Adaptive Card</param>
+        /// <returns></returns>
+        public static AdaptiveCardParseResult FromJson(string json)
         {
-            return Actions.Any();
+            var parseResult = new AdaptiveCardParseResult();
+
+            try
+            {
+                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
+                {
+                    ContractResolver = new WarningLoggingContractResolver(parseResult)
+                });
+            }
+            catch (JsonException ex)
+            {
+                throw new AdaptiveSerializationException(ex.Message, ex);
+            }
+
+            return parseResult;
+        }
+
+
+        /// <summary>
+        ///  Serialize this Adaptive Card to JSON
+        /// </summary>
+        /// <returns></returns>
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
+
+        /// <summary>
+        /// This makes sure the $schema property doesn't show up in AdditionalProperties
+        /// </summary>
+        [JsonProperty("$schema")]
+        internal string JsonSchema { get; set; }
+
+        public bool ShouldSerializeJsonSchema()
+        {
+            return false;
         }
     }
 }

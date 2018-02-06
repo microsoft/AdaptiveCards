@@ -44,11 +44,12 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/TextInput.cpp
              ../../shared/cpp/ObjectModel/TimeInput.cpp
              ../../shared/cpp/ObjectModel/ToggleInput.cpp
-             ../../shared/cpp/ObjectModel/HttpAction.cpp
              ../../shared/cpp/ObjectModel/OpenUrlAction.cpp
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp
              ../../shared/cpp/ObjectModel/SubmitAction.cpp
              ../../shared/cpp/ObjectModel/HostConfig.cpp
+             ../../shared/cpp/ObjectModel/ActionParserRegistration.cpp
+             ../../shared/cpp/ObjectModel/ElementParserRegistration.cpp
              src/main/cpp/objectmodel_wrap.cpp
              )
 

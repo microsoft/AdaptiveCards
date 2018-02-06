@@ -1,0 +1,133 @@
+{
+  "supportsInteractivity": true,
+  "spacing": {
+    "small": 8,
+    "default": 15,
+    "medium": 20,
+    "large": 24,
+    "extraLarge": 34,
+    "padding": 12
+  },
+  "separator": {
+    "lineThickness": 1,
+    "lineColor": "#66FFFFFF"
+  },
+  "fontFamily": "Segoe UI",
+  "fontSizes": {
+    "small": 12,
+    "default": 15,
+    "medium": 20,
+    "large": 24,
+    "extraLarge": 34
+  },
+  "fontWeights": {
+    "lighter": 400,
+    "default": 500,
+    "bolder": 700
+  },
+  "containerStyles": {
+    "default": {
+      "backgroundColor": "#FF1F1F1F",
+      "foregroundColors": {
+        "default": {
+          "default": "#FFFFFFFF",
+          "subtle": "#99FFFFFF"
+        },
+        "light": {
+          "default": "#FFFFFFFF",
+          "subtle": "#99FFFFFF"
+        },
+        "dark": {
+          "default": "#FF000000",
+          "subtle": "#99000000"
+        },
+        "accent": {
+          "default": "#FF419FFE",
+          "subtle": "#99419FFE"
+        },
+        "attention": {
+          "default": "#FFE81123",
+          "subtle": "#99E81123"
+        },
+        "good": {
+          "default": "#FF79AB3C",
+          "subtle": "#9979AB3C"
+        },
+        "warning": {
+          "default": "#FFFFF000",
+          "subtle": "#99FFF000"
+        }
+      }
+    },
+    "emphasis": {
+      "backgroundColor": "#FF2E2E2E",
+      "foregroundColors": {
+        "default": {
+          "default": "#FFFFFFFF",
+          "subtle": "#99FFFFFF"
+        },
+        "light": {
+          "default": "#FFFFFFFF",
+          "subtle": "#99FFFFFF"
+        },
+        "dark": {
+          "default": "#FF000000",
+          "subtle": "#99000000"
+        },
+        "accent": {
+          "default": "#FF419FFE",
+          "subtle": "#99419FFE"
+        },
+        "attention": {
+          "default": "#FFE81123",
+          "subtle": "#99E81123"
+        },
+        "good": {
+          "default": "#FF79AB3C",
+          "subtle": "#9979AB3C"
+        },
+        "warning": {
+          "default": "#FFFFF000",
+          "subtle": "#99FFF000"
+        }
+      }
+    }
+  },
+  "imageSizes": {
+    "small": 32,
+    "medium": 50,
+    "large": 150
+  },
+  "actions": {
+    "maxActions": 5,
+    "spacing": "default",
+    "buttonSpacing": 4,
+    "showCard": {
+      "actionMode": "inline",
+      "inlineTopMargin": 12
+    },
+    "actionsOrientation": "horizontal",
+    "actionAlignment": "stretch"
+  },
+  "imageSet": {
+    "imageSize": "medium"
+  },
+  "factSet": {
+    "title": {
+      "color": "default",
+      "size": "normal",
+      "isSubtle": false,
+      "weight": "bolder",
+      "wrap": true,
+      "maxWidth": 150
+    },
+    "value": {
+      "color": "default",
+      "size": "normal",
+      "isSubtle": false,
+      "weight": "default",
+      "wrap": true
+    },
+    "spacing": 10
+  }
+}

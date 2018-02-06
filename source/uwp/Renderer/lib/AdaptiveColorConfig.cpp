@@ -3,45 +3,51 @@
 #include "AdaptiveColorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        ColorConfig colorConfig;
+        return RuntimeClassInitialize(colorConfig);
     } CATCH_RETURN;
 
 
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize(ColorConfig colorConfig) noexcept
     {
-        m_sharedColorConfig = colorConfig;
+        RETURN_IF_FAILED(GetColorFromString(colorConfig.defaultColor, &m_defaultColor));
+        RETURN_IF_FAILED(GetColorFromString(colorConfig.subtleColor, &m_subtleColor));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::get_Normal(Color* value)
+    HRESULT AdaptiveColorConfig::get_Default(ABI::Windows::UI::Color* value)
     {
-        return GetColorFromString(m_sharedColorConfig.normal, value);
+        *value = m_defaultColor;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Normal(Color /*value*/)
+    HRESULT AdaptiveColorConfig::put_Default(ABI::Windows::UI::Color color)
     {
-        return E_NOTIMPL;
+        m_defaultColor = color;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::get_Subtle(Color* value)
+    HRESULT AdaptiveColorConfig::get_Subtle(ABI::Windows::UI::Color* value)
     {
-        return GetColorFromString(m_sharedColorConfig.subtle, value);
+        *value = m_subtleColor;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Subtle(Color /*value*/)
+    HRESULT AdaptiveColorConfig::put_Subtle(ABI::Windows::UI::Color color)
     {
-        return E_NOTIMPL;
+        m_subtleColor = color;
+        return S_OK;
     }
-}
-}
+}}}
+

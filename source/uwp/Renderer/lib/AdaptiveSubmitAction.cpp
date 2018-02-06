@@ -3,9 +3,10 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
     {
@@ -16,6 +17,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction)
     {
+        if (sharedSubmitAction == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedSubmitAction = sharedSubmitAction;
         return S_OK;
     }
@@ -36,39 +42,75 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::Submit;
+        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::Submit;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveSubmitAction::get_DataJson(IJsonObject** data)
     {
-        return UTF8ToHString(m_sharedSubmitAction->GetSpeak(), speak);
+        return StringToJsonObject(m_sharedSubmitAction->GetDataJson(), data);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_Speak(HSTRING speak)
+    HRESULT AdaptiveSubmitAction::put_DataJson(IJsonObject* data)
+    {
+        std::string jsonAsString;
+        RETURN_IF_FAILED(JsonObjectToString(data, jsonAsString));
+        m_sharedSubmitAction->SetDataJson(jsonAsString);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedSubmitAction->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedSubmitAction->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedSubmitAction->SetId(out);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_DataJson(HSTRING* data)
+    HRESULT AdaptiveSubmitAction::get_ActionTypeString(HSTRING* type)
     {
-        return UTF8ToHString(m_sharedSubmitAction->GetDataJson(), data);
+        ::ActionType typeEnum;
+        RETURN_IF_FAILED(get_ActionType(&typeEnum));
+        return ProjectedActionTypeToHString(typeEnum, type);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_DataJson(HSTRING data)
+    HRESULT AdaptiveSubmitAction::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(data, out));
-        m_sharedSubmitAction->SetDataJson(out);
+        return JsonCppToJsonObject(m_sharedSubmitAction->GetAdditionalProperties(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    {
+        Json::Value jsonCpp;
+        RETURN_IF_FAILED(JsonObjectToJsonCpp(jsonObject, &jsonCpp));
+        m_sharedSubmitAction->SetAdditionalProperties(jsonCpp);
         return S_OK;
     }
-}}
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedSubmitAction->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveCards::SubmitAction>& sharedModel)
+    {
+        sharedModel = m_sharedSubmitAction;
+        return S_OK;
+    }
+}}}

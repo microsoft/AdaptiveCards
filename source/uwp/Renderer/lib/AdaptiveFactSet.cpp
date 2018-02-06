@@ -4,16 +4,15 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     AdaptiveFactSet::AdaptiveFactSet()
     {
@@ -22,15 +21,24 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept try
     {
-        m_sharedFactSet = std::make_shared<FactSet>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+        return RuntimeClassInitialize(factSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::FactSet>& sharedFactSet)
     {
-        m_sharedFactSet = sharedFactSet;
-        GenerateFactsProjection(m_sharedFactSet->GetFacts(), m_facts.Get());
+        if (sharedFactSet == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        GenerateFactsProjection(sharedFactSet->GetFacts(), m_facts.Get());
+        
+        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedFactSet->GetSpacing());
+        m_separator = sharedFactSet->GetSeparator();
+        RETURN_IF_FAILED(UTF8ToHString(sharedFactSet->GetId(), m_id.GetAddressOf()));
+
         return S_OK;
     }
 
@@ -48,32 +56,83 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedFactSet->GetSeparationStyle());
+        *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
-        m_sharedFactSet->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_spacing = spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveFactSet::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedFactSet->GetSpeak(), speak);
+        *separator = m_separator;
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedFactSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::put_Speak(HSTRING speak)
+    HRESULT AdaptiveFactSet::put_Separator(boolean separator)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedFactSet->SetSpeak(out);
+        m_separator = separator;
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedFactSet->SetSeparator(sharedSeparator);
+        */
+
         return S_OK;
     }
 
-}}
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::get_Id(HSTRING* id)
+    {
+        return m_id.CopyTo(id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::put_Id(HSTRING id)
+    {
+        return m_id.Set(id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        std::shared_ptr<AdaptiveCards::FactSet> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveCards::FactSet>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(factSet)));
+        RETURN_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));
+
+        sharedModel = factSet;
+
+        return S_OK;
+    }
+}}}

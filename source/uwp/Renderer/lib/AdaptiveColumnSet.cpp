@@ -4,16 +4,17 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "XamlHelpers.h"
+#include "AdaptiveColumn.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     AdaptiveColumnSet::AdaptiveColumnSet()
     {
@@ -22,15 +23,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept try
     {
-        m_sharedColumnSet = std::make_shared<ColumnSet>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
+        return RuntimeClassInitialize(columnSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ColumnSet>& sharedColumnSet)
     {
-        m_sharedColumnSet = sharedColumnSet;
-        GenerateColumnsProjection(m_sharedColumnSet->GetColumns(), m_columns.Get());
+        if (sharedColumnSet == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        GenerateColumnsProjection(sharedColumnSet->GetColumns(), m_columns.Get());
+        GenerateActionProjection(sharedColumnSet->GetSelectAction(), &m_selectAction);
+
+        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedColumnSet->GetSpacing());
+        m_separator = sharedColumnSet->GetSeparator();
+        RETURN_IF_FAILED(UTF8ToHString(sharedColumnSet->GetId(), m_id.GetAddressOf()));
+
         return S_OK;
     }
 
@@ -41,6 +52,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveColumnSet::get_SelectAction(IAdaptiveActionElement** action)
+    {
+        return m_selectAction.CopyTo(action);
+    }
+
+    _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveColumnSet::put_SelectAction(IAdaptiveActionElement* action)
+    {
+        m_selectAction = action;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveColumnSet::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::ColumnSet;
@@ -48,32 +72,99 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveColumnSet::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedColumnSet->GetSeparationStyle());
+        *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveColumnSet::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
-        m_sharedColumnSet->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_spacing = spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveColumnSet::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedColumnSet->GetSpeak(), speak);
+        *separator = m_separator;
+        return S_OK;
+
+        // Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedColumnSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Speak(HSTRING speak)
+    HRESULT AdaptiveColumnSet::put_Separator(boolean separator)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedColumnSet->SetSpeak(out);
+        m_separator = separator;
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedColumnSet->SetSeparator(sharedSeparator);
+        */
+
         return S_OK;
     }
 
-}}
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_Id(HSTRING* id)
+    {
+        return m_id.CopyTo(id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::put_Id(HSTRING id)
+    {
+        return m_id.Set(id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        std::shared_ptr<AdaptiveCards::ColumnSet> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveCards::ColumnSet>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(columnSet)));
+
+        if (m_selectAction != nullptr)
+        {
+            std::shared_ptr<BaseActionElement> sharedAction;
+            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
+            columnSet->SetSelectAction(sharedAction);
+        }
+
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column)
+        {
+            std::shared_ptr<Column> sharedColumn = std::make_shared<Column>();
+            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveColumn>(column);
+            RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumn));
+
+            columnSet->GetColumns().push_back(sharedColumn);
+
+            return S_OK;
+        });
+
+        sharedModel = columnSet;
+        return S_OK;
+    }
+}}}

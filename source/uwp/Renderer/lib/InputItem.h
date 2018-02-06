@@ -1,32 +1,34 @@
 #pragma once
 
-#include "json/json.h"
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     class InputItem
     {
     public:
         InputItem(
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement* adaptiveInputElement,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
             ABI::Windows::UI::Xaml::IUIElement* uiInputElement) :
             m_adaptiveInputElement(adaptiveInputElement),
             m_uiInputElement(uiInputElement)
         {}
 
-        void Serialize(Json::Value& jsonValue);
+        std::string Serialize() const;
+        std::string GetIdString() const;
+        HSTRING GetId() const;
+
 
     private:
-        void SerializeChoiceSetInput(Json::Value& jsonValue, const char* idString);
-        void SerializeDateInput(Json::Value& jsonValue, const char* idString);
-        void SerializeTextInput(Json::Value& jsonValue, const char* idString);
-        void SerializeTimeInput(Json::Value& jsonValue, const char* idString);
-        void SerializeToggleInput(Json::Value& jsonValue, const char* idString);
+        std::string SerializeChoiceSetInput() const;
+        std::string SerializeDateInput() const;
+        std::string SerializeTextInput() const;
+        std::string SerializeTimeInput() const;
+        std::string SerializeToggleInput() const;
 
-        void GetChoiceValue(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex, std::string& choiceValue);
+        std::string GetChoiceValue(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement> m_adaptiveInputElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement> m_adaptiveInputElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_uiInputElement;
     };
-}}
+}}}

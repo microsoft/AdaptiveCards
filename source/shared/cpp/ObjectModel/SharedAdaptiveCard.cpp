@@ -1,81 +1,76 @@
 #include "SharedAdaptiveCard.h"
-#include "ChoiceSetInput.h"
-#include "ColumnSet.h"
-#include "Container.h"
-#include "DateInput.h"
-#include "FactSet.h"
-#include "HttpAction.h"
-#include "Image.h"
-#include "ImageSet.h"
-#include "NumberInput.h"
-#include "OpenUrlAction.h"
 #include "ParseUtil.h"
-#include "ShowCardAction.h"
-#include "SubmitAction.h"
-#include "TextBlock.h"
-#include "TextInput.h"
-#include "TimeInput.h"
-#include "ToggleInput.h"
 
 using namespace AdaptiveCards;
-
-const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> AdaptiveCard::CardElementParsers =
-{
-    { CardElementType::Container, Container::Deserialize },
-    { CardElementType::ColumnSet, ColumnSet::Deserialize },
-    { CardElementType::FactSet, FactSet::Deserialize },
-    { CardElementType::Image, Image::Deserialize },
-    { CardElementType::ImageSet, ImageSet::Deserialize },
-    { CardElementType::TextBlock, TextBlock::Deserialize },
-    { CardElementType::ChoiceSetInput, ChoiceSetInput::Deserialize },
-    { CardElementType::DateInput, DateInput::Deserialize },
-    { CardElementType::NumberInput, NumberInput::Deserialize },
-    { CardElementType::TextInput, TextInput::Deserialize },
-    { CardElementType::TimeInput, TimeInput::Deserialize },
-    { CardElementType::ToggleInput, ToggleInput::Deserialize },
-};
-
-const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> AdaptiveCard::ActionParsers =
-{
-    { ActionType::Http, HttpAction::Deserialize },
-    { ActionType::OpenUrl, OpenUrlAction::Deserialize },
-    { ActionType::ShowCard, ShowCardAction::Deserialize },
-    { ActionType::Submit, SubmitAction::Deserialize },
-};
 
 AdaptiveCard::AdaptiveCard()
 {
 }
 
-AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImage) :
-    m_version(version),
-    m_minVersion(minVersion),
-    m_fallbackText(fallbackText),
-    m_backgroundImage(backgroundImage)
-{
-}
-
-AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImage, std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
+AdaptiveCard::AdaptiveCard(std::string version,
+    std::string minVersion,
+    std::string fallbackText,
+    std::string backgroundImage,
+    ContainerStyle style,
+    std::string speak) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
+    m_style(style),
+    m_speak(speak)
+{
+}
+
+AdaptiveCard::AdaptiveCard(std::string version,
+    std::string minVersion,
+    std::string fallbackText,
+    std::string backgroundImage,
+    ContainerStyle style,
+    std::string speak,
+    std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
+    m_version(version),
+    m_minVersion(minVersion),
+    m_fallbackText(fallbackText),
+    m_backgroundImage(backgroundImage),
+    m_style(style),
+    m_speak(speak),
     m_body(body),
     m_actions(actions)
 {
 }
 
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile) throw (AdaptiveCards::AdaptiveCardParseException)
+#ifdef __ANDROID__
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(
+    const std::string& jsonFile,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
+#else
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(
+    const std::string& jsonFile,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration)
+#endif // __ANDROID__
 {
     std::ifstream jsonFileStream(jsonFile);
 
     Json::Value root;
     jsonFileStream >> root;
 
-    return AdaptiveCard::Deserialize(root);
+    return AdaptiveCard::Deserialize(root, elementParserRegistration, actionParserRegistration);
 }
 
-std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException)
+#ifdef __ANDROID__
+std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
+    const Json::Value& json,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
+#else
+std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
+    const Json::Value& json,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration)
+#endif // __ANDROID__
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 
@@ -88,15 +83,41 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     std::string backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImageUrl);
     std::string backgroundImage = backgroundImageUrl != "" ? backgroundImageUrl :
         ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage);
+    std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
+    ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
+
+    if (elementParserRegistration == nullptr)
+    {
+        elementParserRegistration.reset(new ElementParserRegistration());
+    }
+    if (actionParserRegistration == nullptr)
+    {
+        actionParserRegistration.reset(new ActionParserRegistration());
+    }
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers, false);
+    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false);
 
     // Parse actions if present
-    auto actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::ActionParsers);
+    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions);
 
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, body, actions);
     return result;
+}
+
+#ifdef __ANDROID__
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(
+    const std::string& jsonString,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
+#else
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(
+    const std::string& jsonString,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration)
+#endif // __ANDROID__
+{
+    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString), elementParserRegistration, actionParserRegistration);
 }
 
 Json::Value AdaptiveCard::SerializeToJsonValue()
@@ -107,6 +128,13 @@ Json::Value AdaptiveCard::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinVersion)] = GetMinVersion();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText)] = GetFallbackText();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = GetBackgroundImage();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
+
+    ContainerStyle style = GetStyle();
+    if (style != ContainerStyle::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
+    }
 
     std::string bodyPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body);
     root[bodyPropertyName] = Json::Value(Json::arrayValue);
@@ -129,11 +157,6 @@ std::string AdaptiveCard::Serialize()
 {
     Json::FastWriter writer;
     return writer.write(SerializeToJsonValue());
-}
-
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException)
-{
-    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string AdaptiveCard::GetVersion() const
@@ -176,14 +199,29 @@ void AdaptiveCard::SetBackgroundImage(const std::string value)
     m_backgroundImage = value;
 }
 
+std::string AdaptiveCard::GetSpeak() const
+{
+    return m_speak;
+}
+
+void AdaptiveCard::SetSpeak(const std::string value)
+{
+    m_speak = value;
+}
+
+ContainerStyle AdaptiveCards::AdaptiveCard::GetStyle() const
+{
+    return m_style;
+}
+
+void AdaptiveCards::AdaptiveCard::SetStyle(const ContainerStyle value)
+{
+    m_style = value;
+}
+
 const CardElementType AdaptiveCard::GetElementType() const
 {
     return CardElementType::AdaptiveCard;
-}
-
-const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody() const
-{
-    return m_body;
 }
 
 std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody()
@@ -191,7 +229,7 @@ std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody()
     return m_body;
 }
 
-const std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions() const
+std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions()
 {
     return m_actions;
 }

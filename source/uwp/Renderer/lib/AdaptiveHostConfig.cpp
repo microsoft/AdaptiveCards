@@ -3,53 +3,81 @@
 #include "Util.h"
 #include "AdaptiveActionsConfig.h"
 #include "AdaptiveCardConfig.h"
-#include "AdaptiveChoiceSetInputConfig.h"
 #include "AdaptiveColorsConfig.h"
-#include "AdaptiveColumnConfig.h"
-#include "AdaptiveColumnSetConfig.h"
-#include "AdaptiveContainerConfig.h"
-#include "AdaptiveDateInputConfig.h"
+#include "AdaptiveContainerStylesDefinition.h"
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveFontSizesConfig.h"
+#include "AdaptiveFontWeightsConfig.h"
+#include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
 #include "AdaptiveImageSizesConfig.h"
-#include "AdaptiveNumberInputConfig.h"
-#include "AdaptiveSeparationConfig.h"
-#include "AdaptiveTextBlockConfig.h"
-#include "AdaptiveTextInputConfig.h"
-#include "AdaptiveTimeInputConfig.h"
-#include "AdaptiveToggleInputConfig.h"
+#include "AdaptiveSpacingConfig.h"
+#include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigStaticsImpl::CreateHostConfigFromJson(HSTRING adaptiveJson, IAdaptiveHostConfig** config) noexcept try
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfigParseResult** parseResult) noexcept try
     {
-        *config = nullptr;
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
+        return FromJsonString(adaptiveJsonString, parseResult);
 
-        HostConfig sharedHostConfig = HostConfig::DeserializeFromString(adaptiveJsonString);
-        return MakeAndInitialize<AdaptiveHostConfig>(config, sharedHostConfig);
     } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveHostConfigParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
+
+        std::string adaptiveJsonString;
+        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
+
+        return FromJsonString(adaptiveJsonString, parseResult);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveHostConfigParseResult** parseResult)
+    {
+        HostConfig sharedHostConfig = HostConfig::DeserializeFromString(jsonString);
+
+        ComPtr<IAdaptiveHostConfig> config;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&config, sharedHostConfig));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfigParseResult>(parseResult, config.Get()));
+
+        return S_OK;
+    }
 
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        HostConfig sharedHostConfig;
+        return RuntimeClassInitialize(sharedHostConfig);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize(const HostConfig& sharedHostConfig)
     {
-        RETURN_IF_FAILED(RuntimeClassInitialize());
-        m_sharedHostConfig = sharedHostConfig;
+        m_supportsInteractivity = sharedHostConfig.supportsInteractivity;
+        RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.fontFamily, m_fontFamily.GetAddressOf()));
 
-        //TODO: Generate projections for HostConfig
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontSizesConfig>(m_fontSizes.GetAddressOf(), sharedHostConfig.fontSizes));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(), sharedHostConfig.fontWeights));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveContainerStylesDefinition>(m_containerStyles.GetAddressOf(), sharedHostConfig.containerStyles));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSizesConfig>(m_imageSizes.GetAddressOf(), sharedHostConfig.imageSizes));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSpacingConfig>(m_spacing.GetAddressOf(), sharedHostConfig.spacing));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSeparatorConfig>(m_separator.GetAddressOf(), sharedHostConfig.separator));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardConfig>(m_adaptiveCard.GetAddressOf(), sharedHostConfig.adaptiveCard));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSetConfig>(m_imageSet.GetAddressOf(), sharedHostConfig.imageSet));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFactSetConfig>(m_factSet.GetAddressOf(), sharedHostConfig.factSet));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_actions.GetAddressOf(), sharedHostConfig.actions));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.image));
 
         return S_OK;
     }
@@ -57,272 +85,169 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FontFamily(HSTRING* text)
     {
-        return UTF8ToHString(m_sharedHostConfig.fontFamily, text);
+        return m_fontFamily.CopyTo(text);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::put_FontFamily(HSTRING text)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(text, out));
-        m_sharedHostConfig.fontFamily = out;
-        return S_OK;
+        return m_fontFamily.Set(text);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FontSizes(IAdaptiveFontSizesConfig** fontSizesConfig)
     {
-        return MakeAndInitialize<AdaptiveFontSizesConfig>(fontSizesConfig, m_sharedHostConfig.fontSizes);
+        return m_fontSizes.CopyTo(fontSizesConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_FontSizes(IAdaptiveFontSizesConfig*)
+    HRESULT AdaptiveHostConfig::put_FontSizes(IAdaptiveFontSizesConfig* fontSizes)
     {
-        return E_NOTIMPL;
+        m_fontSizes = fontSizes;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+     HRESULT AdaptiveHostConfig::get_FontWeights(IAdaptiveFontWeightsConfig** fontWeightsConfig)
+    {
+        return m_fontWeights.CopyTo(fontWeightsConfig);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::put_FontWeights(IAdaptiveFontWeightsConfig* fontWeights)
+    {
+        m_fontWeights = fontWeights;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supporsInteractivity)
     {
-        *supporsInteractivity = m_sharedHostConfig.supportsInteractivity;
+        *supporsInteractivity = m_supportsInteractivity;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::put_SupportsInteractivity(boolean supportsInteractivity)
     {
-        m_sharedHostConfig.supportsInteractivity = Boolify(supportsInteractivity);
+        m_supportsInteractivity = supportsInteractivity;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveHostConfig::get_Colors(IAdaptiveColorsConfig** colorsConfig)
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition** value)
     {
-        return MakeAndInitialize<AdaptiveColorsConfig>(colorsConfig, m_sharedHostConfig.colors);
+        return m_containerStyles.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveHostConfig::put_Colors(IAdaptiveColorsConfig* )
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
     {
-        return E_NOTIMPL;
+        m_containerStyles = containerStylesDefinition;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_ImageSizes(IAdaptiveImageSizesConfig** imageSizes)
     {
-        return MakeAndInitialize<AdaptiveImageSizesConfig>(imageSizes, m_sharedHostConfig.imageSizes);
+        return m_imageSizes.CopyTo(imageSizes);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ImageSizes(IAdaptiveImageSizesConfig* )
+    HRESULT AdaptiveHostConfig::put_ImageSizes(IAdaptiveImageSizesConfig* imageSizes)
     {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_MaxActions(UINT32* maxActions)
-    {
-        *maxActions = m_sharedHostConfig.maxActions;
+        m_imageSizes = imageSizes;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_MaxActions(UINT32 maxActions)
+    _Use_decl_annotations_ 
+    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig** spacingConfig)
     {
-        m_sharedHostConfig.maxActions = maxActions;
+        return m_spacing.CopyTo(spacingConfig);
+    }
+
+    _Use_decl_annotations_ 
+    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig* spacingConfig)
+    {
+        m_spacing = spacingConfig;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_StrongSeparation(IAdaptiveSeparationConfig** strongSeparationConfig)
+    _Use_decl_annotations_ 
+    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig** separatorConfig)
     {
-        return MakeAndInitialize<AdaptiveSeparationConfig>(strongSeparationConfig, m_sharedHostConfig.strongSeparation);
+        return m_separator.CopyTo(separatorConfig);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_StrongSeparation(IAdaptiveSeparationConfig*)
+    _Use_decl_annotations_ 
+    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig* separatorConfig)
     {
-        return E_NOTIMPL;
+        m_separator = separatorConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_AdaptiveCard(IAdaptiveCardConfig** adaptiveCardConfig)
     {
-        return MakeAndInitialize<AdaptiveCardConfig>(adaptiveCardConfig, m_sharedHostConfig.adaptiveCard);
+        return m_adaptiveCard.CopyTo(adaptiveCardConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_AdaptiveCard(IAdaptiveCardConfig* )
+    HRESULT AdaptiveHostConfig::put_AdaptiveCard(IAdaptiveCardConfig* adaptiveCardConfig)
     {
-        return E_NOTIMPL;
+        m_adaptiveCard = adaptiveCardConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_ImageSet(IAdaptiveImageSetConfig** imageSetConfig)
     {
-        return MakeAndInitialize<AdaptiveImageSetConfig>(imageSetConfig, m_sharedHostConfig.imageSet);
+        return m_imageSet.CopyTo(imageSetConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ImageSet(IAdaptiveImageSetConfig* )
+    HRESULT AdaptiveHostConfig::put_ImageSet(IAdaptiveImageSetConfig* imageSetConfig)
     {
-        return E_NOTIMPL;
+        m_imageSet = imageSetConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_Image(IAdaptiveImageConfig** imageConfig)
     {
-        return MakeAndInitialize<AdaptiveImageConfig>(imageConfig, m_sharedHostConfig.image);
+        return m_image.CopyTo(imageConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_Image(IAdaptiveImageConfig* )
+    HRESULT AdaptiveHostConfig::put_Image(IAdaptiveImageConfig* imageConfig)
     {
-        return E_NOTIMPL;
+        m_image = imageConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FactSet(IAdaptiveFactSetConfig** factSetConfig)
     {
-        return MakeAndInitialize<AdaptiveFactSetConfig>(factSetConfig, m_sharedHostConfig.factSet);
+        return m_factSet.CopyTo(factSetConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_FactSet(IAdaptiveFactSetConfig* )
+    HRESULT AdaptiveHostConfig::put_FactSet(IAdaptiveFactSetConfig* factSetConfig)
     {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_Column(IAdaptiveColumnConfig** columnConfig)
-    {
-        return MakeAndInitialize<AdaptiveColumnConfig>(columnConfig, m_sharedHostConfig.column);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_Column(IAdaptiveColumnConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_Container(IAdaptiveContainerConfig** containerConfig)
-    {
-        return MakeAndInitialize<AdaptiveContainerConfig>(containerConfig, m_sharedHostConfig.container);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_Container(IAdaptiveContainerConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_ColumnSet(IAdaptiveColumnSetConfig** columnSetConfig)
-    {
-        return MakeAndInitialize<AdaptiveColumnSetConfig>(columnSetConfig, m_sharedHostConfig.columnSet);
-
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ColumnSet(IAdaptiveColumnSetConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_TextBlock(IAdaptiveTextBlockConfig** textBlockConfig)
-    {
-        return MakeAndInitialize<AdaptiveTextBlockConfig>(textBlockConfig, m_sharedHostConfig.textBlock);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_TextBlock(IAdaptiveTextBlockConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_DateInput(IAdaptiveDateInputConfig** dateInputConfig)
-    {
-        return MakeAndInitialize<AdaptiveDateInputConfig>(dateInputConfig, m_sharedHostConfig.dateInput);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_DateInput(IAdaptiveDateInputConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_TimeInput(IAdaptiveTimeInputConfig** timeInputConfig)
-    {
-        return MakeAndInitialize<AdaptiveTimeInputConfig>(timeInputConfig, m_sharedHostConfig.timeInput);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_TimeInput(IAdaptiveTimeInputConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_NumberInput(IAdaptiveNumberInputConfig** numberInputConfig)
-    {
-        return MakeAndInitialize<AdaptiveNumberInputConfig>(numberInputConfig, m_sharedHostConfig.numberInput);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_NumberInput(IAdaptiveNumberInputConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_ToggleInput(IAdaptiveToggleInputConfig** toggleInputConfig)
-    {
-        return MakeAndInitialize<AdaptiveToggleInputConfig>(toggleInputConfig, m_sharedHostConfig.toggleInput);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ToggleInput(IAdaptiveToggleInputConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_TextInput(IAdaptiveTextInputConfig** textInputConfig)
-    {
-        return MakeAndInitialize<AdaptiveTextInputConfig>(textInputConfig, m_sharedHostConfig.textInput);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_TextInput(IAdaptiveTextInputConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_ChoiceSetInput(IAdaptiveChoiceSetInputConfig** choiceSetConfig)
-    {
-        return MakeAndInitialize<AdaptiveChoiceSetInputConfig>(choiceSetConfig, m_sharedHostConfig.choiceSet);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ChoiceSetInput(IAdaptiveChoiceSetInputConfig* )
-    {
-        return E_NOTIMPL;
+        m_factSet = factSetConfig;
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_Actions(IAdaptiveActionsConfig** actionsConfig)
     {
-        return MakeAndInitialize<AdaptiveActionsConfig>(actionsConfig, m_sharedHostConfig.actions);
+        return m_actions.CopyTo(actionsConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_Actions(IAdaptiveActionsConfig* )
+    HRESULT AdaptiveHostConfig::put_Actions(IAdaptiveActionsConfig* actionsConfig)
     {
-        return E_NOTIMPL;
+        m_actions = actionsConfig;
+        return S_OK;
     }
-}}
+}}}

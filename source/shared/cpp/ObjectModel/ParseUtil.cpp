@@ -1,5 +1,7 @@
 #include "ParseUtil.h"
 #include "AdaptiveCardParseException.h"
+#include "ElementParserRegistration.h"
+#include "ActionParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -7,7 +9,7 @@ namespace AdaptiveCards
 void ParseUtil::ThrowIfNotJsonObject(const Json::Value& json)
 {
     if (!json.isObject()) {
-        throw AdaptiveCardParseException("Expected JSON Object\n");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidJson, "Expected JSON Object\n");
     }
 }
 
@@ -15,7 +17,7 @@ void ParseUtil::ExpectString(const Json::Value& json)
 {
     if (!json.isString())
     {
-        throw AdaptiveCardParseException("The JSON element did not have the expected type 'string'");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "The JSON element did not have the expected type 'string'");
     }
 }
 
@@ -25,7 +27,7 @@ std::string ParseUtil::GetTypeAsString(const Json::Value& json)
     std::string typeKey = "type";
     if (!json.isMember(typeKey))
     {
-        throw AdaptiveCardParseException("The JSON element is missing the following value: " + typeKey);
+        throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "The JSON element is missing the following value: " + typeKey);
     }
 
     return json.get(typeKey, Json::Value()).asString();
@@ -52,7 +54,7 @@ std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey 
     {
         if (isRequired)
         {
-            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
         }
         else
         {
@@ -62,7 +64,7 @@ std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey 
 
     if (!propertyValue.isString())
     {
-        throw AdaptiveCardParseException("Value was invalid. Expected type string.");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Value for property " + propertyName + " was invalid. Expected type string.");
     }
 
     return propertyValue.asString();
@@ -76,7 +78,7 @@ std::string ParseUtil::GetJsonString(const Json::Value& json, AdaptiveCardSchema
     {
         if (isRequired)
         {
-            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
         }
         else
         {
@@ -95,7 +97,7 @@ std::string ParseUtil::GetValueAsString(const Json::Value& json, AdaptiveCardSch
     {
         if (isRequired)
         {
-            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
         }
         else
         {
@@ -114,7 +116,7 @@ bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool
     {
         if (isRequired)
         {
-            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
         }
         else
         {
@@ -124,7 +126,7 @@ bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool
 
     if (!propertyValue.isBool())
     {
-        throw AdaptiveCardParseException("Value was invalid. Expected type bool.");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Value for property " + propertyName + " was invalid. Expected type bool.");
     }
 
     return propertyValue.asBool();
@@ -138,7 +140,7 @@ unsigned int ParseUtil::GetUInt(const Json::Value & json, AdaptiveCardSchemaKey 
     {
         if (isRequired)
         {
-            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
         }
         else
         {
@@ -148,7 +150,7 @@ unsigned int ParseUtil::GetUInt(const Json::Value & json, AdaptiveCardSchemaKey 
 
     if (!propertyValue.isUInt())
     {
-        throw AdaptiveCardParseException("Value was invalid. Expected type uInt.");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Value for property " + propertyName + " was invalid. Expected type uInt.");
     }
 
     return propertyValue.asUInt();
@@ -162,7 +164,7 @@ int ParseUtil::GetInt(const Json::Value & json, AdaptiveCardSchemaKey key, int d
     {
         if (isRequired)
         {
-            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
         }
         else
         {
@@ -172,7 +174,7 @@ int ParseUtil::GetInt(const Json::Value & json, AdaptiveCardSchemaKey key, int d
 
     if (!propertyValue.isInt())
     {
-        throw AdaptiveCardParseException("Value was invalid. Expected type int.");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Value for property " + propertyName + " was invalid. Expected type int.");
     }
 
     return propertyValue.asInt();
@@ -185,7 +187,7 @@ void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyTy
     bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
     if (!isTypeCorrect)
     {
-        throw AdaptiveCardParseException("The JSON element did not have the correct type. Expected: " + expectedTypeStr + ", Actual: " + actualType);
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "The JSON element did not have the correct type. Expected: " + expectedTypeStr + ", Actual: " + actualType);
     }
 }
 
@@ -194,12 +196,12 @@ void ParseUtil::ExpectKeyAndValueType(const Json::Value& json, const char* expec
 {
     if (expectedKey == nullptr)
     {
-        throw AdaptiveCardParseException("null expectedKey");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "null expectedKey");
     }
 
     if (!json.isMember(expectedKey))
     {
-        throw AdaptiveCardParseException("The JSON element is missing the following key: " + std::string(expectedKey));
+        throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "The JSON element is missing the following key: " + std::string(expectedKey));
     }
 
     auto value = json.get(expectedKey, Json::Value());
@@ -215,7 +217,7 @@ CardElementType ParseUtil::GetCardElementType(const Json::Value& json)
     }
     catch (const std::out_of_range&)
     {
-        throw AdaptiveCardParseException("Invalid CardElementType");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid CardElementType");
     }
 }
 
@@ -240,7 +242,7 @@ ActionType ParseUtil::GetActionType(const Json::Value& json)
     }
     catch (const std::out_of_range&)
     {
-        throw AdaptiveCardParseException("Invalid ActionType");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid ActionType");
     }
 }
 
@@ -265,12 +267,12 @@ Json::Value ParseUtil::GetArray(
     auto elementArray = json.get(propertyName, Json::Value());
     if (isRequired && elementArray.empty())
     {
-        throw AdaptiveCardParseException("Could not parse required key: " + propertyName + ". It was not found");
+        throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Could not parse required key: " + propertyName + ". It was not found");
     }
 
     if (!elementArray.empty() && !elementArray.isArray())
     {
-        throw AdaptiveCardParseException("Could not parse specified key: " + propertyName + ". It was not an array");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Could not parse specified key: " + propertyName + ". It was not an array");
     }
     return elementArray;
 }
@@ -281,7 +283,7 @@ Json::Value ParseUtil::GetJsonValueFromString(const std::string jsonString)
     Json::Value jsonValue;
     if (!reader.parse(jsonString.c_str(), jsonValue))
     {
-        throw AdaptiveCardParseException("Expected JSON Object\n");
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidJson, "Expected JSON Object\n");
     }
     return jsonValue;
 }
@@ -292,9 +294,105 @@ Json::Value ParseUtil::ExtractJsonValue(const Json::Value& json, AdaptiveCardSch
     auto propertyValue = json.get(propertyName, Json::Value());
     if (isRequired && propertyValue.empty())
     {
-        throw AdaptiveCardParseException("Could not extract specified key: " + propertyName + ".");
+        throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Could not extract required key: " + propertyName + ".");
     }
     return propertyValue;
+}
+
+std::string ParseUtil::ToLowercase(std::string value)
+{
+    std::transform(value.begin(), value.end(), value.begin(), [](char c) { return std::tolower(c, std::locale()); });
+    return value;
+}
+
+std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key,
+    bool isRequired)
+{
+    auto elementArray = GetArray(json, key, isRequired);
+
+    std::vector<std::shared_ptr<BaseCardElement>> elements;
+    if (elementArray.empty())
+    {
+        return elements;
+    }
+
+    elements.reserve(elementArray.size());
+
+    for (const auto& curJsonValue : elementArray)
+    {
+        // Get the element's type
+        std::string typeString = GetTypeAsString(curJsonValue);
+
+        std::shared_ptr<IBaseCardElementParser> parser = elementParserRegistration->GetParser(typeString);
+
+        //Parse it if it's allowed by the current parsers
+        if (parser != nullptr)
+        {
+            // Use the parser that maps to the type
+            elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
+        }
+    }
+
+    return elements;
+}
+
+std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& json)
+{
+    if (json.empty() || !json.isObject())
+    {
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Expected a Json object to extract Action element");
+    }
+
+    // Get the element's type
+    std::string typeString = GetTypeAsString(json);
+
+    auto parser = actionParserRegistration->GetParser(typeString);
+
+    //Parse it if it's allowed by the current parsers
+    if (parser != nullptr)
+    {
+        // Use the parser that maps to the type
+        return parser->Deserialize(elementParserRegistration, actionParserRegistration, json);
+    }
+
+    return nullptr;
+}
+
+std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key,
+    bool isRequired)
+{
+    auto elementArray = GetArray(json, key, isRequired);
+
+    std::vector<std::shared_ptr<BaseActionElement>> elements;
+
+    if (elementArray.empty())
+    {
+        return elements;
+    }
+
+    elements.reserve(elementArray.size());
+
+    for (const auto& curJsonValue : elementArray)
+    {
+        auto action = ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, curJsonValue);
+        if (action != nullptr)
+        {
+            elements.push_back(action);
+        }
+    }
+
+    return elements;
 }
 
 ParseUtil::ParseUtil()

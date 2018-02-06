@@ -17,6 +17,8 @@ namespace std {
 %include <std_shared_ptr.i>
 %include <std_vector.i>
 
+#define __ANDROID__ 1
+
 %{
 #include "pch.h"
 #include <memory>
@@ -24,6 +26,8 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
+#include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
+#include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
@@ -39,7 +43,6 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/TextInput.h"
 #include "../../../shared/cpp/ObjectModel/TimeInput.h"
 #include "../../../shared/cpp/ObjectModel/ToggleInput.h"
-#include "../../../shared/cpp/ObjectModel/HttpAction.h"
 #include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
@@ -48,9 +51,13 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %}
 
-%shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
+%shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseInputElement)
+%shared_ptr(AdaptiveCards::IActionElementParser)
+%shared_ptr(AdaptiveCards::IBaseCardElementParser)
+%shared_ptr(AdaptiveCards::ElementParserRegistration)
+%shared_ptr(AdaptiveCards::ActionParserRegistration)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
 %shared_ptr(AdaptiveCards::Image)
@@ -66,11 +73,25 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextInput)
 %shared_ptr(AdaptiveCards::TimeInput)
 %shared_ptr(AdaptiveCards::ToggleInput)
-%shared_ptr(AdaptiveCards::HttpAction)
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
+%shared_ptr(AdaptiveCards::ContainerParser)
+%shared_ptr(AdaptiveCards::TextBlockParser)
+%shared_ptr(AdaptiveCards::ImageParser)
+%shared_ptr(AdaptiveCards::ColumnSetParser)
+%shared_ptr(AdaptiveCards::FactSetParser)
+%shared_ptr(AdaptiveCards::ChoiceSetInputParser)
+%shared_ptr(AdaptiveCards::NumberInputParser)
+%shared_ptr(AdaptiveCards::TextInputParser)
+%shared_ptr(AdaptiveCards::TimeInputParser)
+%shared_ptr(AdaptiveCards::ToggleInputParser)
+%shared_ptr(AdaptiveCards::OpenUrlActionParser)
+%shared_ptr(AdaptiveCards::ShowCardActionParser)
+%shared_ptr(AdaptiveCards::SubmitActionParser)
+%shared_ptr(AdaptiveCards::ImageSetParser)
+%shared_ptr(AdaptiveCards::DateInputParser)
 
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
@@ -309,21 +330,6 @@ namespace std {
     }
 };
 
-%exception AdaptiveCards::HttpAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
-    $action
-    if (!result) {
-        jclass excep = jenv->FindClass("java/lang/ClassCastException");
-        if (excep) {
-            jenv->ThrowNew(excep, "dynamic_cast exception");
-        }
-    }
-}
-%extend AdaptiveCards::HttpAction {
-    static AdaptiveCards::HttpAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
-        return dynamic_cast<AdaptiveCards::HttpAction *>(baseActionElement);
-    }
-};
-
 %exception AdaptiveCards::OpenUrlAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
     $action
     if (!result) {
@@ -374,6 +380,8 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
+%include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
@@ -389,7 +397,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/TextInput.h"
 %include "../../../shared/cpp/ObjectModel/TimeInput.h"
 %include "../../../shared/cpp/ObjectModel/ToggleInput.h"
-%include "../../../shared/cpp/ObjectModel/HttpAction.h"
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"

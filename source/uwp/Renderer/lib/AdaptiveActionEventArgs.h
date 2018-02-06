@@ -1,25 +1,25 @@
 #pragma once
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     class AdaptiveActionEventArgs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionEventArgs>
+        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionEventArgs>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveActionEventArgs, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionEventArgs, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action, _In_ HSTRING inputs);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action, _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs* inputs);
 
         // IAdaptiveActionEventArgs
-        IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement** action);
-        IFACEMETHODIMP get_Inputs(_Out_ HSTRING* inputs);
+        IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** action);
+        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** inputs);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement> m_action;
-        Microsoft::WRL::Wrappers::HString m_inputs;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_action;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs> m_inputs;
     };
-}}
+}}}

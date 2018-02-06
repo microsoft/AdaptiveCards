@@ -1,0 +1,18 @@
+@import 'node_modules/adaptivecards/scss/base';
+
+@include base-anchor();
+
+@include base-container();
+
+@include base-push-button(
+    $background-color: rgba(0, 0, 0, 0.1),
+    $border: 2px solid transparent,
+    $font-size: 15px,
+    $font-weight: 500,
+    $active-background-color: rgba(0, 0, 0, 0.3),
+    $hover-background-color: null,
+    $hover-border:  2px solid rgba(0, 0, 0, 0.2),
+    $color: white
+);
+
+@include base-input();

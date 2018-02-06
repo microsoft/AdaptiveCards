@@ -2,62 +2,63 @@
 #include "AdaptiveImageSizesConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveImageSizesConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        ImageSizesConfig imageSizesConfig;
+        return RuntimeClassInitialize(imageSizesConfig);
     } CATCH_RETURN;
-
 
     HRESULT AdaptiveImageSizesConfig::RuntimeClassInitialize(ImageSizesConfig imageSizesConfig) noexcept
     {
-        m_sharedImageSizesConfig = imageSizesConfig;
+        m_small = imageSizesConfig.smallSize;
+        m_medium = imageSizesConfig.mediumSize;
+        m_large = imageSizesConfig.largeSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSizesConfig::get_Small(UINT32* smallSize)
     {
-        *smallSize = m_sharedImageSizesConfig.smallSize;
+        *smallSize = m_small;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSizesConfig::put_Small(UINT32 smallSize)
     {
-        m_sharedImageSizesConfig.smallSize = smallSize;
+        m_small = smallSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSizesConfig::get_Medium(UINT32* mediumSize)
     {
-        *mediumSize = m_sharedImageSizesConfig.mediumSize;
+        *mediumSize = m_medium;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSizesConfig::put_Medium(UINT32 mediumSize)
     {
-        m_sharedImageSizesConfig.mediumSize = mediumSize;
+        m_medium = mediumSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSizesConfig::get_Large(UINT32* largeSize)
     {
-        *largeSize = m_sharedImageSizesConfig.largeSize;
+        *largeSize = m_large;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImageSizesConfig::put_Large(UINT32 largeSize)
     {
-        m_sharedImageSizesConfig.largeSize = largeSize;
+        m_large = largeSize;
         return S_OK;
     }
-}
-}
+}}}

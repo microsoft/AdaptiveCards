@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <set>
 #include <ppltasks.h>
+#include <sstream>
 
 // The #define of this in winbase.h windows.ui.xaml.media.animation.h's IStoryboard defintion
 // so we need to remove it

@@ -23,10 +23,14 @@ std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns()
     return m_columns;
 }
 
-std::string ColumnSet::Serialize()
+std::shared_ptr<BaseActionElement> ColumnSet::GetSelectAction() const
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return m_selectAction;
+}
+
+void ColumnSet::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
 }
 
 Json::Value ColumnSet::SerializeToJsonValue()
@@ -40,22 +44,37 @@ Json::Value ColumnSet::SerializeToJsonValue()
         root[propertyName].append(column->SerializeToJsonValue());
     }
 
+    std::shared_ptr<BaseActionElement> selectAction = GetSelectAction();
+    if (selectAction != nullptr)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+    }
+
     return root;
 }
 
-std::shared_ptr<ColumnSet> ColumnSet::Deserialize(const Json::Value& value)
+std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
     auto container = BaseCardElement::Deserialize<ColumnSet>(value);
 
     // Parse Columns
-    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
+    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
     container->m_columns = std::move(cardElements);
+
+    container->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction));
+
     return container;
 }
 
-std::shared_ptr<ColumnSet> ColumnSet::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const std::string& jsonString)
 {
-    return ColumnSet::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+    return ColumnSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }

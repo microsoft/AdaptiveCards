@@ -8,17 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\connect\index.html">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Include="wwwroot\explorer\markdown\Action.Http.md" />
     <Content Include="wwwroot\explorer\markdown\Action.OpenUrl.md" />
     <Content Include="wwwroot\explorer\markdown\Action.ShowCard.md" />
     <Content Include="wwwroot\explorer\markdown\Action.Submit.md" />
   </ItemGroup>
 
-  
-  
+
+
   <ItemGroup>
     <PackageReference Include="ColorCode.Netstandard" Version="1.0.4.3" />
     <PackageReference Include="MarkedNet" Version="1.0.6" />
@@ -38,9 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.config" />

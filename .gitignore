@@ -266,12 +266,14 @@ build*
 makefile.inc
 product.pbxproj
 
-#Generated header from MIDL
-**/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
-
-#macOS 
+# Mac
 **/.DS_Store
-# Xcode
-*.pbxproj
-*.xcuserstate
-xcuserdata/
+
+#Generated header from MIDL
+**/UWP/Renderer/AdaptiveCards.Rendering.Uwp.h
+*.binlog
+source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
+source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
+source/nodejs/adaptivecards/built/card-elements.js
+source/nodejs/adaptivecards/built/card-elements.js.map
+*.tgz

@@ -9,21 +9,26 @@ ChoiceInput::ChoiceInput() :
 {
 }
 
-std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(const Json::Value& json)
+std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(
+    std::shared_ptr<ElementParserRegistration>,
+    std::shared_ptr<ActionParserRegistration>,
+    const Json::Value& json)
 {
     auto choice = std::make_shared<ChoiceInput>();
 
     choice->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     choice->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, true));
-    choice->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
     choice->SetIsSelected(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSelected, false));
 
     return choice;
 }
 
-std::shared_ptr<ChoiceInput> ChoiceInput::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<ChoiceInput> ChoiceInput::DeserializeFromString(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const std::string& jsonString)
 {
-    return ChoiceInput::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+    return ChoiceInput::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string ChoiceInput::Serialize()
@@ -38,7 +43,6 @@ Json::Value ChoiceInput::SerializeToJsonValue()
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSelected)] = GetIsSelected();
 
     return root;
@@ -72,14 +76,4 @@ bool AdaptiveCards::ChoiceInput::GetIsSelected() const
 void AdaptiveCards::ChoiceInput::SetIsSelected(const bool isSelected)
 {
     m_isSelected = isSelected;
-}
-
-std::string ChoiceInput::GetSpeak() const
-{
-    return m_speak;
-}
-
-void ChoiceInput::SetSpeak(const std::string value)
-{
-    m_speak = value;
 }

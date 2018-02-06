@@ -1,19 +1,20 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "TextInput.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-    class AdaptiveTextInput :
+    class DECLSPEC_UUID("2e716e94-a83a-4e9b-9873-bff858af068d") AdaptiveTextInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextInput,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextInput,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveTextInput, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveTextInput, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -29,11 +30,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsMultiline(_Out_ boolean* isMultiline);
         IFACEMETHODIMP put_IsMultiline(_In_ boolean isMultiline);
 
-        IFACEMETHODIMP get_MaxLength(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_MaxLength(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxLength(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle *textInputStyle);
-        IFACEMETHODIMP put_TextInputStyle(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle);
+        IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle *textInputStyle);
+        IFACEMETHODIMP put_TextInputStyle(_In_ ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle);
 
         // IAdaptiveInputElement
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
@@ -43,17 +44,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
+        IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
+        IFACEMETHODIMP put_Separator(_In_ boolean separator);
+
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
+
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::TextInput>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::TextInput> m_sharedTextInput;
     };
 
     ActivatableClass(AdaptiveTextInput);
-}}
+}}}

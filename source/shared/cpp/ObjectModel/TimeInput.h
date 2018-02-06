@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "BaseInputElement.h"
 #include "Enums.h"
+#include "ElementParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -11,11 +12,7 @@ class TimeInput : public BaseInputElement
 public:
     TimeInput();
 
-    static std::shared_ptr<TimeInput> Deserialize(const Json::Value& root);
-    static std::shared_ptr<TimeInput> DeserializeFromString(const std::string& jsonString);
-
-    virtual std::string Serialize();
-    Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetMax() const;
     void SetMax(const std::string value);
@@ -34,5 +31,19 @@ private:
     std::string m_min;
     std::string m_placeholder;
     std::string m_value;
+};
+
+class TimeInputParser : public IBaseCardElementParser
+{
+public:
+    std::shared_ptr<BaseCardElement> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& root);
+
+    std::shared_ptr<BaseCardElement> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const std::string& jsonString);
 };
 }

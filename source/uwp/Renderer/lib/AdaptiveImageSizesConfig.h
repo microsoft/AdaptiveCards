@@ -1,34 +1,36 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     class AdaptiveImageSizesConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImageSizesConfig>
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImageSizesConfig>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveImageSizesConfig, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveImageSizesConfig, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ImageSizesConfig imageSizesConfig) noexcept;
 
-        IFACEMETHODIMP get_Small(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_Small(_Out_ UINT32* value);
         IFACEMETHODIMP put_Small(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Medium(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_Medium(_Out_ UINT32* value);
         IFACEMETHODIMP put_Medium(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Large(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_Large(_Out_ UINT32* value);
         IFACEMETHODIMP put_Large(_In_ UINT32 value);
 
     private:
-        ImageSizesConfig m_sharedImageSizesConfig;
+        UINT32 m_small;
+        UINT32 m_medium;
+        UINT32 m_large;
     };
 
     ActivatableClass(AdaptiveImageSizesConfig);
-}}
+}}}

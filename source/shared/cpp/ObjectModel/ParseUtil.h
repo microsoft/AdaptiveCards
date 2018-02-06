@@ -4,9 +4,13 @@
 #include "AdaptiveCardParseException.h"
 #include "Enums.h"
 #include "json/json.h"
+#include "ElementParserRegistration.h"
+#include "ActionParserRegistration.h"
 
 namespace AdaptiveCards
 {
+class BaseCardElement;
+class BaseActionElement;
 
 class ParseUtil
 {
@@ -56,25 +60,27 @@ public:
         std::function<T(const std::string& name)> enumConverter,
         bool isRequired = false);
 
-    template <typename T>
-    static std::vector<std::shared_ptr<T>> GetElementCollection(
+    static std::vector<std::shared_ptr<BaseCardElement>> GetElementCollection(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        const std::unordered_map<CardElementType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers,
         bool isRequired = false);
 
     template <typename T>
     static std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        const std::function<std::shared_ptr<T>(const Json::Value&)>& deserializer,
+        const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value&)>& deserializer,
         bool isRequired = false);
 
-    template <typename T>
-    static std::vector<std::shared_ptr<T>> GetActionCollection(
+    static std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        const std::unordered_map<ActionType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers,
         bool isRequired = false);
 
     template <typename T>
@@ -84,16 +90,17 @@ public:
         const T &defaultValue,
         const std::function<T(const Json::Value&, const T&)>& deserializer);
 
-    template <typename T>
-    static std::shared_ptr<T> GetActionFromJsonValue(
-        const Json::Value& json,
-        const std::unordered_map<ActionType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers);
+    static std::shared_ptr<BaseActionElement> GetActionFromJsonValue(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& json);
 
     static void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
 
     // throws if the key is missing or the value mapped to the key is the wrong type
     static void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
 
+    static std::string ToLowercase(const std::string value);
 
 private:
     ParseUtil();
@@ -113,7 +120,7 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
         {
             if (isRequired)
             {
-                throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
             }
             else
             {
@@ -123,7 +130,7 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
 
         if (!propertyValue.isString())
         {
-            throw AdaptiveCardParseException("Enum type was invalid. Expected type string.");
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Enum type was invalid. Expected type string.");
         }
 
         propertyValueStr = propertyValue.asString();
@@ -131,48 +138,19 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
     }
     catch (const std::out_of_range&)
     {
-        throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
+        // TODO: Uncomment and add to warnings instead of throwing.
+        // throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
+        return defaultEnumValue;
     }
-}
-
-template <typename T>
-std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
-    const Json::Value& json,
-    AdaptiveCardSchemaKey key,
-    const std::unordered_map<CardElementType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers,
-    bool isRequired)
-{
-    auto elementArray = GetArray(json, key, isRequired);
-
-    std::vector<std::shared_ptr<T>> elements;
-    if (elementArray.empty())
-    {
-        return elements;
-    }
-
-    elements.reserve(elementArray.size());
-
-    for (const auto& curJsonValue : elementArray)
-    {
-        // Get the element's type
-        CardElementType curElementType = ParseUtil::TryGetCardElementType(curJsonValue);
-
-        //Parse it if it's allowed by the current parsers
-        if (parsers.find(curElementType) != parsers.end())
-        {
-            // Use the parser that maps to the type
-            elements.push_back(parsers.at(curElementType)(curJsonValue));
-        }
-    }
-
-    return elements;
 }
 
 template <typename T>
 std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollectionOfSingleType(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
-    const std::function<std::shared_ptr<T>(const Json::Value&)>& deserializer,
+    const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value&)>& deserializer,
     bool isRequired)
 {
     auto elementArray = GetArray(json, key, isRequired);
@@ -189,40 +167,10 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollectionOfSingleType(
     for (const Json::Value& curJsonValue : elementArray)
     {
         // Parse the element
-        auto el = deserializer(curJsonValue);
+        auto el = deserializer(elementParserRegistration, actionParserRegistration, curJsonValue);
         if (el != nullptr)
         {
             elements.push_back(el);
-        }
-    }
-
-    return elements;
-}
-
-template <typename T>
-std::vector<std::shared_ptr<T>> ParseUtil::GetActionCollection(
-    const Json::Value& json,
-    AdaptiveCardSchemaKey key,
-    const std::unordered_map<ActionType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers,
-    bool isRequired)
-{
-    auto elementArray = GetArray(json, key, isRequired);
-
-    std::vector<std::shared_ptr<T>> elements;
-
-    if (elementArray.empty())
-    {
-        return elements;
-    }
-
-    elements.reserve(elementArray.size());
-
-    for (const auto& curJsonValue : elementArray)
-    {
-        auto action = ParseUtil::GetActionFromJsonValue(curJsonValue, parsers);
-        if (action != nullptr)
-        {
-            elements.push_back(action);
         }
     }
 
@@ -240,27 +188,4 @@ T ParseUtil::ExtractJsonValueAndMergeWithDefault(
     T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
     return result;
 }
-
-template <typename T>
-std::shared_ptr<T> ParseUtil::GetActionFromJsonValue(
-    const Json::Value& json,
-    const std::unordered_map<ActionType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers)
-{
-    if (json.empty() || !json.isObject())
-    {
-        throw AdaptiveCardParseException("Expected a Json object to extract Action element");
-    }
-    // Get the action's type
-    ActionType actionType = ParseUtil::TryGetActionType(json);
-
-    //Parse it if it's allowed by the current parsers
-    if (parsers.find(actionType) != parsers.end())
-    {
-        // Use the parser that maps to the type
-        return parsers.at(actionType)(json);
-    }
-
-    return nullptr;
-}
-
 }

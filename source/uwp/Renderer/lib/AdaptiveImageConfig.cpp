@@ -1,33 +1,34 @@
 #include "pch.h"
 #include "AdaptiveImageConfig.h"
-#include "AdaptiveSeparationConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize() noexcept try
     {
-        return S_OK;
+        ImageConfig imageConfig;
+        return RuntimeClassInitialize(imageConfig);
     } CATCH_RETURN;
 
-    HRESULT AdaptiveImageConfig::RuntimeClassInitialize(ImageConfig ImageConfig) noexcept
+    HRESULT AdaptiveImageConfig::RuntimeClassInitialize(ImageConfig sharedImageConfig) noexcept
     {
-        m_sharedImageConfig = ImageConfig;
+        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImageConfig.imageSize);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageConfig::get_Separation(IAdaptiveSeparationConfig** separationConfig)
+    HRESULT AdaptiveImageConfig::get_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
     {
-        return MakeAndInitialize<AdaptiveSeparationConfig>(separationConfig, m_sharedImageConfig.separation);
+        *imageSize = m_imageSize;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageConfig::put_Separation(IAdaptiveSeparationConfig*)
+    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
     {
-        return E_NOTIMPL;
+        m_imageSize = imageSize;
+        return S_OK;
     }
-}
-}
+}}}

@@ -8,13 +8,16 @@
 @class ACVTableViewController;
 
 @protocol ACVTableViewControllerDelegate
-- (void) fromACVTable: (ACVTableViewController *) avcTabVc
-     userSelectedJson: (NSString*) jsonStr;
+- (void)fromACVTable:(ACVTableViewController *)avcTabVc
+    userSelectedJson:(NSString *)jsonStr;
+- (void)source:(ACVTableViewController *)avcTabVc
+    userconfig:(NSString *)payload;
 @end
 
 @interface ACVTableViewController: UITableViewController
 
 @property (nonatomic, weak) id <ACVTableViewControllerDelegate> delegate;
+@property NSString *userSelectedJSon;
 
 @end
 

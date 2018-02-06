@@ -1,36 +1,128 @@
 #include "pch.h"
 #include "AdaptiveCard.h"
+#include "AdaptiveCardParseResult.h"
+#include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveElementParserRegistration.h"
+#include "AdaptiveCardParseException.h"
+#include "AdaptiveError.h"
 
 #include <json.h>
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
 
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::CreateCardFromJson(HSTRING adaptiveJson, IAdaptiveCard** card) noexcept try
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {
-        *card = nullptr;
+        return FromJsonStringWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(
+        HSTRING adaptiveJson,
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration,
+        IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
-        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(adaptiveJsonString);
-        return MakeAndInitialize<AdaptiveCard>(card, sharedAdaptiveCard);
+        return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
     } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        return FromJsonWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJsonWithParserRegistration(
+        IJsonObject* adaptiveJson,
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration,
+        IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
+
+        std::string adaptiveJsonString;
+        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
+
+        return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(
+        const std::string jsonString,
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration,
+        IAdaptiveCardParseResult** parseResult)
+    {
+        std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
+        if (elementParserRegistration != nullptr)
+        {
+            ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl = PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
+            if (elementParserRegistrationImpl != nullptr)
+            {
+                sharedModelElementParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
+            }
+        }
+
+        std::shared_ptr<ActionParserRegistration> sharedModelActionParserRegistration;
+        if (actionParserRegistration != nullptr)
+        {
+            ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl = PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
+            if (actionParserRegistrationImpl != nullptr)
+            {
+                sharedModelActionParserRegistration = actionParserRegistrationImpl->GetSharedParserRegistration();
+            }
+        }
+
+                ComPtr<AdaptiveCardParseResult> adaptiveParseResult;
+                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
+                try
+                {
+                        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
+                        ComPtr<IAdaptiveCard> adaptiveCard;
+                        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));
+                        RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
+                        return adaptiveParseResult.CopyTo(parseResult);
+                }
+                catch (const AdaptiveCardParseException& e)
+                {
+                        ComPtr<IVector<IAdaptiveError*>> errors;
+                        RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
+                        HString errorMessage;
+                        ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode>(e.GetStatusCode());
+                        RETURN_IF_FAILED(UTF8ToHString(e.GetReason(), errorMessage.GetAddressOf()));
+                        ComPtr<IAdaptiveError> adaptiveError;
+                        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
+                        RETURN_IF_FAILED(errors->Append(adaptiveError.Get()));
+                        return adaptiveParseResult.CopyTo(parseResult);
+                }
+    }
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
-        m_sharedAdaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
-       
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+        return RuntimeClassInitialize(adaptiveCard);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
+    {
         m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_body == nullptr)
         {
@@ -42,19 +134,28 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         {
             return E_FAIL;
         }        
-        
-        return S_OK;
-    }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
-    {
-        RETURN_IF_FAILED(RuntimeClassInitialize());
-        m_sharedAdaptiveCard = sharedAdaptiveCard;
+        RETURN_IF_FAILED(GenerateContainedElementsProjection(sharedAdaptiveCard->GetBody(), m_body.Get()));
+        RETURN_IF_FAILED(GenerateActionsProjection(sharedAdaptiveCard->GetActions(), m_actions.Get()));
 
-        RETURN_IF_FAILED(GenerateContainedElementsProjection(m_sharedAdaptiveCard->GetBody(), m_body.Get()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetVersion(), m_version.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetMinVersion(), m_minVersion.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
 
-        RETURN_IF_FAILED(GenerateActionsProjection(m_sharedAdaptiveCard->GetActions(), m_actions.Get()));
+        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        HSTRING imageUri;
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), &imageUri));
+        if (imageUri != nullptr)
+        {
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, m_backgroundImage.GetAddressOf()));
+        }
 
         return S_OK;
     }
@@ -62,46 +163,37 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Version(HSTRING* version)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->GetVersion(), version);
+        return m_version.CopyTo(version);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_Version(HSTRING version)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(version, out));
-        m_sharedAdaptiveCard->SetVersion(out);
-        return S_OK;
+        return m_version.Set(version);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_MinVersion(HSTRING* minVersion)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->GetMinVersion(), minVersion);
+        return m_minVersion.CopyTo(minVersion);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_MinVersion(HSTRING minVersion)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(minVersion, out));
-        m_sharedAdaptiveCard->SetMinVersion(out);
-        return S_OK;
+        return m_minVersion.Set(minVersion);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::get_FallbackText(HSTRING* fallbackText)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->GetFallbackText(), fallbackText);
+        return m_fallbackText.CopyTo(fallbackText);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::put_FallbackText(HSTRING fallbackText)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(fallbackText, out));
-        m_sharedAdaptiveCard->SetFallbackText(out);
-        return S_OK;
+        return m_fallbackText.Set(fallbackText);
     }
 
     _Use_decl_annotations_
@@ -124,41 +216,78 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_BackgroundImageUrl(IUriRuntimeClass** url)
+    HRESULT AdaptiveCard::get_BackgroundImage(IUriRuntimeClass** url)
     {
-        *url = nullptr;
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-
-        HSTRING imageUri;
-        RETURN_IF_FAILED(UTF8ToHString(m_sharedAdaptiveCard->GetBackgroundImage(), &imageUri));
-        RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, url));
-        return S_OK;
+        return m_backgroundImage.CopyTo(url);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_BackgroundImageUrl(IUriRuntimeClass* url) try
+    HRESULT AdaptiveCard::put_BackgroundImage(IUriRuntimeClass* url) try
     {
-        if (url == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        HString urlTemp;
-        url->get_AbsoluteUri(urlTemp.GetAddressOf());
-
-        std::string urlString;
-        RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-        m_sharedAdaptiveCard->SetBackgroundImage(urlString);
-
+        m_backgroundImage = url;
         return S_OK;
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::ToJsonString(HSTRING* jsonString)
+    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->Serialize(), jsonString);
+        *style = m_style;
+        return S_OK;
     }
-}}
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
+    {
+        m_style = style;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Speak(HSTRING* speak)
+    {
+        return m_speak.CopyTo(speak);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Speak(HSTRING speak)
+    {
+        return m_speak.Set(speak);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::ToJson(IJsonObject** result)
+    {
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        return StringToJsonObject(sharedModel->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::GetSharedModel(std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel)
+    {
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+
+        adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
+        adaptiveCard->SetMinVersion(HStringToUTF8(m_minVersion.Get()));
+        adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
+        adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
+
+        if (m_backgroundImage != nullptr)
+        {
+            HString urlTemp;
+            m_backgroundImage->get_AbsoluteUri(urlTemp.GetAddressOf());
+            std::string urlString;
+            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
+            adaptiveCard->SetBackgroundImage(urlString);
+        }
+
+        adaptiveCard->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+
+        GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
+        GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
+
+        sharedModel = adaptiveCard;
+        return S_OK;
+    }
+}}}

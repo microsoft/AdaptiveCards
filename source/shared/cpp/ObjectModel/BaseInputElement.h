@@ -12,7 +12,7 @@ class BaseInputElement : public BaseCardElement
 {
 public:
     BaseInputElement(CardElementType elementType);
-    BaseInputElement(CardElementType type, SeparationStyle separationStyle, std::string speak);
+    BaseInputElement(CardElementType type, Spacing spacing, bool separator);
 
     std::string GetId() const;
     void SetId(const std::string value);
@@ -23,8 +23,7 @@ public:
     bool GetIsRequired() const;
     void SetIsRequired(const bool isRequired);
 
-    virtual std::string Serialize() = 0;
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
 private:
     std::string m_id;

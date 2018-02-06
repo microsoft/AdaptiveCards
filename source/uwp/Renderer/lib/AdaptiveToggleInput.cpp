@@ -1,17 +1,17 @@
 #include "pch.h"
 #include "AdaptiveToggleInput.h"
+
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
     {
@@ -22,6 +22,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput)
     {
+        if (sharedToggleInput == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedToggleInput = sharedToggleInput;
         return S_OK;
     }
@@ -109,31 +114,39 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveToggleInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedToggleInput->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(m_sharedToggleInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveToggleInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
-        m_sharedToggleInput->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedToggleInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveToggleInput::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedToggleInput->GetSpeak(), speak);
+        *separator = m_sharedToggleInput->GetSeparator();
+        return S_OK;
+
+        //return GenerateSeparatorProjection(m_sharedToggleInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Speak(HSTRING speak)
+    HRESULT AdaptiveToggleInput::put_Separator(boolean separator)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedToggleInput->SetSpeak(out);
+        m_sharedToggleInput->SetSeparator(separator);
+
+        /*
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedToggleInput->SetSeparator(sharedSeparator);
+        */
         return S_OK;
     }
 
@@ -151,4 +164,24 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-}}
+    _Use_decl_annotations_
+    HRESULT AdaptiveToggleInput::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveToggleInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedToggleInput->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ToggleInput>& sharedModel)
+    {
+        sharedModel = m_sharedToggleInput;
+        return S_OK;
+    }
+}}}

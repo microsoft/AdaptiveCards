@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "outDir": "lib",
+        "moduleResolution": "node",
+        "noImplicitAny": false,        
+        "sourceMap": true, 
+        "declaration": true
+    },
+    "files": ["./src/adaptivecards.ts"]
+}

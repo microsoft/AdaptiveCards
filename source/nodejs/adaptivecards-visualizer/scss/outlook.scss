@@ -1,0 +1,59 @@
+@import 'node_modules/adaptivecards/scss/base';
+
+@font-face {
+    font-family: 'FabricMDL2Icons';
+    src: url('https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.woff') format('woff'), url('https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@include base-anchor();
+
+@include base-container();
+
+@include base-push-button(
+    $background-color: white,
+    $border: 1px solid #B2E0FF,
+    $color: #0078D7,
+
+    $hover-background-color: #0078D7,
+    $hover-border: 1px solid #73C1FD,
+    $hover-color: white,
+
+    $active-background-color: #464B93,
+    $active-border: 1px solid #464B93,
+    $active-color: white,
+    
+    $subdued-border: 1px solid #EEEEEE,
+    $subdued-color: #666666,
+
+    $subdued-hover-background-color: #0078D7,
+    $subdued-hover-border: 1px solid #0078D7,
+    $subdued-hover-color: white,
+
+    $expanded-background-color: #0078D7,
+    $expanded-border: 1px solid #0078D7,
+    $expanded-color: white,
+
+    $expanded-active-background-color: #464B93,
+    $expanded-active-border: 1px solid #464B93,
+    $expanded-active-color: white
+);
+
+.ac-pushButton.expandable:after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-family: 'FabricMDL2Icons';
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 900;
+    margin: auto 0px auto 6px;
+    content: '\E70D';
+}
+
+.ac-pushButton.expandable.expanded:after {
+    content: '\E70E';
+}
+
+@include base-input();

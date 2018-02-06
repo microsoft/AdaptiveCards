@@ -5,11 +5,11 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     ImageLoadTracker::~ImageLoadTracker()
     {
@@ -30,7 +30,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IExceptionRoutedEventHandler> imageFailedEventHandler = Microsoft::WRL::Callback<IExceptionRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageFailed);
         THROW_IF_FAILED(bitmapImage->add_ImageFailed(imageFailedEventHandler.Get(), &trackedImageDetails.imageFailedRegistration));
 
-        // Ensure we donn't try and write the private data from multiple threads
+        // Ensure we don't try and write the private data from multiple threads
         auto exclusiveLock = m_lock.LockExclusive();
 
         ComPtr<IInspectable> inspectableBitmapImage;
@@ -42,6 +42,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             m_trackedImageCount++;
             m_totalImageCount++;
         }
+    }
+
+    _Use_decl_annotations_
+    void ImageLoadTracker::MarkFailedLoadBitmapImage(IBitmapImage* bitmapImage)
+    {
+        // Record failure
+        m_hasFailure = true;
+
+        // And then notify this image is done
+        ComPtr<IBitmapImage> localBitmapImage(bitmapImage);
+        ComPtr<IInspectable> inspectableBitmapImage;
+        THROW_IF_FAILED(localBitmapImage.As(&inspectableBitmapImage));
+        ImageLoadResultReceived(inspectableBitmapImage.Get());
     }
 
     void ImageLoadTracker::AbandonOutstandingImages()
@@ -113,7 +126,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         if (m_trackedImageCount == 0)
         {
-            FireAllImagesLoaded();
+            m_hasFailure ? FireImagesLoadingHadError() : FireAllImagesLoaded();
         }
     }
 
@@ -136,4 +149,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             listener->AllImagesLoaded();
         }
     }
-}}
+
+    void ImageLoadTracker::FireImagesLoadingHadError()
+    {
+        for (auto& listener : m_listeners)
+        {
+            listener->ImagesLoadingHadError();
+        }
+    }
+}}}

@@ -2,9 +2,10 @@
 #include "AdaptiveActionEventArgs.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize()
     {
@@ -12,22 +13,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(IAdaptiveActionElement* action, HSTRING inputs)
+    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(IAdaptiveActionElement* action, IAdaptiveInputs* inputs)
     {
         m_action = action;
-        m_inputs.Attach(inputs);
+        m_inputs = inputs;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveActionEventArgs::get_Action(IAdaptiveActionElement** action)
     {
-        ComPtr<IAdaptiveActionElement> localAction(m_action);
-        *action = localAction.Detach();
-        return S_OK;
+        return m_action.CopyTo(action);
     }
-    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(HSTRING* inputs)
+
+    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(IAdaptiveInputs** inputs)
     {
         return m_inputs.CopyTo(inputs);
     }
-}}
+}}}

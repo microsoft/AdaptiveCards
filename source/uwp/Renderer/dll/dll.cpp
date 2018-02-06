@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 
-WrlCreatorMapIncludePragma(XamlCardRenderer);
+WrlCreatorMapIncludePragma(AdaptiveCardRenderer);
 
 STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId, _COM_Outptr_ IActivationFactory **factory)
 {

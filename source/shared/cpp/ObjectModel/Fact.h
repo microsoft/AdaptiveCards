@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "Enums.h"
 #include "json/json.h"
+#include "ElementParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -10,7 +11,7 @@ class Fact
 {
 public:
     Fact();
-    Fact(std::string title, std::string value, std::string speak);
+    Fact(std::string title, std::string value);
 
     std::string Serialize();
     Json::Value SerializeToJsonValue();
@@ -21,15 +22,18 @@ public:
     std::string GetValue() const;
     void SetValue(const std::string value);
 
-    std::string GetSpeak() const;
-    void SetSpeak(const std::string value);
+    static std::shared_ptr<Fact> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& root);
 
-    static std::shared_ptr<Fact> Deserialize(const Json::Value& root);
-    static std::shared_ptr<Fact> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<Fact> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const std::string& jsonString);
 
 private:
     std::string m_title;
     std::string m_value;
-    std::string m_speak;
 };
 }

@@ -1,49 +1,65 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "ImageSet.h"
 #include <windows.foundation.h>
 
-namespace AdaptiveCards {
-    namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
+{
+    class DECLSPEC_UUID("04ed4200-de21-4587-8bc5-74b000809985") AdaptiveImageSet :
+        public Microsoft::WRL::RuntimeClass<
+        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImageSet,
+        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
+        Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        class AdaptiveImageSet :
-            public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImageSet,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveImageSet, BaseTrust)
+
+    public:
+        AdaptiveImageSet();
+
+        HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ImageSet>& sharedImageSet);
+
+        // IAdaptiveImageSet
+        IFACEMETHODIMP get_Images(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage*>** columns);
+
+        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize);
+        IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize);
+
+        // IAdaptiveCardElement
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
+
+        IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
+        IFACEMETHODIMP put_Separator(_In_ boolean separator);
+
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
+
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
+
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::ImageSet>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
         {
-            InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveImageSet, BaseTrust)
+            return PeekHelper(riid, this);
+        }
 
-        public:
-            AdaptiveImageSet();
+    private:
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage*>> m_images;
+        ABI::AdaptiveCards::Rendering::Uwp::ImageSize m_imageSize;
 
-            HRESULT RuntimeClassInitialize() noexcept;
-            HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ImageSet>& sharedImageSet);
+        boolean m_separator;
+        Microsoft::WRL::Wrappers::HString m_id;
+        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
+    };
 
-            // IAdaptiveImageSet
-            IFACEMETHODIMP get_Images(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage*>** columns);
-
-            IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize);
-            IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize);
-
-            // IAdaptiveCardElement
-            IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
-
-            IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
-            IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
-
-            IFACEMETHODIMP get_Speak(_In_ HSTRING *speak);
-            IFACEMETHODIMP put_Speak(_Out_ HSTRING speak);
-
-        private:
-            // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
-            Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage*>> m_images;
-
-            std::shared_ptr<AdaptiveCards::ImageSet> m_sharedImageSet;
-        };
-
-        ActivatableClass(AdaptiveImageSet);
-    }
-}
+    ActivatableClass(AdaptiveImageSet);
+}}}

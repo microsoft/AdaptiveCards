@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "Enums.h"
 #include "json/json.h"
+#include "ElementParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -23,16 +24,19 @@ public:
     bool GetIsSelected() const;
     void SetIsSelected(const bool value);
 
-    std::string GetSpeak() const;
-    void SetSpeak(const std::string value);
+    static std::shared_ptr<ChoiceInput> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& root);
 
-    static std::shared_ptr<ChoiceInput> Deserialize(const Json::Value& root);
-    static std::shared_ptr<ChoiceInput> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<ChoiceInput> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const std::string& jsonString);
 
 private:
     std::string m_title;
     std::string m_value;
-    std::string m_speak;
     bool m_isSelected;
 };
 }

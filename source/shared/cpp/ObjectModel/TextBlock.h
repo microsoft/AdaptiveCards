@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
+#include <time.h>
+#include "ElementParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -10,22 +12,19 @@ class TextBlock : public BaseCardElement
 {
 public:
     TextBlock();
-    TextBlock(SeparationStyle separationStyle,
-        std::string speak,
+    TextBlock(
+        Spacing spacing,
+        bool separator,
         std::string text,
         TextSize textSize,
         TextWeight textWeight,
-        TextColor textColor,
+        ForegroundColor color,
         bool isSubtle,
         bool wrap,
         int maxLines,
         HorizontalAlignment hAlignment);
 
-    static std::shared_ptr<TextBlock> Deserialize(const Json::Value& root);
-    static std::shared_ptr<TextBlock> DeserializeFromString(const std::string& jsonString);
-
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetText() const;
     void SetText(const std::string value);
@@ -36,8 +35,8 @@ public:
     TextWeight GetTextWeight() const;
     void SetTextWeight(const TextWeight value);
 
-    TextColor GetTextColor() const;
-    void SetTextColor(const TextColor value);
+    ForegroundColor GetTextColor() const;
+    void SetTextColor(const ForegroundColor value);
 
     bool GetWrap() const;
     void SetWrap(const bool value);
@@ -55,10 +54,26 @@ private:
     std::string m_text;
     TextSize m_textSize;
     TextWeight m_textWeight;
-    TextColor m_textColor;
+    ForegroundColor m_textColor;
     bool m_isSubtle;
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
+    std::string ParseDateTime() const;
+    static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
+};
+
+class TextBlockParser : public IBaseCardElementParser
+{
+public:
+    std::shared_ptr<BaseCardElement> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& root);
+
+    std::shared_ptr<BaseCardElement> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const std::string& jsonString);
 };
 }

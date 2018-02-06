@@ -1,17 +1,18 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "Fact.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-    class AdaptiveFact :
+    class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveFact :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFact>
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveFact, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveFact, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -24,14 +25,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Value(_In_ HSTRING* value);
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
-        IFACEMETHODIMP get_Speak(_In_ HSTRING* speak);
-        IFACEMETHODIMP put_Speak(_Out_ HSTRING speak);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::Fact>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
     private:
         std::shared_ptr<AdaptiveCards::Fact> m_sharedFact;
     };
 
     ActivatableClass(AdaptiveFact);
-}}
+}}}

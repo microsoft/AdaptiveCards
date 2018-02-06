@@ -1,0 +1,143 @@
+//
+//  ACRChoiceSetViewDataSource.mm
+//  ACRChoiceSetViewDataSource
+//
+//  Copyright © 2018 Microsoft. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "ACRChoiceSetViewDataSource.h"
+
+using namespace AdaptiveCards;
+
+@implementation ACRChoiceSetViewDataSource
+{
+    std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
+    NSMutableDictionary *_userSelections;
+    NSIndexPath *_lastSelectedIndexPath;
+}
+
+- (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
+{
+    self = [super init];
+    if(self)
+    {
+        self.id = [[NSString alloc]initWithCString:choiceSet->GetId().c_str()
+                                           encoding:NSUTF8StringEncoding];
+        _isMultiChoicesAllowed = choiceSet->GetIsMultiSelect();
+        _choiceSetDataSource = choiceSet;
+        _userSelections = [[NSMutableDictionary alloc] init];
+        _lastSelectedIndexPath = nil;
+    }
+    return self;
+}
+
+// ChoiceSetView is a parent view that leads to child view that handles input selection
+// so the size is always 1 when there are more than one choices
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return (_choiceSetDataSource->GetChoices().size());
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"tabCellId";
+    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:identifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if(!cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:identifier];
+    }
+    NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
+                               encoding:NSUTF8StringEncoding];
+    cell.textLabel.text = title;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // if this tableView was used before for gathering input,
+    // load the tableView with user selection
+    if([_userSelections count] &&
+       [_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] &&
+       [[_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] boolValue] == YES)
+    {
+        [self tableView:tableView didSelectRowAtIndexPath:indexPath];
+        [cell setSelected:YES animated:NO];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        _lastSelectedIndexPath = indexPath;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryCheckmark)
+    {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+    }
+    else
+    {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
+    }
+
+    // didDeselectRowAtIndexPath doesn't get called for the cells that was already selected before the tableView came to view
+    // if multi choice is not allowed, then uncheck pre-selection
+    if(_isMultiChoicesAllowed == NO && _lastSelectedIndexPath.row != indexPath.row)
+    {
+        [tableView cellForRowAtIndexPath:_lastSelectedIndexPath].accessoryType = UITableViewCellAccessoryNone;
+        _userSelections[[NSNumber numberWithInteger:_lastSelectedIndexPath.row]] = [NSNumber numberWithBool:NO];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    // uncheck selection if multi choice is not allowed
+    if(_isMultiChoicesAllowed == NO)
+    {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+    }
+}
+
+- (BOOL)validate:(NSError **)error
+{
+    // no need to validate
+    return YES;
+}
+
+- (void)getInput:(NSMutableDictionary *)dictionary
+{
+    NSMutableArray *values = [[NSMutableArray alloc] init];
+    for(NSInteger i = 0; i < [_userSelections count]; i++)
+    {
+        if([_userSelections[[NSNumber numberWithInteger:i]] boolValue] == YES)
+        {
+            [values addObject:
+             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[i]->GetValue().c_str()
+                                encoding:NSUTF8StringEncoding]];
+        }
+    }
+    dictionary[self.id] = [values componentsJoinedByString:@";"];
+}
+
+@end

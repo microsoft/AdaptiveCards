@@ -1,38 +1,60 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "ShowCardAction.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-    class AdaptiveShowCardAction :
+    class DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveShowCardAction,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement>
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveShowCardAction,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveShowCardAction, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveShowCardAction, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction);
 
         // IAdaptiveShowCardAction
-        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card);
-        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card);
+        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** card);
+        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType);
-
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType);
+        IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
         IFACEMETHODIMP put_Title(_In_ HSTRING title);
+
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
+
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
+
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedModel);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
+
     private:
-        std::shared_ptr<AdaptiveCards::ShowCardAction> m_sharedShowCardAction;
+        
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard> m_card;
+
+        Microsoft::WRL::Wrappers::HString m_id;
+        Microsoft::WRL::Wrappers::HString m_title;
+        Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
+
     };
 
     ActivatableClass(AdaptiveShowCardAction);
-}}
+}}}
