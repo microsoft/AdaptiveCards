@@ -139,6 +139,10 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 inputActionHandlerList,
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
+        if (textInput.GetIsMultiline())
+        {
+            editText.setLines(3);
+        }
         setTextInputStyle(editText, textInput.GetTextInputStyle());
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);
         if (maxLength > 0)
