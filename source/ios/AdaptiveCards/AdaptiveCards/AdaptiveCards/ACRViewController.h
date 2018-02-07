@@ -19,4 +19,6 @@
           hostconfig:(ACOHostConfig *)config
                frame:(CGRect)frame;
 
+- (NSMutableDictionary *) getImageMap;
+
 @end

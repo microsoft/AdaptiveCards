@@ -55,7 +55,18 @@ using namespace AdaptiveCards;
 
     if(!body.empty())
     {
-         verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
+        // loop through elements and find images or text blocks
+        // images splits over two task, loading and scaling
+        // text has only one taks initializing attributed text
+        // get concurrent gcd queue
+        // dispatch sync for image downloading
+        // dispatch async for image scaling
+        // --> cache the result
+        // disptach async attributed text
+        // --> cache  the result
+        // wait till all task is done
+        // execute the rest of the code
+        verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
 
         [ACRRenderer render:verticalView rootViewController:vc inputs:inputs withCardElems:body andHostConfig:config];
 

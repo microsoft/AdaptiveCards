@@ -10,6 +10,7 @@
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRViewController.h"
 
 @implementation ACRImageRenderer
 
@@ -24,7 +25,7 @@
     return CardElementType::Image;
 }
 
-- (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem
++ (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem
         withHostConfig:(std::shared_ptr<HostConfig> const &)hostConfig
 {
     float sz = hostConfig->imageSizes.smallSize;
@@ -126,21 +127,21 @@
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-    NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
-                                          encoding:[NSString defaultCStringEncoding]];
-    NSURL *url = [NSURL URLWithString:urlStr];
 
-    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-
-    CGSize cgsize = [self getImageSize:imgElem withHostConfig:config];
-
-    UIGraphicsBeginImageContext(cgsize);
+    CGSize cgsize = [ACRImageRenderer getImageSize:imgElem withHostConfig:config];
     UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-    [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
-    img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    view.image = img;
+    NSNumber *key = [NSNumber numberWithUnsignedLong:(unsigned long) elem.get()];
+    if([(ACRViewController *)vc getImageMap][key] == nil)
+    {
+        NSLog(@"Image not ready");
+       [(ACRViewController *)vc getImageMap][key] = view;
+    }
+    else
+    {
+        NSLog(@"image is ready");
+        view.image = [(ACRViewController *)vc getImageMap][key];
+    }
 
     //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
     view.contentMode = UIViewContentModeScaleAspectFit;
@@ -154,8 +155,7 @@
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
     [wrappingview addSubview:view];
 
-
-    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
+    [viewGroup addArrangedSubview:wrappingview];
 
     [wrappingview addConstraints:[self setImageAlignment:imgElem->GetHorizontalAlignment()
                                            withSuperview:wrappingview

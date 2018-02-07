@@ -11,6 +11,11 @@
 #import "SharedAdaptiveCard.h"
 #import "ACRRendererPrivate.h"
 #import <AVFoundation/AVFoundation.h>
+#import "Container.h"
+#import "ColumnSet.h"
+#import "Column.h"
+#import "Image.h"
+#import "ACRImageRenderer.h"
 
 using namespace AdaptiveCards;
 
@@ -19,6 +24,7 @@ using namespace AdaptiveCards;
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
     std::shared_ptr<HostConfig> _hostConfig;
     CGRect _guideFrame;
+    NSMutableDictionary *_imageViewMap;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -27,6 +33,7 @@ using namespace AdaptiveCards;
     if(self){
         _guideFrame = CGRectMake(0, 0, 0, 0);
         _hostConfig = std::make_shared<HostConfig>();
+        _imageViewMap = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -45,6 +52,7 @@ using namespace AdaptiveCards;
             _hostConfig = [config getHostConfig];
         }
         _guideFrame = frame;
+        _imageViewMap = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -95,7 +103,24 @@ using namespace AdaptiveCards;
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
-    // transforms (i.e. renders) an adaptiveCard to a new UIView instance
+    std::vector<std::shared_ptr<BaseCardElement>> body = _adaptiveCard->GetBody();
+    if(!body.empty())
+    {
+        // loop through elements and find images or text blocks
+        // images splits over two task, loading and scaling
+        // text has only one taks initializing attributed text
+        // get concurrent gcd queue
+        // dispatch sync for image downloading
+        // dispatch async for image scaling
+        // --> cache the result
+        // disptach async attributed text
+        // --> cache  the result
+        // wait till all task is done
+        // execute the rest of the code
+        // transforms (i.e. renders) an adaptiveCard to a new UIView instance
+        [self addImageBlockToConcurrentQueue:body];
+    }
+    
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                              inputs:inputs
                                                      viewController:self
@@ -147,6 +172,87 @@ using namespace AdaptiveCards;
     [NSLayoutConstraint activateConstraints:
      @[[newView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
        [newView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
+}
+
+- (void) addImageBlockToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
+{
+    for(auto &elem : body)
+    {
+        switch (elem->GetElementType())
+        {
+            case CardElementType::Image:
+            {
+                //dispatch_queue_t syncQueue = dispatch_queue_create("io.AdaptiveCards.syncQueue", NULL);
+                /// dispatch to concurrent queue
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                {
+                    std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
+                    NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
+                                                          encoding:[NSString defaultCStringEncoding]];
+                    NSLog(@"entered");
+                    NSURL *url = [NSURL URLWithString:urlStr];
+
+                    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+
+                    CGSize cgsize = [ACRImageRenderer getImageSize:imgElem withHostConfig:_hostConfig];
+
+                    UIGraphicsBeginImageContext(cgsize);
+                    [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
+                    img = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
+                    dispatch_sync(dispatch_get_main_queue(), ^
+                                  {
+                                      NSLog(@"recording");
+                                      NSNumber *key = [NSNumber numberWithUnsignedLong: (unsigned long)elem.get()];
+                                      UIImageView *view = _imageViewMap[key];
+                                      if (!view)
+                                      {
+                                          NSLog(@"view is not ready");
+                                      }
+                                      else{
+                                      view.image = img;
+                                      }
+                                  });
+
+                });
+                break;
+            }
+            case CardElementType::Container:
+            {
+                std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
+                std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
+                [self addImageBlockToConcurrentQueue: new_body];
+                break;
+            }
+            case CardElementType::Column:
+            {
+                std::shared_ptr<Column> colum = std::static_pointer_cast<Column>(elem);
+                std::vector<std::shared_ptr<BaseCardElement>> &new_body = colum->GetItems();
+                [self addImageBlockToConcurrentQueue: new_body];
+                break;
+            }
+            case CardElementType::ColumnSet:
+            {
+                std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
+                std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
+                for(auto &colum : columns)
+                {
+                    [self addImageBlockToConcurrentQueue: colum->GetItems()];
+                }
+                break;
+            }
+            default:
+            {
+                /// no work is needed
+                break;
+            }
+        }
+    }
+}
+
+- (NSMutableDictionary *) getImageMap
+{
+    return _imageViewMap;
 }
 
 @end
