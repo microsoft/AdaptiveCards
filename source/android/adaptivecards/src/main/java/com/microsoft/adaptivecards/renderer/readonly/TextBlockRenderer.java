@@ -131,7 +131,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
         TextView textView = new TextView(context);
         textView.setTag(baseCardElement);
-        MarkDownParser markDownParser = new MarkDownParser(textBlock.GetText());
+        MarkDownParser markDownParser = new MarkDownParser(textBlock.WstringToString(textBlock.GetText()));
         String textString = markDownParser.TransformToHtml();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
