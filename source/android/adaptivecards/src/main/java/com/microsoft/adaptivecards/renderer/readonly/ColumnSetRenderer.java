@@ -20,9 +20,6 @@ import com.microsoft.adaptivecards.renderer.IBaseCardElementRenderer;
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 4/27/2017.
- */
 
 public class ColumnSetRenderer extends BaseCardElementRenderer
 {
@@ -67,18 +64,17 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
-        GridLayout gridLayout = new GridLayout(context);
-        gridLayout.setTag(columnSet);
-        gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout layout = new LinearLayout(context);
+        layout.setTag(columnSet);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
-            //setSeparationConfig(context, gridLayout, columnSet.GetSeparationStyle(), hostConfig.getContainer().getSeparation(), hostConfig.getStrongSeparation(), false /* horizontal line */);
-            ((ColumnRenderer)columnRenderer).render(context, fragmentManager, gridLayout, column, i, inputActionHandlerList, hostConfig);
+            ((ColumnRenderer)columnRenderer).render(context, fragmentManager, layout, column, i, inputActionHandlerList, hostConfig);
         }
 
-        viewGroup.addView(gridLayout);
-        return gridLayout;
+        viewGroup.addView(layout);
+        return layout;
     }
 
     private static ColumnSetRenderer s_instance = null;

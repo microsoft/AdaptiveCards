@@ -33,21 +33,6 @@ public class DateInputHandler extends TextInputHandler
             throws ParseException
     {
         super.internalValidate();
-        DateInput dateInput = (DateInput) m_baseInputElement;
-
-        EditText editText = getEditText();
-        Date value = s_simpleDateFormat.parse(editText.getText().toString());
-        Date minDate = s_simpleDateFormat.parse(dateInput.GetMin());
-        if (value.compareTo(minDate) < 0)
-        {
-            throw new IllegalArgumentException("Input, " + dateInput.GetId() + ", contains value, " + editText.getText().toString() + ", that is less than the minimum value, " + dateInput.GetMin() + ", allowed.");
-        }
-
-        Date maxDate = s_simpleDateFormat.parse(dateInput.GetMax());
-        if (value.compareTo(maxDate) > 0)
-        {
-            throw new IllegalArgumentException("Input, " + dateInput.GetId() + ", contains value, " + editText.getText().toString() + ", that is greater than the maximum value, " + dateInput.GetMax() + ", allowed.");
-        }
     }
 
     private FragmentManager m_fragmentManager;

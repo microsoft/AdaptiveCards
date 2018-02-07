@@ -28,8 +28,6 @@ public abstract class HttpRequestHelper
             throws MalformedURLException, URISyntaxException, IOException
     {
         URL netURL = new URL(url);
-        URI netURI = new URI(netURL.getProtocol(), netURL.getUserInfo(), netURL.getHost(), netURL.getPort(), netURL.getPath(), netURL.getQuery(), netURL.getRef());
-        netURL = netURI.toURL();
 
         HttpURLConnection conn = (HttpURLConnection) netURL.openConnection();
         conn.setRequestMethod(method);
