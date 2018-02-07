@@ -1,25 +1,7 @@
 import { HostContainer } from "./host-container";
-import {
-    AdaptiveCard,
-    HostConfig,
-    Size,
-    TextSize,
-    TextColor,
-    TextWeight,
-    Spacing,
-    ShowCardActionMode,
-    Orientation,
-    ActionAlignment,
-    CardElement,
-    Image,
-    Container,
-    Column,
-    Action,
-    ActionSet,
-    HttpAction
-} from "adaptivecards";
+import * as Adaptive from "adaptivecards";
 
-export class ToggleVisibilityAction extends Action {
+export class ToggleVisibilityAction extends Adaptive.Action {
     targetElementIds: Array<string> = [];
 
     getJsonTypeName(): string {
@@ -46,7 +28,7 @@ export class ToggleVisibilityAction extends Action {
 }
 
 export class OutlookContainer extends HostContainer {
-    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: Adaptive.AdaptiveCard, target: HTMLElement): HTMLElement {
         var element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
@@ -62,32 +44,54 @@ export class OutlookContainer extends HostContainer {
     public initialize() {
         super.initialize();
 
-        AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new ActionSet(); });
+        Adaptive.AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new Adaptive.ActionSet(); });
 
-        AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
-        AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
-        AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+        Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
+        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
+        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 
-        AdaptiveCard.useAutomaticContainerBleeding = true;
-        AdaptiveCard.preExpandSingleShowCardAction = true;
-        AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
+        Adaptive.AdaptiveCard.preExpandSingleShowCardAction = true;
+        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
     }
 
-    public parseElement(element: CardElement, json: any) {
+    public parseElement(element: Adaptive.CardElement, json: any) {
         if (typeof json["isVisible"] === "boolean") {
             element.isVisible = json["isVisible"];
         }
 
-        if (element instanceof Image) {
-            (<Image>element).backgroundColor = json["backgroundColor"];
+        if (element instanceof Adaptive.Image) {
+            (<Adaptive.Image>element).backgroundColor = json["backgroundColor"];
         }
 
-        if (element instanceof Column) {
-            (<Column>element).pixelWidth = json["pixelWidth"];
+        if (element instanceof Adaptive.Column) {
+            (<Adaptive.Column>element).pixelWidth = json["pixelWidth"];
         }
 
-        if (element instanceof Container) {
-            (<Container>element).bleed = json["bleed"];
+        if (element instanceof Adaptive.Container) {
+            var container = <Adaptive.Container>element;
+
+            container.bleed = json["bleed"];
+
+            var jsonPadding = json["padding"];
+
+            if (jsonPadding) {
+                if (typeof jsonPadding === "string") {
+                    var uniformPadding = Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding, Adaptive.Spacing.None);
+    
+                    container.padding = new Adaptive.PaddingDefinition(
+                        uniformPadding,
+                        uniformPadding,
+                        uniformPadding,
+                        uniformPadding);
+                }
+                else if (typeof jsonPadding === "object") {
+                    container.padding = new Adaptive.PaddingDefinition(
+                        Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding["top"], Adaptive.Spacing.None),
+                        Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding["right"], Adaptive.Spacing.None),
+                        Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding["bottom"], Adaptive.Spacing.None),
+                        Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding["left"], Adaptive.Spacing.None));
+                }
+            }    
         }
     }
 
@@ -102,8 +106,8 @@ export class OutlookContainer extends HostContainer {
         }
     }
 
-    public getHostConfig(): HostConfig {
-        return new HostConfig({
+    public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig({
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
             spacing: {
@@ -189,36 +193,36 @@ export class OutlookContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: Spacing.Default,
+                spacing: Adaptive.Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: ShowCardActionMode.Inline,
+                    actionMode: Adaptive.ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: Orientation.Horizontal,
-                actionAlignment: ActionAlignment.Left
+                actionsOrientation: Adaptive.Orientation.Horizontal,
+                actionAlignment: Adaptive.ActionAlignment.Left
             },
             adaptiveCard: {
-                allowCustomStyle: false
+                allowCustomStyle: true
             },
             imageSet: {
-                imageSize: Size.Medium,
+                imageSize: Adaptive.Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
+                    color: Adaptive.TextColor.Default,
+                    size: Adaptive.TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Bolder,
+                    weight: Adaptive.TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150,
                 },
                 value: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
+                    color: Adaptive.TextColor.Default,
+                    size: Adaptive.TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Default,
+                    weight: Adaptive.TextWeight.Default,
                     wrap: true,
                 },
                 spacing: 10

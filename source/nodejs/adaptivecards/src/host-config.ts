@@ -2,47 +2,6 @@ import * as Enums from "./enums";
 import * as Utils from "./utils";
 import { TextColor } from "./adaptivecards";
 
-export class SpacingDefinition {
-    left: number = 0;
-    top: number = 0;
-    right: number = 0;
-    bottom: number = 0;
-
-    constructor(obj?: any) {
-        if (obj) {
-            this.top = obj["top"] || this.top;
-            this.right = obj["right"] || this.right;
-            this.bottom = obj["bottom"] || this.bottom;
-            this.left = obj["left"] || this.left;
-        }
-    }
-}
-
-export class PaddingDefinition {
-    top: Enums.Padding = Enums.Padding.None;
-    right: Enums.Padding = Enums.Padding.None;
-    bottom: Enums.Padding = Enums.Padding.None;
-    left: Enums.Padding = Enums.Padding.None;
-
-    constructor(obj?: any) {
-        if (obj) {
-            this.top = Utils.parseHostConfigEnum(Enums.Padding, obj["top"], Enums.Padding.None);
-            this.right = Utils.parseHostConfigEnum(Enums.Padding, obj["right"], Enums.Padding.None);
-            this.bottom = Utils.parseHostConfigEnum(Enums.Padding, obj["bottom"], Enums.Padding.None);
-            this.left = Utils.parseHostConfigEnum(Enums.Padding, obj["left"], Enums.Padding.None);
-        }
-    }
-
-    toJSON() {
-        return {
-            top: Enums.Padding[this.top],
-            right: Enums.Padding[this.right],
-            bottom: Enums.Padding[this.bottom],
-            left: Enums.Padding[this.left],
-        }
-    }
-}
-
 export class TextColorDefinition {
     default: string = "#000000";
     subtle: string = "#666666";
@@ -425,23 +384,5 @@ export class HostConfig {
             default:
                 return 0;
         }
-    }
-
-    getEffectivePadding(padding: Enums.Padding): number {
-        switch (padding) {
-            case Enums.Padding.Default:
-                return this.spacing.padding;
-            default:
-                return 0;
-        }
-    }
-
-    paddingToSpacingDefinition(padding: PaddingDefinition): SpacingDefinition {
-        return new SpacingDefinition({
-            top: this.getEffectivePadding(padding.top),
-            right: this.getEffectivePadding(padding.right),
-            bottom: this.getEffectivePadding(padding.bottom),
-            left: this.getEffectivePadding(padding.left)
-        })
     }
 }
