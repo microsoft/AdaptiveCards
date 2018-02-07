@@ -143,25 +143,44 @@ export abstract class CardElement {
         }
     }
 
-    protected internalGetNonZeroPadding(padding: PaddingDefinition) {
-        if (padding.top == Enums.Spacing.None) {
-            padding.top = this.internalPadding.top;
+    protected _padding: PaddingDefinition = null;
+
+    protected internalGetNonZeroPadding(padding: PaddingDefinition,
+                                        processTop: boolean = true,
+                                        processRight: boolean = true,
+                                        processBottom: boolean = true,
+                                        processLeft: boolean = true) {
+        if (processTop) {
+            if (padding.top == Enums.Spacing.None) {
+                padding.top = this.internalPadding.top;
+            }
         }
 
-        if (padding.right == Enums.Spacing.None) {
-            padding.right = this.internalPadding.right;
+        if (processRight) {
+            if (padding.right == Enums.Spacing.None) {
+                padding.right = this.internalPadding.right;
+            }
         }
 
-        if (padding.bottom == Enums.Spacing.None) {
-            padding.bottom = this.internalPadding.bottom;
+        if (processBottom) {
+            if (padding.bottom == Enums.Spacing.None) {
+                padding.bottom = this.internalPadding.bottom;
+            }
         }
 
-        if (padding.left == Enums.Spacing.None) {
-            padding.left = this.internalPadding.left;
+        if (processLeft) {
+            if (padding.left == Enums.Spacing.None) {
+                padding.left = this.internalPadding.left;
+            }
         }
 
         if (this.parent) {
-            this.parent.internalGetNonZeroPadding(padding);
+            this.parent.internalGetNonZeroPadding(
+                padding,
+                processTop && this.isAtTheVeryTop(),
+                processRight && this.isAtTheVeryRight(),
+                processBottom && this.isAtTheVeryBottom(),
+                processLeft && this.isAtTheVeryLeft());
         }
     }
 
@@ -222,7 +241,12 @@ export abstract class CardElement {
     }
 
     protected get internalPadding(): PaddingDefinition {
-        return (this._internalPadding && this.allowCustomPadding) ? this._internalPadding : this.defaultPadding;
+        if (this._padding) {
+            return this._padding;
+        }
+        else {
+            return (this._internalPadding && this.allowCustomPadding) ? this._internalPadding : this.defaultPadding;
+        }
     }
 
     protected set internalPadding(value: PaddingDefinition) {
@@ -245,14 +269,6 @@ export abstract class CardElement {
 
     getNonZeroPadding(): PaddingDefinition {
         var padding: PaddingDefinition = new PaddingDefinition();
-        /*
-            {
-                top: Enums.Padding.None,
-                right: Enums.Padding.None,
-                bottom: Enums.Padding.None,
-                left: Enums.Padding.None
-            });
-        */
 
         this.internalGetNonZeroPadding(padding);
 
@@ -2528,7 +2544,6 @@ export class Container extends CardElement {
     private _selectAction: Action;
     private _items: Array<CardElement> = [];
     private _style?: string = null;
-    private _padding: PaddingDefinition = null;
 
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {

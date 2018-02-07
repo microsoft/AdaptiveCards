@@ -203,7 +203,7 @@ export class OutlookContainer extends HostContainer {
                 actionAlignment: Adaptive.ActionAlignment.Left
             },
             adaptiveCard: {
-                allowCustomStyle: false
+                allowCustomStyle: true
             },
             imageSet: {
                 imageSize: Adaptive.Size.Medium,
