@@ -253,7 +253,7 @@ void AdaptiveCard::SetLanguage(const std::locale value)
     {
         if (bodyElement->GetElementType() == CardElementType::Container)
         {
-            auto container = std::dynamic_pointer_cast<Container>(bodyElement);
+            auto container = std::static_pointer_cast<Container>(bodyElement);
             if (container != nullptr)
             {
                 container->SetLanguage(value);
@@ -263,7 +263,7 @@ void AdaptiveCard::SetLanguage(const std::locale value)
         {
             if (bodyElement->GetElementType() == CardElementType::TextBlock)
             {
-                auto textBlock = std::dynamic_pointer_cast<TextBlock>(bodyElement);
+                auto textBlock = std::static_pointer_cast<TextBlock>(bodyElement);
                 if (textBlock != nullptr)
                 {
                     textBlock->SetLanguage(value);
@@ -276,7 +276,7 @@ void AdaptiveCard::SetLanguage(const std::locale value)
     {
         if (actionElement->GetElementType() == ActionType::ShowCard)
         {
-            auto showCard = std::dynamic_pointer_cast<ShowCardAction>(actionElement);
+            auto showCard = std::static_pointer_cast<ShowCardAction>(actionElement);
             if (showCard != nullptr)
             {
                 showCard->SetLanguage(value);

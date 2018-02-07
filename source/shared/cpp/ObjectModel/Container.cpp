@@ -65,14 +65,16 @@ void Container::SetLanguage(const std::locale& value)
 
         if (elementType == CardElementType::Container)
         {
-            auto element = std::dynamic_pointer_cast<Container>(item);
+            auto element = std::static_pointer_cast<Container>(item);
             element->SetLanguage(value);
         }
-
-        if (elementType == CardElementType::TextBlock)
+        else
         {
-            auto element = std::dynamic_pointer_cast<TextBlock>(item);
-            element->SetLanguage(value);
+            if (elementType == CardElementType::TextBlock)
+            {
+                auto element = std::static_pointer_cast<TextBlock>(item);
+                element->SetLanguage(value);
+            }
         }
     }
 }

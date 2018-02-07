@@ -346,13 +346,15 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
                     textBlock->SetLanguage(dateLanguage);
                 }
             }
-
-            if (elements.back()->GetElementType() == CardElementType::Container)
+            else
             {
-                auto container = std::static_pointer_cast<Container>(elements.back());
-                if (container != nullptr)
+                if (elements.back()->GetElementType() == CardElementType::Container)
                 {
-                    container->SetLanguage(dateLanguage);
+                    auto container = std::static_pointer_cast<Container>(elements.back());
+                    if (container != nullptr)
+                    {
+                        container->SetLanguage(dateLanguage);
+                    }
                 }
             }
         }
@@ -414,7 +416,7 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
 
             if (elements.back()->GetElementType() == ActionType::ShowCard)
             {
-                auto showCard = std::dynamic_pointer_cast<ShowCardAction>(elements.back());
+                auto showCard = std::static_pointer_cast<ShowCardAction>(elements.back());
                 showCard->SetLanguage(dateLanguage);
             }
         }
