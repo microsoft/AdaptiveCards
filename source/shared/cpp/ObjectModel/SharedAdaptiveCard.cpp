@@ -17,11 +17,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string backgroundImage,
     ContainerStyle style,
     std::string speak,
-<<<<<<< HEAD
     std::locale language) :
-=======
-    std::string language) :
->>>>>>> 2e3dbcfc7468b987d0b9cf2a4bdb92d72a2c47a0
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
@@ -38,11 +34,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string backgroundImage,
     ContainerStyle style,
     std::string speak,
-<<<<<<< HEAD
     std::locale language,
-=======
-    std::string language,
->>>>>>> 2e3dbcfc7468b987d0b9cf2a4bdb92d72a2c47a0
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_minVersion(minVersion),
@@ -101,11 +93,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
         ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
-<<<<<<< HEAD
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
-=======
-    std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language, true /* isRequired */);
->>>>>>> 2e3dbcfc7468b987d0b9cf2a4bdb92d72a2c47a0
     
     std::locale locale;
     try
@@ -114,12 +102,8 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     }
     catch (std::runtime_error error)
     {
-<<<<<<< HEAD
         // throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Language " + language + " is not recognized.");
         // generate warning for language created incorrectly
-=======
-        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Language " + language + " is not recognized.");
->>>>>>> 2e3dbcfc7468b987d0b9cf2a4bdb92d72a2c47a0
     }
 
     if (elementParserRegistration == nullptr)
@@ -137,11 +121,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false, locale);
 
-<<<<<<< HEAD
     auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, locale, body, actions);
-=======
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, language, body, actions);
->>>>>>> 2e3dbcfc7468b987d0b9cf2a4bdb92d72a2c47a0
     return result;
 }
 
@@ -303,7 +283,6 @@ void AdaptiveCard::SetLanguage(const std::locale value)
             }
         }
     }
-    return m_language;
 }
 
 const CardElementType AdaptiveCard::GetElementType() const
