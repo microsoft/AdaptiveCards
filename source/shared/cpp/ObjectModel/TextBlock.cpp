@@ -8,7 +8,6 @@
 #include <regex>
 #include <iostream>
 #include <codecvt>
-#include <algorithm>
 #include "TextBlock.h"
 #include "ParseUtil.h"
 
