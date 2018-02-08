@@ -2,14 +2,19 @@ package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v4.app.FragmentManager;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.microsoft.adaptivecards.objectmodel.AdaptiveCard;
 import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
+import com.microsoft.adaptivecards.objectmodel.MarkDownParser;
+import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.FontSizesConfig;
@@ -22,10 +27,6 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.HashMap;
 import java.util.Vector;
-
-/**
- * Created by bekao on 2/11/2017.
- */
 
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
@@ -130,7 +131,16 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
         TextView textView = new TextView(context);
         textView.setTag(baseCardElement);
-        textView.setText(textBlock.GetText());
+        MarkDownParser markDownParser = new MarkDownParser(textBlock.GetText());
+        String textString = markDownParser.TransformToHtml();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        {
+            textView.setText(Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT).toString().trim());
+        }
+        else
+        {
+            textView.setText(Html.fromHtml(textString).toString().trim());
+        }
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(textView, textBlock.GetTextSize(), hostConfig);

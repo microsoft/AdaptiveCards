@@ -8,32 +8,39 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class EnableSharedFromThisContainer {
+public class MarkDownParser {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  protected EnableSharedFromThisContainer(long cPtr, boolean cMemoryOwn) {
+  protected MarkDownParser(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(EnableSharedFromThisContainer obj) {
+  protected static long getCPtr(MarkDownParser obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
+  }
+
+  protected void finalize() {
+    delete();
   }
 
   public synchronized void delete() {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        throw new UnsupportedOperationException("C++ destructor does not have public access");
+        AdaptiveCardObjectModelJNI.delete_MarkDownParser(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
-  public Container shared_from_this() {
-    long cPtr = AdaptiveCardObjectModelJNI.EnableSharedFromThisContainer_shared_from_this(swigCPtr, this);
-    return (cPtr == 0) ? null : new Container(cPtr, true);
+  public MarkDownParser(String txt) {
+    this(AdaptiveCardObjectModelJNI.new_MarkDownParser(txt), true);
+  }
+
+  public String TransformToHtml() {
+    return AdaptiveCardObjectModelJNI.MarkDownParser_TransformToHtml(swigCPtr, this);
   }
 
 }

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -17,10 +18,6 @@ import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistratio
 
 import java.util.Vector;
 import java.util.Locale;
-
-/**
- * Created by bekao on 4/27/2017.
- */
 
 public class ColumnRenderer extends BaseCardElementRenderer
 {
@@ -59,20 +56,19 @@ public class ColumnRenderer extends BaseCardElementRenderer
             Vector<IInputHandler> inputActionHandlerList,
             HostConfig hostConfig)
     {
-        GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
+        LinearLayout.LayoutParams layoutParams;
         BaseCardElementVector baseCardElementVector = column.GetItems();
         View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, hostConfig);
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
         if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeAuto))
         {
-            //GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index));
-            layoutParams.columnSpec = GridLayout.spec(index);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
             returnedView.setLayoutParams(layoutParams);
         }
         else if (columnSize.equals(g_columnSizeStretch))
         {
-            //GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index, 1f));
-            layoutParams.columnSpec = GridLayout.spec(index, 1f);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            layoutParams.weight = 1;
             returnedView.setLayoutParams(layoutParams);
         }
         else
@@ -80,8 +76,9 @@ public class ColumnRenderer extends BaseCardElementRenderer
             try
             {
                 int columnWeight = Integer.parseInt(columnSize);
-                //GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index, (float)columnWeight));
-                layoutParams.columnSpec = GridLayout.spec(index, (float)columnWeight);
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.width = 0;
+                layoutParams.weight = columnWeight;
                 returnedView.setLayoutParams(layoutParams);
             }
             catch (NumberFormatException numFormatExcep)
