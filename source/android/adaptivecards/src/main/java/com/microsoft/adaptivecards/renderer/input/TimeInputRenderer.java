@@ -17,10 +17,6 @@ import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
 
-/**
- * Created by bekao on 6/25/2017.
- */
-
 public class TimeInputRenderer extends TextInputRenderer
 {
     private TimeInputRenderer()

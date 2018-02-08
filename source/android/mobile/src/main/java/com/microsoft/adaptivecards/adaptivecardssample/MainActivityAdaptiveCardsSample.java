@@ -15,13 +15,9 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.microsoft.adaptivecards.renderer.actionhandler.IShowCardActionHandler;
-import com.microsoft.adaptivecards.renderer.actionhandler.ISubmitActionHandler;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.objectmodel.*;
 import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -34,7 +30,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
-    implements IShowCardActionHandler, ISubmitActionHandler
+    implements ICardActionHandler
 {
 
     // Used to load the 'adaptivecards-native-lib' library on application startup.
@@ -99,7 +95,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, this, new HostConfig()));
+            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, new HostConfig()));
         }
         catch (java.io.IOException ex)
         {
@@ -184,17 +180,69 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return true;
     }
 
-    @Override
-    public void onShowCard(ShowCardAction showCardAction, AdaptiveCard adaptiveCard)
+    private void onSubmit(Map<String, String> keyValueMap)
     {
+        showToast("Submit: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+    }
+
+    private void onShowCard(BaseActionElement actionElement)
+    {
+        ShowCardAction showCardAction = null;
+        if (actionElement instanceof ShowCardAction)
+        {
+            showCardAction = (ShowCardAction) actionElement;
+        }
+        else if ((showCardAction = ShowCardAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
         ShowCardFragment showCardFragment = new ShowCardFragment();
-        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, this, new HostConfig());
+        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, new HostConfig());
         Bundle args = new Bundle();
         args.putString("title", showCardAction.GetTitle());
         showCardFragment.setArguments(args);
 
         FragmentManager fm = getSupportFragmentManager();
         showCardFragment.show(fm, showCardAction.GetTitle());
+    }
+
+    private void onOpenUrl(BaseActionElement actionElement)
+    {
+        OpenUrlAction openUrlAction = null;
+        if (actionElement instanceof ShowCardAction)
+        {
+            openUrlAction = (OpenUrlAction) actionElement;
+        }
+        else if ((openUrlAction = OpenUrlAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(openUrlAction.GetUrl()));
+        this.startActivity(browserIntent);
+    }
+
+    @Override
+    public void onAction(BaseActionElement actionElement, Map<String, String> inputData)
+    {
+        int actionType = actionElement.GetElementType().swigValue();
+        if (actionType == ActionType.Submit.swigValue())
+        {
+            onSubmit(inputData);
+        }
+        else if (actionType == ActionType.ShowCard.swigValue())
+        {
+            onShowCard(actionElement);
+        }
+        else if (actionType == ActionType.OpenUrl.swigValue())
+        {
+            onOpenUrl(actionElement);
+        }
+        else
+        {
+            showToast("Unknown Action!" , Toast.LENGTH_LONG);
+        }
     }
 
     public void showToast(String text, int duration)
@@ -220,12 +268,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         this.runOnUiThread(new RunnableExtended(this, text, duration));
-    }
-
-    @Override
-    public void onSubmit(SubmitAction submitAction, Map<String, String> keyValueMap)
-    {
-        showToast("Submit: " + keyValueMap.toString(), Toast.LENGTH_LONG);
     }
 
 }

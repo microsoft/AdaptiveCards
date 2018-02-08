@@ -9,10 +9,6 @@ import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
 import java.text.ParseException;
 import java.util.Map;
 
-/**
- * Created by bekao on 6/27/2017.
- */
-
 public class TextInputHandler extends BaseInputHandler
 {
     public TextInputHandler(BaseInputElement baseInputElement)

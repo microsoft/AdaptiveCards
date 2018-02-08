@@ -1,17 +1,14 @@
 package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.microsoft.adaptivecards.objectmodel.ColorConfig;
 import com.microsoft.adaptivecards.objectmodel.ColorsConfig;
 import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
-import com.microsoft.adaptivecards.objectmodel.SeparatorThickness;
 import com.microsoft.adaptivecards.objectmodel.Spacing;
 import com.microsoft.adaptivecards.objectmodel.SpacingConfig;
 

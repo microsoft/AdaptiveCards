@@ -21,10 +21,6 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 6/25/2017.
- */
-
 public class TextInputRenderer extends BaseCardElementRenderer
 {
     protected TextInputRenderer()
