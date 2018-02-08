@@ -70,8 +70,6 @@ export class OutlookContainer extends HostContainer {
         if (element instanceof Adaptive.Container) {
             var container = <Adaptive.Container>element;
 
-            container.bleed = json["bleed"];
-
             var jsonPadding = json["padding"];
 
             if (jsonPadding) {
