@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -72,7 +71,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
-            ((ColumnRenderer)columnRenderer).render(context, fragmentManager, layout, column, i, inputActionHandlerList, hostConfig);
+            ((ColumnRenderer)columnRenderer).render(context, fragmentManager, layout, column, inputActionHandlerList, hostConfig);
         }
 
         viewGroup.addView(layout);

@@ -11,10 +11,6 @@ import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 2/12/2017.
- */
-
 public interface IBaseCardElementRenderer
 {
     View render(

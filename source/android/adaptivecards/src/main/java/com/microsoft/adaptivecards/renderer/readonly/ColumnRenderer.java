@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -52,7 +51,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             Column column,
-            int index,
             Vector<IInputHandler> inputActionHandlerList,
             HostConfig hostConfig)
     {

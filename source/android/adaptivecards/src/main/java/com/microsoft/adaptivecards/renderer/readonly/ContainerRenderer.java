@@ -14,10 +14,6 @@ import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistratio
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 2/11/2017.
- */
-
 public class ContainerRenderer extends BaseCardElementRenderer
 {
     private ContainerRenderer()

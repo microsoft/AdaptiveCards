@@ -31,10 +31,6 @@ import com.microsoft.adaptivecards.renderer.readonly.TextBlockRenderer;
 import java.util.HashMap;
 import java.util.Vector;
 
-/**
- * Created by bekao on 4/28/2017.
- */
-
 public class CardRendererRegistration
 {
     private CardRendererRegistration()

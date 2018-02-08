@@ -10,31 +10,23 @@ import android.widget.Toast;
 import com.microsoft.adaptivecards.objectmodel.ActionType;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
-import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.IBaseActionElementRenderer;
-import com.microsoft.adaptivecards.renderer.action.OpenUrlActionRenderer;
-import com.microsoft.adaptivecards.renderer.action.ShowCardActionRenderer;
-import com.microsoft.adaptivecards.renderer.action.SubmitActionRenderer;
-import com.microsoft.adaptivecards.renderer.actionhandler.IShowCardActionHandler;
-import com.microsoft.adaptivecards.renderer.actionhandler.ISubmitActionHandler;
+import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 
 import java.util.HashMap;
 import java.util.Vector;
-
-/**
- * Created by bekao on 7/1/2017.
- */
 
 public class ActionRendererRegistration
 {
     private ActionRendererRegistration()
     {
         // Register Action Renderers
-        registerRenderer(ActionType.OpenUrl.toString(), OpenUrlActionRenderer.getInstance());
-        registerRenderer(ActionType.ShowCard.toString(), ShowCardActionRenderer.getInstance());
-        registerRenderer(ActionType.Submit.toString(), SubmitActionRenderer.getInstance());
+        registerRenderer(ActionType.OpenUrl.toString(), ActionElementRenderer.getInstance());
+        registerRenderer(ActionType.ShowCard.toString(), ActionElementRenderer.getInstance());
+        registerRenderer(ActionType.Submit.toString(), ActionElementRenderer.getInstance());
     }
 
     public static ActionRendererRegistration getInstance()
@@ -72,8 +64,7 @@ public class ActionRendererRegistration
             Object tag,
             BaseActionElementVector baseActionElementList,
             Vector<IInputHandler> inputActionHandlerList,
-            IShowCardActionHandler showCardActionHandler,
-            ISubmitActionHandler submitActionHandler,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         long size;
@@ -102,7 +93,7 @@ public class ActionRendererRegistration
                 continue;
             }
 
-            renderer.render(context, layout, actionElement, inputActionHandlerList, showCardActionHandler, submitActionHandler, hostConfig);
+            renderer.render(context, layout, actionElement, inputActionHandlerList, cardActionHandler, hostConfig);
         }
 
         return layout;
