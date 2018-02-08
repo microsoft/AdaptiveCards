@@ -1,6 +1,7 @@
 package com.microsoft.adaptivecards.renderer.registration;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class ActionRendererRegistration
 
     public View render(
             Context context,
+            FragmentManager fragmentManager,
             ViewGroup viewGroup,
             Object tag,
             BaseActionElementVector baseActionElementList,
@@ -73,14 +75,24 @@ public class ActionRendererRegistration
             return null;
         }
 
-        LinearLayout layout = new LinearLayout(context);
-        layout.setTag(tag);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        layout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout actionsLayout = new LinearLayout(context);
+        actionsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        actionsLayout.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout actionButtonsLayout = new LinearLayout(context);
+        actionButtonsLayout.setTag(tag);
+        actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        LinearLayout hiddenCardsLayout = new LinearLayout(context);
+        hiddenCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        hiddenCardsLayout.setOrientation(LinearLayout.VERTICAL);
+        actionsLayout.addView(actionButtonsLayout);
+        actionsLayout.addView(hiddenCardsLayout);
 
         if (viewGroup != null)
         {
-            viewGroup.addView(layout);
+            viewGroup.addView(actionsLayout);
         }
 
         for (int i = 0; i < size; i++)
@@ -93,10 +105,10 @@ public class ActionRendererRegistration
                 continue;
             }
 
-            renderer.render(context, layout, actionElement, inputActionHandlerList, cardActionHandler, hostConfig);
+            renderer.render(context, fragmentManager, actionButtonsLayout, actionElement, inputActionHandlerList, cardActionHandler, hostConfig);
         }
 
-        return layout;
+        return actionsLayout;
     }
 
     private static ActionRendererRegistration s_instance = null;
