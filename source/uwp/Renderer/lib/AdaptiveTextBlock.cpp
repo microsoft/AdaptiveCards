@@ -33,7 +33,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
     {
-        return WStringToHString(m_sharedTextBlock->GetText(), text);
+        return UTF8ToHString(m_sharedTextBlock->GetText().Concatenate(), text);
     }
 
     _Use_decl_annotations_

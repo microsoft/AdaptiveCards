@@ -5,6 +5,7 @@
 #include "Enums.h"
 #include <time.h>
 #include "ElementParserRegistration.h"
+#include "TextBlockText.h"
 
 namespace AdaptiveCards
 {
@@ -27,8 +28,10 @@ public:
 
     virtual Json::Value SerializeToJsonValue() override;
 
-    std::wstring GetText() const;
+    TextBlockText GetText() const;
     void SetText(const std::string value);
+
+    TextBlockText GenerateSplitText() const;
 
     TextSize GetTextSize() const;
     void SetTextSize(const TextSize value);
@@ -51,7 +54,7 @@ public:
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
-    void SetLanguage(const std::locale& value);
+    void SetLanguage(const std::string& value);
 
     std::u16string ToU16String(const std::string& in) const;
     std::u16string ToU16String(const std::wstring& in) const;
@@ -68,7 +71,7 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
-    std::locale m_language;
+    std::string m_language;
 
     std::wstring ParseDateTime() const;
     static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);

@@ -66,7 +66,7 @@ public:
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
         bool isRequired = false,
-        const std::locale& dateLanguage = std::locale());
+        const std::string& dateLanguage = "");
 
     template <typename T>
     static std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
@@ -83,7 +83,7 @@ public:
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
         bool isRequired = false,
-        const std::locale& dateLanguage = std::locale());
+        const std::string& dateLanguage = "");
 
     template <typename T>
     static T ExtractJsonValueAndMergeWithDefault(

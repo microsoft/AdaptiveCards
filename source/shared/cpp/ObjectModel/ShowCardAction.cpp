@@ -28,7 +28,7 @@ void AdaptiveCards::ShowCardAction::SetCard(const std::shared_ptr<AdaptiveCard> 
     m_card = card;
 }
 
-void ShowCardAction::SetLanguage(const std::locale& value)
+void ShowCardAction::SetLanguage(const std::string& value)
 {
     // If the card inside doesn't specify language, propagate
     if (m_card->GetLanguage().empty())

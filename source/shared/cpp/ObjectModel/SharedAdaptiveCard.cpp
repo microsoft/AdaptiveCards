@@ -17,7 +17,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string backgroundImage,
     ContainerStyle style,
     std::string speak,
-    std::locale language) :
+    std::string language) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
@@ -34,7 +34,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string backgroundImage,
     ContainerStyle style,
     std::string speak,
-    std::locale language,
+    std::string language,
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_minVersion(minVersion),
@@ -95,17 +95,6 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
     
-    std::locale locale;
-    try
-    {
-        locale = std::locale(language);
-    }
-    catch (std::runtime_error error)
-    {
-        // throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Language " + language + " is not recognized.");
-        // generate warning for language created incorrectly
-    }
-
     if (elementParserRegistration == nullptr)
     {
         elementParserRegistration.reset(new ElementParserRegistration());
@@ -116,12 +105,12 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     }
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false, locale);
+    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false, language);
 
     // Parse actions if present
-    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false, locale);
+    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false, language);
 
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, locale, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, language, body, actions);
     return result;
 }
 
@@ -242,10 +231,10 @@ void AdaptiveCards::AdaptiveCard::SetStyle(const ContainerStyle value)
 
 std::string AdaptiveCard::GetLanguage() const
 {
-    return m_language.name();
+    return m_language;
 }
 
-void AdaptiveCard::SetLanguage(const std::locale value)
+void AdaptiveCard::SetLanguage(const std::string value)
 {
     m_language = value;
     // Propagate language to TextBlocks, Containers and showCardActions

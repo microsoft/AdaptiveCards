@@ -314,7 +314,7 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
     bool isRequired,
-    const std::locale& dateLanguage)
+    const std::string& dateLanguage)
 {
     auto elementArray = GetArray(json, key, isRequired);
 
@@ -394,7 +394,7 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
     bool isRequired,
-    const std::locale& dateLanguage)
+    const std::string& dateLanguage)
 {
     auto elementArray = GetArray(json, key, isRequired);
 

@@ -57,7 +57,7 @@ void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-void Container::SetLanguage(const std::locale& value)
+void Container::SetLanguage(const std::string& value)
 {
     for (auto& item : m_items)
     {

@@ -47,7 +47,7 @@ TextBlock::TextBlock(
     m_wrap(wrap),
     m_maxLines(maxLines),
     m_hAlignment(hAlignment),
-    m_language(language.c_str())
+    m_language(language)
 {
 }
 
@@ -63,14 +63,14 @@ Json::Value TextBlock::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines)] = GetMaxLines();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = GetIsSubtle();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = GetWrap();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = WstringToString(GetText());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText().Concatenate();
 
     return root;
 }
 
-std::wstring TextBlock::GetText() const
+TextBlockText TextBlock::GetText() const
 {
-    return ParseDateTime();
+    return GenerateSplitText();
 }
 
 void TextBlock::SetText(const std::string value)
@@ -148,10 +148,171 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
-void TextBlock::SetLanguage(const std::locale& value)
+void TextBlock::SetLanguage(const std::string& value)
 {
     m_language = value;
 }
+
+TextBlockText TextBlock::GenerateSplitText() const
+{
+    TextBlockText splittedText;
+
+    std::wregex pattern(L"\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
+    std::wsmatch matches;
+    std::wstring text = StringToWstring(m_text);
+    std::wostringstream parsedostr;
+    enum MatchIndex
+    {
+        IsDate = 2,
+        Year = 4,
+        Month,
+        Day,
+        Hour,
+        Min,
+        Sec,
+        TimeZone = 12,
+        TZHr,
+        TZMn,
+        Format,
+        Style,
+    };
+    std::vector<int> indexer = {Year, Month, Day, Hour, Min, Sec, TZHr, TZMn};
+
+    while (std::regex_search(text, matches, pattern))
+    {
+        time_t offset = 0;
+        int  formatStyle = 0;
+        // Date is matched
+        bool isDate = matches[IsDate].matched;
+        int hours = 0, minutes = 0;
+        struct tm parsedTm = {0};
+        int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
+            &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+            &parsedTm.tm_sec, &hours, &minutes};
+
+        if (matches[Style].matched)
+        {
+            // match for long/short/compact
+            bool formatHasSpace = matches[Format].str()[1] == ' ';
+            int formatStartIndex = formatHasSpace ? 2 : 1;
+            formatStyle = matches[Format].str()[formatStartIndex];
+        }
+
+        splittedText.AddTextSection(WstringToString(matches.prefix().str()), TextSectionFormat::RegularString);
+
+        if (!isDate && formatStyle)
+        {
+            parsedostr << matches[0].str();
+            text = matches.suffix().str();
+            continue;
+        }
+
+        for (unsigned int idx = 0; idx < indexer.size(); idx++)
+        {
+            if (matches[indexer[idx]].matched)
+            {
+                // get indexes for time attributes to index into conrresponding matches
+                // and covert it to string
+                *addrs[idx] = stoi(matches[indexer[idx]]);
+            }
+        }
+
+        // check for date and time validation
+        if (IsValidTimeAndDate(parsedTm, hours, minutes))
+        {
+            // maches offset sign, 
+            // Z == UTC, 
+            // + == time added from UTC
+            // - == time subtracted from UTC
+            if (matches[TimeZone].matched)
+            {
+                // converts to seconds
+                hours *= 3600;
+                minutes *= 60;
+                offset = hours + minutes;
+
+                wchar_t zone = matches[TimeZone].str()[0];
+                // time zone offset calculation 
+                if (zone == '+')
+                {
+                    offset *= -1;
+                }
+            }
+
+            // measured from year 1900
+            parsedTm.tm_year -= 1900;
+            parsedTm.tm_mon -= 1;
+
+            time_t utc;
+            // converts to ticks in UTC
+            utc = mktime(&parsedTm);
+            if (utc == -1)
+            {
+                parsedostr << matches[0];
+            }
+
+            wchar_t tzOffsetBuff[6] = {0};
+            // gets local time zone offset
+            wcsftime(tzOffsetBuff, 6, L"%z", &parsedTm);
+            std::wstring localTimeZoneOffsetStr(tzOffsetBuff);
+            int nTzOffset = std::stoi(localTimeZoneOffsetStr);
+            offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
+            // add offset to utc
+            utc += offset;
+            struct tm result = {0};
+
+            // converts to local time from utc
+            if (!LOCALTIME(&result, &utc))
+            {
+                // localtime() set dst, put_time adjusts time accordingly which is not what we want since 
+                // we have already taken cared of it in our calculation
+                if (result.tm_isdst == 1)
+                    result.tm_hour -= 1;
+
+                if (isDate)
+                {
+                    std::string plainDate = std::to_string(result.tm_mon) + "/" +
+                        std::to_string(result.tm_mday) + "/" +
+                        std::to_string(result.tm_year + 1900);
+
+                    switch (formatStyle)
+                    {
+                        // SHORT Style
+                        case 'S':
+                            splittedText.AddTextSection(plainDate, TextSectionFormat::DateShort);
+                            break;
+                            // LONG Style
+                        case 'L':
+                            splittedText.AddTextSection(plainDate, TextSectionFormat::DateLong);
+                            break;
+                            // COMPACT or DEFAULT Style
+                        case 'C': default:
+                            splittedText.AddTextSection(plainDate, TextSectionFormat::DateCompact);
+                            break;
+                    }
+                }
+                else
+                {
+                    splittedText.AddTextSection(std::to_string(result.tm_hour) + ":" + 
+                        std::to_string(result.tm_min) + ":" + 
+                        std::to_string(result.tm_sec), 
+                        TextSectionFormat::Time);
+                }
+            }
+        }
+        else
+        {
+            splittedText.AddTextSection(WstringToString(matches[0].str()), TextSectionFormat::RegularString);
+        }
+
+        text = matches.suffix().str();
+    }
+
+    splittedText.AddTextSection(WstringToString(text), TextSectionFormat::RegularString);
+
+    return splittedText;
+}
+
 
 std::u16string TextBlock::ToU16String(const std::string& in) const
 {
@@ -223,6 +384,8 @@ bool TextBlock::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int min
     }
     return false;
 }
+
+
 
 std::wstring TextBlock::ParseDateTime() const
 {
@@ -344,12 +507,12 @@ std::wstring TextBlock::ParseDateTime() const
                     {
                         // SHORT Style
                     case 'S':
-                        parsedostr.imbue(m_language);
+                        // parsedostr.imbue(m_language);
                         parsedostr << std::put_time(&result, L"%a, %b %e, %Y");
                         break;
                         // LONG Style
                     case 'L':
-                        parsedostr.imbue(m_language);
+                        // parsedostr.imbue(m_language);
                         parsedostr << std::put_time(&result, L"%A, %B %e, %Y");
                         break;
                         // COMPACT or DEFAULT Style

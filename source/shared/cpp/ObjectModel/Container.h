@@ -27,7 +27,7 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-    void SetLanguage(const std::locale& value);
+    void SetLanguage(const std::string& value);
 
 private:
     ContainerStyle m_style;
