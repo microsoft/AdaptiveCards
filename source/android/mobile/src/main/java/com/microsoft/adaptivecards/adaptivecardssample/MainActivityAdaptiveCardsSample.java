@@ -99,7 +99,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), getSupportFragmentManager(), adaptiveCard, this, this, new HostConfig()));
+            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, this, new HostConfig()));
         }
         catch (java.io.IOException ex)
         {
