@@ -25,6 +25,8 @@ using namespace AdaptiveCards;
     std::shared_ptr<HostConfig> _hostConfig;
     CGRect _guideFrame;
     NSMutableDictionary *_imageViewMap;
+    dispatch_queue_t _serial_queue;
+    int _serial_number;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -34,6 +36,8 @@ using namespace AdaptiveCards;
         _guideFrame = CGRectMake(0, 0, 0, 0);
         _hostConfig = std::make_shared<HostConfig>();
         _imageViewMap = [[NSMutableDictionary alloc] init];
+        _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", DISPATCH_QUEUE_SERIAL);
+        _serial_number = 0;
     }
     return self;
 }
@@ -53,6 +57,8 @@ using namespace AdaptiveCards;
         }
         _guideFrame = frame;
         _imageViewMap = [[NSMutableDictionary alloc] init];
+        _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", NULL);
+        _serial_number = 0;
     }
     return self;
 }
@@ -118,9 +124,11 @@ using namespace AdaptiveCards;
         // wait till all task is done
         // execute the rest of the code
         // transforms (i.e. renders) an adaptiveCard to a new UIView instance
+        [self tagImageBlockWithUniqueID:body];
+
         [self addImageBlockToConcurrentQueue:body];
     }
-    
+
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                              inputs:inputs
                                                      viewController:self
@@ -174,6 +182,68 @@ using namespace AdaptiveCards;
        [newView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
 }
 
+- (void) tagImageBlockWithUniqueID:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
+{
+    for(auto &elem : body)
+    {
+        switch (elem->GetElementType())
+        {
+            case CardElementType::Image:
+            {
+                dispatch_sync(_serial_queue, ^{
+                std::string serial_number_as_string = std::to_string(_serial_number);
+                    NSLog(@"serial number %@", [NSNumber numberWithInt:_serial_number]);
+                std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
+
+                if("" == imgElem->GetId())
+                {
+                    imgElem->SetId("_" + serial_number_as_string);
+                    NSLog(@"new image id = %@", [[NSString alloc] initWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]]);
+                }
+                else
+                {
+                    imgElem->SetId(imgElem->GetId() + "_" + serial_number_as_string);
+                    NSLog(@"replaced image id = %@", [[NSString alloc] initWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]]);
+                }
+
+                ++_serial_number;
+                });
+
+                break;
+            }
+            case CardElementType::Container:
+            {
+                std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
+                std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
+                [self tagImageBlockWithUniqueID: new_body];
+                break;
+            }
+            case CardElementType::Column:
+            {
+                std::shared_ptr<Column> colum = std::static_pointer_cast<Column>(elem);
+                std::vector<std::shared_ptr<BaseCardElement>> &new_body = colum->GetItems();
+                [self tagImageBlockWithUniqueID: new_body];
+                break;
+            }
+            case CardElementType::ColumnSet:
+            {
+                std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
+                std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
+                for(auto &colum : columns)
+                {
+                    [self tagImageBlockWithUniqueID: colum->GetItems()];
+                }
+                break;
+            }
+            default:
+            {
+                /// no work is needed
+                break;
+            }
+        }
+    }
+}
+
 - (void) addImageBlockToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
 {
     for(auto &elem : body)
@@ -184,9 +254,10 @@ using namespace AdaptiveCards;
             {
                 //dispatch_queue_t syncQueue = dispatch_queue_create("io.AdaptiveCards.syncQueue", NULL);
                 /// dispatch to concurrent queue
+                std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
+
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                 {
-                    std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
                     NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
                                                           encoding:[NSString defaultCStringEncoding]];
                     NSLog(@"entered");
@@ -200,20 +271,41 @@ using namespace AdaptiveCards;
                     [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
                     img = UIGraphicsGetImageFromCurrentImageContext();
                     UIGraphicsEndImageContext();
-                    dispatch_sync(dispatch_get_main_queue(), ^
+                    dispatch_async(dispatch_get_main_queue(), ^
                                   {
                                       NSLog(@"recording");
-                                      NSNumber *key = [NSNumber numberWithUnsignedLong: (unsigned long)elem.get()];
-                                      UIImageView *view = _imageViewMap[key];
-                                      if (!view)
+                                      //NSNumber *key = [NSNumber numberWithUnsignedLong: (unsigned long)elem.get()];
+                                      //NSLog(@" addr %p", elem.get());
+                                      __block UIImageView *view = nil;
+                                      NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+                                      dispatch_sync(_serial_queue, ^{
+                                          if(!_imageViewMap[key])
+                                          {
+                                              NSLog(@"view is not ready");
+                                              NSLog(@"img view map = %@", _imageViewMap);
+                                              NSLog(@"image id::key = %@", key);
+                                              _imageViewMap[key] = img;
+                                          }
+                                          else
+                                          {
+                                              NSLog(@"view is ready");
+                                              view = _imageViewMap[key];
+                                              NSLog(@"key = %@", key);
+                                          }
+                                      });
+                                      NSLog(@"view controller image loading done");
+                                      if(view)
                                       {
-                                          NSLog(@"view is not ready");
-                                      }
-                                      else{
-                                      view.image = img;
+                                          view.image = img;
+                                          view.contentMode = UIViewContentModeScaleAspectFit;
+                                          view.clipsToBounds = NO;
+                                          if(imgElem->GetImageStyle() == ImageStyle::Person) {
+                                              CALayer *imgLayer = view.layer;
+                                              [imgLayer setCornerRadius:cgsize.width/2];
+                                              [imgLayer setMasksToBounds:YES];
+                                          }
                                       }
                                   });
-
                 });
                 break;
             }
@@ -253,6 +345,10 @@ using namespace AdaptiveCards;
 - (NSMutableDictionary *) getImageMap
 {
     return _imageViewMap;
+}
+- (dispatch_queue_t) getSerialQueue
+{
+    return _serial_queue;
 }
 
 @end

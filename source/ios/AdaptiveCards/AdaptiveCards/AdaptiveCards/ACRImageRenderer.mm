@@ -131,17 +131,51 @@
     CGSize cgsize = [ACRImageRenderer getImageSize:imgElem withHostConfig:config];
     UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-    NSNumber *key = [NSNumber numberWithUnsignedLong:(unsigned long) elem.get()];
-    if([(ACRViewController *)vc getImageMap][key] == nil)
+
+    NSMutableDictionary *imageViewMap = [(ACRViewController *)vc getImageMap];
+    __block UIImage *img = nil;
+    NSLog(@"img renderer");
+
+    NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+    NSLog(@"image renderer image id = %@", [[NSString alloc] initWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]]);
+    if(vc)
     {
-        NSLog(@"Image not ready");
-       [(ACRViewController *)vc getImageMap][key] = view;
+        dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
+            if(imageViewMap[key])
+            {
+                NSLog(@"img is ready");
+                NSLog(@"img view map = %@", imageViewMap);
+                img = imageViewMap[key];
+            }
+            else
+            {
+                NSLog(@"img is not ready");
+                NSLog(@"img view map = %@", imageViewMap);
+                imageViewMap[key] = view;
+            }
+        });
     }
     else
     {
-        NSLog(@"image is ready");
-        view.image = [(ACRViewController *)vc getImageMap][key];
+        NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
+                                              encoding:[NSString defaultCStringEncoding]];
+        NSLog(@"entered");
+        NSURL *url = [NSURL URLWithString:urlStr];
+
+        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+
+        CGSize cgsize = [ACRImageRenderer getImageSize:imgElem withHostConfig:config];
+
+        UIGraphicsBeginImageContext(cgsize);
+        [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
+        img = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
     }
+
+    NSLog(@"img renderer dispatch done");
+    if(img)
+    {
+        view.image = img;
 
     //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
     view.contentMode = UIViewContentModeScaleAspectFit;
@@ -150,6 +184,7 @@
         CALayer *imgLayer = view.layer;
         [imgLayer setCornerRadius:cgsize.width/2];
         [imgLayer setMasksToBounds:YES];
+    }
     }
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
