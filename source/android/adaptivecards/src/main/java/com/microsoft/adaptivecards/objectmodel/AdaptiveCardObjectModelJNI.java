@@ -474,7 +474,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_AdaptiveCardParseException(long jarg1);
   public final static native String AdaptiveCardParseException_what(long jarg1, AdaptiveCardParseException jarg1_);
   public final static native int AdaptiveCardParseException_GetStatusCode(long jarg1, AdaptiveCardParseException jarg1_);
-  public final static native String AdaptiveCardParseException_GetMessage(long jarg1, AdaptiveCardParseException jarg1_);
+  public final static native String AdaptiveCardParseException_GetReason(long jarg1, AdaptiveCardParseException jarg1_);
   public final static native void FontSizesConfig_smallFontSize_set(long jarg1, FontSizesConfig jarg1_, long jarg2);
   public final static native long FontSizesConfig_smallFontSize_get(long jarg1, FontSizesConfig jarg1_);
   public final static native void FontSizesConfig_defaultFontSize_set(long jarg1, FontSizesConfig jarg1_, long jarg2);

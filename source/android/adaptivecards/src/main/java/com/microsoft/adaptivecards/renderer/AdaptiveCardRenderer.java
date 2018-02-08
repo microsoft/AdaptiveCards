@@ -128,7 +128,7 @@ public class AdaptiveCardRenderer
         BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
         if (baseActionElementList != null && baseActionElementList.size() > 0)
         {
-            ActionRendererRegistration.getInstance().render(context, layout, adaptiveCard, baseActionElementList, inputHandlerList, cardActionHandler, hostConfig);
+            ActionRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseActionElementList, inputHandlerList, cardActionHandler, hostConfig);
         }
 
         String imageUrl = adaptiveCard.GetBackgroundImage();

@@ -1,6 +1,7 @@
 package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 
@@ -15,6 +16,7 @@ public interface IBaseActionElementRenderer
 {
     Button render(
             Context context,
+            FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
             Vector<IInputHandler> inputHandlerList,

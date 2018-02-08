@@ -9396,7 +9396,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardParseException_1GetMessage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardParseException_1GetReason(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCardParseException *arg1 = (AdaptiveCards::AdaptiveCardParseException *) 0 ;
   std::string *result = 0 ;
@@ -9405,7 +9405,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::AdaptiveCardParseException **)&jarg1; 
-  result = (std::string *) &((AdaptiveCards::AdaptiveCardParseException const *)arg1)->GetMessage();
+  result = (std::string *) &((AdaptiveCards::AdaptiveCardParseException const *)arg1)->GetReason();
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
