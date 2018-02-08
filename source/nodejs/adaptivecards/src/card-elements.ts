@@ -2598,7 +2598,7 @@ export class Container extends CardElement {
             var physicalMargin: SpacingDefinition = new SpacingDefinition();
             var physicalPadding: SpacingDefinition = new SpacingDefinition();
 
-            var useAutoPadding = (this.parent ? this.parent.canContentBleed() : false) && (this.bleed || AdaptiveCard.useAutomaticContainerBleeding);
+            var useAutoPadding = (this.parent ? this.parent.canContentBleed() : false) && AdaptiveCard.useAutomaticContainerBleeding;
 
             if (useAutoPadding) {
                 var effectivePadding = this.getNonZeroPadding();
@@ -2869,7 +2869,6 @@ export class Container extends CardElement {
     }
 
     backgroundImage: BackgroundImage;
-    bleed: boolean = false;
     verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 
     get style(): string {
