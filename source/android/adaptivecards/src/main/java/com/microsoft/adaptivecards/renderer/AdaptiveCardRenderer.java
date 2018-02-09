@@ -112,7 +112,7 @@ public class AdaptiveCardRenderer
         layout.setTag(adaptiveCard);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         layout.setOrientation(LinearLayout.VERTICAL);
-        int padding = (int) hostConfig.getSpacing().getPaddingSpacing();
+        int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
         layout.setPadding(padding, padding, padding, padding);
 
         Vector<IInputHandler> inputHandlerList = new Vector<IInputHandler>();

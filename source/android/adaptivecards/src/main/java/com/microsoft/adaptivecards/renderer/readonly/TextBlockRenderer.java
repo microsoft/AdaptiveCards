@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
 import com.microsoft.adaptivecards.objectmodel.MarkDownParser;
+import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.FontSizesConfig;
@@ -46,28 +47,28 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextSize(TextView textView, TextSize textSize, HostConfig hostConfig)
+    static void setTextSize(Context context, TextView textView, TextSize textSize, HostConfig hostConfig)
     {
         FontSizesConfig fontSizesConfig = hostConfig.getFontSizes();
         if (textSize.swigValue() == TextSize.ExtraLarge.swigValue())
         {
-            textView.setTextSize(fontSizesConfig.getExtraLargeFontSize());
+            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getExtraLargeFontSize()));
         }
         else if (textSize.swigValue() == TextSize.Large.swigValue())
         {
-            textView.setTextSize(fontSizesConfig.getLargeFontSize());
+            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getLargeFontSize()));
         }
         else if (textSize.swigValue() == TextSize.Medium.swigValue())
         {
-            textView.setTextSize(fontSizesConfig.getMediumFontSize());
+            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getMediumFontSize()));
         }
         else if (textSize.swigValue() == TextSize.Default.swigValue())
         {
-            textView.setTextSize(fontSizesConfig.getDefaultFontSize());
+            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getDefaultFontSize()));
         }
         else if (textSize.swigValue() == TextSize.Small.swigValue())
         {
-            textView.setTextSize(fontSizesConfig.getSmallFontSize());
+            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getSmallFontSize()));
         }
         else
         {
@@ -141,7 +142,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());
-        setTextSize(textView, textBlock.GetTextSize(), hostConfig);
+        setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
