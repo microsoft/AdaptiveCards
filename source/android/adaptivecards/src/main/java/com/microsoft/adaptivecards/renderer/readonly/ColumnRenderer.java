@@ -76,7 +76,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             try
             {
-                int columnWeight = Integer.parseInt(columnSize);
+                //int columnWeight = Integer.parseInt(columnSize);
+                float columnWeight = Float.parseFloat(columnSize);
                 layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.width = 0;
                 layoutParams.weight = columnWeight;
