@@ -1,10 +1,12 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "Enums.h"
+#include "TextSection.h"
 #include "TextSection.h"
 
 namespace AdaptiveCards
-{  
+{   
     class TextBlockText
     {
     public:

@@ -1,18 +1,10 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "Enums.h"
 
 namespace AdaptiveCards
 {
-    enum class TextSectionFormat : uint16_t
-    {
-        RegularString = 0,
-        Time,
-        DateCompact,
-        DateShort,
-        DateLong
-    };
-
     class TextSection
     {
     public:

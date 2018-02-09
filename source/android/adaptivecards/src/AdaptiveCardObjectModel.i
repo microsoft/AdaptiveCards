@@ -16,6 +16,7 @@ namespace std {
 %include <std_string.i>
 %include <std_shared_ptr.i>
 %include <std_vector.i>
+%include <std_wstring.i>
 
 #define __ANDROID__ 1
 
@@ -29,7 +30,6 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
-#include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
 #include "../../../shared/cpp/ObjectModel/Column.h"
@@ -50,8 +50,9 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 #include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
-#include "../../../shared/cpp/ObjectModel/TextBlockText.h"
 #include "../../../shared/cpp/ObjectModel/TextSection.h"
+#include "../../../shared/cpp/ObjectModel/TextBlockText.h"
+#include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
@@ -387,7 +388,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
-%include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"
 %include "../../../shared/cpp/ObjectModel/Column.h"
@@ -408,5 +408,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
-%include "../../../shared/cpp/ObjectModel/TextBlockText.h"
 %include "../../../shared/cpp/ObjectModel/TextSection.h"
+%include "../../../shared/cpp/ObjectModel/TextBlockText.h"
+%include "../../../shared/cpp/ObjectModel/TextBlock.h"
