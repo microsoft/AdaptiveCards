@@ -23,7 +23,7 @@ export class ToggleVisibilityAction extends Adaptive.Action {
     parse(json: any) {
         super.parse(json);
 
-        this.targetElementIds = json["targetElementIds"] as Array<string>;
+        this.targetElementIds = json["targetElements"] as Array<string>;
     }
 }
 
@@ -54,6 +54,29 @@ export class OutlookContainer extends HostContainer {
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
     }
 
+    private parsePadding(json: any): Adaptive.PaddingDefinition {
+        if (json) {
+            if (typeof json === "string") {
+                var uniformPadding = Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json, Adaptive.Spacing.None);
+
+                return new Adaptive.PaddingDefinition(
+                    uniformPadding,
+                    uniformPadding,
+                    uniformPadding,
+                    uniformPadding);
+            }
+            else if (typeof json === "object") {
+                return new Adaptive.PaddingDefinition(
+                    Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json["top"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json["right"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json["bottom"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json["left"], Adaptive.Spacing.None));
+            }
+        }
+
+        return null;
+    }
+
     public parseElement(element: Adaptive.CardElement, json: any) {
         if (typeof json["isVisible"] === "boolean") {
             element.isVisible = json["isVisible"];
@@ -68,28 +91,19 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.Container) {
-            var container = <Adaptive.Container>element;
+            var padding = this.parsePadding(json["padding"]);
 
-            var jsonPadding = json["padding"];
+            if (padding) {
+                (<Adaptive.Container>element).padding = padding;
+            }
+        }
 
-            if (jsonPadding) {
-                if (typeof jsonPadding === "string") {
-                    var uniformPadding = Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding, Adaptive.Spacing.None);
-    
-                    container.padding = new Adaptive.PaddingDefinition(
-                        uniformPadding,
-                        uniformPadding,
-                        uniformPadding,
-                        uniformPadding);
-                }
-                else if (typeof jsonPadding === "object") {
-                    container.padding = new Adaptive.PaddingDefinition(
-                        Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding["top"], Adaptive.Spacing.None),
-                        Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding["right"], Adaptive.Spacing.None),
-                        Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding["bottom"], Adaptive.Spacing.None),
-                        Adaptive.getEnumValueOrDefault(Adaptive.Spacing, jsonPadding["left"], Adaptive.Spacing.None));
-                }
-            }    
+        if (element instanceof Adaptive.ColumnSet) {
+            var padding = this.parsePadding(json["padding"]);
+
+            if (padding) {
+                (<Adaptive.ColumnSet>element).padding = padding;
+            }
         }
     }
 

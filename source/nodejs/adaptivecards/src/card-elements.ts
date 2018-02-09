@@ -106,6 +106,7 @@ export abstract class CardElement {
     private _isVisible: boolean = true;
     private _truncatedDueToOverflow: boolean = false;
     private _defaultRenderedElementDisplayMode: string = null;
+    private _padding: PaddingDefinition = null;
 
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
@@ -142,8 +143,6 @@ export abstract class CardElement {
             raiseElementVisibilityChangedEvent(this, false);
         }
     }
-
-    protected _padding: PaddingDefinition = null;
 
     protected internalGetNonZeroPadding(padding: PaddingDefinition,
                                         processTop: boolean = true,
@@ -255,6 +254,18 @@ export abstract class CardElement {
 
     protected get separatorOrientation(): Enums.Orientation {
         return Enums.Orientation.Horizontal;
+    }
+
+    protected getPadding(): PaddingDefinition {
+        return this._padding;
+    }
+
+    protected setPadding(value: PaddingDefinition) {
+        this._padding = value;
+
+        if (this._padding) {
+            AdaptiveCard.useAutomaticContainerBleeding = false;
+        }
     }
 
     id: string;
@@ -2885,15 +2896,11 @@ export class Container extends CardElement {
     }
 
     get padding(): PaddingDefinition {
-        return this._padding;
+        return this.getPadding();
     }
 
     set padding(value: PaddingDefinition) {
-        this._padding = value;
-
-        if (this.padding) {
-            AdaptiveCard.useAutomaticContainerBleeding = false;
-        }
+        this.setPadding(value);
     }
 
     getJsonTypeName(): string {
@@ -3224,6 +3231,19 @@ export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
     private _selectAction: Action;
 
+    protected applyPadding() {
+        if (this.padding) {
+            if (this.renderedElement) {
+                var physicalPadding = this.padding.toSpacingDefinition(this.hostConfig);
+
+                this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+                this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+                this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+                this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+            }
+        }
+    }
+
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
@@ -3310,6 +3330,14 @@ export class ColumnSet extends CardElement {
         }
     }
 
+    get padding(): PaddingDefinition {
+        return this.getPadding();
+    }
+
+    set padding(value: PaddingDefinition) {
+        this.setPadding(value);
+    }
+
     getJsonTypeName(): string {
         return "ColumnSet";
     }
@@ -3364,6 +3392,8 @@ export class ColumnSet extends CardElement {
     }
 
     updateLayout(processChildren: boolean = true) {
+        this.applyPadding();
+        
         if (processChildren) {
             for (var i = 0; i < this._columns.length; i++) {
                 this._columns[i].updateLayout();
