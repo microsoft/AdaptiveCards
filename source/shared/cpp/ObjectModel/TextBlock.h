@@ -28,10 +28,9 @@ public:
 
     virtual Json::Value SerializeToJsonValue() override;
 
-    TextBlockText GetText() const;
+    std::string GetText() const;
     void SetText(const std::string value);
-
-    TextBlockText GenerateSplitText() const;
+    TextBlockText GetTextForDateParsing() const;
 
     TextSize GetTextSize() const;
     void SetTextSize(const TextSize value);
@@ -55,12 +54,7 @@ public:
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
     void SetLanguage(const std::string& value);
-
-    std::u16string ToU16String(const std::string& in) const;
-    std::u16string ToU16String(const std::wstring& in) const;
-
-    std::wstring StringToWstring(const std::string& in) const;
-    std::string WstringToString(const std::wstring& in) const;
+    std::string GetLanguage();
 
 private:
     std::string m_text;
@@ -72,9 +66,6 @@ private:
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
     std::string m_language;
-
-    std::wstring ParseDateTime() const;
-    static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
 };
 
 class TextBlockParser : public IBaseCardElementParser
