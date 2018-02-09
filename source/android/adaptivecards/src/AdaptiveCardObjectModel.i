@@ -50,6 +50,8 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 #include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
+#include "../../../shared/cpp/ObjectModel/TextBlockText.h"
+#include "../../../shared/cpp/ObjectModel/TextSection.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
@@ -118,6 +120,7 @@ namespace std {
 %template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
 %template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >; 
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >; 
+%template(TextSectionVector) std::vector<AdaptiveCards::TextSection>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -405,3 +408,5 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
+%include "../../../shared/cpp/ObjectModel/TextBlockText.h"
+%include "../../../shared/cpp/ObjectModel/TextSection.h"
