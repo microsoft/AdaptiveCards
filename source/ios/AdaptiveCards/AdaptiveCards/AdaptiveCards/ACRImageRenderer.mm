@@ -134,23 +134,20 @@
 
     NSMutableDictionary *imageViewMap = [(ACRViewController *)vc getImageMap];
     __block UIImage *img = nil;
-    NSLog(@"img renderer");
-
+    // Generate key for ImageViewMap
     NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-    NSLog(@"image renderer image id = %@", [[NSString alloc] initWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]]);
+    // check ViewController is available
     if(vc)
     {
+        // Syncronize access to imageViewMap
         dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
+            // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
             if(imageViewMap[key])
             {
-                NSLog(@"img is ready");
-                NSLog(@"img view map = %@", imageViewMap);
                 img = imageViewMap[key];
             }
             else
             {
-                NSLog(@"img is not ready");
-                NSLog(@"img view map = %@", imageViewMap);
                 imageViewMap[key] = view;
             }
         });
@@ -172,19 +169,17 @@
         UIGraphicsEndImageContext();
     }
 
-    NSLog(@"img renderer dispatch done");
     if(img)
     {
         view.image = img;
-
-    //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
-    view.contentMode = UIViewContentModeScaleAspectFit;
-    view.clipsToBounds = NO;
-    if(imgElem->GetImageStyle() == ImageStyle::Person) {
-        CALayer *imgLayer = view.layer;
-        [imgLayer setCornerRadius:cgsize.width/2];
-        [imgLayer setMasksToBounds:YES];
-    }
+        //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
+        view.contentMode = UIViewContentModeScaleAspectFit;
+        view.clipsToBounds = NO;
+        if(imgElem->GetImageStyle() == ImageStyle::Person) {
+            CALayer *imgLayer = view.layer;
+            [imgLayer setCornerRadius:cgsize.width/2];
+            [imgLayer setMasksToBounds:YES];
+        }
     }
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];

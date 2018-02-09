@@ -26,7 +26,6 @@ using namespace AdaptiveCards;
     CGRect _guideFrame;
     NSMutableDictionary *_imageViewMap;
     dispatch_queue_t _serial_queue;
-    int _serial_number;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -37,7 +36,6 @@ using namespace AdaptiveCards;
         _hostConfig = std::make_shared<HostConfig>();
         _imageViewMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", DISPATCH_QUEUE_SERIAL);
-        _serial_number = 0;
     }
     return self;
 }
@@ -58,7 +56,6 @@ using namespace AdaptiveCards;
         _guideFrame = frame;
         _imageViewMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", NULL);
-        _serial_number = 0;
     }
     return self;
 }
@@ -112,21 +109,8 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = _adaptiveCard->GetBody();
     if(!body.empty())
     {
-        // loop through elements and find images or text blocks
-        // images splits over two task, loading and scaling
-        // text has only one taks initializing attributed text
-        // get concurrent gcd queue
-        // dispatch sync for image downloading
-        // dispatch async for image scaling
-        // --> cache the result
-        // disptach async attributed text
-        // --> cache  the result
-        // wait till all task is done
-        // execute the rest of the code
-        // transforms (i.e. renders) an adaptiveCard to a new UIView instance
-        [self tagImageBlockWithUniqueID:body];
-
-        [self addImageBlockToConcurrentQueue:body];
+        int serialNumber = 0;
+        [self addImageBlockToConcurrentQueue:body serialNumber:serialNumber];
     }
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
@@ -182,7 +166,9 @@ using namespace AdaptiveCards;
        [newView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
 }
 
-- (void) tagImageBlockWithUniqueID:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
+// Walk through adaptive cards elements and if images are found, download and process images concurrently and on different thread
+// from main thread, so images process won't block UI thread.
+- (int) addImageBlockToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body serialNumber:(int)serialNumber
 {
     for(auto &elem : body)
     {
@@ -190,146 +176,103 @@ using namespace AdaptiveCards;
         {
             case CardElementType::Image:
             {
-                dispatch_sync(_serial_queue, ^{
-                std::string serial_number_as_string = std::to_string(_serial_number);
-                    NSLog(@"serial number %@", [NSNumber numberWithInt:_serial_number]);
+                /// dispatch to concurrent queue
                 std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-
+                /// generate a string key to uniquely identify Image
+                std::string serial_number_as_string = std::to_string(serialNumber);
+                // Id field is optional, if empty, add new one
                 if("" == imgElem->GetId())
                 {
                     imgElem->SetId("_" + serial_number_as_string);
-                    NSLog(@"new image id = %@", [[NSString alloc] initWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]]);
                 }
                 else
                 {
+                    // concat a newly generated key to a existing id, the key will be removed after use
                     imgElem->SetId(imgElem->GetId() + "_" + serial_number_as_string);
-                    NSLog(@"replaced image id = %@", [[NSString alloc] initWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]]);
                 }
 
-                ++_serial_number;
-                });
-
-                break;
-            }
-            case CardElementType::Container:
-            {
-                std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
-                std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
-                [self tagImageBlockWithUniqueID: new_body];
-                break;
-            }
-            case CardElementType::Column:
-            {
-                std::shared_ptr<Column> colum = std::static_pointer_cast<Column>(elem);
-                std::vector<std::shared_ptr<BaseCardElement>> &new_body = colum->GetItems();
-                [self tagImageBlockWithUniqueID: new_body];
-                break;
-            }
-            case CardElementType::ColumnSet:
-            {
-                std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
-                std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
-                for(auto &colum : columns)
-                {
-                    [self tagImageBlockWithUniqueID: colum->GetItems()];
-                }
-                break;
-            }
-            default:
-            {
-                /// no work is needed
-                break;
-            }
-        }
-    }
-}
-
-- (void) addImageBlockToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
-{
-    for(auto &elem : body)
-    {
-        switch (elem->GetElementType())
-        {
-            case CardElementType::Image:
-            {
-                //dispatch_queue_t syncQueue = dispatch_queue_create("io.AdaptiveCards.syncQueue", NULL);
-                /// dispatch to concurrent queue
-                std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-                {
-                    NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
-                                                          encoding:[NSString defaultCStringEncoding]];
-                    NSLog(@"entered");
-                    NSURL *url = [NSURL URLWithString:urlStr];
-
-                    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-
-                    CGSize cgsize = [ACRImageRenderer getImageSize:imgElem withHostConfig:_hostConfig];
-
-                    UIGraphicsBeginImageContext(cgsize);
-                    [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
-                    img = UIGraphicsGetImageFromCurrentImageContext();
-                    UIGraphicsEndImageContext();
-                    dispatch_async(dispatch_get_main_queue(), ^
-                                  {
-                                      NSLog(@"recording");
-                                      //NSNumber *key = [NSNumber numberWithUnsignedLong: (unsigned long)elem.get()];
-                                      //NSLog(@" addr %p", elem.get());
-                                      __block UIImageView *view = nil;
-                                      NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-                                      dispatch_sync(_serial_queue, ^{
-                                          if(!_imageViewMap[key])
-                                          {
-                                              NSLog(@"view is not ready");
-                                              NSLog(@"img view map = %@", _imageViewMap);
-                                              NSLog(@"image id::key = %@", key);
-                                              _imageViewMap[key] = img;
-                                          }
-                                          else
-                                          {
-                                              NSLog(@"view is ready");
-                                              view = _imageViewMap[key];
-                                              NSLog(@"key = %@", key);
-                                          }
+                ++serialNumber;
+                // run image downloading and processing on global queue which is concurrent and different from main queue
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                    ^{
+                         NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
+                                                               encoding:[NSString defaultCStringEncoding]];
+                         NSURL *url = [NSURL URLWithString:urlStr];
+                         // download image
+                         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                         CGSize cgsize = [ACRImageRenderer getImageSize:imgElem withHostConfig:_hostConfig];
+                         // scale image
+                         UIGraphicsBeginImageContext(cgsize);
+                         [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
+                         img = UIGraphicsGetImageFromCurrentImageContext();
+                         UIGraphicsEndImageContext();
+                         // UITask can't be run on global queue, add task to main queue
+                         dispatch_async(dispatch_get_main_queue(),
+                             ^{
+                                  __block UIImageView *view = nil;
+                                  // generate key for imageMap from image element's id
+                                  NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+                                  // syncronize access to image map
+                                  dispatch_sync(_serial_queue,
+                                      ^{
+                                           // UIImageView is not ready, cashe UIImage
+                                           if(!_imageViewMap[key])
+                                           {
+                                               _imageViewMap[key] = img;
+                                           }
+                                           // UIImageView ready, get view
+                                           else
+                                           {
+                                               view = _imageViewMap[key];
+                                           }
                                       });
-                                      NSLog(@"view controller image loading done");
-                                      if(view)
+
+                                   // if view is available, set image to it, and continue image processing
+                                  if(view)
+                                  {
+                                      view.image = img;
+                                      view.contentMode = UIViewContentModeScaleAspectFit;
+                                      view.clipsToBounds = NO;
+                                      if(imgElem->GetImageStyle() == ImageStyle::Person)
                                       {
-                                          view.image = img;
-                                          view.contentMode = UIViewContentModeScaleAspectFit;
-                                          view.clipsToBounds = NO;
-                                          if(imgElem->GetImageStyle() == ImageStyle::Person) {
-                                              CALayer *imgLayer = view.layer;
-                                              [imgLayer setCornerRadius:cgsize.width/2];
-                                              [imgLayer setMasksToBounds:YES];
-                                          }
+                                          CALayer *imgLayer = view.layer;
+                                          [imgLayer setCornerRadius:cgsize.width/2];
+                                          [imgLayer setMasksToBounds:YES];
                                       }
-                                  });
-                });
+                                  }
+                              });
+                         }
+                );
                 break;
             }
+            // continue on search
             case CardElementType::Container:
             {
                 std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
                 std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
-                [self addImageBlockToConcurrentQueue: new_body];
+                // update serial number that is used for generating unique key for image_map
+                serialNumber = [self addImageBlockToConcurrentQueue: new_body serialNumber:serialNumber];
                 break;
             }
+            // continue on search
             case CardElementType::Column:
             {
                 std::shared_ptr<Column> colum = std::static_pointer_cast<Column>(elem);
                 std::vector<std::shared_ptr<BaseCardElement>> &new_body = colum->GetItems();
-                [self addImageBlockToConcurrentQueue: new_body];
+                // update serial number that is used for generating unique key for image_map
+                serialNumber = [self addImageBlockToConcurrentQueue: new_body serialNumber:serialNumber];
                 break;
             }
+            // continue on search
             case CardElementType::ColumnSet:
             {
                 std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
                 std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
+                // ColumnSet is vector of Column, instead of vector of BaseCardElement
                 for(auto &colum : columns)
                 {
-                    [self addImageBlockToConcurrentQueue: colum->GetItems()];
+                    // update serial number that is used for generating unique key for image_map
+                    serialNumber = [self addImageBlockToConcurrentQueue: colum->GetItems() serialNumber:serialNumber];
                 }
                 break;
             }
@@ -340,6 +283,7 @@ using namespace AdaptiveCards;
             }
         }
     }
+    return serialNumber;
 }
 
 - (NSMutableDictionary *) getImageMap
