@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AdaptiveTextBlock.h"
 #include "Util.h"
+#include "DateTimeParser.h"
 #include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
@@ -33,7 +34,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
     {
-        return UTF8ToHString(m_sharedTextBlock->GetText().Concatenate(), text);
+        DateTimeParser parser(m_sharedTextBlock->GetLanguage());
+        return UTF8ToHString(parser.GenerateString(m_sharedTextBlock->GetTextForDateParsing()), text);
     }
 
     _Use_decl_annotations_

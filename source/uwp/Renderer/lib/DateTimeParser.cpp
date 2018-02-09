@@ -22,31 +22,28 @@ std::string DateTimeParser::GenerateString(TextBlockText text)
     for (const auto& textSection : text.GetString())
     {
         struct tm result{};
+        result.tm_hour = textSection.GetHour();
+        result.tm_min = textSection.GetMinute();
+        result.tm_sec = textSection.GetSecond();
+        result.tm_mday = textSection.GetDay();
+        result.tm_mon = textSection.GetMonth();
+        result.tm_year = textSection.GetYear() - 1900;
+
         switch (textSection.GetFormat())
         {
             case TextSectionFormat::Time:
-                result.tm_hour = textSection.GetHour();
-                result.tm_min = textSection.GetMinute();
-                result.tm_sec = textSection.GetSecond();
                 parsedostr << std::put_time(&result, L"%I:%M %p");
                 break;
             case TextSectionFormat::DateCompact:
-                result.tm_mday = textSection.GetDay();
-                result.tm_mon = textSection.GetMonth();
-                result.tm_year = textSection.GetYear() - 1900;
                 parsedostr << std::put_time(&result, L"%Ex");
                 break;
             case TextSectionFormat::DateShort:
-                result.tm_mday = textSection.GetDay();
-                result.tm_mon = textSection.GetMonth();
-                result.tm_year = textSection.GetYear() - 1900;
+                mktime(&result);
                 parsedostr.imbue(m_language);
                 parsedostr << std::put_time(&result, L"%a, %b %e, %Y");
                 break;
             case TextSectionFormat::DateLong:
-                result.tm_mday = textSection.GetDay();
-                result.tm_mon = textSection.GetMonth();
-                result.tm_year = textSection.GetYear() - 1900;
+                mktime(&result);
                 parsedostr.imbue(m_language);
                 parsedostr << std::put_time(&result, L"%A, %B %e, %Y");
                 break;
