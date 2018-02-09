@@ -16,6 +16,9 @@
 #import "Column.h"
 #import "Image.h"
 #import "ACRImageRenderer.h"
+#import "TextBlock.h"
+#import "ACRTextBlockRenderer.h"
+#import "MarkDownParser.h"
 
 using namespace AdaptiveCards;
 
@@ -25,7 +28,9 @@ using namespace AdaptiveCards;
     std::shared_ptr<HostConfig> _hostConfig;
     CGRect _guideFrame;
     NSMutableDictionary *_imageViewMap;
+    NSMutableDictionary *_textMap;
     dispatch_queue_t _serial_queue;
+    dispatch_queue_t _serial_text_queue;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -35,7 +40,9 @@ using namespace AdaptiveCards;
         _guideFrame = CGRectMake(0, 0, 0, 0);
         _hostConfig = std::make_shared<HostConfig>();
         _imageViewMap = [[NSMutableDictionary alloc] init];
+        _textMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", DISPATCH_QUEUE_SERIAL);
+        _serial_text_queue = dispatch_queue_create("io.adaptiveCards.serial_text_queue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -55,7 +62,9 @@ using namespace AdaptiveCards;
         }
         _guideFrame = frame;
         _imageViewMap = [[NSMutableDictionary alloc] init];
+        _textMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", NULL);
+        _serial_text_queue = dispatch_queue_create("io.adaptiveCards.serial_text_queue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -174,6 +183,70 @@ using namespace AdaptiveCards;
     {
         switch (elem->GetElementType())
         {
+            case CardElementType::TextBlock:
+            {
+                /// dispatch to concurrent queue
+                std::shared_ptr<TextBlock> txtElem = std::dynamic_pointer_cast<TextBlock>(elem);
+                /// generate a string key to uniquely identify Image
+                std::string serial_number_as_string = std::to_string(serialNumber);
+                // Id field is optional, if empty, add new one
+                if("" == txtElem->GetId())
+                {
+                    txtElem->SetId("_" + serial_number_as_string);
+                }
+                else
+                {
+                    // concat a newly generated key to a existing id, the key will be removed after use
+                    txtElem->SetId(txtElem->GetId() + "_" + serial_number_as_string);
+                }
+
+                ++serialNumber;
+                // run image downloading and processing on global queue which is concurrent and different from main queue
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                    ^{
+                        // MarkDownParser transforms text with MarkDown to a html string
+                        std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(txtElem->GetText().c_str());
+                        NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+                        //NSString *parsedString = [NSString stringWithCString:txtBlck->GetText().c_str() encoding:NSUTF8StringEncoding];
+
+                        // Font and text size are applied as CSS style by appending it to the html string -- font is hard coded for now
+                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx;}</style>",
+                                                                              @"verdana", [ACRTextBlockRenderer getTextBlockTextSize:txtElem->GetTextSize() withHostConfig:_hostConfig]]];
+                        // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
+                        NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+                        NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
+                        NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+
+                         dispatch_async(dispatch_get_main_queue(),
+                             ^{
+                                  __block UILabel *lab = nil;
+                                  // generate key for imageMap from image element's id
+                                  NSString *key = [NSString stringWithCString:txtElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+                                  // syncronize access to image map
+                                  dispatch_sync(_serial_text_queue,
+                                      ^{
+                                           // UIImageView is not ready, cashe UIImage
+                                           if(!_textMap[key])
+                                           {
+                                               _textMap[key] = content;
+                                           }
+                                           // UIImageView ready, get view
+                                           else
+                                           {
+                                               lab = _textMap[key];
+                                           }
+                                      });
+
+                                   // if view is available, set image to it, and continue image processing
+                                  if(lab)
+                                  {
+                                      lab.attributedText = content;
+                                  }
+                              });
+                         }
+                );
+                break;
+            }
             case CardElementType::Image:
             {
                 /// dispatch to concurrent queue
@@ -293,6 +366,16 @@ using namespace AdaptiveCards;
 - (dispatch_queue_t) getSerialQueue
 {
     return _serial_queue;
+}
+
+- (dispatch_queue_t) getSerialTextQueue
+{
+    return _serial_text_queue;
+}
+
+- (NSMutableDictionary *) getTextMap
+{
+    return _textMap;
 }
 
 @end

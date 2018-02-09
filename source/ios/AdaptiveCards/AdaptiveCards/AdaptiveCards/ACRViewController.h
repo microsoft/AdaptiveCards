@@ -22,4 +22,8 @@
 - (NSMutableDictionary *) getImageMap;
 
 - (dispatch_queue_t) getSerialQueue;
+
+- (NSMutableDictionary *) getTextMap; 
+
+- (dispatch_queue_t) getSerialTextQueue;
 @end
