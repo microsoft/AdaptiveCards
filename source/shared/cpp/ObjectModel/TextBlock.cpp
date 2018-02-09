@@ -3,6 +3,7 @@
 #include <iostream>
 #include <codecvt>
 #include "TextBlock.h"
+#include "TextBlockText.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveCards;
