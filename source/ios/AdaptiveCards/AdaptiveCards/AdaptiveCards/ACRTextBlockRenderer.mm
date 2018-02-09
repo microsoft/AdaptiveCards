@@ -49,16 +49,6 @@ rootViewController:(UIViewController *)vc
     //NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithString:parsedString];
 
 #endif
-    // Set paragraph style such as line break mode and alignment
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
-    paragraphStyle.alignment = [self getTextBlockAlignment:txtBlck withHostConfig:config];
-
-    // Obtain text color to apply to the attributed string
-    ContainerStyle style = [viewGroup getStyle];
-    ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? config->containerStyles.emphasisPalette.foregroundColors:
-                                                                     config->containerStyles.defaultPalette.foregroundColors;
-
     __block NSMutableAttributedString *content = nil;
     if(vc)
     {
@@ -81,10 +71,21 @@ rootViewController:(UIViewController *)vc
 
     if(content)
     {
+        // Set paragraph style such as line break mode and alignment
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+        paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtBlck withHostConfig:config];
+
+        // Obtain text color to apply to the attributed string
+        ContainerStyle style = [viewGroup getStyle];
+        ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? config->containerStyles.emphasisPalette.foregroundColors:
+                                                                         config->containerStyles.defaultPalette.foregroundColors;
+
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
         lab.attributedText = content;
     }
+
     lab.numberOfLines = int(txtBlck->GetMaxLines());
     if(!lab.numberOfLines and !txtBlck->GetWrap())
     {
@@ -180,7 +181,7 @@ rootViewController:(UIViewController *)vc
     }
 }
 
-- (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
++ (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
                           withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (txtBlock->GetHorizontalAlignment()){

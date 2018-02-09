@@ -240,6 +240,18 @@ using namespace AdaptiveCards;
                                    // if view is available, set image to it, and continue image processing
                                   if(lab)
                                   {
+                                      // Set paragraph style such as line break mode and alignment
+                                      NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                                      paragraphStyle.lineBreakMode = txtElem->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+                                      paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtElem withHostConfig:_hostConfig];
+
+                                      // Obtain text color to apply to the attributed string
+                                      ContainerStyle style = ContainerStyle::None;//[viewGroup getStyle];
+                                      ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? _hostConfig->containerStyles.emphasisPalette.foregroundColors:
+                                                                                                             _hostConfig->containerStyles.defaultPalette.foregroundColors;
+
+                                      // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
+                                      [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtElem->GetTextColor() colorsConfig:colorConfig subtleOption:txtElem->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtElem->GetTextWeight() withHostConfig:_hostConfig]} range:NSMakeRange(0, content.length - 1)];
                                       lab.attributedText = content;
                                   }
                               });
