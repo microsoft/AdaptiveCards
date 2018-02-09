@@ -18,13 +18,14 @@
 
 - (void)addArrangedSubview:(UIView *)view
 {
-    CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    //CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     [super addArrangedSubview:view];
-    super.frame.size = [super.stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    //super.frame.size = [super.stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     CGRect frame = super.frame;
-    frame.size.width = MAX(super.frame.size.width, contentSz.width);
-    frame.size.height += contentSz.height;
+    //frame.size.width = MAX(super.frame.size.width, contentSz.width);
+    //frame.size.height += contentSz.height;
     super.frame = frame;
+#if 1
     enum Bounds { eMinNumRequired = 2};
     if([self.stackView.arrangedSubviews count] >= eMinNumRequired)
     {
@@ -47,6 +48,7 @@
                       attribute:NSLayoutAttributeWidth
                      multiplier:1
                        constant:0]];
+#endif
 
 }
 

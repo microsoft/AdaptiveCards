@@ -35,8 +35,8 @@ using namespace AdaptiveCards;
         ((UICollectionViewFlowLayout* )self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        CGSize target = [view systemLayoutSizeFittingSize:sz];
-        self.frame = CGRectMake(0, 0, (target.width / sz.width) * sz.width, sz.height);
+        //CGSize target = [view systemLayoutSizeFittingSize:sz];
+        //self.frame = CGRectMake(0, 0, (target.width / sz.width) * sz.width, sz.height);
     }
     return self;
 }
