@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.http.HttpRequestHelper;
 import com.microsoft.adaptivecards.renderer.http.HttpRequestResult;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -112,17 +113,17 @@ public class ImageRenderer extends BaseCardElementRenderer
         private ImageStyle m_imageStyle;
     }
 
-    private static void setImageSize(ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+    private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
         if (imageSize.swigValue() == ImageSize.Stretch.swigValue()) {
             //ImageView must match parent for stretch to work
             imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         } else if (imageSize.swigValue() == ImageSize.Small.swigValue()) {
-            imageView.setMaxWidth((int) imageSizesConfig.getSmallSize());
+            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getSmallSize()));
         } else if (imageSize.swigValue() == ImageSize.Medium.swigValue()) {
-            imageView.setMaxWidth((int) imageSizesConfig.getMediumSize());
+            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getMediumSize()));
         } else if (imageSize.swigValue() == ImageSize.Large.swigValue()) {
-            imageView.setMaxWidth((int) imageSizesConfig.getLargeSize());
+            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getLargeSize()));
         } else if (imageSize.swigValue() != ImageSize.Auto.swigValue()){
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
@@ -190,7 +191,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         //set horizontalAlignment
         imageView.setLayoutParams(layoutParams);
 
-        setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
+        setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
         setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isPartOfImageSet /* horizontal line */);
 
         viewGroup.addView(imageView);

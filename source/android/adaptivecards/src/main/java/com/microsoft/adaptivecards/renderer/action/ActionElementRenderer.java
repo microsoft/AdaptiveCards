@@ -15,6 +15,7 @@ import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.ShowCardAction;
 import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
 import com.microsoft.adaptivecards.renderer.IBaseActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 
@@ -127,6 +128,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement);
+        button.setTextSize(Util.dpToPixels(context, hostConfig.getFontSizes().getDefaultFontSize()));
         if (baseActionElement.GetElementType().swigValue() == ActionType.ShowCard.swigValue()
                 && hostConfig.getActions().getShowCard().getActionMode().swigValue() == ActionMode.Inline.swigValue())
         {
@@ -143,7 +145,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
             View invisibleCard = AdaptiveCardRenderer.getInstance().render(context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig);
             invisibleCard.setVisibility(View.GONE);
-            invisibleCard.setPadding(0,0,0,0);
+            invisibleCard.setPadding(0,Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()),0,0);
+
 
             ViewGroup parent = (ViewGroup) viewGroup.getParent();
             ViewGroup hiddenCards = (ViewGroup) parent.getChildAt(1);

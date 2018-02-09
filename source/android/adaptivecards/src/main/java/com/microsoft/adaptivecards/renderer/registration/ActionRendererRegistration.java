@@ -95,7 +95,7 @@ public class ActionRendererRegistration
             viewGroup.addView(actionsLayout);
         }
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < size && i < hostConfig.getActions().getMaxActions(); i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
             IBaseActionElementRenderer renderer = m_typeToRendererMap.get(actionElement.GetElementType().toString());

@@ -38,11 +38,35 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         System.loadLibrary("adaptivecards-native-lib");
     }
 
+    private HostConfig m_hostConfig;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
         setupTabs();
+
+        m_hostConfig = new HostConfig();
+        m_hostConfig.getFontSizes().setDefaultFontSize(6);
+        m_hostConfig.getFontSizes().setSmallFontSize(4);
+        m_hostConfig.getFontSizes().setMediumFontSize(7);
+        m_hostConfig.getFontSizes().setLargeFontSize(8);
+        m_hostConfig.getFontSizes().setExtraLargeFontSize(10);
+
+        m_hostConfig.getImageSizes().setLargeSize(150);
+        m_hostConfig.getImageSizes().setMediumSize(90);
+        m_hostConfig.getImageSizes().setSmallSize(60);
+
+        m_hostConfig.getSpacing().setDefaultSpacing(6);
+        m_hostConfig.getSpacing().setSmallSpacing(4);
+        m_hostConfig.getSpacing().setMediumSpacing(8);
+        m_hostConfig.getSpacing().setLargeSpacing(10);
+        m_hostConfig.getSpacing().setExtraLargeSpacing(15);
+        m_hostConfig.getSpacing().setPaddingSpacing(12);
+
+        //m_hostConfig.getActions().setMaxActions(2);
+        m_hostConfig.getActions().getShowCard().setInlineTopMargin(10);
+
 
         // Add text change handler
         final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
@@ -95,7 +119,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, new HostConfig()));
+            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, m_hostConfig));
         }
         catch (java.io.IOException ex)
         {
@@ -198,7 +222,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         ShowCardFragment showCardFragment = new ShowCardFragment();
-        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, new HostConfig());
+        HostConfig config = new HostConfig();
+        config.getFontSizes().setSmallFontSize(1);
+        config.getFontSizes().setMediumFontSize(1);
+        config.getFontSizes().setLargeFontSize(1);
+        config.getFontSizes().setExtraLargeFontSize(1);
+
+        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, config);
         Bundle args = new Bundle();
         args.putString("title", showCardAction.GetTitle());
         showCardFragment.setArguments(args);

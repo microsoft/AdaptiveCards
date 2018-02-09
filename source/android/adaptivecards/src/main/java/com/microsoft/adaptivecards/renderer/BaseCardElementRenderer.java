@@ -14,7 +14,7 @@ import com.microsoft.adaptivecards.objectmodel.SpacingConfig;
 
 public abstract class BaseCardElementRenderer implements IBaseCardElementRenderer
 {
-    protected static int getSpacingSize(Spacing spacing, SpacingConfig defaultSpacingConfig)
+    protected static long getSpacingSize(Spacing spacing, SpacingConfig defaultSpacingConfig)
     {
         long spacingSize = 0;
         if (spacing.swigValue() == Spacing.None.swigValue())
@@ -105,8 +105,8 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             //Do not add space to the first element of a viewgroup
             return;
         }
-        int spacingSize = getSpacingSize(spacing, hostConfig.getSpacing());
-        int separatorThickness = (int)hostConfig.getSeparator().getLineThickness();
+        int spacingSize = Util.dpToPixels(context, getSpacingSize(spacing, hostConfig.getSpacing()));
+        int separatorThickness = Util.dpToPixels(context, hostConfig.getSeparator().getLineThickness());
         int separatorColor = android.graphics.Color.parseColor(hostConfig.getSeparator().getLineColor());
 
         View view = new ImageView(context);
