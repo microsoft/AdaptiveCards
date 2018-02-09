@@ -49,7 +49,6 @@ protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
 
 private:
-    static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
     CardElementType m_type;
     Spacing m_spacing;
     std::string m_id;
