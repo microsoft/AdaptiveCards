@@ -299,6 +299,14 @@ enum class WarningStatusCode {
     AssetLoadFailed
 };
 
+enum class TextSectionFormat {
+    RegularString = 0,
+    Time,
+    DateCompact,
+    DateShort,
+    DateLong
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 

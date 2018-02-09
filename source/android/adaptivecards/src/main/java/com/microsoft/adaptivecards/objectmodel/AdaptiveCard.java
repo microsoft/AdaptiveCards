@@ -39,12 +39,12 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_0(), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, ContainerStyle style, String speak) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, minVersion, fallbackText, backgroundImage, style.swigValue(), speak), true);
+  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, minVersion, fallbackText, backgroundImage, style.swigValue(), speak, language), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, ContainerStyle style, String speak, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImage, style.swigValue(), speak, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImage, style.swigValue(), speak, language, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -93,6 +93,14 @@ public class AdaptiveCard {
 
   public void SetStyle(ContainerStyle value) {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetStyle(swigCPtr, this, value.swigValue());
+  }
+
+  public String GetLanguage() {
+    return AdaptiveCardObjectModelJNI.AdaptiveCard_GetLanguage(swigCPtr, this);
+  }
+
+  public void SetLanguage(String value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetLanguage(swigCPtr, this, value);
   }
 
   public BaseCardElementVector GetBody() {

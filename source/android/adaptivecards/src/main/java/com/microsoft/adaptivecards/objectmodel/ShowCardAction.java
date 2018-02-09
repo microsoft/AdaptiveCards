@@ -54,6 +54,10 @@ public class ShowCardAction extends BaseActionElement {
     AdaptiveCardObjectModelJNI.ShowCardAction_SetCard(swigCPtr, this, AdaptiveCard.getCPtr(arg0), arg0);
   }
 
+  public void SetLanguage(String value) {
+    AdaptiveCardObjectModelJNI.ShowCardAction_SetLanguage(swigCPtr, this, value);
+  }
+
   public static ShowCardAction dynamic_cast(BaseActionElement baseActionElement) {
     long cPtr = AdaptiveCardObjectModelJNI.ShowCardAction_dynamic_cast(BaseActionElement.getCPtr(baseActionElement), baseActionElement);
     return (cPtr == 0) ? null : new ShowCardAction(cPtr, true);
