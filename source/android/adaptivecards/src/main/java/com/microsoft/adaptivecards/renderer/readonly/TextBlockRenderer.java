@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.microsoft.adaptivecards.objectmodel.AdaptiveCard;
 import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
 import com.microsoft.adaptivecards.objectmodel.MarkDownParser;
-import com.microsoft.adaptivecards.objectmodel.SWIGTYPE_p_TextBlockText;
 import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -134,7 +133,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTag(baseCardElement);
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
-        String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing()));
+        String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
 
         MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
         String textString = markDownParser.TransformToHtml();

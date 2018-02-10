@@ -6,6 +6,7 @@ import com.microsoft.adaptivecards.objectmodel.TextSection;
 import com.microsoft.adaptivecards.objectmodel.TextSectionFormat;
 import com.microsoft.adaptivecards.objectmodel.TextSectionVector;
 
+import java.text.ParsePosition;
 import java.util.Locale;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -30,20 +31,20 @@ public class DateTimeParser {
                 String time = timeFormat.format(FormatTime(ts.GetHour(), ts.GetMinute()));
                 parsedString += time;
             } else {
-                Date dateToParse = FormatDate(ts.GetYear(), ts.GetMonth(), ts.GetDay());
+                 Date dateToParse = FormatDate(ts.GetYear(), ts.GetMonth(), ts.GetDay());
                 if (ts.GetFormat() == TextSectionFormat.DateCompact) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                     parsedString += dateFormat.format(dateToParse);
                 } else {
                     if (ts.GetFormat() == TextSectionFormat.DateShort) {
-                        SimpleDateFormat localizedFormat = new SimpleDateFormat("E, M d, y", m_language);
+                        SimpleDateFormat localizedFormat = new SimpleDateFormat("EEE, MMM dd, yyyy", m_language);
                         parsedString += localizedFormat.format(dateToParse);
                     } else {
                         if (ts.GetFormat() == TextSectionFormat.DateLong) {
-                            SimpleDateFormat localizedFormat = new SimpleDateFormat("E, M d, y", m_language);
+                            SimpleDateFormat localizedFormat = new SimpleDateFormat("EEEE, MMMM dd, yyyy", m_language);
                             parsedString += localizedFormat.format(dateToParse);
                         } else {
-                            parsedString += ts.GetOriginalText();
+                            parsedString += ts.GetText();
                         }
                     }
                 }
@@ -57,16 +58,18 @@ public class DateTimeParser {
     {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         try {
-            return timeFormat.parse(hour + ":" + minute);
+            String rawTime = hour + ":" + minute;
+            return timeFormat.parse(rawTime);
         } catch (Exception e){
-            return new Date(); // I dont know, return today, the method shouldnt fail after all
+            return new Date();
         }
     }
 
     private Date FormatDate(int year, int month, int day){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         try{
-            return dateFormat.parse(day + "/" + month + "/" + year);
+            String rawDate = (month + 1) + "/" + day + "/" + year;
+            return dateFormat.parse(rawDate, new ParsePosition(0));
         } catch(Exception e){
             return new Date();
         }

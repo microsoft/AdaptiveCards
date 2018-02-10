@@ -48,7 +48,11 @@ public class TextBlockText {
   }
 
   public void AddTextSection(String text, TextSectionFormat format) {
-    AdaptiveCardObjectModelJNI.TextBlockText_AddTextSection(swigCPtr, this, text, format.swigValue());
+    AdaptiveCardObjectModelJNI.TextBlockText_AddTextSection__SWIG_0(swigCPtr, this, text, format.swigValue());
+  }
+
+  public void AddTextSection(String text, String originalText, TextSectionFormat format) {
+    AdaptiveCardObjectModelJNI.TextBlockText_AddTextSection__SWIG_1(swigCPtr, this, text, originalText, format.swigValue());
   }
 
   public String Concatenate() {

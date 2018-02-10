@@ -261,7 +261,7 @@ std::wstring TextBlockText::StringToWstring(const std::string& in) const
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
     return utfConverter.from_bytes(in);
 #else
-    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utfConverter;
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utfConverter;
     return utfConverter.from_bytes(in);
 #endif // _WIN32
 }
