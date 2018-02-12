@@ -15,7 +15,7 @@ namespace AdaptiveCards
         std::string GetText() const;
         std::string GetOriginalText() const;
         TextSectionFormat GetFormat() const;
-        // Date format should be: MM/DD/YY
+        // Date format should be: MM/DD/YYYY
         int GetDay() const;
         int GetMonth() const;
         int GetYear() const;

@@ -12,7 +12,7 @@ namespace AdaptiveCards
     public:
         TextBlockText();
         TextBlockText(std::string in);
-        std::vector<TextSection> GetString() const;
+        std::vector<std::shared_ptr<TextSection>> GetString() const;
         void AddTextSection(std::string text, TextSectionFormat format);
         void AddTextSection(std::string text, std::string originalText, TextSectionFormat format);
         std::string Concatenate();
@@ -21,6 +21,6 @@ namespace AdaptiveCards
         static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
         void ParseDateTime(std::string in);        
 
-        std::vector<TextSection> m_fullString;
+        std::vector<std::shared_ptr<TextSection>> m_fullString;
     };
 }

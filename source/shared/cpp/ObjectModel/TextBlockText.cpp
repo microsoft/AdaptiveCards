@@ -28,19 +28,19 @@ TextBlockText::TextBlockText(std::string in)
     ParseDateTime(in);
 }
 
-std::vector<TextSection> TextBlockText::GetString() const
+std::vector<std::shared_ptr<TextSection>> TextBlockText::GetString() const
 {
     return m_fullString;
 }
 
 void TextBlockText::AddTextSection(std::string text, TextSectionFormat format)
 {
-    m_fullString.emplace_back(TextSection(text, format));
+    m_fullString.emplace_back(std::make_shared<TextSection>(text, format));
 }
 
 void TextBlockText::AddTextSection(std::string text, std::string originalText, TextSectionFormat format)
 {
-    m_fullString.emplace_back(TextSection(text, originalText, format));
+    m_fullString.emplace_back(std::make_shared<TextSection>(text, originalText, format));
 }
 
 std::string TextBlockText::Concatenate()
@@ -48,7 +48,7 @@ std::string TextBlockText::Concatenate()
     std::string formedString;
     for (const auto& piece : m_fullString)
     {
-        formedString += piece.GetOriginalText();
+        formedString += piece->GetOriginalText();
     }
     return formedString;
 }

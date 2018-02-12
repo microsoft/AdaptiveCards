@@ -12,6 +12,7 @@ DateTimeParser::DateTimeParser(const std::string& language)
     }
     catch (...)
     {
+        m_language = std::locale("en");
     }
 }
 
@@ -22,19 +23,21 @@ std::string DateTimeParser::GenerateString(TextBlockText text)
     for (const auto& textSection : text.GetString())
     {
         struct tm result{};
-        result.tm_hour = textSection.GetHour();
-        result.tm_min = textSection.GetMinute();
-        result.tm_sec = textSection.GetSecond();
-        result.tm_mday = textSection.GetDay();
-        result.tm_mon = textSection.GetMonth();
-        result.tm_year = textSection.GetYear() - 1900;
+        result.tm_hour = textSection->GetHour();
+        result.tm_min = textSection->GetMinute();
+        result.tm_sec = textSection->GetSecond();
+        result.tm_mday = textSection->GetDay();
+        result.tm_mon = textSection->GetMonth();
+        result.tm_year = textSection->GetYear() >= 1900 ? textSection->GetYear() - 1900 : 0;
 
-        switch (textSection.GetFormat())
+        switch (textSection->GetFormat())
         {
             case TextSectionFormat::Time:
+                
                 parsedostr << std::put_time(&result, L"%I:%M %p");
                 break;
             case TextSectionFormat::DateCompact:
+                
                 parsedostr << std::put_time(&result, L"%Ex");
                 break;
             case TextSectionFormat::DateShort:
@@ -49,7 +52,7 @@ std::string DateTimeParser::GenerateString(TextBlockText text)
                 break;
             case TextSectionFormat::RegularString:
             default:
-                parsedostr << StringToWstring(textSection.GetText());
+                parsedostr << StringToWstring(textSection->GetText());
                 break;
         }
     }

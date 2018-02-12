@@ -71,7 +71,7 @@ int TextSection::GetDateSection(int position) const
         auto splittedDate = Split(m_text, dateDelimiter);
         if (splittedDate.size() > position)
         {
-            dateValue = std::stoi(splittedDate.at(1));
+            dateValue = std::stoi(splittedDate.at(position));
         }
     }
     return dateValue;
@@ -85,7 +85,7 @@ int TextSection::GetTimeSection(int position) const
         auto splittedTime = Split(m_text, timeDelimiter);
         if (splittedTime.size() > position)
         {
-            timeValue = std::stoi(splittedTime.at(0));
+            timeValue = std::stoi(splittedTime.at(position));
         }
     }
     return timeValue;
