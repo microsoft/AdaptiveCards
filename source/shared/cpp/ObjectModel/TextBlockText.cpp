@@ -80,11 +80,14 @@ bool TextBlockText::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int
 
 void TextBlockText::ParseDateTime(std::string in)
 {
+    const char dateDelimiter = '/';
+    const char timeDelimiter = ':';
+
     std::vector<TextSection> sections;
 
-    std::wregex pattern(L"\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
-    std::wsmatch matches;
-    std::wstring text = StringToWstring(in);
+    std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
+    std::smatch matches;
+    std::string text = in;
     enum MatchIndex
     {
         IsDate = 2,
@@ -122,11 +125,11 @@ void TextBlockText::ParseDateTime(std::string in)
             formatStyle = matches[Format].str()[formatStartIndex];
         }
 
-        AddTextSection(WstringToString(matches.prefix().str()), TextSectionFormat::RegularString);
+        AddTextSection(matches.prefix().str(), TextSectionFormat::RegularString);
 
         if (!isDate && formatStyle)
         {
-            AddTextSection(WstringToString(matches[0].str()), TextSectionFormat::RegularString);
+            AddTextSection(matches[0].str(), TextSectionFormat::RegularString);
             text = matches.suffix().str();
             continue;
         }
@@ -172,7 +175,7 @@ void TextBlockText::ParseDateTime(std::string in)
             utc = mktime(&parsedTm);
             if (utc == -1)
             {
-                AddTextSection(WstringToString(matches[0]), TextSectionFormat::RegularString);
+                AddTextSection(matches[0], TextSectionFormat::RegularString);
             }
 
             wchar_t tzOffsetBuff[6]{};
@@ -197,90 +200,43 @@ void TextBlockText::ParseDateTime(std::string in)
 
                 if (isDate)
                 {
-                    std::string plainDate = std::to_string(result.tm_mon) + "/" +
-                        std::to_string(result.tm_mday) + "/" +
+                    std::string plainDate = std::to_string(result.tm_mon) + dateDelimiter +
+                        std::to_string(result.tm_mday) + dateDelimiter +
                         std::to_string(result.tm_year + 1900);
 
                     switch (formatStyle)
                     {
                         // SHORT Style
                         case 'S':
-                            AddTextSection(plainDate, WstringToString(matches[0].str()), TextSectionFormat::DateShort);
+                            AddTextSection(plainDate, matches[0].str(), TextSectionFormat::DateShort);
                             break;
                         // LONG Style
                         case 'L':
-                            AddTextSection(plainDate, WstringToString(matches[0].str()), TextSectionFormat::DateLong);
+                            AddTextSection(plainDate, matches[0].str(), TextSectionFormat::DateLong);
                             break;
                         // COMPACT or DEFAULT Style
                         case 'C': default:
-                            AddTextSection(plainDate, WstringToString(matches[0].str()), TextSectionFormat::DateCompact);
+                            AddTextSection(plainDate, matches[0].str(), TextSectionFormat::DateCompact);
                             break;
                     }
                 }
                 else
                 {
-                    AddTextSection(std::to_string(result.tm_hour) + ":" +
-                        std::to_string(result.tm_min) + ":" +
+                    AddTextSection(std::to_string(result.tm_hour) + timeDelimiter +
+                        std::to_string(result.tm_min) + timeDelimiter +
                         std::to_string(result.tm_sec), 
-                        WstringToString(matches[0].str()),
+                        matches[0].str(),
                         TextSectionFormat::Time);
                 }
             }
         }
         else
         {
-            AddTextSection(WstringToString(matches[0].str()), TextSectionFormat::RegularString);
+            AddTextSection(matches[0].str(), TextSectionFormat::RegularString);
         }
         
         text = matches.suffix().str();
     }
 
-    AddTextSection(WstringToString(text), TextSectionFormat::RegularString);
-}
-
-// TODO: Refactor this things
-std::u16string TextBlockText::ToU16String(const std::string& in) const
-{
-#ifdef _WIN32
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-    return ToU16String(utfConverter.from_bytes(in));
-#else
-    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utfConverter;
-    return utfConverter.from_bytes(in);
-#endif // _WIN32
-}
-
-std::u16string TextBlockText::ToU16String(const std::wstring& in) const
-{
-    return {in.begin(), in.end()};
-}
-
-std::wstring TextBlockText::StringToWstring(const std::string& in) const
-{
-#ifdef _WIN32
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-    return utfConverter.from_bytes(in);
-#else
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utfConverter;
-    return utfConverter.from_bytes(in);
-#endif // _WIN32
-}
-
-std::string TextBlockText::WstringToString(const std::wstring& input) const
-{
-#ifdef _WIN32
-    if (sizeof(wchar_t) == 2)
-    {
-        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-        return utfConverter.to_bytes(input);
-    }
-    else
-    {
-        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utfConverter;
-        return utfConverter.to_bytes(input);
-    }
-#else
-    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utfConverter;
-    return utfConverter.to_bytes(ToU16String(input));
-#endif // _WIN32
+    AddTextSection(text, TextSectionFormat::RegularString);
 }
