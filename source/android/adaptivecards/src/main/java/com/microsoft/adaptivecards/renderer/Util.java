@@ -12,4 +12,5 @@ public final class Util {
         int returnVal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
         return returnVal;
     }
+
 }

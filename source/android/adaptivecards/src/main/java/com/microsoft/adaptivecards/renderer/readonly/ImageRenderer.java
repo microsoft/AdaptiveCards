@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.microsoft.adaptivecards.renderer.Util;
+import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.http.HttpRequestHelper;
 import com.microsoft.adaptivecards.renderer.http.HttpRequestResult;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -138,9 +140,10 @@ public class ImageRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
-        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, hostConfig, false);
+        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, cardActionHandler, hostConfig, false);
     }
 
     public View render(
@@ -149,6 +152,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             boolean isPartOfImageSet)
     {
@@ -186,6 +190,12 @@ public class ImageRenderer extends BaseCardElementRenderer
         else if (horizontalAlignment.swigValue() == HorizontalAlignment.Center.swigValue())
         {
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        }
+
+        if (image.GetSelectAction() != null)
+        {
+            imageView.setClickable(true);
+            imageView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(image.GetSelectAction(),inputActionHandlerList, cardActionHandler));
         }
 
         //set horizontalAlignment
