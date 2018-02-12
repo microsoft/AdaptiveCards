@@ -38,7 +38,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         return s_instance;
     }
 
-    private class ButtonOnClickListener implements View.OnClickListener
+    public static class ButtonOnClickListener implements View.OnClickListener
     {
 
         public ButtonOnClickListener(BaseActionElement action, Vector< IInputHandler > inputHandlerList, ICardActionHandler cardActionHandler)

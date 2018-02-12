@@ -122,7 +122,7 @@ public class AdaptiveCardRenderer
         {
             throw new IllegalArgumentException("Adaptive Card does not contain a body.");
         }
-        View view = CardRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseCardElementList, inputHandlerList, hostConfig);
+        View view = CardRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseCardElementList, inputHandlerList, cardActionHandler, hostConfig);
 
         // Actions are optional
         BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
