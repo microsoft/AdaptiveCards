@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,11 +135,30 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         String textString = markDownParser.TransformToHtml();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            textView.setText(Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT).toString().trim());
+            Spanned htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT);
+            if (htmlString.length() > 1)
+            {
+                CharSequence sequence = htmlString.subSequence(0, htmlString.length()-1);
+                textView.setText(sequence);
+            }
+            else
+            {
+                textView.setText(htmlString);
+            }
         }
         else
         {
-            textView.setText(Html.fromHtml(textString).toString().trim());
+            // Before Android N, html.fromHtml adds two newline characters to end of string
+            Spanned htmlString = Html.fromHtml(textString);
+            if (htmlString.length() > 2)
+            {
+                CharSequence sequence = htmlString.subSequence(0, htmlString.length()-2);
+                textView.setText(sequence);textView.setText(sequence);
+            }
+            else
+            {
+                textView.setText(htmlString);
+            }
         }
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());

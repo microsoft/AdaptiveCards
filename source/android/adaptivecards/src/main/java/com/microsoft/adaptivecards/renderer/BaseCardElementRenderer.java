@@ -41,10 +41,10 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         {
             spacingSize = defaultSpacingConfig.getSmallSpacing();
         }
-//        else if (spacing.swigValue() == Spacing.Padding.swigValue())
-//        {
-//            spacingSize = defaultSpacingConfig.getSmallSpacing();
-//        }
+        else if (spacing.swigValue() == Spacing.Padding.swigValue())
+        {
+            spacingSize = defaultSpacingConfig.getPaddingSpacing();
+        }
         else
         {
             throw new IllegalArgumentException("Unknown spacing style: " + spacing.toString());
