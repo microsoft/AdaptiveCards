@@ -68,7 +68,8 @@ public class TextSectionVector {
   }
 
   public TextSection get(int i) {
-    return new TextSection(AdaptiveCardObjectModelJNI.TextSectionVector_get(swigCPtr, this, i), false);
+    long cPtr = AdaptiveCardObjectModelJNI.TextSectionVector_get(swigCPtr, this, i);
+    return (cPtr == 0) ? null : new TextSection(cPtr, true);
   }
 
   public void set(int i, TextSection val) {

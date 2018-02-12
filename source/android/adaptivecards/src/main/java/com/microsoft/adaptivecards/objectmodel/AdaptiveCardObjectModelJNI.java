@@ -671,7 +671,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_TextBlockText__SWIG_0();
   public final static native long new_TextBlockText__SWIG_1(String jarg1);
   public final static native long TextBlockText_GetString(long jarg1, TextBlockText jarg1_);
-  public final static native void TextBlockText_AddTextSection(long jarg1, TextBlockText jarg1_, String jarg2, int jarg3);
+  public final static native void TextBlockText_AddTextSection__SWIG_0(long jarg1, TextBlockText jarg1_, String jarg2, int jarg3);
+  public final static native void TextBlockText_AddTextSection__SWIG_1(long jarg1, TextBlockText jarg1_, String jarg2, String jarg3, int jarg4);
   public final static native String TextBlockText_Concatenate(long jarg1, TextBlockText jarg1_);
   public final static native void delete_TextBlockText(long jarg1);
   public final static native long new_TextBlock__SWIG_0();

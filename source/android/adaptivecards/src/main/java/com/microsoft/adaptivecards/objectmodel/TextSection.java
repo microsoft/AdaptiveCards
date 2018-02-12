@@ -10,7 +10,7 @@ package com.microsoft.adaptivecards.objectmodel;
 
 public class TextSection {
   private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  private transient boolean swigCMemOwn;
 
   protected TextSection(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
