@@ -48,7 +48,9 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlockText.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextSection.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.cpp" />
@@ -84,7 +86,9 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlockText.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextSection.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.h" />
