@@ -33,68 +33,62 @@ TextSectionFormat TextSection::GetFormat() const
 
 int TextSection::GetDay() const
 {
-    int day{};
-    if (m_format == TextSectionFormat::DateShort ||
-        m_format == TextSectionFormat::DateLong ||
-        m_format == TextSectionFormat::DateCompact)
-    {
-        day = std::stoi(Split(m_text, '/').at(1));
-    }
-    return day;
+    return GetDateSection(1);
 }
 
 int TextSection::GetMonth() const
 {
-    int minute{};
-    if (m_format == TextSectionFormat::DateShort ||
-        m_format == TextSectionFormat::DateLong ||
-        m_format == TextSectionFormat::DateCompact)
-    {
-        minute = std::stoi(Split(m_text, '/').at(0));
-    }
-    return minute;
+    return GetDateSection(0);
 }
 
 int TextSection::GetYear() const
 {
-    int year{};
-    if (m_format == TextSectionFormat::DateShort ||
-        m_format == TextSectionFormat::DateLong ||
-        m_format == TextSectionFormat::DateCompact)
-    {
-        year = std::stoi(Split(m_text, '/').at(2));
-    }
-    return year;
+    return GetDateSection(2);
 }
 
 int TextSection::GetSecond() const
 {
-    int second{};
-    if (m_format == TextSectionFormat::Time)
-    {
-        second = std::stoi(Split(m_text, ':').at(2));
-    }
-    return second;
+    return GetTimeSection(2);
 }
 
 int TextSection::GetMinute() const
 {
-    int minute{};
-    if (m_format == TextSectionFormat::Time)
-    {
-        minute = std::stoi(Split(m_text, ':').at(1));
-    }
-    return minute;
+    return GetTimeSection(1);
 }
 
 int TextSection::GetHour() const
 {
-    int hour{};
+    return GetTimeSection(0);
+}
+
+int TextSection::GetDateSection(int position) const
+{
+    int dateValue{};
+    if (m_format == TextSectionFormat::DateShort ||
+        m_format == TextSectionFormat::DateLong ||
+        m_format == TextSectionFormat::DateCompact)
+    {
+        auto splittedDate = Split(m_text, dateDelimiter);
+        if (splittedDate.size() > position)
+        {
+            dateValue = std::stoi(splittedDate.at(1));
+        }
+    }
+    return dateValue;
+}
+
+int TextSection::GetTimeSection(int position) const
+{
+    int timeValue{};
     if (m_format == TextSectionFormat::Time)
     {
-        hour = std::stoi(Split(m_text, ':').at(0));
+        auto splittedTime = Split(m_text, timeDelimiter);
+        if (splittedTime.size() > position)
+        {
+            timeValue = std::stoi(splittedTime.at(0));
+        }
     }
-    return hour;
+    return timeValue;
 }
 
 std::vector<std::string> TextSection::Split(const std::string& in, char delimiter) const
