@@ -35,7 +35,10 @@ std::vector<std::shared_ptr<TextSection>> TextBlockText::GetString() const
 
 void TextBlockText::AddTextSection(std::string text, TextSectionFormat format)
 {
-    m_fullString.emplace_back(std::make_shared<TextSection>(text, format));
+    if (!text.empty())
+    {
+        m_fullString.emplace_back(std::make_shared<TextSection>(text, format));
+    }
 }
 
 void TextBlockText::AddTextSection(std::string text, std::string originalText, TextSectionFormat format)
