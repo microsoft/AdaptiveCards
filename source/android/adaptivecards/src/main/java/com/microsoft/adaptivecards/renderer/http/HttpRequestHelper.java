@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
@@ -18,16 +17,12 @@ import static java.net.HttpURLConnection.HTTP_MOVED_PERM;
 import static java.net.HttpURLConnection.HTTP_MOVED_TEMP;
 import static java.net.HttpURLConnection.HTTP_SEE_OTHER;
 
-/**
- * Created by bekao on 7/4/2017.
- */
-
 public abstract class HttpRequestHelper
 {
     private static HttpURLConnection connect(String url, String method, Map<String, String> requestProperty, boolean doOutput /* for post/puts */, boolean useCaches)
-            throws MalformedURLException, URISyntaxException, IOException
+            throws URISyntaxException, IOException
     {
-        URL netURL = new URL(url);
+        URL netURL = new URL(url.replace(" ", "%20"));
 
         HttpURLConnection conn = (HttpURLConnection) netURL.openConnection();
         conn.setRequestMethod(method);
