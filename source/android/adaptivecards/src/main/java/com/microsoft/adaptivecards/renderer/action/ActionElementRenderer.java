@@ -128,7 +128,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement);
-        button.setTextSize(Util.dpToPixels(context, hostConfig.getFontSizes().getDefaultFontSize()));
+        button.setTextSize(hostConfig.getFontSizes().getDefaultFontSize());
         if (baseActionElement.GetElementType().swigValue() == ActionType.ShowCard.swigValue()
                 && hostConfig.getActions().getShowCard().getActionMode().swigValue() == ActionMode.Inline.swigValue())
         {

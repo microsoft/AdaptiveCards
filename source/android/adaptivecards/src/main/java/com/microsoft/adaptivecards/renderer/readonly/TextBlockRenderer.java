@@ -54,23 +54,23 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         FontSizesConfig fontSizesConfig = hostConfig.getFontSizes();
         if (textSize.swigValue() == TextSize.ExtraLarge.swigValue())
         {
-            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getExtraLargeFontSize()));
+            textView.setTextSize(fontSizesConfig.getExtraLargeFontSize());
         }
         else if (textSize.swigValue() == TextSize.Large.swigValue())
         {
-            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getLargeFontSize()));
+            textView.setTextSize(fontSizesConfig.getLargeFontSize());
         }
         else if (textSize.swigValue() == TextSize.Medium.swigValue())
         {
-            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getMediumFontSize()));
+            textView.setTextSize(fontSizesConfig.getMediumFontSize());
         }
         else if (textSize.swigValue() == TextSize.Default.swigValue())
         {
-            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getDefaultFontSize()));
+            textView.setTextSize(fontSizesConfig.getDefaultFontSize());
         }
         else if (textSize.swigValue() == TextSize.Small.swigValue())
         {
-            textView.setTextSize(Util.dpToPixels(context, fontSizesConfig.getSmallFontSize()));
+            textView.setTextSize(fontSizesConfig.getSmallFontSize());
         }
         else
         {
