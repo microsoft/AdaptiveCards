@@ -12,7 +12,7 @@ DateTimeParser::DateTimeParser(const std::string& language)
     }
     catch (...)
     {
-        m_language = std::locale("en");
+        m_language = std::locale("");
     }
 }
 
