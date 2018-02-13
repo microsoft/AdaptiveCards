@@ -17,14 +17,24 @@ namespace AdaptiveCardsSharedModelUnitTest
             TextBlock blck;
             string testString = "{{TIME(2017-10-28T02:17:00Z)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"07:17 PM", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-28T02:17:00Z)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{TIME(2017-10-28T02:17:00Z)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "19:17:0");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::Time);
         }
         TEST_METHOD(TransformToTimeTest2)
         {
             TextBlock blck;
             string testString = "{{TIME(2017-10-27T18:19:09Z)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"11:19 AM", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-27T18:19:09Z)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{TIME(2017-10-27T18:19:09Z)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "11:19:9");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::Time);
         }
         TEST_METHOD(TransformToTimeWithSmallPositiveOffsetTest)
         {
@@ -32,7 +42,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             // paris
             string testString = "{{TIME(2017-10-28T04:20:00+02:00)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"07:20 PM", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-28T04:20:00+02:00)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{TIME(2017-10-28T04:20:00+02:00)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "19:20:0");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::Time);
         }
         TEST_METHOD(TransformToTimeWithLargePositiveOffsetTest)
         {
@@ -40,7 +55,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             // seoul
             string testString = "{{TIME(2017-10-28T11:25:00+09:00)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"07:25 PM", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-28T11:25:00+09:00)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{TIME(2017-10-28T11:25:00+09:00)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "19:25:0");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::Time);
         }
         TEST_METHOD(TransformToTimeWithMinusOffsetTest)
         {
@@ -48,7 +68,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York
             string testString = "{{TIME(2017-10-27T22:27:00-04:00)}}"; 
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"07:27 PM", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-27T22:27:00-04:00)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{TIME(2017-10-27T22:27:00-04:00)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "19:27:0");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::Time);
         }
     };
     TEST_CLASS(DateTest)
@@ -58,7 +83,12 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             TextBlock blck;
             blck.SetText("{{DATE(2017-02-13T20:46:30Z, COMPACT)}}");
-            Assert::AreEqual<wstring>(L"02/13/17",  blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-02-13T20:46:30Z, COMPACT)}}",  blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{DATE(2017-02-13T20:46:30Z, COMPACT)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "1/13/2017");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateCompact);
         }
 
         TEST_METHOD(TransformToDateWithSmallPositiveOffset)
@@ -66,7 +96,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             TextBlock blck;
             string testString = "{{DATE(2017-10-28T04:20:00+02:00, COMPACT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"10/27/17", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-10-28T04:20:00+02:00, COMPACT)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{DATE(2017-10-28T04:20:00+02:00, COMPACT)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "9/27/2017");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateCompact);
         }
 
         TEST_METHOD(TransformToDateWithLargePositiveOffset)
@@ -75,7 +110,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             string testString = "{{DATE(2017-10-28T11:25:00+09:00, COMPACT)}}";
             // New York
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"10/27/17", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-10-28T11:25:00+09:00, COMPACT)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{DATE(2017-10-28T11:25:00+09:00, COMPACT)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "9/27/2017");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateCompact);
         }
 
         TEST_METHOD(TransformToDateNegativeOffset)
@@ -83,7 +123,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             TextBlock blck;
             string testString = "{{DATE(2017-10-27T22:27:00-04:00, COMPACT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"10/27/17", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-10-27T22:27:00-04:00, COMPACT)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{DATE(2017-10-27T22:27:00-04:00, COMPACT)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "9/27/2017");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateCompact);
         }
 
         TEST_METHOD(TransformToDateRespectsOptionalSpace)
@@ -91,7 +136,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             TextBlock blck;
             string testString = "{{DATE(2017-10-27T22:27:00-04:00,COMPACT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"10/27/17", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-10-27T22:27:00-04:00,COMPACT)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{DATE(2017-10-27T22:27:00-04:00,COMPACT)}}");
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "9/27/2017");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateCompact);
         }
 
         TEST_METHOD(TransformToDateOnlyAllowsUpToOneSpaceBeforeModifier)
@@ -99,102 +149,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             TextBlock blck;
             string testString = "{{DATE(2017-10-27T22:27:00-04:00,  COMPACT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{DATE(2017-10-27T22:27:00-04:00,  COMPACT)}}", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-10-27T22:27:00-04:00,  COMPACT)}}", blck.GetText());
         }
-
-        TEST_METHOD(TransformDateToMultipleLanguagesShort)
-        {
-            TextBlock blck;
-            string testString = "{{DATE(2017-02-14T20:08:00Z, SHORT)}}";
-            blck.SetText(testString);
-
-            std::vector<std::string> languagesArray = {
-                "zh-CN",  // Mandarin
-                "en-US",  // English
-                "es-MX",  // Spanish
-                "hi-IN",  // Hindi
-                "ar-EG",  // Arabic
-                "id-ID",  // Indonesian
-                "fr-FR",  // French
-                "bn-BD",  // Bengali
-                "pt-BR",  // Portuguese
-                "ru-RU",  // Russian
-                "de-DE",  // German
-                "ja-JP",  // Japanese
-                "ko-KR"   // Korean 
-            };
-
-            std::vector<std::wstring> expectedResultsArray =
-            {
-                L"周二, 2月 14, 2017",
-                L"Tue, Feb 14, 2017",
-                L"mar., feb. 14, 2017",
-                L"मंगल., फरवरी 14, 2017",
-                L"الثلاثاء, فبراير 14, 2017",
-                L"Sel, Feb 14, 2017",
-                L"mar., févr. 14, 2017",
-                L"মঙ্গল, ফেব্রুয়ারী 14, 2017",
-                L"ter, fev 14, 2017",
-                L"Вт, фев 14, 2017",
-                L"Di, Feb 14, 2017",
-                L"火, 2 14, 2017",
-                L"화, 2 14, 2017"
-            };
-
-            for (size_t i{}; i < languagesArray.size(); ++i)
-            {
-                std::locale lang = std::locale(languagesArray[i]);
-                blck.SetLanguage(lang);
-                Assert::AreEqual<wstring>(expectedResultsArray[i], blck.GetText());
-            }
-        }
-
-        TEST_METHOD(TransformDateToMultipleLanguagesLong)
-        {
-            TextBlock blck;
-            string testString = "{{DATE(2017-02-14T20:08:00Z, LONG)}}";
-            blck.SetText(testString);
-
-            std::vector<std::string> languagesArray = {
-                "zh-CN",  // Mandarin
-                "en-US",  // English
-                "es-MX",  // Spanish
-                "hi-IN",  // Hindi
-                "ar-EG",  // Arabic
-                "id-ID",  // Indonesian
-                "fr-FR",  // French
-                "bn-BD",  // Bengali
-                "pt-BR",  // Portuguese
-                "ru-RU",  // Russian
-                "de-DE",  // German
-                "ja-JP",  // Japanese
-                "ko-KR"   // Korean 
-            };
-
-            std::vector<std::wstring> expectedResultsArray =
-            {
-                L"星期二, 二月 14, 2017",
-                L"Tuesday, February 14, 2017",
-                L"martes, febrero 14, 2017",
-                L"मंगलवार, फरवरी 14, 2017",
-                L"الثلاثاء, فبراير 14, 2017",
-                L"Selasa, Februari 14, 2017",
-                L"mardi, février 14, 2017",
-                L"মঙ্গলবার, ফেব্রুয়ারী 14, 2017",
-                L"terça-feira, fevereiro 14, 2017",
-                L"вторник, Февраль 14, 2017",
-                L"Dienstag, Februar 14, 2017",
-                L"火曜日, 2月 14, 2017",
-                L"화요일, 2월 14, 2017"
-            };
-
-            for (size_t i{}; i < languagesArray.size(); ++i)
-            {
-                std::locale lang = std::locale(languagesArray[i]);
-                blck.SetLanguage(lang);
-                Assert::AreEqual<wstring>(expectedResultsArray[i], blck.GetText());
-            }
-        }
+    
     };
     TEST_CLASS(TimeAndDateInputTest)
     {
@@ -205,7 +162,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York
             string testString = "{{TIME(2017-10-27T22:07:00Z, SHORT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{TIME(2017-10-27T22:07:00Z, SHORT)}}", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-27T22:07:00Z, SHORT)}}", blck.GetText());
         }
         TEST_METHOD(TimeWithLongFormat)
         {
@@ -214,7 +171,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York 
             string testString = "{{TIME(2017-10-27T22:27:00-04:00, LONG)}}"; 
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{TIME(2017-10-27T22:27:00-04:00, LONG)}}", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-27T22:27:00-04:00, LONG)}}", blck.GetText());
         }
         TEST_METHOD(TimeWithLongFormatInText)
         {
@@ -222,7 +179,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York
             string testString = "Hello {{TIME(2017-10-27T26:27:00Z, LONG)}} World!";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"Hello {{TIME(2017-10-27T26:27:00Z, LONG)}} World!", blck.GetText());
+            Assert::AreEqual<string>("Hello {{TIME(2017-10-27T26:27:00Z, LONG)}} World!", blck.GetText());
         }
         TEST_METHOD(MissingLeadingDigitOfMinutesInputTest)
         {
@@ -230,7 +187,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York
             string testString = "{{TIME(2017-10-27T22:7:00-04:00)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{TIME(2017-10-27T22:7:00-04:00)}}", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-27T22:7:00-04:00)}}", blck.GetText());
         }
         TEST_METHOD(MissingColumnDelimiterTest)
         {
@@ -238,7 +195,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York
             string testString = "{{TIME(2017-10-27T2:7:00Q04:00)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{TIME(2017-10-27T2:7:00Q04:00)}}", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-10-27T2:7:00Q04:00)}}", blck.GetText());
         }
         TEST_METHOD(ISO8601WithTextTest)
         {
@@ -246,7 +203,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York
             string testString = "You have arrived in New York on {{DATE(2017-10-27T22:23:00Z, SHORT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"You have arrived in New York on Fri, Oct 27, 2017", blck.GetText());
+            Assert::AreEqual<string>("You have arrived in New York on {{DATE(2017-10-27T22:23:00Z, SHORT)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().back()->GetOriginalText(), "{{DATE(2017-10-27T22:23:00Z, SHORT)}}");
+            Assert::AreEqual<string>(block.GetString().back()->GetText(), "9/27/2017");
+            Assert::IsTrue(block.GetString().back()->GetFormat() == TextSectionFormat::DateShort);
         }
 
         TEST_METHOD(TwoISO8601WithText)
@@ -255,7 +217,27 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York
             string testString = "You have arrived in New York on {{DATE(2017-10-27T22:27:00-04:00, SHORT)}} at {{TIME(2017-10-27T22:27:00-04:00)}}.\r have a good trip";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"You have arrived in New York on Fri, Oct 27, 2017 at 07:27 PM.\r have a good trip", blck.GetText());
+            Assert::AreEqual<string>("You have arrived in New York on {{DATE(2017-10-27T22:27:00-04:00, SHORT)}} at {{TIME(2017-10-27T22:27:00-04:00)}}.\r have a good trip", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            const auto& sections = block.GetString();
+
+            Assert::AreEqual<string>(sections[0]->GetText(), "You have arrived in New York on ");
+            Assert::IsTrue(sections[0]->GetFormat() == TextSectionFormat::RegularString);
+
+            Assert::AreEqual<string>(sections[1]->GetOriginalText(), "{{DATE(2017-10-27T22:27:00-04:00, SHORT)}}");
+            Assert::AreEqual<string>(sections[1]->GetText(), "9/27/2017");
+            Assert::IsTrue(sections[1]->GetFormat() == TextSectionFormat::DateShort);
+
+            Assert::AreEqual<string>(sections[2]->GetText(), " at ");
+            Assert::IsTrue(sections[2]->GetFormat() == TextSectionFormat::RegularString);
+
+            Assert::AreEqual<string>(sections[3]->GetOriginalText(), "{{TIME(2017-10-27T22:27:00-04:00)}}");
+            Assert::AreEqual<string>(sections[3]->GetText(), "19:27:0");
+            Assert::IsTrue(sections[3]->GetFormat() == TextSectionFormat::Time);
+
+            Assert::AreEqual<string>(sections[4]->GetText(), ".\r have a good trip");
+            Assert::IsTrue(sections[4]->GetFormat() == TextSectionFormat::RegularString);
         }
 
         TEST_METHOD(prefixStringISO8650sufixStringTest)
@@ -264,7 +246,20 @@ namespace AdaptiveCardsSharedModelUnitTest
             // New York
             string testString = "You will arrived in Seattle on {{DATE(2017-10-27T22:23:00Z, SHORT)}}; have a good trip";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"You will arrived in Seattle on Fri, Oct 27, 2017; have a good trip", blck.GetText());
+            Assert::AreEqual<string>("You will arrived in Seattle on {{DATE(2017-10-27T22:23:00Z, SHORT)}}; have a good trip", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            const auto& sections = block.GetString();
+
+            Assert::AreEqual<string>(sections[0]->GetText(), "You will arrived in Seattle on ");
+            Assert::IsTrue(sections[0]->GetFormat() == TextSectionFormat::RegularString);
+
+            Assert::AreEqual<string>(sections[1]->GetOriginalText(), "{{DATE(2017-10-27T22:23:00Z, SHORT)}}");
+            Assert::AreEqual<string>(sections[1]->GetText(), "9/27/2017");
+            Assert::IsTrue(sections[1]->GetFormat() == TextSectionFormat::DateShort);
+
+            Assert::AreEqual<string>(sections[2]->GetText(), "; have a good trip");
+            Assert::IsTrue(sections[2]->GetFormat() == TextSectionFormat::RegularString);
         }
 
         TEST_METHOD(MalformedCurlybracketsTest)
@@ -272,63 +267,75 @@ namespace AdaptiveCardsSharedModelUnitTest
             TextBlock blck;
             string testString = "{a{DATE(2017-02-13T20:46:30Z, SHORT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{a{DATE(2017-02-13T20:46:30Z, SHORT)}}", blck.GetText());
+            Assert::AreEqual<string>("{a{DATE(2017-02-13T20:46:30Z, SHORT)}}", blck.GetText());
         }
         TEST_METHOD(MissingClosingCurlyBracketTest)
         {
             TextBlock blck;
             string testString = "{{DATE(2017-02-13T20:46:30Z, SHORT)}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{DATE(2017-02-13T20:46:30Z, SHORT)}", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-02-13T20:46:30Z, SHORT)}", blck.GetText());
         }
         TEST_METHOD(YearInBadFormatInputTest)
         {
             TextBlock blck;
             string testString = "{{DATE(2017a02-13T20:46:30Z, SHORT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{DATE(2017a02-13T20:46:30Z, SHORT)}}", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017a02-13T20:46:30Z, SHORT)}}", blck.GetText());
         }
         TEST_METHOD(DateDefaultStyleInputTest)
         {
             TextBlock blck;
             string testString = "{{DATE(2017-02-13T20:46:30Z)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"02/13/17", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-02-13T20:46:30Z)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "1/13/2017");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateCompact);
         }
         TEST_METHOD(DateLONGStyleInputTest)
         {
             TextBlock blck;
             string testString = "{{DATE(2017-02-13T20:46:30Z, LONG)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"Monday, February 13, 2017", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-02-13T20:46:30Z, LONG)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "1/13/2017");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateLong);
         }
         TEST_METHOD(DateSHORTStyleInputTest)
         {
             TextBlock blck;
             string testString = "{{DATE(2017-02-13T20:46:30Z, SHORT)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"Mon, Feb 13, 2017", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-02-13T20:46:30Z, SHORT)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "1/13/2017");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateShort);
         }
         TEST_METHOD(DateSmallCaseLONGStyleInputTest)
         {
             TextBlock blck;
             string testString = "{{DATE(2017-02-13T20:46:30Z, Long)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{DATE(2017-02-13T20:46:30Z, Long)}}", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-02-13T20:46:30Z, Long)}}", blck.GetText());
         }
         TEST_METHOD(InvalidDateTest)
         {
             TextBlock blck;
             string testString = "{{DATE(2017-99-14T06:08:00Z)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{DATE(2017-99-14T06:08:00Z)}}", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(2017-99-14T06:08:00Z)}}", blck.GetText());
         }
         TEST_METHOD(InvalidTimeTest)
         {
             TextBlock blck;
             string testString = "{{TIME(2017-99-14T06:08:00Z)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{TIME(2017-99-14T06:08:00Z)}}", blck.GetText());
+            Assert::AreEqual<string>("{{TIME(2017-99-14T06:08:00Z)}}", blck.GetText());
         }
         TEST_METHOD(LeapYearValidDayTest)
         {
@@ -336,7 +343,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             // UTC and PST at Leap Year
             string testString = "{{DATE(1992-02-29T18:08:00Z)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"02/29/92", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(1992-02-29T18:08:00Z)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "1/29/1992");
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{DATE(1992-02-29T18:08:00Z)}}");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateCompact);
         }
         TEST_METHOD(LeapYearValidDayOnlyAtUTCTest)
         {
@@ -344,14 +356,19 @@ namespace AdaptiveCardsSharedModelUnitTest
             // UTC and PST at Leap Year
             string testString = "{{DATE(1992-02-29T07:59:00Z)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"02/28/92", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(1992-02-29T07:59:00Z)}}", blck.GetText());
+
+            TextBlockText block = blck.GetTextForDateParsing();
+            Assert::AreEqual<string>(block.GetString().front()->GetText(), "1/28/1992");
+            Assert::AreEqual<string>(block.GetString().front()->GetOriginalText(), "{{DATE(1992-02-29T07:59:00Z)}}");
+            Assert::IsTrue(block.GetString().front()->GetFormat() == TextSectionFormat::DateCompact);
         }
         TEST_METHOD(NoneLeapYearInvalidDayTest)
         {
             TextBlock blck;
             string testString = "{{DATE(1994-02-29T06:08:00Z)}}";
             blck.SetText(testString);
-            Assert::AreEqual<wstring>(L"{{DATE(1994-02-29T06:08:00Z)}}", blck.GetText());
+            Assert::AreEqual<string>("{{DATE(1994-02-29T06:08:00Z)}}", blck.GetText());
         }
     };
 
