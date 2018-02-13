@@ -142,7 +142,9 @@
     <ClCompile Include="..\..\ObjectModel\ShowCardAction.cpp" />
     <ClCompile Include="..\..\ObjectModel\SubmitAction.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextBlockText.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextSection.cpp" />
     <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
   </ItemGroup>
@@ -179,7 +181,9 @@
     <ClInclude Include="..\..\ObjectModel\ShowCardAction.h" />
     <ClInclude Include="..\..\ObjectModel\SubmitAction.h" />
     <ClInclude Include="..\..\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\ObjectModel\TextBlockText.h" />
     <ClInclude Include="..\..\ObjectModel\TextInput.h" />
+    <ClInclude Include="..\..\ObjectModel\TextSection.h" />
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
   </ItemGroup>
