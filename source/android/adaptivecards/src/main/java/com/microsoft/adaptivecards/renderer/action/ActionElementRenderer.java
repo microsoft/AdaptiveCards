@@ -8,8 +8,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.objectmodel.ActionAlignment;
 import com.microsoft.adaptivecards.objectmodel.ActionMode;
 import com.microsoft.adaptivecards.objectmodel.ActionType;
+import com.microsoft.adaptivecards.objectmodel.ActionsOrientation;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.ShowCardAction;
@@ -103,11 +105,28 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     public Button renderButton(
             Context context,
             ViewGroup viewGroup,
-            BaseActionElement baseActionElement)
+            BaseActionElement baseActionElement,
+            HostConfig hostConfig)
     {
         Button button = new Button(context);
         button.setText(baseActionElement.GetTitle());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
+        int orientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        LinearLayout.LayoutParams layoutParams;
+        if (orientation == ActionsOrientation.Horizontal.swigValue())
+        {
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }
+        else
+        {
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }
+
+        if (alignment == ActionAlignment.Stretch.swigValue())
+        {
+            layoutParams.weight = 1f;
+        }
+
         button.setLayoutParams(layoutParams);
         viewGroup.addView(button);
         return button;
@@ -127,7 +146,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             throw new IllegalArgumentException("Action Handler is null.");
         }
 
-        Button button = renderButton(context, viewGroup, baseActionElement);
+        Button button = renderButton(context, viewGroup, baseActionElement, hostConfig);
         button.setTextSize(hostConfig.getFontSizes().getDefaultFontSize());
         if (baseActionElement.GetElementType().swigValue() == ActionType.ShowCard.swigValue()
                 && hostConfig.getActions().getShowCard().getActionMode().swigValue() == ActionMode.Inline.swigValue())
