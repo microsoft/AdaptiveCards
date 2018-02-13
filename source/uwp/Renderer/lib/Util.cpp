@@ -671,6 +671,47 @@ HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
     return(asJsonValue->Stringify(result));
 }
 
+HRESULT StringToJsonValue(const string inputString, IJsonValue** result)
+{
+    HSTRING asHstring;
+    RETURN_IF_FAILED(UTF8ToHString(inputString, &asHstring));
+    return HStringToJsonValue(asHstring, result);
+}
+
+HRESULT HStringToJsonValue(const HSTRING& inputHString, IJsonValue** result)
+{
+    ComPtr<IJsonValueStatics> jValueStatics;
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonValue).Get(), &jValueStatics));
+    ComPtr<IJsonValue> jValue;
+    HRESULT hr = jValueStatics->Parse(inputHString, &jValue);
+    if (FAILED(hr))
+    {
+        RETURN_IF_FAILED(ActivateInstance(
+            HStringReference(RuntimeClass_Windows_Data_Json_JsonValue).Get(),
+            &jValue));
+    }
+    *result = jValue.Detach();
+    return S_OK;
+}
+
+
+HRESULT JsonValueToString(IJsonValue* inputValue, string& result)
+{
+    HSTRING asHstring;
+    RETURN_IF_FAILED(JsonValueToHString(inputValue, &asHstring));
+    return HStringToUTF8(asHstring, result);
+}
+
+HRESULT JsonValueToHString(IJsonValue* inputJsonValue, HSTRING* result)
+{
+    if (!inputJsonValue)
+    {
+        return E_INVALIDARG;
+    }
+    ComPtr<IJsonValue> localInputJsonValue(inputJsonValue);
+    return (localInputJsonValue->Stringify(result));
+}
+
 HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, IJsonObject** result)
 {
     Json::FastWriter fastWriter;
