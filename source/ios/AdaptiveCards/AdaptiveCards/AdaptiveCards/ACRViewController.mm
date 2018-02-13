@@ -64,11 +64,6 @@ using namespace AdaptiveCards;
             _hostConfig = [config getHostConfig];
         }
         _guideFrame = frame;
-        _imageViewMap = [[NSMutableDictionary alloc] init];
-        _textMap = [[NSMutableDictionary alloc] init];
-        _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", NULL);
-        _serial_text_queue = dispatch_queue_create("io.adaptiveCards.serial_text_queue", DISPATCH_QUEUE_SERIAL);
-        _serialNumber = 0;
     }
     return self;
 }
@@ -204,21 +199,21 @@ using namespace AdaptiveCards;
                         NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
 
                          dispatch_async(dispatch_get_main_queue(),
-                             ^{ __block UILabel *lab = nil; // generate key for imageMap from image element's id
+                             ^{ __block UILabel *lab = nil; // generate key for text map from TextBlock element's id
                                   NSString *key = [NSString stringWithCString:txtElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-                                  // syncronize access to image map
+                                  // syncronize access to text map
                                   dispatch_sync(_serial_text_queue,
                                       ^{
-                                           // UIImageView is not ready, cashe UIImage
+                                           // UILabel is not ready, cashe UILabel
                                            if(!_textMap[key]) {
                                                _textMap[key] = content;
-                                           } // UIImageView ready, get view
+                                           } // UILable is ready, get label
                                            else {
                                                lab = _textMap[key];
                                            }
                                       });
 
-                                   // if view is available, set image to it, and continue image processing
+                                   // if a label is available, set NSAttributedString to it
                                   if(lab) {
                                       // Set paragraph style such as line break mode and alignment
                                       NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
