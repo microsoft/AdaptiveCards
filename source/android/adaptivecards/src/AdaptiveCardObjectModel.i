@@ -49,6 +49,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
+#include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
@@ -403,3 +404,4 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"
+%include "../../../shared/cpp/ObjectModel/MarkDownParser.h"

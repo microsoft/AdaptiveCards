@@ -24,11 +24,6 @@ export enum Spacing {
     Padding
 }
 
-export enum Padding {
-    None,
-    Default
-}
-
 export enum TextWeight {
     Lighter,
     Default,
