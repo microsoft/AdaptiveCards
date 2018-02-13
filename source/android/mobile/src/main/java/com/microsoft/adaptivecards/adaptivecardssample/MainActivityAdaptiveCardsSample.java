@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
     implements ICardActionHandler
@@ -39,10 +40,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private HostConfig m_hostConfig;
+    private AtomicBoolean m_fileLoaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        m_fileLoaded = new AtomicBoolean(false);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
         setupTabs();
 
@@ -70,6 +73,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             @Override
             public void afterTextChanged(Editable editable)
             {
+                if (m_fileLoaded.compareAndSet(true, false))
+                {
+                    return;
+                }
+
                 m_timer.cancel();
                 m_timer = new Timer();
                 m_timer.schedule(new TimerTask()
@@ -169,9 +177,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                             total.append(line + "\n");
                         }
 
+                        m_fileLoaded.set(true);
                         EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
                         String fullString = total.toString();
                         jsonText.setText(fullString);
+
                         renderAdaptiveCard(fullString, true);
 
                         EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
