@@ -40,13 +40,9 @@ rootViewController:(UIViewController *)vc
         NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
         // Syncronize access to imageViewMap
         dispatch_sync([(ACRViewController *)vc getSerialTextQueue], ^{
-            // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
-            if(textMap[key])
-            {
+            if(textMap[key]) { // if content is available, get it, otherwise cache label, so it can be used used later
                 content = textMap[key];
-            }
-            else
-            {
+            } else {
                 textMap[key] = lab;
             }
         });

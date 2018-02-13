@@ -55,7 +55,7 @@ namespace AdaptiveCards
         {
             return (m_delimiterCnts && 
                     ch != EOF &&
-                    !iswspace(ch) && 
+                    !isspace(ch) && 
                     !(m_lookBehind == Alphanumeric && ispunct(ch)) && 
                     !(m_lookBehind == Alphanumeric && m_currentDelimiterType == Underscore));
         };

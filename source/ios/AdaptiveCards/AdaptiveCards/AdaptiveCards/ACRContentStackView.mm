@@ -84,7 +84,6 @@ using namespace AdaptiveCards;
     _style = ContainerStyle::None;
 
     [self addSubview:self.stackView];
-#if 1
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
                                   attribute:NSLayoutAttributeLeading
@@ -117,7 +116,7 @@ using namespace AdaptiveCards;
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1
                                    constant:0]];
-#endif
+
     self.stackView.translatesAutoresizingMaskIntoConstraints = false;
     self.translatesAutoresizingMaskIntoConstraints = false;
 
@@ -138,8 +137,6 @@ using namespace AdaptiveCards;
 {
     [_targets addObject:target];
 }
-    
-
 
 // let the last element to strech
 - (void)adjustHuggingForLastElement

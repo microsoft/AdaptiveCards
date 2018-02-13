@@ -7,6 +7,7 @@
 
 #import "ACRImageRenderer.h"
 #import "Image.h"
+#import "Enums.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
@@ -25,11 +26,12 @@
     return CardElementType::Image;
 }
 
-+ (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem
++ (CGSize)getImageSize:(ImageSize)imageSize
         withHostConfig:(std::shared_ptr<HostConfig> const &)hostConfig
 {
     float sz = hostConfig->imageSizes.smallSize;
-    switch (imgElem->GetImageSize()){
+    switch (imageSize)
+    {
         case ImageSize::Large:{
             sz = hostConfig->imageSizes.largeSize;
             break;
@@ -128,7 +130,7 @@
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
 
-    CGSize cgsize = [ACRImageRenderer getImageSize:imgElem withHostConfig:config];
+    CGSize cgsize = [ACRImageRenderer getImageSize:imgElem->GetImageSize() withHostConfig:config];
     UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
 
@@ -136,43 +138,19 @@
     __block UIImage *img = nil;
     // Generate key for ImageViewMap
     NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-    // check ViewController is available
-    if(vc)
-    {
-        // Syncronize access to imageViewMap
-        dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
-            // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
-            if(imageViewMap[key])
-            {
-                img = imageViewMap[key];
-            }
-            else
-            {
-                imageViewMap[key] = view;
-            }
-        });
-    }
-    else
-    {
-        NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
-                                              encoding:[NSString defaultCStringEncoding]];
-        NSLog(@"entered");
-        NSURL *url = [NSURL URLWithString:urlStr];
+    // Syncronize access to imageViewMap
+    dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
+        // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
+        if(imageViewMap[key]) {
+            img = imageViewMap[key];
+        }
+        else {
+            imageViewMap[key] = view;
+        }
+    });
 
-        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-
-        CGSize cgsize = [ACRImageRenderer getImageSize:imgElem withHostConfig:config];
-
-        UIGraphicsBeginImageContext(cgsize);
-        [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
-        img = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    }
-
-    if(img)
-    {
+    if(img) {// if image is ready, proceed to add it
         view.image = img;
-        //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
         view.contentMode = UIViewContentModeScaleAspectFit;
         view.clipsToBounds = NO;
         if(imgElem->GetImageStyle() == ImageStyle::Person) {
@@ -180,6 +158,7 @@
             [imgLayer setCornerRadius:cgsize.width/2];
             [imgLayer setMasksToBounds:YES];
         }
+        // remove postfix added for imageMap access
         std::string id = imgElem->GetId();
         std::size_t idx = id.find_last_of('_');
         imgElem->SetId(id.substr(0, idx));
@@ -203,8 +182,7 @@
                                                               actionElement:selectAction
                                                                      inputs:inputs
                                                                  hostConfig:config];
-    if(gestureRecognizer)
-    {
+    if(gestureRecognizer) {
         [view addGestureRecognizer:gestureRecognizer];
         view.userInteractionEnabled = YES;
     }
