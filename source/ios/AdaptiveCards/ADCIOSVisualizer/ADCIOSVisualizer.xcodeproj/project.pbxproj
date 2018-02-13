@@ -404,6 +404,7 @@
 				TargetAttributes = {
 					F423C0711EE1FB6100905679 = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = UBF8T346G9;
 						ProvisioningStyle = Automatic;
 					};
 					F423C08D1EE1FB6100905679 = {
@@ -688,6 +689,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				INFOPLIST_FILE = ADCIOSVisualizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSVisualizer;
@@ -699,6 +701,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				INFOPLIST_FILE = ADCIOSVisualizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSVisualizer;

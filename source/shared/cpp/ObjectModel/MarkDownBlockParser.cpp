@@ -201,7 +201,7 @@ void EmphasisParser::UpdateCurrentEmphasisRunState(DelimiterType emphasisType)
 
 bool EmphasisParser::IsRightEmphasisDelimiter(int ch)
 {
-    if ((isspace(ch) || (ch == EOF)) &&
+    if ((iswspace(ch) || (ch == EOF)) &&
         (m_lookBehind != WhiteSpace) &&
         (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == Asterisk))
     {
@@ -284,7 +284,7 @@ bool EmphasisParser::TryCapturingLeftEmphasisToken(int ch, std::string &currentT
 void EmphasisParser::UpdateLookBehind(int ch)
 {
     //store ch and move itr
-    if (isspace(ch))
+    if (iswspace(ch))
     {
         m_lookBehind = WhiteSpace;
     }
@@ -418,7 +418,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream &lookahead)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream &lookahead)
 {
-    if (isspace(lookahead.peek()) || iscntrl(lookahead.peek()))
+    if (iswspace(lookahead.peek()) || iscntrl(lookahead.peek()))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;

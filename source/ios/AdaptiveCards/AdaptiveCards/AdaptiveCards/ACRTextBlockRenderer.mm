@@ -32,23 +32,6 @@ rootViewController:(UIViewController *)vc
 {
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel *lab = [[UILabel alloc] init];
-#if 0
-    // MarkDownParser transforms text with MarkDown to a html string
-    std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(txtBlck->GetText().c_str());
-    NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
-    //NSString *parsedString = [NSString stringWithCString:txtBlck->GetText().c_str() encoding:NSUTF8StringEncoding];
-
-    // Font and text size are applied as CSS style by appending it to the html string -- font is hard coded for now
-    parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx;}</style>",
-                                                          @"verdana", [ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]]];
-    // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
-    NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-    NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-    NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
-
-    //NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithString:parsedString];
-
-#endif
     __block NSMutableAttributedString *content = nil;
     if(vc)
     {
@@ -84,6 +67,10 @@ rootViewController:(UIViewController *)vc
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
         lab.attributedText = content;
+
+        std::string id = txtBlck->GetId();
+        std::size_t idx = id.find_last_of('_');
+        txtBlck->SetId(id.substr(0, idx));
     }
 
     lab.numberOfLines = int(txtBlck->GetMaxLines());

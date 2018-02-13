@@ -31,6 +31,7 @@ using namespace AdaptiveCards;
     NSMutableDictionary *_textMap;
     dispatch_queue_t _serial_queue;
     dispatch_queue_t _serial_text_queue;
+    int _serialNumber;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -43,6 +44,7 @@ using namespace AdaptiveCards;
         _textMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", DISPATCH_QUEUE_SERIAL);
         _serial_text_queue = dispatch_queue_create("io.adaptiveCards.serial_text_queue", DISPATCH_QUEUE_SERIAL);
+        _serialNumber = 0;
     }
     return self;
 }
@@ -65,6 +67,7 @@ using namespace AdaptiveCards;
         _textMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", NULL);
         _serial_text_queue = dispatch_queue_create("io.adaptiveCards.serial_text_queue", DISPATCH_QUEUE_SERIAL);
+        _serialNumber = 0;
     }
     return self;
 }
@@ -116,11 +119,7 @@ using namespace AdaptiveCards;
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
     std::vector<std::shared_ptr<BaseCardElement>> body = _adaptiveCard->GetBody();
-    if(!body.empty())
-    {
-        int serialNumber = 0;
-        [self addImageBlockToConcurrentQueue:body serialNumber:serialNumber];
-    }
+
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                              inputs:inputs
@@ -177,7 +176,7 @@ using namespace AdaptiveCards;
 
 // Walk through adaptive cards elements and if images are found, download and process images concurrently and on different thread
 // from main thread, so images process won't block UI thread.
-- (int) addImageBlockToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body serialNumber:(int)serialNumber
+- (void) addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
 {
     for(auto &elem : body)
     {
@@ -188,7 +187,7 @@ using namespace AdaptiveCards;
                 /// dispatch to concurrent queue
                 std::shared_ptr<TextBlock> txtElem = std::dynamic_pointer_cast<TextBlock>(elem);
                 /// generate a string key to uniquely identify Image
-                std::string serial_number_as_string = std::to_string(serialNumber);
+                std::string serial_number_as_string = std::to_string(_serialNumber);
                 // Id field is optional, if empty, add new one
                 if("" == txtElem->GetId())
                 {
@@ -200,7 +199,7 @@ using namespace AdaptiveCards;
                     txtElem->SetId(txtElem->GetId() + "_" + serial_number_as_string);
                 }
 
-                ++serialNumber;
+                ++_serialNumber;
                 // run image downloading and processing on global queue which is concurrent and different from main queue
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                     ^{
@@ -218,9 +217,7 @@ using namespace AdaptiveCards;
                         NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
 
                          dispatch_async(dispatch_get_main_queue(),
-                             ^{
-                                  __block UILabel *lab = nil;
-                                  // generate key for imageMap from image element's id
+                             ^{ __block UILabel *lab = nil; // generate key for imageMap from image element's id
                                   NSString *key = [NSString stringWithCString:txtElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                                   // syncronize access to image map
                                   dispatch_sync(_serial_text_queue,
@@ -253,6 +250,10 @@ using namespace AdaptiveCards;
                                       // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
                                       [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtElem->GetTextColor() colorsConfig:colorConfig subtleOption:txtElem->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtElem->GetTextWeight() withHostConfig:_hostConfig]} range:NSMakeRange(0, content.length - 1)];
                                       lab.attributedText = content;
+                                      // remove what has been added
+                                      std::string id = txtElem->GetId();
+                                      std::size_t idx = id.find_last_of('_');
+                                      txtElem->SetId(id.substr(0, idx));
                                   }
                               });
                          }
@@ -264,7 +265,7 @@ using namespace AdaptiveCards;
                 /// dispatch to concurrent queue
                 std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
                 /// generate a string key to uniquely identify Image
-                std::string serial_number_as_string = std::to_string(serialNumber);
+                std::string serial_number_as_string = std::to_string(_serialNumber);
                 // Id field is optional, if empty, add new one
                 if("" == imgElem->GetId())
                 {
@@ -276,7 +277,7 @@ using namespace AdaptiveCards;
                     imgElem->SetId(imgElem->GetId() + "_" + serial_number_as_string);
                 }
 
-                ++serialNumber;
+                ++_serialNumber;
                 // run image downloading and processing on global queue which is concurrent and different from main queue
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                     ^{
@@ -324,6 +325,10 @@ using namespace AdaptiveCards;
                                           [imgLayer setCornerRadius:cgsize.width/2];
                                           [imgLayer setMasksToBounds:YES];
                                       }
+                                      // remove what has been added
+                                      std::string id = imgElem->GetId();
+                                      std::size_t idx = id.find_last_of('_');
+                                      imgElem->SetId(id.substr(0, idx));
                                   }
                               });
                          }
@@ -336,7 +341,7 @@ using namespace AdaptiveCards;
                 std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
                 std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
                 // update serial number that is used for generating unique key for image_map
-                serialNumber = [self addImageBlockToConcurrentQueue: new_body serialNumber:serialNumber];
+                [self addTasksToConcurrentQueue: new_body];
                 break;
             }
             // continue on search
@@ -345,7 +350,7 @@ using namespace AdaptiveCards;
                 std::shared_ptr<Column> colum = std::static_pointer_cast<Column>(elem);
                 std::vector<std::shared_ptr<BaseCardElement>> &new_body = colum->GetItems();
                 // update serial number that is used for generating unique key for image_map
-                serialNumber = [self addImageBlockToConcurrentQueue: new_body serialNumber:serialNumber];
+                [self addTasksToConcurrentQueue: new_body];
                 break;
             }
             // continue on search
@@ -357,7 +362,7 @@ using namespace AdaptiveCards;
                 for(auto &colum : columns)
                 {
                     // update serial number that is used for generating unique key for image_map
-                    serialNumber = [self addImageBlockToConcurrentQueue: colum->GetItems() serialNumber:serialNumber];
+                    [self addTasksToConcurrentQueue: colum->GetItems()];
                 }
                 break;
             }
@@ -368,7 +373,6 @@ using namespace AdaptiveCards;
             }
         }
     }
-    return serialNumber;
 }
 
 - (NSMutableDictionary *) getImageMap

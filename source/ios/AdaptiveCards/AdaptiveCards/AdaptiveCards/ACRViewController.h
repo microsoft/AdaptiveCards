@@ -26,4 +26,5 @@
 - (NSMutableDictionary *) getTextMap; 
 
 - (dispatch_queue_t) getSerialTextQueue;
+
 @end

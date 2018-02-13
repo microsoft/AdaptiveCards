@@ -180,6 +180,9 @@
             [imgLayer setCornerRadius:cgsize.width/2];
             [imgLayer setMasksToBounds:YES];
         }
+        std::string id = imgElem->GetId();
+        std::size_t idx = id.find_last_of('_');
+        imgElem->SetId(id.substr(0, idx));
     }
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
