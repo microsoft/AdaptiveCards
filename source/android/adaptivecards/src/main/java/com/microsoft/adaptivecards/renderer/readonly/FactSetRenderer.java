@@ -2,6 +2,7 @@ package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -44,6 +45,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
         TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle());
         TextBlockRenderer.setTextSize(context, textView, textConfig.getSize(), hostConfig);
         TextBlockRenderer.getInstance().setTextWeight(textView, textConfig.getWeight());
+        textView.setSingleLine(!textConfig.getWrap());
+        textView.setEllipsize(TextUtils.TruncateAt.END);
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
                 GridLayout.spec(GridLayout.UNDEFINED),
                 GridLayout.spec(GridLayout.UNDEFINED));
