@@ -47,11 +47,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         setupTabs();
 
         m_hostConfig = new HostConfig();
-        m_hostConfig.getFontSizes().setDefaultFontSize(6);
-        m_hostConfig.getFontSizes().setSmallFontSize(4);
-        m_hostConfig.getFontSizes().setMediumFontSize(7);
-        m_hostConfig.getFontSizes().setLargeFontSize(8);
-        m_hostConfig.getFontSizes().setExtraLargeFontSize(10);
 
         m_hostConfig.getImageSizes().setLargeSize(150);
         m_hostConfig.getImageSizes().setMediumSize(90);
