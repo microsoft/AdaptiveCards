@@ -350,12 +350,8 @@ using namespace AdaptiveCards;
 -(void) tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &) elem
 {
     std::string serial_number_as_string = std::to_string(_serialNumber);
-    // ID field is optional, if empty, add new one
-    if("" == elem->GetId()) {
-        elem->SetId("_" + serial_number_as_string);
-    } else { // concat a newly generated key to a existing id, the key will be removed after use
-        elem->SetId(elem->GetId() + "_" + serial_number_as_string);
-    }
+    // concat a newly generated key to a existing id, the key will be removed after use
+    elem->SetId(elem->GetId() + "_" + serial_number_as_string);
     ++_serialNumber;
 }
 
