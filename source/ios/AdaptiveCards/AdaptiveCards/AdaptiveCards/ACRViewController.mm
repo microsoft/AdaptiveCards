@@ -343,9 +343,9 @@ using namespace AdaptiveCards;
                               [imgLayer setMasksToBounds:YES];
                           }
                           // remove tag
-                          std::string id = imageElem->GetId();
+                          std::string id = imgElem->GetId();
                           std::size_t idx = id.find_last_of('_');
-                          imageElem->SetId(id.substr(0, idx));
+                          imgElem->SetId(id.substr(0, idx));
                       }
                   });
              }
