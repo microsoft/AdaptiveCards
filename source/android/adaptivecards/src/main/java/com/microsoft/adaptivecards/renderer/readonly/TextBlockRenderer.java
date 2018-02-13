@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -167,6 +168,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             }
         }
         textView.setSingleLine(!textBlock.GetWrap());
+        textView.setEllipsize(TextUtils.TruncateAt.END);
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
