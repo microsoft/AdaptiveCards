@@ -71,16 +71,4 @@ public class TextSection {
     return AdaptiveCardObjectModelJNI.TextSection_GetYear(swigCPtr, this);
   }
 
-  public int GetSecond() {
-    return AdaptiveCardObjectModelJNI.TextSection_GetSecond(swigCPtr, this);
-  }
-
-  public int GetMinute() {
-    return AdaptiveCardObjectModelJNI.TextSection_GetMinute(swigCPtr, this);
-  }
-
-  public int GetHour() {
-    return AdaptiveCardObjectModelJNI.TextSection_GetHour(swigCPtr, this);
-  }
-
 }

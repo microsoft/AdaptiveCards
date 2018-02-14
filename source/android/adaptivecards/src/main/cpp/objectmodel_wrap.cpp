@@ -12203,60 +12203,6 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetSecond(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (int)((AdaptiveCards::TextSection const *)arg1)->GetSecond();
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetMinute(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (int)((AdaptiveCards::TextSection const *)arg1)->GetMinute();
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetHour(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (int)((AdaptiveCards::TextSection const *)arg1)->GetHour();
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextSection(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
   std::shared_ptr< AdaptiveCards::TextSection > *smartarg1 = 0 ;

@@ -225,11 +225,9 @@ void TextBlockText::ParseDateTime(std::string in)
                 }
                 else
                 {
-                    AddTextSection(std::to_string(result.tm_hour) + timeDelimiter +
-                        std::to_string(result.tm_min) + timeDelimiter +
-                        std::to_string(result.tm_sec), 
-                        matches[0].str(),
-                        TextSectionFormat::Time);
+                    std::ostringstream parsedTime;
+                    parsedTime << std::put_time(&result, "%I:%M %p");
+                    AddTextSection(parsedTime.str(), TextSectionFormat::RegularString);
                 }
             }
         }

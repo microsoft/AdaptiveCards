@@ -23,19 +23,12 @@ std::string DateTimeParser::GenerateString(TextBlockText text)
     for (const auto& textSection : text.GetString())
     {
         struct tm result{};
-        result.tm_hour = textSection->GetHour();
-        result.tm_min = textSection->GetMinute();
-        result.tm_sec = textSection->GetSecond();
         result.tm_mday = textSection->GetDay();
         result.tm_mon = textSection->GetMonth();
         result.tm_year = textSection->GetYear() >= 1900 ? textSection->GetYear() - 1900 : 0;
 
         switch (textSection->GetFormat())
         {
-            case TextSectionFormat::Time:
-                
-                parsedostr << std::put_time(&result, L"%I:%M %p");
-                break;
             case TextSectionFormat::DateCompact:
                 
                 parsedostr << std::put_time(&result, L"%Ex");

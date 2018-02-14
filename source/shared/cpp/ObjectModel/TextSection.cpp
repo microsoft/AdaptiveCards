@@ -13,7 +13,6 @@ TextSection::TextSection(std::string text, TextSectionFormat format) : m_text(te
 TextSection::TextSection(std::string text, std::string originalText, TextSectionFormat format) :
     m_text(text), m_originalText(originalText), m_format(format)
 {
-
 }
 
 std::string TextSection::GetText() const
@@ -46,21 +45,6 @@ int TextSection::GetYear() const
     return GetDateSection(2);
 }
 
-int TextSection::GetSecond() const
-{
-    return GetTimeSection(2);
-}
-
-int TextSection::GetMinute() const
-{
-    return GetTimeSection(1);
-}
-
-int TextSection::GetHour() const
-{
-    return GetTimeSection(0);
-}
-
 int TextSection::GetDateSection(int position) const
 {
     int dateValue{};
@@ -75,20 +59,6 @@ int TextSection::GetDateSection(int position) const
         }
     }
     return dateValue;
-}
-
-int TextSection::GetTimeSection(int position) const
-{
-    int timeValue{};
-    if (m_format == TextSectionFormat::Time)
-    {
-        auto splittedTime = Split(m_text, timeDelimiter);
-        if (splittedTime.size() > position)
-        {
-            timeValue = std::stoi(splittedTime.at(position));
-        }
-    }
-    return timeValue;
 }
 
 std::vector<std::string> TextSection::Split(const std::string& in, char delimiter) const

@@ -664,9 +664,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int TextSection_GetDay(long jarg1, TextSection jarg1_);
   public final static native int TextSection_GetMonth(long jarg1, TextSection jarg1_);
   public final static native int TextSection_GetYear(long jarg1, TextSection jarg1_);
-  public final static native int TextSection_GetSecond(long jarg1, TextSection jarg1_);
-  public final static native int TextSection_GetMinute(long jarg1, TextSection jarg1_);
-  public final static native int TextSection_GetHour(long jarg1, TextSection jarg1_);
   public final static native void delete_TextSection(long jarg1);
   public final static native long new_TextBlockText__SWIG_0();
   public final static native long new_TextBlockText__SWIG_1(String jarg1);
