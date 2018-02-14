@@ -9,6 +9,7 @@
 #import "ACRContentHoldingUIView.h"
 #import "TextBlock.h"
 #import "MarkDownParser.h"
+#import "ACRViewController.h"
 
 @implementation ACRTextBlockRenderer
 
@@ -31,32 +32,42 @@ rootViewController:(UIViewController *)vc
 {
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel *lab = [[UILabel alloc] init];
+    __block NSMutableAttributedString *content = nil;
+    if(vc)
+    {
+        NSMutableDictionary *textMap = [(ACRViewController *)vc getTextMap];
+        // Generate key for ImageViewMap
+        NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+        // Syncronize access to imageViewMap
+        dispatch_sync([(ACRViewController *)vc getSerialTextQueue], ^{
+            if(textMap[key]) { // if content is available, get it, otherwise cache label, so it can be used used later
+                content = textMap[key];
+            } else {
+                textMap[key] = lab;
+            }
+        });
+    }
 
-    // MarkDownParser transforms text with MarkDown to a html string
-    std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(txtBlck->GetText().c_str());
-    NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+    if(content)
+    {
+        // Set paragraph style such as line break mode and alignment
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+        paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtBlck withHostConfig:config];
 
-    // Font and text size are applied as CSS style by appending it to the html string -- font is hard coded for now
-    parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx;}</style>",
-                                                          @"verdana", [ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]]];
-    // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
-    NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-    NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-    NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+        // Obtain text color to apply to the attributed string
+        ContainerStyle style = [viewGroup getStyle];
+        ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? config->containerStyles.emphasisPalette.foregroundColors:
+                                                                         config->containerStyles.defaultPalette.foregroundColors;
 
-    // Set paragraph style such as line break mode and alignment
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
-    paragraphStyle.alignment = [self getTextBlockAlignment:txtBlck withHostConfig:config];
-
-    // Obtain text color to apply to the attributed string
-    ContainerStyle style = [viewGroup getStyle];
-    ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? config->containerStyles.emphasisPalette.foregroundColors:
-                                                                     config->containerStyles.defaultPalette.foregroundColors;
-
-    // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-    [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
+        // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
+        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
         lab.attributedText = content;
+
+        std::string id = txtBlck->GetId();
+        std::size_t idx = id.find_last_of('_');
+        txtBlck->SetId(id.substr(0, idx));
+    }
 
     lab.numberOfLines = int(txtBlck->GetMaxLines());
     if(!lab.numberOfLines and !txtBlck->GetWrap())
@@ -153,7 +164,7 @@ rootViewController:(UIViewController *)vc
     }
 }
 
-- (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
++ (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
                           withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (txtBlock->GetHorizontalAlignment()){

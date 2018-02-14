@@ -19,4 +19,12 @@
           hostconfig:(ACOHostConfig *)config
                frame:(CGRect)frame;
 
+- (NSMutableDictionary *) getImageMap;
+
+- (dispatch_queue_t) getSerialQueue;
+
+- (NSMutableDictionary *) getTextMap; 
+
+- (dispatch_queue_t) getSerialTextQueue;
+
 @end

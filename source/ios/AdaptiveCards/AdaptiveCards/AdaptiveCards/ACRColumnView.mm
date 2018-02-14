@@ -18,12 +18,8 @@
 
 - (void)addArrangedSubview:(UIView *)view
 {
-    CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     [super addArrangedSubview:view];
-    super.frame.size = [super.stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     CGRect frame = super.frame;
-    frame.size.width = MAX(super.frame.size.width, contentSz.width);
-    frame.size.height += contentSz.height;
     super.frame = frame;
     enum Bounds { eMinNumRequired = 2};
     if([self.stackView.arrangedSubviews count] >= eMinNumRequired)

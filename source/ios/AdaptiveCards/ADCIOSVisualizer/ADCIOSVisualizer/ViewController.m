@@ -137,8 +137,6 @@
                               @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]-[scrollview]|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
     [ViewController applyConstraints:formats variables:viewMap];
-    
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -155,7 +153,7 @@
     {
         renderResult = [ACRRenderer render:cardParseResult.card
                                     config:hostconfigParseResult.config
-                                     frame:CGRectMake(0, 0, 200, 0)];
+                                     frame:CGRectMake(0, 0, 500, 0)];
     }	
     
     if(renderResult.succeeded)
