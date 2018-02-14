@@ -21,8 +21,10 @@
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
                   colorsConfig:(ColorsConfig const &)config
                   subtleOption:(bool)isSubtle;
-
 + (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
                           withHostConfig:(std::shared_ptr<HostConfig> const &)config;
-
+// given string with short form of date (MM/dd/yyyy), convert it to 
+// NSDateFormatterMediumStyle or NSDateFormatterLongStyle in local language
++ (void) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck 
+           stringWithDate:(std::string &)dateParsedString;
 @end

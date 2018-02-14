@@ -195,6 +195,12 @@
 		F4F2556F1F98247600A80D39 /* ACOBaseActionElementPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */; };
 		F4F255701F98247600A80D39 /* ACOBaseActionElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */; };
 		F4F44B6E203FAF9300A2F24C /* ACRUILabel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B6D203FAF9300A2F24C /* ACRUILabel.mm */; };
+		F4F44B7A20478C5C00A2F24C /* DateTimePreparsedToken.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B7620478C5B00A2F24C /* DateTimePreparsedToken.h */; };
+		F4F44B7B20478C5C00A2F24C /* DateTimePreparser.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B7720478C5B00A2F24C /* DateTimePreparser.h */; };
+		F4F44B7C20478C5C00A2F24C /* DateTimePreparsedToken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7820478C5C00A2F24C /* DateTimePreparsedToken.cpp */; };
+		F4F44B7D20478C5C00A2F24C /* DateTimePreparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7920478C5C00A2F24C /* DateTimePreparser.cpp */; };
+		F4F44B8020478C6F00A2F24C /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B7E20478C6F00A2F24C /* Util.h */; };
+		F4F44B8120478C6F00A2F24C /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7F20478C6F00A2F24C /* Util.cpp */; };
 		F4FA2731201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FA272F201FF940005989F9 /* ACRLongPressGestureRecognizerFactory.mm */; };
 		F4FA2732201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA2730201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h */; };
 		F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */; };
@@ -396,6 +402,12 @@
 		F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOBaseActionElement.mm; sourceTree = "<group>"; };
 		F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRUILabel.h; sourceTree = "<group>"; };
 		F4F44B6D203FAF9300A2F24C /* ACRUILabel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRUILabel.mm; sourceTree = "<group>"; };
+		F4F44B7620478C5B00A2F24C /* DateTimePreparsedToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateTimePreparsedToken.h; path = ../../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h; sourceTree = "<group>"; };
+		F4F44B7720478C5B00A2F24C /* DateTimePreparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateTimePreparser.h; path = ../../../../shared/cpp/ObjectModel/DateTimePreparser.h; sourceTree = "<group>"; };
+		F4F44B7820478C5C00A2F24C /* DateTimePreparsedToken.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DateTimePreparsedToken.cpp; path = ../../../../shared/cpp/ObjectModel/DateTimePreparsedToken.cpp; sourceTree = "<group>"; };
+		F4F44B7920478C5C00A2F24C /* DateTimePreparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DateTimePreparser.cpp; path = ../../../../shared/cpp/ObjectModel/DateTimePreparser.cpp; sourceTree = "<group>"; };
+		F4F44B7E20478C6F00A2F24C /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = ../../../../shared/cpp/ObjectModel/Util.h; sourceTree = "<group>"; };
+		F4F44B7F20478C6F00A2F24C /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Util.cpp; path = ../../../../shared/cpp/ObjectModel/Util.cpp; sourceTree = "<group>"; };
 		F4FA272F201FF940005989F9 /* ACRLongPressGestureRecognizerFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRLongPressGestureRecognizerFactory.mm; sourceTree = "<group>"; };
 		F4FA2730201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRLongPressGestureRecognizerFactory.h; sourceTree = "<group>"; };
 		F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRColumnView.h; sourceTree = "<group>"; };
@@ -500,6 +512,12 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				F4F44B7F20478C6F00A2F24C /* Util.cpp */,
+				F4F44B7E20478C6F00A2F24C /* Util.h */,
+				F4F44B7820478C5C00A2F24C /* DateTimePreparsedToken.cpp */,
+				F4F44B7620478C5B00A2F24C /* DateTimePreparsedToken.h */,
+				F4F44B7920478C5C00A2F24C /* DateTimePreparser.cpp */,
+				F4F44B7720478C5B00A2F24C /* DateTimePreparser.h */,
 				F42E516C1FEC383E008F9642 /* MarkDownBlockParser.cpp */,
 				F42E516F1FEC383F008F9642 /* MarkDownBlockParser.h */,
 				F42E51701FEC383F008F9642 /* MarkDownHtmlGenerator.cpp */,
@@ -743,6 +761,7 @@
 				F43A94141F1EED6D0001920B /* ACRInputRenderer.h in Headers */,
 				F44873061EE2261F00FCAFAE /* Container.h in Headers */,
 				F4CAE7861F75B25C00545555 /* ACRRendererPrivate.h in Headers */,
+				F4F44B7A20478C5C00A2F24C /* DateTimePreparsedToken.h in Headers */,
 				F42C2F482035192F008787B0 /* ACOBaseCardElement.h in Headers */,
 				F42741161EF895AB00399FBB /* ACRTextBlockRenderer.h in Headers */,
 				F429793E1F3155EF00E89914 /* ACRTextField.h in Headers */,
@@ -752,6 +771,7 @@
 				F42741071EF8624F00399FBB /* ACRIBaseCardElementRenderer.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,
 				F43110471F357487001AAE30 /* ACRToggleInputDataSource.h in Headers */,
+				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
 				F448730E1EE2261F00FCAFAE /* FactSet.h in Headers */,
 				F42E51751FEC3840008F9642 /* MarkDownHtmlGenerator.h in Headers */,
 				F44873131EE2261F00FCAFAE /* Image.h in Headers */,
@@ -798,6 +818,7 @@
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
 				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
 				F44873041EE2261F00FCAFAE /* ColumnSet.h in Headers */,
+				F4F44B7B20478C5C00A2F24C /* DateTimePreparser.h in Headers */,
 				F44873191EE2261F00FCAFAE /* NumberInput.h in Headers */,
 				F43A94181F20502D0001920B /* ACRInputToggleRenderer.h in Headers */,
 				F495FC0B2022A18F0093D4DE /* ACRChoiceSetViewDataSource.h in Headers */,
@@ -975,12 +996,14 @@
 				F42E51761FEC3840008F9642 /* MarkDownParsedResult.cpp in Sources */,
 				F44872F51EE2261F00FCAFAE /* AdaptiveCardParseException.cpp in Sources */,
 				F429794D1F32684900E89914 /* ACRDateTextField.mm in Sources */,
+				F4F44B8120478C6F00A2F24C /* Util.cpp in Sources */,
 				F43110481F357487001AAE30 /* ACRToggleInputDataSource.mm in Sources */,
 				6B6840F91F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm in Sources */,
 				F42741131EF873A600399FBB /* ACRImageRenderer.mm in Sources */,
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
 				F423C14D1EE1FFF100905679 /* ACRViewController.mm in Sources */,
 				F495FC0E2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.mm in Sources */,
+				F4F44B7D20478C5C00A2F24C /* DateTimePreparser.cpp in Sources */,
 				F452CD581F68CD6F005394B2 /* HostConfig.cpp in Sources */,
 				F4071C7E1FCCBAEF00AF4FEA /* ActionParserRegistration.cpp in Sources */,
 				F4FE456B1F196F3D0071D9E5 /* ACRContentStackView.mm in Sources */,
@@ -991,6 +1014,7 @@
 				F43A94151F1EED6D0001920B /* ACRInputRenderer.mm in Sources */,
 				F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */,
 				F4F44B6E203FAF9300A2F24C /* ACRUILabel.mm in Sources */,
+				F4F44B7C20478C5C00A2F24C /* DateTimePreparsedToken.cpp in Sources */,
 				F44873211EE2261F00FCAFAE /* SubmitAction.cpp in Sources */,
 				F44872FF1EE2261F00FCAFAE /* ChoiceSetInput.cpp in Sources */,
 				F4C1F5F61F2BF2900018CB78 /* ACRSubmitTarget.mm in Sources */,
