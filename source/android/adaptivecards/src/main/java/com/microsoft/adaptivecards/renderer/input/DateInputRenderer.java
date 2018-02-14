@@ -17,10 +17,6 @@ import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
 
-/**
- * Created by bekao on 6/25/2017.
- */
-
 public class DateInputRenderer extends TextInputRenderer
 {
     private DateInputRenderer()
@@ -56,6 +52,8 @@ public class DateInputRenderer extends TextInputRenderer
             throw new InternalError("Unable to convert BaseCardElement to DateInput object model.");
         }
 
+        setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
+
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
         EditText editText = renderInternal(
                 context,
@@ -86,7 +84,6 @@ public class DateInputRenderer extends TextInputRenderer
             }
         });
 
-        setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
         return editText;
     }
 

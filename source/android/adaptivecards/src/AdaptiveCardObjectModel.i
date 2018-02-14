@@ -50,8 +50,8 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 #include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
-#include "../../../shared/cpp/ObjectModel/TextSection.h"
-#include "../../../shared/cpp/ObjectModel/TextBlockText.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %}
 
@@ -96,7 +96,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::SubmitActionParser)
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
-%shared_ptr(AdaptiveCards::TextSection)
+%shared_ptr(AdaptiveCards::DateTimePreparsedToken)
 
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
@@ -122,7 +122,7 @@ namespace std {
 %template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
 %template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >; 
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >; 
-%template(TextSectionVector) std::vector<std::shared_ptr<AdaptiveCards::TextSection> >;
+%template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -409,6 +409,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
-%include "../../../shared/cpp/ObjectModel/TextSection.h"
-%include "../../../shared/cpp/ObjectModel/TextBlockText.h"
+%include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+%include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"

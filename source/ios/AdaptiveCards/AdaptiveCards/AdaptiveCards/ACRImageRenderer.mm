@@ -7,9 +7,13 @@
 
 #import "ACRImageRenderer.h"
 #import "Image.h"
+#import "Enums.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRViewController.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 
 @implementation ACRImageRenderer
 
@@ -24,11 +28,12 @@
     return CardElementType::Image;
 }
 
-- (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem
++ (CGSize)getImageSize:(ImageSize)imageSize
         withHostConfig:(std::shared_ptr<HostConfig> const &)hostConfig
 {
     float sz = hostConfig->imageSizes.smallSize;
-    switch (imgElem->GetImageSize()){
+    switch (imageSize)
+    {
         case ImageSize::Large:{
             sz = hostConfig->imageSizes.largeSize;
             break;
@@ -122,40 +127,66 @@
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-    NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
-                                          encoding:[NSString defaultCStringEncoding]];
-    NSURL *url = [NSURL URLWithString:urlStr];
 
-    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-
-    CGSize cgsize = [self getImageSize:imgElem withHostConfig:config];
-
-    UIGraphicsBeginImageContext(cgsize);
+    CGSize cgsize = [ACRImageRenderer getImageSize:imgElem->GetImageSize() withHostConfig:config];
     UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-    [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
-    img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    view.image = img;
 
-    //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
-    view.contentMode = UIViewContentModeScaleAspectFit;
-    view.clipsToBounds = NO;
-    if(imgElem->GetImageStyle() == ImageStyle::Person) {
-        CALayer *imgLayer = view.layer;
-        [imgLayer setCornerRadius:cgsize.width/2];
-        [imgLayer setMasksToBounds:YES];
+    // Add width/height constraints so image is resized accordingly
+    [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                        attribute:NSLayoutAttributeWidth
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1.0
+                                                         constant:cgsize.width],
+                           [NSLayoutConstraint constraintWithItem:view
+                                                        attribute:NSLayoutAttributeHeight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1.0
+                                                         constant:cgsize.height]]];
+    NSMutableDictionary *imageViewMap = [(ACRViewController *)vc getImageMap];
+    __block UIImage *img = nil;
+    // Generate key for ImageViewMap
+    NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+    // Syncronize access to imageViewMap
+    dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
+        // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
+        if(imageViewMap[key] && [imageViewMap[key] isKindOfClass:[UIImage class]]) {
+            img = imageViewMap[key];
+        }
+        else {
+            imageViewMap[key] = view;
+        }
+    });
+
+    if(img) {// if image is ready, proceed to add it
+        view.image = img;
+        view.contentMode = UIViewContentModeScaleAspectFit;
+        view.clipsToBounds = NO;
+        if(imgElem->GetImageStyle() == ImageStyle::Person) {
+            CALayer *imgLayer = view.layer;
+            [imgLayer setCornerRadius:cgsize.width/2];
+            [imgLayer setMasksToBounds:YES];
+        }
+        // remove postfix added for imageMap access
+        std::string id = imgElem->GetId();
+        std::size_t idx = id.find_last_of('_');
+        imgElem->SetId(id.substr(0, idx));
     }
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
     [wrappingview addSubview:view];
 
-
-    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
+    [viewGroup addArrangedSubview:wrappingview];
 
     [wrappingview addConstraints:[self setImageAlignment:imgElem->GetHorizontalAlignment()
                                            withSuperview:wrappingview
@@ -170,8 +201,7 @@
                                                               actionElement:selectAction
                                                                      inputs:inputs
                                                                  hostConfig:config];
-    if(gestureRecognizer)
-    {
+    if(gestureRecognizer) {
         [view addGestureRecognizer:gestureRecognizer];
         view.userInteractionEnabled = YES;
     }

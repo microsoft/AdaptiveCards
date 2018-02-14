@@ -4,14 +4,14 @@
 #define LOCALTIME(X,Y) localtime_s(X,Y)
 #endif
 
-#include "TextBlockText.h"
+#include "DateTimePreparsedToken.h"
 
 #include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
 #include <time.h>
 #include "ElementParserRegistration.h"
-#include "TextBlockText.h"
+#include "DateTimePreparser.h"
 #include <iomanip>
 #include <regex>
 #include <iostream>
@@ -19,44 +19,44 @@
 
 using namespace AdaptiveCards;
 
-TextBlockText::TextBlockText()
+DateTimePreparser::DateTimePreparser()
 {
 }
 
-TextBlockText::TextBlockText(std::string in)
+DateTimePreparser::DateTimePreparser(std::string in)
 {
     ParseDateTime(in);
 }
 
-std::vector<std::shared_ptr<TextSection>> TextBlockText::GetString() const
+std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparser::GetTextTokens() const
 {
-    return m_fullString;
+    return m_textTokenCollection;
 }
 
-void TextBlockText::AddTextSection(std::string text, TextSectionFormat format)
+void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFormat format)
 {
     if (!text.empty())
     {
-        m_fullString.emplace_back(std::make_shared<TextSection>(text, format));
+        m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, format));
     }
 }
 
-void TextBlockText::AddTextSection(std::string text, std::string originalText, TextSectionFormat format)
+void DateTimePreparser::AddDateToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format)
 {
-    m_fullString.emplace_back(std::make_shared<TextSection>(text, originalText, format));
+    m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, date, format));
 }
 
-std::string TextBlockText::Concatenate()
+std::string DateTimePreparser::Concatenate()
 {
     std::string formedString;
-    for (const auto& piece : m_fullString)
+    for (const auto& piece : m_textTokenCollection)
     {
-        formedString += piece->GetOriginalText();
+        formedString += piece->GetText();
     }
     return formedString;
 }
 
-bool TextBlockText::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
+bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
 {
     if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 &&
         parsedTm.tm_min <= 60 && parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
@@ -81,12 +81,9 @@ bool TextBlockText::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int
     return false;
 }
 
-void TextBlockText::ParseDateTime(std::string in)
+void DateTimePreparser::ParseDateTime(std::string in)
 {
-    const char dateDelimiter = '/';
-    const char timeDelimiter = ':';
-
-    std::vector<TextSection> sections;
+    std::vector<DateTimePreparsedToken> sections;
 
     std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
     std::smatch matches;
@@ -128,11 +125,11 @@ void TextBlockText::ParseDateTime(std::string in)
             formatStyle = matches[Format].str()[formatStartIndex];
         }
 
-        AddTextSection(matches.prefix().str(), TextSectionFormat::RegularString);
+        AddTextToken(matches.prefix().str(), DateTimePreparsedTokenFormat::RegularString);
 
         if (!isDate && formatStyle)
         {
-            AddTextSection(matches[0].str(), TextSectionFormat::RegularString);
+            AddTextToken(matches[0].str(), DateTimePreparsedTokenFormat::RegularString);
             text = matches.suffix().str();
             continue;
         }
@@ -178,7 +175,7 @@ void TextBlockText::ParseDateTime(std::string in)
             utc = mktime(&parsedTm);
             if (utc == -1)
             {
-                AddTextSection(matches[0], TextSectionFormat::RegularString);
+                AddTextToken(matches[0], DateTimePreparsedTokenFormat::RegularString);
             }
 
             wchar_t tzOffsetBuff[6]{};
@@ -203,23 +200,19 @@ void TextBlockText::ParseDateTime(std::string in)
 
                 if (isDate)
                 {
-                    std::string plainDate = std::to_string(result.tm_mon) + dateDelimiter +
-                        std::to_string(result.tm_mday) + dateDelimiter +
-                        std::to_string(result.tm_year + 1900);
-
                     switch (formatStyle)
                     {
                         // SHORT Style
                         case 'S':
-                            AddTextSection(plainDate, matches[0].str(), TextSectionFormat::DateShort);
+                            AddDateToken(matches[0].str(), result, DateTimePreparsedTokenFormat::DateShort);
                             break;
                         // LONG Style
                         case 'L':
-                            AddTextSection(plainDate, matches[0].str(), TextSectionFormat::DateLong);
+                            AddDateToken(matches[0].str(), result, DateTimePreparsedTokenFormat::DateLong);
                             break;
                         // COMPACT or DEFAULT Style
                         case 'C': default:
-                            AddTextSection(plainDate, matches[0].str(), TextSectionFormat::DateCompact);
+                            AddDateToken(matches[0].str(), result , DateTimePreparsedTokenFormat::DateCompact);
                             break;
                     }
                 }
@@ -227,17 +220,17 @@ void TextBlockText::ParseDateTime(std::string in)
                 {
                     std::ostringstream parsedTime;
                     parsedTime << std::put_time(&result, "%I:%M %p");
-                    AddTextSection(parsedTime.str(), TextSectionFormat::RegularString);
+                    AddTextToken(parsedTime.str(), DateTimePreparsedTokenFormat::RegularString);
                 }
             }
         }
         else
         {
-            AddTextSection(matches[0].str(), TextSectionFormat::RegularString);
+            AddTextToken(matches[0].str(), DateTimePreparsedTokenFormat::RegularString);
         }
         
         text = matches.suffix().str();
     }
 
-    AddTextSection(text, TextSectionFormat::RegularString);
+    AddTextToken(text, DateTimePreparsedTokenFormat::RegularString);
 }

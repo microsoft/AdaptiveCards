@@ -3,7 +3,7 @@
 #include <iostream>
 #include <codecvt>
 #include "TextBlock.h"
-#include "TextBlockText.h"
+#include "DateTimePreparser.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveCards;
@@ -73,9 +73,9 @@ void TextBlock::SetText(const std::string value)
     m_text = value;
 }
 
-TextBlockText TextBlock::GetTextForDateParsing() const
+DateTimePreparser TextBlock::GetTextForDateParsing() const
 {
-    return TextBlockText(m_text);
+    return DateTimePreparser(m_text);
 }
 
 TextSize TextBlock::GetTextSize() const

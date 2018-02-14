@@ -13,7 +13,7 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
 {
     HostConfig result;
     std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
-    result.fontFamily = fontFamily == "" ? fontFamily : result.fontFamily;
+    result.fontFamily = fontFamily != "" ? fontFamily : result.fontFamily;
 
     result.supportsInteractivity = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::SupportsInteractivity, result.supportsInteractivity);

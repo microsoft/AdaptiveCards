@@ -53,7 +53,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to Container object model.");
         }
 
-        //setSeparationConfig(context, viewGroup, container.GetSeparationStyle(), hostConfig.getContainer().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
         return CardRendererRegistration.getInstance().render(context, fragmentManager, viewGroup, container, container.GetItems(), inputActionHandlerList, hostConfig);
     }
 

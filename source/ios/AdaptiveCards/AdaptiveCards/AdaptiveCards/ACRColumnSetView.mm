@@ -19,11 +19,8 @@
 
 - (void)addArrangedSubview:(UIView* )view
 {
-    CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     [super addArrangedSubview:view];
     CGRect frame = super.frame;
-    frame.size.height = MAX(super.frame.size.height, contentSz.height);
-    frame.size.width += contentSz.width;
     super.frame = frame;
 }
 

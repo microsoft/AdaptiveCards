@@ -57,8 +57,8 @@ public class TextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TextBlock_SetText(swigCPtr, this, value);
   }
 
-  public TextBlockText GetTextForDateParsing() {
-    return new TextBlockText(AdaptiveCardObjectModelJNI.TextBlock_GetTextForDateParsing(swigCPtr, this), true);
+  public DateTimePreparser GetTextForDateParsing() {
+    return new DateTimePreparser(AdaptiveCardObjectModelJNI.TextBlock_GetTextForDateParsing(swigCPtr, this), true);
   }
 
   public TextSize GetTextSize() {

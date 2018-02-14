@@ -62,7 +62,8 @@
                     android:id="@+id/Visual"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_margin="20px">
 
                     <ScrollView
                         android:layout_width="match_parent"
@@ -73,7 +74,8 @@
                             android:id="@+id/visualAdaptiveCardLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical" >
+                            android:orientation="vertical"
+                            android:background="@drawable/border">
                         </LinearLayout>
                     </ScrollView>
                 </LinearLayout>

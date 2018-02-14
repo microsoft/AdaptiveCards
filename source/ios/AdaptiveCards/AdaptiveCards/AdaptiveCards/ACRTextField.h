@@ -8,7 +8,8 @@
 #import <UIKit/UIKit.h>
 #import "ACRIBaseInputHandler.h"
 
-@interface ACRTextField:UITextField<ACRIBaseInputHandler>
+@interface ACRTextField:UITextField<ACRIBaseInputHandler, UITextFieldDelegate>
 @property NSString* id;
 @property bool isRequired;
+- (void) dismissNumPad;
 @end

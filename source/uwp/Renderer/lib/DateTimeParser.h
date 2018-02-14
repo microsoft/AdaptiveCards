@@ -1,5 +1,5 @@
 #pragma once
-#include "TextBlockText.h"
+#include "DateTimePreparser.h"
 
 #include <codecvt>
 #include <string>
@@ -10,7 +10,7 @@ namespace AdaptiveCards
     {
     public:
         DateTimeParser(const std::string& language);
-        std::string GenerateString(TextBlockText text);
+        std::string GenerateString(DateTimePreparser text);
 
     private:
         std::string WstringToString(const std::wstring& in) const;

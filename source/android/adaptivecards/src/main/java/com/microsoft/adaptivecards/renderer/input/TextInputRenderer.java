@@ -128,6 +128,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
+        setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
         EditText editText = renderInternal(
                 context,
                 viewGroup,
@@ -138,8 +139,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 inputActionHandlerList,
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
+        if (textInput.GetIsMultiline())
+        {
+            editText.setLines(3);
+        }
         setTextInputStyle(editText, textInput.GetTextInputStyle());
-        setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);
         if (maxLength > 0)
         {

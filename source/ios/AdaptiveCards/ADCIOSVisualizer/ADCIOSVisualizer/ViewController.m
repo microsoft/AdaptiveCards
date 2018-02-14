@@ -50,7 +50,7 @@
 
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[editView]-|",   
-                              @"V:|-40-[editView(>=150,<=200)]-[buttonLayout]", nil];
+                              @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
 
@@ -65,12 +65,13 @@
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout);
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]", nil];
+                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];   
+    [super viewDidLoad];
+    [self registerForKeyboardNotifications];
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     self.ACVTabVC.delegate = self;
@@ -127,6 +128,7 @@
     [self.view addSubview:self.scrView];
     [self.scrView addSubview:self.curView];
     UIScrollView *scrollview = self.scrView;
+    scrollview.showsVerticalScrollIndicator = YES;
     UIView *view = self.curView;
     view.translatesAutoresizingMaskIntoConstraints = NO;
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
@@ -134,11 +136,9 @@
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, scrollview, buttonLayout);
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(>=150,<=200)]-[buttonLayout]-[scrollview]|",
+                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-20-|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
     [ViewController applyConstraints:formats variables:viewMap];
-    
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -155,7 +155,7 @@
     {
         renderResult = [ACRRenderer render:cardParseResult.card
                                     config:hostconfigParseResult.config
-                                     frame:CGRectMake(0, 0, 200, 0)];
+                                     frame:CGRectMake(0, 0, 500, 0)];
     }	
     
     if(renderResult.succeeded)
@@ -177,6 +177,7 @@
         
         [self addChildViewController:adcVc];
         [self.scrView addSubview:adcVc.view];
+
         [adcVc didMoveToParentViewController:self];
         self.scrView.contentSize = self.curView.frame.size;
         
@@ -184,12 +185,19 @@
         UIView *view = self.curView;
         view.translatesAutoresizingMaskIntoConstraints = NO;
         scrollview.translatesAutoresizingMaskIntoConstraints = NO;
-        
         NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
         NSArray<NSString *> *formats = [NSArray arrayWithObjects:@"H:|[view(<=scrollview)]|", @"V:|[view(>=scrollview)]|",nil];
-     
         [ViewController applyConstraints:formats variables:viewMap];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    float verticalContentInset = self.scrView.frame.size.height - self.curView.frame.size.height;
+    verticalContentInset = (verticalContentInset <= 0)? 20 : verticalContentInset;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, verticalContentInset, 0.0);
+    self.scrView.contentInset = contentInsets;
 }
 
 - (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr
@@ -223,6 +231,36 @@
 - (void)didFetchHttpRequest:(NSURLRequest *)request
 {
     NSLog(@"Http Request fetched: %@", request);    
+}
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+
+}
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.scrView.contentInset = contentInsets;
+    self.scrView.scrollIndicatorInsets = contentInsets;
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrView.contentInset = contentInsets;
+    self.scrView.scrollIndicatorInsets = contentInsets;
 }
 
 @end

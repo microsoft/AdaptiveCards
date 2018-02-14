@@ -62,6 +62,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");
         }
 
+        setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
+
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
         LinearLayout layout = new LinearLayout(context);

@@ -117,10 +117,10 @@
     <ClCompile Include="..\..\ObjectModel\MarkDownParsedResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ObjectModel\TextBlockText.cpp">
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparsedToken.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ObjectModel\TextSection.cpp">
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -230,10 +230,10 @@
     <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\TextBlockText.h">
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparser.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\TextSection.h">
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparsedToken.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,34 +16,33 @@ DateTimeParser::DateTimeParser(const std::string& language)
     }
 }
 
-std::string DateTimeParser::GenerateString(TextBlockText text)
+std::string DateTimeParser::GenerateString(DateTimePreparser text)
 {
     std::wostringstream parsedostr;
 
-    for (const auto& textSection : text.GetString())
+    for (const auto& textSection : text.GetTextTokens())
     {
         struct tm result{};
         result.tm_mday = textSection->GetDay();
         result.tm_mon = textSection->GetMonth();
         result.tm_year = textSection->GetYear() >= 1900 ? textSection->GetYear() - 1900 : 0;
 
+        // using the put_time function the 3 formats are locale dependent
+        parsedostr.imbue(m_language);
         switch (textSection->GetFormat())
         {
-            case TextSectionFormat::DateCompact:
-                
+            case DateTimePreparsedTokenFormat::DateCompact:
                 parsedostr << std::put_time(&result, L"%Ex");
                 break;
-            case TextSectionFormat::DateShort:
+            case DateTimePreparsedTokenFormat::DateShort:
                 mktime(&result);
-                parsedostr.imbue(m_language);
                 parsedostr << std::put_time(&result, L"%a, %b %e, %Y");
                 break;
-            case TextSectionFormat::DateLong:
+            case DateTimePreparsedTokenFormat::DateLong:
                 mktime(&result);
-                parsedostr.imbue(m_language);
                 parsedostr << std::put_time(&result, L"%A, %B %e, %Y");
                 break;
-            case TextSectionFormat::RegularString:
+            case DateTimePreparsedTokenFormat::RegularString:
             default:
                 parsedostr << StringToWstring(textSection->GetText());
                 break;

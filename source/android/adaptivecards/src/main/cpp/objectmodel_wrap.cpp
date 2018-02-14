@@ -270,8 +270,8 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 #include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
-#include "../../../shared/cpp/ObjectModel/TextSection.h"
-#include "../../../shared/cpp/ObjectModel/TextBlockText.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 
 SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::const_reference std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__get(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,int i){
@@ -358,14 +358,14 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_
                 else
                     throw std::out_of_range("vector index out of range");
             }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::const_reference std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TextSection_Sg__Sg__get(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *self,int i){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::const_reference std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__get(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,int i){
                 int size = int(self->size());
                 if (i>=0 && i<size)
                     return (*self)[i];
                 else
                     throw std::out_of_range("vector index out of range");
             }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TextSection_Sg__Sg__set(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *self,int i,std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type const &val){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__set(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,int i,std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &val){
                 int size = int(self->size());
                 if (i>=0 && i<size)
                     (*self)[i] = val;
@@ -1458,155 +1458,155 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextSectionVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparsedTokenVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *)new std::vector< std::shared_ptr< AdaptiveCards::TextSection > >();
-  *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jresult = result; 
+  result = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *)new std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >();
+  *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextSectionVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparsedTokenVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::size_type arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::size_type arg1 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::size_type)jarg1; 
-  result = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *)new std::vector< std::shared_ptr< AdaptiveCards::TextSection > >(arg1);
-  *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jresult = result; 
+  arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::size_type)jarg1; 
+  result = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *)new std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >(arg1);
+  *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::size_type result;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::size_type result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
-  result = ((std::vector< std::shared_ptr< AdaptiveCards::TextSection > > const *)arg1)->size();
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
+  result = ((std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > const *)arg1)->size();
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::size_type result;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::size_type result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
-  result = ((std::vector< std::shared_ptr< AdaptiveCards::TextSection > > const *)arg1)->capacity();
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
+  result = ((std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > const *)arg1)->capacity();
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::size_type arg2 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::size_type arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
-  arg2 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::size_type)jarg2; 
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
+  arg2 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::size_type)jarg2; 
   (arg1)->reserve(arg2);
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
-  result = (bool)((std::vector< std::shared_ptr< AdaptiveCards::TextSection > > const *)arg1)->empty();
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
+  result = (bool)((std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > const *)arg1)->empty();
   jresult = (jboolean)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
   (arg1)->clear();
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type *arg2 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type tempnull2 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type *arg2 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type tempnull2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
-  arg2 = jarg2 ? *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type **)&jarg2 : &tempnull2; 
-  (arg1)->push_back((std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type const &)*arg2);
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
+  arg2 = jarg2 ? *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type **)&jarg2 : &tempnull2; 
+  (arg1)->push_back((std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &)*arg2);
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
   int arg2 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
   arg2 = (int)jarg2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TextSection_Sg__Sg__get(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__get(arg1,arg2);
   }
   catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
   
-  *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::TextSection >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::DateTimePreparsedToken >(*result) : 0; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
   int arg2 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type *arg3 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type tempnull3 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type *arg3 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type tempnull3 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
   arg2 = (int)jarg2; 
-  arg3 = jarg3 ? *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > >::value_type **)&jarg3 : &tempnull3; 
+  arg3 = jarg3 ? *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type **)&jarg3 : &tempnull3; 
   try {
-    std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TextSection_Sg__Sg__set(arg1,arg2,(std::shared_ptr< AdaptiveCards::TextSection > const &)*arg3);
+    std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__set(arg1,arg2,(std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > const &)*arg3);
   }
   catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
@@ -1616,12 +1616,12 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextSectionVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TextSection > > *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateTimePreparsedTokenVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jarg1; 
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
   delete arg1;
 }
 
@@ -1923,13 +1923,13 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSectionFormat_1RegularString_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedTokenFormat_1RegularString_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
-  AdaptiveCards::TextSectionFormat result;
+  AdaptiveCards::DateTimePreparsedTokenFormat result;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::TextSectionFormat)AdaptiveCards::TextSectionFormat::RegularString;
+  result = (AdaptiveCards::DateTimePreparsedTokenFormat)AdaptiveCards::DateTimePreparsedTokenFormat::RegularString;
   jresult = (jint)result; 
   return jresult;
 }
@@ -12022,25 +12022,25 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextSection_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparsedToken_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextSection *result = 0 ;
+  AdaptiveCards::DateTimePreparsedToken *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::TextSection *)new AdaptiveCards::TextSection();
+  result = (AdaptiveCards::DateTimePreparsedToken *)new AdaptiveCards::DateTimePreparsedToken();
   
-  *(std::shared_ptr<  AdaptiveCards::TextSection > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::TextSection >(result SWIG_NO_NULL_DELETER_1) : 0;
+  *(std::shared_ptr<  AdaptiveCards::DateTimePreparsedToken > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::DateTimePreparsedToken >(result SWIG_NO_NULL_DELETER_1) : 0;
   
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextSection_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparsedToken_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jint jarg2) {
   jlong jresult = 0 ;
   std::string arg1 ;
-  AdaptiveCards::TextSectionFormat arg2 ;
-  AdaptiveCards::TextSection *result = 0 ;
+  AdaptiveCards::DateTimePreparsedTokenFormat arg2 ;
+  AdaptiveCards::DateTimePreparsedToken *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -12052,21 +12052,22 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   if (!arg1_pstr) return 0;
   (&arg1)->assign(arg1_pstr);
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  arg2 = (AdaptiveCards::TextSectionFormat)jarg2; 
-  result = (AdaptiveCards::TextSection *)new AdaptiveCards::TextSection(arg1,arg2);
+  arg2 = (AdaptiveCards::DateTimePreparsedTokenFormat)jarg2; 
+  result = (AdaptiveCards::DateTimePreparsedToken *)new AdaptiveCards::DateTimePreparsedToken(arg1,arg2);
   
-  *(std::shared_ptr<  AdaptiveCards::TextSection > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::TextSection >(result SWIG_NO_NULL_DELETER_1) : 0;
+  *(std::shared_ptr<  AdaptiveCards::DateTimePreparsedToken > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::DateTimePreparsedToken >(result SWIG_NO_NULL_DELETER_1) : 0;
   
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextSection_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jint jarg3) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparsedToken_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jint jarg3) {
   jlong jresult = 0 ;
   std::string arg1 ;
-  std::string arg2 ;
-  AdaptiveCards::TextSectionFormat arg3 ;
-  AdaptiveCards::TextSection *result = 0 ;
+  tm arg2 ;
+  AdaptiveCards::DateTimePreparsedTokenFormat arg3 ;
+  tm *argp2 ;
+  AdaptiveCards::DateTimePreparsedToken *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -12078,160 +12079,140 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   if (!arg1_pstr) return 0;
   (&arg1)->assign(arg1_pstr);
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  if(!jarg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+  argp2 = *(tm **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null tm");
     return 0;
-  } 
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
-  if (!arg2_pstr) return 0;
-  (&arg2)->assign(arg2_pstr);
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  arg3 = (AdaptiveCards::TextSectionFormat)jarg3; 
-  result = (AdaptiveCards::TextSection *)new AdaptiveCards::TextSection(arg1,arg2,arg3);
+  }
+  arg2 = *argp2; 
+  arg3 = (AdaptiveCards::DateTimePreparsedTokenFormat)jarg3; 
+  result = (AdaptiveCards::DateTimePreparsedToken *)new AdaptiveCards::DateTimePreparsedToken(arg1,arg2,arg3);
   
-  *(std::shared_ptr<  AdaptiveCards::TextSection > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::TextSection >(result SWIG_NO_NULL_DELETER_1) : 0;
+  *(std::shared_ptr<  AdaptiveCards::DateTimePreparsedToken > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::DateTimePreparsedToken >(result SWIG_NO_NULL_DELETER_1) : 0;
   
   return jresult;
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedToken_1GetText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
+  AdaptiveCards::DateTimePreparsedToken *arg1 = (AdaptiveCards::DateTimePreparsedToken *) 0 ;
+  std::shared_ptr< AdaptiveCards::DateTimePreparsedToken const > *smartarg1 = 0 ;
   std::string result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::TextSection const *)arg1)->GetText();
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::DateTimePreparsedToken > **)&jarg1;
+  arg1 = (AdaptiveCards::DateTimePreparsedToken *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::DateTimePreparsedToken const *)arg1)->GetText();
   jresult = jenv->NewStringUTF((&result)->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetOriginalText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jstring jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
-  std::string result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::TextSection const *)arg1)->GetOriginalText();
-  jresult = jenv->NewStringUTF((&result)->c_str()); 
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetFormat(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedToken_1GetFormat(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
-  AdaptiveCards::TextSectionFormat result;
+  AdaptiveCards::DateTimePreparsedToken *arg1 = (AdaptiveCards::DateTimePreparsedToken *) 0 ;
+  std::shared_ptr< AdaptiveCards::DateTimePreparsedToken const > *smartarg1 = 0 ;
+  AdaptiveCards::DateTimePreparsedTokenFormat result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (AdaptiveCards::TextSectionFormat)((AdaptiveCards::TextSection const *)arg1)->GetFormat();
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::DateTimePreparsedToken > **)&jarg1;
+  arg1 = (AdaptiveCards::DateTimePreparsedToken *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (AdaptiveCards::DateTimePreparsedTokenFormat)((AdaptiveCards::DateTimePreparsedToken const *)arg1)->GetFormat();
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetDay(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedToken_1GetDay(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
+  AdaptiveCards::DateTimePreparsedToken *arg1 = (AdaptiveCards::DateTimePreparsedToken *) 0 ;
+  std::shared_ptr< AdaptiveCards::DateTimePreparsedToken const > *smartarg1 = 0 ;
   int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (int)((AdaptiveCards::TextSection const *)arg1)->GetDay();
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::DateTimePreparsedToken > **)&jarg1;
+  arg1 = (AdaptiveCards::DateTimePreparsedToken *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (int)((AdaptiveCards::DateTimePreparsedToken const *)arg1)->GetDay();
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetMonth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedToken_1GetMonth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
+  AdaptiveCards::DateTimePreparsedToken *arg1 = (AdaptiveCards::DateTimePreparsedToken *) 0 ;
+  std::shared_ptr< AdaptiveCards::DateTimePreparsedToken const > *smartarg1 = 0 ;
   int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (int)((AdaptiveCards::TextSection const *)arg1)->GetMonth();
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::DateTimePreparsedToken > **)&jarg1;
+  arg1 = (AdaptiveCards::DateTimePreparsedToken *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (int)((AdaptiveCards::DateTimePreparsedToken const *)arg1)->GetMonth();
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSection_1GetYear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparsedToken_1GetYear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection const > *smartarg1 = 0 ;
+  AdaptiveCards::DateTimePreparsedToken *arg1 = (AdaptiveCards::DateTimePreparsedToken *) 0 ;
+  std::shared_ptr< AdaptiveCards::DateTimePreparsedToken const > *smartarg1 = 0 ;
   int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (int)((AdaptiveCards::TextSection const *)arg1)->GetYear();
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::DateTimePreparsedToken > **)&jarg1;
+  arg1 = (AdaptiveCards::DateTimePreparsedToken *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (int)((AdaptiveCards::DateTimePreparsedToken const *)arg1)->GetYear();
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextSection(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::TextSection *arg1 = (AdaptiveCards::TextSection *) 0 ;
-  std::shared_ptr< AdaptiveCards::TextSection > *smartarg1 = 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateTimePreparsedToken(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::DateTimePreparsedToken *arg1 = (AdaptiveCards::DateTimePreparsedToken *) 0 ;
+  std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > *smartarg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
   
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextSection > **)&jarg1;
-  arg1 = (AdaptiveCards::TextSection *)(smartarg1 ? smartarg1->get() : 0); 
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::DateTimePreparsedToken > **)&jarg1;
+  arg1 = (AdaptiveCards::DateTimePreparsedToken *)(smartarg1 ? smartarg1->get() : 0); 
   (void)arg1; delete smartarg1;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlockText_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparser_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextBlockText *result = 0 ;
+  AdaptiveCards::DateTimePreparser *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::TextBlockText *)new AdaptiveCards::TextBlockText();
-  *(AdaptiveCards::TextBlockText **)&jresult = result; 
+  result = (AdaptiveCards::DateTimePreparser *)new AdaptiveCards::DateTimePreparser();
+  *(AdaptiveCards::DateTimePreparser **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlockText_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparser_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
   std::string arg1 ;
-  AdaptiveCards::TextBlockText *result = 0 ;
+  AdaptiveCards::DateTimePreparser *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -12243,36 +12224,36 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   if (!arg1_pstr) return 0;
   (&arg1)->assign(arg1_pstr);
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  result = (AdaptiveCards::TextBlockText *)new AdaptiveCards::TextBlockText(arg1);
-  *(AdaptiveCards::TextBlockText **)&jresult = result; 
+  result = (AdaptiveCards::DateTimePreparser *)new AdaptiveCards::DateTimePreparser(arg1);
+  *(AdaptiveCards::DateTimePreparser **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockText_1GetString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1GetTextTokens(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextBlockText *arg1 = (AdaptiveCards::TextBlockText *) 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::TextSection > > result;
+  AdaptiveCards::DateTimePreparser *arg1 = (AdaptiveCards::DateTimePreparser *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockText **)&jarg1; 
-  result = ((AdaptiveCards::TextBlockText const *)arg1)->GetString();
-  *(std::vector< std::shared_ptr< AdaptiveCards::TextSection > > **)&jresult = new std::vector< std::shared_ptr< AdaptiveCards::TextSection > >((const std::vector< std::shared_ptr< AdaptiveCards::TextSection > > &)result); 
+  arg1 = *(AdaptiveCards::DateTimePreparser **)&jarg1; 
+  result = ((AdaptiveCards::DateTimePreparser const *)arg1)->GetTextTokens();
+  *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jresult = new std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >((const std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > &)result); 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockText_1AddTextSection_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3) {
-  AdaptiveCards::TextBlockText *arg1 = (AdaptiveCards::TextBlockText *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1AddTextToken(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3) {
+  AdaptiveCards::DateTimePreparser *arg1 = (AdaptiveCards::DateTimePreparser *) 0 ;
   std::string arg2 ;
-  AdaptiveCards::TextSectionFormat arg3 ;
+  AdaptiveCards::DateTimePreparsedTokenFormat arg3 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockText **)&jarg1; 
+  arg1 = *(AdaptiveCards::DateTimePreparser **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -12281,21 +12262,22 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
   if (!arg2_pstr) return ;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  arg3 = (AdaptiveCards::TextSectionFormat)jarg3; 
-  (arg1)->AddTextSection(arg2,arg3);
+  arg3 = (AdaptiveCards::DateTimePreparsedTokenFormat)jarg3; 
+  (arg1)->AddTextToken(arg2,arg3);
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockText_1AddTextSection_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jint jarg4) {
-  AdaptiveCards::TextBlockText *arg1 = (AdaptiveCards::TextBlockText *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1AddDateToken(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jint jarg4) {
+  AdaptiveCards::DateTimePreparser *arg1 = (AdaptiveCards::DateTimePreparser *) 0 ;
   std::string arg2 ;
-  std::string arg3 ;
-  AdaptiveCards::TextSectionFormat arg4 ;
+  tm arg3 ;
+  AdaptiveCards::DateTimePreparsedTokenFormat arg4 ;
+  tm *argp3 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockText **)&jarg1; 
+  arg1 = *(AdaptiveCards::DateTimePreparser **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -12304,40 +12286,38 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
   if (!arg2_pstr) return ;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  if(!jarg3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+  argp3 = *(tm **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null tm");
     return ;
-  } 
-  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0); 
-  if (!arg3_pstr) return ;
-  (&arg3)->assign(arg3_pstr);
-  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
-  arg4 = (AdaptiveCards::TextSectionFormat)jarg4; 
-  (arg1)->AddTextSection(arg2,arg3,arg4);
+  }
+  arg3 = *argp3; 
+  arg4 = (AdaptiveCards::DateTimePreparsedTokenFormat)jarg4; 
+  (arg1)->AddDateToken(arg2,arg3,arg4);
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockText_1Concatenate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1Concatenate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  AdaptiveCards::TextBlockText *arg1 = (AdaptiveCards::TextBlockText *) 0 ;
+  AdaptiveCards::DateTimePreparser *arg1 = (AdaptiveCards::DateTimePreparser *) 0 ;
   std::string result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockText **)&jarg1; 
+  arg1 = *(AdaptiveCards::DateTimePreparser **)&jarg1; 
   result = (arg1)->Concatenate();
   jresult = jenv->NewStringUTF((&result)->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextBlockText(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::TextBlockText *arg1 = (AdaptiveCards::TextBlockText *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateTimePreparser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::DateTimePreparser *arg1 = (AdaptiveCards::DateTimePreparser *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::TextBlockText **)&jarg1; 
+  arg1 = *(AdaptiveCards::DateTimePreparser **)&jarg1; 
   delete arg1;
 }
 
@@ -12469,7 +12449,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   jlong jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
-  AdaptiveCards::TextBlockText result;
+  AdaptiveCards::DateTimePreparser result;
   
   (void)jenv;
   (void)jcls;
@@ -12478,7 +12458,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextBlock > **)&jarg1;
   arg1 = (AdaptiveCards::TextBlock *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::TextBlock const *)arg1)->GetTextForDateParsing();
-  *(AdaptiveCards::TextBlockText **)&jresult = new AdaptiveCards::TextBlockText((const AdaptiveCards::TextBlockText &)result); 
+  *(AdaptiveCards::DateTimePreparser **)&jresult = new AdaptiveCards::DateTimePreparser((const AdaptiveCards::DateTimePreparser &)result); 
   return jresult;
 }
 

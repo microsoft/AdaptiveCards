@@ -8,10 +8,6 @@ import android.widget.LinearLayout;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
-/**
- * Created by bekao on 7/1/2017.
- */
-
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
     public Button renderButton(
@@ -22,7 +18,9 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
     {
         Button button = new Button(context);
         button.setText(baseActionElement.GetTitle());
-        button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = 1;
+        button.setLayoutParams(layoutParams);
         viewGroup.addView(button);
         return button;
     }

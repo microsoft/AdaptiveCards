@@ -65,7 +65,7 @@ using namespace AdaptiveCards;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
     }
-    NSString *title = @"Make Choices";
+    NSString *title = @"Make Choice";
     cell.textLabel.text = title;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;

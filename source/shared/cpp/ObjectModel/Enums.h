@@ -299,7 +299,7 @@ enum class WarningStatusCode {
     AssetLoadFailed
 };
 
-enum class TextSectionFormat {
+enum class DateTimePreparsedTokenFormat {
     RegularString = 0,
     Time,
     DateCompact,

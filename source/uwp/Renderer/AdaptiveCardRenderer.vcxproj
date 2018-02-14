@@ -152,6 +152,7 @@
     <ClInclude Include="lib\CustomActionWrapper.h" />
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
+    <ClInclude Include="lib\HtmlHelpers.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveSeparatorConfig.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="lib\CustomActionWrapper.cpp" />
     <ClCompile Include="lib\CustomElementWrapper.cpp" />
     <ClCompile Include="lib\DateTimeParser.cpp" />
+    <ClCompile Include="lib\HtmlHelpers.cpp" />
     <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveSeparatorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionConfig.cpp" />

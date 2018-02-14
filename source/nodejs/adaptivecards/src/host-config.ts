@@ -31,7 +31,7 @@ export class ImageSetConfig {
     constructor(obj?: any) {
         if (obj) {
             this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = Utils.getValueOrDefault<number>("maxImageHeight", 100);
+            this.maxImageHeight = Utils.getValueOrDefault<number>(obj["maxImageHeight"], 100);
         }
     }
 

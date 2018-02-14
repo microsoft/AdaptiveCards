@@ -137,8 +137,6 @@ using namespace AdaptiveCards;
 {
     [_targets addObject:target];
 }
-    
-
 
 // let the last element to strech
 - (void)adjustHuggingForLastElement

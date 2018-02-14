@@ -1,10 +1,9 @@
 package com.microsoft.adaptivecards.renderer.readonly;
 
-import com.microsoft.adaptivecards.objectmodel.AdaptiveCard;
-import com.microsoft.adaptivecards.objectmodel.TextBlockText;
-import com.microsoft.adaptivecards.objectmodel.TextSection;
-import com.microsoft.adaptivecards.objectmodel.TextSectionFormat;
-import com.microsoft.adaptivecards.objectmodel.TextSectionVector;
+import com.microsoft.adaptivecards.objectmodel.DateTimePreparsedToken;
+import com.microsoft.adaptivecards.objectmodel.DateTimePreparsedTokenFormat;
+import com.microsoft.adaptivecards.objectmodel.DateTimePreparsedTokenVector;
+import com.microsoft.adaptivecards.objectmodel.DateTimePreparser;
 
 import java.text.ParsePosition;
 import java.util.Locale;
@@ -17,24 +16,24 @@ public class DateTimeParser {
         m_language = new Locale(language);
     }
 
-    public String GenerateString(TextBlockText text){
+    public String GenerateString(DateTimePreparser text){
         String parsedString = new String();
-        TextSectionVector textSections = text.GetString();
+        DateTimePreparsedTokenVector textSections = text.GetTextTokens();
         long textSectionLength = textSections.size();
 
         for(int i = 0; i < textSectionLength; ++i){
-            TextSection ts = textSections.get(i);
+            DateTimePreparsedToken ts = textSections.get(i);
             // Java complains of the enum not being a constant type, so have to do this with if elses
             Date dateToParse = FormatDate(ts.GetYear(), ts.GetMonth(), ts.GetDay());
-            if (ts.GetFormat() == TextSectionFormat.DateCompact) {
+            if (ts.GetFormat() == DateTimePreparsedTokenFormat.DateCompact) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                 parsedString += dateFormat.format(dateToParse);
             } else {
-                if (ts.GetFormat() == TextSectionFormat.DateShort) {
+                if (ts.GetFormat() == DateTimePreparsedTokenFormat.DateShort) {
                     SimpleDateFormat localizedFormat = new SimpleDateFormat("EEE, MMM dd, yyyy", m_language);
                     parsedString += localizedFormat.format(dateToParse);
                 } else {
-                    if (ts.GetFormat() == TextSectionFormat.DateLong) {
+                    if (ts.GetFormat() == DateTimePreparsedTokenFormat.DateLong) {
                         SimpleDateFormat localizedFormat = new SimpleDateFormat("EEEE, MMMM dd, yyyy", m_language);
                         parsedString += localizedFormat.format(dateToParse);
                     } else {

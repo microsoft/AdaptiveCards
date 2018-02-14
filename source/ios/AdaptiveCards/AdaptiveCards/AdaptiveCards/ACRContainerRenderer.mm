@@ -11,6 +11,8 @@
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 
 @implementation ACRContainerRenderer
 
@@ -28,9 +30,11 @@
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
 rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
 
     ContainerStyle style = containerElem->GetStyle();
