@@ -108,12 +108,18 @@ public class AdaptiveCardRenderer
             throw new IllegalArgumentException("hostConfig is null");
         }
 
+        LinearLayout rootLayout = new LinearLayout(context);
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(adaptiveCard);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         layout.setOrientation(LinearLayout.VERTICAL);
         int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
         layout.setPadding(padding, padding, padding, padding);
+
+        rootLayout.addView(layout);
 
         Vector<IInputHandler> inputHandlerList = new Vector<IInputHandler>();
 
@@ -128,6 +134,10 @@ public class AdaptiveCardRenderer
         BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
         if (baseActionElementList != null && baseActionElementList.size() > 0)
         {
+            LinearLayout showCardsLayout = new LinearLayout(context);
+            showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            rootLayout.addView(showCardsLayout);
+
             ActionRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseActionElementList, inputHandlerList, cardActionHandler, hostConfig);
         }
 
@@ -138,7 +148,7 @@ public class AdaptiveCardRenderer
             loaderAsync.execute(imageUrl);
         }
 
-        return layout;
+        return rootLayout;
     }
 
     private static AdaptiveCardRenderer s_instance = null;

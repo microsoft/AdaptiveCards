@@ -95,6 +95,19 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             }
 
             m_invisibleCard.setVisibility(m_invisibleCard.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+            View mainCardView = ((ViewGroup) m_hiddenCardsLayout.getParent()).getChildAt(0);
+            int padding = mainCardView.getPaddingTop();
+
+            //remove bottom padding from top linear layout
+            if (m_invisibleCard.getVisibility() == View.VISIBLE)
+            {
+                mainCardView.setPadding(padding, padding, padding, 0);
+            }
+            else
+            {
+                mainCardView.setPadding(padding, padding, padding, padding);
+            }
         }
         private View m_invisibleCard;
         private ViewGroup m_hiddenCardsLayout;
@@ -164,10 +177,12 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
             View invisibleCard = AdaptiveCardRenderer.getInstance().render(context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig);
             invisibleCard.setVisibility(View.GONE);
-            invisibleCard.setPadding(0,Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()),0,0);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()), 0, 0);
+            invisibleCard.setLayoutParams(layoutParams);
 
+            ViewGroup parent = (ViewGroup) viewGroup.getParent().getParent();
 
-            ViewGroup parent = (ViewGroup) viewGroup.getParent();
             ViewGroup hiddenCards = (ViewGroup) parent.getChildAt(1);
             hiddenCards.addView(invisibleCard);
 

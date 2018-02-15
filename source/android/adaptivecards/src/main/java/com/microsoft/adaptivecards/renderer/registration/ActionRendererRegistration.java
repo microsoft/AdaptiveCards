@@ -16,6 +16,7 @@ import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.IBaseActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -78,10 +79,6 @@ public class ActionRendererRegistration
             return null;
         }
 
-        LinearLayout actionsLayout = new LinearLayout(context);
-        actionsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        actionsLayout.setOrientation(LinearLayout.VERTICAL);
-
         LinearLayout actionButtonsLayout = new LinearLayout(context);
         actionButtonsLayout.setTag(tag);
         actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -104,16 +101,9 @@ public class ActionRendererRegistration
             actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
         }
 
-        LinearLayout hiddenCardsLayout = new LinearLayout(context);
-        hiddenCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        hiddenCardsLayout.setOrientation(LinearLayout.VERTICAL);
-        actionsLayout.addView(actionButtonsLayout);
-        actionsLayout.addView(hiddenCardsLayout);
-
-
         if (viewGroup != null)
         {
-            viewGroup.addView(actionsLayout);
+            viewGroup.addView(actionButtonsLayout);
         }
 
         for (int i = 0; i < size && i < hostConfig.getActions().getMaxActions(); i++)
@@ -129,7 +119,7 @@ public class ActionRendererRegistration
             renderer.render(context, fragmentManager, actionButtonsLayout, actionElement, inputActionHandlerList, cardActionHandler, hostConfig);
         }
 
-        return actionsLayout;
+        return actionButtonsLayout;
     }
 
     private static ActionRendererRegistration s_instance = null;
