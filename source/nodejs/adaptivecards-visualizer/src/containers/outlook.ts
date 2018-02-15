@@ -82,6 +82,28 @@ export class OutlookContainer extends HostContainer {
             element.isVisible = json["isVisible"];
         }
 
+        if (element instanceof Adaptive.AdaptiveCard) {
+            var card = <Adaptive.AdaptiveCard>element;
+            var actionArray: Array<Adaptive.Action> = [];
+
+            card["resources"] = { actions: actionArray };
+
+            if (typeof json["resources"] === "object") {
+                var actionResources = json["resources"]["actions"] as Array<any>;
+
+                for (var i = 0; i < actionResources.length; i++) {
+                    let action = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionResources[i]["type"]);
+
+                    if (action) {
+                        action.parse(actionResources[i]);
+                        action.setParent(card);
+
+                        actionArray.push(action);
+                    }
+                }
+            }
+        }
+
         if (element instanceof Adaptive.Image) {
             (<Adaptive.Image>element).backgroundColor = json["backgroundColor"];
         }
@@ -107,15 +129,28 @@ export class OutlookContainer extends HostContainer {
         }
     }
 
-    public anchorClicked(anchor: HTMLAnchorElement): boolean {
-        if (anchor.href.toLowerCase().startsWith("action:")) {
-            alert("Executing inline action...");
+    public anchorClicked(rootCard: Adaptive.AdaptiveCard, anchor: HTMLAnchorElement): boolean {
+        var regEx = /^action:([a-z0-9]+)$/ig;
 
-            return true;
+        var matches = regEx.exec(anchor.href);
+        
+        if (matches) {
+            var actionId = matches[1];
+
+            if (rootCard) {
+                var actionArray = rootCard["resources"]["actions"] as Array<Adaptive.Action>;
+
+                for (var i = 0; i < actionArray.length; i++) {
+                    if (actionArray[i].id == actionId) {
+                        actionArray[i].execute();
+
+                        return true;
+                    }
+                }
+            }
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     public getHostConfig(): Adaptive.HostConfig {

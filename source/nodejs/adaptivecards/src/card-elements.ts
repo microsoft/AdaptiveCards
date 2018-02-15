@@ -4,13 +4,6 @@ import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { IAdaptiveCard } from "./schema";
 
-function invokeSetParent(obj: any, parent: CardElement) {
-    if (obj) {
-        // Closest emulation of "internal" in TypeScript.
-        obj["setParent"](parent);
-    }
-}
-
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
         // Closest emulation of "internal" in TypeScript.
@@ -30,7 +23,7 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
     return true;
 }
 
-function createActionInstance(json: any): Action {
+export function createActionInstance(json: any): Action {
     var actionType = json["type"];
 
     var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
@@ -144,6 +137,41 @@ export abstract class CardElement {
         }
     }
 
+    // Marked private to emulate internal access
+    private handleOverflow(maxHeight: number) {
+        if (this.isVisible || this.isHiddenDueToOverflow()) {
+            var handled = this.truncateOverflow(maxHeight);
+
+            // Even if we were unable to truncate the element to fit this time,
+            // it still could have been previously truncated
+            this._truncatedDueToOverflow = handled || this._truncatedDueToOverflow;
+
+            if (!handled) {
+                this.hideElementDueToOverflow();
+            }
+            else if (handled && !this._isVisible) {
+                this.showElementHiddenDueToOverflow();
+            }
+        }
+    }
+
+    // Marked private to emulate internal access
+    private resetOverflow(): boolean {
+        var sizeChanged = false;
+
+        if (this._truncatedDueToOverflow) {
+            this.undoOverflowTruncation();
+            this._truncatedDueToOverflow = false;
+            sizeChanged = true;
+        }
+
+        if (this.isHiddenDueToOverflow) {
+            this.showElementHiddenDueToOverflow();
+        }
+
+        return sizeChanged;
+    }
+
     protected internalGetNonZeroPadding(padding: PaddingDefinition,
                                         processTop: boolean = true,
                                         processRight: boolean = true,
@@ -204,14 +232,6 @@ export abstract class CardElement {
         }
     }
 
-    protected setParent(value: CardElement) {
-        this._parent = value;
-    }
-
-    protected get useDefaultSizing(): boolean {
-        return true;
-    }
-
     protected abstract internalRender(): HTMLElement;
 
     /*
@@ -230,6 +250,10 @@ export abstract class CardElement {
      * This should reverse any changes performed in truncateOverflow().
      */
     protected undoOverflowTruncation() { }
+
+    protected get useDefaultSizing(): boolean {
+        return true;
+    }
 
     protected get allowCustomPadding(): boolean {
         return true;
@@ -277,6 +301,10 @@ export abstract class CardElement {
 
     abstract getJsonTypeName(): string;
     abstract renderSpeech(): string;
+
+    setParent(value: CardElement) {
+        this._parent = value;
+    }
 
     getNonZeroPadding(): PaddingDefinition {
         var padding: PaddingDefinition = new PaddingDefinition();
@@ -356,41 +384,6 @@ export abstract class CardElement {
 
     updateLayout(processChildren: boolean = true) {
         // Does nothing in base implementation
-    }
-
-    // Marked private to emulate internal access
-    private handleOverflow(maxHeight: number) {
-        if (this.isVisible || this.isHiddenDueToOverflow()) {
-            var handled = this.truncateOverflow(maxHeight);
-
-            // Even if we were unable to truncate the element to fit this time,
-            // it still could have been previously truncated
-            this._truncatedDueToOverflow = handled || this._truncatedDueToOverflow;
-
-            if (!handled) {
-                this.hideElementDueToOverflow();
-            }
-            else if (handled && !this._isVisible) {
-                this.showElementHiddenDueToOverflow();
-            }
-        }
-    }
-
-    // Marked private to emulate internal access
-    private resetOverflow(): boolean {
-        var sizeChanged = false;
-
-        if (this._truncatedDueToOverflow) {
-            this.undoOverflowTruncation();
-            this._truncatedDueToOverflow = false;
-            sizeChanged = true;
-        }
-
-        if (this.isHiddenDueToOverflow) {
-            this.showElementHiddenDueToOverflow();
-        }
-
-        return sizeChanged;
     }
 
     isRendered(): boolean {
@@ -1125,7 +1118,7 @@ export class Image extends CardElement {
         this._selectAction = value;
 
         if (this._selectAction) {
-            invokeSetParent(this._selectAction, this);
+            this._selectAction.setParent(this);
         }
     }
 }
@@ -1185,7 +1178,7 @@ export class ImageSet extends CardElement {
         if (!image.parent) {
             this._images.push(image);
 
-            invokeSetParent(image, this);
+            image.setParent(this);
         }
         else {
             throw new Error("This image already belongs to another ImageSet");
@@ -1808,11 +1801,11 @@ export abstract class Action {
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
 
-    protected setParent(value: CardElement) {
+    abstract getJsonTypeName(): string;
+
+    setParent(value: CardElement) {
         this._parent = value;
     }
-
-    abstract getJsonTypeName(): string;
 
     execute() {
         raiseExecuteActionEvent(this);
@@ -2044,12 +2037,6 @@ export class HttpAction extends Action {
 }
 
 export class ShowCardAction extends Action {
-    protected setParent(value: CardElement) {
-        super.setParent(value);
-
-        invokeSetParent(this.card, value);
-    }
-
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     getJsonTypeName(): string {
@@ -2064,6 +2051,12 @@ export class ShowCardAction extends Action {
         super.parse(json);
 
         this.card.parse(json["card"]);
+    }
+
+    setParent(value: CardElement) {
+        super.setParent(value);
+
+        this.card.setParent(value);
     }
 
     getAllInputs(): Array<Input> {
@@ -2091,7 +2084,8 @@ class ActionCollection {
     private _actionCard: HTMLElement = null;
 
     showStatusCard(status: AdaptiveCard) {
-        invokeSetParent(status, this._owner);
+        status.setParent(this._owner);
+
         this._statusCard = status.render();
 
         this.refreshContainer();
@@ -2408,7 +2402,8 @@ class ActionCollection {
         if (!action.parent) {
             this.items.push(action);
 
-            invokeSetParent(action, this._owner);
+            action.setParent(this._owner);
+
             invokeSetCollection(action, this);
         }
         else {
@@ -3022,7 +3017,7 @@ export class Container extends CardElement {
             if (item.isStandalone) {
                 this._items.push(item);
 
-                invokeSetParent(item, this);
+                item.setParent(this);
             }
             else {
                 throw new Error("Elements of type " + item.getJsonTypeName() + " cannot be used as standalone elements.");
@@ -3132,7 +3127,7 @@ export class Container extends CardElement {
         this._selectAction = value;
 
         if (this._selectAction) {
-            invokeSetParent(this._selectAction, this);
+            this._selectAction.setParent(this);
         }
     }
 }
@@ -3405,7 +3400,7 @@ export class ColumnSet extends CardElement {
         if (!column.parent) {
             this._columns.push(column);
 
-            invokeSetParent(column, this);
+            column.setParent(this);
         }
         else {
             throw new Error("This column already belongs to another ColumnSet.");
@@ -3485,7 +3480,7 @@ export class ColumnSet extends CardElement {
         this._selectAction = value;
 
         if (this._selectAction) {
-            invokeSetParent(this._selectAction, this);
+            this._selectAction.setParent(this);
         }
     }
 }
@@ -3544,7 +3539,7 @@ function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement
     let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
 
-    return onAnchorClickedHandler != null ? onAnchorClickedHandler(anchor) : false;
+    return onAnchorClickedHandler != null ? onAnchorClickedHandler(card, anchor) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
@@ -3787,7 +3782,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
 
-    static onAnchorClicked: (anchor: HTMLAnchorElement) => boolean = null;
+    static onAnchorClicked: (rootCard: AdaptiveCard, anchor: HTMLAnchorElement) => boolean = null;
     static onExecuteAction: (action: Action) => void = null;
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
@@ -3883,7 +3878,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    onAnchorClicked: (anchor: HTMLAnchorElement) => boolean = null;
+    onAnchorClicked: (rootCard: AdaptiveCard, anchor: HTMLAnchorElement) => boolean = null;
     onExecuteAction: (action: Action) => void = null;
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
