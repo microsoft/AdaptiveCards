@@ -377,8 +377,8 @@ function monacoEditorLoaded() {
         getSelectedHostContainer().parseElement(element, json);
     }
 
-    AdaptiveCards.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
-        return getSelectedHostContainer().anchorClicked(anchor);
+    AdaptiveCards.AdaptiveCard.onAnchorClicked = (rootCard: AdaptiveCards.AdaptiveCard, anchor: HTMLAnchorElement) => {
+        return getSelectedHostContainer().anchorClicked(rootCard, anchor);
     }
 
     currentConfigPayload = Constants.defaultConfigPayload;
