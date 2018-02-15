@@ -35,7 +35,8 @@ rootViewController:(UIViewController *)vc
     std::shared_ptr<ImageSet>imgSetElem = std::dynamic_pointer_cast<ImageSet>(elem);
     ACRImageSetUICollectionView *view = [[ACRImageSetUICollectionView alloc] init:imgSetElem
                                                                    WithHostConfig:config
-                                                                    WithSuperview:viewGroup];
+                                                                    WithSuperview:viewGroup
+                                                               rootViewController:vc];
     [view registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"cellId"];
 
     [(UIStackView *)viewGroup addArrangedSubview:view];

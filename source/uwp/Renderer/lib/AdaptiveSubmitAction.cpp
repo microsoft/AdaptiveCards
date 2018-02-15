@@ -49,16 +49,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_DataJson(IJsonObject** data)
+    HRESULT AdaptiveSubmitAction::get_DataJson(IJsonValue** data)
     {
-        return StringToJsonObject(m_sharedSubmitAction->GetDataJson(), data);
+        return StringToJsonValue(m_sharedSubmitAction->GetDataJson(), data);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_DataJson(IJsonObject* data)
+    HRESULT AdaptiveSubmitAction::put_DataJson(IJsonValue* data)
     {
         std::string jsonAsString;
-        RETURN_IF_FAILED(JsonObjectToString(data, jsonAsString));
+        RETURN_IF_FAILED(JsonValueToString(data, jsonAsString));
         m_sharedSubmitAction->SetDataJson(jsonAsString);
         return S_OK;
     }

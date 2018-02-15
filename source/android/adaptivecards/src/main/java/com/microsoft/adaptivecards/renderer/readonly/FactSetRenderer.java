@@ -48,8 +48,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
         TextBlockRenderer.setTextSize(textView, textConfig.getSize(), hostConfig);
         TextBlockRenderer.getInstance().setTextWeight(textView, textConfig.getWeight());
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
-                GridLayout.spec(GridLayout.UNDEFINED, 1f),
-                GridLayout.spec(GridLayout.UNDEFINED, 1f));
+                GridLayout.spec(GridLayout.UNDEFINED),
+                GridLayout.spec(GridLayout.UNDEFINED));
         textView.setLayoutParams(parem);
         return textView;
     }

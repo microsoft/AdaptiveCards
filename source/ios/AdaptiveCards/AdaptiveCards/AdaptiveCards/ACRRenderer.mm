@@ -14,7 +14,7 @@
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
-#import "ACRViewController.h"
+#import "ACRViewControllerPrivate.h"
 
 using namespace AdaptiveCards;
 
@@ -55,7 +55,9 @@ using namespace AdaptiveCards;
 
     if(!body.empty())
     {
-         verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
+        [(ACRViewController *)vc addTasksToConcurrentQueue:body];
+
+        verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
 
         [ACRRenderer render:verticalView rootViewController:vc inputs:inputs withCardElems:body andHostConfig:config];
 

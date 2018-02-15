@@ -6,6 +6,7 @@
 //
 
 #import "ACRBaseCardElementRenderer.h"
+#import "TextBlock.h"
 
 @interface ACRTextBlockRenderer:ACRBaseCardElementRenderer
 
@@ -18,5 +19,8 @@
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
                   colorsConfig:(ColorsConfig const &)config
                   subtleOption:(bool)isSubtle;
-                                     
+
++ (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
+                          withHostConfig:(std::shared_ptr<HostConfig> const &)config;
+
 @end

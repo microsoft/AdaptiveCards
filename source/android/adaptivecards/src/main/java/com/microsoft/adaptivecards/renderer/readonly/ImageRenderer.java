@@ -32,10 +32,6 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 import java.io.IOException;
 import java.util.Vector;
 
-/**
- * Created by bekao on 4/27/2017.
- */
-
 public class ImageRenderer extends BaseCardElementRenderer
 {
     private ImageRenderer()
@@ -114,68 +110,24 @@ public class ImageRenderer extends BaseCardElementRenderer
         private Context m_context;
         private ImageView m_imageView;
         private ImageStyle m_imageStyle;
-        private String errorString;
     }
 
-    private static void setImageSize(ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig)
-    {
-        if (imageSize.swigValue() == ImageSize.Auto.swigValue())
-        {
+    private static void setImageSize(ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+        if (imageSize.swigValue() == ImageSize.Stretch.swigValue()) {
+            //ImageView must match parent for stretch to work
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else if (imageSize.swigValue() == ImageSize.Stretch.swigValue())
-        {
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        }
-        else if (imageSize.swigValue() == ImageSize.Small.swigValue())
-        {
-            imageView.setMaxWidth((int)imageSizesConfig.getSmallSize());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else if (imageSize.swigValue() == ImageSize.Medium.swigValue())
-        {
-            imageView.setMaxWidth((int)imageSizesConfig.getMediumSize());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else if (imageSize.swigValue() == ImageSize.Large.swigValue())
-        {
-            imageView.setMaxWidth((int)imageSizesConfig.getLargeSize());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else
-        {
+        } else if (imageSize.swigValue() == ImageSize.Small.swigValue()) {
+            imageView.setMaxWidth((int) imageSizesConfig.getSmallSize());
+        } else if (imageSize.swigValue() == ImageSize.Medium.swigValue()) {
+            imageView.setMaxWidth((int) imageSizesConfig.getMediumSize());
+        } else if (imageSize.swigValue() == ImageSize.Large.swigValue()) {
+            imageView.setMaxWidth((int) imageSizesConfig.getLargeSize());
+        } else if (imageSize.swigValue() != ImageSize.Auto.swigValue()){
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
 
         imageView.setAdjustViewBounds(true);
-    }
-
-    private static View setHorizontalAlignment(Context context, ImageView imageView, HorizontalAlignment horizontalAlignment)
-    {
-        if (horizontalAlignment.swigValue() == HorizontalAlignment.Left.swigValue())
-        {
-            return imageView;
-        }
-        if (horizontalAlignment.swigValue() == HorizontalAlignment.Right.swigValue())
-        {
-            RelativeLayout relativeLayout = new RelativeLayout(context);
-            RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            relativeLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            relativeLayout.addView(imageView, relativeLayoutParams);
-            relativeLayout.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-            return relativeLayout;
-        }
-        if (horizontalAlignment.swigValue() == HorizontalAlignment.Center.swigValue())
-        {
-            LinearLayout.LayoutParams linearLayoutParams = (LinearLayout.LayoutParams) imageView.getLayoutParams();
-            linearLayoutParams.gravity = Gravity.CENTER;
-            imageView.setLayoutParams(linearLayoutParams);
-            return imageView;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Unknown Horizontal alignment: " + horizontalAlignment.toString());
-        }
     }
 
     @Override
@@ -187,7 +139,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             Vector<IInputHandler> inputActionHandlerList,
             HostConfig hostConfig)
     {
-        Image image = null;
+        Image image;
         if (baseCardElement instanceof Image)
         {
             image = (Image) baseCardElement;
@@ -201,10 +153,35 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setTag(image);
         ImageLoaderAsync imageLoaderAsync = new ImageLoaderAsync(context, imageView, image.GetImageStyle());
         imageLoaderAsync.execute(image.GetUrl());
+
+        LinearLayout.LayoutParams layoutParams;
+        if (image.GetImageSize().swigValue() == ImageSize.Stretch.swigValue())
+        {
+            //ImageView must match parent for stretch to work
+            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        }
+        else
+        {
+            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        }
+
+        HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
+        if (horizontalAlignment.swigValue() == HorizontalAlignment.Right.swigValue())
+        {
+            layoutParams.gravity = Gravity.RIGHT;
+        }
+        else if (horizontalAlignment.swigValue() == HorizontalAlignment.Center.swigValue())
+        {
+            layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        }
+
+        //set horizontalAlignment
+        imageView.setLayoutParams(layoutParams);
+
         setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, true /* horizontal line */);
-        viewGroup.addView(setHorizontalAlignment(context, imageView, image.GetHorizontalAlignment()));
+
+        viewGroup.addView(imageView);
         return imageView;
     }
 
