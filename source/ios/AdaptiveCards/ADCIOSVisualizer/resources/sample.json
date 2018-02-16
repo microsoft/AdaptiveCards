@@ -29,6 +29,7 @@
     "default": {
       "backgroundColor": "#00000000",
       "borderColor": "#FF232323",
+      "borderThickness": "1",
       "fontColors": {
         "default": {
           "normal": "#333333",
