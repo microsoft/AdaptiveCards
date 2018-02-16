@@ -21,7 +21,9 @@ using namespace AdaptiveCards;
     self = [self initWithFrame:CGRectMake(0,0,0,0)];
     if(self)
     {
-        [self setBackgroundColor:style hostConfig:config];
+        _style = style;
+        [self setBackgroundColorWithHostConfig:config];
+        [self setBorderColorWithHostConfig:config];
     }
     return self;
 }
@@ -56,25 +58,35 @@ using namespace AdaptiveCards;
     return _style;
 }
 
-- (void)setBackgroundColor:(ContainerStyle)style
-                hostConfig:(std::shared_ptr<HostConfig> const &)config
++ (UIColor *)colorFromString:(const std::string&)colorString
 {
-    _style = style;
-    long num = 0;
-    if(style == ContainerStyle::Emphasis)
-    {
-        num = std::stoul(config->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
-    }
-    else
-    {
-        num = std::stoul(config->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
-    }
+    long num = std::stoul(colorString.substr(1), nullptr, 16);
 
-    self.backgroundColor =
-        [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                        green:((num & 0x0000FF00) >>  8) / 255.0
-                         blue:((num & 0x000000FF)) / 255.0
-                        alpha:((num & 0xFF000000) >> 24) / 255.0];
+    return [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
+                    green:((num & 0x0000FF00) >>  8) / 255.0
+                     blue:((num & 0x000000FF)) / 255.0
+                    alpha:((num & 0xFF000000) >> 24) / 255.0];
+}
+
++ (ContainerStyleDefinition&)paletteForStyle:(ContainerStyle&)style hostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    return (style == ContainerStyle::Emphasis)
+        ? config->containerStyles.emphasisPalette
+        : config->containerStyles.defaultPalette;
+}
+
+- (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    UIColor *color = [[self class] colorFromString:[[self class] paletteForStyle:_style hostConfig:config].backgroundColor];
+
+    self.backgroundColor = color;
+}
+
+- (void)setBorderColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    UIColor *color = [[self class] colorFromString:[[self class] paletteForStyle:_style hostConfig:config].borderColor];
+
+    [[self layer] setBorderColor:[color CGColor]];
 }
 
 - (void)config
