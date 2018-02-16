@@ -24,6 +24,7 @@ using namespace AdaptiveCards;
         _style = style;
         [self setBackgroundColorWithHostConfig:config];
         [self setBorderColorWithHostConfig:config];
+        [self setBorderThicknessWithHostConfig:config];
     }
     return self;
 }
@@ -68,25 +69,37 @@ using namespace AdaptiveCards;
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
 }
 
-+ (ContainerStyleDefinition&)paletteForStyle:(ContainerStyle&)style hostConfig:(std::shared_ptr<HostConfig> const &)config
++ (CGFloat)borderWidthFromString:(const std::string&)thicknessString
 {
-    return (style == ContainerStyle::Emphasis)
+    return std::stof(thicknessString);
+}
+
+- (ContainerStyleDefinition&)paletteForHostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    return (_style == ContainerStyle::Emphasis)
         ? config->containerStyles.emphasisPalette
         : config->containerStyles.defaultPalette;
 }
 
 - (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [[self class] colorFromString:[[self class] paletteForStyle:_style hostConfig:config].backgroundColor];
+    UIColor *color = [[self class] colorFromString:[self paletteForHostConfig:config].backgroundColor];
 
     self.backgroundColor = color;
 }
 
 - (void)setBorderColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [[self class] colorFromString:[[self class] paletteForStyle:_style hostConfig:config].borderColor];
+    UIColor *color = [[self class] colorFromString:[self paletteForHostConfig:config].borderColor];
 
     [[self layer] setBorderColor:[color CGColor]];
+}
+
+- (void)setBorderThicknessWithHostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    const CGFloat borderWidth = [[self class] borderWidthFromString:[self paletteForHostConfig:config].borderThickness];
+
+    [[self layer] setBorderWidth:borderWidth];
 }
 
 - (void)config

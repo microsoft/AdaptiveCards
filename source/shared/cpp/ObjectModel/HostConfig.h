@@ -124,7 +124,7 @@ struct ContainerStyleDefinition
 {
     std::string backgroundColor = "#FFFFFFFF";
     std::string borderColor = "#FF7F7F7F7F";
-    std::string borderThickness = "1";
+    std::string borderThickness = "0";
     ColorsConfig foregroundColors;
 
     static ContainerStyleDefinition Deserialize(const Json::Value& json, const ContainerStyleDefinition& defaultValue);
@@ -134,7 +134,7 @@ struct ContainerStylesDefinition
 {
     ContainerStyleDefinition defaultPalette;
     ContainerStyleDefinition emphasisPalette = 
-    { "#08000000", "#08000000", "1",
+    { "#08000000", "#08000000", "0",
         {
             { "#FF000000", "#B2000000" },   //defaultColor
             { "#FF0000FF", "#B20000FF" },   //accent
