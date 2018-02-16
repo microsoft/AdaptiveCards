@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards
@@ -6,10 +8,12 @@ namespace AdaptiveCards
     /// <summary>
     ///     Container for a collection of elements
     /// </summary>
+    [XmlType(TypeName = AdaptiveContainer.TypeName)]
     public class AdaptiveContainer : AdaptiveElement
     {
         public const string TypeName = "Container";
 
+        [XmlIgnore]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -17,18 +21,34 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
-        public IList<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
+        [XmlElement(typeof(AdaptiveTextBlock))]
+        [XmlElement(typeof(AdaptiveImage))]
+        [XmlElement(typeof(AdaptiveContainer))]
+        [XmlElement(typeof(AdaptiveColumnSet))]
+        [XmlElement(typeof(AdaptiveImageSet))]
+        [XmlElement(typeof(AdaptiveFactSet))]
+        [XmlElement(typeof(AdaptiveTextInput))]
+        [XmlElement(typeof(AdaptiveDateInput))]
+        [XmlElement(typeof(AdaptiveTimeInput))]
+        [XmlElement(typeof(AdaptiveNumberInput))]
+        [XmlElement(typeof(AdaptiveChoiceSetInput))]
+        [XmlElement(typeof(AdaptiveToggleInput))]
+        public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
         /// <summary>
         ///     Action for this container (this allows a default action at the container level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlElement]
+        [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
         ///     The style in which the image is displayed.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
+        [DefaultValue(typeof(AdaptiveContainerStyle), "0")]
         public AdaptiveContainerStyle Style { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Reflection;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -13,6 +14,7 @@ namespace AdaptiveCards
         ///     Title of the action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
         public string Title { get; set; }
 
         // TODO: Title should be required is NOT a selectAction? Or can we use it as a tooltip?

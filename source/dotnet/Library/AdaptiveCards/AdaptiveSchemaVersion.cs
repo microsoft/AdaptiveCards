@@ -3,16 +3,23 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace AdaptiveCards
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [JsonConverter(typeof(AdaptiveSchemaJsonConverter))]
     public class AdaptiveSchemaVersion : IComparable<AdaptiveSchemaVersion>
-    {     
-        public int Major { get; }
+    {
 
-        public int Minor { get; }
+        [XmlAttribute]
+        public int Major { get; set; }
+
+        [XmlAttribute]
+        public int Minor { get; set; }
+
+        public AdaptiveSchemaVersion() { }
 
         public AdaptiveSchemaVersion(string versionString)
         {

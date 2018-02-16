@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -8,18 +10,23 @@ namespace AdaptiveCards
     ///     Choice as part of a Input.AdaptiveChoiceSetInput element
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+    [XmlType(TypeName = "Choice")]
     public class AdaptiveChoice
     {
         /// <summary>
         ///     Display text for the choice
         /// </summary>
         [JsonRequired]
+        [XmlAttribute]
+        [DefaultValue(null)]
         public string Title { get; set; }
 
         /// <summary>
         ///     Internal value which will be collected as input if the choice is selected
         /// </summary>
         [JsonRequired]
+        [XmlAttribute]
+        [DefaultValue(null)]
         public string Value { get; set; }
 
         /// <summary>

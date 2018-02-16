@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards
@@ -11,6 +14,7 @@ namespace AdaptiveCards
     ///     Adaptive card which has flexible container
     /// </summary>
     [JsonConverter(typeof(AdaptiveCardConverter))]
+    [XmlRoot(ElementName="Card")]
     public class AdaptiveCard : AdaptiveTypedElement
 #if WINDOWS_UWP
       // TODO: uncomment when I figure out the Windows build
@@ -21,6 +25,7 @@ namespace AdaptiveCards
 
         public const string TypeName = "AdaptiveCard";
 
+        [XmlIgnore]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -52,7 +57,19 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(Order = -3)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
-        public IList<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
+        [XmlElement(typeof(AdaptiveTextBlock))]
+        [XmlElement(typeof(AdaptiveImage))]
+        [XmlElement(typeof(AdaptiveContainer))]
+        [XmlElement(typeof(AdaptiveColumnSet))]
+        [XmlElement(typeof(AdaptiveImageSet))]
+        [XmlElement(typeof(AdaptiveFactSet))]
+        [XmlElement(typeof(AdaptiveTextInput))]
+        [XmlElement(typeof(AdaptiveDateInput))]
+        [XmlElement(typeof(AdaptiveTimeInput))]
+        [XmlElement(typeof(AdaptiveNumberInput))]
+        [XmlElement(typeof(AdaptiveToggleInput))]
+        [XmlElement(typeof(AdaptiveChoiceSetInput))]
+        public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
         public bool ShouldSerializeBody() => Body?.Count > 0;
 
@@ -61,7 +78,11 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(Order = -2)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
-        public IList<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
+        [XmlArray("Actions")]
+        [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(AdaptiveOpenUrlAction))]
+        [XmlArrayItem(ElementName = "ShowCard", Type = typeof(AdaptiveShowCardAction))]
+        [XmlArrayItem(ElementName = "Submit", Type = typeof(AdaptiveSubmitAction))]
+        public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
         public bool ShouldSerializeActions() => Actions?.Count > 0;
 
@@ -69,6 +90,8 @@ namespace AdaptiveCards
         ///     Speak annotation for the card
         /// </summary>
         [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
+        [XmlElement]
+        [DefaultValue(null)]
         public string Speak { get; set; }
 
         /// <summary>
@@ -82,12 +105,15 @@ namespace AdaptiveCards
         ///     Background image for card
         /// </summary>
         [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public Uri BackgroundImage { get; set; }
+        [XmlAttribute]
+        public string BackgroundImage { get; set; }
 
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
+        [XmlElement]
+        [DefaultValue(null)]
         public AdaptiveSchemaVersion Version { get; set; }
 
         /// <summary>
@@ -95,12 +121,16 @@ namespace AdaptiveCards
         ///     supported are safe to ignore
         /// </summary>
         [JsonProperty(Order = -8, NullValueHandling = NullValueHandling.Ignore)]
+        [XmlElement]
+        [DefaultValue(null)]
         public AdaptiveSchemaVersion MinVersion { get; set; }
 
         /// <summary>
         ///     if a client is not able to show the card, show fallbackText to the user. This can be in markdown format.
         /// </summary>
         [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
+        [DefaultValue(null)]
         public string FallbackText { get; set; }
 
         /// <summary>
@@ -134,13 +164,14 @@ namespace AdaptiveCards
         /// <returns></returns>
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            return JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
         }
 
         /// <summary>
         /// This makes sure the $schema property doesn't show up in AdditionalProperties
         /// </summary>
         [JsonProperty("$schema")]
+        [XmlIgnore]
         internal string JsonSchema { get; set; }
 
         public bool ShouldSerializeJsonSchema()
