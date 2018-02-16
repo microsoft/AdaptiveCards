@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "AdaptiveColorsConfig.h"
 #include "AdaptiveColorConfig.h"
@@ -17,6 +17,8 @@
 #include "json/json.h"
 #include "WholeItemsPanel.h"
 #include "AdaptiveCardRendererComponent.h"
+#include "MarkDownParser.h"
+#include "HtmlHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -1127,6 +1129,41 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         StyleXamlTextBlock(textSize, textColor, containerStyle, Boolify(isSubtle), wrap, maxWidth, textWeight, xamlTextBlock, hostConfig);
     }
 
+    HRESULT SetTextOnXamlTextBlock(
+        IAdaptiveRenderContext* renderContext,
+        HSTRING textIn,
+        ITextBlock * textBlock)
+    {
+        MarkDownParser markdownParser(HStringToUTF8(textIn));
+        auto htmlString = markdownParser.TransformToHtml();
+
+        HString htmlHString;
+        UTF8ToHString(htmlString, htmlHString.GetAddressOf());
+        
+        ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocument> xmlDocument = XamlHelpers::CreateXamlClass<ABI::Windows::Data::Xml::Dom::IXmlDocument>(HStringReference(RuntimeClass_Windows_Data_Xml_Dom_XmlDocument));
+
+        ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocumentIO> xmlDocumentIO;
+        RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentIO));
+        
+        HRESULT hr = xmlDocumentIO->LoadXml(htmlHString.Get());
+        if (FAILED(hr))
+        {
+            RETURN_IF_FAILED(textBlock->put_Text(textIn));
+        }
+        else
+        {
+            ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
+            RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
+
+            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
+            RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));
+
+            RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get()));
+        }
+
+        return S_OK;
+    }
+
     _Use_decl_annotations_
     void XamlBuilder::BuildTextBlock(
         IAdaptiveCardElement* adaptiveCardElement,
@@ -1145,8 +1182,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
 
         HString text;
-        adaptiveTextBlock->get_Text(text.GetAddressOf());
-        xamlTextBlock->put_Text(text.Get());
+        THROW_IF_FAILED(adaptiveTextBlock->get_Text(text.GetAddressOf()));
+        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), xamlTextBlock.Get()));
 
         ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor;
         THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));
