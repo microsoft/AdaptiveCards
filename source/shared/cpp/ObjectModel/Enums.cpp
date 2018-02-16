@@ -3,12 +3,11 @@
 namespace AdaptiveCards
 {
 
-std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName;
-std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHash, CaseInsensitiveEqualTo> AdaptiveCardSchemaKeyNameToEnum;
-
-void InitializeAdaptiveCardSchemaKeyEnumMappings()
+void GetAdaptiveCardSchemaKeyEnumMappings(
+    std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> * adaptiveCardSchemaKeyEnumToNameOut,
+    std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHash, CaseInsensitiveEqualTo> * adaptiveCardSchemaKeyNameToEnumOut)
 {
-    AdaptiveCardSchemaKeyEnumToName =
+    static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> adaptiveCardSchemaKeyEnumToName =
     {
         { AdaptiveCardSchemaKey::Accent, "accent" },
         { AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment" },
@@ -126,15 +125,24 @@ void InitializeAdaptiveCardSchemaKeyEnumMappings()
         { AdaptiveCardSchemaKey::Width, "width" },
         { AdaptiveCardSchemaKey::Wrap, "wrap" }
     };
-    AdaptiveCardSchemaKeyNameToEnum = GenerateStringToEnumMap<AdaptiveCardSchemaKey>(AdaptiveCardSchemaKeyEnumToName);
+    static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHash, CaseInsensitiveEqualTo> adaptiveCardSchemaKeyNameToEnum = GenerateStringToEnumMap<AdaptiveCardSchemaKey>(adaptiveCardSchemaKeyEnumToName);
+
+    if (adaptiveCardSchemaKeyEnumToNameOut != nullptr)
+    {
+        *adaptiveCardSchemaKeyEnumToNameOut = adaptiveCardSchemaKeyEnumToName;
+    }
+
+    if (adaptiveCardSchemaKeyNameToEnumOut != nullptr)
+    {
+        *adaptiveCardSchemaKeyNameToEnumOut = adaptiveCardSchemaKeyNameToEnum;
+    }
 }
 
-std::unordered_map<CardElementType, std::string, EnumHash> CardElementTypeEnumToName;
-std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum;
-
-void InitializeCardElementTypeEnumMappings()
+void GetCardElementTypeEnumMappings(
+    std::unordered_map<CardElementType, std::string, EnumHash> * cardElementTypeEnumToNameOut,
+    std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> * cardElementTypeNameToEnumOut)
 {
-    CardElementTypeEnumToName =
+    static std::unordered_map<CardElementType, std::string, EnumHash> cardElementTypeEnumToName =
     {
         { CardElementType::AdaptiveCard, "AdaptiveCard" },
         { CardElementType::Column, "Column" },
@@ -153,80 +161,125 @@ void InitializeCardElementTypeEnumMappings()
         { CardElementType::TextBlock, "TextBlock" },
         { CardElementType::Custom, "Custom" }
     };
-    CardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(CardElementTypeEnumToName);
+    static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> cardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(cardElementTypeEnumToName);
+
+    if (cardElementTypeEnumToNameOut != nullptr)
+    {
+        *cardElementTypeEnumToNameOut = cardElementTypeEnumToName;
+    }
+
+    if (cardElementTypeNameToEnumOut != nullptr)
+    {
+        *cardElementTypeNameToEnumOut = cardElementTypeNameToEnum;
+    }
 }
 
-std::unordered_map<ActionType, std::string, EnumHash> ActionTypeEnumToName;
-std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionTypeNameToEnum;
-
-void InitializeActionTypeEnumMappings()
+void GetActionTypeEnumMappings(
+    std::unordered_map<ActionType, std::string, EnumHash> * actionTypeEnumToNameOut,
+    std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo> * actionTypeNameToEnumOut)
 {
-    ActionTypeEnumToName =
+    static std::unordered_map<ActionType, std::string, EnumHash> actionTypeEnumToName =
     {
         { ActionType::OpenUrl, "Action.OpenUrl" },
         { ActionType::ShowCard, "Action.ShowCard" },
         { ActionType::Submit, "Action.Submit" },
         { ActionType::Custom, "Custom" }
     };
-    ActionTypeNameToEnum = GenerateStringToEnumMap<ActionType>(ActionTypeEnumToName);
-}
+    static std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionTypeNameToEnum = GenerateStringToEnumMap<ActionType>(actionTypeEnumToName);
 
-std::unordered_map<Spacing, std::string, EnumHash> SpacingEnumToName;
-std::unordered_map<std::string, Spacing, CaseInsensitiveHash, CaseInsensitiveEqualTo> SpacingNameToEnum;
-
-void InitializeSpacingEnumMappings()
-{
-    SpacingEnumToName =
+    if (actionTypeEnumToNameOut != nullptr)
     {
-        { Spacing::Default, "default" },
-        { Spacing::None, "none" },
-        { Spacing::Small, "small" },
-        { Spacing::Medium, "medium" },
-        { Spacing::Large, "large" },
-        { Spacing::ExtraLarge, "extraLarge" },
-        { Spacing::Padding, "padding" },
-    };
-    SpacingNameToEnum = GenerateStringToEnumMap<Spacing>(SpacingEnumToName);
+        *actionTypeEnumToNameOut = actionTypeEnumToName;
+    }
+
+    if (actionTypeNameToEnumOut != nullptr)
+    {
+        *actionTypeNameToEnumOut = actionTypeNameToEnum;
+    }
 }
 
-std::unordered_map<SeparatorThickness, std::string, EnumHash> SeparatorThicknessEnumToName;
-std::unordered_map<std::string, SeparatorThickness, CaseInsensitiveHash, CaseInsensitiveEqualTo> SeparatorThicknessNameToEnum;
-
-void InitializeSeparatorThicknessEnumMappings()
+void GetSpacingMappings(
+    std::unordered_map<Spacing, std::string, EnumHash> * spacingEnumToNameOut,
+    std::unordered_map<std::string, Spacing, CaseInsensitiveHash, CaseInsensitiveEqualTo> * spacingNameToEnumOut)
 {
-    SeparatorThicknessEnumToName =
+    static std::unordered_map<Spacing, std::string, EnumHash> spacingEnumToName =
+        {
+            { Spacing::Default, "default" },
+            { Spacing::None, "none" },
+            { Spacing::Small, "small" },
+            { Spacing::Medium, "medium" },
+            { Spacing::Large, "large" },
+            { Spacing::ExtraLarge, "extraLarge" },
+            { Spacing::Padding, "padding" },
+        };
+    static std::unordered_map<std::string, Spacing, CaseInsensitiveHash, CaseInsensitiveEqualTo> spacingNameToEnum = GenerateStringToEnumMap<Spacing>(spacingEnumToName);
+
+    if (spacingEnumToNameOut != nullptr)
+    {
+        *spacingEnumToNameOut = spacingEnumToName;
+    }
+
+    if (spacingNameToEnumOut != nullptr)
+    {
+        *spacingNameToEnumOut = spacingNameToEnum;
+    }
+}
+
+void GetSeparatorThicknessEnumMappings(
+    std::unordered_map<SeparatorThickness, std::string, EnumHash> *separatorThicknessEnumToNameOut,
+    std::unordered_map<std::string, SeparatorThickness, CaseInsensitiveHash, CaseInsensitiveEqualTo> * separatorThicknessNameToEnumOut)
+{
+    static std::unordered_map<SeparatorThickness, std::string, EnumHash> separatorThicknessEnumToName =
     {
         { SeparatorThickness::Default, "default" },
         { SeparatorThickness::Thick, "thick" },
     };
-    SeparatorThicknessNameToEnum = GenerateStringToEnumMap<SeparatorThickness>(SeparatorThicknessEnumToName);
+    static std::unordered_map<std::string, SeparatorThickness, CaseInsensitiveHash, CaseInsensitiveEqualTo> separatorThicknessNameToEnum = GenerateStringToEnumMap<SeparatorThickness>(separatorThicknessEnumToName);
+
+    if (separatorThicknessEnumToNameOut != nullptr)
+    {
+        *separatorThicknessEnumToNameOut = separatorThicknessEnumToName;
+    }
+
+    if (separatorThicknessNameToEnumOut != nullptr)
+    {
+        *separatorThicknessNameToEnumOut = separatorThicknessNameToEnum;
+    }
 }
 
-std::unordered_map<ImageStyle, std::string, EnumHash> ImageStyleEnumToName;
-std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleNameToEnum;
-
-void InitializeImageStyleEnumMappings()
+void GetImageStyleEnumMappings(
+    std::unordered_map<ImageStyle, std::string, EnumHash> * imageStyleEnumToNameOut,
+    std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> * imageStyleNameToEnumOut)
 {
-    ImageStyleEnumToName =
+    static std::unordered_map<ImageStyle, std::string, EnumHash> imageStyleEnumToName =
     {
         { ImageStyle::Default, "default" },
         { ImageStyle::Person, "person" }
     };
 
-    ImageStyleNameToEnum =
+    static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> imageStyleNameToEnum =
     {
         { "default", ImageStyle::Default },
         { "person", ImageStyle::Person },
         { "normal", ImageStyle::Default } // Back compat to support "Normal" for "Default" for pre V1.0 payloads
     };
+
+    if (imageStyleEnumToNameOut != nullptr)
+    {
+        *imageStyleEnumToNameOut = imageStyleEnumToName;
+    }
+
+    if (imageStyleNameToEnumOut != nullptr)
+    {
+        *imageStyleNameToEnumOut = imageStyleNameToEnum;
+    }
 }
 
-std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName;
-std::unordered_map<std::string, ImageSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageSizeNameToEnum;
-
-void InitializeImageSizeEnumMappings()
+void GetImageSizeEnumMappings(
+    std::unordered_map<ImageSize, std::string, EnumHash> * imageSizeEnumToNameOut,
+    std::unordered_map<std::string, ImageSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> * imageSizeNameToEnumOut)
 {
-    ImageSizeEnumToName =
+    static std::unordered_map<ImageSize, std::string, EnumHash> imageSizeEnumToName =
     {
         { ImageSize::Auto, "Auto" },
         { ImageSize::Large, "Large" },
@@ -234,29 +287,47 @@ void InitializeImageSizeEnumMappings()
         { ImageSize::Small, "Small" },
         { ImageSize::Stretch, "Stretch" },
     };
-    ImageSizeNameToEnum = GenerateStringToEnumMap<ImageSize>(ImageSizeEnumToName);
+    static std::unordered_map<std::string, ImageSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> imageSizeNameToEnum = GenerateStringToEnumMap<ImageSize>(imageSizeEnumToName);
+
+    if (imageSizeEnumToNameOut != nullptr)
+    {
+        *imageSizeEnumToNameOut = imageSizeEnumToName;
+    }
+
+    if (imageSizeNameToEnumOut != nullptr)
+    {
+        *imageSizeNameToEnumOut = imageSizeNameToEnum;
+    }
 };
 
-std::unordered_map<HorizontalAlignment, std::string, EnumHash> HorizontalAlignmentEnumToName;
-std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> HorizontalAlignmentNameToEnum;
-
-void InitializeHorizontalAlignmentEnumMappings()
+void GetHorizontalAlignmentEnumMappings(
+    std::unordered_map<HorizontalAlignment, std::string, EnumHash> * horizontalAlignmentEnumToNameOut,
+    std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> * horizontalAlignmentNameToEnumOut)
 {
-    HorizontalAlignmentEnumToName =
+    static std::unordered_map<HorizontalAlignment, std::string, EnumHash> horizontalAlignmentEnumToName =
     {
         {HorizontalAlignment::Center, "Center"},
         {HorizontalAlignment::Left, "Left"},
         {HorizontalAlignment::Right, "Right"}
     };
-    HorizontalAlignmentNameToEnum = GenerateStringToEnumMap<HorizontalAlignment>(HorizontalAlignmentEnumToName);
+    static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> horizontalAlignmentNameToEnum = GenerateStringToEnumMap<HorizontalAlignment>(horizontalAlignmentEnumToName);
+
+    if (horizontalAlignmentEnumToNameOut != nullptr)
+    {
+        *horizontalAlignmentEnumToNameOut = horizontalAlignmentEnumToName;
+    }
+
+    if (horizontalAlignmentNameToEnumOut != nullptr)
+    {
+        *horizontalAlignmentNameToEnumOut = horizontalAlignmentNameToEnum;
+    }
 };
 
-std::unordered_map<ForegroundColor, std::string, EnumHash> ColorEnumToName;
-std::unordered_map<std::string, ForegroundColor, CaseInsensitiveHash, CaseInsensitiveEqualTo> ColorNameToEnum;
-
-void InitializeColorEnumMappings()
+void GetColorEnumMappings(
+    std::unordered_map<ForegroundColor, std::string, EnumHash> * colorEnumToNameOut,
+    std::unordered_map<std::string, ForegroundColor, CaseInsensitiveHash, CaseInsensitiveEqualTo> * colorNameToEnumOut)
 {
-    ColorEnumToName =
+    static std::unordered_map<ForegroundColor, std::string, EnumHash> colorEnumToName =
     {
         {ForegroundColor::Accent, "Accent"},
         {ForegroundColor::Attention, "Attention"},
@@ -266,36 +337,54 @@ void InitializeColorEnumMappings()
         {ForegroundColor::Light, "Light" },
         {ForegroundColor::Warning, "Warning"},
     };
-    ColorNameToEnum = GenerateStringToEnumMap<ForegroundColor>(ColorEnumToName);
+    static std::unordered_map<std::string, ForegroundColor, CaseInsensitiveHash, CaseInsensitiveEqualTo> colorNameToEnum = GenerateStringToEnumMap<ForegroundColor>(colorEnumToName);
+
+    if (colorEnumToNameOut != nullptr)
+    {
+        *colorEnumToNameOut = colorEnumToName;
+    }
+
+    if (colorNameToEnumOut != nullptr)
+    {
+        *colorNameToEnumOut = colorNameToEnum;
+    }
 }
 
-std::unordered_map<TextWeight, std::string, EnumHash> TextWeightEnumToName;
-std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextWeightNameToEnum;
-
-void InitializeTextWeightEnumMappings()
+void GetTextWeightEnumMappings(
+    std::unordered_map<TextWeight, std::string, EnumHash> * textWeightEnumToNameOut,
+    std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> * textWeightNameToEnumOut)
 {
-    TextWeightEnumToName =
+    static std::unordered_map<TextWeight, std::string, EnumHash> textWeightEnumToName =
     {
         {TextWeight::Bolder, "Bolder"},
         {TextWeight::Lighter, "Lighter"},
         {TextWeight::Default, "Default"},
     };
 
-    TextWeightNameToEnum =
+    static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> textWeightNameToEnum =
     {
         { "Bolder", TextWeight::Bolder },
         { "Lighter", TextWeight::Lighter },
         { "Default", TextWeight::Default },
         { "Normal", TextWeight::Default }, // Back compat to support "Normal" for "Default" for pre V1.0 payloads
     };
+
+    if (textWeightEnumToNameOut != nullptr)
+    {
+        *textWeightEnumToNameOut = textWeightEnumToName;
+    }
+
+    if (textWeightNameToEnumOut != nullptr)
+    {
+        *textWeightNameToEnumOut = textWeightNameToEnum;
+    }
 }
 
-std::unordered_map<TextSize, std::string, EnumHash> TextSizeEnumToName;
-std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextSizeNameToEnum;
-
-void InitializeTextSizeEnumMappings()
+void GetTextSizeEnumMappings(
+    std::unordered_map<TextSize, std::string, EnumHash> * textSizeEnumToNameOut,
+    std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> * textSizeNameToEnumOut)
 {
-    TextSizeEnumToName =
+    static std::unordered_map<TextSize, std::string, EnumHash> textSizeEnumToName =
     {
         {TextSize::ExtraLarge, "ExtraLarge"},
         {TextSize::Large, "Large"},
@@ -303,7 +392,8 @@ void InitializeTextSizeEnumMappings()
         {TextSize::Default, "Default"},
         {TextSize::Small, "Small"},
     };
-    TextSizeNameToEnum =
+
+    static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> textSizeNameToEnum =
     {
         { "ExtraLarge", TextSize::ExtraLarge },
         { "Large", TextSize::Large },
@@ -312,576 +402,572 @@ void InitializeTextSizeEnumMappings()
         { "Small", TextSize::Small },
         { "Normal", TextSize::Default }, // Back compat to support "Normal" for "Default" for pre V1.0 payloads
     };
+
+    if (textSizeEnumToNameOut != nullptr)
+    {
+        *textSizeEnumToNameOut = textSizeEnumToName;
+    }
+
+    if (textSizeNameToEnumOut != nullptr)
+    {
+        *textSizeNameToEnumOut = textSizeNameToEnum;
+    }
 }
 
-std::unordered_map<ActionsOrientation, std::string, EnumHash> ActionsOrientationEnumToName;
-std::unordered_map<std::string, ActionsOrientation, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionsOrientationNameToEnum;
-
-void InitializeActionsOrientationEnumMappings()
+void GetActionsOrientationEnumMappings(
+    std::unordered_map<ActionsOrientation, std::string, EnumHash> * actionsOrientationEnumToNameOut,
+    std::unordered_map<std::string, ActionsOrientation, CaseInsensitiveHash, CaseInsensitiveEqualTo> * actionsOrientationNameToEnumOut)
 {
-    ActionsOrientationEnumToName =
+    static std::unordered_map<ActionsOrientation, std::string, EnumHash> actionsOrientationEnumToName =
     {
         { ActionsOrientation::Horizontal, "Horizontal" },
         { ActionsOrientation::Vertical, "Vertical" },
     };
-    ActionsOrientationNameToEnum = GenerateStringToEnumMap<ActionsOrientation>(ActionsOrientationEnumToName);
+    static std::unordered_map<std::string, ActionsOrientation, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionsOrientationNameToEnum = GenerateStringToEnumMap<ActionsOrientation>(actionsOrientationEnumToName);
+
+    if (actionsOrientationEnumToNameOut != nullptr)
+    {
+        *actionsOrientationEnumToNameOut = actionsOrientationEnumToName;
+    }
+
+    if (actionsOrientationNameToEnumOut != nullptr)
+    {
+        *actionsOrientationNameToEnumOut = actionsOrientationNameToEnum;
+    }
 }
 
-std::unordered_map<ActionMode, std::string, EnumHash> ActionModeEnumToName;
-std::unordered_map<std::string, ActionMode, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionModeNameToEnum;
-
-void InitializeActionModeEnumMappings()
+void GetActionModeEnumMappings(
+    std::unordered_map<ActionMode, std::string, EnumHash> * actionModeEnumToNameOut,
+    std::unordered_map<std::string, ActionMode, CaseInsensitiveHash, CaseInsensitiveEqualTo> * actionModeNameToEnumOut)
 {
-    ActionModeEnumToName =
+    static std::unordered_map<ActionMode, std::string, EnumHash> actionModeEnumToName =
     {
         { ActionMode::Inline, "Inline" },
         { ActionMode::Popup, "Popup" }
     };
-    ActionModeNameToEnum = GenerateStringToEnumMap<ActionMode>(ActionModeEnumToName);
+    static std::unordered_map<std::string, ActionMode, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionModeNameToEnum = GenerateStringToEnumMap<ActionMode>(actionModeEnumToName);
+
+    if (actionModeEnumToNameOut != nullptr)
+    {
+        *actionModeEnumToNameOut = actionModeEnumToName;
+    }
+
+    if (actionModeNameToEnumOut != nullptr)
+    {
+        *actionModeNameToEnumOut = actionModeNameToEnum;
+    }
 }
 
-std::unordered_map<ChoiceSetStyle, std::string, EnumHash> ChoiceSetStyleEnumToName;
-std::unordered_map<std::string, ChoiceSetStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ChoiceSetStyleNameToEnum;
-
-void InitializeChoiceSetStyleEnumMappings()
+void GetChoiceSetStyleEnumMappings(
+    std::unordered_map<ChoiceSetStyle, std::string, EnumHash> * choiceSetStyleEnumToNameOut,
+    std::unordered_map<std::string, ChoiceSetStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> * choiceSetStyleNameToEnumOut)
 {
-    ChoiceSetStyleEnumToName =
+    static std::unordered_map<ChoiceSetStyle, std::string, EnumHash> choiceSetStyleEnumToName =
     {
         { ChoiceSetStyle::Compact, "Compact" },
         { ChoiceSetStyle::Expanded, "Expanded" }
     };
-    ChoiceSetStyleNameToEnum= GenerateStringToEnumMap<ChoiceSetStyle>(ChoiceSetStyleEnumToName);
+    static std::unordered_map<std::string, ChoiceSetStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> choiceSetStyleNameToEnum = GenerateStringToEnumMap<ChoiceSetStyle>(choiceSetStyleEnumToName);
+
+    if (choiceSetStyleEnumToNameOut != nullptr)
+    {
+        *choiceSetStyleEnumToNameOut = choiceSetStyleEnumToName;
+    }
+
+    if (choiceSetStyleNameToEnumOut != nullptr)
+    {
+        *choiceSetStyleNameToEnumOut = choiceSetStyleNameToEnum;
+    }
 };
 
-std::unordered_map<TextInputStyle, std::string, EnumHash> TextInputStyleEnumToName;
-static std::unordered_map<std::string, TextInputStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextInputStyleNameToEnum;
-
-void InitializeTextInputStyleEnumMappings()
+void GetTextInputStyleEnumMappings(
+    std::unordered_map<TextInputStyle, std::string, EnumHash> * textInputStyleEnumToNameOut,
+    std::unordered_map<std::string, TextInputStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> * textInputStyleNameToEnumOut)
 {
-    TextInputStyleEnumToName =
+    static std::unordered_map<TextInputStyle, std::string, EnumHash> textInputStyleEnumToName =
     {
         { TextInputStyle::Email, "Email" },
         { TextInputStyle::Tel, "Tel" },
         { TextInputStyle::Text, "Text" },
         { TextInputStyle::Url, "Url" },
     };
-    TextInputStyleNameToEnum = GenerateStringToEnumMap<TextInputStyle>(TextInputStyleEnumToName);
+    static std::unordered_map<std::string, TextInputStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> textInputStyleNameToEnum = GenerateStringToEnumMap<TextInputStyle>(textInputStyleEnumToName);
+
+    if (textInputStyleEnumToNameOut != nullptr)
+    {
+        *textInputStyleEnumToNameOut = textInputStyleEnumToName;
+    }
+
+    if (textInputStyleNameToEnumOut != nullptr)
+    {
+        *textInputStyleNameToEnumOut = textInputStyleNameToEnum;
+    }
 }
 
-std::unordered_map<ContainerStyle, std::string, EnumHash> ContainerStyleEnumToName;
-std::unordered_map<std::string, ContainerStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ContainerStyleNameToEnum;
-
-void InitializeContainerStyleEnumMappings()
+void GetContainerStyleEnumMappings(
+    std::unordered_map<ContainerStyle, std::string, EnumHash> * containerStyleEnumToNameOut,
+    std::unordered_map<std::string, ContainerStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> * containerStyleNameToEnumOut)
 {
-    ContainerStyleEnumToName =
+    static std::unordered_map<ContainerStyle, std::string, EnumHash> containerStyleEnumToName =
     {
         { ContainerStyle::Default, "Default" },
         { ContainerStyle::Emphasis, "Emphasis" },
     };
-    ContainerStyleNameToEnum = GenerateStringToEnumMap<ContainerStyle>(ContainerStyleEnumToName);
+    static std::unordered_map<std::string, ContainerStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> containerStyleNameToEnum = GenerateStringToEnumMap<ContainerStyle>(containerStyleEnumToName);
+
+    if (containerStyleEnumToNameOut != nullptr)
+    {
+        *containerStyleEnumToNameOut = containerStyleEnumToName;
+    }
+
+    if (containerStyleNameToEnumOut != nullptr)
+    {
+        *containerStyleNameToEnumOut = containerStyleNameToEnum;
+    }
 }
 
-std::unordered_map<ActionAlignment, std::string, EnumHash> ActionAlignmentEnumToName;
-std::unordered_map<std::string, ActionAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionAlignmentNameToEnum;
-
-void InitializeActionAlignmentEnumMappings()
+void GetActionAlignmentEnumMappings(
+    std::unordered_map<ActionAlignment, std::string, EnumHash> * actionAlignmentEnumToNameOut,
+    std::unordered_map<std::string, ActionAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> * actionAlignmentNameToEnumOut)
 {
-    ActionAlignmentEnumToName =
+    static std::unordered_map<ActionAlignment, std::string, EnumHash> actionAlignmentEnumToName =
     {
         { ActionAlignment::Left, "Left" },
         { ActionAlignment::Center, "Center" },
         { ActionAlignment::Right, "Right" },
         { ActionAlignment::Stretch, "Stretch" },
     };
-    ActionAlignmentNameToEnum = GenerateStringToEnumMap<ActionAlignment>(ActionAlignmentEnumToName);
+    static std::unordered_map<std::string, ActionAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionAlignmentNameToEnum = GenerateStringToEnumMap<ActionAlignment>(actionAlignmentEnumToName);
+
+    if (actionAlignmentEnumToNameOut != nullptr)
+    {
+        *actionAlignmentEnumToNameOut = actionAlignmentEnumToName;
+    }
+
+    if (actionAlignmentNameToEnumOut != nullptr)
+    {
+        *actionAlignmentNameToEnumOut = actionAlignmentNameToEnum;
+    }
 }
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
 {
-    if (AdaptiveCardSchemaKeyEnumToName.empty())
-    {
-        InitializeAdaptiveCardSchemaKeyEnumMappings();
-    }
+    std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> adaptiveCardSchemaKeyEnumToName;
+    GetAdaptiveCardSchemaKeyEnumMappings(&adaptiveCardSchemaKeyEnumToName, nullptr);
 
-    if (AdaptiveCardSchemaKeyEnumToName.find(type) == AdaptiveCardSchemaKeyEnumToName.end())
+    if (adaptiveCardSchemaKeyEnumToName.find(type) == adaptiveCardSchemaKeyEnumToName.end())
     {
         throw std::out_of_range("Invalid AdaptiveCardSchemaKey");
     }
 
-    return AdaptiveCardSchemaKeyEnumToName[type];
+    return adaptiveCardSchemaKeyEnumToName[type];
 }
 
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type)
 {
-    if (AdaptiveCardSchemaKeyNameToEnum.empty())
-    {
-        InitializeAdaptiveCardSchemaKeyEnumMappings();
-    }
+    std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHash, CaseInsensitiveEqualTo> adaptiveCardSchemaKeyNameToEnum;
+    GetAdaptiveCardSchemaKeyEnumMappings(nullptr, &adaptiveCardSchemaKeyNameToEnum);
 
-    if (AdaptiveCardSchemaKeyNameToEnum.find(type) == AdaptiveCardSchemaKeyNameToEnum.end())
+    if (adaptiveCardSchemaKeyNameToEnum.find(type) == adaptiveCardSchemaKeyNameToEnum.end())
     {
         throw std::out_of_range("Invalid AdaptiveCardSchemaKey: " + type);
     }
 
-    return AdaptiveCardSchemaKeyNameToEnum[type];
+    return adaptiveCardSchemaKeyNameToEnum[type];
 }
 
 const std::string CardElementTypeToString(CardElementType elementType)
 {
-    if (CardElementTypeEnumToName.empty())
-    {
-        InitializeCardElementTypeEnumMappings();
-    }
+    std::unordered_map<CardElementType, std::string, EnumHash> cardElementTypeEnumToName;
+    GetCardElementTypeEnumMappings(&cardElementTypeEnumToName, nullptr);
 
-    if (CardElementTypeEnumToName.find(elementType) == CardElementTypeEnumToName.end())
+    if (cardElementTypeEnumToName.find(elementType) == cardElementTypeEnumToName.end())
     {
         throw std::out_of_range("Invalid CardElementType");
     }
 
-    return CardElementTypeEnumToName[elementType];
+    return cardElementTypeEnumToName[elementType];
 }
 
 CardElementType CardElementTypeFromString(const std::string& elementType)
 {
-    if (CardElementTypeNameToEnum.empty())
-    {
-        InitializeCardElementTypeEnumMappings();
-    }
+    std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> cardElementTypeNameToEnum;
+    GetCardElementTypeEnumMappings(nullptr, &cardElementTypeNameToEnum);
 
-    if (CardElementTypeNameToEnum.find(elementType) == CardElementTypeNameToEnum.end())
+    if (cardElementTypeNameToEnum.find(elementType) == cardElementTypeNameToEnum.end())
     {
         throw std::out_of_range("Invalid CardElementType: " + elementType);
     }
 
-    return CardElementTypeNameToEnum[elementType];
+    return cardElementTypeNameToEnum[elementType];
 }
 
 const std::string ActionTypeToString(ActionType actionType)
 {
-    if (ActionTypeEnumToName.empty())
-    {
-        InitializeActionTypeEnumMappings();
-    }
+    std::unordered_map<ActionType, std::string, EnumHash> actionTypeEnumToName;
+    GetActionTypeEnumMappings(&actionTypeEnumToName, nullptr);
 
-    if (ActionTypeEnumToName.find(actionType) == ActionTypeEnumToName.end())
+    if (actionTypeEnumToName.find(actionType) == actionTypeEnumToName.end())
     {
         throw std::out_of_range("Invalid ActionType");
     }
 
-    return ActionTypeEnumToName[actionType];
+    return actionTypeEnumToName[actionType];
 }
 
 ActionType ActionTypeFromString(const std::string& actionType)
 {
-    if (ActionTypeNameToEnum.empty())
-    {
-        InitializeActionTypeEnumMappings();
-    }
+    std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionTypeNameToEnum;
+    GetActionTypeEnumMappings(nullptr, &actionTypeNameToEnum);
 
-    if (ActionTypeNameToEnum.find(actionType) == ActionTypeNameToEnum.end())
+    if (actionTypeNameToEnum.find(actionType) == actionTypeNameToEnum.end())
     {
         throw std::out_of_range("Invalid ActionType: " + actionType);
     }
 
-    return ActionTypeNameToEnum[actionType];
+    return actionTypeNameToEnum[actionType];
 }
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment)
 {
-    if (HorizontalAlignmentEnumToName.empty())
-    {
-        InitializeHorizontalAlignmentEnumMappings();
-    }
+    std::unordered_map<HorizontalAlignment, std::string, EnumHash> horizontalAlignmentEnumToName;
+    GetHorizontalAlignmentEnumMappings(&horizontalAlignmentEnumToName, nullptr);
 
-    if (HorizontalAlignmentEnumToName.find(alignment) == HorizontalAlignmentEnumToName.end())
+    if (horizontalAlignmentEnumToName.find(alignment) == horizontalAlignmentEnumToName.end())
     {
         throw std::out_of_range("Invalid HorizontalAlignment type");
     }
-    return HorizontalAlignmentEnumToName[alignment];
+    return horizontalAlignmentEnumToName[alignment];
 }
 
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment)
 {
-    if (HorizontalAlignmentNameToEnum.empty())
-    {
-        InitializeHorizontalAlignmentEnumMappings();
-    }
+    std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> horizontalAlignmentNameToEnum;
+    GetHorizontalAlignmentEnumMappings(nullptr, &horizontalAlignmentNameToEnum);
 
-    if (HorizontalAlignmentNameToEnum.find(alignment) == HorizontalAlignmentNameToEnum.end())
+    if (horizontalAlignmentNameToEnum.find(alignment) == horizontalAlignmentNameToEnum.end())
     {
         throw std::out_of_range("Invalid HorizontalAlignment: " + alignment);
     }
 
-    return HorizontalAlignmentNameToEnum[alignment];
+    return horizontalAlignmentNameToEnum[alignment];
 }
 
 const std::string ForegroundColorToString(ForegroundColor color)
 {
-    if (ColorEnumToName.empty())
-    {
-        InitializeColorEnumMappings();
-    }
+    std::unordered_map<ForegroundColor, std::string, EnumHash> colorEnumToName;
+    GetColorEnumMappings(&colorEnumToName, nullptr);
 
-    if (ColorEnumToName.find(color) == ColorEnumToName.end())
+    if (colorEnumToName.find(color) == colorEnumToName.end())
     {
         throw std::out_of_range("Invalid ForegroundColor type");
     }
-    return ColorEnumToName[color];
+    return colorEnumToName[color];
 }
 
 ForegroundColor ForegroundColorFromString(const std::string& color)
 {
-    if (ColorNameToEnum.empty())
-    {
-        InitializeColorEnumMappings();
-    }
+    std::unordered_map<std::string, ForegroundColor, CaseInsensitiveHash, CaseInsensitiveEqualTo> colorNameToEnum;
+    GetColorEnumMappings(nullptr, &colorNameToEnum);
 
-    if (ColorNameToEnum.find(color) == ColorNameToEnum.end())
+    if (colorNameToEnum.find(color) == colorNameToEnum.end())
     {
         throw std::out_of_range("Invalid ForegroundColor: " + color);
     }
 
-    return ColorNameToEnum[color];
+    return colorNameToEnum[color];
 }
 
 const std::string TextWeightToString(TextWeight weight)
 {
-    if (TextWeightEnumToName.empty())
-    {
-        InitializeTextWeightEnumMappings();
-    }
+    std::unordered_map<TextWeight, std::string, EnumHash> textWeightEnumToName;
+    GetTextWeightEnumMappings(&textWeightEnumToName, nullptr);
 
-    if (TextWeightEnumToName.find(weight) == TextWeightEnumToName.end())
+    if (textWeightEnumToName.find(weight) == textWeightEnumToName.end())
     {
         throw std::out_of_range("Invalid TextWeight type");
     }
-    return TextWeightEnumToName[weight];
+    return textWeightEnumToName[weight];
 }
 
 TextWeight TextWeightFromString(const std::string& weight)
 {
-    if (TextWeightNameToEnum.empty())
-    {
-        InitializeTextWeightEnumMappings();
-    }
+    std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> textWeightNameToEnum;
+    GetTextWeightEnumMappings(nullptr, &textWeightNameToEnum);
 
-    if (TextWeightNameToEnum.find(weight) == TextWeightNameToEnum.end())
+    if (textWeightNameToEnum.find(weight) == textWeightNameToEnum.end())
     {
         throw std::out_of_range("Invalid TextWeight: " + weight);
     }
 
-    return TextWeightNameToEnum[weight];
+    return textWeightNameToEnum[weight];
 }
 
 const std::string TextSizeToString(TextSize size)
 {
-    if (TextSizeEnumToName.empty())
-    {
-        InitializeTextSizeEnumMappings();
-    }
+    std::unordered_map<TextSize, std::string, EnumHash> textSizeEnumToName;
+    GetTextSizeEnumMappings(&textSizeEnumToName, nullptr);
 
-    if (TextSizeEnumToName.find(size) == TextSizeEnumToName.end())
+    if (textSizeEnumToName.find(size) == textSizeEnumToName.end())
     {
         throw std::out_of_range("Invalid TextSize type");
     }
-    return TextSizeEnumToName[size];
+    return textSizeEnumToName[size];
 }
 
 TextSize TextSizeFromString(const std::string& size)
 {
-    if (TextSizeNameToEnum.empty())
-    {
-        InitializeTextSizeEnumMappings();
-    }
+    std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> textSizeNameToEnum;
+    GetTextSizeEnumMappings(nullptr, &textSizeNameToEnum);
 
-    if (TextSizeNameToEnum.find(size) == TextSizeNameToEnum.end())
+    if (textSizeNameToEnum.find(size) == textSizeNameToEnum.end())
     {
         throw std::out_of_range("Invalid TextSize: " + size);
     }
 
-    return TextSizeNameToEnum[size];
+    return textSizeNameToEnum[size];
 }
 
 const std::string ImageSizeToString(ImageSize size)
 {
-    if (ImageSizeEnumToName.empty())
-    {
-        InitializeImageSizeEnumMappings();
-    }
+    std::unordered_map<ImageSize, std::string, EnumHash> imageSizeEnumToName;
+    GetImageSizeEnumMappings(&imageSizeEnumToName, nullptr);
 
-    if (ImageSizeEnumToName.find(size) == ImageSizeEnumToName.end())
+    if (imageSizeEnumToName.find(size) == imageSizeEnumToName.end())
     {
         throw std::out_of_range("Invalid ImageSize type");
     }
-    return ImageSizeEnumToName[size];
+    return imageSizeEnumToName[size];
 }
 
 ImageSize ImageSizeFromString(const std::string& size)
 {
-    if (ImageSizeNameToEnum.empty())
-    {
-        InitializeImageSizeEnumMappings();
-    }
+    std::unordered_map<std::string, ImageSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> imageSizeNameToEnum;
+    GetImageSizeEnumMappings(nullptr, &imageSizeNameToEnum);
 
-    if (ImageSizeNameToEnum.find(size) == ImageSizeNameToEnum.end())
+    if (imageSizeNameToEnum.find(size) == imageSizeNameToEnum.end())
     {
         throw std::out_of_range("Invalid ImageSize: " + size);
     }
 
-    return ImageSizeNameToEnum[size];
+    return imageSizeNameToEnum[size];
 }
 
 const std::string SpacingToString(Spacing spacing)
 {
-    if (SpacingEnumToName.empty())
-    {
-        InitializeSpacingEnumMappings();
-    }
+    std::unordered_map<Spacing, std::string, EnumHash> spacingEnumToName;
+    GetSpacingMappings(&spacingEnumToName, nullptr);
 
-    if (SpacingEnumToName.find(spacing) == SpacingEnumToName.end())
+    if (spacingEnumToName.find(spacing) == spacingEnumToName.end())
     {
         throw std::out_of_range("Invalid Spacing type");
     }
-    return SpacingEnumToName[spacing];
+    return spacingEnumToName[spacing];
 }
 
 Spacing SpacingFromString(const std::string& spacing)
 {
-    if (SpacingNameToEnum.empty())
-    {
-        InitializeSpacingEnumMappings();
-    }
+    std::unordered_map<std::string, Spacing, CaseInsensitiveHash, CaseInsensitiveEqualTo> spacingNameToEnum;
+    GetSpacingMappings(nullptr, &spacingNameToEnum);
 
-    if (SpacingNameToEnum.find(spacing) == SpacingNameToEnum.end())
+    if (spacingNameToEnum.find(spacing) == spacingNameToEnum.end())
     {
         throw std::out_of_range("Invalid Spacing: " + spacing);
     }
 
-    return SpacingNameToEnum[spacing];
+    return spacingNameToEnum[spacing];
 }
 
 const std::string SeparatorThicknessToString(SeparatorThickness thickness)
 {
-    if (SeparatorThicknessEnumToName.empty())
-    {
-        InitializeSeparatorThicknessEnumMappings();
-    }
+    std::unordered_map<SeparatorThickness, std::string, EnumHash> separatorThicknessEnumToName;
+    GetSeparatorThicknessEnumMappings(&separatorThicknessEnumToName, nullptr);
 
-    if (SeparatorThicknessEnumToName.find(thickness) == SeparatorThicknessEnumToName.end())
+    if (separatorThicknessEnumToName.find(thickness) == separatorThicknessEnumToName.end())
     {
         throw std::out_of_range("Invalid SeparatorThickness type");
     }
-    return SeparatorThicknessEnumToName[thickness];
+    return separatorThicknessEnumToName[thickness];
 }
 
 SeparatorThickness SeparatorThicknessFromString(const std::string& thickness)
 {
-    if (SeparatorThicknessNameToEnum.empty())
-    {
-        InitializeSeparatorThicknessEnumMappings();
-    }
+    std::unordered_map<std::string, SeparatorThickness, CaseInsensitiveHash, CaseInsensitiveEqualTo> separatorThicknessNameToEnum;
+    GetSeparatorThicknessEnumMappings(nullptr, &separatorThicknessNameToEnum);
 
-    if (SeparatorThicknessNameToEnum.find(thickness) == SeparatorThicknessNameToEnum.end())
+    if (separatorThicknessNameToEnum.find(thickness) == separatorThicknessNameToEnum.end())
     {
         throw std::out_of_range("Invalid SeparatorThickness: " + thickness);
     }
 
-    return SeparatorThicknessNameToEnum[thickness];
+    return separatorThicknessNameToEnum[thickness];
 }
 
 const std::string ImageStyleToString(ImageStyle style)
 {
-    if (ImageStyleEnumToName.empty())
-    {
-        InitializeImageStyleEnumMappings();
-    }
+    std::unordered_map<ImageStyle, std::string, EnumHash> imageStyleEnumToName;
+    GetImageStyleEnumMappings(&imageStyleEnumToName, nullptr);
 
-    if (ImageStyleEnumToName.find(style) == ImageStyleEnumToName.end())
+    if (imageStyleEnumToName.find(style) == imageStyleEnumToName.end())
     {
         throw std::out_of_range("Invalid ImageStyle style");
     }
-    return ImageStyleEnumToName[style];
+    return imageStyleEnumToName[style];
 }
 
 ImageStyle ImageStyleFromString(const std::string& style)
 {
-    if (ImageStyleNameToEnum.empty())
-    {
-        InitializeImageStyleEnumMappings();
-    }
+    std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> imageStyleNameToEnum;
+    GetImageStyleEnumMappings(nullptr, &imageStyleNameToEnum);
 
-    if (ImageStyleNameToEnum.find(style) == ImageStyleNameToEnum.end())
+    if (imageStyleNameToEnum.find(style) == imageStyleNameToEnum.end())
     {
         throw std::out_of_range("Invalid ImageStyle: " + style);
     }
 
-    return ImageStyleNameToEnum[style];
+    return imageStyleNameToEnum[style];
 }
 
 const std::string ActionsOrientationToString(ActionsOrientation orientation)
 {
-    if (ActionsOrientationEnumToName.empty())
-    {
-        InitializeActionsOrientationEnumMappings();
-    }
+    std::unordered_map<ActionsOrientation, std::string, EnumHash> actionsOrientationEnumToName;
+    GetActionsOrientationEnumMappings(&actionsOrientationEnumToName, nullptr);
 
-    if (ActionsOrientationEnumToName.find(orientation) == ActionsOrientationEnumToName.end())
+    if (actionsOrientationEnumToName.find(orientation) == actionsOrientationEnumToName.end())
     {
         throw std::out_of_range("Invalid ActionsOrientation type");
     }
-    return ActionsOrientationEnumToName[orientation];
+    return actionsOrientationEnumToName[orientation];
 }
 
 ActionsOrientation ActionsOrientationFromString(const std::string& orientation)
 {
-    if (ActionsOrientationNameToEnum.empty())
-    {
-        InitializeActionsOrientationEnumMappings();
-    }
+    std::unordered_map<std::string, ActionsOrientation, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionsOrientationNameToEnum;
+    GetActionsOrientationEnumMappings(nullptr, &actionsOrientationNameToEnum);
 
-    if (ActionsOrientationNameToEnum.find(orientation) == ActionsOrientationNameToEnum.end())
+    if (actionsOrientationNameToEnum.find(orientation) == actionsOrientationNameToEnum.end())
     {
         throw std::out_of_range("Invalid ActionsOrientation: " + orientation);
     }
-    return ActionsOrientationNameToEnum[orientation];
+    return actionsOrientationNameToEnum[orientation];
 }
 
 const std::string ActionModeToString(ActionMode mode)
 {
-    if (ActionModeEnumToName.empty())
-    {
-        InitializeActionModeEnumMappings();
-    }
+    std::unordered_map<ActionMode, std::string, EnumHash> actionModeEnumToName;
+    GetActionModeEnumMappings(&actionModeEnumToName, nullptr);
 
-    if (ActionModeEnumToName.find(mode) == ActionModeEnumToName.end())
+    if (actionModeEnumToName.find(mode) == actionModeEnumToName.end())
     {
         throw std::out_of_range("Invalid ActionMode type");
     }
-    return ActionModeEnumToName[mode];
+    return actionModeEnumToName[mode];
 }
 
 ActionMode ActionModeFromString(const std::string& mode)
 {
-    if (ActionModeNameToEnum.empty())
-    {
-        InitializeActionModeEnumMappings();
-    }
+    std::unordered_map<std::string, ActionMode, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionModeNameToEnum;
+    GetActionModeEnumMappings(nullptr, &actionModeNameToEnum);
 
-    if (ActionModeNameToEnum.find(mode) == ActionModeNameToEnum.end())
+    if (actionModeNameToEnum.find(mode) == actionModeNameToEnum.end())
     {
         throw std::out_of_range("Invalid ActionMode: " + mode);
     }
-    return ActionModeNameToEnum[mode];
+    return actionModeNameToEnum[mode];
 }
 
 const std::string ChoiceSetStyleToString(ChoiceSetStyle style)
 {
-    if (ChoiceSetStyleEnumToName.empty())
-    {
-        InitializeChoiceSetStyleEnumMappings();
-    }
+    std::unordered_map<ChoiceSetStyle, std::string, EnumHash> choiceSetStyleEnumToName;
+    GetChoiceSetStyleEnumMappings(&choiceSetStyleEnumToName, nullptr);
 
-    if (ChoiceSetStyleEnumToName.find(style) == ChoiceSetStyleEnumToName.end())
+    if (choiceSetStyleEnumToName.find(style) == choiceSetStyleEnumToName.end())
     {
         throw std::out_of_range("Invalid ChoiceSetStyle");
     }
-    return ChoiceSetStyleEnumToName[style];
+    return choiceSetStyleEnumToName[style];
 }
 ChoiceSetStyle ChoiceSetStyleFromString(const std::string & style)
 {
-    if (ChoiceSetStyleNameToEnum.empty())
-    {
-        InitializeChoiceSetStyleEnumMappings();
-    }
+    std::unordered_map<std::string, ChoiceSetStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> choiceSetStyleNameToEnum;
+    GetChoiceSetStyleEnumMappings(nullptr, &choiceSetStyleNameToEnum);
 
-    if (ChoiceSetStyleNameToEnum.find(style) == ChoiceSetStyleNameToEnum.end())
+    if (choiceSetStyleNameToEnum.find(style) == choiceSetStyleNameToEnum.end())
     {
         throw std::out_of_range("Invalid ChoiceSetStyle: " + style);
     }
-    return ChoiceSetStyleNameToEnum[style];
+    return choiceSetStyleNameToEnum[style];
 }
 
 const std::string TextInputStyleToString(TextInputStyle style)
 {
-    if (TextInputStyleEnumToName.empty())
-    {
-        InitializeTextInputStyleEnumMappings();
-    }
+    std::unordered_map<TextInputStyle, std::string, EnumHash> textInputStyleEnumToName;
+    GetTextInputStyleEnumMappings(&textInputStyleEnumToName, nullptr);
 
-    if (TextInputStyleEnumToName.find(style) == TextInputStyleEnumToName.end())
+    if (textInputStyleEnumToName.find(style) == textInputStyleEnumToName.end())
     {
         throw std::out_of_range("Invalid TextInputStyle");
     }
-    return TextInputStyleEnumToName[style];
+    return textInputStyleEnumToName[style];
 }
 
 TextInputStyle TextInputStyleFromString(const std::string & style)
 {
-    if (TextInputStyleNameToEnum.empty())
-    {
-        InitializeTextInputStyleEnumMappings();
-    }
+    std::unordered_map<std::string, TextInputStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> textInputStyleNameToEnum;
+    GetTextInputStyleEnumMappings(nullptr, &textInputStyleNameToEnum);
 
-    if (TextInputStyleNameToEnum.find(style) == TextInputStyleNameToEnum.end())
+    if (textInputStyleNameToEnum.find(style) == textInputStyleNameToEnum.end())
     {
         throw std::out_of_range("Invalid TextInputStyle: " + style);
     }
-    return TextInputStyleNameToEnum[style];
+    return textInputStyleNameToEnum[style];
 }
 
 const std::string ContainerStyleToString(ContainerStyle style)
 {
-    if (ContainerStyleEnumToName.empty())
-    {
-        InitializeContainerStyleEnumMappings();
-    }
+    std::unordered_map<ContainerStyle, std::string, EnumHash> containerStyleEnumToName;
+    GetContainerStyleEnumMappings(&containerStyleEnumToName, nullptr);
 
-    if (ContainerStyleEnumToName.find(style) == ContainerStyleEnumToName.end())
+    if (containerStyleEnumToName.find(style) == containerStyleEnumToName.end())
     {
         throw std::out_of_range("Invalid ContainerStyle");
     }
-    return ContainerStyleEnumToName[style];
+    return containerStyleEnumToName[style];
 }
 
 ContainerStyle ContainerStyleFromString(const std::string & style)
 {
-    if (ContainerStyleNameToEnum.empty())
-    {
-        InitializeContainerStyleEnumMappings();
-    }
+    std::unordered_map<std::string, ContainerStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> containerStyleNameToEnum;
+    GetContainerStyleEnumMappings(nullptr, &containerStyleNameToEnum);
 
-    if (ContainerStyleNameToEnum.find(style) == ContainerStyleNameToEnum.end())
+    if (containerStyleNameToEnum.find(style) == containerStyleNameToEnum.end())
     {
         throw std::out_of_range("Invalid ContainerStyle: " + style);
     }
-    return ContainerStyleNameToEnum[style];
+    return containerStyleNameToEnum[style];
 }
 
 const std::string ActionAlignmentToString(ActionAlignment alignment)
 {
-    if (ActionAlignmentEnumToName.empty())
-    {
-        InitializeActionAlignmentEnumMappings();
-    }
+    std::unordered_map<ActionAlignment, std::string, EnumHash> actionAlignmentEnumToName;
+    GetActionAlignmentEnumMappings(&actionAlignmentEnumToName, nullptr);
 
-    if (ActionAlignmentEnumToName.find(alignment) == ActionAlignmentEnumToName.end())
+    if (actionAlignmentEnumToName.find(alignment) == actionAlignmentEnumToName.end())
     {
         throw std::out_of_range("Invalid ActionAlignment");
     }
-    return ActionAlignmentEnumToName[alignment];
+    return actionAlignmentEnumToName[alignment];
 }
 
 ActionAlignment ActionAlignmentFromString(const std::string & alignment)
 {
-    if (ActionAlignmentNameToEnum.empty())
-    {
-        InitializeActionAlignmentEnumMappings();
-    }
+    std::unordered_map<std::string, ActionAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionAlignmentNameToEnum;
+    GetActionAlignmentEnumMappings(nullptr, &actionAlignmentNameToEnum);
 
-    if (ActionAlignmentNameToEnum.find(alignment) == ActionAlignmentNameToEnum.end())
+    if (actionAlignmentNameToEnum.find(alignment) == actionAlignmentNameToEnum.end())
     {
         throw std::out_of_range("Invalid ActionAlignment: " + alignment);
     }
-    return ActionAlignmentNameToEnum[alignment];
+    return actionAlignmentNameToEnum[alignment];
 }
 }
