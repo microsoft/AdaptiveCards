@@ -14,6 +14,8 @@
 #import "ACRSubmitTarget.h"
 #import "SubmitAction.h"
 
+using namespace AdaptiveCards;
+
 @implementation ACRLongPressGestureRecognizerFactory
 // instantiates a target for UILongPressGestureRecognizer object
 // and instantiate a tap gesture reconginizer with target, and return it

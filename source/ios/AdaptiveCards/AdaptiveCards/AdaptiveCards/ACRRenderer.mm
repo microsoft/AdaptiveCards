@@ -6,6 +6,7 @@
 //
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseCardElementRenderer.h"
 #import "ACRBaseActionElementRenderer.h"
@@ -92,6 +93,7 @@ using namespace AdaptiveCards;
 
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     ACOHostConfig *acoConfig = [[ACOHostConfig alloc] init];
+    [acoConfig setHostConfig:config];
 
     for(const auto &elem:elems)
     {
@@ -105,7 +107,6 @@ using namespace AdaptiveCards;
         }
 
         [acoElem setElem:elem];
-        [acoConfig setHostConfig:config];
 
         UIButton* button = [actionRenderer renderButton:vc
                                                  inputs:inputs
@@ -130,6 +131,9 @@ using namespace AdaptiveCards;
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
+    ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
+    ACOHostConfig *acoConfig = [[ACOHostConfig alloc] init];
+    [acoConfig setHostConfig:config];
 
     for(const auto &elem:elems)
     {
@@ -144,7 +148,8 @@ using namespace AdaptiveCards;
             continue;
         }
 
-        [renderer render:view rootViewController:vc inputs:inputs withCardElem:elem andHostConfig:config];
+        [acoElem setElem:elem];
+        [renderer render:view rootViewController:vc inputs:inputs baseCardElement:acoElem hostConfig:acoConfig];
     }
 
     return view;
