@@ -1,11 +1,11 @@
 //
-//  ACOBaseCardElementPrivate
-//  ACOBaseCardElementPrivate.h
+//  ACOBaseActionElementPrivate
+//  ACOBaseActionElementPrivate.h
 //
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright © 2017 Microsoft. All rights reserved.
 //
 #import "ACOBaseActionElement.h"
-#import "BaseCardElement.h"
+#import "BaseActionElement.h"
 
 using namespace AdaptiveCards;
 
