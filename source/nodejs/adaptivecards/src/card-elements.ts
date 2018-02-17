@@ -664,7 +664,7 @@ export class TextBlock extends CardElement {
                 anchor.classList.add("ac-anchor");
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
-                    if (raiseAnchorClickedEvent(this, anchor)) {
+                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
                         e.preventDefault();
                     }
                 }
