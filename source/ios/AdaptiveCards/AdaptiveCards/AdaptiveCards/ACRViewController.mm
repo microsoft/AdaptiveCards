@@ -311,10 +311,12 @@ using namespace AdaptiveCards;
              UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
              CGSize cgsize = [ACRImageRenderer getImageSize:imgElem->GetImageSize() withHostConfig:_hostConfig];
              // scale image
+/*
              UIGraphicsBeginImageContext(cgsize);
              [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
              img = UIGraphicsGetImageFromCurrentImageContext();
              UIGraphicsEndImageContext();
+*/
              // UITask can't be run on global queue, add task to main queue
              dispatch_async(dispatch_get_main_queue(),
                  ^{
