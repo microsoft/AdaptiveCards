@@ -11,5 +11,5 @@
 @interface ACRTextField:UITextField<ACRIBaseInputHandler, UITextFieldDelegate>
 @property NSString* id;
 @property bool isRequired;
--(void) dismissNumPad;
+- (void) dismissNumPad;
 @end

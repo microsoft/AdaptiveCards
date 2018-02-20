@@ -34,7 +34,7 @@
     return YES;
 }
 
--(void) dismissNumPad
+- (void)dismissNumPad
 {
     [self resignFirstResponder];
 }
