@@ -17,10 +17,6 @@ import com.microsoft.adaptivecards.renderer.BaseActionElementRenderer;
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 6/26/2017.
- */
-
 public class OpenUrlActionRenderer extends BaseActionElementRenderer
 {
     private OpenUrlActionRenderer()

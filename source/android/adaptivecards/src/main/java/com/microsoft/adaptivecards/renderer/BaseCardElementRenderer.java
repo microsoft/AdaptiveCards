@@ -15,10 +15,6 @@ import com.microsoft.adaptivecards.objectmodel.SeparatorThickness;
 import com.microsoft.adaptivecards.objectmodel.Spacing;
 import com.microsoft.adaptivecards.objectmodel.SpacingConfig;
 
-/**
- * Created by bekao on 5/11/2017.
- */
-
 public abstract class BaseCardElementRenderer implements IBaseCardElementRenderer
 {
     protected static int getSpacingSize(Spacing spacing, SpacingConfig defaultSpacingConfig)
@@ -107,6 +103,11 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             HostConfig hostConfig,
             boolean horizontalLine)
     {
+        if (viewGroup.getChildCount() <= 0)
+        {
+            //Do not add space to the first element of a viewgroup
+            return;
+        }
         int spacingSize = getSpacingSize(spacing, hostConfig.getSpacing());
         int separatorThickness = (int)hostConfig.getSeparator().getLineThickness();
         int separatorColor = android.graphics.Color.parseColor(hostConfig.getSeparator().getLineColor());
@@ -119,18 +120,18 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             params = new LinearLayout.LayoutParams(
                     horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : separatorThickness,
                     horizontalLine ? separatorThickness : LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(
+                    horizontalLine ? 0 : spacingSize / 2 /* left */,
+                    horizontalLine ? spacingSize / 2 : 0 /* top */,
+                    horizontalLine ? 0 : spacingSize / 2 /* right */,
+                    horizontalLine ? spacingSize / 2 : 0 /* bottom */);
         }
         else
         {
             params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : LinearLayout.LayoutParams.WRAP_CONTENT,
-                    horizontalLine ? LinearLayout.LayoutParams.WRAP_CONTENT : LinearLayout.LayoutParams.MATCH_PARENT);
+                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : spacingSize,
+                    horizontalLine ? spacingSize : LinearLayout.LayoutParams.MATCH_PARENT);
         }
-        params.setMargins(
-                horizontalLine ? 0 : spacingSize /* left */,
-                horizontalLine ? spacingSize : 0 /* top */,
-                horizontalLine ? 0 : spacingSize /* right */,
-                horizontalLine ? spacingSize : 0 /* bottom */);
         view.setLayoutParams(params);
         viewGroup.addView(view);
     }

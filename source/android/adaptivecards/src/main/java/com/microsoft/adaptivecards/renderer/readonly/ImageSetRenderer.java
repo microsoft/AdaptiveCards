@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
@@ -16,15 +17,10 @@ import com.microsoft.adaptivecards.objectmodel.ImageSize;
 import com.microsoft.adaptivecards.objectmodel.ImageVector;
 import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistration;
 import com.microsoft.adaptivecards.renderer.layout.HorizontalFlowLayout;
-import com.microsoft.adaptivecards.renderer.IBaseCardElementRenderer;
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 4/27/2017.
- */
-
-public class ImageSetRenderer implements IBaseCardElementRenderer
+public class ImageSetRenderer extends BaseCardElementRenderer
 {
     private ImageSetRenderer()
     {
@@ -59,7 +55,9 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ImageSet object model.");
         }
 
-        IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
+        setSpacingAndSeparator(context, viewGroup, imageSet.GetSpacing(), imageSet.GetSeparator(), hostConfig, true);
+
+        ImageRenderer imageRenderer = (ImageRenderer) CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)
         {
             throw new IllegalArgumentException("No renderer registered for: " + CardElementType.Image.toString());
@@ -76,7 +74,7 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
 
             // TODO: temporary - this will be handled in the object model
             image.SetImageSize(imageSize);
-            imageRenderer.render(context, fragmentManager, horizFlowLayout, image, inputActionHandlerList, hostConfig);
+            imageRenderer.render(context, fragmentManager, horizFlowLayout, image, inputActionHandlerList, hostConfig, true);
         }
 
         viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));

@@ -85,7 +85,7 @@ public class ActionRendererRegistration
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(tag);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
 
         if (viewGroup != null)
         {

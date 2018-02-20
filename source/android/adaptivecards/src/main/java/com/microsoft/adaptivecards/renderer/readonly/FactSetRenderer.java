@@ -19,10 +19,6 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.Vector;
 
-/**
- * Created by bekao on 4/27/2017.
- */
-
 public class FactSetRenderer extends BaseCardElementRenderer
 {
     private FactSetRenderer()
@@ -39,7 +35,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig)
+    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
@@ -50,6 +46,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
                 GridLayout.spec(GridLayout.UNDEFINED),
                 GridLayout.spec(GridLayout.UNDEFINED));
+        parem.rightMargin = (int) spacing;
         textView.setLayoutParams(parem);
         return textView;
     }
@@ -73,6 +70,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
         }
 
+        setSpacingAndSeparator(context, viewGroup, factSet.GetSpacing(), factSet.GetSeparator(), hostConfig, true);
+
         GridLayout gridLayout = new GridLayout(context);
         gridLayout.setTag(factSet);
         gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -80,11 +79,12 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         FactVector factVector = factSet.GetFacts();
         long factVectorSize = factVector.size();
+        long spacing = hostConfig.getFactSet().getSpacing();
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
-            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig));
-            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig));
+            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing));
+            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0));
         }
 
         viewGroup.addView(gridLayout);

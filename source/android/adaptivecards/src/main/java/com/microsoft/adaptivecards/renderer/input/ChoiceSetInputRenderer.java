@@ -26,10 +26,6 @@ import com.microsoft.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import java.util.List;
 import java.util.Vector;
 
-/**
- * Created by bekao on 6/25/2017.
- */
-
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
     private ChoiceSetInputRenderer()
@@ -155,6 +151,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             throw new InternalError("Unable to convert BaseCardElement to ChoiceSetInput object model.");
         }
+
+        setSpacingAndSeparator(context, viewGroup, choiceSetInput.GetSpacing(), choiceSetInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         View view = null;
 

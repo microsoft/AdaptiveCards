@@ -56,6 +56,8 @@ public class TimeInputRenderer extends TextInputRenderer
             throw new InternalError("Unable to convert BaseCardElement to TimeInput object model.");
         }
 
+        setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
+
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
         EditText editText = renderInternal(
                 context,
@@ -86,7 +88,6 @@ public class TimeInputRenderer extends TextInputRenderer
             }
         });
 
-        setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
         return editText;
     }
     
