@@ -11,7 +11,6 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 
-
 using namespace AdaptiveCards;
 
 @implementation ACRImageSetUICollectionView
@@ -24,7 +23,7 @@ using namespace AdaptiveCards;
 
 - (instancetype)init:(std::shared_ptr<ImageSet> const&)imageSet
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-       WithSuperview:(UIView* )view
+       WithSuperview:(UIView *)view
   rootViewController:(UIViewController *)vc
 {
     self = [super initWithFrame:view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
@@ -39,8 +38,8 @@ using namespace AdaptiveCards;
         _vc = vc;
         CGSize sz = [ACRImageRenderer getImageSize:imageSet->GetImageSize() withHostConfig:hostConfig];
 
-        ((UICollectionViewFlowLayout* )self.collectionViewLayout).itemSize = sz;
-        ((UICollectionViewFlowLayout* )self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = sz;
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
     }
@@ -62,7 +61,7 @@ using namespace AdaptiveCards;
     static NSString *identifier = @"cellId";
     [_acoElem setElem:_imgSet->GetImages()[indexPath.row]];
 
-    UIView* content = [[ACRImageRenderer getInstance] render:nil rootViewController:_vc inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
+    UIView *content = [[ACRImageRenderer getInstance] render:nil rootViewController:_vc inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell) {

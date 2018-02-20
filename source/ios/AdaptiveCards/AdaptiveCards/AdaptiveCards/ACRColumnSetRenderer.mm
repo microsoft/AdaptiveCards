@@ -54,7 +54,7 @@
     {
         [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
         [acoColumn setElem:column];
-        curView = (UIStackView *)[columRenderer render:columnSetView rootViewController:vc inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];                                  
+        curView = (UIStackView *)[columRenderer render:columnSetView rootViewController:vc inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
         try
         {
             relativeColumnWidth = std::stoul(column->GetWidth());

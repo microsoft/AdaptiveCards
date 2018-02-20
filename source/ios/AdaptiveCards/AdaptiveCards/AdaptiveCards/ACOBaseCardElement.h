@@ -9,4 +9,4 @@
 
 @interface ACOBaseCardElement:NSObject
 
-@end    
+@end

@@ -24,7 +24,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (instancetype) init:(std::shared_ptr<HostConfig> const &) config
+- (instancetype) init:(std::shared_ptr<HostConfig> const &)config
 {
     self = [super init];
     _config = config;

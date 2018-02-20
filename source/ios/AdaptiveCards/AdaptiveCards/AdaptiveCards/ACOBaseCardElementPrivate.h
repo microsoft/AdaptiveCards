@@ -14,4 +14,4 @@ using namespace AdaptiveCards;
 - (std::shared_ptr<BaseCardElement>)getElem;
 - (void)setElem:(std::shared_ptr<BaseCardElement> const &)elem;
 
-@end    
+@end
