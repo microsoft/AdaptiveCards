@@ -152,7 +152,6 @@ using namespace AdaptiveCards;
             if(elem && elem->GetSeparator())
             {
                 separator->rgb = std::stoul(config->separator.lineColor.substr(1), nullptr, 16);
-                NSLog(@"color in hex = %lx", separator->rgb);
                 separator->lineWidth = 1;
             }
 
