@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -46,7 +47,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
         ColumnSet columnSet = null;
         if (baseCardElement instanceof ColumnSet)
@@ -74,7 +76,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
-            ((ColumnRenderer)columnRenderer).render(context, fragmentManager, layout, column, inputActionHandlerList, cardActionHandler, hostConfig);
+            columnRenderer.render(context, fragmentManager, layout, column, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle);
         }
 
         if (columnSet.GetSelectAction() != null)

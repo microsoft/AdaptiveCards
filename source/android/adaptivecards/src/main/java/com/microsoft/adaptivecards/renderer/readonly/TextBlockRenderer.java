@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
 import com.microsoft.adaptivecards.objectmodel.MarkDownParser;
 import com.microsoft.adaptivecards.renderer.Util;
@@ -107,9 +108,16 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTypeface(null, m_textWeightMap.get(textWeight));
     }
 
-    static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle)
+    static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
-        textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
+        if (containerStyle.swigValue() == ContainerStyle.Emphasis.swigValue())
+        {
+            textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getEmphasisPalette().getForegroundColors(), isSubtle));
+        }
+        else
+        {
+            textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
+        }
     }
 
     @Override
@@ -120,7 +128,8 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
         TextBlock textBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -172,7 +181,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
-        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle());
+        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), containerStyle);
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();

@@ -109,7 +109,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/border"
                             android:orientation="vertical"
-                            android:padding="0dp"></LinearLayout>
+                            ></LinearLayout>
                     </ScrollView>
                 </LinearLayout>
 
