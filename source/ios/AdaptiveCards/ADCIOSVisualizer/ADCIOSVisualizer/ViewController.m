@@ -70,7 +70,8 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];   
+    [super viewDidLoad];
+    [self registerForKeyboardNotifications];
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     self.ACVTabVC.delegate = self;
@@ -167,14 +168,22 @@
             [self.curView removeFromSuperview];
         else
         {
-            self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,0,0)];
+            self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,500,300)];
             self.scrView.showsHorizontalScrollIndicator = YES;
         }
         self.curView = adcVc.view;
         self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
         
         [self addChildViewController:adcVc];
-        [self.scrView addSubview:adcVc.view];
+        self.mainContentView = [[UIStackView alloc] init];
+        UIView *flexView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        //[self.scrView addSubview:adcVc.view];
+        [self.scrView addSubview:self.mainContentView];
+        self.mainContentView.axis = UILayoutConstraintAxisVertical;
+        [self.mainContentView addArrangedSubview:self.curView];
+        [self.mainContentView addArrangedSubview:flexView];
+        [[self.mainContentView.arrangedSubviews objectAtIndex:1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+
         [adcVc didMoveToParentViewController:self];
         self.scrView.contentSize = self.curView.frame.size;
         
@@ -182,12 +191,20 @@
         UIView *view = self.curView;
         view.translatesAutoresizingMaskIntoConstraints = NO;
         scrollview.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
-        NSArray<NSString *> *formats = [NSArray arrayWithObjects:@"H:|[view(<=scrollview)]|", @"V:|[view(>=scrollview)]|",nil];
-     
+        UIStackView *contentHoldingView = self.mainContentView;
+        NSDictionary *viewMap = NSDictionaryOfVariableBindings(contentHoldingView, scrollview);
+        NSArray<NSString *> *formats = [NSArray arrayWithObjects:@"H:|[contentHoldingView(<=scrollview)]|", @"V:|[contentHoldingView(>=scrollview)]|",nil];
         [ViewController applyConstraints:formats variables:viewMap];
     }
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    float vertialContentInset = self.scrView.frame.size.height - self.curView.frame.size.height;
+    vertialContentInset = (vertialContentInset <= 0)? 20 : vertialContentInset;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, vertialContentInset, 0.0);
+    self.scrView.contentInset = contentInsets;
 }
 
 - (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr
@@ -221,6 +238,36 @@
 - (void)didFetchHttpRequest:(NSURLRequest *)request
 {
     NSLog(@"Http Request fetched: %@", request);    
+}
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+
+}
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.scrView.contentInset = contentInsets;
+    self.scrView.scrollIndicatorInsets = contentInsets;
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrView.contentInset = contentInsets;
+    self.scrView.scrollIndicatorInsets = contentInsets;
 }
 
 @end
