@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -91,7 +92,8 @@ public class CardRendererRegistration
             BaseCardElementVector baseCardElementList,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
@@ -119,7 +121,7 @@ public class CardRendererRegistration
                 continue;
             }
 
-            renderer.render(context, fragmentManager, layout, cardElement, inputActionHandlerList, cardActionHandler, hostConfig);
+            renderer.render(context, fragmentManager, layout, cardElement, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle);
         }
 
         return layout;

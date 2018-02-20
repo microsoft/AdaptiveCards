@@ -3,6 +3,7 @@ package com.microsoft.adaptivecards.renderer;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import com.microsoft.adaptivecards.objectmodel.AdaptiveCard;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.http.HttpRequestHelper;
@@ -90,9 +92,19 @@ public class AdaptiveCardRenderer
         }
     }
 
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            AdaptiveCard adaptiveCard,
+            ICardActionHandler cardActionHandler,
+            HostConfig hostConfig)
+    {
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false);
+    }
+
     public View render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig, false);
     }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action
@@ -101,7 +113,8 @@ public class AdaptiveCardRenderer
             FragmentManager fragmentManager,
             AdaptiveCard adaptiveCard,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            boolean isInlineShowCard)
     {
         if (hostConfig == null)
         {
@@ -128,7 +141,32 @@ public class AdaptiveCardRenderer
         {
             throw new IllegalArgumentException("Adaptive Card does not contain a body.");
         }
-        View view = CardRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseCardElementList, inputHandlerList, cardActionHandler, hostConfig);
+
+        ContainerStyle style = ContainerStyle.Default;
+
+        if (isInlineShowCard && hostConfig.getActions().getShowCard().getStyle().swigValue() != ContainerStyle.None.swigValue())
+        {
+            style = hostConfig.getActions().getShowCard().getStyle();
+        }
+
+        if (hostConfig.getAdaptiveCard().getAllowCustomStyle() && adaptiveCard.GetStyle().swigValue() != ContainerStyle.None.swigValue())
+        {
+            style = adaptiveCard.GetStyle();
+        }
+
+        String color;
+        if (style.swigValue() == ContainerStyle.Default.swigValue())
+        {
+            color = hostConfig.getContainerStyles().getDefaultPalette().getBackgroundColor();
+        }
+        else
+        {
+            color = hostConfig.getContainerStyles().getEmphasisPalette().getBackgroundColor();
+        }
+
+        layout.setBackgroundColor(Color.parseColor(color));
+
+        CardRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseCardElementList, inputHandlerList, cardActionHandler, hostConfig, style);
 
         // Actions are optional
         BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -44,25 +45,24 @@ public class ColumnRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
-        throw new InternalError("Default renderer unsupported by Column Renderer.");
-    }
+        Column column;
+        if (baseCardElement instanceof Column)
+        {
+            column = (Column) baseCardElement;
+        }
+        else if ((column = Column.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
+        }
 
-    public View render(
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            Column column,
-            Vector<IInputHandler> inputActionHandlerList,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
-    {
         LinearLayout.LayoutParams layoutParams;
         BaseCardElementVector baseCardElementVector = column.GetItems();
         setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, cardActionHandler, hostConfig);
+        View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle);
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
 
 

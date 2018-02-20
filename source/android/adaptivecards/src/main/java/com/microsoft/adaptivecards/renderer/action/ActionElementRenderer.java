@@ -160,7 +160,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig);
-        button.setTextSize(hostConfig.getFontSizes().getDefaultFontSize());
+
         if (baseActionElement.GetElementType().swigValue() == ActionType.ShowCard.swigValue()
                 && hostConfig.getActions().getShowCard().getActionMode().swigValue() == ActionMode.Inline.swigValue())
         {
@@ -175,7 +175,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
             }
 
-            View invisibleCard = AdaptiveCardRenderer.getInstance().render(context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig);
+            View invisibleCard = AdaptiveCardRenderer.getInstance().render(context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig, true);
             invisibleCard.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()), 0, 0);

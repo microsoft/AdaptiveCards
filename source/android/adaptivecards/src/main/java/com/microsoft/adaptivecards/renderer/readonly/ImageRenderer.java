@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -141,9 +142,10 @@ public class ImageRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
-        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, cardActionHandler, hostConfig, false);
+        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle, false);
     }
 
     public View render(
@@ -154,6 +156,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
+            ContainerStyle containerStyle,
             boolean isPartOfImageSet)
     {
         Image image;
