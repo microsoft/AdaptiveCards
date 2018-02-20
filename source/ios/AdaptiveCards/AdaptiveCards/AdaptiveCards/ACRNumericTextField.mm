@@ -41,4 +41,5 @@
 {
     dictionary[self.id] = self.text;
 }
+
 @end

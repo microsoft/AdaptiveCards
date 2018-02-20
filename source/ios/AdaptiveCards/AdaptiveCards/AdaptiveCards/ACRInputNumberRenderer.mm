@@ -40,6 +40,13 @@ rootViewController:(UIViewController *)vc
     numInput.keyboardType = UIKeyboardTypeNumberPad;
     numInput.min = numInputBlck->GetMin();
     numInput.max = numInputBlck->GetMax();
+    CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:numInput action:@selector(dismissNumPad)];
+    [toolBar setItems:@[doneButton, flexSpace] animated:NO];
+    [toolBar sizeToFit];
+    numInput.inputAccessoryView = toolBar;
 
     [viewGroup addArrangedSubview: numInput];
 

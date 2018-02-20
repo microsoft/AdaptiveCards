@@ -40,6 +40,7 @@ rootViewController:(UIViewController *)vc
     txtInput.allowsEditingTextAttributes = YES;
     txtInput.borderStyle = UITextBorderStyleLine;
     txtInput.isRequired  = inputBlck->GetIsRequired();
+    txtInput.delegate = txtInput;
 
     switch(inputBlck->GetTextInputStyle())
     {
@@ -56,6 +57,13 @@ rootViewController:(UIViewController *)vc
         case TextInputStyle::Tel:
         {
             txtInput.keyboardType = UIKeyboardTypePhonePad;
+            CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
+            UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtInput action:@selector(dismissNumPad)];
+            [toolBar setItems:@[doneButton, flexSpace] animated:NO];
+            [toolBar sizeToFit];
+            txtInput.inputAccessoryView = toolBar;
             break;
         }
         case TextInputStyle::Url:
