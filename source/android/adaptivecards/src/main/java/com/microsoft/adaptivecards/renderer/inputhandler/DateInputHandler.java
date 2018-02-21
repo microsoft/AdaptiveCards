@@ -4,11 +4,12 @@ import android.support.v4.app.FragmentManager;
 import android.widget.EditText;
 
 import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
-import com.microsoft.adaptivecards.objectmodel.DateInput;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class DateInputHandler extends TextInputHandler
 {
@@ -31,8 +32,22 @@ public class DateInputHandler extends TextInputHandler
         super.internalValidate();
     }
 
+    @Override
+    public Exception getData(Map<String, String> data)
+    {
+        EditText editText = getEditText();
+        try {
+            Date date = DateFormat.getDateInstance().parse(editText.getText().toString());
+            data.put(m_baseInputElement.GetId(), s_simpleDateFormat.format(date));
+        } catch (ParseException e) {
+            return new Exception("Input.Time text is not a valid time");
+        }
+
+        return null;
+    }
+
     private FragmentManager m_fragmentManager;
 
-    public static final String DATE_FORMAT = "M/d/yyyy";
-    public static SimpleDateFormat s_simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static DateFormat s_simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
 }

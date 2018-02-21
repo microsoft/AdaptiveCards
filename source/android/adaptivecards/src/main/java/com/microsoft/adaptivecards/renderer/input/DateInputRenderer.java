@@ -14,6 +14,9 @@ import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.DateInput;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
@@ -57,11 +60,21 @@ public class DateInputRenderer extends TextInputRenderer
         setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
+
+        String dateString = "";
+
+        try {
+            Date date = DateInputHandler.s_simpleDateFormat.parse(dateInput.GetValue());
+            dateString = DateFormat.getDateInstance().format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         EditText editText = renderInternal(
                 context,
                 viewGroup,
                 dateInput,
-                dateInput.GetValue(),
+                dateString,
                 dateInput.GetPlaceholder(),
                 dateInputHandler,
                 inputActionHandlerList,
