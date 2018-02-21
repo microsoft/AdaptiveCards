@@ -137,6 +137,24 @@
     CGSize cgsize = [ACRImageRenderer getImageSize:imgElem->GetImageSize() withHostConfig:config];
     UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
+    
+    // Add width/height constraints so image is resized accordingly
+    [view addConstraints:@[
+                           [NSLayoutConstraint constraintWithItem:view
+                                                        attribute:NSLayoutAttributeWidth
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1.0
+                                                         constant:cgsize.width],
+                           [NSLayoutConstraint constraintWithItem:view
+                                                        attribute:NSLayoutAttributeHeight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1.0
+                                                         constant:cgsize.height]
+                           ]];
 
     NSMutableDictionary *imageViewMap = [(ACRViewController *)vc getImageMap];
     __block UIImage *img = nil;
