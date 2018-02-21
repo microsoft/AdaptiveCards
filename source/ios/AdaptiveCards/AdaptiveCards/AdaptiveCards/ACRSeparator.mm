@@ -147,11 +147,11 @@ using namespace AdaptiveCards;
         if(separator)
         {
             // Shared model has not implemented support
-            separator->width  = spacing;
+            separator->width = spacing;
             separator->height = spacing;
             if(elem && elem->GetSeparator())
             {
-                separator->rgb		 = 0xB2000000;
+                separator->rgb = std::stoul(config->separator.lineColor.substr(1), nullptr, 16);
                 separator->lineWidth = 1;
             }
 
@@ -210,9 +210,9 @@ using namespace AdaptiveCards;
     UIBezierPath *path = [UIBezierPath bezierPath];
     if(path)
     {
-        [path moveToPoint:   orig];
+        [path moveToPoint:orig];
         [path addLineToPoint:dest];
-        path.lineWidth =      self->lineWidth;
+        path.lineWidth = self->lineWidth;
 
         [[UIColor colorWithRed:((self->rgb & 0x00FF0000)>> 16)/ 255.0
                          green:((self->rgb & 0x0000FF00)>> 8)/ 255.0

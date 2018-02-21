@@ -189,9 +189,10 @@ using namespace AdaptiveCards;
                         std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(txtElem->GetText().c_str());
                         NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
-                        // Font and text size are applied as CSS style by appending it to the html string -- font is hard coded for now
+                        // Font and text size are applied as CSS style by appending it to the html string
+                        NSString *fontFamily = [NSString stringWithCString:_hostConfig->fontFamily.c_str() encoding:NSUTF8StringEncoding];
                         parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx;}</style>",
-                                                                              @"verdana", [ACRTextBlockRenderer getTextBlockTextSize:txtElem->GetTextSize() withHostConfig:_hostConfig]]];
+                                                                              fontFamily, [ACRTextBlockRenderer getTextBlockTextSize:txtElem->GetTextSize() withHostConfig:_hostConfig]]];
                         // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
                         NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
                         NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
