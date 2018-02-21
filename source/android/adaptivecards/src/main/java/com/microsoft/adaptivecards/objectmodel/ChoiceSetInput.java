@@ -73,6 +73,14 @@ public class ChoiceSetInput extends BaseInputElement {
     return new ChoiceInputVector(AdaptiveCardObjectModelJNI.ChoiceSetInput_GetChoices__SWIG_0(swigCPtr, this), false);
   }
 
+  public String GetValue() {
+    return AdaptiveCardObjectModelJNI.ChoiceSetInput_GetValue(swigCPtr, this);
+  }
+
+  public void SetValue(String value) {
+    AdaptiveCardObjectModelJNI.ChoiceSetInput_SetValue(swigCPtr, this, value);
+  }
+
   public static ChoiceSetInput dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.ChoiceSetInput_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new ChoiceSetInput(cPtr, true);
