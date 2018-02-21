@@ -91,7 +91,7 @@
     self.editView.directionalLockEnabled = NO;
     [self.view addSubview:self.editView];
 
-    UIStackView *buttonLayout = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, 500, 30)];
+    UIStackView *buttonLayout = [[UIStackView alloc] init];
     self.buttonLayout = buttonLayout;
 
     // try button
@@ -135,7 +135,7 @@
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, scrollview, buttonLayout);
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]|",
+                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40-|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
@@ -168,21 +168,14 @@
             [self.curView removeFromSuperview];
         else
         {
-            self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,500,300)];
+            self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,0,0)];
             self.scrView.showsHorizontalScrollIndicator = YES;
         }
         self.curView = adcVc.view;
         self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
         
         [self addChildViewController:adcVc];
-        self.mainContentView = [[UIStackView alloc] initWithFrame:CGRectMake(0,0,500,300)];
-        UIView *flexView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        //[self.scrView addSubview:adcVc.view];
-        [self.scrView addSubview:self.mainContentView];
-        self.mainContentView.axis = UILayoutConstraintAxisVertical;
-        [self.mainContentView addArrangedSubview:self.curView];
-        //[self.mainContentView addArrangedSubview:flexView];
-        //[[self.mainContentView.arrangedSubviews objectAtIndex:1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        [self.scrView addSubview:adcVc.view];
 
         [adcVc didMoveToParentViewController:self];
         self.scrView.contentSize = self.curView.frame.size;
@@ -191,9 +184,8 @@
         UIView *view = self.curView;
         view.translatesAutoresizingMaskIntoConstraints = NO;
         scrollview.translatesAutoresizingMaskIntoConstraints = NO;
-        UIStackView *contentHoldingView = self.mainContentView;
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(contentHoldingView, scrollview);
-        NSArray<NSString *> *formats = [NSArray arrayWithObjects:@"H:|[contentHoldingView(<=scrollview)]|", @"V:|[contentHoldingView(>=scrollview)]|",nil];
+        NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
+        NSArray<NSString *> *formats = [NSArray arrayWithObjects:@"H:|[view(<=scrollview)]|", @"V:|[view(>=scrollview)]|",nil];
         [ViewController applyConstraints:formats variables:viewMap];
     }
 }
