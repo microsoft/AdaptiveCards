@@ -11,7 +11,7 @@ using namespace AdaptiveCards;
 
 @interface ACOBaseCardElement()
 
-- (std::shared_ptr<BaseCardElement>)getElem;
+- (std::shared_ptr<BaseCardElement>)element;
 - (void)setElem:(std::shared_ptr<BaseCardElement> const &)elem;
 
 @end

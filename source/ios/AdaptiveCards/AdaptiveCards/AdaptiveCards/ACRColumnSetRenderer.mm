@@ -35,7 +35,7 @@
         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseCardElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
     ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] init];

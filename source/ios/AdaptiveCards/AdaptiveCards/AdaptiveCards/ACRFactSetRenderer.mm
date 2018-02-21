@@ -60,7 +60,7 @@ rootViewController:(UIViewController *)vc
         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseCardElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(elem);
 
     UIStackView *titleStack = [[UIStackView alloc] init];

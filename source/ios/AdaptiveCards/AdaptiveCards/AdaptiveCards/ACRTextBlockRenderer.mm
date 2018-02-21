@@ -33,7 +33,7 @@ rootViewController:(UIViewController *)vc
         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseCardElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel *lab = [[UILabel alloc] init];
     __block NSMutableAttributedString *content = nil;

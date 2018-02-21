@@ -35,7 +35,7 @@
 {
 
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseCardElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
     ContainerStyle style = ContainerStyle::Default;

@@ -30,7 +30,7 @@ rootViewController:(UIViewController *)vc
         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseCardElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<BaseInputElement> timeInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *field = [[ACRDateTextField alloc] initWithTimeDateInput:timeInput dateStyle:NSDateFormatterNoStyle];
 

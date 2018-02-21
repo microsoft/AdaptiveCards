@@ -35,7 +35,7 @@ rootViewController:(UIViewController *)vc
         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseCardElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
 
     ACRInputTableView *inputView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];

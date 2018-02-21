@@ -33,7 +33,7 @@ using namespace AdaptiveCards;
         self.delegate = self;
         self.backgroundColor = UIColor.clearColor;
         _acoElem = [[ACOBaseCardElement alloc] init];
-        _acoConfig = [[ACOHostConfig alloc] init:hostConfig];
+        _acoConfig = [[ACOHostConfig alloc] initWithConfig:hostConfig];
         _imgSet = imageSet;
         _vc = vc;
         CGSize sz = [ACRImageRenderer getImageSize:imageSet->GetImageSize() withHostConfig:hostConfig];
