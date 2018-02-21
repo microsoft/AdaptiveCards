@@ -45,7 +45,7 @@
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
 
     UIView *prevView = nil, *curView = nil;
-    long relativeColumnWidth = 0, prevRelColumnWidth = 0;
+    float relativeColumnWidth = 0, prevRelColumnWidth = 0;
     float multiplier = 1.0;
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
 
@@ -57,9 +57,9 @@
         curView = (UIStackView *)[columRenderer render:columnSetView rootViewController:vc inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
         try
         {
-            relativeColumnWidth = std::stoul(column->GetWidth());
+            relativeColumnWidth = std::stof(column->GetWidth());
             if(prevRelColumnWidth)
-                multiplier = ((float)relativeColumnWidth) / prevRelColumnWidth;
+                multiplier = relativeColumnWidth / prevRelColumnWidth;
         }
         catch(...){ ;}
 
