@@ -27,4 +27,16 @@
 {
     dictionary[self.id] = self.text;
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self resignFirstResponder];
+    return YES;
+}
+
+- (void)dismissNumPad
+{
+    [self resignFirstResponder];
+}
+
 @end
