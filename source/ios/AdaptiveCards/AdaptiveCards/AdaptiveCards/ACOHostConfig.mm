@@ -24,6 +24,13 @@ using namespace AdaptiveCards;
     return self;
 }
 
+- (instancetype)initWithConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    self = [super init];
+    _config = config;
+    return self;
+}
+
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 {
     ACOHostConfigParseResult *result = nil;

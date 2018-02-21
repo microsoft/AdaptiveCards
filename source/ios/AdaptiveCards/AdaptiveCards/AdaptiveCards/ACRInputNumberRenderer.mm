@@ -9,6 +9,8 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRNumericTextField.h"
 #import "NumberInput.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 
 @implementation ACRInputNumberRenderer
 
@@ -26,9 +28,11 @@
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
 rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<NumberInput> numInputBlck = std::dynamic_pointer_cast<NumberInput>(elem);
     ACRNumericTextField *numInput = [[ACRNumericTextField alloc] init];
     numInput.id = [NSString stringWithCString:numInputBlck->GetId().c_str()

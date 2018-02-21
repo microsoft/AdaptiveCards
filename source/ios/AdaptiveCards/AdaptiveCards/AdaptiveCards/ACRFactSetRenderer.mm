@@ -11,6 +11,8 @@
 #import "ACRSeparator.h"
 #import "ACRColumnSetView.h"
 #import "FactSet.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 
 @implementation ACRFactSetRenderer
 
@@ -54,9 +56,11 @@
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
 rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(elem);
 
     UIStackView *titleStack = [[UIStackView alloc] init];

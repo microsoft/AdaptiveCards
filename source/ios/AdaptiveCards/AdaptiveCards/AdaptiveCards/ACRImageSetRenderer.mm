@@ -8,6 +8,8 @@
 #import <UIKit/UIKit.h>
 #import "ACRImageSetRenderer.h"
 #import "ACRImageSetUICollectionView.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 #import "ImageSet.h"
 #import "SharedAdaptiveCard.h"
 
@@ -29,9 +31,11 @@ using namespace AdaptiveCards;
 - (UIView *)render:(UIView *)viewGroup
 rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ImageSet>imgSetElem = std::dynamic_pointer_cast<ImageSet>(elem);
     ACRImageSetUICollectionView *view = [[ACRImageSetUICollectionView alloc] init:imgSetElem
                                                                    WithHostConfig:config

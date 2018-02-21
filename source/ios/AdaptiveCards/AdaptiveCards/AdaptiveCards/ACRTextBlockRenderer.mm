@@ -10,6 +10,8 @@
 #import "TextBlock.h"
 #import "MarkDownParser.h"
 #import "ACRViewController.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 
 @implementation ACRTextBlockRenderer
 
@@ -27,9 +29,11 @@
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
 rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel *lab = [[UILabel alloc] init];
     __block NSMutableAttributedString *content = nil;

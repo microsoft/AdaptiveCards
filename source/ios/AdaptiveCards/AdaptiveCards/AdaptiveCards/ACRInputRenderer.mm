@@ -9,6 +9,8 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRTextField.h"
 #import "TextInput.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 
 @implementation ACRInputRenderer
 
@@ -26,9 +28,11 @@
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
 rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
     ACRTextField *txtInput = [[ACRTextField alloc] init];
     NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()

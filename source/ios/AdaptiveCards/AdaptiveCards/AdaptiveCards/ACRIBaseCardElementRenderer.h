@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#include "BaseCardElement.h"
-#include "HostConfig.h"
-#include "ACRContentStackView.h"
+#import "ACRContentStackView.h"
+#import "ACOHostConfig.h"
+#import "ACOBaseCardElement.h"
 
 using namespace AdaptiveCards;
 
@@ -21,6 +21,6 @@ using namespace AdaptiveCards;
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             rootViewController:(UIViewController *)vc
             inputs:(NSArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config;
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 @end

@@ -8,19 +8,22 @@
 #import <Foundation/Foundation.h>
 #import "ACRImageSetUICollectionView.h"
 #import "ACRImageRenderer.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRImageSetUICollectionView
 {
+    ACOBaseCardElement *_acoElem;
+    ACOHostConfig *_acoConfig;
     std::shared_ptr<ImageSet> _imgSet;
-    std::shared_ptr<HostConfig> _config;
     UIViewController* _vc;
 }
 
 - (instancetype)init:(std::shared_ptr<ImageSet> const&)imageSet
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-       WithSuperview:(UIView* )view
+       WithSuperview:(UIView *)view
   rootViewController:(UIViewController *)vc
 {
     self = [super initWithFrame:view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
@@ -29,13 +32,14 @@ using namespace AdaptiveCards;
         self.dataSource = self;
         self.delegate = self;
         self.backgroundColor = UIColor.clearColor;
+        _acoElem = [[ACOBaseCardElement alloc] init];
+        _acoConfig = [[ACOHostConfig alloc] initWithConfig:hostConfig];
         _imgSet = imageSet;
-        _config = hostConfig;
         _vc = vc;
-        CGSize sz = [ACRImageRenderer getImageSize:imageSet->GetImageSize() withHostConfig:_config];
+        CGSize sz = [ACRImageRenderer getImageSize:imageSet->GetImageSize() withHostConfig:hostConfig];
 
-        ((UICollectionViewFlowLayout* )self.collectionViewLayout).itemSize = sz;
-        ((UICollectionViewFlowLayout* )self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = sz;
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
     }
@@ -55,12 +59,9 @@ using namespace AdaptiveCards;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"cellId";
+    [_acoElem setElem:_imgSet->GetImages()[indexPath.row]];
 
-    UIView* content = [[ACRImageRenderer getInstance] render:nil
-                                          rootViewController:_vc
-                                                      inputs:nil
-                                                withCardElem:_imgSet->GetImages()[indexPath.row]
-                                               andHostConfig:_config];
+    UIView *content = [[ACRImageRenderer getInstance] render:nil rootViewController:_vc inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell) {

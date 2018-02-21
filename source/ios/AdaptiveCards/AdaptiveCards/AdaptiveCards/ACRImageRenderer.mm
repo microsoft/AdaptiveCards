@@ -12,6 +12,8 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRViewController.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 
 @implementation ACRImageRenderer
 
@@ -125,9 +127,11 @@
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
-      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+   baseCardElement:(ACOBaseCardElement *)acoElem
+        hostConfig:(ACOHostConfig *)acoConfig;
 {
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
 
     CGSize cgsize = [ACRImageRenderer getImageSize:imgElem->GetImageSize() withHostConfig:config];

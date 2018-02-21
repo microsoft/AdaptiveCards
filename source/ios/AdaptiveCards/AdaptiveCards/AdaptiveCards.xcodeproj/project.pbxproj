@@ -70,6 +70,9 @@
 		F42979471F322C9000E89914 /* ACRNumericTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F42979451F322C9000E89914 /* ACRNumericTextField.h */; };
 		F429794A1F323BA700E89914 /* ACRDateTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F42979481F323BA700E89914 /* ACRDateTextField.h */; };
 		F429794D1F32684900E89914 /* ACRDateTextField.mm in Sources */ = {isa = PBXBuildFile; fileRef = F429794C1F32684900E89914 /* ACRDateTextField.mm */; };
+		F42C2F482035192F008787B0 /* ACOBaseCardElement.h in Headers */ = {isa = PBXBuildFile; fileRef = F42C2F472035192E008787B0 /* ACOBaseCardElement.h */; };
+		F42C2F4A20351954008787B0 /* ACOBaseCardElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = F42C2F4920351954008787B0 /* ACOBaseCardElement.mm */; };
+		F42C2F4C20351A8E008787B0 /* ACOBaseCardElementPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = F42C2F4B20351A8E008787B0 /* ACOBaseCardElementPrivate.h */; };
 		F42E51731FEC3840008F9642 /* MarkDownParsedResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E516B1FEC383E008F9642 /* MarkDownParsedResult.h */; };
 		F42E51741FEC3840008F9642 /* MarkDownBlockParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F42E516C1FEC383E008F9642 /* MarkDownBlockParser.cpp */; };
 		F42E51751FEC3840008F9642 /* MarkDownHtmlGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E516D1FEC383F008F9642 /* MarkDownHtmlGenerator.h */; };
@@ -263,6 +266,9 @@
 		F42979451F322C9000E89914 /* ACRNumericTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRNumericTextField.h; sourceTree = "<group>"; };
 		F42979481F323BA700E89914 /* ACRDateTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRDateTextField.h; sourceTree = "<group>"; };
 		F429794C1F32684900E89914 /* ACRDateTextField.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRDateTextField.mm; sourceTree = "<group>"; };
+		F42C2F472035192E008787B0 /* ACOBaseCardElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOBaseCardElement.h; sourceTree = "<group>"; };
+		F42C2F4920351954008787B0 /* ACOBaseCardElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOBaseCardElement.mm; sourceTree = "<group>"; };
+		F42C2F4B20351A8E008787B0 /* ACOBaseCardElementPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOBaseCardElementPrivate.h; sourceTree = "<group>"; };
 		F42E516B1FEC383E008F9642 /* MarkDownParsedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarkDownParsedResult.h; path = ../../../../shared/cpp/ObjectModel/MarkDownParsedResult.h; sourceTree = "<group>"; };
 		F42E516C1FEC383E008F9642 /* MarkDownBlockParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MarkDownBlockParser.cpp; path = ../../../../shared/cpp/ObjectModel/MarkDownBlockParser.cpp; sourceTree = "<group>"; };
 		F42E516D1FEC383F008F9642 /* MarkDownHtmlGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarkDownHtmlGenerator.h; path = ../../../../shared/cpp/ObjectModel/MarkDownHtmlGenerator.h; sourceTree = "<group>"; };
@@ -457,6 +463,7 @@
 				F42979351F3007DF00E89914 /* Layouts */,
 				F423C0B81EE1FBAA00905679 /* ACFramework.h */,
 				F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */,
+				F42C2F472035192E008787B0 /* ACOBaseCardElement.h */,
 				F423C1481EE1FFF100905679 /* ACRViewController.h */,
 				F423C1491EE1FFF100905679 /* ACRViewController.mm */,
 				F4CAE77F1F75AB9000545555 /* ACOAdaptiveCard.h */,
@@ -628,8 +635,10 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
-				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
 				F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */,
+				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
+				F42C2F4B20351A8E008787B0 /* ACOBaseCardElementPrivate.h */,
+				F42C2F4920351954008787B0 /* ACOBaseCardElement.mm */,
 				F4CAE7811F75AB9000545555 /* ACOAdaptiveCardPrivate.h */,
 				F4CAE7851F75B25C00545555 /* ACRRendererPrivate.h */,
 				F4CAE77D1F748AF200545555 /* ACOHostConfigPrivate.h */,
@@ -729,6 +738,7 @@
 				F43A94141F1EED6D0001920B /* ACRInputRenderer.h in Headers */,
 				F44873061EE2261F00FCAFAE /* Container.h in Headers */,
 				F4CAE7861F75B25C00545555 /* ACRRendererPrivate.h in Headers */,
+				F42C2F482035192F008787B0 /* ACOBaseCardElement.h in Headers */,
 				F42741161EF895AB00399FBB /* ACRTextBlockRenderer.h in Headers */,
 				F429793E1F3155EF00E89914 /* ACRTextField.h in Headers */,
 				F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */,
@@ -758,6 +768,7 @@
 				F4C1F5DD1F218F920018CB78 /* ACRInputNumberRenderer.h in Headers */,
 				F44873221EE2261F00FCAFAE /* SubmitAction.h in Headers */,
 				F42E51791FEC3840008F9642 /* MarkDownParser.h in Headers */,
+				F42C2F4C20351A8E008787B0 /* ACOBaseCardElementPrivate.h in Headers */,
 				F448730C1EE2261F00FCAFAE /* Fact.h in Headers */,
 				6B1147D81F32F922008846EC /* ACRShowCardTarget.h in Headers */,
 				F4FE456E1F1985200071D9E5 /* ACRColumnSetView.h in Headers */,
@@ -987,6 +998,7 @@
 				F448731A1EE2261F00FCAFAE /* OpenUrlAction.cpp in Sources */,
 				F4CAE7831F75AB9000545555 /* ACOAdaptiveCard.mm in Sources */,
 				6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */,
+				F42C2F4A20351954008787B0 /* ACOBaseCardElement.mm in Sources */,
 				F4CA74A02016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.mm in Sources */,
 				F42741171EF895AB00399FBB /* ACRTextBlockRenderer.mm in Sources */,
 				F44873231EE2261F00FCAFAE /* TextBlock.cpp in Sources */,
