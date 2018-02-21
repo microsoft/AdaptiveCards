@@ -128,6 +128,7 @@
     [self.view addSubview:self.scrView];
     [self.scrView addSubview:self.curView];
     UIScrollView *scrollview = self.scrView;
+    scrollview.showsVerticalScrollIndicator = YES;
     UIView *view = self.curView;
     view.translatesAutoresizingMaskIntoConstraints = NO;
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
@@ -135,7 +136,7 @@
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, scrollview, buttonLayout);
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40-|",
+                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-20-|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
@@ -190,7 +191,7 @@
     }
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     float vertialContentInset = self.scrView.frame.size.height - self.curView.frame.size.height;
