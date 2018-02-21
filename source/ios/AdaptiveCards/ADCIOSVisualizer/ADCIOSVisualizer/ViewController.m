@@ -91,7 +91,7 @@
     self.editView.directionalLockEnabled = NO;
     [self.view addSubview:self.editView];
 
-    UIStackView *buttonLayout = [[UIStackView alloc] init];
+    UIStackView *buttonLayout = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, 500, 30)];
     self.buttonLayout = buttonLayout;
 
     // try button
@@ -175,14 +175,14 @@
         self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
         
         [self addChildViewController:adcVc];
-        self.mainContentView = [[UIStackView alloc] init];
+        self.mainContentView = [[UIStackView alloc] initWithFrame:CGRectMake(0,0,500,300)];
         UIView *flexView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         //[self.scrView addSubview:adcVc.view];
         [self.scrView addSubview:self.mainContentView];
         self.mainContentView.axis = UILayoutConstraintAxisVertical;
         [self.mainContentView addArrangedSubview:self.curView];
-        [self.mainContentView addArrangedSubview:flexView];
-        [[self.mainContentView.arrangedSubviews objectAtIndex:1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        //[self.mainContentView addArrangedSubview:flexView];
+        //[[self.mainContentView.arrangedSubviews objectAtIndex:1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
 
         [adcVc didMoveToParentViewController:self];
         self.scrView.contentSize = self.curView.frame.size;
