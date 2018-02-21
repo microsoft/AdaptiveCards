@@ -15,6 +15,9 @@ import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.TimeInput;
 import com.microsoft.adaptivecards.renderer.inputhandler.TimeInputHandler;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
@@ -59,11 +62,20 @@ public class TimeInputRenderer extends TextInputRenderer
         setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
+        String time = "";
+
+        try {
+            Date date = TimeInputHandler.s_simpleDateFormat.parse(timeInput.GetValue());
+            time = DateFormat.getTimeInstance().format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         EditText editText = renderInternal(
                 context,
                 viewGroup,
                 timeInput,
-                timeInput.GetValue(),
+                time,
                 timeInput.GetPlaceholder(),
                 timeInputHandler,
                 inputActionHandlerList,
@@ -75,9 +87,8 @@ public class TimeInputRenderer extends TextInputRenderer
             public void onClick(View v)
             {
                 TimeInputHandler timeInputHandler = (TimeInputHandler) v.getTag();
-                TimeInput timeInput = (TimeInput) timeInputHandler.getBaseInputElement();
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
-                timePickerFragment.initialize(timeInput, (EditText) v);
+                timePickerFragment.initialize((EditText) v);
                 Bundle args = new Bundle();
                 args.putString("title", TITLE);
                 timePickerFragment.setArguments(args);
