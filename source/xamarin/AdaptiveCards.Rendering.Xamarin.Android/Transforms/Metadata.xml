@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<metadata>
-  <!-- Normalize the namespace for .NET -->
-  <attr path="/api/package[starts-with(@name, 'com.microsoft.adaptivecards')]"
-        name="managedName">AdaptiveCards.Rendering.Android</attr>
-  <!--
-  This sample removes the class: android.support.v4.content.AsyncTaskLoader.LoadTask:
-  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='AsyncTaskLoader.LoadTask']" />
-  
-  This sample removes the method: android.support.v4.content.CursorLoader.loadInBackground:
-  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
-  -->
-
+﻿<metadata>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards']" name="managedName">Microsoft.AdaptiveCards</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.objectmodel']" name="managedName">Microsoft.AdaptiveCards.ObjectModel</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer']" name="managedName">Microsoft.AdaptiveCards.Renderer</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.action']" name="managedName">Microsoft.AdaptiveCards.Renderer.Action</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.actionhandler']" name="managedName">Microsoft.AdaptiveCards.Renderer.ActionHandler</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.http']" name="managedName">Microsoft.AdaptiveCards.Renderer.Http</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.input']" name="managedName">Microsoft.AdaptiveCards.Renderer.Input</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.inputhandler']" name="managedName">Microsoft.AdaptiveCards.Renderer.InputHandler</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.layout']" name="managedName">Microsoft.AdaptiveCards.Renderer.Layout</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.readonly']" name="managedName">Microsoft.AdaptiveCards.Renderer.Readonly</attr>
+  <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.registration']" name="managedName">Microsoft.AdaptiveCards.Renderer.Registration</attr>
+  <remove-node path="/api/package[@name='com.microsoft.adaptivecards.renderer.readonly']/class[@name='ColumnRenderer']"/>
 </metadata>
