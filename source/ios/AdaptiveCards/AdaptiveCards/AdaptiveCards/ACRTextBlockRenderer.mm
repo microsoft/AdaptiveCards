@@ -65,7 +65,7 @@ rootViewController:(UIViewController *)vc
                                                                          config->containerStyles.defaultPalette.foregroundColors;
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
+        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextStrokeWidthForWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
         lab.attributedText = content;
 
         std::string id = txtBlck->GetId();
@@ -183,7 +183,7 @@ rootViewController:(UIViewController *)vc
     }
 }
 
-+ (NSNumber *)getTextBlockTextWeight:(TextWeight)weight
++ (NSNumber *)getTextStrokeWidthForWeight:(TextWeight)weight
                       withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (weight) {
@@ -193,6 +193,20 @@ rootViewController:(UIViewController *)vc
             return @1;
         case TextWeight::Bolder:
             return @-2;
+    }
+}
+
++ (int)getTextBlockFontWeight:(TextWeight)weight
+               withHostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    switch (weight) {
+        default:
+        case TextWeight::Default:
+            return config->fontWeights.defaultWeight;
+        case TextWeight::Lighter:
+            return config->fontWeights.lighterWeight;
+        case TextWeight::Bolder:
+            return config->fontWeights.bolderWeight;
     }
 }
 
