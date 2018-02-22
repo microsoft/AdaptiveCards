@@ -19,6 +19,9 @@ import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.objectmodel.*;
 import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -247,9 +250,29 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return true;
     }
 
-    private void onSubmit(Map<String, String> keyValueMap)
-    {
-        showToast("Submit: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+    private void onSubmit(BaseActionElement actionElement, Map<String, String> keyValueMap) {
+        SubmitAction submitAction = null;
+        if (actionElement instanceof SubmitAction) {
+            submitAction = (SubmitAction) actionElement;
+        } else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null) {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        String data = submitAction.GetDataJson();
+        if (!data.isEmpty())
+        {
+            try {
+                JSONObject object = new JSONObject(data);
+                showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+            } catch (JSONException e) {
+                //e.printStackTrace();
+                showToast(e.toString(), Toast.LENGTH_LONG);
+            }
+        }
+        else
+        {
+            showToast("Submit input: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+        }
     }
 
     private void onShowCard(BaseActionElement actionElement)
@@ -265,13 +288,18 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         ShowCardFragment showCardFragment = new ShowCardFragment();
-        HostConfig config = new HostConfig();
-        config.getFontSizes().setSmallFontSize(1);
-        config.getFontSizes().setMediumFontSize(1);
-        config.getFontSizes().setLargeFontSize(1);
-        config.getFontSizes().setExtraLargeFontSize(1);
+        String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
+        HostConfig hostConfig;
+        if (hostConfigText.isEmpty())
+        {
+            hostConfig = new HostConfig();
+        }
+        else
+        {
+            hostConfig = HostConfig.DeserializeFromString(hostConfigText);
+        }
 
-        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, config);
+        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, hostConfig);
         Bundle args = new Bundle();
         args.putString("title", showCardAction.GetTitle());
         showCardFragment.setArguments(args);
@@ -302,7 +330,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         int actionType = actionElement.GetElementType().swigValue();
         if (actionType == ActionType.Submit.swigValue())
         {
-            onSubmit(inputData);
+            onSubmit(actionElement, inputData);
         }
         else if (actionType == ActionType.ShowCard.swigValue())
         {
