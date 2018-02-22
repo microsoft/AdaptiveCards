@@ -1,13 +1,13 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using Com.Microsoft.Adaptivecards.Objectmodel;
-using Com.Microsoft.Adaptivecards.Renderer.Actionhandler;
-using Com.Microsoft.Adaptivecards.Renderer;
 using Android.Support.V4.App;
 using System.Collections.Generic;
 using System.Net.Http;
 using System;
+
+using AdaptiveCards.Rendering.Android;
+using AdaptiveCards.BotConnection;
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
@@ -15,23 +15,12 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : FragmentActivity, IShowCardActionHandler, ISubmitActionHandler
     {
+        private PayloadRetriever m_payloadRetriever = null;
+
         public MainActivity()
         {
             Java.Lang.Runtime.GetRuntime().LoadLibrary("adaptivecards-native-lib");
         }
-
-  
-        string card = @"
-{
-    ""type"": ""AdaptiveCard"",
-    ""version"": ""1.0"",
-    ""body"": [
-        {
-            ""type"": ""TextBlock"",
-            ""text"": ""Hello""
-        }
-    ]
-}";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,12 +29,15 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            m_payloadRetriever = new PayloadRetriever();
+
             Button button = FindViewById<Button>(Resource.Id.myButton);
             button.Click += buttonClick;
         }
 
-        private async void buttonClick(object sender, EventArgs e)
+        private void buttonClick(object sender, EventArgs e)
         {
+            /*
             var httpClient = new HttpClient();
             var response = await httpClient.GetAsync("https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/samples/v1.0/Scenarios/FlightUpdate.json");
             if (response.IsSuccessStatusCode)
@@ -53,37 +45,33 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
                 var content = await response.Content.ReadAsStringAsync();
                 renderAdaptiveCard(content, true);
             }
+            */
+            EditText adaptiveCardRequest = FindViewById<EditText>(Resource.Id.editText1);
+            RenderAdaptiveCard(m_payloadRetriever.RequestAdaptiveCard(adaptiveCardRequest.Text));
         }
 
-        private void renderAdaptiveCard(string jsonText, bool showErrorToast)
+        private void RenderAdaptiveCard(string jsonText)
         {
             try
             {
                 AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
-                Toast.MakeText(this, adaptiveCard.Body.Capacity().ToString(), ToastLength.Short).Show();
-                LinearLayout layout = (LinearLayout)FindViewById(Resource.Id.visualAdaptiveCardLayout);
+                LinearLayout layout = FindViewById<LinearLayout>(Resource.Id.visualAdaptiveCardLayout);
                 layout.RemoveAllViews();
 
-                var view = AdaptiveCardRenderer.Instance.Render(Application.Context, SupportFragmentManager, adaptiveCard, this, this, new HostConfig());
-                layout.AddView(view);
+                layout.AddView(AdaptiveCardRenderer.Instance.Render(ApplicationContext, SupportFragmentManager, adaptiveCard, this, this, new HostConfig()));
             }
-            catch (Java.IO.IOException ex)
+            catch (Exception ex)
             {
-                if (showErrorToast)
-                {
-                    Toast.MakeText(this, ex.Message, ToastLength.Short).Show();
-                }
+                String s = ex.ToString();
             }
         }
 
         public void OnShowCard(ShowCardAction p0, AdaptiveCard p1)
         {
-            
         }
 
         public void OnSubmit(SubmitAction p0, IDictionary<string, string> p1)
-        {
-            
+        {   
         }
     }
 }
