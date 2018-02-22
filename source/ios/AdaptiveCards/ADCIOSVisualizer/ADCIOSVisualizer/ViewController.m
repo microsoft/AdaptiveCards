@@ -194,9 +194,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    float vertialContentInset = self.scrView.frame.size.height - self.curView.frame.size.height;
-    vertialContentInset = (vertialContentInset <= 0)? 20 : vertialContentInset;
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, vertialContentInset, 0.0);
+    float verticalContentInset = self.scrView.frame.size.height - self.curView.frame.size.height;
+    verticalContentInset = (verticalContentInset <= 0)? 20 : verticalContentInset;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, verticalContentInset, 0.0);
     self.scrView.contentInset = contentInsets;
 }
 

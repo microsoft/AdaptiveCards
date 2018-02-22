@@ -160,7 +160,7 @@
     // Syncronize access to imageViewMap
     dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
         // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
-        if(imageViewMap[key] and [imageViewMap[key] isKindOfClass:[UIImage class]]) {
+        if(imageViewMap[key] && [imageViewMap[key] isKindOfClass:[UIImage class]]) {
             img = imageViewMap[key];
         }
         else {
