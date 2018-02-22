@@ -99,12 +99,12 @@ public class AdaptiveCardRenderer
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, new Vector<IInputHandler>(), false);
     }
 
     public View render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig, false);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig, new Vector<IInputHandler>(), false);
     }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action
@@ -114,6 +114,7 @@ public class AdaptiveCardRenderer
             AdaptiveCard adaptiveCard,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
+            Vector<IInputHandler> inputHandlerList,
             boolean isInlineShowCard)
     {
         if (hostConfig == null)
@@ -133,8 +134,6 @@ public class AdaptiveCardRenderer
         layout.setPadding(padding, padding, padding, padding);
 
         rootLayout.addView(layout);
-
-        Vector<IInputHandler> inputHandlerList = new Vector<IInputHandler>();
 
         BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
         if (baseCardElementList == null || baseCardElementList.size() <= 0)
