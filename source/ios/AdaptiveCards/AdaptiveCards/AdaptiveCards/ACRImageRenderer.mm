@@ -137,10 +137,9 @@
     CGSize cgsize = [ACRImageRenderer getImageSize:imgElem->GetImageSize() withHostConfig:config];
     UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-    
+
     // Add width/height constraints so image is resized accordingly
-    [view addConstraints:@[
-                           [NSLayoutConstraint constraintWithItem:view
+    [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
                                                         attribute:NSLayoutAttributeWidth
                                                         relatedBy:NSLayoutRelationEqual
                                                            toItem:nil
@@ -153,9 +152,7 @@
                                                            toItem:nil
                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                        multiplier:1.0
-                                                         constant:cgsize.height]
-                           ]];
-
+                                                         constant:cgsize.height]]];
     NSMutableDictionary *imageViewMap = [(ACRViewController *)vc getImageMap];
     __block UIImage *img = nil;
     // Generate key for ImageViewMap
@@ -163,7 +160,7 @@
     // Syncronize access to imageViewMap
     dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
         // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
-        if(imageViewMap[key]) {
+        if(imageViewMap[key] && [imageViewMap[key] isKindOfClass:[UIImage class]]) {
             img = imageViewMap[key];
         }
         else {
