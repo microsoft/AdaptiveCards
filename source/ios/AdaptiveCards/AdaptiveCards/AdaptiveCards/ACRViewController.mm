@@ -191,8 +191,11 @@ using namespace AdaptiveCards;
 
                         // Font and text size are applied as CSS style by appending it to the html string
                         NSString *fontFamily = [NSString stringWithCString:_hostConfig->fontFamily.c_str() encoding:NSUTF8StringEncoding];
-                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx;}</style>",
-                                                                              fontFamily, [ACRTextBlockRenderer getTextBlockTextSize:txtElem->GetTextSize() withHostConfig:_hostConfig]]];
+                        const int fontWeight = [ACRTextBlockRenderer getTextBlockFontWeight:txtElem->GetTextWeight() withHostConfig:_hostConfig];
+                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx; font-weight: %d;}</style>",
+                                                                              fontFamily,
+                                                                              [ACRTextBlockRenderer getTextBlockTextSize:txtElem->GetTextSize() withHostConfig:_hostConfig],
+                                                                              fontWeight]];
                         // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
                         NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
                         NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
@@ -226,7 +229,11 @@ using namespace AdaptiveCards;
                                       ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? _hostConfig->containerStyles.emphasisPalette.foregroundColors:
                                                                                                              _hostConfig->containerStyles.defaultPalette.foregroundColors;
                                       // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-                                      [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtElem->GetTextColor() colorsConfig:colorConfig subtleOption:txtElem->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtElem->GetTextWeight() withHostConfig:_hostConfig]} range:NSMakeRange(0, content.length - 1)];
+                                      [content addAttributes:@{
+                                                               NSParagraphStyleAttributeName:paragraphStyle,
+                                                               NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtElem->GetTextColor() colorsConfig:colorConfig subtleOption:txtElem->GetIsSubtle()],
+                                                               }
+                                                       range:NSMakeRange(0, content.length - 1)];
                                       lab.attributedText = content;
                                       // remove tag
                                       std::string id = txtElem->GetId();
