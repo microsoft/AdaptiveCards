@@ -12,6 +12,7 @@
 #import "ACRViewController.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRUILabel.h"
 
 @implementation ACRTextBlockRenderer
 
@@ -35,7 +36,8 @@ rootViewController:(UIViewController *)vc
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
-    UILabel *lab = [[UILabel alloc] init];
+    ACRUILabel *lab = [[ACRUILabel alloc] init];
+    lab.style = [viewGroup style];
     __block NSMutableAttributedString *content = nil;
     if(vc)
     {
@@ -60,7 +62,7 @@ rootViewController:(UIViewController *)vc
         paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtBlck withHostConfig:config];
 
         // Obtain text color to apply to the attributed string
-        ContainerStyle style = [viewGroup getStyle];
+        ContainerStyle style = lab.style;
         ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? config->containerStyles.emphasisPalette.foregroundColors:
                                                                          config->containerStyles.defaultPalette.foregroundColors;
 

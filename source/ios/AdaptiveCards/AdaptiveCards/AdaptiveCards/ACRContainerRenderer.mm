@@ -37,20 +37,14 @@ rootViewController:(UIViewController *)vc
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
 
-    ContainerStyle style = containerElem->GetStyle();
-
-    if(style == ContainerStyle::None)
-    {
-        style = [viewGroup getStyle];
-    }
-
-    ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:style hostConfig:config];
-
+    ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:containerElem->GetStyle()
+                                                        parentStyle:[viewGroup style] hostConfig:config];
     [ACRRenderer render:container
      rootViewController:vc
                  inputs:inputs
           withCardElems:containerElem->GetItems()
           andHostConfig:config];
+
     [viewGroup addArrangedSubview:container];
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();

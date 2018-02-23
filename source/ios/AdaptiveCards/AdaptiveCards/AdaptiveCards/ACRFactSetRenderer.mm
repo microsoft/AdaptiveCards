@@ -68,7 +68,7 @@ rootViewController:(UIViewController *)vc
 
     UIStackView *valueStack = [[UIStackView alloc] init];
     valueStack.axis = UILayoutConstraintAxisVertical;
-    ContainerStyle style = [viewGroup getStyle];
+    ContainerStyle style = ContainerStyle::None;
 
     for(auto fact :fctSet->GetFacts())
     {
