@@ -194,6 +194,7 @@
 		F4F2556C1F98246000A80D39 /* ACOBaseActionElement.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F2556F1F98247600A80D39 /* ACOBaseActionElementPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */; };
 		F4F255701F98247600A80D39 /* ACOBaseActionElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */; };
+		F4F44B6E203FAF9300A2F24C /* ACRUILabel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B6D203FAF9300A2F24C /* ACRUILabel.mm */; };
 		F4FA2731201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FA272F201FF940005989F9 /* ACRLongPressGestureRecognizerFactory.mm */; };
 		F4FA2732201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA2730201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h */; };
 		F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */; };
@@ -393,6 +394,8 @@
 		F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOBaseActionElement.h; sourceTree = "<group>"; };
 		F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOBaseActionElementPrivate.h; sourceTree = "<group>"; };
 		F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOBaseActionElement.mm; sourceTree = "<group>"; };
+		F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRUILabel.h; sourceTree = "<group>"; };
+		F4F44B6D203FAF9300A2F24C /* ACRUILabel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRUILabel.mm; sourceTree = "<group>"; };
 		F4FA272F201FF940005989F9 /* ACRLongPressGestureRecognizerFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRLongPressGestureRecognizerFactory.mm; sourceTree = "<group>"; };
 		F4FA2730201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRLongPressGestureRecognizerFactory.h; sourceTree = "<group>"; };
 		F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRColumnView.h; sourceTree = "<group>"; };
@@ -663,6 +666,8 @@
 				F43A940F1F1D60E30001920B /* ACRFactSetRenderer.mm */,
 				F427411A1EF8A25200399FBB /* ACRRegistration.h */,
 				F427411B1EF8A25200399FBB /* ACRRegistration.mm */,
+				F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */,
+				F4F44B6D203FAF9300A2F24C /* ACRUILabel.mm */,
 			);
 			name = ReadOnlyObjects;
 			sourceTree = "<group>";
@@ -985,6 +990,7 @@
 				F42E51741FEC3840008F9642 /* MarkDownBlockParser.cpp in Sources */,
 				F43A94151F1EED6D0001920B /* ACRInputRenderer.mm in Sources */,
 				F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */,
+				F4F44B6E203FAF9300A2F24C /* ACRUILabel.mm in Sources */,
 				F44873211EE2261F00FCAFAE /* SubmitAction.cpp in Sources */,
 				F44872FF1EE2261F00FCAFAE /* ChoiceSetInput.cpp in Sources */,
 				F4C1F5F61F2BF2900018CB78 /* ACRSubmitTarget.mm in Sources */,
@@ -1161,10 +1167,18 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdaptiveCards",
+				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = AdaptiveCards/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdaptiveCards",
+				);
 				MACH_O_TYPE = mh_dylib;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
@@ -1184,10 +1198,18 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdaptiveCards",
+				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = AdaptiveCards/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdaptiveCards",
+				);
 				MACH_O_TYPE = mh_dylib;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
