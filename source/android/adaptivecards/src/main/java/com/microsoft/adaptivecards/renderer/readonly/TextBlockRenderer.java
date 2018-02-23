@@ -4,13 +4,11 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.text.util.LinkifyCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
 import com.microsoft.adaptivecards.objectmodel.MarkDownParser;
-import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -132,11 +129,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         public void handleTag(boolean opening, String tag, Editable output,
                               XMLReader xmlReader) {
             if(tag.equals("ul") && !opening) output.append("\n");
-            if(tag.equals("li") && opening) output.append("\n\t•");
+            if(tag.equals("li") && opening) output.append("\n\t• ");
         }
     }
 
-    private CharSequence TrimHtmlString(Spanned htmlString)
+    private CharSequence trimHtmlString(Spanned htmlString)
     {
         int numToRemoveFromEnd = 0;
         int numToRemoveFromStart = 0;
@@ -206,23 +203,18 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
             Spanned htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
-            textView.setText(TrimHtmlString(htmlString));
-
-            if (!textBlock.GetWrap())
-            {
-                textView.setMaxLines(1);
-            }
+            textView.setText(trimHtmlString(htmlString));
         }
         else
         {
             // Before Android N, html.fromHtml adds two newline characters to end of string
             Spanned htmlString = Html.fromHtml(textString, null, new UlTagHandler());
-            textView.setText(TrimHtmlString(htmlString));
-
-            textView.setSingleLine(!textBlock.GetWrap());
+            textView.setText(trimHtmlString(htmlString));
         }
+        textView.setSingleLine(!textBlock.GetWrap());
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setHorizontallyScrolling(false);
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
@@ -230,9 +222,13 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();
-        if (maxLines > 0)
+        if (maxLines > 0 && textBlock.GetWrap())
         {
             textView.setMaxLines(maxLines);
+        }
+        else if (!textBlock.GetWrap())
+        {
+            textView.setMaxLines(1);
         }
 
         viewGroup.addView(textView);
