@@ -71,7 +71,14 @@ using namespace AdaptiveCards;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _asyncRenderedElements.clear();
     [self render];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self callDidCompleteRenderingIfNeeded];
 }
 
 - (void)render
@@ -171,15 +178,36 @@ using namespace AdaptiveCards;
        [newView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
 }
 
+auto _asyncRenderedElements = std::list<const BaseCardElement*>();
+
+- (void)callDidCompleteRenderingIfNeeded
+{
+#if DEBUG
+    NSLog(@"callDidCompleteRenderingIfNeeded");
+#endif
+
+    if (_asyncRenderedElements.size() == 0)
+    {
+        // Call back app with didCompleteRendering
+        if ([[self acrActionDelegate] respondsToSelector:@selector(didCompleteRendering)])
+        {
+            [[self acrActionDelegate] didCompleteRendering];
+        }
+    }
+}
+
 // Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
 - (void) addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
 {
     for(auto &elem : body)
     {
+        const auto p = elem.get();
         switch (elem->GetElementType())
         {
             case CardElementType::TextBlock:
             {
+                _asyncRenderedElements.push_back(p);
+                
                 /// tag a base card element with unique key
                 [self tagBaseCardElement:elem];
                 /// dispatch to concurrent queue
@@ -240,7 +268,11 @@ using namespace AdaptiveCards;
                                       std::string id = txtElem->GetId();
                                       std::size_t idx = id.find_last_of('_');
                                       txtElem->SetId(id.substr(0, idx));
+                                      
                                   }
+
+                                 _asyncRenderedElements.remove(p);
+                                 [self callDidCompleteRenderingIfNeeded];
                               });
                          }
                 );
