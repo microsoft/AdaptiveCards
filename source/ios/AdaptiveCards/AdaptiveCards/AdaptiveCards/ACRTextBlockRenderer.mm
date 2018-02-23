@@ -79,9 +79,7 @@ rootViewController:(UIViewController *)vc
         lab.numberOfLines = 1;
     }
 
-    CGSize intrinsicSz = [lab intrinsicContentSize];
-
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] init];
 
     [wrappingview addSubview:lab];
 
