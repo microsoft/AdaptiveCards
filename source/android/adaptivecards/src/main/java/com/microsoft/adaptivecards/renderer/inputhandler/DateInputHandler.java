@@ -40,7 +40,7 @@ public class DateInputHandler extends TextInputHandler
             Date date = DateFormat.getDateInstance().parse(editText.getText().toString());
             data.put(m_baseInputElement.GetId(), s_simpleDateFormat.format(date));
         } catch (ParseException e) {
-            return new Exception("Input.Time text is not a valid time");
+            return new Exception("Input.Date text is not a valid date");
         }
 
         return null;

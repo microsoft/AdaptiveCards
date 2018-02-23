@@ -117,6 +117,7 @@ public class ImageRenderer extends BaseCardElementRenderer
     }
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
         if (imageSize.swigValue() == ImageSize.Stretch.swigValue()) {
             //ImageView must match parent for stretch to work
             imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -127,7 +128,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getMediumSize()));
         } else if (imageSize.swigValue() == ImageSize.Large.swigValue()) {
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getLargeSize()));
-        } else if (imageSize.swigValue() != ImageSize.Auto.swigValue()){
+        } else if (imageSize.swigValue() != ImageSize.Auto.swigValue() && imageSize.swigValue() != ImageSize.None.swigValue()){
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
 
@@ -178,7 +179,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         if (image.GetImageSize().swigValue() == ImageSize.Stretch.swigValue())
         {
             //ImageView must match parent for stretch to work
-            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
         else
         {
