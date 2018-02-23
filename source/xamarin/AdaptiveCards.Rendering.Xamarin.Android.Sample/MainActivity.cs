@@ -6,15 +6,16 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System;
 
-using Microsoft.AdaptiveCards;
-
 using AdaptiveCards.BotConnection;
+using Microsoft.AdaptiveCards.ObjectModel;
+using Microsoft.AdaptiveCards.Renderer;
+using Microsoft.AdaptiveCards.Renderer.ActionHandler;
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
     
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : FragmentActivity
+    public class MainActivity : FragmentActivity, IShowCardActionHandler, ISubmitActionHandler
     {
         private PayloadRetriever m_payloadRetriever = null;
 
@@ -59,7 +60,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
                 LinearLayout layout = FindViewById<LinearLayout>(Resource.Id.visualAdaptiveCardLayout);
                 layout.RemoveAllViews();
 
-                // layout.AddView(AdaptiveCardRenderer.Instance.Render(ApplicationContext, SupportFragmentManager, adaptiveCard, this, this, new HostConfig()));
+                layout.AddView(AdaptiveCardRenderer.Instance.Render(ApplicationContext, SupportFragmentManager, adaptiveCard, this, this, new HostConfig()));
             }
             catch (Exception ex)
             {
@@ -67,7 +68,6 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             }
         }
 
-        /*
         public void OnShowCard(ShowCardAction p0, AdaptiveCard p1)
         {
         }
@@ -75,7 +75,6 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
         public void OnSubmit(SubmitAction p0, IDictionary<string, string> p1)
         {   
         }
-        */
     }
 }
 

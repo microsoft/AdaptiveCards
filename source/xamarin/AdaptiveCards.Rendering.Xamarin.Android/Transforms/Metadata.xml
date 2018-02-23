@@ -10,5 +10,4 @@
   <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.layout']" name="managedName">Microsoft.AdaptiveCards.Renderer.Layout</attr>
   <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.readonly']" name="managedName">Microsoft.AdaptiveCards.Renderer.Readonly</attr>
   <attr path="/api/package[@name='com.microsoft.adaptivecards.renderer.registration']" name="managedName">Microsoft.AdaptiveCards.Renderer.Registration</attr>
-  <remove-node path="/api/package[@name='com.microsoft.adaptivecards.renderer.readonly']/class[@name='ColumnRenderer']"/>
 </metadata>
