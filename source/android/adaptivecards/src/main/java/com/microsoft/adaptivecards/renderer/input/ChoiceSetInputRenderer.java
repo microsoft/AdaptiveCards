@@ -23,6 +23,7 @@ import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 import com.microsoft.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -55,12 +56,19 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         List<CheckBox> checkBoxList = new Vector<CheckBox>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
+        String value = choiceSetInput.GetValue();
+        Vector<String> defaults = new Vector<>();
+        defaults.addAll(Arrays.asList(value.split(",")));
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
             CheckBox checkBox = new CheckBox(context);
             checkBox.setText(choiceInput.GetTitle());
-            checkBox.setChecked(choiceInput.GetIsSelected());
+
+            if (defaults.contains(choiceInput.GetValue()))
+            {
+                checkBox.setChecked(true);
+            }
             checkBoxList.add(checkBox);
             layout.addView(checkBox);
         }

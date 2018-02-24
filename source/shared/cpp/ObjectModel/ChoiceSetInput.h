@@ -28,7 +28,11 @@ public:
     std::vector<std::shared_ptr<ChoiceInput>>& GetChoices();
     const std::vector<std::shared_ptr<ChoiceInput>>& GetChoices() const;
 
+    std::string GetValue() const;
+    void SetValue(std::string value);
+
 private:
+    std::string m_value;
     bool m_isMultiSelect;
     ChoiceSetStyle m_choiceSetStyle;
 
