@@ -11,13 +11,13 @@
 ## Windows
 
 ```console
-<swig directory>\swig.exe -c++ -java -package com.microsoft.adaptivecards.objectmodel -outdir main\java\com\microsoft\adaptivecards\objectmodel -o main\cpp\objectmodel_wrap.cpp AdaptiveCardObjectModel.i
+<swig directory>\swig.exe -c++ -java -package io.adaptivecards.objectmodel -outdir main\java\io\adaptivecards\objectmodel -o main\cpp\objectmodel_wrap.cpp AdaptiveCardObjectModel.i
 ```
 
 ## Mac
 
 ```console
-swig -c++ -java -package com.microsoft.adaptivecards.objectmodel -outdir main/java/com/microsoft/adaptivecards/objectmodel -o main/cpp/objectmodel_wrap.cpp AdaptiveCardObjectModel.i
+swig -c++ -java -package io.adaptivecards.objectmodel -outdir main/java/io/adaptivecards/objectmodel -o main/cpp/objectmodel_wrap.cpp AdaptiveCardObjectModel.i
 ```
 
 # To compile:

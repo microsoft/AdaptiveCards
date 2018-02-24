@@ -422,7 +422,7 @@ SWIGINTERN AdaptiveCards::SubmitAction *AdaptiveCards_SubmitAction_dynamic_cast(
 extern "C" {
 #endif
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI__1_1ANDROID_1_1_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI__1_1ANDROID_1_1_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   int result;
   
@@ -434,7 +434,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *result = 0 ;
   
@@ -446,7 +446,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::size_type arg1 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *result = 0 ;
@@ -460,7 +460,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::size_type result;
@@ -475,7 +475,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::size_type result;
@@ -490,7 +490,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::size_type arg2 ;
   
@@ -503,7 +503,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   bool result;
@@ -518,7 +518,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   
   (void)jenv;
@@ -529,7 +529,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type *arg2 = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type tempnull2 ;
@@ -544,7 +544,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   int arg2 ;
@@ -568,7 +568,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   int arg2 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type *arg3 = 0 ;
@@ -592,7 +592,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseCardElementVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseCardElementVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   
   (void)jenv;
@@ -602,7 +602,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *result = 0 ;
   
@@ -614,7 +614,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > >::size_type arg1 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *result = 0 ;
@@ -628,7 +628,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > >::size_type result;
@@ -643,7 +643,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > >::size_type result;
@@ -658,7 +658,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > >::size_type arg2 ;
   
@@ -671,7 +671,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   bool result;
@@ -686,7 +686,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   
   (void)jenv;
@@ -697,7 +697,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type *arg2 = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type tempnull2 ;
@@ -712,7 +712,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   int arg2 ;
@@ -736,7 +736,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   int arg2 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type *arg3 = 0 ;
@@ -760,7 +760,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   
   (void)jenv;
@@ -770,7 +770,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *result = 0 ;
   
@@ -782,7 +782,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > >::size_type arg1 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *result = 0 ;
@@ -796,7 +796,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > >::size_type result;
@@ -811,7 +811,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > >::size_type result;
@@ -826,7 +826,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > >::size_type arg2 ;
   
@@ -839,7 +839,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   bool result;
@@ -854,7 +854,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   
   (void)jenv;
@@ -865,7 +865,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type *arg2 = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type tempnull2 ;
@@ -880,7 +880,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   int arg2 ;
@@ -904,7 +904,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   int arg2 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type *arg3 = 0 ;
@@ -928,7 +928,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   
   (void)jenv;
@@ -938,7 +938,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *result = 0 ;
   
@@ -950,7 +950,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > >::size_type arg1 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *result = 0 ;
@@ -964,7 +964,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > >::size_type result;
@@ -979,7 +979,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > >::size_type result;
@@ -994,7 +994,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > >::size_type arg2 ;
   
@@ -1007,7 +1007,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   bool result;
@@ -1022,7 +1022,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   
   (void)jenv;
@@ -1033,7 +1033,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type *arg2 = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type tempnull2 ;
@@ -1048,7 +1048,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   int arg2 ;
@@ -1072,7 +1072,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   int arg2 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type *arg3 = 0 ;
@@ -1096,7 +1096,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   
   (void)jenv;
@@ -1106,7 +1106,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInputVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInputVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *result = 0 ;
   
@@ -1118,7 +1118,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInputVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInputVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::size_type arg1 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *result = 0 ;
@@ -1132,7 +1132,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::size_type result;
@@ -1147,7 +1147,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::size_type result;
@@ -1162,7 +1162,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::size_type arg2 ;
   
@@ -1175,7 +1175,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   bool result;
@@ -1190,7 +1190,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   
   (void)jenv;
@@ -1201,7 +1201,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type *arg2 = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type tempnull2 ;
@@ -1216,7 +1216,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   int arg2 ;
@@ -1240,7 +1240,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInputVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   int arg2 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type *arg3 = 0 ;
@@ -1264,7 +1264,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceInputVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceInputVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   
   (void)jenv;
@@ -1274,7 +1274,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElementVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElementVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *result = 0 ;
   
@@ -1286,7 +1286,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElementVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElementVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::size_type arg1 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *result = 0 ;
@@ -1300,7 +1300,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::size_type result;
@@ -1315,7 +1315,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::size_type result;
@@ -1330,7 +1330,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::size_type arg2 ;
   
@@ -1343,7 +1343,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   bool result;
@@ -1358,7 +1358,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   
   (void)jenv;
@@ -1369,7 +1369,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type *arg2 = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type tempnull2 ;
@@ -1384,7 +1384,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   int arg2 ;
@@ -1408,7 +1408,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElementVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   int arg2 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type *arg3 = 0 ;
@@ -1432,7 +1432,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseActionElementVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseActionElementVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   
   (void)jenv;
@@ -1442,7 +1442,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_EnableSharedFromThisContainer_1shared_1from_1this(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_EnableSharedFromThisContainer_1shared_1from_1this(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::enable_shared_from_this< AdaptiveCards::Container > *arg1 = (std::enable_shared_from_this< AdaptiveCards::Container > *) 0 ;
   std::shared_ptr< AdaptiveCards::Container > result;
@@ -1457,7 +1457,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1EnumHash(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1EnumHash(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::EnumHash *result = 0 ;
   
@@ -1469,7 +1469,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1EnumHash(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1EnumHash(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::EnumHash *arg1 = (AdaptiveCards::EnumHash *) 0 ;
   
   (void)jenv;
@@ -1479,7 +1479,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveEqualTo(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveEqualTo(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::CaseInsensitiveEqualTo *result = 0 ;
   
@@ -1491,7 +1491,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1CaseInsensitiveEqualTo(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1CaseInsensitiveEqualTo(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::CaseInsensitiveEqualTo *arg1 = (AdaptiveCards::CaseInsensitiveEqualTo *) 0 ;
   
   (void)jenv;
@@ -1501,7 +1501,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveHash(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveHash(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::CaseInsensitiveHash *result = 0 ;
   
@@ -1513,7 +1513,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1CaseInsensitiveHash(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1CaseInsensitiveHash(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::CaseInsensitiveHash *arg1 = (AdaptiveCards::CaseInsensitiveHash *) 0 ;
   
   (void)jenv;
@@ -1523,7 +1523,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardSchemaKey_1Accent_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardSchemaKey_1Accent_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::AdaptiveCardSchemaKey result;
   
@@ -1535,7 +1535,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSize_1Small_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSize_1Small_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::TextSize result;
   
@@ -1547,7 +1547,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextWeight_1Lighter_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextWeight_1Lighter_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::TextWeight result;
   
@@ -1559,7 +1559,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ForegroundColor_1Default_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ForegroundColor_1Default_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ForegroundColor result;
   
@@ -1571,7 +1571,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HorizontalAlignment_1Left_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HorizontalAlignment_1Left_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::HorizontalAlignment result;
   
@@ -1583,7 +1583,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageStyle_1Default_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageStyle_1Default_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ImageStyle result;
   
@@ -1595,7 +1595,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSize_1None_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSize_1None_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ImageSize result;
   
@@ -1607,7 +1607,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputStyle_1Text_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputStyle_1Text_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::TextInputStyle result;
   
@@ -1619,7 +1619,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CardElementType_1Unsupported_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CardElementType_1Unsupported_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::CardElementType result;
   
@@ -1631,7 +1631,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionType_1Unsupported_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionType_1Unsupported_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ActionType result;
   
@@ -1643,7 +1643,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionAlignment_1Left_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionAlignment_1Left_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ActionAlignment result;
   
@@ -1655,7 +1655,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyle_1Compact_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyle_1Compact_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ChoiceSetStyle result;
   
@@ -1667,7 +1667,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorThickness_1Default_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorThickness_1Default_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::SeparatorThickness result;
   
@@ -1679,7 +1679,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Spacing_1Default_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Spacing_1Default_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::Spacing result;
   
@@ -1691,7 +1691,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsOrientation_1Vertical_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsOrientation_1Vertical_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ActionsOrientation result;
   
@@ -1703,7 +1703,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionMode_1Inline_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionMode_1Inline_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ActionMode result;
   
@@ -1715,7 +1715,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorStatusCode_1InvalidJson_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorStatusCode_1InvalidJson_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ErrorStatusCode result;
   
@@ -1727,7 +1727,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_WarningStatusCode_1UnknownElementType_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_WarningStatusCode_1UnknownElementType_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::WarningStatusCode result;
   
@@ -1739,7 +1739,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardSchemaKeyToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardSchemaKeyToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCardSchemaKey arg1 ;
   std::string result;
@@ -1753,7 +1753,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardSchemaKeyFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardSchemaKeyFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::AdaptiveCardSchemaKey result;
@@ -1775,7 +1775,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CardElementTypeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CardElementTypeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::CardElementType arg1 ;
   std::string result;
@@ -1789,7 +1789,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CardElementTypeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CardElementTypeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::CardElementType result;
@@ -1811,7 +1811,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionTypeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionTypeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ActionType arg1 ;
   std::string result;
@@ -1825,7 +1825,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionTypeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionTypeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ActionType result;
@@ -1847,7 +1847,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HorizontalAlignmentToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HorizontalAlignmentToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::HorizontalAlignment arg1 ;
   std::string result;
@@ -1861,7 +1861,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HorizontalAlignmentFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HorizontalAlignmentFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::HorizontalAlignment result;
@@ -1883,7 +1883,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ForegroundColorToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ForegroundColorToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ForegroundColor arg1 ;
   std::string result;
@@ -1897,7 +1897,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ForegroundColorFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ForegroundColorFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ForegroundColor result;
@@ -1919,7 +1919,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextWeightToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextWeightToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::TextWeight arg1 ;
   std::string result;
@@ -1933,7 +1933,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextWeightFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextWeightFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::TextWeight result;
@@ -1955,7 +1955,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSizeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSizeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::TextSize arg1 ;
   std::string result;
@@ -1969,7 +1969,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSizeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextSizeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::TextSize result;
@@ -1991,7 +1991,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ImageSize arg1 ;
   std::string result;
@@ -2005,7 +2005,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ImageSize result;
@@ -2027,7 +2027,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   std::string result;
@@ -2041,7 +2041,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::Spacing result;
@@ -2063,7 +2063,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorThicknessToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorThicknessToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::SeparatorThickness arg1 ;
   std::string result;
@@ -2077,7 +2077,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorThicknessFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorThicknessFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::SeparatorThickness result;
@@ -2099,7 +2099,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ImageStyle arg1 ;
   std::string result;
@@ -2113,7 +2113,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ImageStyle result;
@@ -2135,7 +2135,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsOrientationToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsOrientationToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ActionsOrientation arg1 ;
   std::string result;
@@ -2149,7 +2149,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsOrientationFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsOrientationFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ActionsOrientation result;
@@ -2171,7 +2171,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionModeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionModeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ActionMode arg1 ;
   std::string result;
@@ -2185,7 +2185,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionModeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionModeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ActionMode result;
@@ -2207,7 +2207,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ChoiceSetStyle arg1 ;
   std::string result;
@@ -2221,7 +2221,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ChoiceSetStyle result;
@@ -2243,7 +2243,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::TextInputStyle arg1 ;
   std::string result;
@@ -2257,7 +2257,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::TextInputStyle result;
@@ -2279,7 +2279,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ContainerStyle arg1 ;
   std::string result;
@@ -2293,7 +2293,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ContainerStyle result;
@@ -2315,7 +2315,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionAlignmentToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionAlignmentToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
   AdaptiveCards::ActionAlignment arg1 ;
   std::string result;
@@ -2329,7 +2329,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionAlignmentFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionAlignmentFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::ActionAlignment result;
@@ -2351,7 +2351,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElement_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jint jarg1, jint jarg2, jboolean jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElement_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jint jarg1, jint jarg2, jboolean jarg3) {
   jlong jresult = 0 ;
   AdaptiveCards::CardElementType arg1 ;
   AdaptiveCards::Spacing arg2 ;
@@ -2371,7 +2371,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElement_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElement_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jlong jresult = 0 ;
   AdaptiveCards::CardElementType arg1 ;
   AdaptiveCards::BaseCardElement *result = 0 ;
@@ -2387,7 +2387,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseCardElement(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseCardElement(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
   
@@ -2400,7 +2400,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1GetSeparator(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1GetSeparator(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement const > *smartarg1 = 0 ;
@@ -2418,7 +2418,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1SetSeparator(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1SetSeparator(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   bool arg2 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -2434,7 +2434,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1GetSpacing(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1GetSpacing(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement const > *smartarg1 = 0 ;
@@ -2452,7 +2452,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1SetSpacing(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1SetSpacing(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   AdaptiveCards::Spacing arg2 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -2468,7 +2468,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1GetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1GetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement const > *smartarg1 = 0 ;
@@ -2486,7 +2486,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1SetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1SetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -2509,7 +2509,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1GetElementType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1GetElementType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement const > *smartarg1 = 0 ;
@@ -2527,7 +2527,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -2545,7 +2545,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -2563,7 +2563,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1DeserializeSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1DeserializeSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg1 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg2 ;
@@ -2593,7 +2593,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElement(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElement(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionType arg1 ;
   AdaptiveCards::BaseActionElement *result = 0 ;
@@ -2609,7 +2609,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseActionElement(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseActionElement(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
   
@@ -2622,7 +2622,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement const > *smartarg1 = 0 ;
@@ -2640,7 +2640,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -2663,7 +2663,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement const > *smartarg1 = 0 ;
@@ -2681,7 +2681,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -2704,7 +2704,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetElementType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetElementType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement const > *smartarg1 = 0 ;
@@ -2722,7 +2722,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -2740,7 +2740,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -2758,7 +2758,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -2776,7 +2776,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   Json::Value arg2 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -2798,7 +2798,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseInputElement_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseInputElement_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jlong jresult = 0 ;
   AdaptiveCards::CardElementType arg1 ;
   AdaptiveCards::BaseInputElement *result = 0 ;
@@ -2814,7 +2814,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseInputElement_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jint jarg2, jboolean jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseInputElement_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jint jarg2, jboolean jarg3) {
   jlong jresult = 0 ;
   AdaptiveCards::CardElementType arg1 ;
   AdaptiveCards::Spacing arg2 ;
@@ -2834,7 +2834,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1GetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1GetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::BaseInputElement *arg1 = (AdaptiveCards::BaseInputElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseInputElement const > *smartarg1 = 0 ;
@@ -2852,7 +2852,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1SetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1SetId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::BaseInputElement *arg1 = (AdaptiveCards::BaseInputElement *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::BaseInputElement > *smartarg1 = 0 ;
@@ -2875,7 +2875,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1GetIsRequired(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1GetIsRequired(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::BaseInputElement *arg1 = (AdaptiveCards::BaseInputElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseInputElement const > *smartarg1 = 0 ;
@@ -2893,7 +2893,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1SetIsRequired(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1SetIsRequired(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::BaseInputElement *arg1 = (AdaptiveCards::BaseInputElement *) 0 ;
   bool arg2 ;
   std::shared_ptr< AdaptiveCards::BaseInputElement > *smartarg1 = 0 ;
@@ -2909,7 +2909,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseInputElement *arg1 = (AdaptiveCards::BaseInputElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseInputElement > *smartarg1 = 0 ;
@@ -2927,7 +2927,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseInputElement(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseInputElement(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::BaseInputElement *arg1 = (AdaptiveCards::BaseInputElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseInputElement > *smartarg1 = 0 ;
   
@@ -2940,7 +2940,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_IActionElementParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_IActionElementParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::IActionElementParser *arg1 = (AdaptiveCards::IActionElementParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -2974,7 +2974,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1IActionElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1IActionElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::IActionElementParser *arg1 = (AdaptiveCards::IActionElementParser *) 0 ;
   std::shared_ptr< AdaptiveCards::IActionElementParser > *smartarg1 = 0 ;
   
@@ -2987,7 +2987,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ActionParserRegistration(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ActionParserRegistration(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionParserRegistration *result = 0 ;
   
@@ -3001,7 +3001,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionParserRegistration_1AddParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionParserRegistration_1AddParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
   AdaptiveCards::ActionParserRegistration *arg1 = (AdaptiveCards::ActionParserRegistration *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::IActionElementParser > arg3 ;
@@ -3029,7 +3029,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionParserRegistration_1RemoveParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionParserRegistration_1RemoveParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ActionParserRegistration *arg1 = (AdaptiveCards::ActionParserRegistration *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *smartarg1 = 0 ;
@@ -3052,7 +3052,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionParserRegistration_1GetParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionParserRegistration_1GetParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionParserRegistration *arg1 = (AdaptiveCards::ActionParserRegistration *) 0 ;
   std::string arg2 ;
@@ -3079,7 +3079,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionParserRegistration(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionParserRegistration(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ActionParserRegistration *arg1 = (AdaptiveCards::ActionParserRegistration *) 0 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *smartarg1 = 0 ;
   
@@ -3092,7 +3092,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_IBaseCardElementParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_IBaseCardElementParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::IBaseCardElementParser *arg1 = (AdaptiveCards::IBaseCardElementParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -3126,7 +3126,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1IBaseCardElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1IBaseCardElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::IBaseCardElementParser *arg1 = (AdaptiveCards::IBaseCardElementParser *) 0 ;
   std::shared_ptr< AdaptiveCards::IBaseCardElementParser > *smartarg1 = 0 ;
   
@@ -3139,7 +3139,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ElementParserRegistration(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ElementParserRegistration(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ElementParserRegistration *result = 0 ;
   
@@ -3153,7 +3153,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ElementParserRegistration_1AddParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ElementParserRegistration_1AddParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
   AdaptiveCards::ElementParserRegistration *arg1 = (AdaptiveCards::ElementParserRegistration *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::IBaseCardElementParser > arg3 ;
@@ -3181,7 +3181,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ElementParserRegistration_1RemoveParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ElementParserRegistration_1RemoveParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ElementParserRegistration *arg1 = (AdaptiveCards::ElementParserRegistration *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *smartarg1 = 0 ;
@@ -3204,7 +3204,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ElementParserRegistration_1GetParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ElementParserRegistration_1GetParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jlong jresult = 0 ;
   AdaptiveCards::ElementParserRegistration *arg1 = (AdaptiveCards::ElementParserRegistration *) 0 ;
   std::string arg2 ;
@@ -3231,7 +3231,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ElementParserRegistration(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ElementParserRegistration(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ElementParserRegistration *arg1 = (AdaptiveCards::ElementParserRegistration *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *smartarg1 = 0 ;
   
@@ -3244,7 +3244,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::Container *result = 0 ;
   
@@ -3258,7 +3258,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jint jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jint jarg3) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -3278,7 +3278,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -3305,7 +3305,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
   std::shared_ptr< AdaptiveCards::Container > *smartarg1 = 0 ;
@@ -3323,7 +3323,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1GetItems_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1GetItems_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
   std::shared_ptr< AdaptiveCards::Container > *smartarg1 = 0 ;
@@ -3341,7 +3341,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1GetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1GetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
   std::shared_ptr< AdaptiveCards::Container const > *smartarg1 = 0 ;
@@ -3359,7 +3359,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
   AdaptiveCards::ContainerStyle arg2 ;
   std::shared_ptr< AdaptiveCards::Container > *smartarg1 = 0 ;
@@ -3375,7 +3375,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
   std::shared_ptr< AdaptiveCards::Container const > *smartarg1 = 0 ;
@@ -3393,7 +3393,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > arg2 ;
   std::shared_ptr< AdaptiveCards::Container > *smartarg1 = 0 ;
@@ -3412,7 +3412,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -3440,7 +3440,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Container(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Container(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
   std::shared_ptr< AdaptiveCards::Container > *smartarg1 = 0 ;
   
@@ -3453,7 +3453,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerParser *arg1 = (AdaptiveCards::ContainerParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -3487,7 +3487,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerParser *arg1 = (AdaptiveCards::ContainerParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -3525,7 +3525,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ContainerParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ContainerParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerParser *result = 0 ;
   
@@ -3539,7 +3539,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ContainerParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ContainerParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ContainerParser *arg1 = (AdaptiveCards::ContainerParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ContainerParser > *smartarg1 = 0 ;
   
@@ -3552,7 +3552,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlock_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlock_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::TextBlock *result = 0 ;
   
@@ -3566,7 +3566,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlock_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jstring jarg3, jint jarg4, jint jarg5, jint jarg6, jboolean jarg7, jboolean jarg8, jint jarg9, jint jarg10) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlock_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jstring jarg3, jint jarg4, jint jarg5, jint jarg6, jboolean jarg7, jboolean jarg8, jint jarg9, jint jarg10) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -3607,7 +3607,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3625,7 +3625,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
@@ -3643,7 +3643,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3666,7 +3666,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetTextSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetTextSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
@@ -3684,7 +3684,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetTextSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetTextSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   AdaptiveCards::TextSize arg2 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3700,7 +3700,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetTextWeight(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetTextWeight(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
@@ -3718,7 +3718,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetTextWeight(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetTextWeight(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   AdaptiveCards::TextWeight arg2 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3734,7 +3734,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetTextColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetTextColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
@@ -3752,7 +3752,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetTextColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetTextColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   AdaptiveCards::ForegroundColor arg2 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3768,7 +3768,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetWrap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetWrap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
@@ -3786,7 +3786,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetWrap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetWrap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   bool arg2 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3802,7 +3802,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetIsSubtle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetIsSubtle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
@@ -3820,7 +3820,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetIsSubtle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetIsSubtle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   bool arg2 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3836,7 +3836,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetMaxLines(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetMaxLines(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
@@ -3854,7 +3854,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetMaxLines(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetMaxLines(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   unsigned int arg2 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3870,7 +3870,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
@@ -3888,7 +3888,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   AdaptiveCards::HorizontalAlignment arg2 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
@@ -3904,7 +3904,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -3932,7 +3932,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextBlock(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextBlock(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
   
@@ -3945,7 +3945,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::TextBlockParser *arg1 = (AdaptiveCards::TextBlockParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -3979,7 +3979,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::TextBlockParser *arg1 = (AdaptiveCards::TextBlockParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -4017,7 +4017,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlockParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlockParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::TextBlockParser *result = 0 ;
   
@@ -4031,7 +4031,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextBlockParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextBlockParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::TextBlockParser *arg1 = (AdaptiveCards::TextBlockParser *) 0 ;
   std::shared_ptr< AdaptiveCards::TextBlockParser > *smartarg1 = 0 ;
   
@@ -4044,7 +4044,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Image_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Image_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::Image *result = 0 ;
   
@@ -4058,7 +4058,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Image_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jstring jarg3, jint jarg4, jint jarg5, jstring jarg6, jint jarg7) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Image_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jstring jarg3, jint jarg4, jint jarg5, jstring jarg6, jint jarg7) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -4100,7 +4100,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::Image > *smartarg1 = 0 ;
@@ -4118,7 +4118,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetUrl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetUrl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::Image const > *smartarg1 = 0 ;
@@ -4136,7 +4136,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetUrl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetUrl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::Image > *smartarg1 = 0 ;
@@ -4159,7 +4159,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetImageStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetImageStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::Image const > *smartarg1 = 0 ;
@@ -4177,7 +4177,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetImageStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetImageStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   AdaptiveCards::ImageStyle arg2 ;
   std::shared_ptr< AdaptiveCards::Image > *smartarg1 = 0 ;
@@ -4193,7 +4193,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetImageSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetImageSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::Image const > *smartarg1 = 0 ;
@@ -4211,7 +4211,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetImageSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetImageSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   AdaptiveCards::ImageSize arg2 ;
   std::shared_ptr< AdaptiveCards::Image > *smartarg1 = 0 ;
@@ -4227,7 +4227,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetAltText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetAltText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::Image const > *smartarg1 = 0 ;
@@ -4245,7 +4245,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetAltText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetAltText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::Image > *smartarg1 = 0 ;
@@ -4268,7 +4268,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::Image const > *smartarg1 = 0 ;
@@ -4286,7 +4286,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   AdaptiveCards::HorizontalAlignment arg2 ;
   std::shared_ptr< AdaptiveCards::Image > *smartarg1 = 0 ;
@@ -4302,7 +4302,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::Image const > *smartarg1 = 0 ;
@@ -4320,7 +4320,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > arg2 ;
   std::shared_ptr< AdaptiveCards::Image > *smartarg1 = 0 ;
@@ -4339,7 +4339,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -4367,7 +4367,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Image(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Image(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::Image *arg1 = (AdaptiveCards::Image *) 0 ;
   std::shared_ptr< AdaptiveCards::Image > *smartarg1 = 0 ;
   
@@ -4380,7 +4380,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageParser *arg1 = (AdaptiveCards::ImageParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -4414,7 +4414,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageParser_1DeserializeWithoutCheckingType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageParser_1DeserializeWithoutCheckingType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageParser *arg1 = (AdaptiveCards::ImageParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -4448,7 +4448,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageParser *arg1 = (AdaptiveCards::ImageParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -4486,7 +4486,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageParser *result = 0 ;
   
@@ -4500,7 +4500,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ImageParser *arg1 = (AdaptiveCards::ImageParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ImageParser > *smartarg1 = 0 ;
   
@@ -4513,7 +4513,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSet_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSet_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSet *result = 0 ;
   
@@ -4527,7 +4527,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSet_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSet_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -4545,7 +4545,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSet_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSet_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -4570,7 +4570,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSet *arg1 = (AdaptiveCards::ImageSet *) 0 ;
   std::shared_ptr< AdaptiveCards::ImageSet > *smartarg1 = 0 ;
@@ -4588,7 +4588,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1GetImageSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1GetImageSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ImageSet *arg1 = (AdaptiveCards::ImageSet *) 0 ;
   std::shared_ptr< AdaptiveCards::ImageSet const > *smartarg1 = 0 ;
@@ -4606,7 +4606,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1SetImageSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1SetImageSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ImageSet *arg1 = (AdaptiveCards::ImageSet *) 0 ;
   AdaptiveCards::ImageSize arg2 ;
   std::shared_ptr< AdaptiveCards::ImageSet > *smartarg1 = 0 ;
@@ -4622,7 +4622,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1GetImages_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1GetImages_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSet *arg1 = (AdaptiveCards::ImageSet *) 0 ;
   std::shared_ptr< AdaptiveCards::ImageSet > *smartarg1 = 0 ;
@@ -4640,7 +4640,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -4668,7 +4668,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSet(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSet(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ImageSet *arg1 = (AdaptiveCards::ImageSet *) 0 ;
   std::shared_ptr< AdaptiveCards::ImageSet > *smartarg1 = 0 ;
   
@@ -4681,7 +4681,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSetParser *arg1 = (AdaptiveCards::ImageSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -4715,7 +4715,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSetParser *arg1 = (AdaptiveCards::ImageSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -4753,7 +4753,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSetParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSetParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSetParser *result = 0 ;
   
@@ -4767,7 +4767,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSetParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSetParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ImageSetParser *arg1 = (AdaptiveCards::ImageSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ImageSetParser > *smartarg1 = 0 ;
   
@@ -4780,7 +4780,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Column_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Column_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::Column *result = 0 ;
   
@@ -4794,7 +4794,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Column_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jstring jarg3, jint jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Column_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jstring jarg3, jint jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -4823,7 +4823,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Column_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jstring jarg3, jint jarg4, jlong jarg5, jobject jarg5_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Column_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jstring jarg3, jint jarg4, jlong jarg5, jobject jarg5_) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -4859,7 +4859,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -4877,7 +4877,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -4895,7 +4895,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg1 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg2 ;
@@ -4923,7 +4923,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg1 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg2 ;
@@ -4955,7 +4955,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::shared_ptr< AdaptiveCards::Column const > *smartarg1 = 0 ;
@@ -4973,7 +4973,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -4996,7 +4996,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::shared_ptr< AdaptiveCards::Column const > *smartarg1 = 0 ;
@@ -5014,7 +5014,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   AdaptiveCards::ContainerStyle arg2 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -5030,7 +5030,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetItems_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetItems_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -5048,7 +5048,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::shared_ptr< AdaptiveCards::Column const > *smartarg1 = 0 ;
@@ -5066,7 +5066,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > arg2 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -5085,7 +5085,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -5113,7 +5113,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Column(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Column(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
   
@@ -5126,7 +5126,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnSet_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnSet_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ColumnSet *result = 0 ;
   
@@ -5140,7 +5140,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnSet_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnSet_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = 0 ;
   AdaptiveCards::ColumnSet *result = 0 ;
@@ -5161,7 +5161,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColumnSet *arg1 = (AdaptiveCards::ColumnSet *) 0 ;
   std::shared_ptr< AdaptiveCards::ColumnSet > *smartarg1 = 0 ;
@@ -5179,7 +5179,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1GetColumns_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1GetColumns_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColumnSet *arg1 = (AdaptiveCards::ColumnSet *) 0 ;
   std::shared_ptr< AdaptiveCards::ColumnSet > *smartarg1 = 0 ;
@@ -5197,7 +5197,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColumnSet *arg1 = (AdaptiveCards::ColumnSet *) 0 ;
   std::shared_ptr< AdaptiveCards::ColumnSet const > *smartarg1 = 0 ;
@@ -5215,7 +5215,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1SetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColumnSet *arg1 = (AdaptiveCards::ColumnSet *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > arg2 ;
   std::shared_ptr< AdaptiveCards::ColumnSet > *smartarg1 = 0 ;
@@ -5234,7 +5234,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -5262,7 +5262,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnSet(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnSet(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ColumnSet *arg1 = (AdaptiveCards::ColumnSet *) 0 ;
   std::shared_ptr< AdaptiveCards::ColumnSet > *smartarg1 = 0 ;
   
@@ -5275,7 +5275,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ColumnSetParser *arg1 = (AdaptiveCards::ColumnSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -5309,7 +5309,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ColumnSetParser *arg1 = (AdaptiveCards::ColumnSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -5347,7 +5347,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnSetParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnSetParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ColumnSetParser *result = 0 ;
   
@@ -5361,7 +5361,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnSetParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnSetParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ColumnSetParser *arg1 = (AdaptiveCards::ColumnSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ColumnSetParser > *smartarg1 = 0 ;
   
@@ -5374,7 +5374,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Fact_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Fact_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::Fact *result = 0 ;
   
@@ -5388,7 +5388,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Fact_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Fact_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2) {
   jlong jresult = 0 ;
   std::string arg1 ;
   std::string arg2 ;
@@ -5420,7 +5420,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;
   std::shared_ptr< AdaptiveCards::Fact > *smartarg1 = 0 ;
@@ -5438,7 +5438,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;
   std::shared_ptr< AdaptiveCards::Fact > *smartarg1 = 0 ;
@@ -5456,7 +5456,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1GetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1GetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;
   std::shared_ptr< AdaptiveCards::Fact const > *smartarg1 = 0 ;
@@ -5474,7 +5474,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1SetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1SetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::Fact > *smartarg1 = 0 ;
@@ -5497,7 +5497,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;
   std::shared_ptr< AdaptiveCards::Fact const > *smartarg1 = 0 ;
@@ -5515,7 +5515,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::Fact > *smartarg1 = 0 ;
@@ -5538,7 +5538,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg1 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg2 ;
@@ -5566,7 +5566,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg1 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg2 ;
@@ -5598,7 +5598,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Fact(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Fact(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;
   std::shared_ptr< AdaptiveCards::Fact > *smartarg1 = 0 ;
   
@@ -5611,7 +5611,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSet_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSet_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSet *result = 0 ;
   
@@ -5625,7 +5625,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSet_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSet_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -5643,7 +5643,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSet_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSet_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -5668,7 +5668,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSet_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSet_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSet *arg1 = (AdaptiveCards::FactSet *) 0 ;
   std::shared_ptr< AdaptiveCards::FactSet > *smartarg1 = 0 ;
@@ -5686,7 +5686,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSet_1GetFacts_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSet_1GetFacts_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSet *arg1 = (AdaptiveCards::FactSet *) 0 ;
   std::shared_ptr< AdaptiveCards::FactSet > *smartarg1 = 0 ;
@@ -5704,7 +5704,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSet_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSet_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -5732,7 +5732,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactSet(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactSet(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::FactSet *arg1 = (AdaptiveCards::FactSet *) 0 ;
   std::shared_ptr< AdaptiveCards::FactSet > *smartarg1 = 0 ;
   
@@ -5745,7 +5745,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSetParser *arg1 = (AdaptiveCards::FactSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -5779,7 +5779,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSetParser *arg1 = (AdaptiveCards::FactSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -5817,7 +5817,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSetParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSetParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSetParser *result = 0 ;
   
@@ -5831,7 +5831,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactSetParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactSetParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::FactSetParser *arg1 = (AdaptiveCards::FactSetParser *) 0 ;
   std::shared_ptr< AdaptiveCards::FactSetParser > *smartarg1 = 0 ;
   
@@ -5844,7 +5844,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInput(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInput(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ChoiceInput *result = 0 ;
   
@@ -5858,7 +5858,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput > *smartarg1 = 0 ;
@@ -5876,7 +5876,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput > *smartarg1 = 0 ;
@@ -5894,7 +5894,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1GetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1GetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput const > *smartarg1 = 0 ;
@@ -5912,7 +5912,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput > *smartarg1 = 0 ;
@@ -5935,7 +5935,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput const > *smartarg1 = 0 ;
@@ -5953,7 +5953,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput > *smartarg1 = 0 ;
@@ -5976,7 +5976,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1GetIsSelected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1GetIsSelected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput const > *smartarg1 = 0 ;
@@ -5994,7 +5994,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SetIsSelected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SetIsSelected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   bool arg2 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput > *smartarg1 = 0 ;
@@ -6010,7 +6010,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg1 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg2 ;
@@ -6038,7 +6038,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg1 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg2 ;
@@ -6070,7 +6070,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -6098,7 +6098,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput > *smartarg1 = 0 ;
   
@@ -6111,7 +6111,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetInput_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetInput_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ChoiceSetInput *result = 0 ;
   
@@ -6125,7 +6125,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetInput_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetInput_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -6143,7 +6143,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetInput_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetInput_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jboolean jarg2, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
   AdaptiveCards::Spacing arg1 ;
   bool arg2 ;
@@ -6168,7 +6168,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput > *smartarg1 = 0 ;
@@ -6186,7 +6186,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1GetIsMultiSelect(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1GetIsMultiSelect(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput const > *smartarg1 = 0 ;
@@ -6204,7 +6204,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1SetIsMultiSelect(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1SetIsMultiSelect(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   bool arg2 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput > *smartarg1 = 0 ;
@@ -6220,7 +6220,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1GetChoiceSetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1GetChoiceSetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput const > *smartarg1 = 0 ;
@@ -6238,7 +6238,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1SetChoiceSetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1SetChoiceSetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   AdaptiveCards::ChoiceSetStyle arg2 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput > *smartarg1 = 0 ;
@@ -6254,7 +6254,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1GetChoices_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1GetChoices_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput > *smartarg1 = 0 ;
@@ -6272,7 +6272,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -6300,7 +6300,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceSetInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceSetInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput > *smartarg1 = 0 ;
   
@@ -6313,7 +6313,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ChoiceSetInputParser *arg1 = (AdaptiveCards::ChoiceSetInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -6347,7 +6347,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ChoiceSetInputParser *arg1 = (AdaptiveCards::ChoiceSetInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -6385,7 +6385,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetInputParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetInputParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ChoiceSetInputParser *result = 0 ;
   
@@ -6399,7 +6399,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceSetInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceSetInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ChoiceSetInputParser *arg1 = (AdaptiveCards::ChoiceSetInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInputParser > *smartarg1 = 0 ;
   
@@ -6412,7 +6412,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateInput(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateInput(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::DateInput *result = 0 ;
   
@@ -6426,7 +6426,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::shared_ptr< AdaptiveCards::DateInput > *smartarg1 = 0 ;
@@ -6444,7 +6444,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1GetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1GetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::shared_ptr< AdaptiveCards::DateInput const > *smartarg1 = 0 ;
@@ -6462,7 +6462,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::DateInput > *smartarg1 = 0 ;
@@ -6485,7 +6485,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1GetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1GetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::shared_ptr< AdaptiveCards::DateInput const > *smartarg1 = 0 ;
@@ -6503,7 +6503,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::DateInput > *smartarg1 = 0 ;
@@ -6526,7 +6526,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1GetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1GetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::shared_ptr< AdaptiveCards::DateInput const > *smartarg1 = 0 ;
@@ -6544,7 +6544,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::DateInput > *smartarg1 = 0 ;
@@ -6567,7 +6567,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::shared_ptr< AdaptiveCards::DateInput const > *smartarg1 = 0 ;
@@ -6585,7 +6585,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::DateInput > *smartarg1 = 0 ;
@@ -6608,7 +6608,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -6636,7 +6636,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::DateInput *arg1 = (AdaptiveCards::DateInput *) 0 ;
   std::shared_ptr< AdaptiveCards::DateInput > *smartarg1 = 0 ;
   
@@ -6649,7 +6649,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::DateInputParser *arg1 = (AdaptiveCards::DateInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -6683,7 +6683,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::DateInputParser *arg1 = (AdaptiveCards::DateInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -6721,7 +6721,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateInputParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateInputParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::DateInputParser *result = 0 ;
   
@@ -6735,7 +6735,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::DateInputParser *arg1 = (AdaptiveCards::DateInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::DateInputParser > *smartarg1 = 0 ;
   
@@ -6748,7 +6748,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1NumberInput(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1NumberInput(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::NumberInput *result = 0 ;
   
@@ -6762,7 +6762,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
@@ -6780,7 +6780,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
@@ -6798,7 +6798,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
@@ -6821,7 +6821,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
@@ -6839,7 +6839,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   int arg2 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
@@ -6855,7 +6855,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
@@ -6873,7 +6873,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   int arg2 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
@@ -6889,7 +6889,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
@@ -6907,7 +6907,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   int arg2 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
@@ -6923,7 +6923,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -6951,7 +6951,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1NumberInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1NumberInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
   
@@ -6964,7 +6964,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::NumberInputParser *arg1 = (AdaptiveCards::NumberInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -6998,7 +6998,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::NumberInputParser *arg1 = (AdaptiveCards::NumberInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -7036,7 +7036,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1NumberInputParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1NumberInputParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::NumberInputParser *result = 0 ;
   
@@ -7050,7 +7050,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1NumberInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1NumberInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::NumberInputParser *arg1 = (AdaptiveCards::NumberInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInputParser > *smartarg1 = 0 ;
   
@@ -7063,7 +7063,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextInput(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextInput(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::TextInput *result = 0 ;
   
@@ -7077,7 +7077,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TextInput > *smartarg1 = 0 ;
@@ -7095,7 +7095,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TextInput const > *smartarg1 = 0 ;
@@ -7113,7 +7113,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::TextInput > *smartarg1 = 0 ;
@@ -7136,7 +7136,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TextInput const > *smartarg1 = 0 ;
@@ -7154,7 +7154,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::TextInput > *smartarg1 = 0 ;
@@ -7177,7 +7177,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetIsMultiline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetIsMultiline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TextInput const > *smartarg1 = 0 ;
@@ -7195,7 +7195,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetIsMultiline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetIsMultiline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   bool arg2 ;
   std::shared_ptr< AdaptiveCards::TextInput > *smartarg1 = 0 ;
@@ -7211,7 +7211,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetMaxLength(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetMaxLength(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TextInput const > *smartarg1 = 0 ;
@@ -7229,7 +7229,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetMaxLength(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetMaxLength(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   unsigned int arg2 ;
   std::shared_ptr< AdaptiveCards::TextInput > *smartarg1 = 0 ;
@@ -7245,7 +7245,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetTextInputStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetTextInputStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TextInput const > *smartarg1 = 0 ;
@@ -7263,7 +7263,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetTextInputStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetTextInputStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   AdaptiveCards::TextInputStyle arg2 ;
   std::shared_ptr< AdaptiveCards::TextInput > *smartarg1 = 0 ;
@@ -7279,7 +7279,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -7307,7 +7307,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TextInput > *smartarg1 = 0 ;
   
@@ -7320,7 +7320,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::TextInputParser *arg1 = (AdaptiveCards::TextInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -7354,7 +7354,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::TextInputParser *arg1 = (AdaptiveCards::TextInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -7392,7 +7392,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextInputParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextInputParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::TextInputParser *result = 0 ;
   
@@ -7406,7 +7406,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::TextInputParser *arg1 = (AdaptiveCards::TextInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::TextInputParser > *smartarg1 = 0 ;
   
@@ -7419,7 +7419,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TimeInput(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TimeInput(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::TimeInput *result = 0 ;
   
@@ -7433,7 +7433,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TimeInput > *smartarg1 = 0 ;
@@ -7451,7 +7451,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1GetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1GetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TimeInput const > *smartarg1 = 0 ;
@@ -7469,7 +7469,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::TimeInput > *smartarg1 = 0 ;
@@ -7492,7 +7492,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1GetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1GetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TimeInput const > *smartarg1 = 0 ;
@@ -7510,7 +7510,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::TimeInput > *smartarg1 = 0 ;
@@ -7533,7 +7533,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1GetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1GetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TimeInput const > *smartarg1 = 0 ;
@@ -7551,7 +7551,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SetPlaceholder(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::TimeInput > *smartarg1 = 0 ;
@@ -7574,7 +7574,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TimeInput const > *smartarg1 = 0 ;
@@ -7592,7 +7592,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::TimeInput > *smartarg1 = 0 ;
@@ -7615,7 +7615,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -7643,7 +7643,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TimeInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TimeInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::TimeInput *arg1 = (AdaptiveCards::TimeInput *) 0 ;
   std::shared_ptr< AdaptiveCards::TimeInput > *smartarg1 = 0 ;
   
@@ -7656,7 +7656,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::TimeInputParser *arg1 = (AdaptiveCards::TimeInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -7690,7 +7690,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::TimeInputParser *arg1 = (AdaptiveCards::TimeInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -7728,7 +7728,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TimeInputParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TimeInputParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::TimeInputParser *result = 0 ;
   
@@ -7742,7 +7742,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TimeInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TimeInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::TimeInputParser *arg1 = (AdaptiveCards::TimeInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::TimeInputParser > *smartarg1 = 0 ;
   
@@ -7755,7 +7755,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleInput(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleInput(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ToggleInput *result = 0 ;
   
@@ -7769,7 +7769,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ToggleInput > *smartarg1 = 0 ;
@@ -7787,7 +7787,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1GetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1GetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ToggleInput const > *smartarg1 = 0 ;
@@ -7805,7 +7805,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SetTitle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ToggleInput > *smartarg1 = 0 ;
@@ -7828,7 +7828,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ToggleInput const > *smartarg1 = 0 ;
@@ -7846,7 +7846,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ToggleInput > *smartarg1 = 0 ;
@@ -7869,7 +7869,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1GetValueOff(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1GetValueOff(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ToggleInput const > *smartarg1 = 0 ;
@@ -7887,7 +7887,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SetValueOff(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SetValueOff(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ToggleInput > *smartarg1 = 0 ;
@@ -7910,7 +7910,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1GetValueOn(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1GetValueOn(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ToggleInput const > *smartarg1 = 0 ;
@@ -7928,7 +7928,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SetValueOn(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SetValueOn(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ToggleInput > *smartarg1 = 0 ;
@@ -7951,7 +7951,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
@@ -7979,7 +7979,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ToggleInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ToggleInput(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ToggleInput *arg1 = (AdaptiveCards::ToggleInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ToggleInput > *smartarg1 = 0 ;
   
@@ -7992,7 +7992,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ToggleInputParser *arg1 = (AdaptiveCards::ToggleInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -8026,7 +8026,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::ToggleInputParser *arg1 = (AdaptiveCards::ToggleInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -8064,7 +8064,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleInputParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleInputParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ToggleInputParser *result = 0 ;
   
@@ -8078,7 +8078,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ToggleInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ToggleInputParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ToggleInputParser *arg1 = (AdaptiveCards::ToggleInputParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ToggleInputParser > *smartarg1 = 0 ;
   
@@ -8091,7 +8091,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1OpenUrlAction(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1OpenUrlAction(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::OpenUrlAction *result = 0 ;
   
@@ -8105,7 +8105,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::OpenUrlAction *arg1 = (AdaptiveCards::OpenUrlAction *) 0 ;
   std::shared_ptr< AdaptiveCards::OpenUrlAction > *smartarg1 = 0 ;
@@ -8123,7 +8123,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1GetUrl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1GetUrl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::OpenUrlAction *arg1 = (AdaptiveCards::OpenUrlAction *) 0 ;
   std::shared_ptr< AdaptiveCards::OpenUrlAction const > *smartarg1 = 0 ;
@@ -8141,7 +8141,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1SetUrl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1SetUrl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::OpenUrlAction *arg1 = (AdaptiveCards::OpenUrlAction *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::OpenUrlAction > *smartarg1 = 0 ;
@@ -8164,7 +8164,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -8192,7 +8192,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1OpenUrlAction(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1OpenUrlAction(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::OpenUrlAction *arg1 = (AdaptiveCards::OpenUrlAction *) 0 ;
   std::shared_ptr< AdaptiveCards::OpenUrlAction > *smartarg1 = 0 ;
   
@@ -8205,7 +8205,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1OpenUrlActionParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1OpenUrlActionParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::OpenUrlActionParser *result = 0 ;
   
@@ -8219,7 +8219,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1OpenUrlActionParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1OpenUrlActionParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::OpenUrlActionParser *arg1 = (AdaptiveCards::OpenUrlActionParser *) 0 ;
   std::shared_ptr< AdaptiveCards::OpenUrlActionParser > *smartarg1 = 0 ;
   
@@ -8232,7 +8232,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ShowCardAction(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ShowCardAction(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ShowCardAction *result = 0 ;
   
@@ -8246,7 +8246,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ShowCardAction *arg1 = (AdaptiveCards::ShowCardAction *) 0 ;
   std::shared_ptr< AdaptiveCards::ShowCardAction > *smartarg1 = 0 ;
@@ -8264,7 +8264,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1GetCard(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1GetCard(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ShowCardAction *arg1 = (AdaptiveCards::ShowCardAction *) 0 ;
   std::shared_ptr< AdaptiveCards::ShowCardAction const > *smartarg1 = 0 ;
@@ -8282,7 +8282,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1SetCard(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1SetCard(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ShowCardAction *arg1 = (AdaptiveCards::ShowCardAction *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > arg2 ;
   std::shared_ptr< AdaptiveCards::ShowCardAction > *smartarg1 = 0 ;
@@ -8301,7 +8301,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -8329,7 +8329,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ShowCardAction(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ShowCardAction(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ShowCardAction *arg1 = (AdaptiveCards::ShowCardAction *) 0 ;
   std::shared_ptr< AdaptiveCards::ShowCardAction > *smartarg1 = 0 ;
   
@@ -8342,7 +8342,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ShowCardActionParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ShowCardActionParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ShowCardActionParser *result = 0 ;
   
@@ -8356,7 +8356,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ShowCardActionParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ShowCardActionParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ShowCardActionParser *arg1 = (AdaptiveCards::ShowCardActionParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ShowCardActionParser > *smartarg1 = 0 ;
   
@@ -8369,7 +8369,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SubmitAction(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SubmitAction(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::SubmitAction *result = 0 ;
   
@@ -8383,7 +8383,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1GetDataJson(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1GetDataJson(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::SubmitAction *arg1 = (AdaptiveCards::SubmitAction *) 0 ;
   std::shared_ptr< AdaptiveCards::SubmitAction const > *smartarg1 = 0 ;
@@ -8401,7 +8401,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1SetDataJson(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1SetDataJson(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::SubmitAction *arg1 = (AdaptiveCards::SubmitAction *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::SubmitAction > *smartarg1 = 0 ;
@@ -8424,7 +8424,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::SubmitAction *arg1 = (AdaptiveCards::SubmitAction *) 0 ;
   std::shared_ptr< AdaptiveCards::SubmitAction > *smartarg1 = 0 ;
@@ -8442,7 +8442,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
@@ -8470,7 +8470,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SubmitAction(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SubmitAction(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::SubmitAction *arg1 = (AdaptiveCards::SubmitAction *) 0 ;
   std::shared_ptr< AdaptiveCards::SubmitAction > *smartarg1 = 0 ;
   
@@ -8483,7 +8483,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SubmitActionParser(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SubmitActionParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::SubmitActionParser *result = 0 ;
   
@@ -8497,7 +8497,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SubmitActionParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SubmitActionParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::SubmitActionParser *arg1 = (AdaptiveCards::SubmitActionParser *) 0 ;
   std::shared_ptr< AdaptiveCards::SubmitActionParser > *smartarg1 = 0 ;
   
@@ -8510,7 +8510,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::AdaptiveCard *result = 0 ;
   
@@ -8524,7 +8524,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3, jstring jarg4, jint jarg5, jstring jarg6) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3, jstring jarg4, jint jarg5, jstring jarg6) {
   jlong jresult = 0 ;
   std::string arg1 ;
   std::string arg2 ;
@@ -8585,7 +8585,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3, jstring jarg4, jint jarg5, jstring jarg6, jlong jarg7, jobject jarg7_, jlong jarg8, jobject jarg8_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3, jstring jarg4, jint jarg5, jstring jarg6, jlong jarg7, jobject jarg7_, jlong jarg8, jobject jarg8_) {
   jlong jresult = 0 ;
   std::string arg1 ;
   std::string arg2 ;
@@ -8660,7 +8660,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetVersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetVersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
@@ -8678,7 +8678,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetVersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetVersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -8701,7 +8701,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetMinVersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetMinVersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
@@ -8719,7 +8719,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetMinVersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetMinVersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -8742,7 +8742,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetFallbackText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetFallbackText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
@@ -8760,7 +8760,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetFallbackText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetFallbackText(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -8783,7 +8783,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetBackgroundImage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetBackgroundImage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
@@ -8801,7 +8801,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetBackgroundImage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetBackgroundImage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -8824,7 +8824,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetSpeak(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetSpeak(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
@@ -8842,7 +8842,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetSpeak(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetSpeak(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -8865,7 +8865,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
@@ -8883,7 +8883,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   AdaptiveCards::ContainerStyle arg2 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -8899,7 +8899,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetBody(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetBody(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -8917,7 +8917,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetActions(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetActions(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -8935,7 +8935,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetElementType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetElementType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
@@ -8953,7 +8953,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromFile_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromFile_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -8996,7 +8996,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromFile_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromFile_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -9034,7 +9034,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromFile_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromFile_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > result;
@@ -9067,7 +9067,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1Deserialize_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1Deserialize_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -9106,7 +9106,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1Deserialize_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1Deserialize_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -9140,7 +9140,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1Deserialize_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1Deserialize_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > result;
@@ -9169,7 +9169,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromString_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromString_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -9212,7 +9212,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromString_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromString_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
@@ -9250,7 +9250,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromString_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1DeserializeFromString_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > result;
@@ -9283,7 +9283,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -9301,7 +9301,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1Serialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
@@ -9319,7 +9319,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCard(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCard(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
   
@@ -9332,7 +9332,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardParseException(JNIEnv *jenv, jclass jcls, jint jarg1, jstring jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardParseException(JNIEnv *jenv, jclass jcls, jint jarg1, jstring jarg2) {
   jlong jresult = 0 ;
   AdaptiveCards::ErrorStatusCode arg1 ;
   std::string *arg2 = 0 ;
@@ -9356,7 +9356,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCardParseException(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCardParseException(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::AdaptiveCardParseException *arg1 = (AdaptiveCards::AdaptiveCardParseException *) 0 ;
   
   (void)jenv;
@@ -9366,7 +9366,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardParseException_1what(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardParseException_1what(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCardParseException *arg1 = (AdaptiveCards::AdaptiveCardParseException *) 0 ;
   char *result = 0 ;
@@ -9381,7 +9381,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardParseException_1GetStatusCode(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardParseException_1GetStatusCode(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::AdaptiveCardParseException *arg1 = (AdaptiveCards::AdaptiveCardParseException *) 0 ;
   AdaptiveCards::ErrorStatusCode result;
@@ -9396,7 +9396,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardParseException_1GetReason(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardParseException_1GetReason(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::AdaptiveCardParseException *arg1 = (AdaptiveCards::AdaptiveCardParseException *) 0 ;
   std::string *result = 0 ;
@@ -9411,7 +9411,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1smallFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1smallFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -9424,7 +9424,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1smallFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1smallFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
@@ -9439,7 +9439,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1defaultFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1defaultFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -9452,7 +9452,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1defaultFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1defaultFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
@@ -9467,7 +9467,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1mediumFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1mediumFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -9480,7 +9480,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1mediumFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1mediumFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
@@ -9495,7 +9495,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1largeFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1largeFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -9508,7 +9508,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1largeFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1largeFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
@@ -9523,7 +9523,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1extraLargeFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1extraLargeFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -9536,7 +9536,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1extraLargeFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1extraLargeFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
@@ -9551,7 +9551,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::FontSizesConfig *arg2 = 0 ;
@@ -9576,7 +9576,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FontSizesConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FontSizesConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::FontSizesConfig *result = 0 ;
   
@@ -9588,7 +9588,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FontSizesConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FontSizesConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   
   (void)jenv;
@@ -9598,7 +9598,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1lighterWeight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1lighterWeight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FontWeightsConfig *arg1 = (AdaptiveCards::FontWeightsConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -9611,7 +9611,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1lighterWeight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1lighterWeight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontWeightsConfig *arg1 = (AdaptiveCards::FontWeightsConfig *) 0 ;
   unsigned int result;
@@ -9626,7 +9626,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1defaultWeight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1defaultWeight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FontWeightsConfig *arg1 = (AdaptiveCards::FontWeightsConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -9639,7 +9639,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1defaultWeight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1defaultWeight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontWeightsConfig *arg1 = (AdaptiveCards::FontWeightsConfig *) 0 ;
   unsigned int result;
@@ -9654,7 +9654,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1bolderWeight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1bolderWeight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FontWeightsConfig *arg1 = (AdaptiveCards::FontWeightsConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -9667,7 +9667,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1bolderWeight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1bolderWeight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontWeightsConfig *arg1 = (AdaptiveCards::FontWeightsConfig *) 0 ;
   unsigned int result;
@@ -9682,7 +9682,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontWeightsConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::FontWeightsConfig *arg2 = 0 ;
@@ -9707,7 +9707,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FontWeightsConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FontWeightsConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::FontWeightsConfig *result = 0 ;
   
@@ -9719,7 +9719,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FontWeightsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FontWeightsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::FontWeightsConfig *arg1 = (AdaptiveCards::FontWeightsConfig *) 0 ;
   
   (void)jenv;
@@ -9729,7 +9729,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1defaultColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1defaultColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -9750,7 +9750,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1defaultColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1defaultColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   std::string *result = 0 ;
@@ -9765,7 +9765,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1subtleColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1subtleColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -9786,7 +9786,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1subtleColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1subtleColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   std::string *result = 0 ;
@@ -9801,7 +9801,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ColorConfig *arg2 = 0 ;
@@ -9826,7 +9826,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColorConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColorConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorConfig *result = 0 ;
   
@@ -9838,7 +9838,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColorConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColorConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
@@ -9848,7 +9848,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1defaultColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1defaultColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
@@ -9862,7 +9862,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1defaultColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1defaultColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *result = 0 ;
@@ -9877,7 +9877,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1accent_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1accent_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
@@ -9891,7 +9891,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1accent_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1accent_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *result = 0 ;
@@ -9906,7 +9906,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1dark_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1dark_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
@@ -9920,7 +9920,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1dark_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1dark_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *result = 0 ;
@@ -9935,7 +9935,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1light_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1light_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
@@ -9949,7 +9949,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1light_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1light_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *result = 0 ;
@@ -9964,7 +9964,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1good_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1good_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
@@ -9978,7 +9978,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1good_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1good_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *result = 0 ;
@@ -9993,7 +9993,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1warning_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1warning_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
@@ -10007,7 +10007,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1warning_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1warning_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *result = 0 ;
@@ -10022,7 +10022,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1attention_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1attention_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
@@ -10036,7 +10036,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1attention_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1attention_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   AdaptiveCards::ColorConfig *result = 0 ;
@@ -10051,7 +10051,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ColorsConfig *arg2 = 0 ;
@@ -10076,7 +10076,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColorsConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColorsConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ColorsConfig *result = 0 ;
   
@@ -10088,7 +10088,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColorsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColorsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   
   (void)jenv;
@@ -10098,7 +10098,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1weight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1weight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextWeight arg2 ;
   
@@ -10111,7 +10111,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1weight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1weight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextWeight result;
@@ -10126,7 +10126,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextSize arg2 ;
   
@@ -10139,7 +10139,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextSize result;
@@ -10154,7 +10154,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::ForegroundColor arg2 ;
   
@@ -10167,7 +10167,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::ForegroundColor result;
@@ -10182,7 +10182,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1isSubtle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1isSubtle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   bool arg2 ;
   
@@ -10195,7 +10195,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1isSubtle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1isSubtle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   bool result;
@@ -10210,7 +10210,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1wrap_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1wrap_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   bool arg2 ;
   
@@ -10223,7 +10223,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1wrap_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1wrap_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   bool result;
@@ -10238,7 +10238,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1maxWidth_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1maxWidth_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10251,7 +10251,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1maxWidth_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1maxWidth_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   unsigned int result;
@@ -10266,7 +10266,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::TextConfig *arg2 = 0 ;
@@ -10291,7 +10291,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::TextConfig *result = 0 ;
   
@@ -10303,7 +10303,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   
   (void)jenv;
@@ -10313,7 +10313,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1smallSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1smallSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10326,7 +10326,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1smallSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1smallSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int result;
@@ -10341,7 +10341,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1defaultSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1defaultSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10354,7 +10354,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1defaultSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1defaultSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int result;
@@ -10369,7 +10369,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1mediumSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1mediumSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10382,7 +10382,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1mediumSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1mediumSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int result;
@@ -10397,7 +10397,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1largeSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1largeSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10410,7 +10410,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1largeSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1largeSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int result;
@@ -10425,7 +10425,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1extraLargeSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1extraLargeSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10438,7 +10438,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1extraLargeSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1extraLargeSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int result;
@@ -10453,7 +10453,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1paddingSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1paddingSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10466,7 +10466,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1paddingSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1paddingSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   unsigned int result;
@@ -10481,7 +10481,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::SpacingConfig *arg2 = 0 ;
@@ -10506,7 +10506,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SpacingConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SpacingConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::SpacingConfig *result = 0 ;
   
@@ -10518,7 +10518,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SpacingConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SpacingConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::SpacingConfig *arg1 = (AdaptiveCards::SpacingConfig *) 0 ;
   
   (void)jenv;
@@ -10528,7 +10528,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1lineThickness_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1lineThickness_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::SeparatorConfig *arg1 = (AdaptiveCards::SeparatorConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10541,7 +10541,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1lineThickness_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1lineThickness_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::SeparatorConfig *arg1 = (AdaptiveCards::SeparatorConfig *) 0 ;
   unsigned int result;
@@ -10556,7 +10556,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1lineColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1lineColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::SeparatorConfig *arg1 = (AdaptiveCards::SeparatorConfig *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -10577,7 +10577,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1lineColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1lineColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::SeparatorConfig *arg1 = (AdaptiveCards::SeparatorConfig *) 0 ;
   std::string *result = 0 ;
@@ -10592,7 +10592,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparatorConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::SeparatorConfig *arg2 = 0 ;
@@ -10617,7 +10617,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SeparatorConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SeparatorConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::SeparatorConfig *result = 0 ;
   
@@ -10629,7 +10629,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SeparatorConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SeparatorConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::SeparatorConfig *arg1 = (AdaptiveCards::SeparatorConfig *) 0 ;
   
   (void)jenv;
@@ -10639,7 +10639,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1smallSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1smallSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10652,7 +10652,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1smallSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1smallSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int result;
@@ -10667,7 +10667,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1mediumSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1mediumSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10680,7 +10680,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1mediumSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1mediumSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int result;
@@ -10695,7 +10695,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1largeSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1largeSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10708,7 +10708,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1largeSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1largeSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int result;
@@ -10723,7 +10723,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ImageSizesConfig *arg2 = 0 ;
@@ -10748,7 +10748,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSizesConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSizesConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSizesConfig *result = 0 ;
   
@@ -10760,7 +10760,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSizesConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSizesConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   
   (void)jenv;
@@ -10770,7 +10770,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1imageSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1imageSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
   AdaptiveCards::ImageSize arg2 ;
   
@@ -10783,7 +10783,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1imageSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1imageSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
   AdaptiveCards::ImageSize result;
@@ -10798,7 +10798,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1maxImageHeight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1maxImageHeight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -10811,7 +10811,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1maxImageHeight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1maxImageHeight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
   unsigned int result;
@@ -10826,7 +10826,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ImageSetConfig *arg2 = 0 ;
@@ -10851,7 +10851,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSetConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSetConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageSetConfig *result = 0 ;
   
@@ -10863,7 +10863,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSetConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSetConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
   
   (void)jenv;
@@ -10873,7 +10873,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageConfig_1imageSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageConfig_1imageSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ImageConfig *arg1 = (AdaptiveCards::ImageConfig *) 0 ;
   AdaptiveCards::ImageSize arg2 ;
   
@@ -10886,7 +10886,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageConfig_1imageSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageConfig_1imageSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ImageConfig *arg1 = (AdaptiveCards::ImageConfig *) 0 ;
   AdaptiveCards::ImageSize result;
@@ -10901,7 +10901,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ImageConfig *arg2 = 0 ;
@@ -10926,7 +10926,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ImageConfig *result = 0 ;
   
@@ -10938,7 +10938,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ImageConfig *arg1 = (AdaptiveCards::ImageConfig *) 0 ;
   
   (void)jenv;
@@ -10948,7 +10948,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1allowCustomStyle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1allowCustomStyle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::AdaptiveCardConfig *arg1 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
   bool arg2 ;
   
@@ -10961,7 +10961,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1allowCustomStyle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1allowCustomStyle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::AdaptiveCardConfig *arg1 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
   bool result;
@@ -10976,7 +10976,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::AdaptiveCardConfig *arg2 = 0 ;
@@ -11001,7 +11001,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::AdaptiveCardConfig *result = 0 ;
   
@@ -11013,7 +11013,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCardConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCardConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::AdaptiveCardConfig *arg1 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
   
   (void)jenv;
@@ -11023,7 +11023,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1title_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1title_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   AdaptiveCards::TextConfig *arg2 = (AdaptiveCards::TextConfig *) 0 ;
   
@@ -11037,7 +11037,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1title_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1title_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   AdaptiveCards::TextConfig *result = 0 ;
@@ -11052,7 +11052,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   AdaptiveCards::TextConfig *arg2 = (AdaptiveCards::TextConfig *) 0 ;
   
@@ -11066,7 +11066,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   AdaptiveCards::TextConfig *result = 0 ;
@@ -11081,7 +11081,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -11094,7 +11094,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   unsigned int result;
@@ -11109,7 +11109,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::FactSetConfig *arg2 = 0 ;
@@ -11134,7 +11134,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSetConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSetConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::FactSetConfig *result = 0 ;
   
@@ -11146,7 +11146,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactSetConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactSetConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   
   (void)jenv;
@@ -11156,7 +11156,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1backgroundColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1backgroundColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ContainerStyleDefinition *arg1 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -11177,7 +11177,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1backgroundColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1backgroundColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::ContainerStyleDefinition *arg1 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
   std::string *result = 0 ;
@@ -11192,7 +11192,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1foregroundColors_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1foregroundColors_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ContainerStyleDefinition *arg1 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
   AdaptiveCards::ColorsConfig *arg2 = (AdaptiveCards::ColorsConfig *) 0 ;
   
@@ -11206,7 +11206,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1foregroundColors_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1foregroundColors_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerStyleDefinition *arg1 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
   AdaptiveCards::ColorsConfig *result = 0 ;
@@ -11221,7 +11221,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleDefinition_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ContainerStyleDefinition *arg2 = 0 ;
@@ -11246,7 +11246,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ContainerStyleDefinition(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ContainerStyleDefinition(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerStyleDefinition *result = 0 ;
   
@@ -11258,7 +11258,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ContainerStyleDefinition(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ContainerStyleDefinition(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ContainerStyleDefinition *arg1 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
   
   (void)jenv;
@@ -11268,7 +11268,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1defaultPalette_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1defaultPalette_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
   AdaptiveCards::ContainerStyleDefinition *arg2 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
   
@@ -11282,7 +11282,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1defaultPalette_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1defaultPalette_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
   AdaptiveCards::ContainerStyleDefinition *result = 0 ;
@@ -11297,7 +11297,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1emphasisPalette_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1emphasisPalette_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
   AdaptiveCards::ContainerStyleDefinition *arg2 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
   
@@ -11311,7 +11311,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1emphasisPalette_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1emphasisPalette_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
   AdaptiveCards::ContainerStyleDefinition *result = 0 ;
@@ -11326,7 +11326,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ContainerStylesDefinition *arg2 = 0 ;
@@ -11351,7 +11351,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ContainerStylesDefinition(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ContainerStylesDefinition(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerStylesDefinition *result = 0 ;
   
@@ -11363,7 +11363,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ContainerStylesDefinition(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ContainerStylesDefinition(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
   
   (void)jenv;
@@ -11373,7 +11373,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1actionMode_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1actionMode_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   AdaptiveCards::ActionMode arg2 ;
   
@@ -11386,7 +11386,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1actionMode_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1actionMode_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   AdaptiveCards::ActionMode result;
@@ -11401,7 +11401,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1style_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1style_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   AdaptiveCards::ContainerStyle arg2 ;
   
@@ -11414,7 +11414,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1style_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1style_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   AdaptiveCards::ContainerStyle result;
@@ -11429,7 +11429,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1inlineTopMargin_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1inlineTopMargin_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -11442,7 +11442,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1inlineTopMargin_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1inlineTopMargin_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   unsigned int result;
@@ -11457,7 +11457,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ShowCardActionConfig *arg2 = 0 ;
@@ -11482,7 +11482,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ShowCardActionConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ShowCardActionConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ShowCardActionConfig *result = 0 ;
   
@@ -11494,7 +11494,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ShowCardActionConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ShowCardActionConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   
   (void)jenv;
@@ -11504,7 +11504,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1showCard_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1showCard_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ShowCardActionConfig *arg2 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   
@@ -11518,7 +11518,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1showCard_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1showCard_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ShowCardActionConfig *result = 0 ;
@@ -11533,7 +11533,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionsOrientation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionsOrientation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ActionsOrientation arg2 ;
   
@@ -11546,7 +11546,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionsOrientation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionsOrientation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ActionsOrientation result;
@@ -11561,7 +11561,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionAlignment_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionAlignment_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ActionAlignment arg2 ;
   
@@ -11574,7 +11574,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionAlignment_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionAlignment_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ActionAlignment result;
@@ -11589,7 +11589,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1buttonSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1buttonSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -11602,7 +11602,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1buttonSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1buttonSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   unsigned int result;
@@ -11617,7 +11617,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1maxActions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1maxActions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   unsigned int arg2 ;
   
@@ -11630,7 +11630,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1maxActions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1maxActions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   unsigned int result;
@@ -11645,7 +11645,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::Spacing arg2 ;
   
@@ -11658,7 +11658,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::Spacing result;
@@ -11673,7 +11673,7 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::ActionsConfig *arg2 = 0 ;
@@ -11698,7 +11698,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ActionsConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ActionsConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionsConfig *result = 0 ;
   
@@ -11710,7 +11710,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   
   (void)jenv;
@@ -11720,7 +11720,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontFamily_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontFamily_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -11741,7 +11741,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontFamily_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontFamily_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   std::string *result = 0 ;
@@ -11756,7 +11756,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontSizes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontSizes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::FontSizesConfig *arg2 = (AdaptiveCards::FontSizesConfig *) 0 ;
   
@@ -11770,7 +11770,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontSizes_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontSizes_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::FontSizesConfig *result = 0 ;
@@ -11785,7 +11785,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontWeights_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontWeights_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::FontWeightsConfig *arg2 = (AdaptiveCards::FontWeightsConfig *) 0 ;
   
@@ -11799,7 +11799,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontWeights_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontWeights_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::FontWeightsConfig *result = 0 ;
@@ -11814,7 +11814,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1supportsInteractivity_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1supportsInteractivity_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   bool arg2 ;
   
@@ -11827,7 +11827,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1supportsInteractivity_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1supportsInteractivity_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   bool result;
@@ -11842,7 +11842,7 @@ SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptiv
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSizes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSizes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ImageSizesConfig *arg2 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   
@@ -11856,7 +11856,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSizes_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSizes_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ImageSizesConfig *result = 0 ;
@@ -11871,7 +11871,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1image_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1image_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ImageConfig *arg2 = (AdaptiveCards::ImageConfig *) 0 ;
   
@@ -11885,7 +11885,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1image_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1image_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ImageConfig *result = 0 ;
@@ -11900,7 +11900,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1separator_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1separator_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::SeparatorConfig *arg2 = (AdaptiveCards::SeparatorConfig *) 0 ;
   
@@ -11914,7 +11914,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1separator_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1separator_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::SeparatorConfig *result = 0 ;
@@ -11929,7 +11929,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::SpacingConfig *arg2 = (AdaptiveCards::SpacingConfig *) 0 ;
   
@@ -11943,7 +11943,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::SpacingConfig *result = 0 ;
@@ -11958,7 +11958,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1adaptiveCard_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1adaptiveCard_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::AdaptiveCardConfig *arg2 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
   
@@ -11972,7 +11972,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1adaptiveCard_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1adaptiveCard_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::AdaptiveCardConfig *result = 0 ;
@@ -11987,7 +11987,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ImageSetConfig *arg2 = (AdaptiveCards::ImageSetConfig *) 0 ;
   
@@ -12001,7 +12001,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ImageSetConfig *result = 0 ;
@@ -12016,7 +12016,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1factSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1factSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::FactSetConfig *arg2 = (AdaptiveCards::FactSetConfig *) 0 ;
   
@@ -12030,7 +12030,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1factSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1factSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::FactSetConfig *result = 0 ;
@@ -12045,7 +12045,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1actions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1actions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ActionsConfig *arg2 = (AdaptiveCards::ActionsConfig *) 0 ;
   
@@ -12059,7 +12059,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1actions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1actions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ActionsConfig *result = 0 ;
@@ -12074,7 +12074,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1containerStyles_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1containerStyles_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ContainerStylesDefinition *arg2 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
   
@@ -12088,7 +12088,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1containerStyles_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1containerStyles_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ContainerStylesDefinition *result = 0 ;
@@ -12103,7 +12103,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
   AdaptiveCards::HostConfig result;
@@ -12121,7 +12121,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
   std::string arg1 ;
   AdaptiveCards::HostConfig result;
@@ -12142,7 +12142,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1HostConfig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1HostConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::HostConfig *result = 0 ;
   
@@ -12154,7 +12154,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1HostConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1HostConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   
   (void)jenv;
@@ -12164,7 +12164,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1MarkDownParser(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1MarkDownParser(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::MarkDownParser *result = 0 ;
@@ -12186,7 +12186,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_MarkDownParser_1TransformToHtml(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_MarkDownParser_1TransformToHtml(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   AdaptiveCards::MarkDownParser *arg1 = (AdaptiveCards::MarkDownParser *) 0 ;
   std::string result;
@@ -12201,7 +12201,7 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1MarkDownParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1MarkDownParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::MarkDownParser *arg1 = (AdaptiveCards::MarkDownParser *) 0 ;
   
   (void)jenv;
@@ -12211,7 +12211,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::BaseInputElement > *argp1;
     (void)jenv;
@@ -12221,7 +12221,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::Container > *argp1;
     (void)jenv;
@@ -12231,7 +12231,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ContainerParser > *argp1;
     (void)jenv;
@@ -12241,7 +12241,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::TextBlock > *argp1;
     (void)jenv;
@@ -12251,7 +12251,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::TextBlockParser > *argp1;
     (void)jenv;
@@ -12261,7 +12261,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Image_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::Image > *argp1;
     (void)jenv;
@@ -12271,7 +12271,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ImageParser > *argp1;
     (void)jenv;
@@ -12281,7 +12281,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSet_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ImageSet > *argp1;
     (void)jenv;
@@ -12291,7 +12291,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ImageSetParser > *argp1;
     (void)jenv;
@@ -12301,7 +12301,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::Column > *argp1;
     (void)jenv;
@@ -12311,7 +12311,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSet_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ColumnSet > *argp1;
     (void)jenv;
@@ -12321,7 +12321,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ColumnSetParser > *argp1;
     (void)jenv;
@@ -12331,7 +12331,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSet_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSet_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::FactSet > *argp1;
     (void)jenv;
@@ -12341,7 +12341,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::FactSetParser > *argp1;
     (void)jenv;
@@ -12351,7 +12351,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ChoiceSetInput > *argp1;
     (void)jenv;
@@ -12361,7 +12361,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ChoiceSetInputParser > *argp1;
     (void)jenv;
@@ -12371,7 +12371,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::DateInput > *argp1;
     (void)jenv;
@@ -12381,7 +12381,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::DateInputParser > *argp1;
     (void)jenv;
@@ -12391,7 +12391,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::NumberInput > *argp1;
     (void)jenv;
@@ -12401,7 +12401,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::NumberInputParser > *argp1;
     (void)jenv;
@@ -12411,7 +12411,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::TextInput > *argp1;
     (void)jenv;
@@ -12421,7 +12421,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::TextInputParser > *argp1;
     (void)jenv;
@@ -12431,7 +12431,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::TimeInput > *argp1;
     (void)jenv;
@@ -12441,7 +12441,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::TimeInputParser > *argp1;
     (void)jenv;
@@ -12451,7 +12451,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInput_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ToggleInput > *argp1;
     (void)jenv;
@@ -12461,7 +12461,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ToggleInputParser > *argp1;
     (void)jenv;
@@ -12471,7 +12471,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlAction_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::OpenUrlAction > *argp1;
     (void)jenv;
@@ -12481,7 +12481,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlActionParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_OpenUrlActionParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::OpenUrlActionParser > *argp1;
     (void)jenv;
@@ -12491,7 +12491,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardAction_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ShowCardAction > *argp1;
     (void)jenv;
@@ -12501,7 +12501,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::ShowCardActionParser > *argp1;
     (void)jenv;
@@ -12511,7 +12511,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitAction_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::SubmitAction > *argp1;
     (void)jenv;
@@ -12521,7 +12521,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     return baseptr;
 }
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitActionParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SubmitActionParser_1SWIGSmartPtrUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
     jlong baseptr = 0;
     std::shared_ptr< AdaptiveCards::SubmitActionParser > *argp1;
     (void)jenv;
