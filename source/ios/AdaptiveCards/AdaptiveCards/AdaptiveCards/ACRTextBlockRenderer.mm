@@ -62,8 +62,8 @@ rootViewController:(UIViewController *)vc
         paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtBlck withHostConfig:config];
 
         // Obtain text color to apply to the attributed string
-        ContainerStyle style = lab.style;
-        ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? config->containerStyles.emphasisPalette.foregroundColors:
+        ACRContainerStyle style = lab.style;
+        ColorsConfig &colorConfig = (style == ACREmphasis)? config->containerStyles.emphasisPalette.foregroundColors:
                                                                          config->containerStyles.defaultPalette.foregroundColors;
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.

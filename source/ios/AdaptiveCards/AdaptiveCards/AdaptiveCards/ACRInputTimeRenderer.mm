@@ -18,9 +18,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::TimeInput;
+    return ACRTimeInput;
 }
 
 - (UIView *)render:(UIView *)viewGroup

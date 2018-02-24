@@ -14,6 +14,8 @@
 #import "HostConfig.h"
 #import "ACRRenderer.h"
 
+using namespace AdaptiveCards;
+
 @interface ACRRenderer()
 
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard

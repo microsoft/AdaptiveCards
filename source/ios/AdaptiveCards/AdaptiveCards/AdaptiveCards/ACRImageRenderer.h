@@ -7,6 +7,9 @@
 
 #import "ACRBaseCardElementRenderer.h"
 #import "Image.h"
+#import "HostConfig.h"
+
+using namespace AdaptiveCards;
 
 @interface ACRImageRenderer:ACRBaseCardElementRenderer
 

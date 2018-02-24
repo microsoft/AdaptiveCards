@@ -6,23 +6,25 @@
 //
 
 #include "ACRContentStackView.h"
+#include "ACOHostConfigPrivate.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRContentStackView
 {
     NSMutableArray* _targets;
-    ContainerStyle _style;
+    ACRContainerStyle _style;
 }
 
-- (instancetype)initWithStyle:(ContainerStyle)style
-                  parentStyle:(ContainerStyle)parentStyle
-                   hostConfig:(std::shared_ptr<HostConfig> const &)config
+- (instancetype)initWithStyle:(ACRContainerStyle)style
+                  parentStyle:(ACRContainerStyle)parentStyle
+                   hostConfig:(ACOHostConfig *)acoConfig
 {
     self = [self initWithFrame:CGRectMake(0,0,0,0)];
     if(self){
-        if(style != ContainerStyle::None &&
+        if(style != ACRNone &&
             style != parentStyle) {
+            std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
             [self setBackgroundColor:style hostConfig:config];
             [self removeConstraints:self.constraints];
             [self applyPadding:config->spacing.paddingSpacing priority:1000];
@@ -57,22 +59,22 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (ContainerStyle)style
+- (ACRContainerStyle)style
 {
     return _style;
 }
 
-- (void)setStyle:(AdaptiveCards::ContainerStyle)style
+- (void)setStyle:(ACRContainerStyle)style
 {
     _style = style;
 }
 
-- (void)setBackgroundColor:(ContainerStyle)style
+- (void)setBackgroundColor:(ACRContainerStyle)style
                 hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     _style = style;
     long num = 0;
-    if(style == ContainerStyle::Emphasis)
+    if(style == ACREmphasis)
     {
         num = std::stoul(config->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
     }

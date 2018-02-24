@@ -7,16 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
 #import "ACRContentStackView.h"
 #import "ACOHostConfig.h"
-#import "ACOBaseCardElement.h"
-
-using namespace AdaptiveCards;
 
 @protocol ACRIBaseCardElementRenderer
 
-+ (CardElementType)elemType;
++ (ACRCardElementType)elemType;
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             rootViewController:(UIViewController *)vc

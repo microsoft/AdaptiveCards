@@ -7,6 +7,9 @@
 
 #import "ACRBaseCardElementRenderer.h"
 #import "TextBlock.h"
+#import "HostConfig.h"
+
+using namespace AdaptiveCards;
 
 @interface ACRTextBlockRenderer:ACRBaseCardElementRenderer
 

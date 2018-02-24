@@ -97,15 +97,17 @@
     [wrappingView addConstraints:vertConst];
     _adcView = wrappingView;
 
-    ContainerStyle style = (_config->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : _config->actions.showCard.style;
+    ContainerStyle containerStyle = (_config->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : _config->actions.showCard.style;
+
+    ACRContainerStyle style = (ACRContainerStyle)(containerStyle);
 
     long num = 0;
 
-    if(style == ContainerStyle::None) {
+    if(style == ACRNone) {
         style = [_superview style];
     }
 
-    if(style == ContainerStyle::Emphasis) {
+    if(style == ACREmphasis) {
         num = std::stoul(_config->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
     } else {
         num = std::stoul(_config->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);

@@ -23,9 +23,9 @@ using namespace AdaptiveCards;
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::ImageSet;
+    return ACRImageSet;
 }
 
 - (UIView *)render:(UIView *)viewGroup
