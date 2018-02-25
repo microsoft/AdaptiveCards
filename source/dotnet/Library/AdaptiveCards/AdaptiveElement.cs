@@ -14,7 +14,9 @@ namespace AdaptiveCards
         /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveSpacing.Default"/>.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(typeof(AdaptiveSpacing), "default")]
         public AdaptiveSpacing Spacing { get; set; }
 
@@ -22,7 +24,9 @@ namespace AdaptiveCards
         /// Indicates whether there should be a visible separator (e.g. a line) between this element and the one before it.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(false)]
         public bool Separator { get; set; }
 

@@ -11,19 +11,25 @@ namespace AdaptiveCards
     /// <summary>
     ///     Element which collects choice from the user
     /// </summary>
+#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveChoiceSetInput.TypeName)]
+#endif
     public class AdaptiveChoiceSetInput : AdaptiveInput
     {
         public const string TypeName = "Input.ChoiceSet";
 
+#if !NETSTANDARD1_3
         [XmlIgnore]
+#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///      Comma separated string of selected Choice values
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(null)]
         public string Value { get; set; }
 
@@ -31,14 +37,18 @@ namespace AdaptiveCards
         ///     Style for choice
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         public AdaptiveChoiceInputStyle Style { get; set; }
 
         /// <summary>
         ///     allow multiple choices to be selected (default false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(false)]
         public bool IsMultiSelect { get; set; }
 

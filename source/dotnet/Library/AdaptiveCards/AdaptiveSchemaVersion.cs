@@ -13,10 +13,14 @@ namespace AdaptiveCards
     public class AdaptiveSchemaVersion : IComparable<AdaptiveSchemaVersion>
     {
 
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         public int Major { get; set; }
 
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         public int Minor { get; set; }
 
         public AdaptiveSchemaVersion() { }

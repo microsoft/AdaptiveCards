@@ -10,7 +10,9 @@ namespace AdaptiveCards
     ///     Represents one "fact" in a FactSet element.
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+#if !NETSTANDARD1_3
     [XmlType(TypeName = "Fact")]
+#endif
     public class AdaptiveFact
     {
         public AdaptiveFact()
@@ -26,14 +28,18 @@ namespace AdaptiveCards
         ///     The facts label
         /// </summary>
         [JsonRequired]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         public string Title { get; set; }
 
         /// <summary>
         ///     The fact's value
         /// </summary>
         [JsonRequired]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         public string Value { get; set; }
 
         /// <summary>

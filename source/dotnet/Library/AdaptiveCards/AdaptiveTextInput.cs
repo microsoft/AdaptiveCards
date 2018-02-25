@@ -7,19 +7,25 @@ namespace AdaptiveCards
     /// <summary>
     ///     Input which collects text from the user
     /// </summary>
+#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextInput.TypeName)]
+#endif
     public class AdaptiveTextInput : AdaptiveInput
     {
         public const string TypeName = "Input.Text";
 
+#if !NETSTANDARD1_3
         [XmlIgnore]
+#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///     Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(null)]
         public string Placeholder { get; set; }
 
@@ -27,7 +33,9 @@ namespace AdaptiveCards
         ///     The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(null)]
         public string Value { get; set; }
 
@@ -35,7 +43,9 @@ namespace AdaptiveCards
         ///     Hint of style of input, if client doesn't support the style it will become simple text input
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(typeof(AdaptiveTextInputStyle), "text")]
         public AdaptiveTextInputStyle Style { get; set; }
 
@@ -43,7 +53,9 @@ namespace AdaptiveCards
         ///     true to collect multiple lines of text(default is false)
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(false)]
         public bool IsMultiline { get; set; }
 
@@ -51,7 +63,9 @@ namespace AdaptiveCards
         ///     hint of maximum length characters to collect(may be ignored by some clients)
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(0)]
         public int MaxLength { get; set; }
 

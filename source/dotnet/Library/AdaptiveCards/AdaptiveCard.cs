@@ -14,7 +14,9 @@ namespace AdaptiveCards
     ///     Adaptive card which has flexible container
     /// </summary>
     [JsonConverter(typeof(AdaptiveCardConverter))]
+#if !NETSTANDARD1_3
     [XmlRoot(ElementName="Card")]
+#endif
     public class AdaptiveCard : AdaptiveTypedElement
 #if WINDOWS_UWP
       // TODO: uncomment when I figure out the Windows build
@@ -25,7 +27,9 @@ namespace AdaptiveCards
 
         public const string TypeName = "AdaptiveCard";
 
+#if !NETSTANDARD1_3
         [XmlIgnore]
+#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -57,6 +61,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(Order = -3)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
+#if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveTextBlock))]
         [XmlElement(typeof(AdaptiveImage))]
         [XmlElement(typeof(AdaptiveContainer))]
@@ -69,6 +74,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveNumberInput))]
         [XmlElement(typeof(AdaptiveToggleInput))]
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
+#endif
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
         public bool ShouldSerializeBody() => Body?.Count > 0;
@@ -78,10 +84,12 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(Order = -2)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
+#if !NETSTANDARD1_3
         [XmlArray("Actions")]
         [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(AdaptiveOpenUrlAction))]
         [XmlArrayItem(ElementName = "ShowCard", Type = typeof(AdaptiveShowCardAction))]
         [XmlArrayItem(ElementName = "Submit", Type = typeof(AdaptiveSubmitAction))]
+#endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
         public bool ShouldSerializeActions() => Actions?.Count > 0;
@@ -90,7 +98,9 @@ namespace AdaptiveCards
         ///     Speak annotation for the card
         /// </summary>
         [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlElement]
+#endif
         [DefaultValue(null)]
         public string Speak { get; set; }
 
@@ -105,14 +115,18 @@ namespace AdaptiveCards
         ///     Background image for card
         /// </summary>
         [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         public string BackgroundImage { get; set; }
 
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
+#if !NETSTANDARD1_3
         [XmlElement]
+#endif
         [DefaultValue(null)]
         public AdaptiveSchemaVersion Version { get; set; }
 
@@ -121,7 +135,9 @@ namespace AdaptiveCards
         ///     supported are safe to ignore
         /// </summary>
         [JsonProperty(Order = -8, NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlElement]
+#endif
         [DefaultValue(null)]
         public AdaptiveSchemaVersion MinVersion { get; set; }
 
@@ -129,7 +145,9 @@ namespace AdaptiveCards
         ///     if a client is not able to show the card, show fallbackText to the user. This can be in markdown format.
         /// </summary>
         [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(null)]
         public string FallbackText { get; set; }
 
@@ -171,7 +189,9 @@ namespace AdaptiveCards
         /// This makes sure the $schema property doesn't show up in AdditionalProperties
         /// </summary>
         [JsonProperty("$schema")]
+#if !NETSTANDARD1_3
         [XmlIgnore]
+#endif
         internal string JsonSchema { get; set; }
 
         public bool ShouldSerializeJsonSchema()

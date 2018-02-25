@@ -7,19 +7,25 @@ namespace AdaptiveCards
     /// <summary>
     ///     Input which collects a choice between two options from the user
     /// </summary>
+#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveToggleInput.TypeName)]
+#endif
     public class AdaptiveToggleInput : AdaptiveInput
     {
         public const string TypeName = "Input.Toggle";
 
+#if !NETSTANDARD1_3
         [XmlIgnore]
+#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///     Title text for toggle
         /// </summary>
         [JsonRequired]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(null)]
         public string Title { get; set; }
 
@@ -27,7 +33,9 @@ namespace AdaptiveCards
         ///     Value to use for on (Default: true)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(null)]
         public string ValueOn { get; set; } = bool.TrueString;
 
@@ -35,7 +43,9 @@ namespace AdaptiveCards
         ///     Value to use for off (Default: false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(null)]
         public string ValueOff { get; set; } = bool.FalseString;
 
@@ -43,7 +53,9 @@ namespace AdaptiveCards
         ///     The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
         [XmlAttribute]
+#endif
         [DefaultValue(null)]
         public string Value { get; set; }
 

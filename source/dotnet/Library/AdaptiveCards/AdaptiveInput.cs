@@ -15,7 +15,9 @@ namespace AdaptiveCards
         /// </summary>
         [Obsolete("Ths IsRequired property is not supported in Adaptive Cards yet and will be ignored")]
         [JsonIgnore]
+#if !NETSTANDARD1_3
         [XmlIgnore]
+#endif
         public bool IsRequired { get; set; }
 
         /// <summary>
