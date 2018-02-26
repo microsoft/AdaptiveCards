@@ -11,7 +11,7 @@ namespace std {
     };
 }
 
-%module AdaptiveCardObjectModel
+%module(directors="1") AdaptiveCardObjectModel;
 
 %include <std_string.i>
 %include <std_shared_ptr.i>
@@ -94,6 +94,73 @@ namespace std {
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
 
+%feature("director") IBaseCardElementParser;
+%feature("director") IActionElementParser;
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::ActionParserRegistration> "new $typemap(jstype, AdaptiveCards::ActionParserRegistration)($1,true)";
+%typemap(directorin,descriptor="L$typemap(jstype, AdaptiveCards::ActionParserRegistration);") std::shared_ptr<AdaptiveCards::ActionParserRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::ActionParserRegistration> "$typemap(jstype, AdaptiveCards::ActionParserRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::ActionParserRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseCardElement> "new $typemap(jstype, AdaptiveCards::BaseCardElement)($1,true)";
+%typemap(directorin,descriptor="L$typemap(jstype, AdaptiveCards::BaseCardElement);") std::shared_ptr<AdaptiveCards::BaseCardElement> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::BaseCardElement> "$typemap(jstype, AdaptiveCards::BaseCardElement).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::BaseCardElement> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseActionElement> "new $typemap(jstype, AdaptiveCards::BaseActionElement)($1,true)";
+%typemap(directorin,descriptor="L$typemap(jstype, AdaptiveCards::BaseActionElement);") std::shared_ptr<AdaptiveCards::BaseActionElement> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::BaseActionElement> "$typemap(jstype, AdaptiveCards::BaseActionElement).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::BaseActionElement> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::ElementParserRegistration> "new $typemap(jstype, AdaptiveCards::ElementParserRegistration)($1,true)";
+%typemap(directorin,descriptor="L$typemap(jstype, AdaptiveCards::ElementParserRegistration);") std::shared_ptr<AdaptiveCards::ElementParserRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::ElementParserRegistration> "$typemap(jstype, AdaptiveCards::ElementParserRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::ElementParserRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
   jclass excep = jenv->FindClass("java/io/IOException");
@@ -111,6 +178,7 @@ namespace std {
     return what();
   }
 %}
+
 
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
 %template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
