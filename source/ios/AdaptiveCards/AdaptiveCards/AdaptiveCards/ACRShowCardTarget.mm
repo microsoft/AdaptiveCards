@@ -101,17 +101,13 @@
 
     long num = 0;
 
-    if(style == ContainerStyle::None)
-    {
-        style = [_superview getStyle];
+    if(style == ContainerStyle::None) {
+        style = [_superview style];
     }
 
-    if(style == ContainerStyle::Emphasis)
-    {
+    if(style == ContainerStyle::Emphasis) {
         num = std::stoul(_config->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
-    }
-    else
-    {
+    } else {
         num = std::stoul(_config->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
     }
 

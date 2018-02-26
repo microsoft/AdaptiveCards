@@ -20,6 +20,7 @@
 #import "ACRTextBlockRenderer.h"
 #import "MarkDownParser.h"
 #import "ImageSet.h"
+#import "ACRUILabel.h"
 
 using namespace AdaptiveCards;
 
@@ -96,7 +97,7 @@ using namespace AdaptiveCards;
            [imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
            ]];
     }
-    ContainerStyle style = (_hostConfig->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : _hostConfig->actions.showCard.style;
+    ContainerStyle style = (_hostConfig->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle(): ContainerStyle::Default;
     if(style != ContainerStyle::None)
     {
         unsigned long num = 0;
@@ -203,7 +204,7 @@ using namespace AdaptiveCards;
                         NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
 
                          dispatch_async(dispatch_get_main_queue(),
-                             ^{ __block UILabel *lab = nil; // generate key for text map from TextBlock element's id
+                             ^{ __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
                                   NSString *key = [NSString stringWithCString:txtElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                                   // syncronize access to text map
                                   dispatch_sync(_serial_text_queue,
@@ -225,7 +226,7 @@ using namespace AdaptiveCards;
                                       paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtElem withHostConfig:_hostConfig];
 
                                       // Obtain text color to apply to the attributed string
-                                      ContainerStyle style = ContainerStyle::None;//[viewGroup getStyle];
+                                      ContainerStyle style = lab.style;
                                       ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? _hostConfig->containerStyles.emphasisPalette.foregroundColors:
                                                                                                              _hostConfig->containerStyles.defaultPalette.foregroundColors;
                                       // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.

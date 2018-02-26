@@ -16,12 +16,18 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)initWithStyle:(ContainerStyle)style
+                  parentStyle:(ContainerStyle)parentStyle
                    hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     self = [self initWithFrame:CGRectMake(0,0,0,0)];
-    if(self)
-    {
-        [self setBackgroundColor:style hostConfig:config];
+    if(self){
+        if(style != ContainerStyle::None &&
+            style != parentStyle) {
+            [self setBackgroundColor:style hostConfig:config];
+            [self removeConstraints:self.constraints];
+            [self applyPadding:config->spacing.paddingSpacing priority:1000];
+        }
+        _style = style;
     }
     return self;
 }
@@ -51,9 +57,14 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (ContainerStyle)getStyle
+- (ContainerStyle)style
 {
     return _style;
+}
+
+- (void)setStyle:(AdaptiveCards::ContainerStyle)style
+{
+    _style = style;
 }
 
 - (void)setBackgroundColor:(ContainerStyle)style
@@ -75,48 +86,16 @@ using namespace AdaptiveCards;
                         green:((num & 0x0000FF00) >>  8) / 255.0
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
+    self.opaque = NO;
 }
 
 - (void)config
 {
-    if(!self.stackView) return;
-
-    _style = ContainerStyle::None;
-
+    if(!self.stackView){
+        return;
+    }
     [self addSubview:self.stackView];
-    [self addConstraint:
-     [NSLayoutConstraint constraintWithItem:self
-                                  attribute:NSLayoutAttributeLeading
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.stackView
-                                  attribute:NSLayoutAttributeLeading
-                                 multiplier:1
-                                   constant:0]];
-    [self addConstraint:
-     [NSLayoutConstraint constraintWithItem:self
-                                  attribute:NSLayoutAttributeTrailing
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.stackView
-                                  attribute:NSLayoutAttributeTrailing
-                                 multiplier:1
-                                   constant:0]];
-    [self addConstraint:
-     [NSLayoutConstraint constraintWithItem:self
-                                  attribute:NSLayoutAttributeTop
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.stackView
-                                  attribute:NSLayoutAttributeTop
-                                 multiplier:1
-                                   constant:0]];
-    [self addConstraint:
-     [NSLayoutConstraint constraintWithItem:self
-                                  attribute:NSLayoutAttributeBottom
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.stackView
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1
-                                   constant:0]];
-
+    [self applyPadding:0 priority:1000];
     self.stackView.translatesAutoresizingMaskIntoConstraints = false;
     self.translatesAutoresizingMaskIntoConstraints = false;
 
@@ -145,6 +124,25 @@ using namespace AdaptiveCards;
         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
     if([self.stackView.arrangedSubviews count])
         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+}
+
+- (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority
+{
+    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%u@%u)-[_stackView]-(%u@%u)-|",
+                           padding, priority, padding, priority];
+    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
+                           padding, priority, padding, priority];
+    NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
+    NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:dictionary];
+    NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:dictionary];
+    [self addConstraints:horzConst];
+    [self addConstraints:vertConst];
 }
 
 - (UILayoutConstraintAxis) getAxis
