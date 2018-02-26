@@ -87,27 +87,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddInputItem(IAdaptiveCardElement* cardElement, ABI::Windows::UI::Xaml::IUIElement* uiElement)
+    HRESULT AdaptiveRenderContext::AddInputValue(IAdaptiveInputValue* inputValue)
     {
-        ComPtr<IAdaptiveCardElement> localCardElement(cardElement);
-        ComPtr<IAdaptiveInputElement> inputElement;
-        THROW_IF_FAILED(localCardElement.As(&inputElement));
-
-        ComPtr<IUIElement> localUiElement(uiElement);
-
-        InputItem item(inputElement.Get(), localUiElement.Get());
-
-        auto inputItems = m_renderResult->GetInputItems();
-
-        if (inputItems != nullptr)
-        {
-            inputItems->push_back(item);
-        }
-        else
-        {
-            // Add to Errors
-        }
-
-        return S_OK;
+        return m_renderResult->AddInputValue(inputValue);
     }
 }}}

@@ -2108,6 +2108,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(stackPanel.CopyTo(choiceInputSet));
     }
 
+    void AddInputValueToContext(
+        IAdaptiveRenderContext* renderContext, 
+        IAdaptiveCardElement* adaptiveCardElement, 
+        IUIElement* inputUiElement)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputElement> inputElement;
+        THROW_IF_FAILED(cardElement.As(&inputElement));
+
+        ComPtr<InputValue> input;
+        THROW_IF_FAILED(MakeAndInitialize<InputValue>(&input, inputElement.Get(), inputUiElement));
+        THROW_IF_FAILED(renderContext->AddInputValue(input.Get()));
+    }
+
     void XamlBuilder::BuildChoiceSetInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
@@ -2144,7 +2158,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             BuildExpandedChoiceSetInput(renderContext, adaptiveChoiceSetInput.Get(), isMultiSelect, choiceInputSet);
         }
 
-        renderContext->AddInputItem(adaptiveCardElement, *choiceInputSet);
+        AddInputValueToContext(renderContext, adaptiveCardElement, *choiceInputSet);
     }
 
     void XamlBuilder::BuildDateInput(
@@ -2182,7 +2196,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePickerAsFrameworkElement.Get()));
         
-        THROW_IF_FAILED(renderContext->AddInputItem(adaptiveCardElement, *dateInputControl));
+        AddInputValueToContext(renderContext, adaptiveCardElement, *dateInputControl);
 
         // TODO: Handle parsing dates for min/max and value
     }
@@ -2238,7 +2252,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         // TODO: Handle max and min?
         THROW_IF_FAILED(textBox.CopyTo(numberInputControl));
-        THROW_IF_FAILED(renderContext->AddInputItem(adaptiveCardElement, *numberInputControl));
+        AddInputValueToContext(renderContext, adaptiveCardElement, *numberInputControl);
     }
 
     void XamlBuilder::BuildTextInput(
@@ -2313,7 +2327,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", frameworkElement.Get()));
 
         THROW_IF_FAILED(textBox.CopyTo(textInputControl));
-        THROW_IF_FAILED(renderContext->AddInputItem(adaptiveCardElement, *textInputControl));
+        AddInputValueToContext(renderContext, adaptiveCardElement, *textInputControl);
     }
 
     void XamlBuilder::BuildTimeInput(
@@ -2344,7 +2358,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         // TODO: Handle placeholder text and parsing times for min/max and value
 
         THROW_IF_FAILED(timePicker.CopyTo(timeInputControl));
-        THROW_IF_FAILED(renderContext->AddInputItem(adaptiveCardElement, *timeInputControl));
+        AddInputValueToContext(renderContext, adaptiveCardElement, *timeInputControl);
     }
 
     void XamlBuilder::BuildToggleInput(
@@ -2393,8 +2407,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(checkBox.As(&frameworkElement));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", frameworkElement.Get()));
 
-        THROW_IF_FAILED(renderContext->AddInputItem(adaptiveCardElement, checkboxAsUIElement.Get()));
         THROW_IF_FAILED(checkboxAsUIElement.CopyTo(toggleInputControl));
+        AddInputValueToContext(renderContext, adaptiveCardElement, *toggleInputControl);
     }
 
     bool XamlBuilder::SupportsInteractivity(IAdaptiveHostConfig* hostConfig)
