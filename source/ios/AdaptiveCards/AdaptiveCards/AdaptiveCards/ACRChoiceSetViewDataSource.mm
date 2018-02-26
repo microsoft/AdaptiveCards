@@ -16,7 +16,7 @@ using namespace AdaptiveCards;
     NSMutableDictionary *_userSelections;
     NSIndexPath *_lastSelectedIndexPath;
     NSSet *_defaultValuesSet;
-    NSArray *_defaultVaulesArray;
+    NSArray *_defaultValuesArray;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -32,10 +32,10 @@ using namespace AdaptiveCards;
         _lastSelectedIndexPath = nil;
         NSString *defaultValues = [NSString stringWithCString:_choiceSetDataSource->GetValue().c_str()
                                                      encoding:NSUTF8StringEncoding];
-        _defaultVaulesArray = [defaultValues componentsSeparatedByCharactersInSet:
+        _defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
                                [NSCharacterSet characterSetWithCharactersInString:@","]];
-        if (_isMultiChoicesAllowed || [_defaultVaulesArray count] == 1){
-            _defaultValuesSet = [NSSet setWithArray:_defaultVaulesArray];
+        if (_isMultiChoicesAllowed || [_defaultValuesArray count] == 1){
+            _defaultValuesSet = [NSSet setWithArray:_defaultValuesArray];
         }
     }
     return self;
@@ -146,7 +146,7 @@ using namespace AdaptiveCards;
 
 - (void)getDefaultInput:(NSMutableDictionary *)dictionary
 {
-    dictionary[self.id] = [_defaultVaulesArray componentsJoinedByString:@";"];
+    dictionary[self.id] = [_defaultValuesArray componentsJoinedByString:@";"];
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
