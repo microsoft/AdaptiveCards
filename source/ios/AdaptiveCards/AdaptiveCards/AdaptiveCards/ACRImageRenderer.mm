@@ -192,6 +192,8 @@
                                            withSuperview:wrappingview
                                                   toView:view]];
 
+    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
     UILongPressGestureRecognizer * gestureRecognizer =
