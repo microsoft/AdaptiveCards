@@ -24,7 +24,7 @@ using namespace AdaptiveCards;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:CGRectMake(0,0,0,0)];
+    self = [super initWithFrame:frame];
     if(self)
     {
         width  = frame.size.width;
@@ -141,9 +141,8 @@ using namespace AdaptiveCards;
         {
             superview = ((ACRContentStackView *) view).stackView;
         }
-
-        separator = [[ACRSeparator alloc] init];
-        unsigned int spacing = [separator getSpacing:requestedSpacing hostConfig:config];
+        unsigned int spacing = [ACRSeparator getSpacing:requestedSpacing hostConfig:config];
+        separator = [[ACRSeparator alloc] initWithFrame:CGRectMake(0, 0, spacing, spacing)];
         if(separator)
         {
             // Shared model has not implemented support
@@ -169,8 +168,7 @@ using namespace AdaptiveCards;
     }
 }
 
-- (unsigned int)getSpacing:(Spacing)spacing
-                           hostConfig:(std::shared_ptr<HostConfig> const &)config
++ (unsigned int)getSpacing:(Spacing)spacing hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (spacing)
     {
