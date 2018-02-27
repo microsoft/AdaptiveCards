@@ -4,9 +4,13 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.text.util.LinkifyCompat;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,8 @@ import com.microsoft.adaptivecards.objectmodel.TextBlock;
 import com.microsoft.adaptivecards.objectmodel.TextSize;
 import com.microsoft.adaptivecards.objectmodel.TextWeight;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+
+import org.xml.sax.XMLReader;
 
 import java.util.HashMap;
 import java.util.Vector;
@@ -120,6 +126,54 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
     }
 
+    // Class to replace ul and li tags
+    public class UlTagHandler implements Html.TagHandler{
+        @Override
+        public void handleTag(boolean opening, String tag, Editable output,
+                              XMLReader xmlReader) {
+            if(tag.equals("ul") && !opening) output.append("\n");
+            if(tag.equals("li") && opening) output.append("\n\t•");
+        }
+    }
+
+    private CharSequence TrimHtmlString(Spanned htmlString)
+    {
+        int numToRemoveFromEnd = 0;
+        int numToRemoveFromStart = 0;
+
+        for (int i = htmlString.length()-1; i >= 0; --i)
+        {
+            if (htmlString.charAt(i) == '\n')
+            {
+                numToRemoveFromEnd++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        for (int i = 0; i <= htmlString.length()-1; ++i)
+        {
+            if (htmlString.charAt(i) == '\n')
+            {
+                numToRemoveFromStart++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        //Sanity check
+        if (numToRemoveFromStart + numToRemoveFromEnd >= htmlString.length())
+        {
+            return htmlString;
+        }
+
+        return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
+    }
+
     @Override
     public View render(
             Context context,
@@ -151,33 +205,24 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         String textString = markDownParser.TransformToHtml();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            Spanned htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT);
-            if (htmlString.length() > 1)
+            Spanned htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
+            textView.setText(TrimHtmlString(htmlString));
+
+            if (!textBlock.GetWrap())
             {
-                CharSequence sequence = htmlString.subSequence(0, htmlString.length()-1);
-                textView.setText(sequence);
-            }
-            else
-            {
-                textView.setText(htmlString);
+                textView.setMaxLines(1);
             }
         }
         else
         {
             // Before Android N, html.fromHtml adds two newline characters to end of string
-            Spanned htmlString = Html.fromHtml(textString);
-            if (htmlString.length() > 2)
-            {
-                CharSequence sequence = htmlString.subSequence(0, htmlString.length()-2);
-                textView.setText(sequence);textView.setText(sequence);
-            }
-            else
-            {
-                textView.setText(htmlString);
-            }
+            Spanned htmlString = Html.fromHtml(textString, null, new UlTagHandler());
+            textView.setText(TrimHtmlString(htmlString));
+
+            textView.setSingleLine(!textBlock.GetWrap());
         }
-        textView.setSingleLine(!textBlock.GetWrap());
         textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
