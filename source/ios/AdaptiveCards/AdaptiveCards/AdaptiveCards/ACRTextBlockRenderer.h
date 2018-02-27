@@ -12,8 +12,10 @@
 
 + (ACRTextBlockRenderer *)getInstance;
 
-+ (NSNumber *)getTextBlockTextWeight:(TextWeight)weight
++ (NSNumber *)getTextStrokeWidthForWeight:(TextWeight)weight
                       withHostConfig:(std::shared_ptr<HostConfig> const &)config;
++ (int)getTextBlockFontWeight:(TextWeight)weight
+               withHostConfig:(std::shared_ptr<HostConfig> const &)config;
 + (int)getTextBlockTextSize:(TextSize)txtSz
              withHostConfig:(std::shared_ptr<HostConfig> const &)config;
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr

@@ -138,6 +138,21 @@
     UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
 
+    // Add width/height constraints so image is resized accordingly
+    [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                        attribute:NSLayoutAttributeWidth
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1.0
+                                                         constant:cgsize.width],
+                           [NSLayoutConstraint constraintWithItem:view
+                                                        attribute:NSLayoutAttributeHeight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1.0
+                                                         constant:cgsize.height]]];
     NSMutableDictionary *imageViewMap = [(ACRViewController *)vc getImageMap];
     __block UIImage *img = nil;
     // Generate key for ImageViewMap
@@ -145,7 +160,7 @@
     // Syncronize access to imageViewMap
     dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
         // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
-        if(imageViewMap[key]) {
+        if(imageViewMap[key] && [imageViewMap[key] isKindOfClass:[UIImage class]]) {
             img = imageViewMap[key];
         }
         else {
@@ -177,6 +192,8 @@
                                            withSuperview:wrappingview
                                                   toView:view]];
 
+    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
     UILongPressGestureRecognizer * gestureRecognizer =

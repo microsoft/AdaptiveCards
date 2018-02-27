@@ -12,6 +12,7 @@
 #import "ACRViewController.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRUILabel.h"
 
 @implementation ACRTextBlockRenderer
 
@@ -35,7 +36,8 @@ rootViewController:(UIViewController *)vc
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
-    UILabel *lab = [[UILabel alloc] init];
+    ACRUILabel *lab = [[ACRUILabel alloc] init];
+    lab.style = [viewGroup style];
     __block NSMutableAttributedString *content = nil;
     if(vc)
     {
@@ -60,12 +62,12 @@ rootViewController:(UIViewController *)vc
         paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtBlck withHostConfig:config];
 
         // Obtain text color to apply to the attributed string
-        ContainerStyle style = [viewGroup getStyle];
+        ContainerStyle style = lab.style;
         ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? config->containerStyles.emphasisPalette.foregroundColors:
                                                                          config->containerStyles.defaultPalette.foregroundColors;
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
+        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()], NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextStrokeWidthForWeight:txtBlck->GetTextWeight() withHostConfig:config]} range:NSMakeRange(0, content.length - 1)];
         lab.attributedText = content;
 
         std::string id = txtBlck->GetId();
@@ -79,9 +81,7 @@ rootViewController:(UIViewController *)vc
         lab.numberOfLines = 1;
     }
 
-    CGSize intrinsicSz = [lab intrinsicContentSize];
-
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] init];
 
     [wrappingview addSubview:lab];
 
@@ -183,7 +183,7 @@ rootViewController:(UIViewController *)vc
     }
 }
 
-+ (NSNumber *)getTextBlockTextWeight:(TextWeight)weight
++ (NSNumber *)getTextStrokeWidthForWeight:(TextWeight)weight
                       withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (weight) {
@@ -193,6 +193,20 @@ rootViewController:(UIViewController *)vc
             return @1;
         case TextWeight::Bolder:
             return @-2;
+    }
+}
+
++ (int)getTextBlockFontWeight:(TextWeight)weight
+               withHostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    switch (weight) {
+        default:
+        case TextWeight::Default:
+            return config->fontWeights.defaultWeight;
+        case TextWeight::Lighter:
+            return config->fontWeights.lighterWeight;
+        case TextWeight::Bolder:
+            return config->fontWeights.bolderWeight;
     }
 }
 

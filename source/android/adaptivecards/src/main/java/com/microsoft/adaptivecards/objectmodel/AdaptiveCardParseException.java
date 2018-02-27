@@ -51,8 +51,8 @@ public class AdaptiveCardParseException extends java.lang.Exception {
     return ErrorStatusCode.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCardParseException_GetStatusCode(swigCPtr, this));
   }
 
-  public String GetMessage() {
-    return AdaptiveCardObjectModelJNI.AdaptiveCardParseException_GetMessage(swigCPtr, this);
+  public String GetReason() {
+    return AdaptiveCardObjectModelJNI.AdaptiveCardParseException_GetReason(swigCPtr, this);
   }
 
 }

@@ -72,6 +72,7 @@
 		F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D33E851F04705800941E44 /* ACVTableViewController.m */; };
 		F4D402161F7DB0BF00D0356B /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D402151F7DB0BF00D0356B /* sample.json */; };
 		F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
+		F4F4484A203FA48700A2F24C /* Container.Style-FixBugs.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F44849203FA48600A2F24C /* Container.Style-FixBugs.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,6 +181,7 @@
 		F4D402151F7DB0BF00D0356B /* sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sample.json; path = resources/sample.json; sourceTree = "<group>"; };
 		F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionOpenURLRenderer.mm; sourceTree = "<group>"; };
 		F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionOpenURLRenderer.h; sourceTree = "<group>"; };
+		F4F44849203FA48600A2F24C /* Container.Style-FixBugs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Container.Style-FixBugs.json"; path = "../../../../samples/v1.0/Elements/Container.Style-FixBugs.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +282,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				F4F44849203FA48600A2F24C /* Container.Style-FixBugs.json */,
 				F4071C821FD63D5300AF4FEA /* Solitaire.json */,
 				F4D402151F7DB0BF00D0356B /* sample.json */,
 				F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */,
@@ -463,6 +466,7 @@
 				F4933CE91F79852C00F6EBFD /* TextBlock.MaxLines.json in Resources */,
 				F4933CDA1F79852C00F6EBFD /* ImageSet.ImageSize.json in Resources */,
 				F4933CFD1F79853B00F6EBFD /* CalendarReminder.json in Resources */,
+				F4F4484A203FA48700A2F24C /* Container.Style-FixBugs.json in Resources */,
 				F4933CE31F79852C00F6EBFD /* Stylesheet.json in Resources */,
 				F4933D011F79853B00F6EBFD /* ImageGallery.json in Resources */,
 				F4933D051F79853B00F6EBFD /* SportsGameUpdate.json in Resources */,

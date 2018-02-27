@@ -44,7 +44,7 @@
                                                             [ACRTextBlockRenderer getTextBlockColor:txtConfig.color
                                                                                         colorsConfig:colorConfig
                                                                                        subtleOption:txtConfig.isSubtle],
-                                                            NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtConfig.weight
+                                                            NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextStrokeWidthForWeight:txtConfig.weight
                                                                                                                      withHostConfig:config]}];
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
@@ -68,7 +68,7 @@ rootViewController:(UIViewController *)vc
 
     UIStackView *valueStack = [[UIStackView alloc] init];
     valueStack.axis = UILayoutConstraintAxisVertical;
-    ContainerStyle style = [viewGroup getStyle];
+    ContainerStyle style = ContainerStyle::None;
 
     for(auto fact :fctSet->GetFacts())
     {

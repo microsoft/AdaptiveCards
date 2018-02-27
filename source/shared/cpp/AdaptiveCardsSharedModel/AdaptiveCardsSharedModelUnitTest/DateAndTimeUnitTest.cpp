@@ -2,6 +2,8 @@
 #include "CppUnitTest.h"
 #include "TextBlock.h"
 #include <time.h>
+#include <Windows.h>
+#include <StrSafe.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -9,6 +11,75 @@ using namespace std;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
+    static TIME_ZONE_INFORMATION tzOriginal = { 0 };
+    static bool changedTime = false;
+
+    void EnableTimeZoneChange(bool set)
+    {
+        HANDLE hToken;
+        TOKEN_PRIVILEGES tkp;
+
+        OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken);
+        LookupPrivilegeValue(NULL, SE_TIME_ZONE_NAME, &tkp.Privileges[0].Luid);
+        tkp.PrivilegeCount = 1;
+        tkp.Privileges[0].Attributes = set?SE_PRIVILEGE_ENABLED:0;
+        if (!AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES)NULL, 0))
+        {
+            Logger::WriteMessage("Could not get the permissions to changes the timezone");
+        }
+    }
+
+    // Time tests assume a Pacific Timezone. Make sure that we're
+    // setting it up appropriately for the run of the tests.
+    TEST_MODULE_INITIALIZE(InitializeTimeZone)
+    {
+        GetTimeZoneInformation(&tzOriginal);
+        changedTime = false;
+        // Don't do this if we're already on the right timezone
+        if (tzOriginal.Bias != 480)
+        {
+            Logger::WriteMessage("Changing TimeZone to Seattle");
+            TIME_ZONE_INFORMATION tzSeattle = { 0 };
+            tzSeattle.Bias = 480;
+            StringCchCopy(tzSeattle.StandardName, 32, L"Test Standard Zone");
+            tzSeattle.StandardDate.wMonth = 11;
+            tzSeattle.StandardDate.wDayOfWeek = 0;
+            tzSeattle.StandardDate.wDay = 1;
+            tzSeattle.StandardDate.wHour = 2;
+
+            StringCchCopy(tzSeattle.DaylightName, 32, L"Test Daylight Zone");
+            tzSeattle.DaylightDate.wMonth = 3;
+            tzSeattle.DaylightDate.wDayOfWeek = 0;
+            tzSeattle.DaylightDate.wDay = 2;
+            tzSeattle.DaylightDate.wHour = 2;
+            tzSeattle.DaylightBias = -60;
+
+            EnableTimeZoneChange(true);
+            bool timeZoneChanged = SetTimeZoneInformation(&tzSeattle);
+            EnableTimeZoneChange(false);
+            if (!timeZoneChanged)
+            {
+                Assert::Fail(L"Could not change the timezone");
+            }
+            changedTime = true;
+        }
+    }
+
+    // Reset the timezone on the machine to the original one.
+    TEST_MODULE_CLEANUP(CleanupTimeZone)
+    {
+        if (changedTime)
+        {
+            Logger::WriteMessage("Resetting TimeZone");
+
+            EnableTimeZoneChange(true);
+            SetTimeZoneInformation(&tzOriginal);
+            EnableTimeZoneChange(false);
+            changedTime = false;
+        }
+    }
+
+
     TEST_CLASS(TimeTest)
     {
     public:

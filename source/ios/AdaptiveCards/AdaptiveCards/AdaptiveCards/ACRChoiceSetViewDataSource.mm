@@ -15,6 +15,8 @@ using namespace AdaptiveCards;
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
     NSMutableDictionary *_userSelections;
     NSIndexPath *_lastSelectedIndexPath;
+    NSSet *_defaultValuesSet;
+    NSArray *_defaultValuesArray;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -28,6 +30,13 @@ using namespace AdaptiveCards;
         _choiceSetDataSource = choiceSet;
         _userSelections = [[NSMutableDictionary alloc] init];
         _lastSelectedIndexPath = nil;
+        NSString *defaultValues = [NSString stringWithCString:_choiceSetDataSource->GetValue().c_str()
+                                                     encoding:NSUTF8StringEncoding];
+        _defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
+                               [NSCharacterSet characterSetWithCharactersInString:@","]];
+        if (_isMultiChoicesAllowed || [_defaultValuesArray count] == 1){
+            _defaultValuesSet = [NSSet setWithArray:_defaultValuesArray];
+        }
     }
     return self;
 }
@@ -57,7 +66,17 @@ using namespace AdaptiveCards;
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+    NSString *keyForDefaultValue = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetValue().c_str()
+                                                      encoding:NSUTF8StringEncoding];
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    if([_defaultValuesSet containsObject:keyForDefaultValue]){
+        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 
     return cell;
 }
@@ -125,15 +144,22 @@ using namespace AdaptiveCards;
     return YES;
 }
 
+- (void)getDefaultInput:(NSMutableDictionary *)dictionary
+{
+    dictionary[self.id] = [_defaultValuesArray componentsJoinedByString:@";"];
+}
+
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
     NSMutableArray *values = [[NSMutableArray alloc] init];
-    for(NSInteger i = 0; i < [_userSelections count]; i++)
+    NSEnumerator *enumerator = [_userSelections keyEnumerator];
+    NSNumber *key;
+    while(key = [enumerator nextObject])
     {
-        if([_userSelections[[NSNumber numberWithInteger:i]] boolValue] == YES)
+        if([_userSelections[key] boolValue] == YES)
         {
             [values addObject:
-             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[i]->GetValue().c_str()
+             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[[key integerValue]]->GetValue().c_str()
                                 encoding:NSUTF8StringEncoding]];
         }
     }
