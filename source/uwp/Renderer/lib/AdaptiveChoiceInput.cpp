@@ -56,20 +56,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::get_IsSelected(boolean* isSelected)
-    {
-        *isSelected = m_sharedChoiceInput->GetIsSelected();
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::put_IsSelected(boolean isSelected)
-    {
-        m_sharedChoiceInput->SetIsSelected(isSelected);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveChoiceInput::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::ChoiceInput;
