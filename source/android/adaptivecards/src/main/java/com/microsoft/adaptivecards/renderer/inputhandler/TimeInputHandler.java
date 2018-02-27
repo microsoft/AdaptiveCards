@@ -41,7 +41,7 @@ public class TimeInputHandler extends TextInputHandler
             Date time = DateFormat.getTimeInstance().parse(editText.getText().toString());
             data.put(m_baseInputElement.GetId(), s_simpleDateFormat.format(time));
         } catch (ParseException e) {
-            return new Exception("Input.Time text is not a valid time");
+            data.put(m_baseInputElement.GetId(), editText.getText().toString());
         }
 
         return null;

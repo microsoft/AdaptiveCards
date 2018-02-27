@@ -3,6 +3,7 @@ package com.microsoft.adaptivecards.renderer.input;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -61,13 +62,13 @@ public class DateInputRenderer extends TextInputRenderer
 
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
 
-        String dateString = "";
+        String dateString = dateInput.GetValue();
 
         try {
             Date date = DateInputHandler.s_simpleDateFormat.parse(dateInput.GetValue());
             dateString = DateFormat.getDateInstance().format(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+            //TODO: Log this
         }
 
         EditText editText = renderInternal(
@@ -80,6 +81,7 @@ public class DateInputRenderer extends TextInputRenderer
                 inputActionHandlerList,
                 hostConfig);
         editText.setRawInputType(TYPE_NULL);
+        editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
         {
             @Override

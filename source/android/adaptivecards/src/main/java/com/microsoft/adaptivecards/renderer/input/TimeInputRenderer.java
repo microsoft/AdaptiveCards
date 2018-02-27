@@ -60,13 +60,13 @@ public class TimeInputRenderer extends TextInputRenderer
         setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
-        String time = "";
+        String time = timeInput.GetValue();
 
         try {
             Date date = TimeInputHandler.s_simpleDateFormat.parse(timeInput.GetValue());
             time = DateFormat.getTimeInstance().format(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+            //TODO: Log this
         }
 
         EditText editText = renderInternal(
@@ -79,6 +79,7 @@ public class TimeInputRenderer extends TextInputRenderer
                 inputActionHandlerList,
                 hostConfig);
         editText.setRawInputType(TYPE_NULL);
+        editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
         {
             @Override

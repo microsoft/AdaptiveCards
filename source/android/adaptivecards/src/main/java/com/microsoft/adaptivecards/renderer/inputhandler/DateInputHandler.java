@@ -29,7 +29,7 @@ public class DateInputHandler extends TextInputHandler
     protected void internalValidate()
             throws ParseException
     {
-        super.internalValidate();
+        
     }
 
     @Override
@@ -40,7 +40,7 @@ public class DateInputHandler extends TextInputHandler
             Date date = DateFormat.getDateInstance().parse(editText.getText().toString());
             data.put(m_baseInputElement.GetId(), s_simpleDateFormat.format(date));
         } catch (ParseException e) {
-            return new Exception("Input.Time text is not a valid time");
+            data.put(m_baseInputElement.GetId(), editText.getText().toString());
         }
 
         return null;

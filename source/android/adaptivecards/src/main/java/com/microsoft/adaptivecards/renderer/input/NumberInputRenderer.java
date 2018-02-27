@@ -63,7 +63,7 @@ public class NumberInputRenderer extends TextInputRenderer
                 numberInputHandler,
                 inputActionHandlerList,
                 hostConfig);
-        editText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         return editText;
     }
