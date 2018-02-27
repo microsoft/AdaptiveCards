@@ -5,9 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
@@ -42,6 +43,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         throw new InternalError("Default renderer unsupported by Column Renderer.");
@@ -52,15 +54,15 @@ public class ColumnRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             Column column,
-            int index,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         LinearLayout.LayoutParams layoutParams;
         BaseCardElementVector baseCardElementVector = column.GetItems();
         setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, hostConfig);
+        View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, cardActionHandler, hostConfig);
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
 
         if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeAuto))
@@ -78,7 +80,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             try
             {
-                int columnWeight = Integer.parseInt(columnSize);
+                float columnWeight = Float.parseFloat(columnSize);
                 layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.width = 0;
                 layoutParams.weight = columnWeight;
@@ -88,6 +90,12 @@ public class ColumnRenderer extends BaseCardElementRenderer
             {
                 throw new IllegalArgumentException("Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>).");
             }
+        }
+
+        if (column.GetSelectAction() != null)
+        {
+            returnedView.setClickable(true);
+            returnedView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(column.GetSelectAction(),inputActionHandlerList, cardActionHandler));
         }
 
         viewGroup.addView(returnedView);

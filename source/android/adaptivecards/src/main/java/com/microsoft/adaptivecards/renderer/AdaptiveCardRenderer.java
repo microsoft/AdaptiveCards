@@ -14,8 +14,7 @@ import com.microsoft.adaptivecards.objectmodel.AdaptiveCard;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
-import com.microsoft.adaptivecards.renderer.actionhandler.IShowCardActionHandler;
-import com.microsoft.adaptivecards.renderer.actionhandler.ISubmitActionHandler;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.http.HttpRequestHelper;
 import com.microsoft.adaptivecards.renderer.http.HttpRequestResult;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -91,9 +90,9 @@ public class AdaptiveCardRenderer
         }
     }
 
-    public View render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, IShowCardActionHandler showCardActionHandler, ISubmitActionHandler submitActionHandler)
+    public View render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler)
     {
-        return render(context, fragmentManager, adaptiveCard, showCardActionHandler, submitActionHandler, defaultHostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig);
     }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action
@@ -101,8 +100,7 @@ public class AdaptiveCardRenderer
             Context context,
             FragmentManager fragmentManager,
             AdaptiveCard adaptiveCard,
-            IShowCardActionHandler showCardActionHandler,
-            ISubmitActionHandler submitActionHandler,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         if (hostConfig == null)
@@ -114,7 +112,7 @@ public class AdaptiveCardRenderer
         layout.setTag(adaptiveCard);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         layout.setOrientation(LinearLayout.VERTICAL);
-        int padding = (int) hostConfig.getSpacing().getPaddingSpacing();
+        int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
         layout.setPadding(padding, padding, padding, padding);
 
         Vector<IInputHandler> inputHandlerList = new Vector<IInputHandler>();
@@ -124,13 +122,13 @@ public class AdaptiveCardRenderer
         {
             throw new IllegalArgumentException("Adaptive Card does not contain a body.");
         }
-        View view = CardRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseCardElementList, inputHandlerList, hostConfig);
+        View view = CardRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseCardElementList, inputHandlerList, cardActionHandler, hostConfig);
 
         // Actions are optional
         BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
         if (baseActionElementList != null && baseActionElementList.size() > 0)
         {
-            ActionRendererRegistration.getInstance().render(context, layout, adaptiveCard, baseActionElementList, inputHandlerList, showCardActionHandler, submitActionHandler, hostConfig);
+            ActionRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseActionElementList, inputHandlerList, cardActionHandler, hostConfig);
         }
 
         String imageUrl = adaptiveCard.GetBackgroundImage();

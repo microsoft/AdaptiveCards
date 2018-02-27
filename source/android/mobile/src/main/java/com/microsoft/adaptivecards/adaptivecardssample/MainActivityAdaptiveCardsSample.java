@@ -15,13 +15,9 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.microsoft.adaptivecards.renderer.actionhandler.IShowCardActionHandler;
-import com.microsoft.adaptivecards.renderer.actionhandler.ISubmitActionHandler;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.objectmodel.*;
 import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -32,9 +28,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
-    implements IShowCardActionHandler, ISubmitActionHandler
+    implements ICardActionHandler
 {
 
     // Used to load the 'adaptivecards-native-lib' library on application startup.
@@ -42,11 +39,32 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         System.loadLibrary("adaptivecards-native-lib");
     }
 
+    private HostConfig m_hostConfig;
+    private AtomicBoolean m_fileLoaded;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        m_fileLoaded = new AtomicBoolean(false);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
         setupTabs();
+
+        m_hostConfig = new HostConfig();
+
+        m_hostConfig.getImageSizes().setLargeSize(150);
+        m_hostConfig.getImageSizes().setMediumSize(90);
+        m_hostConfig.getImageSizes().setSmallSize(60);
+
+        m_hostConfig.getSpacing().setDefaultSpacing(6);
+        m_hostConfig.getSpacing().setSmallSpacing(4);
+        m_hostConfig.getSpacing().setMediumSpacing(8);
+        m_hostConfig.getSpacing().setLargeSpacing(10);
+        m_hostConfig.getSpacing().setExtraLargeSpacing(15);
+        m_hostConfig.getSpacing().setPaddingSpacing(12);
+
+        //m_hostConfig.getActions().setMaxActions(2);
+        m_hostConfig.getActions().getShowCard().setInlineTopMargin(10);
+
 
         // Add text change handler
         final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
@@ -55,6 +73,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             @Override
             public void afterTextChanged(Editable editable)
             {
+                if (m_fileLoaded.compareAndSet(true, false))
+                {
+                    return;
+                }
+
                 m_timer.cancel();
                 m_timer = new Timer();
                 m_timer.schedule(new TimerTask()
@@ -99,9 +122,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), getSupportFragmentManager(), adaptiveCard, this, this, new HostConfig()));
+            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, m_hostConfig));
         }
-        catch (java.io.IOException ex)
+        catch (Exception ex)
         {
             if (showErrorToast)
             {
@@ -154,9 +177,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                             total.append(line + "\n");
                         }
 
+                        m_fileLoaded.set(true);
                         EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
                         String fullString = total.toString();
                         jsonText.setText(fullString);
+
                         renderAdaptiveCard(fullString, true);
 
                         EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
@@ -184,17 +209,75 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return true;
     }
 
-    @Override
-    public void onShowCard(ShowCardAction showCardAction, AdaptiveCard adaptiveCard)
+    private void onSubmit(Map<String, String> keyValueMap)
     {
+        showToast("Submit: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+    }
+
+    private void onShowCard(BaseActionElement actionElement)
+    {
+        ShowCardAction showCardAction = null;
+        if (actionElement instanceof ShowCardAction)
+        {
+            showCardAction = (ShowCardAction) actionElement;
+        }
+        else if ((showCardAction = ShowCardAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
         ShowCardFragment showCardFragment = new ShowCardFragment();
-        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, this, new HostConfig());
+        HostConfig config = new HostConfig();
+        config.getFontSizes().setSmallFontSize(1);
+        config.getFontSizes().setMediumFontSize(1);
+        config.getFontSizes().setLargeFontSize(1);
+        config.getFontSizes().setExtraLargeFontSize(1);
+
+        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, config);
         Bundle args = new Bundle();
         args.putString("title", showCardAction.GetTitle());
         showCardFragment.setArguments(args);
 
         FragmentManager fm = getSupportFragmentManager();
         showCardFragment.show(fm, showCardAction.GetTitle());
+    }
+
+    private void onOpenUrl(BaseActionElement actionElement)
+    {
+        OpenUrlAction openUrlAction = null;
+        if (actionElement instanceof ShowCardAction)
+        {
+            openUrlAction = (OpenUrlAction) actionElement;
+        }
+        else if ((openUrlAction = OpenUrlAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(openUrlAction.GetUrl()));
+        this.startActivity(browserIntent);
+    }
+
+    @Override
+    public void onAction(BaseActionElement actionElement, Map<String, String> inputData)
+    {
+        int actionType = actionElement.GetElementType().swigValue();
+        if (actionType == ActionType.Submit.swigValue())
+        {
+            onSubmit(inputData);
+        }
+        else if (actionType == ActionType.ShowCard.swigValue())
+        {
+            onShowCard(actionElement);
+        }
+        else if (actionType == ActionType.OpenUrl.swigValue())
+        {
+            onOpenUrl(actionElement);
+        }
+        else
+        {
+            showToast("Unknown Action!" , Toast.LENGTH_LONG);
+        }
     }
 
     public void showToast(String text, int duration)
@@ -220,12 +303,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         this.runOnUiThread(new RunnableExtended(this, text, duration));
-    }
-
-    @Override
-    public void onSubmit(SubmitAction submitAction, Map<String, String> keyValueMap)
-    {
-        showToast("Submit: " + keyValueMap.toString(), Toast.LENGTH_LONG);
     }
 
 }

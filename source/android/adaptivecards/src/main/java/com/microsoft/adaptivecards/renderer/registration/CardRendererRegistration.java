@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
@@ -30,10 +31,6 @@ import com.microsoft.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
 import java.util.Vector;
-
-/**
- * Created by bekao on 4/28/2017.
- */
 
 public class CardRendererRegistration
 {
@@ -93,6 +90,7 @@ public class CardRendererRegistration
             Object tag,
             BaseCardElementVector baseCardElementList,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         long size;
@@ -121,7 +119,7 @@ public class CardRendererRegistration
                 continue;
             }
 
-            renderer.render(context, fragmentManager, layout, cardElement, inputActionHandlerList, hostConfig);
+            renderer.render(context, fragmentManager, layout, cardElement, inputActionHandlerList, cardActionHandler, hostConfig);
         }
 
         return layout;

@@ -5,16 +5,17 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.microsoft.adaptivecards.objectmodel.AdaptiveCard;
 import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
 import com.microsoft.adaptivecards.objectmodel.MarkDownParser;
-import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
+import com.microsoft.adaptivecards.renderer.Util;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.FontSizesConfig;
@@ -48,7 +49,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextSize(TextView textView, TextSize textSize, HostConfig hostConfig)
+    static void setTextSize(Context context, TextView textView, TextSize textSize, HostConfig hostConfig)
     {
         FontSizesConfig fontSizesConfig = hostConfig.getFontSizes();
         if (textSize.swigValue() == TextSize.ExtraLarge.swigValue())
@@ -117,6 +118,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         TextBlock textBlock = null;
@@ -135,15 +137,34 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         String textString = markDownParser.TransformToHtml();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            textView.setText(Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT).toString().trim());
+            Spanned htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT);
+            if (htmlString.length() > 1)
+            {
+                CharSequence sequence = htmlString.subSequence(0, htmlString.length()-1);
+                textView.setText(sequence);
+            }
+            else
+            {
+                textView.setText(htmlString);
+            }
         }
         else
         {
-            textView.setText(Html.fromHtml(textString).toString().trim());
+            // Before Android N, html.fromHtml adds two newline characters to end of string
+            Spanned htmlString = Html.fromHtml(textString);
+            if (htmlString.length() > 2)
+            {
+                CharSequence sequence = htmlString.subSequence(0, htmlString.length()-2);
+                textView.setText(sequence);textView.setText(sequence);
+            }
+            else
+            {
+                textView.setText(htmlString);
+            }
         }
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());
-        setTextSize(textView, textBlock.GetTextSize(), hostConfig);
+        setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
