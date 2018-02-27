@@ -24,21 +24,29 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
 	}
 
 	// @interface ACOParseResult : NSObject
-	[BaseType(typeof(NSObject))]
-	interface ACOParseResult
-	{
-		// @property BOOL IsValid;
-		[Export("IsValid")]
-		bool IsValid { get; set; }
-	}
+	// [BaseType(typeof(NSObject))]
+	// interface ACOParseResult
+	// {
+	//	// @property BOOL IsValid;
+	//	[Export("IsValid")]
+	//	bool IsValid { get; set; }
+	// }
 
-	// @interface ACOAdaptiveCardParseResult : ACOParseResult
-	[BaseType(typeof(ACOParseResult))]
+    // @interface ACOAdaptiveCardParseResult : NSObject
+    [BaseType(typeof(NSObject))]
 	interface ACOAdaptiveCardParseResult
 	{
 		// @property ACOAdaptiveCard * card;
 		[Export("card", ArgumentSemantic.Assign)]
 		ACOAdaptiveCard Card { get; set; }
+
+        // @property BOOL isValid;
+        [Export("isValid")]
+        bool IsValid { get; set; }
+
+        // @property NSArray<NSError *> *parseErrors
+        // [Export("parseErrors")]
+
 	}
 
 	// @interface ACOAdaptiveCard : NSObject
@@ -51,13 +59,17 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
 		ACOAdaptiveCardParseResult FromJson(string payload);
 	}
 
-	// @interface ACOHostConfigParseResult : ACOParseResult
-	[BaseType(typeof(ACOParseResult))]
+    // @interface ACOHostConfigParseResult : NSObject
+    [BaseType(typeof(NSObject))]
 	interface ACOHostConfigParseResult
 	{
 		// @property ACOHostConfig * config;
 		[Export("config", ArgumentSemantic.Assign)]
 		ACOHostConfig Config { get; set; }
+
+        // @property BOOL isValid;
+        [Export("isValid")]
+        bool IsValid { get; set; }
 	}
 
 	// @interface ACOHostConfig : NSObject
