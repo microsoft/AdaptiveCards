@@ -123,8 +123,8 @@ struct FactSetConfig
 struct ContainerStyleDefinition
 {
     std::string backgroundColor = "#FFFFFFFF";
-    std::string borderColor = "#FF7F7F7F7F";
-    std::string borderThickness = "0";
+    std::string borderColor = "#FF7F7F7F7F"; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
+    std::string borderThickness = "0"; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
     ColorsConfig foregroundColors;
 
     static ContainerStyleDefinition Deserialize(const Json::Value& json, const ContainerStyleDefinition& defaultValue);
