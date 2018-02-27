@@ -102,7 +102,7 @@
     },
     "imageSet": {
         "imageSize": "Medium",
-        "maxImageHeight": "maxImageHeight"
+        "maxImageHeight": 999
     },
     "factSet": {
         "title": {
