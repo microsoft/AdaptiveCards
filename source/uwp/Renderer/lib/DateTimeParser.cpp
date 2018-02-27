@@ -1,4 +1,5 @@
 #include "DateTimeParser.h"
+#include "Util.h"
 #include <iomanip>
 #include <sstream>
 
@@ -52,22 +53,3 @@ std::string DateTimeParser::GenerateString(DateTimePreparser text)
     return WstringToString(parsedostr.str());
 }
 
-std::wstring DateTimeParser::StringToWstring(const std::string& in) const
-{
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-    return utfConverter.from_bytes(in);
-}
-
-std::string DateTimeParser::WstringToString(const std::wstring& input) const
-{
-    if (sizeof(wchar_t) == 2)
-    {
-        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-        return utfConverter.to_bytes(input);
-    }
-    else
-    {
-        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utfConverter;
-        return utfConverter.to_bytes(input);
-    }
-}

@@ -366,9 +366,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         [default] interface IAdaptiveSeparator;
     };
-
+    
     [
-        uuid(f3b844da-2d6a-4003-8a57-4e5541fcd078),
+        uuid(c4b68276-7cd0-4c3e-8498-3edb9ec6abfb),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveTextBlock)
     ]
@@ -397,6 +397,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT MaxLines([out, retval] UINT32* value);
         [propput] HRESULT MaxLines([in] UINT32 value);
+
+        [propget] HRESULT Language([out, retval] HSTRING* value);
+        [propput] HRESULT Language([in] HSTRING value);
     };
 
     [

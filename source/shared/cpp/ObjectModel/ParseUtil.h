@@ -65,8 +65,7 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        bool isRequired = false,
-        const std::string& dateLanguage = "");
+        bool isRequired = false);
 
     template <typename T>
     static std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
@@ -82,8 +81,7 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        bool isRequired = false,
-        const std::string& dateLanguage = "");
+        bool isRequired = false);
 
     template <typename T>
     static T ExtractJsonValueAndMergeWithDefault(

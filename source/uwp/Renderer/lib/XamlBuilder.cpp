@@ -19,6 +19,7 @@
 #include "AdaptiveCardRendererComponent.h"
 #include "MarkDownParser.h"
 #include "HtmlHelpers.h"
+#include "DateTimeParser.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -1132,9 +1133,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     HRESULT SetTextOnXamlTextBlock(
         IAdaptiveRenderContext* renderContext,
         HSTRING textIn,
+        HSTRING language,
         ITextBlock * textBlock)
     {
-        MarkDownParser markdownParser(HStringToUTF8(textIn));
+        DateTimeParser parser(HStringToUTF8(language));
+        auto textWithParsedDates = parser.GenerateString(HStringToUTF8(textIn));
+
+        MarkDownParser markdownParser(textWithParsedDates);
         auto htmlString = markdownParser.TransformToHtml();
 
         HString htmlHString;
@@ -1183,7 +1188,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         HString text;
         THROW_IF_FAILED(adaptiveTextBlock->get_Text(text.GetAddressOf()));
-        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), xamlTextBlock.Get()));
+        HString language;
+        THROW_IF_FAILED(adaptiveTextBlock->get_Language(language.GetAddressOf()));
+        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), language.Get(), xamlTextBlock.Get()));
 
         ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor;
         THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));

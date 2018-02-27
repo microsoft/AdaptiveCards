@@ -313,8 +313,7 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
-    bool isRequired,
-    const std::string& dateLanguage)
+    bool isRequired)
 {
     auto elementArray = GetArray(json, key, isRequired);
 
@@ -338,25 +337,6 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
         {
             // Use the parser that maps to the type
             elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
-            if (elements.back()->GetElementType() == CardElementType::TextBlock)
-            {
-                auto textBlock = std::static_pointer_cast<TextBlock>(elements.back()); 
-                if (textBlock != nullptr)
-                {
-                    textBlock->SetLanguage(dateLanguage);
-                }
-            }
-            else
-            {
-                if (elements.back()->GetElementType() == CardElementType::Container)
-                {
-                    auto container = std::static_pointer_cast<Container>(elements.back());
-                    if (container != nullptr)
-                    {
-                        container->SetLanguage(dateLanguage);
-                    }
-                }
-            }
         }
     }
 
@@ -393,8 +373,7 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
-    bool isRequired,
-    const std::string& dateLanguage)
+    bool isRequired)
 {
     auto elementArray = GetArray(json, key, isRequired);
 
@@ -413,12 +392,6 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
         if (action != nullptr)
         {
             elements.push_back(action);
-
-            if (elements.back()->GetElementType() == ActionType::ShowCard)
-            {
-                auto showCard = std::static_pointer_cast<ShowCardAction>(elements.back());
-                showCard->SetLanguage(dateLanguage);
-            }
         }
     }
 

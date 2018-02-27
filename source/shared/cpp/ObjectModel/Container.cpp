@@ -1,5 +1,6 @@
 #include "Container.h"
 #include "TextBlock.h"
+#include "ColumnSet.h"
 
 using namespace AdaptiveCards;
 
@@ -68,13 +69,15 @@ void Container::SetLanguage(const std::string& value)
             auto element = std::static_pointer_cast<Container>(item);
             element->SetLanguage(value);
         }
-        else
+        else if (elementType == CardElementType::ColumnSet)
         {
-            if (elementType == CardElementType::TextBlock)
-            {
-                auto element = std::static_pointer_cast<TextBlock>(item);
-                element->SetLanguage(value);
-            }
+            auto element = std::static_pointer_cast<ColumnSet>(item);
+            element->SetLanguage(value);
+        }
+        else if (elementType == CardElementType::TextBlock)
+        {
+            auto element = std::static_pointer_cast<TextBlock>(item);
+            element->SetLanguage(value);
         }
     }
 }

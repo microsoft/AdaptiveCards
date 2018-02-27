@@ -750,3 +750,23 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Rendering::Uwp::Elemen
     CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
+
+std::wstring StringToWstring(const std::string& in) 
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+    return utfConverter.from_bytes(in);
+}
+
+std::string WstringToString(const std::wstring& input)
+{
+    if (sizeof(wchar_t) == 2)
+    {
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+        return utfConverter.to_bytes(input);
+    }
+    else
+    {
+        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utfConverter;
+        return utfConverter.to_bytes(input);
+    }
+}

@@ -13,9 +13,6 @@ namespace AdaptiveCards
         std::string GenerateString(DateTimePreparser text);
 
     private:
-        std::string WstringToString(const std::wstring& in) const;
-        std::wstring StringToWstring(const std::string& in) const;
-
         std::locale m_language;
     };
 }

@@ -2,6 +2,7 @@
 #include "ParseUtil.h"
 
 #include "Container.h"
+#include "ColumnSet.h"
 #include "ShowCardAction.h"
 #include "TextBlock.h"
 
@@ -94,7 +95,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
-    
+
     if (elementParserRegistration == nullptr)
     {
         elementParserRegistration.reset(new ElementParserRegistration());
@@ -105,12 +106,12 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     }
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false, language);
-
+    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false);
     // Parse actions if present
-    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false, language);
+    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false);
 
     auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, language, body, actions);
+    result->SetLanguage(language);
     return result;
 }
 
@@ -234,13 +235,15 @@ std::string AdaptiveCard::GetLanguage() const
     return m_language;
 }
 
-void AdaptiveCard::SetLanguage(const std::string value)
+void AdaptiveCard::SetLanguage(const std::string& value)
 {
     m_language = value;
     // Propagate language to TextBlocks, Containers and showCardActions
     for (auto& bodyElement : m_body)
     {
-        if (bodyElement->GetElementType() == CardElementType::Container)
+        CardElementType elementType = bodyElement->GetElementType();
+
+        if (elementType == CardElementType::Container)
         {
             auto container = std::static_pointer_cast<Container>(bodyElement);
             if (container != nullptr)
@@ -248,17 +251,23 @@ void AdaptiveCard::SetLanguage(const std::string value)
                 container->SetLanguage(value);
             }
         }
-        else
+        else if (elementType == CardElementType::ColumnSet)
         {
-            if (bodyElement->GetElementType() == CardElementType::TextBlock)
+            auto container = std::static_pointer_cast<ColumnSet>(bodyElement);
+            if (container != nullptr)
             {
-                auto textBlock = std::static_pointer_cast<TextBlock>(bodyElement);
-                if (textBlock != nullptr)
-                {
-                    textBlock->SetLanguage(value);
-                }
+                container->SetLanguage(value);
             }
         }
+        else if (bodyElement->GetElementType() == CardElementType::TextBlock)
+        {
+            auto textBlock = std::static_pointer_cast<TextBlock>(bodyElement);
+            if (textBlock != nullptr)
+            {
+                textBlock->SetLanguage(value);
+            }
+        }
+
     }
 
     for (auto& actionElement : m_actions)

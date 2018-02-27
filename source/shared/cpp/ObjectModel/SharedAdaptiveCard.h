@@ -45,7 +45,7 @@ public:
     ContainerStyle GetStyle() const;
     void SetStyle(const ContainerStyle value);
     std::string GetLanguage() const;
-    void SetLanguage(const std::string value);
+    void SetLanguage(const std::string& value);
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     std::vector<std::shared_ptr<BaseActionElement>>& GetActions();

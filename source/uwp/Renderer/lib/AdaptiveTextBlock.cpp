@@ -34,8 +34,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
     {
-        DateTimeParser parser(m_sharedTextBlock->GetLanguage());
-        return UTF8ToHString(parser.GenerateString(m_sharedTextBlock->GetTextForDateParsing()), text);
+        return UTF8ToHString(m_sharedTextBlock->GetText(), text);
     }
 
     _Use_decl_annotations_
@@ -142,6 +141,21 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
     {
         m_sharedTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(alignment));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveTextBlock::get_Language(HSTRING* language)
+    {
+        return UTF8ToHString(m_sharedTextBlock->GetLanguage(), language);
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveTextBlock::put_Language(HSTRING language)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(language, out));
+        m_sharedTextBlock->SetLanguage(out);
         return S_OK;
     }
 

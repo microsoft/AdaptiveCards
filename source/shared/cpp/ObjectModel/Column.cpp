@@ -1,5 +1,8 @@
 #include "ChoiceSetInput.h"
 #include "Column.h"
+#include "TextBlock.h"
+#include "ColumnSet.h"
+#include "Container.h"
 
 using namespace AdaptiveCards;
 
@@ -133,4 +136,28 @@ std::shared_ptr<BaseActionElement> Column::GetSelectAction() const
 void Column::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 {
     m_selectAction = action;
+}
+
+void Column::SetLanguage(const std::string& language)
+{
+    for (auto& item : m_items)
+    {
+        CardElementType elementType = item->GetElementType();
+
+        if (elementType == CardElementType::Container)
+        {
+            auto element = std::static_pointer_cast<Container>(item);
+            element->SetLanguage(language);
+        }
+        else if (elementType == CardElementType::ColumnSet)
+        {
+            auto element = std::static_pointer_cast<ColumnSet>(item);
+            element->SetLanguage(language);
+        }
+        else if (elementType == CardElementType::TextBlock)
+        {
+            auto element = std::static_pointer_cast<TextBlock>(item);
+            element->SetLanguage(language);
+        }
+    }
 }
