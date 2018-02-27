@@ -69,7 +69,7 @@
             },
             "backgroundColor": "#08000000",
             "borderColor": "#FF000000",
-            "borderThickness": "2"
+            "borderThickness": 2
               }
     },
     "spacing": {

@@ -258,8 +258,7 @@ ContainerStyleDefinition AdaptiveCards::ContainerStyleDefinition::Deserialize(co
     const std::string borderColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BorderColor);
     result.borderColor = borderColor == "" ? defaultValue.borderColor : borderColor;
 
-    const std::string borderThickness = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BorderThickness);
-    result.borderThickness = borderThickness == "" ? defaultValue.borderThickness : borderThickness;
+    result.borderThickness = ParseUtil::GetInt(json, AdaptiveCardSchemaKey::BorderThickness, defaultValue.borderThickness);
 
     result.foregroundColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(
         json, AdaptiveCardSchemaKey::ForegroundColors, defaultValue.foregroundColors, ColorsConfig::Deserialize);

@@ -79,11 +79,6 @@ using namespace AdaptiveCards;
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
 }
 
-+ (CGFloat)borderWidthFromString:(const std::string&)thicknessString
-{
-    return std::stof(thicknessString);
-}
-
 - (ContainerStyleDefinition&)paletteForHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     return (_style == ContainerStyle::Emphasis)
@@ -107,7 +102,7 @@ using namespace AdaptiveCards;
 
 - (void)setBorderThicknessWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    const CGFloat borderWidth = [[self class] borderWidthFromString:[self paletteForHostConfig:config].borderThickness];
+    const CGFloat borderWidth = [self paletteForHostConfig:config].borderThickness;
 
     [[self layer] setBorderWidth:borderWidth];
 }
