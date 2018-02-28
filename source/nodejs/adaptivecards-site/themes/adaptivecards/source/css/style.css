@@ -4,10 +4,14 @@ body {
     min-height: 100px;
 }
 
-@media (max-width: 601px) {
+@media only screen and (max-width: 601px) {
     code {
         max-height: 400px !important;
         font-size: .8rem;
+    }
+
+    table.w3-responsive code {
+        font-size: .75rem;
     }
 
     /* neat trick to reverse order of divs
@@ -19,6 +23,18 @@ body {
 
     .reverse-order-mobile > div {
         transform: scaleY(-1);        
+    }
+}
+
+
+@media only screen and (max-width: 991px) {
+    code {
+        max-height: 400px !important;
+        font-size: .8rem;
+    }
+    
+    #menu-nav {
+        display: block;
     }
 }
 

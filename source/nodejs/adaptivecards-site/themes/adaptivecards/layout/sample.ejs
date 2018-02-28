@@ -3,23 +3,23 @@
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-container w3-cell w3-hide-small w3-hide-medium w3-bar-block" style="width: 250px">
     <div class="sidebar__inner">
-          <ul>
-            <% page.samples.forEach(function(sample) { %>
-              <li class='<%= is_current(sample.htmlPath) ? "selectedHolder" : "" %>'>
-                <a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
-              </li>
-            <% }) %>
-          </ul>
+      <ul>
+        <% page.samples.forEach(function(sample) { %>
+          <li class='<%= is_current(sample.htmlPath) ? "selectedHolder" : "" %>'>
+            <a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
+          </li>
+        <% }) %>
+      </ul>
     </div>
   </nav>
     
-  <div class="w3-row w3-mobile w3-main" style="margin-left: 260px">
+  <div class="w3-main" style="margin-left: 260px">
     <h1 class="w3-container"><%= page.title %></h1>
 
     
     <!-- mobile nav -->
     <div class="w3-container w3-hide-large">
-      <select class="page-nav">
+      <select id="menu-nav">
         <% page.samples.forEach(function(sample) { %>
         <% if(is_current(sample.htmlPath)) { %>
           <option value='<%- url_for(sample.htmlPath) %>' selected="selected"><%= sample.name %></option>

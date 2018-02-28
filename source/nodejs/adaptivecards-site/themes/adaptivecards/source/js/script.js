@@ -178,7 +178,7 @@
     //   window.dispatchEvent(new Event('resize'));
     // }, 200);
 
-    $('.page-nav').on('change', function() {
+    $('#menu-nav').on('change', function() {
       window.location = this.value;
     });
   });
