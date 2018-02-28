@@ -45,8 +45,12 @@ public:
         std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
         const Json::Value& json, AdaptiveCardSchemaKey key);
 
+    Json::Value GetAdditionalProperties();
+    void SetAdditionalProperties(Json::Value additionalProperties);
+
 protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
+    std::unordered_set<std::string> m_knownProperties;
 
 private:
     CardElementType m_type;
@@ -54,6 +58,9 @@ private:
     std::string m_id;
     //std::shared_ptr<Separator> m_separator; Issue #629 to make separator an object
     bool m_separator;
+    Json::Value m_additionalProperties;
+
+    void populateKnownPropertiesSet(void);
 };
 
 template <typename T>
@@ -76,6 +83,16 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
         baseCardElement->SetSeparator(Separator::Deserialize(separatorJson));
     }
     */
+
+    // Walk all properties and put any unknown ones in the additional properties json
+    for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)
+    {
+        std::string key = it.key().asCString();
+        if (baseCardElement->m_knownProperties.find(key) == baseCardElement->m_knownProperties.end())
+        {
+            baseCardElement->m_additionalProperties[key] = *it;
+        }
+    }
 
     return cardElement;
 }

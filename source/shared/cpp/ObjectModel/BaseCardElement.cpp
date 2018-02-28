@@ -14,11 +14,20 @@ BaseCardElement::BaseCardElement(
     m_spacing(spacing),
     m_separator(separator)
 {
+    BaseCardElement::populateKnownPropertiesSet();
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
     m_type(type), m_spacing(Spacing::Default)
 {
+    BaseCardElement::populateKnownPropertiesSet();
+}
+
+void BaseCardElement::populateKnownPropertiesSet(void)
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator));
 }
 
 AdaptiveCards::BaseCardElement::~BaseCardElement()
@@ -106,4 +115,14 @@ Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseAct
         return selectAction->SerializeToJsonValue();
     }
     return Json::Value();
+}
+
+Json::Value BaseActionElement::GetAdditionalProperties()
+{
+    return m_additionalProperties;
+}
+
+void BaseActionElement::SetAdditionalProperties(Json::Value value)
+{
+    m_additionalProperties = value;
 }
