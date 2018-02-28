@@ -43,6 +43,22 @@ public class ContainerStyleDefinition {
     return AdaptiveCardObjectModelJNI.ContainerStyleDefinition_backgroundColor_get(swigCPtr, this);
   }
 
+  public void setBorderColor(String value) {
+    AdaptiveCardObjectModelJNI.ContainerStyleDefinition_borderColor_set(swigCPtr, this, value);
+  }
+
+  public String getBorderColor() {
+    return AdaptiveCardObjectModelJNI.ContainerStyleDefinition_borderColor_get(swigCPtr, this);
+  }
+
+  public void setBorderThickness(long value) {
+    AdaptiveCardObjectModelJNI.ContainerStyleDefinition_borderThickness_set(swigCPtr, this, value);
+  }
+
+  public long getBorderThickness() {
+    return AdaptiveCardObjectModelJNI.ContainerStyleDefinition_borderThickness_get(swigCPtr, this);
+  }
+
   public void setForegroundColors(ColorsConfig value) {
     AdaptiveCardObjectModelJNI.ContainerStyleDefinition_foregroundColors_set(swigCPtr, this, ColorsConfig.getCPtr(value), value);
   }
