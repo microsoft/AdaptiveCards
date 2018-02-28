@@ -117,12 +117,12 @@ Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseAct
     return Json::Value();
 }
 
-Json::Value BaseActionElement::GetAdditionalProperties()
+Json::Value BaseCardElement::GetAdditionalProperties()
 {
     return m_additionalProperties;
 }
 
-void BaseActionElement::SetAdditionalProperties(Json::Value value)
+void BaseCardElement::SetAdditionalProperties(Json::Value value)
 {
     m_additionalProperties = value;
 }
