@@ -166,6 +166,9 @@
   $('.ac-properties table').addClass("w3-table w3-bordered w3-responsive")
 
   $(document).ready(function () {
+    hljs.configure({
+      tabReplace: '  '
+    });
     $('pre code').each(function (i, block) {
       hljs.highlightBlock(block);
     });
@@ -175,6 +178,9 @@
     //   window.dispatchEvent(new Event('resize'));
     // }, 200);
 
+    $('.page-nav').on('change', function() {
+      window.location = this.value;
+    });
   });
 
 

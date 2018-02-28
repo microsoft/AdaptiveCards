@@ -33,7 +33,7 @@ hexo.extend.helper.register('propertiesDetails', function (properties) {
         html += "<pre><code class='json'>" + exampleContent + "</code></pre>";
         html += "</div>";
 
-        html += '<div class="w3-container w3-cell w3-mobile" style="width: 300px">';
+        html += '<div class="w3-container w3-cell w3-mobile" style="width: 320px">';
         html += '<div class="adaptivecard">' + exampleContent + '</div>';
         html += '<a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/' + path.basename(example) + '">Try it Yourself »</a>';
         html += '</div>';

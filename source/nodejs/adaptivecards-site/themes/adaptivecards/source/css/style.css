@@ -3,6 +3,25 @@ body {
     font-family: segoe-ui_normal,Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif;
     min-height: 100px;
 }
+
+@media (max-width: 601px) {
+    code {
+        max-height: 400px !important;
+        font-size: .8rem;
+    }
+
+    /* neat trick to reverse order of divs
+    http://jsfiddle.net/m37cxb9g/223/
+    */
+    .reverse-order-mobile {
+        transform: scaleY(-1);        
+    }
+
+    .reverse-order-mobile > div {
+        transform: scaleY(-1);        
+    }
+}
+
 h1{font-size:28px;}
 h2{font-size:24px;}
 h3{font-size:22px;}
@@ -19,31 +38,40 @@ h6{font-size:12px;}
     margin: 10px;
 }
 
-.code-snippet > pre {
-    font-size: 12px;
-    overflow: auto;
-    width: 100%;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    padding: 0;
-}
-
-
 .adaptivecard { 
     display: none; 
     border: solid 1px lightgray;
     margin-top: 10px;
     margin-bottom: 5px;
-    max-width: 300px;
+    min-width: 320px;
+}
+
+.code-snippet {
+    max-width: 96vw;
+    overflow-x: auto;
+}
+
+.code-snippet > pre {
+    font-size: 12px;
+    overflow-wrap: break-word;
+    padding: 0;
+    width: 100%;
+}
+
+code {
+    background-color: #eeeeee;
+    word-break: normal !important;
+    word-wrap: normal !important;
+    white-space: pre-wrap !important;
 }
 
 .explorer .adaptivecard,
-.explorer .code-snippet > pre {
+.explorer code {
     max-height: 400px;
 }
 
 .sample-browser .adaptivecard,
-.sample-browser .code-snippet > pre {
+.sample-browser code {
     max-height: 800px;
 }
 
