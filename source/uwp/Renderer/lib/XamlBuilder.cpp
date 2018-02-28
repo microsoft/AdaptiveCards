@@ -157,17 +157,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
             UINT32 actionsSize;
             THROW_IF_FAILED(actions->get_Size(&actionsSize));
-            if (SupportsInteractivity(hostConfig.Get()))
+            if (actionsSize > 0)
             {
-                unsigned int bodyCount;
-                THROW_IF_FAILED(body->get_Size(&bodyCount));
-                BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext);
-            }
-            else if (actionsSize > 0)
-            {
-                renderContext->AddWarning(
-                    ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
-                    HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
+                if (SupportsInteractivity(hostConfig.Get()))
+                {
+                    unsigned int bodyCount;
+                    THROW_IF_FAILED(body->get_Size(&bodyCount));
+                    BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext);
+                }
+                else
+                {
+                    renderContext->AddWarning(
+                        ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                        HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
+                }
             }
 
             if (isOuterCard)
