@@ -34,6 +34,7 @@ using namespace AdaptiveCards;
     dispatch_queue_t _serial_queue;
     dispatch_queue_t _serial_text_queue;
     int _serialNumber;
+    std::list<const BaseCardElement*> _asyncRenderedElements;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -71,13 +72,9 @@ using namespace AdaptiveCards;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _asyncRenderedElements.clear();
-    [self render];
-}
 
-- (void)viewDidAppear:(BOOL)animated
-{
+    [self render];
+
     [self callDidCompleteRenderingIfNeeded];
 }
 
@@ -178,16 +175,33 @@ using namespace AdaptiveCards;
        [newView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
 }
 
-auto _asyncRenderedElements = std::list<const BaseCardElement*>();
+- (void)addToAsyncRenderingList:(std::shared_ptr<BaseCardElement> const &)elem
+{
+#if DEBUG
+    NSLog(@"adding to async list. size: %ld, type: %d", _asyncRenderedElements.size(), elem->GetElementType());
+#endif
+    _asyncRenderedElements.push_back(elem.get());
+}
+
+- (void)removeFromAsyncRenderingListAndNotifyIfNeeded:(std::shared_ptr<BaseCardElement> const &)elem
+{
+#if DEBUG
+    NSLog(@"removing from list. size: %ld, type: %d", _asyncRenderedElements.size(), elem->GetElementType());
+#endif
+
+    _asyncRenderedElements.remove(elem.get());
+
+    [self callDidCompleteRenderingIfNeeded];
+}
 
 - (void)callDidCompleteRenderingIfNeeded
 {
-#if DEBUG
-    NSLog(@"callDidCompleteRenderingIfNeeded");
-#endif
-
     if (_asyncRenderedElements.size() == 0)
     {
+#if DEBUG
+        NSLog(@"Call didCompleteRendering");
+#endif
+
         // Call back app with didCompleteRendering
         if ([[self acrActionDelegate] respondsToSelector:@selector(didCompleteRendering)])
         {
@@ -201,13 +215,12 @@ auto _asyncRenderedElements = std::list<const BaseCardElement*>();
 {
     for(auto &elem : body)
     {
-        const auto p = elem.get();
         switch (elem->GetElementType())
         {
             case CardElementType::TextBlock:
             {
-                _asyncRenderedElements.push_back(p);
-                
+                [self addToAsyncRenderingList:elem];
+
                 /// tag a base card element with unique key
                 [self tagBaseCardElement:elem];
                 /// dispatch to concurrent queue
@@ -268,11 +281,9 @@ auto _asyncRenderedElements = std::list<const BaseCardElement*>();
                                       std::string id = txtElem->GetId();
                                       std::size_t idx = id.find_last_of('_');
                                       txtElem->SetId(id.substr(0, idx));
-                                      
                                   }
 
-                                 _asyncRenderedElements.remove(p);
-                                 [self callDidCompleteRenderingIfNeeded];
+                                  [self removeFromAsyncRenderingListAndNotifyIfNeeded:txtElem];
                               });
                          }
                 );
@@ -337,6 +348,8 @@ auto _asyncRenderedElements = std::list<const BaseCardElement*>();
 
 - (void) processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
 {
+    [self addToAsyncRenderingList:imageElem];
+
     /// generate a string key to uniquely identify Image
     std::shared_ptr<Image> imgElem = imageElem;
     // run image downloading and processing on global queue which is concurrent and different from main queue
@@ -379,6 +392,8 @@ auto _asyncRenderedElements = std::list<const BaseCardElement*>();
                           std::size_t idx = id.find_last_of('_');
                           imgElem->SetId(id.substr(0, idx));
                       }
+                     
+                      [self removeFromAsyncRenderingListAndNotifyIfNeeded:imgElem];
                   });
              }
     );
