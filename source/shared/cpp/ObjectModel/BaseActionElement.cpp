@@ -20,7 +20,6 @@ std::string BaseActionElement::GetElementTypeString() const
     return m_typeString;
 }
 
-
 void BaseActionElement::SetElementTypeString(const std::string value)
 {
     m_typeString = value;

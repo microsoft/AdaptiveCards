@@ -31,7 +31,6 @@ std::string BaseCardElement::GetElementTypeString() const
     return m_typeString;
 }
 
-
 void BaseCardElement::SetElementTypeString(const std::string value)
 {
     m_typeString = value;
