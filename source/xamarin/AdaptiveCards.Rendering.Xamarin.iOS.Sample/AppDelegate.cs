@@ -1,6 +1,7 @@
 ﻿using Foundation;
 using UIKit;
 using AdaptiveCards.Rendering.Xamarin.iOS;
+using AdaptiveCards.BotConnection;
 
 namespace Adaptive.Cards.Rendering.Xamarin.IOS.Sample
 {
@@ -19,68 +20,6 @@ namespace Adaptive.Cards.Rendering.Xamarin.IOS.Sample
 
         private UITextField adaptiveCardRequest;
         private UIButton sendButton;
-
-        string card = @"
-        {
-            ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-            ""type"": ""AdaptiveCard"",
-            ""version"": ""0.5"",
-            ""body"": [
-                {
-                    ""speak"": ""<s>Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.</s>"",
-                    ""type"": ""ColumnSet"",
-                    ""columns"": [
-                        {
-                            ""type"": ""Column"",
-                            ""width"": 2,
-                            ""items"": [
-                                {
-                                    ""type"": ""TextBlock"",
-                                    ""text"": ""PIZZA""
-                                },
-                                {
-                                    ""type"": ""TextBlock"",
-                                    ""text"": ""Tom's Pie"",
-                                    ""weight"": ""bolder"",
-                                    ""size"": ""extraLarge"",
-                                    ""spacing"": ""none""
-                                },
-                                {
-                                    ""type"": ""TextBlock"",
-                                    ""text"": ""4.2 ★★★☆ (93) · $$"",
-                                    ""isSubtle"": true,
-                                    ""spacing"": ""none""
-                                },
-                                {
-                                    ""type"": ""TextBlock"",
-                                    ""text"": ""**Matt H. said** \""I'm compelled to give this place 5 stars due to the number of times I've chosen to eat here this past year!\"""",
-                                    ""size"": ""small"",
-                                    ""wrap"": true
-                                }
-                            ]
-                        },
-                        {
-                            ""type"": ""Column"",
-                            ""width"": 1,
-                            ""items"": [
-                                {
-                                    ""type"": ""Image"",
-                                    ""url"": ""http://res.cloudinary.com/sagacity/image/upload/c_crop,h_670,w_635,x_0,y_0/c_scale,w_640/v1397425743/Untitled-4_lviznp.jpg"",
-                                    ""size"": ""auto""
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            ""actions"": [
-                {
-                    ""type"": ""Action.OpenUrl"",
-                    ""title"": ""More Info"",
-                    ""url"": ""https://www.youtube.com/watch?v=dQw4w9WgXcQ""
-                }
-            ]
-        }";
 
         string hostconfig = @"
         {
@@ -209,6 +148,7 @@ namespace Adaptive.Cards.Rendering.Xamarin.IOS.Sample
         }";
 
         private ACOHostConfigParseResult m_config = null;
+        private PayloadRetriever m_payloadRetriever = null;
 
         private UIView ReGenerateAdaptiveCard(string json)
         {
@@ -236,6 +176,7 @@ namespace Adaptive.Cards.Rendering.Xamarin.IOS.Sample
             controller.Title = "Xamarin Test App";
 
             m_config = ACOHostConfig.FromJson(hostconfig);
+            m_payloadRetriever = new PayloadRetriever();
 
             Window.RootViewController = controller;
 
@@ -258,7 +199,7 @@ namespace Adaptive.Cards.Rendering.Xamarin.IOS.Sample
             sendButton.TouchUpInside += (sender, e) =>
             {
                 string request = adaptiveCardRequest.Text;
-                var renderedCard = ReGenerateAdaptiveCard(card);
+                var renderedCard = ReGenerateAdaptiveCard(m_payloadRetriever.RequestAdaptiveCard((request)));
                 if (renderedCard != null)
                 {
                     controller.View.AddSubview(renderedCard);

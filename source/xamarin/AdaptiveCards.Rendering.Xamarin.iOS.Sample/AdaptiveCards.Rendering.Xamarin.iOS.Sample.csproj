@@ -108,5 +108,6 @@
       <Name>AdaptiveCards.Rendering.Xamarin.iOS</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\AdaptiveCards.BotConnection\AdaptiveCards.BotConnection.projitems" Label="Shared" Condition="Exists('..\AdaptiveCards.BotConnection\AdaptiveCards.BotConnection.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
