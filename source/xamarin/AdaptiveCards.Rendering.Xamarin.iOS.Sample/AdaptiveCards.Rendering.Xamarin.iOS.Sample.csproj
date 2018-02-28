@@ -101,7 +101,6 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="DemoViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards.Rendering.Xamarin.iOS\AdaptiveCards.Rendering.Xamarin.iOS.csproj">
