@@ -62,7 +62,7 @@ using namespace AdaptiveCards;
         ACRContainerStyle style = (config->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
         [verticalView setStyle:style];
-
+    
         [ACRRenderer render:verticalView rootViewController:vc inputs:inputs withCardElems:body andHostConfig:config];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
