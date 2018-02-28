@@ -75,7 +75,7 @@ using namespace AdaptiveCards;
 
     [self render];
 
-    [self callDidCompleteRenderingIfNeeded];
+    [self callDidLoadElementsIfNeeded];
 }
 
 - (void)render
@@ -191,21 +191,21 @@ using namespace AdaptiveCards;
 
     _asyncRenderedElements.remove(elem.get());
 
-    [self callDidCompleteRenderingIfNeeded];
+    [self callDidLoadElementsIfNeeded];
 }
 
-- (void)callDidCompleteRenderingIfNeeded
+- (void)callDidLoadElementsIfNeeded
 {
     if (_asyncRenderedElements.size() == 0)
     {
 #if DEBUG
-        NSLog(@"Call didCompleteRendering");
+        NSLog(@"Call didLoadElements");
 #endif
 
-        // Call back app with didCompleteRendering
-        if ([[self acrActionDelegate] respondsToSelector:@selector(didCompleteRendering)])
+        // Call back app with didLoadElements
+        if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)])
         {
-            [[self acrActionDelegate] didCompleteRendering];
+            [[self acrActionDelegate] didLoadElements];
         }
     }
 }

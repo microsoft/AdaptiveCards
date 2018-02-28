@@ -233,9 +233,9 @@
     NSLog(@"Http Request fetched: %@", request);    
 }
 
-- (void)didCompleteRendering
+- (void)didLoadElements
 {
-    NSLog(@"didCompleteRendering");
+    NSLog(@"didLoadElements");
 }
 
 - (void)registerForKeyboardNotifications

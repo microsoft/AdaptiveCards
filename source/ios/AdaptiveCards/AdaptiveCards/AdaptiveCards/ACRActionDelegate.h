@@ -16,6 +16,6 @@
 - (void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
 
 @optional
-- (void)didCompleteRendering;
+- (void)didLoadElements;
 
 @end
