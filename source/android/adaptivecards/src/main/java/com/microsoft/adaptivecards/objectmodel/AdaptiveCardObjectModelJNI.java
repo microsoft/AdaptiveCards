@@ -152,6 +152,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseCardElement_DeserializeSelectAction(long jarg1, ElementParserRegistration jarg1_, long jarg2, ActionParserRegistration jarg2_, long jarg3, int jarg4);
   public final static native long new_BaseActionElement(int jarg1);
   public final static native void delete_BaseActionElement(long jarg1);
+  public final static native String BaseActionElement_GetElementTypeString(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetElementTypeString(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native String BaseActionElement_GetTitle(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetTitle(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native String BaseActionElement_GetId(long jarg1, BaseActionElement jarg1_);
