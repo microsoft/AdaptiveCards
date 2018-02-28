@@ -111,7 +111,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         if (adaptiveCard)
         {
-            ComPtr<IUIElement> xamlTreeRoot;
+            ComPtr<IFrameworkElement> xamlTreeRoot;
 
             if (m_explicitDimensions)
             {

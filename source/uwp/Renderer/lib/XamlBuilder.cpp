@@ -109,7 +109,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     _Use_decl_annotations_
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard,
-        IUIElement** xamlTreeRoot, 
+        IFrameworkElement** xamlTreeRoot, 
         AdaptiveCardRenderer* renderer,
         AdaptiveRenderContext* renderContext,
         boolean isOuterCard,
@@ -178,7 +178,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", childElementContainerAsFE.Get()));
             }
 
-            THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
+            THROW_IF_FAILED(childElementContainerAsFE.CopyTo(xamlTreeRoot));
 
             if (isOuterCard)
             {
@@ -684,7 +684,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IAdaptiveCard> showCard;
         THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
 
-        ComPtr<IUIElement> localUiShowCard;
+        ComPtr<IFrameworkElement> localUiShowCard;
         BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), renderer, localRenderContext.Get(), false, showCardConfigStyle);
 
         ComPtr<IGrid2> showCardGrid;
@@ -714,10 +714,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         Thickness margin = { 0, (double)inlineTopMargin, 0, 0 };
         THROW_IF_FAILED(showCardFrameworkElement->put_Margin(margin));
 
-        // Set the visibility as Collapsed until the action is triggered
-        THROW_IF_FAILED(localUiShowCard->put_Visibility(Visibility_Collapsed));
+        ComPtr<IUIElement> showCardUIElement;
+        THROW_IF_FAILED(localUiShowCard.As(&showCardUIElement));
 
-        *uiShowCard = localUiShowCard.Detach();
+        // Set the visibility as Collapsed until the action is triggered
+        THROW_IF_FAILED(showCardUIElement->put_Visibility(Visibility_Collapsed));
+
+        *uiShowCard = showCardUIElement.Detach();
     }
 
     _Use_decl_annotations_
