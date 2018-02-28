@@ -12,10 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Created by bekao on 7/5/2017.
- */
-
 public class CheckBoxSetInputHandler extends BaseInputHandler
 {
     public CheckBoxSetInputHandler(BaseInputElement baseInputElement, List<CheckBox> checkBoxList)

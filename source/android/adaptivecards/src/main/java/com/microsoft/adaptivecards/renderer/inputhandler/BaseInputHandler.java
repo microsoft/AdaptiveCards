@@ -7,10 +7,6 @@ import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
 
 import java.text.ParseException;
 
-/**
- * Created by bekao on 7/5/2017.
- */
-
 public abstract class BaseInputHandler implements IInputHandler
 {
     public BaseInputHandler(BaseInputElement baseInputElement)

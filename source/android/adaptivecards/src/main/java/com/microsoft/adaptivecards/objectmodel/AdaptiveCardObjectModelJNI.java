@@ -150,6 +150,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_BaseCardElement__SWIG_0(int jarg1, int jarg2, boolean jarg3);
   public final static native long new_BaseCardElement__SWIG_1(int jarg1);
   public final static native void delete_BaseCardElement(long jarg1);
+  public final static native String BaseCardElement_GetElementTypeString(long jarg1, BaseCardElement jarg1_);
+  public final static native void BaseCardElement_SetElementTypeString(long jarg1, BaseCardElement jarg1_, String jarg2);
   public final static native boolean BaseCardElement_GetSeparator(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetSeparator(long jarg1, BaseCardElement jarg1_, boolean jarg2);
   public final static native int BaseCardElement_GetSpacing(long jarg1, BaseCardElement jarg1_);
@@ -162,6 +164,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseCardElement_DeserializeSelectAction(long jarg1, ElementParserRegistration jarg1_, long jarg2, ActionParserRegistration jarg2_, long jarg3, int jarg4);
   public final static native long new_BaseActionElement(int jarg1);
   public final static native void delete_BaseActionElement(long jarg1);
+  public final static native String BaseActionElement_GetElementTypeString(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetElementTypeString(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native String BaseActionElement_GetTitle(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetTitle(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native String BaseActionElement_GetId(long jarg1, BaseActionElement jarg1_);
@@ -258,6 +262,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long Column_GetItems__SWIG_0(long jarg1, Column jarg1_);
   public final static native long Column_GetSelectAction(long jarg1, Column jarg1_);
   public final static native void Column_SetSelectAction(long jarg1, Column jarg1_, long jarg2, BaseActionElement jarg2_);
+  public final static native void Column_SetLanguage(long jarg1, Column jarg1_, String jarg2);
   public final static native long Column_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Column(long jarg1);
   public final static native long new_ColumnSet__SWIG_0();
@@ -266,6 +271,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ColumnSet_GetColumns__SWIG_0(long jarg1, ColumnSet jarg1_);
   public final static native long ColumnSet_GetSelectAction(long jarg1, ColumnSet jarg1_);
   public final static native void ColumnSet_SetSelectAction(long jarg1, ColumnSet jarg1_, long jarg2, BaseActionElement jarg2_);
+  public final static native void ColumnSet_SetLanguage(long jarg1, ColumnSet jarg1_, String jarg2);
   public final static native long ColumnSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_ColumnSet(long jarg1);
   public final static native long ColumnSetParser_Deserialize(long jarg1, ColumnSetParser jarg1_, long jarg2, ElementParserRegistration jarg2_, long jarg3, ActionParserRegistration jarg3_, long jarg4);
@@ -588,6 +594,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_FactSetConfig(long jarg1);
   public final static native void ContainerStyleDefinition_backgroundColor_set(long jarg1, ContainerStyleDefinition jarg1_, String jarg2);
   public final static native String ContainerStyleDefinition_backgroundColor_get(long jarg1, ContainerStyleDefinition jarg1_);
+  public final static native void ContainerStyleDefinition_borderColor_set(long jarg1, ContainerStyleDefinition jarg1_, String jarg2);
+  public final static native String ContainerStyleDefinition_borderColor_get(long jarg1, ContainerStyleDefinition jarg1_);
+  public final static native void ContainerStyleDefinition_borderThickness_set(long jarg1, ContainerStyleDefinition jarg1_, long jarg2);
+  public final static native long ContainerStyleDefinition_borderThickness_get(long jarg1, ContainerStyleDefinition jarg1_);
   public final static native void ContainerStyleDefinition_foregroundColors_set(long jarg1, ContainerStyleDefinition jarg1_, long jarg2, ColorsConfig jarg2_);
   public final static native long ContainerStyleDefinition_foregroundColors_get(long jarg1, ContainerStyleDefinition jarg1_);
   public final static native long ContainerStyleDefinition_Deserialize(long jarg1, long jarg2, ContainerStyleDefinition jarg2_);

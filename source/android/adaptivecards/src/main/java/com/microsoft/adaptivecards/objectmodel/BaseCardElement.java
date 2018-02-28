@@ -43,6 +43,14 @@ public class BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_1(type.swigValue()), true);
   }
 
+  public String GetElementTypeString() {
+    return AdaptiveCardObjectModelJNI.BaseCardElement_GetElementTypeString(swigCPtr, this);
+  }
+
+  public void SetElementTypeString(String value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetElementTypeString(swigCPtr, this, value);
+  }
+
   public boolean GetSeparator() {
     return AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparator(swigCPtr, this);
   }

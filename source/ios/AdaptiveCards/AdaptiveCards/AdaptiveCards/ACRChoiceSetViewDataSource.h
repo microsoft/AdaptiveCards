@@ -17,4 +17,6 @@
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet;
 
+- (void)getDefaultInput:(NSMutableDictionary *)dictionary;
+
 @end

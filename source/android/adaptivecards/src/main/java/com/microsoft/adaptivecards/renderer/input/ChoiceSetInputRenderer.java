@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import com.microsoft.adaptivecards.objectmodel.ChoiceInput;
 import com.microsoft.adaptivecards.objectmodel.ChoiceInputVector;
 import com.microsoft.adaptivecards.objectmodel.ChoiceSetStyle;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -148,6 +149,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         ChoiceSetInput choiceSetInput = null;

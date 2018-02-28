@@ -1,6 +1,7 @@
 #include "Container.h"
 #include "TextBlock.h"
 #include "ColumnSet.h"
+#include "Util.h"
 
 using namespace AdaptiveCards;
 
@@ -60,26 +61,7 @@ void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 
 void Container::SetLanguage(const std::string& value)
 {
-    for (auto& item : m_items)
-    {
-        CardElementType elementType = item->GetElementType();
-
-        if (elementType == CardElementType::Container)
-        {
-            auto element = std::static_pointer_cast<Container>(item);
-            element->SetLanguage(value);
-        }
-        else if (elementType == CardElementType::ColumnSet)
-        {
-            auto element = std::static_pointer_cast<ColumnSet>(item);
-            element->SetLanguage(value);
-        }
-        else if (elementType == CardElementType::TextBlock)
-        {
-            auto element = std::static_pointer_cast<TextBlock>(item);
-            element->SetLanguage(value);
-        }
-    }
+    PropagateLanguage(value, m_items);
 }
 
 Json::Value Container::SerializeToJsonValue()

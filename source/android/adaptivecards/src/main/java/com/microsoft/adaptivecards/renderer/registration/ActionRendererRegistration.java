@@ -1,6 +1,7 @@
 package com.microsoft.adaptivecards.renderer.registration;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,31 +11,23 @@ import android.widget.Toast;
 import com.microsoft.adaptivecards.objectmodel.ActionType;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
-import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.IBaseActionElementRenderer;
-import com.microsoft.adaptivecards.renderer.action.OpenUrlActionRenderer;
-import com.microsoft.adaptivecards.renderer.action.ShowCardActionRenderer;
-import com.microsoft.adaptivecards.renderer.action.SubmitActionRenderer;
-import com.microsoft.adaptivecards.renderer.actionhandler.IShowCardActionHandler;
-import com.microsoft.adaptivecards.renderer.actionhandler.ISubmitActionHandler;
+import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 
 import java.util.HashMap;
 import java.util.Vector;
-
-/**
- * Created by bekao on 7/1/2017.
- */
 
 public class ActionRendererRegistration
 {
     private ActionRendererRegistration()
     {
         // Register Action Renderers
-        registerRenderer(ActionType.OpenUrl.toString(), OpenUrlActionRenderer.getInstance());
-        registerRenderer(ActionType.ShowCard.toString(), ShowCardActionRenderer.getInstance());
-        registerRenderer(ActionType.Submit.toString(), SubmitActionRenderer.getInstance());
+        registerRenderer(ActionType.OpenUrl.toString(), ActionElementRenderer.getInstance());
+        registerRenderer(ActionType.ShowCard.toString(), ActionElementRenderer.getInstance());
+        registerRenderer(ActionType.Submit.toString(), ActionElementRenderer.getInstance());
     }
 
     public static ActionRendererRegistration getInstance()
@@ -68,12 +61,12 @@ public class ActionRendererRegistration
 
     public View render(
             Context context,
+            FragmentManager fragmentManager,
             ViewGroup viewGroup,
             Object tag,
             BaseActionElementVector baseActionElementList,
             Vector<IInputHandler> inputActionHandlerList,
-            IShowCardActionHandler showCardActionHandler,
-            ISubmitActionHandler submitActionHandler,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         long size;
@@ -82,17 +75,27 @@ public class ActionRendererRegistration
             return null;
         }
 
-        LinearLayout layout = new LinearLayout(context);
-        layout.setTag(tag);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        layout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout actionsLayout = new LinearLayout(context);
+        actionsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        actionsLayout.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout actionButtonsLayout = new LinearLayout(context);
+        actionButtonsLayout.setTag(tag);
+        actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        LinearLayout hiddenCardsLayout = new LinearLayout(context);
+        hiddenCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        hiddenCardsLayout.setOrientation(LinearLayout.VERTICAL);
+        actionsLayout.addView(actionButtonsLayout);
+        actionsLayout.addView(hiddenCardsLayout);
 
         if (viewGroup != null)
         {
-            viewGroup.addView(layout);
+            viewGroup.addView(actionsLayout);
         }
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < size && i < hostConfig.getActions().getMaxActions(); i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
             IBaseActionElementRenderer renderer = m_typeToRendererMap.get(actionElement.GetElementType().toString());
@@ -102,10 +105,10 @@ public class ActionRendererRegistration
                 continue;
             }
 
-            renderer.render(context, layout, actionElement, inputActionHandlerList, showCardActionHandler, submitActionHandler, hostConfig);
+            renderer.render(context, fragmentManager, actionButtonsLayout, actionElement, inputActionHandlerList, cardActionHandler, hostConfig);
         }
 
-        return layout;
+        return actionsLayout;
     }
 
     private static ActionRendererRegistration s_instance = null;

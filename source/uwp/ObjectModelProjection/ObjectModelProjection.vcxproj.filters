@@ -39,6 +39,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

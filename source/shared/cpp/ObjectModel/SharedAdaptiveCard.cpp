@@ -1,10 +1,7 @@
 #include "SharedAdaptiveCard.h"
 #include "ParseUtil.h"
-
-#include "Container.h"
-#include "ColumnSet.h"
+#include "Util.h"
 #include "ShowCardAction.h"
-#include "TextBlock.h"
 
 using namespace AdaptiveCards;
 
@@ -238,37 +235,8 @@ std::string AdaptiveCard::GetLanguage() const
 void AdaptiveCard::SetLanguage(const std::string& value)
 {
     m_language = value;
-    // Propagate language to TextBlocks, Containers and showCardActions
-    for (auto& bodyElement : m_body)
-    {
-        CardElementType elementType = bodyElement->GetElementType();
-
-        if (elementType == CardElementType::Container)
-        {
-            auto container = std::static_pointer_cast<Container>(bodyElement);
-            if (container != nullptr)
-            {
-                container->SetLanguage(value);
-            }
-        }
-        else if (elementType == CardElementType::ColumnSet)
-        {
-            auto container = std::static_pointer_cast<ColumnSet>(bodyElement);
-            if (container != nullptr)
-            {
-                container->SetLanguage(value);
-            }
-        }
-        else if (bodyElement->GetElementType() == CardElementType::TextBlock)
-        {
-            auto textBlock = std::static_pointer_cast<TextBlock>(bodyElement);
-            if (textBlock != nullptr)
-            {
-                textBlock->SetLanguage(value);
-            }
-        }
-
-    }
+    // Propagate language to ColumnSet, Containers, TextBlocks and showCardActions
+    PropagateLanguage(value, m_body);
 
     for (auto& actionElement : m_actions)
     {

@@ -62,6 +62,10 @@ public class ColumnSet extends BaseCardElement {
     AdaptiveCardObjectModelJNI.ColumnSet_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
+  public void SetLanguage(String language) {
+    AdaptiveCardObjectModelJNI.ColumnSet_SetLanguage(swigCPtr, this, language);
+  }
+
   public static ColumnSet dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new ColumnSet(cPtr, true);

@@ -90,6 +90,7 @@ export interface IValidationError {
 }
 
 export abstract class CardElement {
+    private _lang: string = undefined;
     private _hostConfig?: HostConfig.HostConfig = null;
     private _internalPadding: PaddingDefinition = null;
     private _parent: CardElement = null;
@@ -466,6 +467,34 @@ export abstract class CardElement {
         return null;
     }
 
+    get lang(): string {
+        if (this._lang) {
+            return this._lang;
+        }
+        else {
+            if (this.parent) {
+                return this.parent.lang;
+            }
+            else {
+                return undefined;
+            }
+        }
+    }
+
+    set lang(value: string) {
+        if (value && value != "") {
+            var regEx = /^[a-z]{2,3}$/ig;
+
+            var matches = regEx.exec(value);
+
+            if (!matches) {
+                throw new Error("Invalid language identifier: " + value);
+            }
+        }
+
+        this._lang = value;
+    }
+
     get hostConfig(): HostConfig.HostConfig {
         if (this._hostConfig) {
             return this._hostConfig;
@@ -638,7 +667,7 @@ export class TextBlock extends CardElement {
 
             element.style.fontWeight = fontWeight.toString();
 
-            var formattedText = TextFormatters.formatText(this.text);
+            var formattedText = TextFormatters.formatText(this.lang, this.text);
 
             element.innerHTML = this.useMarkdown ? AdaptiveCard.processMarkdown(formattedText) : formattedText;
 
@@ -3922,6 +3951,21 @@ export class AdaptiveCard extends ContainerWithActions {
 
     parse(json: any) {
         this._cardTypeName = json["type"];
+
+        var langId = json["lang"];
+
+        if (langId && typeof langId === "string") {
+            try {
+                this.lang = langId;
+            }
+            catch (e) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: e.message
+                    });                        
+            }
+        }
 
         this.version = Version.parse(json["version"]);
 

@@ -4,9 +4,10 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
@@ -44,6 +45,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         ColumnSet columnSet = null;
@@ -72,7 +74,13 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
-            ((ColumnRenderer)columnRenderer).render(context, fragmentManager, layout, column, i, inputActionHandlerList, hostConfig);
+            ((ColumnRenderer)columnRenderer).render(context, fragmentManager, layout, column, inputActionHandlerList, cardActionHandler, hostConfig);
+        }
+
+        if (columnSet.GetSelectAction() != null)
+        {
+            layout.setClickable(true);
+            layout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(columnSet.GetSelectAction(),inputActionHandlerList, cardActionHandler));
         }
 
         viewGroup.addView(layout);

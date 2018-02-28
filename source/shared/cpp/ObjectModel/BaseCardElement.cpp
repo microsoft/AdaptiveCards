@@ -12,17 +12,28 @@ BaseCardElement::BaseCardElement(
     bool separator) :
     m_type(type),
     m_spacing(spacing),
-    m_separator(separator)
+    m_separator(separator),
+    m_typeString(CardElementTypeToString(type))
 {
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
-    m_type(type), m_spacing(Spacing::Default)
+    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type))
 {
 }
 
 AdaptiveCards::BaseCardElement::~BaseCardElement()
 {
+}
+
+std::string BaseCardElement::GetElementTypeString() const
+{
+    return m_typeString;
+}
+
+void BaseCardElement::SetElementTypeString(const std::string value)
+{
+    m_typeString = value;
 }
 
 bool BaseCardElement::GetSeparator() const

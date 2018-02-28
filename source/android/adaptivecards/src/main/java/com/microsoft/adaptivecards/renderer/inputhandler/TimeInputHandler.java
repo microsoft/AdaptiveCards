@@ -10,9 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by bekao on 7/4/2017.
- */
 
 public class TimeInputHandler extends TextInputHandler
 {

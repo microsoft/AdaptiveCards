@@ -23,6 +23,9 @@ public:
     void SetSeparator(const std::shared_ptr<Separator> value);
     */
 
+    virtual std::string GetElementTypeString() const;
+    virtual void SetElementTypeString(const std::string value);
+
     virtual bool GetSeparator() const;
     virtual void SetSeparator(const bool value);
 
@@ -52,6 +55,7 @@ private:
     CardElementType m_type;
     Spacing m_spacing;
     std::string m_id;
+    std::string m_typeString;
     //std::shared_ptr<Separator> m_separator; Issue #629 to make separator an object
     bool m_separator;
 };

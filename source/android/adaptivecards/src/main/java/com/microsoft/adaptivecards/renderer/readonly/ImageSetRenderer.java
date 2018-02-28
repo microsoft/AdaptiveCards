@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
@@ -43,6 +44,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         ImageSet imageSet = null;
@@ -74,7 +76,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
             // TODO: temporary - this will be handled in the object model
             image.SetImageSize(imageSize);
-            imageRenderer.render(context, fragmentManager, horizFlowLayout, image, inputActionHandlerList, hostConfig, true);
+            imageRenderer.render(context, fragmentManager, horizFlowLayout, image, inputActionHandlerList, cardActionHandler, hostConfig, true);
         }
 
         viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));

@@ -1,18 +1,12 @@
 package com.microsoft.adaptivecards.renderer.inputhandler;
 
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
 import com.microsoft.adaptivecards.objectmodel.ChoiceSetInput;
 
 import java.text.ParseException;
-import java.util.List;
 import java.util.Map;
-
-/**
- * Created by bekao on 7/5/2017.
- */
 
 public class RadioGroupInputHandler extends BaseInputHandler
 {

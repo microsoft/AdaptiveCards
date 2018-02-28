@@ -145,13 +145,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlock::get_Language(HSTRING* language)
+    HRESULT AdaptiveTextBlock::get_Language(HSTRING* language)
     {
         return UTF8ToHString(m_sharedTextBlock->GetLanguage(), language);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlock::put_Language(HSTRING language)
+    HRESULT AdaptiveTextBlock::put_Language(HSTRING language)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(language, out));

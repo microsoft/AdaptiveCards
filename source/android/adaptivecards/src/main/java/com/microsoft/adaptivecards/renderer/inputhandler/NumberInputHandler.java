@@ -5,10 +5,6 @@ import com.microsoft.adaptivecards.objectmodel.NumberInput;
 
 import java.text.ParseException;
 
-/**
- * Created by bekao on 7/2/2017.
- */
-
 public class NumberInputHandler extends TextInputHandler
 {
     public NumberInputHandler(BaseInputElement baseInputElement)

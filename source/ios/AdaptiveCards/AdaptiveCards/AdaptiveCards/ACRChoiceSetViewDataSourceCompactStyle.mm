@@ -122,7 +122,11 @@ using namespace AdaptiveCards;
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
     // gets inputs from datasource of the table view
-    [_dataSource getInput:dictionary];
+    if(!_tableViewController) {
+        [(ACRChoiceSetViewDataSource *)_dataSource getDefaultInput:dictionary];
+    } else {
+        [_dataSource getInput:dictionary];
+    }
 }
 
 @end
