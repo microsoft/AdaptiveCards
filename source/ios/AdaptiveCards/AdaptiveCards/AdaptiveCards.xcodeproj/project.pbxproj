@@ -21,6 +21,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		3969DD5A2047A98A0029CEF1 /* DateTimePreparser.h in Headers */ = {isa = PBXBuildFile; fileRef = 3969DD582047A9890029CEF1 /* DateTimePreparser.h */; };
+		3969DD5B2047A98A0029CEF1 /* DateTimePreparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3969DD592047A9890029CEF1 /* DateTimePreparser.cpp */; };
+		3969DD5E2047AA060029CEF1 /* DateTimePreparsedToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 3969DD5C2047AA060029CEF1 /* DateTimePreparsedToken.h */; };
+		3969DD5F2047AA060029CEF1 /* DateTimePreparsedToken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3969DD5D2047AA060029CEF1 /* DateTimePreparsedToken.cpp */; };
+		3969DD622047AA400029CEF1 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3969DD602047AA400029CEF1 /* Util.cpp */; };
+		3969DD632047AA400029CEF1 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3969DD612047AA400029CEF1 /* Util.h */; };
 		6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D01F32E53A008846EC /* ACRActionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D41F32F756008846EC /* ACROpenURLTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D21F32F756008846EC /* ACROpenURLTarget.h */; };
 		6B1147D51F32F756008846EC /* ACROpenURLTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1147D31F32F756008846EC /* ACROpenURLTarget.mm */; };
@@ -216,6 +222,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3969DD582047A9890029CEF1 /* DateTimePreparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateTimePreparser.h; path = ../../../../shared/cpp/ObjectModel/DateTimePreparser.h; sourceTree = "<group>"; };
+		3969DD592047A9890029CEF1 /* DateTimePreparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DateTimePreparser.cpp; path = ../../../../shared/cpp/ObjectModel/DateTimePreparser.cpp; sourceTree = "<group>"; };
+		3969DD5C2047AA060029CEF1 /* DateTimePreparsedToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateTimePreparsedToken.h; path = ../../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h; sourceTree = "<group>"; };
+		3969DD5D2047AA060029CEF1 /* DateTimePreparsedToken.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DateTimePreparsedToken.cpp; path = ../../../../shared/cpp/ObjectModel/DateTimePreparsedToken.cpp; sourceTree = "<group>"; };
+		3969DD602047AA400029CEF1 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Util.cpp; path = ../../../../shared/cpp/ObjectModel/Util.cpp; sourceTree = "<group>"; };
+		3969DD612047AA400029CEF1 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = ../../../../shared/cpp/ObjectModel/Util.h; sourceTree = "<group>"; };
 		6B1147D01F32E53A008846EC /* ACRActionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionDelegate.h; sourceTree = "<group>"; };
 		6B1147D21F32F756008846EC /* ACROpenURLTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACROpenURLTarget.h; sourceTree = "<group>"; };
 		6B1147D31F32F756008846EC /* ACROpenURLTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACROpenURLTarget.mm; sourceTree = "<group>"; };
@@ -537,6 +549,10 @@
 				F44872CE1EE2261F00FCAFAE /* Container.h */,
 				F44872CF1EE2261F00FCAFAE /* DateInput.cpp */,
 				F44872D01EE2261F00FCAFAE /* DateInput.h */,
+				3969DD5D2047AA060029CEF1 /* DateTimePreparsedToken.cpp */,
+				3969DD5C2047AA060029CEF1 /* DateTimePreparsedToken.h */,
+				3969DD592047A9890029CEF1 /* DateTimePreparser.cpp */,
+				3969DD582047A9890029CEF1 /* DateTimePreparser.h */,
 				F44872D11EE2261F00FCAFAE /* Enums.cpp */,
 				F44872D21EE2261F00FCAFAE /* Enums.h */,
 				F44872D31EE2261F00FCAFAE /* Fact.cpp */,
@@ -569,6 +585,8 @@
 				F44872F01EE2261F00FCAFAE /* TimeInput.h */,
 				F44872F11EE2261F00FCAFAE /* ToggleInput.cpp */,
 				F44872F21EE2261F00FCAFAE /* ToggleInput.h */,
+				3969DD602047AA400029CEF1 /* Util.cpp */,
+				3969DD612047AA400029CEF1 /* Util.h */,
 			);
 			name = SharedLib;
 			sourceTree = "<group>";
@@ -748,9 +766,12 @@
 				F429793E1F3155EF00E89914 /* ACRTextField.h in Headers */,
 				F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */,
 				F44872FA1EE2261F00FCAFAE /* BaseCardElement.h in Headers */,
+				3969DD5E2047AA060029CEF1 /* DateTimePreparsedToken.h in Headers */,
 				F4FA2732201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h in Headers */,
 				F42741071EF8624F00399FBB /* ACRIBaseCardElementRenderer.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,
+				3969DD5A2047A98A0029CEF1 /* DateTimePreparser.h in Headers */,
+				3969DD632047AA400029CEF1 /* Util.h in Headers */,
 				F43110471F357487001AAE30 /* ACRToggleInputDataSource.h in Headers */,
 				F448730E1EE2261F00FCAFAE /* FactSet.h in Headers */,
 				F42E51751FEC3840008F9642 /* MarkDownHtmlGenerator.h in Headers */,
@@ -975,10 +996,12 @@
 				F42E51761FEC3840008F9642 /* MarkDownParsedResult.cpp in Sources */,
 				F44872F51EE2261F00FCAFAE /* AdaptiveCardParseException.cpp in Sources */,
 				F429794D1F32684900E89914 /* ACRDateTextField.mm in Sources */,
+				3969DD622047AA400029CEF1 /* Util.cpp in Sources */,
 				F43110481F357487001AAE30 /* ACRToggleInputDataSource.mm in Sources */,
 				6B6840F91F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm in Sources */,
 				F42741131EF873A600399FBB /* ACRImageRenderer.mm in Sources */,
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
+				3969DD5F2047AA060029CEF1 /* DateTimePreparsedToken.cpp in Sources */,
 				F423C14D1EE1FFF100905679 /* ACRViewController.mm in Sources */,
 				F495FC0E2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.mm in Sources */,
 				F452CD581F68CD6F005394B2 /* HostConfig.cpp in Sources */,
@@ -1007,6 +1030,7 @@
 				F42C2F4A20351954008787B0 /* ACOBaseCardElement.mm in Sources */,
 				F4CA74A02016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.mm in Sources */,
 				F42741171EF895AB00399FBB /* ACRTextBlockRenderer.mm in Sources */,
+				3969DD5B2047A98A0029CEF1 /* DateTimePreparser.cpp in Sources */,
 				F44873231EE2261F00FCAFAE /* TextBlock.cpp in Sources */,
 				F44872F91EE2261F00FCAFAE /* BaseCardElement.cpp in Sources */,
 				F427410B1EF864A900399FBB /* ACRBaseCardElementRenderer.mm in Sources */,
