@@ -21,8 +21,9 @@
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
                   colorsConfig:(ColorsConfig const &)config
                   subtleOption:(bool)isSubtle;
-
 + (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
                           withHostConfig:(std::shared_ptr<HostConfig> const &)config;
-
+// find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or 
+// NSDateFormatterLongStyle of local language
++ (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck;
 @end
