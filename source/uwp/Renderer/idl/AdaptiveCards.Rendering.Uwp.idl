@@ -528,6 +528,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT AltText([out, retval] HSTRING* value);
         [propput] HRESULT AltText([in] HSTRING value);
+
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
     };
 
     [
@@ -822,6 +825,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propput] HRESULT Style([in] ContainerStyle value);
 
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
     };
 
     [
