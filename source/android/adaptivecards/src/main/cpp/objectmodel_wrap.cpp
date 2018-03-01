@@ -5834,40 +5834,6 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1GetIsSelected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jboolean jresult = 0 ;
-  AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
-  std::shared_ptr< AdaptiveCards::ChoiceInput const > *smartarg1 = 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::ChoiceInput > **)&jarg1;
-  arg1 = (AdaptiveCards::ChoiceInput *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (bool)((AdaptiveCards::ChoiceInput const *)arg1)->GetIsSelected();
-  jresult = (jboolean)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1SetIsSelected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
-  AdaptiveCards::ChoiceInput *arg1 = (AdaptiveCards::ChoiceInput *) 0 ;
-  bool arg2 ;
-  std::shared_ptr< AdaptiveCards::ChoiceInput > *smartarg1 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::ChoiceInput > **)&jarg1;
-  arg1 = (AdaptiveCards::ChoiceInput *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = jarg2 ? true : false; 
-  (arg1)->SetIsSelected(arg2);
-}
-
-
 SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceInput_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg1 ;

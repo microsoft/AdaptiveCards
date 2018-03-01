@@ -91,15 +91,17 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         radioGroup.setOrientation(RadioGroup.VERTICAL);
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
+        String value = choiceSetInput.GetValue();
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
             RadioButton radioButton = new RadioButton(context);
             radioButton.setId(i);
             radioButton.setText(choiceInput.GetTitle());
-
-            // ensure at least one is selected
-            radioButton.setChecked(i == 0 || choiceInput.GetIsSelected());
+            if (choiceInput.GetValue().equals(value))
+            {
+                radioButton.setChecked(true);
+            }
             radioGroup.addView(radioButton);
         }
 
@@ -120,11 +122,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
         int selection = 0;
+        String value = choiceSetInput.GetValue();
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
+
             titleList.addElement(choiceInput.GetTitle());
-            if (choiceInput.GetIsSelected())
+            if (choiceInput.GetValue().equals(value))
             {
                 selection = i;
             }
