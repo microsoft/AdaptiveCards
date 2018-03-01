@@ -242,11 +242,13 @@ using namespace AdaptiveCards;
                         // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
                         NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
                         NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-                        // Initializing NSMutableAttributedString for HTML rendering is very slow
-                        NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
 
-                         dispatch_async(dispatch_get_main_queue(),
-                             ^{ __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
+                        dispatch_async(dispatch_get_main_queue(),
+                             ^{
+                                  // Initializing NSMutableAttributedString for HTML rendering is very slow
+                                  NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+
+                                  __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
                                   NSString *key = [NSString stringWithCString:txtElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                                   // syncronize access to text map
                                   dispatch_sync(_serial_text_queue,
