@@ -186,8 +186,7 @@ using namespace AdaptiveCards;
                 std::shared_ptr<TextBlock> txtElem = std::dynamic_pointer_cast<TextBlock>(elem);
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                     ^{
-                        std::string dateParsedString;
-                        [ACRTextBlockRenderer getLocalizedDate:txtElem stringWithDate:dateParsedString];
+                        std::string dateParsedString = [ACRTextBlockRenderer getLocalizedDate:txtElem];
                         // MarkDownParser transforms text with MarkDown to a html string
                         std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(dateParsedString.c_str());
                         NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];

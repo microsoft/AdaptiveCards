@@ -196,16 +196,18 @@ rootViewController:(UIViewController *)vc
             return @-2;
     }
 }
-// given string with short form of date (MM/dd/yyyy), convert it to
-// NSDateFormatterMediumStyle or NSDateFormatterLongStyle in local language
-+ (void) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck stringWithDate:(std::string &)dateParsedString
+// find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
+// NSDateFormatterLongStyle of local language
++ (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck
 {
+    std::string dateParsedString;
     std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(txtBlck->GetText()).GetTextTokens();
     for(auto section : DateTimePreparsedTokens){
         if(section->GetFormat() != DateTimePreparsedTokenFormat::RegularString) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"MM/dd/yyy"];
-            std::string givenDate = std::to_string(section->GetMonth()) + "/" +  std::to_string(section->GetDay()) + "/" +  std::to_string(section->GetYear());
+            [formatter setDateFormat:@"MM/dd/yyyy"];
+            /// date format has been already verified by preparsed token
+            std::string givenDate = std::to_string(section->GetMonth() + 1) + "/" +  std::to_string(section->GetDay()) + "/" +  std::to_string(section->GetYear());
             NSString *nsString = [NSString stringWithCString:givenDate.c_str() encoding:NSUTF8StringEncoding];
             NSDate *date = [formatter dateFromString:nsString];
             // specify output date format
@@ -220,15 +222,16 @@ rootViewController:(UIViewController *)vc
             }
 
             NSString *languageType= [NSString stringWithCString:txtBlck->GetLanguage().c_str() encoding:NSUTF8StringEncoding];
-            if([languageType compare:@""]){
+            if(languageType.length > 0){
                 outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:languageType];
             }
             NSString *dateInLocalLanguage = [outputFormatter stringFromDate:date];
-            dateParsedString += std::string([dateInLocalLanguage UTF8String]);
+            dateParsedString += [dateInLocalLanguage UTF8String];
         } else {
             dateParsedString += section->GetText();
         }
     }
+    return dateParsedString;
 }
 
 + (int)getTextBlockFontWeight:(TextWeight)weight
