@@ -452,7 +452,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCard** value);
         [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
-        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
     };
 
     [
@@ -1444,7 +1443,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
         [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
-        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
     };
 
     [
