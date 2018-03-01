@@ -37,14 +37,6 @@ namespace AdaptiveCards.Rendering.UWP.ViewModel
             get { return m_isLoading; }
             private set { SetProperty(ref m_isLoading, value); }
         }
-        /// <summary>
-        /// This property will be notified of changes on a delayed schedule, so that it's not
-        /// changing every single time a character is typed. Views presenting 
-        /// </summary>
-        public string DelayedUpdatePayload
-        {
-            get { return Payload; }
-        }
 
         private AdaptiveHostConfig m_hostConfig = null;
         private static AdaptiveCardRenderer _renderer;
@@ -108,11 +100,10 @@ namespace AdaptiveCards.Rendering.UWP.ViewModel
             if (!IsLoading)
             {
                 IsLoading = true;
-
                 await Task.Delay(1000);
-
                 IsLoading = false;
-                NotifyPropertyChanged(DelayedUpdatePayload);
+
+                NotifyPropertyChanged(Payload);
                 Load();
             }
         }
@@ -158,6 +149,7 @@ namespace AdaptiveCards.Rendering.UWP.ViewModel
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.ToString());
                 return;
             }
 
@@ -220,7 +212,6 @@ namespace AdaptiveCards.Rendering.UWP.ViewModel
             }
 
             answer += "\nInputs: " + args.Inputs.AsJson().Stringify();
-
             return answer;
         }
 
@@ -230,7 +221,6 @@ namespace AdaptiveCards.Rendering.UWP.ViewModel
             {
                 StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///HostConfigs/DefaultHostConfig.json"));
                 string text = await FileIO.ReadTextAsync(file);
-
                 return text;
             }
             catch

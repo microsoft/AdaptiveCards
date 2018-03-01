@@ -9,13 +9,9 @@ namespace AdaptiveCards.BotConnection
 {
     public class PayloadRetriever
     {
-        public PayloadRetriever()
-        {
-        }
-
-        public string RequestAdaptiveCard(string request)
-        {
-            return "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.0\", \"type\": \"AdaptiveCard\"," +
+        private int cardToShow = 0;
+        private readonly string[] cards = {
+            "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.0\", \"type\": \"AdaptiveCard\"," +
                 " \"speak\": \"<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>\"," +
                 " \"body\": [ { \"type\": \"TextBlock\", \"text\": \"Passengers\", \"weight\": \"bolder\", \"isSubtle\": false }," +
                 " { \"type\": \"TextBlock\", \"text\": \"Sarah Hum\", \"separator\": true }," +
@@ -46,7 +42,29 @@ namespace AdaptiveCards.BotConnection
                 " { \"type\": \"Column\", \"width\": \"1\", \"items\": [" +
                 " { \"type\": \"TextBlock\", \"text\": \"Total\", \"size\": \"medium\", \"isSubtle\": true } ] }," +
                 " { \"type\": \"Column\", \"width\": 1, \"items\": [" +
-                " { \"type\": \"TextBlock\", \"horizontalAlignment\": \"right\", \"text\": \"$4,033.54\", \"size\": \"medium\", \"weight\": \"bolder\" } ] } ] } ] }";
+                " { \"type\": \"TextBlock\", \"horizontalAlignment\": \"right\", \"text\": \"$4,033.54\", \"size\": \"medium\", \"weight\": \"bolder\" } ] } ] } ] }" ,
+            "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\", \"type\": \"AdaptiveCard\", " +
+                "\"version\": \"1.0\", \"speak\": \"Microsoft stock is trading at $62.30 a share, which is down .32%\", " +
+                "\"body\": [ { \"type\": \"Container\", \"items\": [ " +
+                "{ \"type\": \"TextBlock\", \"text\": \"Microsoft Corp (NASDAQ: MSFT)\", \"size\": \"medium\", \"isSubtle\": true }, " +
+                "{ \"type\": \"TextBlock\", \"text\": \"September 19, 4:00 PM EST\", \"isSubtle\": true } ] }, " +
+                "{ \"type\": \"Container\", \"spacing\": \"none\", \"items\": [ " +
+                "{ \"type\": \"ColumnSet\", \"columns\": [ " +
+                "{ \"type\": \"Column\", \"width\": \"stretch\", \"items\": [ " +
+                "{ \"type\": \"TextBlock\", \"text\": \"75.30\", \"size\": \"extraLarge\" }, " +
+                "{ \"type\": \"TextBlock\", \"text\": \"▼ 0.20 (0.32%)\", \"size\": \"small\", \"color\": \"attention\", \"spacing\": \"none\" } ] }, " +
+                "{ \"type\": \"Column\", \"width\": \"auto\", \"items\": [ " +
+                "{ \"type\": \"FactSet\", \"facts\": [ { \"title\": \"Open\", \"value\": \"62.24\" }, " +
+                "{ \"title\": \"High\", \"value\": \"62.98\" }, { \"title\": \"Low\", \"value\": \"62.20\" } ] } ] } ] } ] } ] }" };
+
+        public PayloadRetriever()
+        {
+        }
+
+        public string RequestAdaptiveCard(string request)
+        {
+            cardToShow = 1 - cardToShow;
+            return cards[cardToShow];
         }
 
     }
