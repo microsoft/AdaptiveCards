@@ -202,7 +202,7 @@ rootViewController:(UIViewController *)vc
 {
     std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(txtBlck->GetText()).GetTextTokens();
     for(auto section : DateTimePreparsedTokens){
-        if(section->GetFormat() == DateTimePreparsedTokenFormat::DateCompact || section->GetFormat() == DateTimePreparsedTokenFormat::DateLong) {
+        if(section->GetFormat() != DateTimePreparsedTokenFormat::RegularString) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"MM/dd/yyy"];
             std::string givenDate = std::to_string(section->GetMonth()) + "/" +  std::to_string(section->GetDay()) + "/" +  std::to_string(section->GetYear());
@@ -210,8 +210,16 @@ rootViewController:(UIViewController *)vc
             NSDate *date = [formatter dateFromString:nsString];
             // specify output date format
             NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+
             outputFormatter.timeStyle = NSDateFormatterNoStyle;
-            outputFormatter.dateStyle = (section->GetFormat() == DateTimePreparsedTokenFormat::DateShort)? NSDateFormatterMediumStyle : NSDateFormatterLongStyle;
+            if(section->GetFormat() == DateTimePreparsedTokenFormat::DateShort){
+                outputFormatter.dateStyle = NSDateFormatterShortStyle;
+            } else if(section->GetFormat() == DateTimePreparsedTokenFormat::DateCompact){
+                outputFormatter.dateStyle = NSDateFormatterMediumStyle;
+            } else{
+                outputFormatter.dateStyle = NSDateFormatterLongStyle;
+            }
+
             NSString *languageType= [NSString stringWithCString:txtBlck->GetLanguage().c_str() encoding:NSUTF8StringEncoding];
             if([languageType compare:@""]){
                 outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:languageType];
