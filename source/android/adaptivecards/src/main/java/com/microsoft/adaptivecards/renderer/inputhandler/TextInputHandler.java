@@ -36,6 +36,11 @@ public class TextInputHandler extends BaseInputHandler
         getEditText().setTextColor(Color.RED);
     }
 
+    @Override
+    protected void internalValidate() throws ParseException {
+        //Do nothing.
+    }
+
     public Exception getData(Map<String, String> data)
     {
 

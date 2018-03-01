@@ -16,6 +16,5 @@ public class NumberInputHandler extends TextInputHandler
     protected void internalValidate()
             throws ParseException
     {
-        super.internalValidate();
     }
 }

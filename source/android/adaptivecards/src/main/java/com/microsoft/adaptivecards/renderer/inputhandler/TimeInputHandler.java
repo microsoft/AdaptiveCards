@@ -29,7 +29,6 @@ public class TimeInputHandler extends TextInputHandler
     protected void internalValidate()
             throws ParseException
     {
-        super.internalValidate();
 
     }
 
