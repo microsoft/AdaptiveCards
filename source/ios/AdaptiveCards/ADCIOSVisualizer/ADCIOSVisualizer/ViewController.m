@@ -233,6 +233,11 @@
     NSLog(@"Http Request fetched: %@", request);    
 }
 
+- (void)didLoadElements
+{
+    NSLog(@"didLoadElements");
+}
+
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
