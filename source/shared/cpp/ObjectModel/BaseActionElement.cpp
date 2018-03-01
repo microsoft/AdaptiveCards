@@ -64,3 +64,11 @@ void BaseActionElement::SetAdditionalProperties(Json::Value value)
 {
     m_additionalProperties = value;
 }
+
+void BaseActionElement::PopulateKnownPropertiesSet(void)
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator));
+}
+

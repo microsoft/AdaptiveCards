@@ -50,6 +50,7 @@ public:
 
 protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
+    virtual void PopulateKnownPropertiesSet(void) = 0;
     std::unordered_set<std::string> m_knownProperties;
 
 private:
@@ -59,8 +60,6 @@ private:
     //std::shared_ptr<Separator> m_separator; Issue #629 to make separator an object
     bool m_separator;
     Json::Value m_additionalProperties;
-
-    void populateKnownPropertiesSet(void);
 };
 
 template <typename T>

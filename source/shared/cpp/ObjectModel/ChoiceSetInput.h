@@ -31,6 +31,9 @@ public:
     std::string GetValue() const;
     void SetValue(std::string value);
 
+protected:
+    void PopulateKnownPropertiesSet(void);
+
 private:
     std::string m_value;
     bool m_isMultiSelect;

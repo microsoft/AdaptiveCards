@@ -39,8 +39,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);
 
-            std::string expected = "{\"color\":\"attention\",\"text\":\"You can even draw attention to certain text with color\",\"unknown\":\"testing unknown\",\"wrap\":true}\n";
-            Assert::AreEqual(jsonString, expected);
+            std::string expected = "{\"unknown\":\"testing unknown\"}\n";
+            Assert::AreEqual(expected, jsonString);
         }
     };
 }

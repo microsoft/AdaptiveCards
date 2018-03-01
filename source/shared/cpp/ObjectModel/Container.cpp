@@ -4,6 +4,7 @@ using namespace AdaptiveCards;
 
 Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Container::Container(
@@ -15,6 +16,7 @@ Container::Container(
     m_style(style),
     m_items(items)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Container::Container(
@@ -109,4 +111,11 @@ std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return ContainerParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void Container::PopulateKnownPropertiesSet(void) 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items));
 }

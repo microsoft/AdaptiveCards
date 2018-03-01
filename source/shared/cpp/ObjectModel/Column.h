@@ -39,6 +39,9 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
+protected:
+    void PopulateKnownPropertiesSet(void);
+
 private:
     std::string m_width;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;

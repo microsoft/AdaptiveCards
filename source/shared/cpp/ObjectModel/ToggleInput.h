@@ -26,6 +26,8 @@ public:
     std::string GetValueOn() const;
     void SetValueOn(const std::string value);
 
+    void PopulateKnownPropertiesSet(void) ;
+
 private:
     std::string m_title;
     std::string m_value;

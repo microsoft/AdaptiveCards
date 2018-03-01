@@ -50,6 +50,9 @@ public:
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
+protected:
+    void PopulateKnownPropertiesSet(void) override;
+
 private:
     std::string m_text;
     TextSize m_textSize;

@@ -29,6 +29,9 @@ public:
     TextInputStyle GetTextInputStyle() const;
     void SetTextInputStyle(const TextInputStyle value);
 
+protected:
+    void PopulateKnownPropertiesSet(void);
+
 private:
     std::string m_placeholder;
     std::string m_value;

@@ -26,6 +26,9 @@ public:
     int GetMin() const;
     void SetMin(const int value);
 
+protected:
+    void PopulateKnownPropertiesSet(void);
+
 private:
     std::string m_placeholder;
     int m_value;

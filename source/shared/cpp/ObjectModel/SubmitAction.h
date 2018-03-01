@@ -17,6 +17,9 @@ public:
 
     virtual Json::Value SerializeToJsonValue() override;
 
+protected:
+    void PopulateKnownPropertiesSet(void);
+
 private:
     std::string m_dataJson;
 };
