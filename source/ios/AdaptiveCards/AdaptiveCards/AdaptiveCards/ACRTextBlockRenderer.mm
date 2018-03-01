@@ -210,11 +210,10 @@ rootViewController:(UIViewController *)vc
             NSDate *date = [formatter dateFromString:nsString];
             // specify output date format
             NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-
             outputFormatter.timeStyle = NSDateFormatterNoStyle;
-            if(section->GetFormat() == DateTimePreparsedTokenFormat::DateShort){
+            if(section->GetFormat() == DateTimePreparsedTokenFormat::DateCompact){
                 outputFormatter.dateStyle = NSDateFormatterShortStyle;
-            } else if(section->GetFormat() == DateTimePreparsedTokenFormat::DateCompact){
+            } else if(section->GetFormat() == DateTimePreparsedTokenFormat::DateShort){
                 outputFormatter.dateStyle = NSDateFormatterMediumStyle;
             } else{
                 outputFormatter.dateStyle = NSDateFormatterLongStyle;
