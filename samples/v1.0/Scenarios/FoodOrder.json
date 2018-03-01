@@ -126,7 +126,7 @@
     },
     {
       "type": "Action.ShowCard",
-      "title": "Tofu (Vegetarian)",
+      "title": "Tofu",
       "card": {
         "type": "AdaptiveCard",
         "body": [

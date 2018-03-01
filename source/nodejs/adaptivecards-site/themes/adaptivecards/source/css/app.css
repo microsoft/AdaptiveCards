@@ -61,7 +61,8 @@ body {
 
 #editor {
     height: calc(100vh - 150px);
-    border: 1px solid #EEEEEE;    
+    border: 1px solid #EEEEEE;
+    overflow: hidden;
 }
 
 .leftPane {

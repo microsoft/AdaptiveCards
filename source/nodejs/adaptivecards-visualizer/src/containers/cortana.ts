@@ -12,45 +12,23 @@ import {
     ActionAlignment,
 } from "adaptivecards";
 
-export class WebChatContainer extends HostContainer {
+export class CortanaContainer extends HostContainer {
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
-        var outerElement = document.createElement("div");
-        outerElement.className = "webChatOuterContainer";
 
-        var resizeCard = () => {
-            if (outerElement.parentElement) {
-                var bounds = outerElement.parentElement.getBoundingClientRect();
+        var wrapper = document.createElement("div");
+        wrapper.className = "cortanaFrame";
+        
+        var cardContainer = document.createElement("div");
+        cardContainer.className = "cardWrapper";
+        adaptiveCard.render(cardContainer);
 
-                var newWidth: string = "216px";
+        wrapper.appendChild(cardContainer);
+        target.appendChild(wrapper);
+     
 
-                if (bounds.width >= 500) {
-                    newWidth = "416px";
-                }
-                else if (bounds.width >= 400) {
-                    newWidth = "320px";
-                }
+        
 
-                if (outerElement.style.width != newWidth) {
-                    outerElement.style.width = newWidth;
-                }
-
-                adaptiveCard.updateLayout();
-            }
-        };
-
-        window.addEventListener("resize", resizeCard);
-
-        var innerElement = document.createElement("div");
-        innerElement.className = "webChatInnerContainer";
-
-        target.appendChild(outerElement);
-        outerElement.appendChild(innerElement);
-
-        var renderedCard = adaptiveCard.render();
-        innerElement.appendChild(renderedCard);
-        resizeCard();
-
-        return outerElement;
+        return cardContainer;
     }
 
     public getHostConfig(): HostConfig {
@@ -65,16 +43,16 @@ export class WebChatContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"
+                lineColor: "#FF999999"
             },
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
             fontSizes: {
-                small: 12,
-                default: 14,
-                medium: 17,
-                large: 21,
-                extraLarge: 26
+                small: 13,
+                default: 15,
+                medium: 18,
+                large: 20,
+                extraLarge: 24
             },
             fontWeights: {
                 lighter: 200,
@@ -83,77 +61,93 @@ export class WebChatContainer extends HostContainer {
             },
             containerStyles: {
                 default: {
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: "#000000",
                     foregroundColors: {
                         default: {
-                            default: "#333333",
-                            subtle: "#EE333333"
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
                         },
                         accent: {
-                            default: "#2E89FC",
-                            subtle: "#882E89FC"
+                            default: "#FF2E89FC",
+                            subtle: "#CC2E89FC"
+                        },
+                        dark: {
+                            default: "#FF999999",
+                            subtle: "#99999999"
+                        },
+                        light: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
                         },
                         attention: {
-                            default: "#FF0000",
-                            subtle: "#DDFF0000"
+                            default: "#CCFF0000",
+                            subtle: "#99FF0000"
                         },
                         good: {
-                            default: "#54a254",
-                            subtle: "#DD54a254"
+                            default: "#CC00FF00",
+                            subtle: "#9900FF00"
                         },
                         warning: {
-                            default: "#c3ab23",
-                            subtle: "#DDc3ab23"
+                            default: "#CCFF9800",
+                            subtle: "#99FF9800"
                         }
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#08000000",
+                    backgroundColor: "#33FFFFFF",
                     foregroundColors: {
                         default: {
-                            default: "#333333",
-                            subtle: "#EE333333"
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
                         },
                         accent: {
-                            default: "#2E89FC",
-                            subtle: "#882E89FC"
+                            default: "#FF2E89FC",
+                            subtle: "#CC2E89FC"
+                        },
+                        dark: {
+                            default: "#FF999999",
+                            subtle: "#99999999"
+                        },
+                        light: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
                         },
                         attention: {
-                            default: "#FF0000",
-                            subtle: "#DDFF0000"
+                            default: "#CCFF0000",
+                            subtle: "#99FF0000"
                         },
                         good: {
-                            default: "#54a254",
-                            subtle: "#DD54a254"
+                            default: "#CC00FF00",
+                            subtle: "#9900FF00"
                         },
                         warning: {
-                            default: "#c3ab23",
-                            subtle: "#DDc3ab23"
+                            default: "#CCFF9800",
+                            subtle: "#99FF9800"
                         }
                     }
                 }
             },
             imageSizes: {
                 small: 40,
-                medium: 80,
-                large: 160
+                medium: 68,
+                large: 320
             },
             actions: {
                 maxActions: 5,
                 spacing: Spacing.Default,
-                buttonSpacing: 10,
+                buttonSpacing: 5,
                 showCard: {
                     actionMode: ShowCardActionMode.Inline,
-                    inlineTopMargin: 16
+                    inlineTopMargin: 20
                 },
                 actionsOrientation: Orientation.Horizontal,
-                actionAlignment: ActionAlignment.Left
+                actionAlignment: ActionAlignment.Stretch
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
             imageSet: {
-                imageSize: Size.Medium,
+                imageSize: Size.Small,
                 maxImageHeight: 100
             },
             factSet: {
@@ -162,17 +156,16 @@ export class WebChatContainer extends HostContainer {
                     size: TextSize.Default,
                     isSubtle: false,
                     weight: TextWeight.Bolder,
-                    wrap: true,
-                    maxWidth: 150
+                    wrap: true
                 },
                 value: {
                     color: TextColor.Default,
                     size: TextSize.Default,
                     isSubtle: false,
                     weight: TextWeight.Default,
-                    wrap: true
+                    wrap: true,
                 },
-                spacing: 10
+                spacing: 12
             }
         });
     }

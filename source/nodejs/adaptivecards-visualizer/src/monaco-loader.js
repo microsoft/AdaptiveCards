@@ -10,7 +10,7 @@ function loadMonacoEditor(jsonSchema, callback) {
                         fileMatch: ["*"],
                     }
                 ],
-                validate: true,
+                validate: false,
                 allowComments: true
             }
 
@@ -21,6 +21,8 @@ function loadMonacoEditor(jsonSchema, callback) {
             document.getElementById('editor'),
             {
                 folding: true,
+                validate: false,
+                fontSize: 14,
                 language: 'json',
                 minimap: {
                     enabled: false

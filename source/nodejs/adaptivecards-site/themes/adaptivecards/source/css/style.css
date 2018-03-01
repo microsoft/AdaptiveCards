@@ -32,7 +32,7 @@ body {
         max-height: 400px !important;
         font-size: .8rem;
     }
-    
+
     #menu-nav {
         display: block;
     }
@@ -54,12 +54,12 @@ h6{font-size:12px;}
     margin: 10px;
 }
 
+
 .adaptivecard { 
     display: none; 
     border: solid 1px lightgray;
     margin-top: 10px;
     margin-bottom: 5px;
-    min-width: 320px;
 }
 
 .code-snippet {
