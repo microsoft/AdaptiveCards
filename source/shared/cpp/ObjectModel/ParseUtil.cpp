@@ -2,6 +2,9 @@
 #include "AdaptiveCardParseException.h"
 #include "ElementParserRegistration.h"
 #include "ActionParserRegistration.h"
+#include "TextBlock.h"
+#include "Container.h"
+#include "ShowCardAction.h"
 
 namespace AdaptiveCards
 {

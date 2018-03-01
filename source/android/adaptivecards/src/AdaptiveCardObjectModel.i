@@ -16,6 +16,7 @@ namespace std {
 %include <std_string.i>
 %include <std_shared_ptr.i>
 %include <std_vector.i>
+%include <std_wstring.i>
 
 #define __ANDROID__ 1
 
@@ -29,7 +30,6 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
-#include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
 #include "../../../shared/cpp/ObjectModel/Column.h"
@@ -50,6 +50,9 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 #include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
+#include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
@@ -93,6 +96,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::SubmitActionParser)
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
+%shared_ptr(AdaptiveCards::DateTimePreparsedToken)
 
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
@@ -118,6 +122,7 @@ namespace std {
 %template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
 %template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >; 
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >; 
+%template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -384,7 +389,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
-%include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"
 %include "../../../shared/cpp/ObjectModel/Column.h"
@@ -405,3 +409,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
+%include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+%include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
+%include "../../../shared/cpp/ObjectModel/TextBlock.h"

@@ -122,6 +122,8 @@
     <ClCompile Include="..\..\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\ObjectModel\DateInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparsedToken.cpp" />
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparser.cpp" />
     <ClCompile Include="..\..\ObjectModel\ElementParserRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\ObjectModel\Fact.cpp" />
@@ -145,6 +147,7 @@
     <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h" />
@@ -158,6 +161,8 @@
     <ClInclude Include="..\..\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\ObjectModel\Container.h" />
     <ClInclude Include="..\..\ObjectModel\DateInput.h" />
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparsedToken.h" />
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparser.h" />
     <ClInclude Include="..\..\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\Enums.h" />
     <ClInclude Include="..\..\ObjectModel\Fact.h" />
@@ -182,6 +187,7 @@
     <ClInclude Include="..\..\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
+    <ClInclude Include="..\..\ObjectModel\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

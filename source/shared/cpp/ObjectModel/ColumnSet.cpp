@@ -33,6 +33,14 @@ void ColumnSet::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
+void ColumnSet::SetLanguage(const std::string& language)
+{
+    for (auto& column : m_columns)
+    {
+        column->SetLanguage(language);
+    }
+}
+
 Json::Value ColumnSet::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();

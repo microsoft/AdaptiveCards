@@ -96,6 +96,10 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
+  public void SetLanguage(String language) {
+    AdaptiveCardObjectModelJNI.Column_SetLanguage(swigCPtr, this, language);
+  }
+
   public static Column dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.Column_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new Column(cPtr, true);

@@ -18,6 +18,8 @@ public:
     std::shared_ptr<AdaptiveCards::AdaptiveCard> GetCard() const;
     void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);
 
+    void SetLanguage(const std::string& value);
+
 private:
     std::shared_ptr<AdaptiveCard> m_card;
 };
