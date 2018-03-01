@@ -149,6 +149,7 @@ namespace Adaptive.Cards.Rendering.Xamarin.IOS.Sample
 
         private ACOHostConfigParseResult m_config = null;
         private PayloadRetriever m_payloadRetriever = null;
+        private UIView m_lastRenderedCard = null;
 
         private UIView ReGenerateAdaptiveCard(string json)
         {
@@ -200,9 +201,16 @@ namespace Adaptive.Cards.Rendering.Xamarin.IOS.Sample
             {
                 string request = adaptiveCardRequest.Text;
                 var renderedCard = ReGenerateAdaptiveCard(m_payloadRetriever.RequestAdaptiveCard((request)));
+
+                if(m_lastRenderedCard != null)
+                {
+                    m_lastRenderedCard.RemoveFromSuperview();    
+                }
+
                 if (renderedCard != null)
                 {
                     controller.View.AddSubview(renderedCard);
+                    m_lastRenderedCard = renderedCard;
                 }
             };
             controller.View.AddSubview(sendButton);
