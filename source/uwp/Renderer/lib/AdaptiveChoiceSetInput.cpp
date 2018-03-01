@@ -38,6 +38,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_isRequired = sharedChoiceSetInput->GetIsRequired();
         m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
         m_choiceSetStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
+        RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
 
         m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedChoiceSetInput->GetSpacing());
         m_separator = sharedChoiceSetInput->GetSeparator();
@@ -183,6 +184,18 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(GenerateSharedChoices(m_choices.Get(), choiceSet->GetChoices()));
 
         sharedModel = choiceSet;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveChoiceSetInput::get_Value(HSTRING * value)
+    {
+        m_value.CopyTo(value);
+        return S_OK;
+    }
+
+    HRESULT AdaptiveChoiceSetInput::put_Value(HSTRING value)
+    {
+        m_value.Set(value);
         return S_OK;
     }
 }}}

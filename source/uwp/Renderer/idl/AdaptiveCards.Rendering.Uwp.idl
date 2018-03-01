@@ -584,9 +584,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT Value([out, retval] HSTRING* value);
         [propput] HRESULT Value([in] HSTRING value);
-            
-        [propget] HRESULT IsSelected([out, retval] boolean* value);
-        [propput] HRESULT IsSelected([in] boolean value);
     };
 
     [
@@ -604,6 +601,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     ]
     interface IAdaptiveChoiceSetInput : IInspectable
     {
+        [propget] HRESULT Value([out, retval] HSTRING * value);
+        [propput] HRESULT Value([in] HSTRING value);
+
         [propget] HRESULT IsMultiSelect([out, retval] boolean* value);
         [propput] HRESULT IsMultiSelect([in] boolean value);
 

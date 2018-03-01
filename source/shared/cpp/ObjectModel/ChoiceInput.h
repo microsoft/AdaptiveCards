@@ -21,9 +21,6 @@ public:
     std::string GetValue() const;
     void SetValue(const std::string value);
 
-    bool GetIsSelected() const;
-    void SetIsSelected(const bool value);
-
     static std::shared_ptr<ChoiceInput> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
@@ -37,6 +34,5 @@ public:
 private:
     std::string m_title;
     std::string m_value;
-    bool m_isSelected;
 };
 }

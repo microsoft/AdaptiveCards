@@ -1959,6 +1959,36 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
     }
 
+    std::vector<std::string> GetChoiceSetValueVector(
+        IAdaptiveChoiceSetInput* adaptiveChoiceSetInput)
+    {
+        HString value;
+        THROW_IF_FAILED(adaptiveChoiceSetInput->get_Value(value.GetAddressOf()));
+
+        std::vector<std::string> values;
+        std::string stdValue = HStringToUTF8(value.Get());
+        std::stringstream streamValue(stdValue);
+
+        while (streamValue.good())
+        {
+            std::string subString;
+            std::getline(streamValue, subString, ',');
+            values.push_back(subString);
+        }
+
+        return values;
+    }
+
+    bool IsChoiceSelected(
+        std::vector<std::string> selectedValues,
+        IAdaptiveChoiceInput* choice)
+    {
+        HString value;
+        THROW_IF_FAILED(choice->get_Value(value.GetAddressOf()));
+        std::string stdValue = HStringToUTF8(value.Get());
+        return std::find(selectedValues.begin(), selectedValues.end(), stdValue) != selectedValues.end();
+    }
+
     void XamlBuilder::BuildCompactChoiceSetInput(
         IAdaptiveRenderContext* renderContext,
         IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
@@ -1983,9 +2013,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IVector<IAdaptiveChoiceInput*>> choices;
         THROW_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
+        std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
+
         int currentIndex = 0;
         int selectedIndex = -1;
-        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [&currentIndex, &selectedIndex, itemsVector](IAdaptiveChoiceInput* adaptiveChoiceInput)
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [&currentIndex, &selectedIndex, itemsVector, values](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
             HString title;
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
@@ -1994,9 +2026,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
             XamlHelpers::SetContent(comboBoxItem.Get(), title.Get());
 
-            boolean isSelected;
-            THROW_IF_FAILED(adaptiveChoiceInput->get_IsSelected(&isSelected));
-            if (isSelected)
+            if (IsChoiceSelected(values, adaptiveChoiceInput))
             {
                 selectedIndex = currentIndex;
             }
@@ -2036,7 +2066,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IPanel> panel;
         THROW_IF_FAILED(stackPanel.As(&panel));
 
-        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [panel, isMultiSelect, renderContext](IAdaptiveChoiceInput* adaptiveChoiceInput)
+        std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
+
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [panel, isMultiSelect, renderContext, values](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
             ComPtr<IUIElement> choiceItem;
             if (isMultiSelect)
@@ -2062,9 +2094,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
             XamlHelpers::SetContent(choiceItem.Get(), title.Get());
 
-            boolean isSelected;
-            THROW_IF_FAILED(adaptiveChoiceInput->get_IsSelected(&isSelected));
-            XamlHelpers::SetToggleValue(choiceItem.Get(), isSelected);
+            XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
 
             THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
             
