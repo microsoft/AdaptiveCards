@@ -63,14 +63,6 @@ public class ChoiceInput {
     AdaptiveCardObjectModelJNI.ChoiceInput_SetValue(swigCPtr, this, value);
   }
 
-  public boolean GetIsSelected() {
-    return AdaptiveCardObjectModelJNI.ChoiceInput_GetIsSelected(swigCPtr, this);
-  }
-
-  public void SetIsSelected(boolean value) {
-    AdaptiveCardObjectModelJNI.ChoiceInput_SetIsSelected(swigCPtr, this, value);
-  }
-
   public static ChoiceInput Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value root) {
     long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(root));
     return (cPtr == 0) ? null : new ChoiceInput(cPtr, true);
