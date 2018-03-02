@@ -14,6 +14,9 @@ public:
 
     virtual ~BaseActionElement();
 
+    virtual std::string GetElementTypeString() const;
+    virtual void SetElementTypeString(const std::string value);
+
     virtual std::string GetTitle() const;
     virtual void SetTitle(const std::string value);
 
@@ -35,6 +38,7 @@ private:
     void PopulateKnownPropertiesSet();
 
     ActionType m_type;
+    std::string m_typeString;
     std::string m_title;
     std::string m_id;
     Json::Value m_additionalProperties;

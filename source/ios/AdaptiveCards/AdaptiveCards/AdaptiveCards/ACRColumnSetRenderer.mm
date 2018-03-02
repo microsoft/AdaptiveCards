@@ -23,9 +23,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::ColumnSet;
+    return ACRColumnSet;
 }
 
 - (UIView* )render:(UIView<ACRIContentHoldingView> *)viewGroup

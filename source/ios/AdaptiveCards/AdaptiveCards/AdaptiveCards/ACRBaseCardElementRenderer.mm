@@ -9,9 +9,9 @@
 
 @implementation ACRBaseCardElementRenderer
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::Unsupported;
+    return ACRUnsupported;
 }
 
 /* not implemented ATM */

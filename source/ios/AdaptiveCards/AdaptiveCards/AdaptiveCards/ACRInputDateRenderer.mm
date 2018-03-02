@@ -19,9 +19,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::DateInput;
+    return ACRDateInput;
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *) viewGroup

@@ -1,5 +1,6 @@
 #include "ChoiceSetInput.h"
 #include "Column.h"
+#include "Util.h"
 
 using namespace AdaptiveCards;
 
@@ -143,4 +144,9 @@ void Column::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
+}
+
+void Column::SetLanguage(const std::string& language)
+{
+    PropagateLanguage(language, m_items);
 }

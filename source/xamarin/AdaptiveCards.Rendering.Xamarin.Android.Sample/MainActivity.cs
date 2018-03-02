@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
     
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : FragmentActivity, IShowCardActionHandler, ISubmitActionHandler
+    public class MainActivity : FragmentActivity, ICardActionHandler
     {
         public MainActivity()
         {
@@ -64,7 +64,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
                 LinearLayout layout = (LinearLayout)FindViewById(Resource.Id.visualAdaptiveCardLayout);
                 layout.RemoveAllViews();
 
-                var view = AdaptiveCardRenderer.Instance.Render(Application.Context, SupportFragmentManager, adaptiveCard, this, this, new HostConfig());
+                var view = AdaptiveCardRenderer.Instance.Render(Application.Context, SupportFragmentManager, adaptiveCard, this, new HostConfig());
                 layout.AddView(view);
             }
             catch (Java.IO.IOException ex)
@@ -81,7 +81,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             
         }
 
-        public void OnSubmit(SubmitAction p0, IDictionary<string, string> p1)
+        public void OnAction(BaseActionElement element, IDictionary<string, string> p1)
         {
             
         }

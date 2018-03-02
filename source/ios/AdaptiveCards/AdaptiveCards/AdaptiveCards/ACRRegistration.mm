@@ -33,7 +33,7 @@ using namespace AdaptiveCards;
 
 @implementation ACRRegistration
 {
-    NSDictionary *typeToRendererDict;
+    NSMutableDictionary *typeToRendererDict;
     NSMutableDictionary *actionRendererDict;
 }
 
@@ -43,7 +43,7 @@ using namespace AdaptiveCards;
     if(self)
     {
         typeToRendererDict =
-            [[NSDictionary alloc] initWithObjectsAndKeys:
+            [[NSMutableDictionary alloc] initWithObjectsAndKeys:
              [ACRImageRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
              [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],
@@ -89,6 +89,11 @@ using namespace AdaptiveCards;
 - (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
 {
     [actionRendererDict setObject:renderer forKey:cardElementType];
+}
+
+- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
+{
+    [typeToRendererDict setObject:renderer forKey:[NSNumber numberWithInteger:cardElementType]];
 }
 
 @end

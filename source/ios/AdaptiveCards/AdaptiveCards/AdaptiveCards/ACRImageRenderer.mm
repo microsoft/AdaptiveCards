@@ -23,9 +23,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::Image;
+    return ACRImage;
 }
 
 + (CGSize)getImageSize:(ImageSize)imageSize
