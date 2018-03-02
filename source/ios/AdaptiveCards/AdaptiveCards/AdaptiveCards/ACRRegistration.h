@@ -20,5 +20,5 @@
 
 - (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
 
-- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer CardElementType:(ACRCardElementType)cardElementType;
+- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType;
 @end

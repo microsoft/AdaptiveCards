@@ -16,8 +16,6 @@
     return singletonInstance;
 }
 
-//+ (ACRCardElementType)elemType;
-
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             rootViewController:(UIViewController *)vc
             inputs:(NSArray *)inputs

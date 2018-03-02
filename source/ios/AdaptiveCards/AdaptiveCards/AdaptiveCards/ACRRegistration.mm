@@ -91,7 +91,7 @@ using namespace AdaptiveCards;
     [actionRendererDict setObject:renderer forKey:cardElementType];
 }
 
-- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer CardElementType:(ACRCardElementType)cardElementType
+- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
 {
     [typeToRendererDict setObject:renderer forKey:[NSNumber numberWithInteger:cardElementType]];
 }
