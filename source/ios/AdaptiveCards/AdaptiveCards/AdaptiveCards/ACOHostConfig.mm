@@ -21,7 +21,7 @@ using namespace AdaptiveCards;
 
 - (instancetype)init
 {
-    self = [self initWithConfig:nil];
+    self = [self initWithConfig:nullptr];
     _config = std::make_shared<HostConfig>();
     return self;
 }
@@ -62,7 +62,7 @@ using namespace AdaptiveCards;
     return result;
 }
 
-- (std::shared_ptr<HostConfig> const &)getHostConfig
+- (std::shared_ptr<HostConfig>)getHostConfig
 {
     return _config;
 }

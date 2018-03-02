@@ -15,10 +15,3 @@
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 
 @end    
-
-
-@interface ACOTextConfig:NSObject
-
-- (instancetype)init;
-
-@end
