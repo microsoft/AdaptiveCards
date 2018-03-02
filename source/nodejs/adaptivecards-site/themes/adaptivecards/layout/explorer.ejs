@@ -28,7 +28,7 @@
       <div class="w3-hide-large">
         <select id="menu-nav">
           <% page.schema.forEach(function(root) { %>
-            <option class="noLink"><%= root.title %></option>
+            <option class="noLink" disabled="disabled"><%= root.title %></option>
             <% root.children.forEach(function(child) { %>
               <% if(is_current("explorer/" + child.name + ".html")) { %>
                 <option value='<%- url_for("explorer/" + child.name + ".html") %>' selected="selected"><%= child.name %></option>
