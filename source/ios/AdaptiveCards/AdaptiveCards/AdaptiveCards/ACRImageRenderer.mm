@@ -7,6 +7,7 @@
 
 #import "ACRImageRenderer.h"
 #import "Image.h"
+#import "ImageSet.h"
 #import "Enums.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
@@ -28,33 +29,6 @@
     return ACRImage;
 }
 
-+ (CGSize)getImageSize:(ImageSize)imageSize
-        withHostConfig:(std::shared_ptr<HostConfig> const &)hostConfig
-{
-    float sz = hostConfig->imageSizes.smallSize;
-    switch (imageSize)
-    {
-        case ImageSize::Large:{
-            sz = hostConfig->imageSizes.largeSize;
-            break;
-        }
-        case ImageSize::Medium:{
-            sz = hostConfig->imageSizes.mediumSize;
-            break;
-        }
-
-        case ImageSize::Small:{
-            sz = hostConfig->imageSizes.smallSize;
-            break;
-        }
-
-        default:{
-            NSLog(@"unimplemented");
-        }
-    }
-    CGSize cgSize = CGSizeMake(sz, sz);
-    return cgSize;
-}
 // code clean-up in progress
 - (NSArray *)setImageAlignment:(HorizontalAlignment)alignment
                  withSuperview:(UIView *)superview
@@ -134,7 +108,7 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
 
-    CGSize cgsize = [ACRImageRenderer getImageSize:imgElem->GetImageSize() withHostConfig:config];
+    CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
     UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
 

@@ -15,9 +15,19 @@ using namespace AdaptiveCards;
     std::shared_ptr<BaseCardElement> _elem;
 }
 
-- (instancetype)init
+- (instancetype)initWithBaseCardElement:(std::shared_ptr<BaseCardElement> const &)element
 {
     self = [super init];
+    if(self && element) {
+        _elem = element;
+        _type = (ACRCardElementType)element->GetElementType();
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    self = [self initWithBaseCardElement:nil];
     return self;
 }
 
