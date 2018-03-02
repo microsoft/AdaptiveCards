@@ -270,8 +270,8 @@ using namespace AdaptiveCards;
                                       paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtElem withHostConfig:_hostConfig];
 
                                       // Obtain text color to apply to the attributed string
-                                      ContainerStyle style = lab.style;
-                                      ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)? _hostConfig->containerStyles.emphasisPalette.foregroundColors:
+                                      ACRContainerStyle style = lab.style;
+                                      ColorsConfig &colorConfig = (style == ACREmphasis)? _hostConfig->containerStyles.emphasisPalette.foregroundColors:
                                                                                                              _hostConfig->containerStyles.defaultPalette.foregroundColors;
                                       // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
                                       [content addAttributes:@{

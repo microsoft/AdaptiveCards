@@ -1,5 +1,5 @@
 //
-//  CustomActionOpenURLRenderer.h
+//  CustomInputNumberRenderer.h
 //  ADCIOSVisualizer
 //
 //  Created by jwoo on 10/19/17.
@@ -10,8 +10,8 @@
 
 #import <AdaptiveCards/ACFramework.h>
 
-@interface CustomActionOpenURLRenderer:ACRBaseActionElementRenderer
+@interface CustomInputNumberRenderer:ACRBaseCardElementRenderer
 
-+ (CustomActionOpenURLRenderer *)getInstance;
++ (CustomInputNumberRenderer *)getInstance;
 
 @end

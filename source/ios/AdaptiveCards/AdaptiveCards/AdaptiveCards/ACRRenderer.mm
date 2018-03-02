@@ -59,8 +59,8 @@ using namespace AdaptiveCards;
         [(ACRViewController *)vc addTasksToConcurrentQueue:body];
 
         verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
-        ContainerStyle style = (config->adaptiveCard.allowCustomStyle)? adaptiveCard->GetStyle() : ContainerStyle::Default;
-        style = (style == ContainerStyle::None)? ContainerStyle::Default : style;
+        ACRContainerStyle style = (config->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
+        style = (style == ACRNone)? ACRDefault : style;
         [verticalView setStyle:style];
 
         [ACRRenderer render:verticalView rootViewController:vc inputs:inputs withCardElems:body andHostConfig:config];

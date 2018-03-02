@@ -7,6 +7,7 @@
 
 #import "ViewController.h"
 #import "CustomActionOpenURLRenderer.h"
+#import "CustomInputNumberRenderer.h"
 
 @interface ViewController ()
 
@@ -163,6 +164,7 @@
         ACRRegistration *registration = [ACRRegistration getInstance];
         // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809 
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
+        [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
         ACRViewController *adcVc = renderResult.viewcontroller;
         adcVc.acrActionDelegate = self;
         if(self.curView)

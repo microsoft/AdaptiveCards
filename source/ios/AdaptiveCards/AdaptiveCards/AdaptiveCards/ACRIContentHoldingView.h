@@ -6,19 +6,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
-#import "Enums.h"
-#import "HostConfig.h"
+#import "ACOBaseCardElement.h"
+#import "ACOHostConfig.h"
 @protocol ACRIContentHoldingView
 
-- (instancetype)initWithStyle:(AdaptiveCards::ContainerStyle)style
-                  parentStyle:(AdaptiveCards::ContainerStyle)parentStyle 
-                   hostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
+- (instancetype)initWithStyle:(ACRContainerStyle)style
+                  parentStyle:(ACRContainerStyle)parentStyle 
+                   hostConfig:(ACOHostConfig *)config;
 - (void)addArrangedSubview:(UIView *)view;
 - (UILayoutConstraintAxis)getAxis;
 - (void)addTarget:(NSObject *)target;
 - (void)adjustHuggingForLastElement;
-- (AdaptiveCards::ContainerStyle)style;
-- (void)setStyle:(AdaptiveCards::ContainerStyle)stye;
+- (ACRContainerStyle)style;
+- (void)setStyle:(ACRContainerStyle)stye;
 
 @end

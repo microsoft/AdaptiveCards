@@ -22,19 +22,19 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::FactSet;
+    return ACRFactSet;
 }
 
 - (UILabel *)buildLabel:(NSString *)text
             hostConfig:(std::shared_ptr<HostConfig> const &)config
             textConfig:(TextConfig const &)txtConfig
-        containerStyle:(ContainerStyle)style
+        containerStyle:(ACRContainerStyle)style
 {
     UILabel *lab = [[UILabel alloc] init];
 
-    ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)?
+    ColorsConfig &colorConfig = (style == ACREmphasis)?
         config->containerStyles.emphasisPalette.foregroundColors:
         config->containerStyles.defaultPalette.foregroundColors;
 
@@ -68,7 +68,7 @@ rootViewController:(UIViewController *)vc
 
     UIStackView *valueStack = [[UIStackView alloc] init];
     valueStack.axis = UILayoutConstraintAxisVertical;
-    ContainerStyle style = ContainerStyle::None;
+    ACRContainerStyle style = [viewGroup style];
 
     for(auto fact :fctSet->GetFacts())
     {
