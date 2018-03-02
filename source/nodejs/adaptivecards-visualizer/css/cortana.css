@@ -1,7 +1,8 @@
 .cortanaFrame {
   background: url('../assets/cortana-frame.png');
-  width: 392px;
-  height: 596px;
+  width: 393px;
+  height: 595px;
+  border: solid 1px black;
 }
 
 .cardWrapper {

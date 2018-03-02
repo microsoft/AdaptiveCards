@@ -465,7 +465,6 @@
           "$ref": "#/definitions/Action"
         },
         "size": {
-          "type": "object",
           "$ref": "#/definitions/ImageSize"
         },
         "style": {

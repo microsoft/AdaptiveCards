@@ -1,4 +1,9 @@
 
+<footer class="w3-container w3-bottommiddle w3-green">
+  &copy; <%= date(new Date(), 'YYYY') %> <%= config.author || config.title %>
+  <%= __('powered_by') %> <a href="http://hexo.io/" target="_blank">Hexo</a>
+  Made with 💙 in Redmond</p>
+</footer>
 
 <% if (config.disqus_shortname){ %>
 <script>

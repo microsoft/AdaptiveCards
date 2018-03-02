@@ -22,7 +22,7 @@ function loadMonacoEditor(jsonSchema, callback) {
             {
                 folding: true,
                 validate: false,
-                fontSize: 14,
+                fontSize: 13.5,
                 language: 'json',
                 minimap: {
                     enabled: false

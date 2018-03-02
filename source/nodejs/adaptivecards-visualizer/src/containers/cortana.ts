@@ -13,20 +13,31 @@ import {
 } from "adaptivecards";
 
 export class CortanaContainer extends HostContainer {
+
+    private _renderFrame: boolean;
+
+    constructor(renderFrame: boolean, styleSheet: string) {
+        super(styleSheet);
+
+        this._renderFrame = renderFrame;
+    }
+
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
 
         var wrapper = document.createElement("div");
-        wrapper.className = "cortanaFrame";
+        wrapper.style.width = "342px";
         
         var cardContainer = document.createElement("div");
-        cardContainer.className = "cardWrapper";
+
+        if (this._renderFrame) {
+            wrapper.className = "cortanaFrame";            
+            cardContainer.className = "cardWrapper";
+        }
+ 
         adaptiveCard.render(cardContainer);
 
         wrapper.appendChild(cardContainer);
         target.appendChild(wrapper);
-     
-
-        
 
         return cardContainer;
     }
