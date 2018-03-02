@@ -7,9 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.microsoft.adaptivecards.objectmodel.TimeInput;
-import com.microsoft.adaptivecards.renderer.inputhandler.TimeInputHandler;
-
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -17,9 +15,8 @@ import java.util.GregorianCalendar;
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener
 {
-    public void initialize(TimeInput timeInput, EditText editText)
+    public void initialize(EditText editText)
     {
-        m_timeInput = timeInput;
         m_editText = editText;
     }
 
@@ -30,7 +27,7 @@ public class TimePickerFragment extends DialogFragment
 
         try
         {
-            Date value = TimeInputHandler.s_simpleDateFormat.parse(m_editText.getText().toString());
+            Date value = DateFormat.getTimeInstance().parse(m_editText.getText().toString());
             calendar = new GregorianCalendar();
             calendar.setTime(value);
         }
@@ -47,10 +44,9 @@ public class TimePickerFragment extends DialogFragment
     public void onTimeSet(TimePicker view, int hourOfDay, int min)
     {
         Calendar calendar = new GregorianCalendar(0, 0, 0, hourOfDay, min);
-        String value = TimeInputHandler.s_simpleDateFormat.format(calendar.getTime());
+        String value = DateFormat.getTimeInstance().format(calendar.getTime());
         m_editText.setText(value);
     }
 
-    private TimeInput m_timeInput;
     private EditText m_editText;
 }

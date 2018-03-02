@@ -32,13 +32,12 @@ using namespace AdaptiveCards;
         self.dataSource = self;
         self.delegate = self;
         self.backgroundColor = UIColor.clearColor;
-        _acoElem = [[ACOBaseCardElement alloc] init];
+        _acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:imageSet];
         _acoConfig = [[ACOHostConfig alloc] initWithConfig:hostConfig];
         _imgSet = imageSet;
         _vc = vc;
-        CGSize sz = [ACRImageRenderer getImageSize:imageSet->GetImageSize() withHostConfig:hostConfig];
 
-        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = sz;
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = [_acoConfig getImageSize:imageSet->GetImageSize()];
         ((UICollectionViewFlowLayout *)self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
 
         self.translatesAutoresizingMaskIntoConstraints = NO;

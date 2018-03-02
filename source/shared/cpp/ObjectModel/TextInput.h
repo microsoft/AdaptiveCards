@@ -39,7 +39,7 @@ private:
     TextInputStyle m_style;
 };
 
-class TextInputParser : public IBaseCardElementParser
+class TextInputParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

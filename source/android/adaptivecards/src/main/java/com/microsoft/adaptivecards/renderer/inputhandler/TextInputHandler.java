@@ -37,24 +37,15 @@ public class TextInputHandler extends BaseInputHandler
     }
 
     @Override
-    protected void internalValidate()
-            throws ParseException
-    {
-        String value = getEditText().getText().toString();
-        if (TextUtils.isEmpty(value) && m_baseInputElement.GetIsRequired())
-        {
-            throw new IllegalArgumentException("Input, " + m_baseInputElement.GetId() + ", cannot be empty.");
-        }
+    protected void internalValidate() throws ParseException {
+        //Do nothing.
     }
 
     public Exception getData(Map<String, String> data)
     {
-        Exception excep = validate();
-        if (excep == null)
-        {
-            data.put(m_baseInputElement.GetId(), getEditText().getText().toString());
-        }
 
-        return excep;
+        data.put(m_baseInputElement.GetId(), getEditText().getText().toString());
+
+        return null;
     }
 }

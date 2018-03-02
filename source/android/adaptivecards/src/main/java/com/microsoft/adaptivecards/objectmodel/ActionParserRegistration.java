@@ -39,17 +39,17 @@ public class ActionParserRegistration {
     this(AdaptiveCardObjectModelJNI.new_ActionParserRegistration(), true);
   }
 
-  public void AddParser(String elementType, IActionElementParser parser) {
-    AdaptiveCardObjectModelJNI.ActionParserRegistration_AddParser(swigCPtr, this, elementType, IActionElementParser.getCPtr(parser), parser);
+  public void AddParser(String elementType, ActionElementParser parser) {
+    AdaptiveCardObjectModelJNI.ActionParserRegistration_AddParser(swigCPtr, this, elementType, ActionElementParser.getCPtr(parser), parser);
   }
 
   public void RemoveParser(String elementType) {
     AdaptiveCardObjectModelJNI.ActionParserRegistration_RemoveParser(swigCPtr, this, elementType);
   }
 
-  public IActionElementParser GetParser(String elementType) {
+  public ActionElementParser GetParser(String elementType) {
     long cPtr = AdaptiveCardObjectModelJNI.ActionParserRegistration_GetParser(swigCPtr, this, elementType);
-    return (cPtr == 0) ? null : new IActionElementParser(cPtr, true);
+    return (cPtr == 0) ? null : new ActionElementParser(cPtr, true);
   }
 
 }

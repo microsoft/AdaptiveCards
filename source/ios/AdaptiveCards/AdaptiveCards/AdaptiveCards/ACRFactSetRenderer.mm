@@ -28,11 +28,12 @@
 }
 
 - (UILabel *)buildLabel:(NSString *)text
-            hostConfig:(std::shared_ptr<HostConfig> const &)config
-            textConfig:(TextConfig const &)txtConfig
-        containerStyle:(ACRContainerStyle)style
+             hostConfig:(ACOHostConfig *)acoConfig
+             textConfig:(TextConfig const &)txtConfig
+         containerStyle:(ACRContainerStyle)style
 {
     UILabel *lab = [[UILabel alloc] init];
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
 
     ColorsConfig &colorConfig = (style == ACREmphasis)?
         config->containerStyles.emphasisPalette.foregroundColors:
@@ -41,16 +42,15 @@
     NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:text
                                            attributes:@{NSForegroundColorAttributeName:
-                                                            [ACRTextBlockRenderer getTextBlockColor:txtConfig.color
+                                                            [ACOHostConfig getTextBlockColor:txtConfig.color
                                                                                         colorsConfig:colorConfig
                                                                                        subtleOption:txtConfig.isSubtle],
-                                                            NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextStrokeWidthForWeight:txtConfig.weight
-                                                                                                                     withHostConfig:config]}];
+                                                            NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:txtConfig.weight]}];
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
     lab.attributedText = content;
     UIFontDescriptor *dec = lab.font.fontDescriptor;
-    lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtConfig.size withHostConfig:config]];
+    lab.font = [UIFont fontWithDescriptor:dec size:[acoConfig getTextBlockTextSize:txtConfig.size]];
     return lab;
 }
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
@@ -75,14 +75,14 @@ rootViewController:(UIViewController *)vc
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str()
                                                     encoding:NSUTF8StringEncoding];
         UILabel *titleLab = [self buildLabel:title
-                                  hostConfig:config
+                                  hostConfig:acoConfig
                                   textConfig:config->factSet.title
                               containerStyle:style];
 
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str()
                                              encoding:NSUTF8StringEncoding];
         UILabel *valueLab = [self buildLabel:value
-                                  hostConfig:config
+                                  hostConfig:acoConfig
                                   textConfig:config->factSet.value
                               containerStyle:style];
 

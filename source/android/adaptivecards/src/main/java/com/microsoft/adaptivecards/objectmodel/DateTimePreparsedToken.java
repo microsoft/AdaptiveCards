@@ -43,8 +43,8 @@ public class DateTimePreparsedToken {
     this(AdaptiveCardObjectModelJNI.new_DateTimePreparsedToken__SWIG_1(text, format.swigValue()), true);
   }
 
-  public DateTimePreparsedToken(String text, SWIGTYPE_p_tm date, DateTimePreparsedTokenFormat format) {
-    this(AdaptiveCardObjectModelJNI.new_DateTimePreparsedToken__SWIG_2(text, SWIGTYPE_p_tm.getCPtr(date), format.swigValue()), true);
+  public DateTimePreparsedToken(String text, CTime date, DateTimePreparsedTokenFormat format) {
+    this(AdaptiveCardObjectModelJNI.new_DateTimePreparsedToken__SWIG_2(text, CTime.getCPtr(date), date, format.swigValue()), true);
   }
 
   public String GetText() {

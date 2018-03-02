@@ -38,4 +38,6 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
     ACREmphasis
 };
 
+@property ACRCardElementType type;
+
 @end

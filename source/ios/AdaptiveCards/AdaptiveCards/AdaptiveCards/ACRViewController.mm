@@ -225,19 +225,20 @@ using namespace AdaptiveCards;
                 [self tagBaseCardElement:elem];
                 /// dispatch to concurrent queue
                 std::shared_ptr<TextBlock> txtElem = std::dynamic_pointer_cast<TextBlock>(elem);
+                ACOHostConfig *acoConfig = [[ACOHostConfig alloc] initWithConfig:_hostConfig];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                     ^{
-                        std::string dateParsedString = [ACRTextBlockRenderer getLocalizedDate:txtElem];
+                        std::string dateParsedString = [ACOHostConfig getLocalizedDate:txtElem];
                         // MarkDownParser transforms text with MarkDown to a html string
                         std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(dateParsedString.c_str());
                         NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
                         // Font and text size are applied as CSS style by appending it to the html string
                         NSString *fontFamily = [NSString stringWithCString:_hostConfig->fontFamily.c_str() encoding:NSUTF8StringEncoding];
-                        const int fontWeight = [ACRTextBlockRenderer getTextBlockFontWeight:txtElem->GetTextWeight() withHostConfig:_hostConfig];
+                        const int fontWeight = [acoConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
                         parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx; font-weight: %d;}</style>",
                                                                               fontFamily,
-                                                                              [ACRTextBlockRenderer getTextBlockTextSize:txtElem->GetTextSize() withHostConfig:_hostConfig],
+                                                                              [acoConfig getTextBlockTextSize:txtElem->GetTextSize()],
                                                                               fontWeight]];
                         // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
                         NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
@@ -267,7 +268,7 @@ using namespace AdaptiveCards;
                                       // Set paragraph style such as line break mode and alignment
                                       NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
                                       paragraphStyle.lineBreakMode = txtElem->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
-                                      paragraphStyle.alignment = [ACRTextBlockRenderer getTextBlockAlignment:txtElem withHostConfig:_hostConfig];
+                                      paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtElem->GetHorizontalAlignment()];
 
                                       // Obtain text color to apply to the attributed string
                                       ACRContainerStyle style = lab.style;
@@ -276,7 +277,7 @@ using namespace AdaptiveCards;
                                       // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
                                       [content addAttributes:@{
                                                                NSParagraphStyleAttributeName:paragraphStyle,
-                                                               NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtElem->GetTextColor() colorsConfig:colorConfig subtleOption:txtElem->GetIsSubtle()],
+                                                               NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtElem->GetTextColor() colorsConfig:colorConfig subtleOption:txtElem->GetIsSubtle()],
                                                                }
                                                        range:NSMakeRange(0, content.length - 1)];
                                       lab.attributedText = content;
@@ -365,7 +366,8 @@ using namespace AdaptiveCards;
              NSURL *url = [NSURL URLWithString:urlStr];
              // download image
              UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-             CGSize cgsize = [ACRImageRenderer getImageSize:imgElem->GetImageSize() withHostConfig:_hostConfig];
+             ACOHostConfig *acoConfig = [[ACOHostConfig alloc] initWithConfig:_hostConfig];
+             CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
 
              // UITask can't be run on global queue, add task to main queue
              dispatch_async(dispatch_get_main_queue(),
@@ -395,7 +397,7 @@ using namespace AdaptiveCards;
                           std::size_t idx = id.find_last_of('_');
                           imgElem->SetId(id.substr(0, idx));
                       }
-                     
+
                       [self removeFromAsyncRenderingListAndNotifyIfNeeded:imgElem];
                   });
              }

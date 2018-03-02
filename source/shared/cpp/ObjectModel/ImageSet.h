@@ -31,7 +31,7 @@ private:
     ImageSize m_imageSize;
 };
     
-class ImageSetParser : public IBaseCardElementParser
+class ImageSetParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

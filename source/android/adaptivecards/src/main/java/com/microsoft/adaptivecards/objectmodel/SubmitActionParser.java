@@ -8,7 +8,7 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class SubmitActionParser extends IActionElementParser {
+public class SubmitActionParser extends ActionElementParser {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 

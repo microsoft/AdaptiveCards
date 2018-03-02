@@ -47,7 +47,7 @@ namespace AdaptiveCards
         });
     }
 
-    void ElementParserRegistration::AddParser(std::string elementType, std::shared_ptr<IBaseCardElementParser> parser)
+    void ElementParserRegistration::AddParser(std::string elementType, std::shared_ptr<BaseCardElementParser> parser)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -71,7 +71,7 @@ namespace AdaptiveCards
         }
     }
 
-    std::shared_ptr<IBaseCardElementParser> ElementParserRegistration::GetParser(std::string elementType)
+    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())
@@ -80,7 +80,7 @@ namespace AdaptiveCards
         }
         else
         {
-            return std::shared_ptr<IBaseCardElementParser>(nullptr);
+            return std::shared_ptr<BaseCardElementParser>(nullptr);
         }
     }
 }

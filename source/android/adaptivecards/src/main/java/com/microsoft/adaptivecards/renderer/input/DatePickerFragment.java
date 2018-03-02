@@ -8,8 +8,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.microsoft.adaptivecards.objectmodel.DateInput;
-import com.microsoft.adaptivecards.renderer.inputhandler.DateInputHandler;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -30,7 +30,7 @@ public class DatePickerFragment extends DialogFragment
 
         try
         {
-            Date value = DateInputHandler.s_simpleDateFormat.parse(m_editText.getText().toString());
+            Date value = DateFormat.getDateInstance().parse(m_editText.getText().toString());
             calendar = new GregorianCalendar();
             calendar.setTime(value);
         }
@@ -48,7 +48,7 @@ public class DatePickerFragment extends DialogFragment
     {
         Calendar calendar = new GregorianCalendar(year, month, dayOfMonth);
         Date date = calendar.getTime();
-        String value = DateInputHandler.s_simpleDateFormat.format(date);
+        String value = DateFormat.getDateInstance().format(date);
         m_editText.setText(value);
     }
 

@@ -35,7 +35,7 @@ private:
     std::string m_valueOn;
 };
 
-class ToggleInputParser : public IBaseCardElementParser
+class ToggleInputParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(
