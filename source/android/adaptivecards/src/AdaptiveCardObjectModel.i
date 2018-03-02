@@ -11,7 +11,30 @@ namespace std {
     };
 }
 
+
 %module AdaptiveCardObjectModel
+
+%rename (CTime) tm;
+struct tm {
+    %rename (Sec) tm_sec;
+    %rename (Min) tm_min;
+    %rename (Hour) tm_hour;
+    %rename (MDay) tm_mday;
+    %rename (Mon) tm_mon;
+    %rename (Year) tm_year;
+    %rename (WDay) tm_wday;
+    %rename (YDay) tm_yday;
+    %rename (IsDst) tm_isdst;
+    int tm_sec;
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+};
 
 %include <std_string.i>
 %include <std_shared_ptr.i>
@@ -23,6 +46,7 @@ namespace std {
 %{
 #include "pch.h"
 #include <memory>
+#include <time.h>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -97,6 +121,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
 %shared_ptr(AdaptiveCards::DateTimePreparsedToken)
+
 
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {

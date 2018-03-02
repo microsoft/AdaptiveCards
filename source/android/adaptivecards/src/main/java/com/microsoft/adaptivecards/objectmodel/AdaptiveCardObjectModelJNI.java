@@ -9,6 +9,26 @@
 package com.microsoft.adaptivecards.objectmodel;
 
 public class AdaptiveCardObjectModelJNI {
+  public final static native void CTime_Sec_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_Sec_get(long jarg1, CTime jarg1_);
+  public final static native void CTime_Min_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_Min_get(long jarg1, CTime jarg1_);
+  public final static native void CTime_Hour_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_Hour_get(long jarg1, CTime jarg1_);
+  public final static native void CTime_MDay_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_MDay_get(long jarg1, CTime jarg1_);
+  public final static native void CTime_Mon_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_Mon_get(long jarg1, CTime jarg1_);
+  public final static native void CTime_Year_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_Year_get(long jarg1, CTime jarg1_);
+  public final static native void CTime_WDay_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_WDay_get(long jarg1, CTime jarg1_);
+  public final static native void CTime_YDay_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_YDay_get(long jarg1, CTime jarg1_);
+  public final static native void CTime_IsDst_set(long jarg1, CTime jarg1_, int jarg2);
+  public final static native int CTime_IsDst_get(long jarg1, CTime jarg1_);
+  public final static native long new_CTime();
+  public final static native void delete_CTime(long jarg1);
   public final static native int __ANDROID___get();
   public final static native long new_BaseCardElementVector__SWIG_0();
   public final static native long new_BaseCardElementVector__SWIG_1(long jarg1);
@@ -667,7 +687,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_MarkDownParser(long jarg1);
   public final static native long new_DateTimePreparsedToken__SWIG_0();
   public final static native long new_DateTimePreparsedToken__SWIG_1(String jarg1, int jarg2);
-  public final static native long new_DateTimePreparsedToken__SWIG_2(String jarg1, long jarg2, int jarg3);
+  public final static native long new_DateTimePreparsedToken__SWIG_2(String jarg1, long jarg2, CTime jarg2_, int jarg3);
   public final static native String DateTimePreparsedToken_GetText(long jarg1, DateTimePreparsedToken jarg1_);
   public final static native int DateTimePreparsedToken_GetFormat(long jarg1, DateTimePreparsedToken jarg1_);
   public final static native int DateTimePreparsedToken_GetDay(long jarg1, DateTimePreparsedToken jarg1_);
@@ -678,7 +698,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_DateTimePreparser__SWIG_1(String jarg1);
   public final static native long DateTimePreparser_GetTextTokens(long jarg1, DateTimePreparser jarg1_);
   public final static native void DateTimePreparser_AddTextToken(long jarg1, DateTimePreparser jarg1_, String jarg2, int jarg3);
-  public final static native void DateTimePreparser_AddDateToken(long jarg1, DateTimePreparser jarg1_, String jarg2, long jarg3, int jarg4);
+  public final static native void DateTimePreparser_AddDateToken(long jarg1, DateTimePreparser jarg1_, String jarg2, long jarg3, CTime jarg3_, int jarg4);
   public final static native String DateTimePreparser_Concatenate(long jarg1, DateTimePreparser jarg1_);
   public final static native void delete_DateTimePreparser(long jarg1);
   public final static native long new_TextBlock__SWIG_0();
