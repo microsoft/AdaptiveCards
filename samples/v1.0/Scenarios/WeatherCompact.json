@@ -45,7 +45,6 @@
 					"type": "Column",
 					"width": "stretch",
 					"items": [
-				 
 						{
 							"type": "TextBlock",
 							"text": "°F",

@@ -47,7 +47,7 @@ export class TimelineContainer extends HostContainer {
         var renderedCard = adaptiveCard.render();
         renderedCard.style.height = "100%";
         clippingDiv.appendChild(renderedCard);
-        adaptiveCard.updateLayout();        
+        adaptiveCard.updateLayout();
         
         return wrapper;
     }

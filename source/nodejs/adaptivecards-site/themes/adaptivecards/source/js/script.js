@@ -163,7 +163,7 @@
 
   });
 
-  $('.ac-properties table').addClass("w3-table w3-bordered w3-responsive")
+  $('.ac-properties table').addClass("w3-table w3-bordered w3-responsive");
 
   $(document).ready(function () {
     hljs.configure({

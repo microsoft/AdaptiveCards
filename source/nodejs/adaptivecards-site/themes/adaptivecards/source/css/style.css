@@ -4,6 +4,7 @@ body {
     min-height: 100px;
 }
 
+
 @media only screen and (max-width: 601px) {
     code {
         max-height: 400px !important;
@@ -28,6 +29,10 @@ body {
 
 
 @media only screen and (max-width: 991px) {
+    .videobanner {
+        display: none;
+    }
+
     code {
         max-height: 400px !important;
         font-size: .8rem;
@@ -38,12 +43,28 @@ body {
     }
 }
 
-h1{font-size:28px;}
-h2{font-size:24px;}
-h3{font-size:22px;}
-h4{font-size:16px;}
-h5{font-size:14px;}
-h6{font-size:12px;}
+h1 { font-size: 28px; }
+h2 { font-size: 24px; }
+h3 { font-size: 22px; }
+h4 { font-size: 16px; }
+h5 { font-size: 14px; }
+h6 { font-size: 12px; }
+
+.cardImage {
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.16), 0px 2px 10px 0px rgba(0,0,0,0.12);
+    margin: 20px;
+}
+
+.content {
+    margin-left: 88px;
+    max-width: 1000px;
+}
+
+.videobanner {
+    width: 100%;
+    float: left;
+    background-color: #0078D7;
+}
 
 .cardEditor {
     display: -webkit-box;
@@ -53,7 +74,6 @@ h6{font-size:12px;}
     min-height: 0;
     margin: 10px;
 }
-
 
 .adaptivecard { 
     display: none; 
@@ -81,12 +101,10 @@ code {
     white-space: pre-wrap !important;
 }
 
-.explorer .adaptivecard,
 .explorer code {
     max-height: 400px;
 }
 
-.sample-browser .adaptivecard,
 .sample-browser code {
     max-height: 800px;
 }
