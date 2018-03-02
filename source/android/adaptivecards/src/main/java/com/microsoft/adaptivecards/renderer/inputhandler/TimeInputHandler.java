@@ -4,11 +4,12 @@ import android.support.v4.app.FragmentManager;
 import android.widget.EditText;
 
 import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
-import com.microsoft.adaptivecards.objectmodel.TimeInput;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 
 public class TimeInputHandler extends TextInputHandler
@@ -17,7 +18,6 @@ public class TimeInputHandler extends TextInputHandler
     {
         super(baseInputElement);
         m_fragmentManager = fragmentManager;
-        s_simpleDateFormat.setLenient(false);
     }
 
     public FragmentManager getFragmentManager()
@@ -29,26 +29,25 @@ public class TimeInputHandler extends TextInputHandler
     protected void internalValidate()
             throws ParseException
     {
-        super.internalValidate();
-        TimeInput timeInput = (TimeInput) m_baseInputElement;
 
-        EditText editText = (EditText) getEditText();
-        Date value = s_simpleDateFormat.parse(editText.getText().toString());
-        Date minTime = s_simpleDateFormat.parse(timeInput.GetMin());
-        if (value.compareTo(minTime) < 0)
-        {
-            throw new IllegalArgumentException("Input, " + timeInput.GetId() + ", contains value, " + editText.getText().toString() + ", that is less than the minimum value, " + timeInput.GetMin() + ", allowed.");
+    }
+
+    @Override
+    public Exception getData(Map<String, String> data)
+    {
+        EditText editText = getEditText();
+        try {
+            Date time = DateFormat.getTimeInstance().parse(editText.getText().toString());
+            data.put(m_baseInputElement.GetId(), s_simpleDateFormat.format(time));
+        } catch (ParseException e) {
+            data.put(m_baseInputElement.GetId(), editText.getText().toString());
         }
 
-        Date maxTime = s_simpleDateFormat.parse(timeInput.GetMax());
-        if (value.compareTo(maxTime) > 0)
-        {
-            throw new IllegalArgumentException("Input, " + timeInput.GetId() + ", contains value, " + editText.getText().toString() + ", that is greater than the maximum value, " + timeInput.GetMax() + ", allowed.");
-        }
+        return null;
     }
 
     private FragmentManager m_fragmentManager;
 
-    public static final String TIME_FORMAT = "hh:mm a";
-    public static SimpleDateFormat s_simpleDateFormat = new SimpleDateFormat(TIME_FORMAT);
+    public static final String TIME_FORMAT_SUBMIT = "kk:mm";
+    public static SimpleDateFormat s_simpleDateFormat = new SimpleDateFormat(TIME_FORMAT_SUBMIT);
 }

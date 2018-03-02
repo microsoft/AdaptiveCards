@@ -3,6 +3,7 @@ package com.microsoft.adaptivecards.renderer.input;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -14,6 +15,9 @@ import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.DateInput;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
@@ -57,16 +61,30 @@ public class DateInputRenderer extends TextInputRenderer
         setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
+
+        String dateString = dateInput.GetValue();
+
+        try
+        {
+            Date date = DateInputHandler.s_simpleDateFormat.parse(dateInput.GetValue());
+            dateString = DateFormat.getDateInstance().format(date);
+        }
+        catch (ParseException e)
+        {
+            //TODO: Log this
+        }
+
         EditText editText = renderInternal(
                 context,
                 viewGroup,
                 dateInput,
-                dateInput.GetValue(),
+                dateString,
                 dateInput.GetPlaceholder(),
                 dateInputHandler,
                 inputActionHandlerList,
                 hostConfig);
         editText.setRawInputType(TYPE_NULL);
+        editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
         {
             @Override

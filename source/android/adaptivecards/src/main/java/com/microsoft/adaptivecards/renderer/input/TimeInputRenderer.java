@@ -14,6 +14,9 @@ import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.TimeInput;
 import com.microsoft.adaptivecards.renderer.inputhandler.TimeInputHandler;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
@@ -57,25 +60,37 @@ public class TimeInputRenderer extends TextInputRenderer
         setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
+        String time = timeInput.GetValue();
+
+        try
+        {
+            Date date = TimeInputHandler.s_simpleDateFormat.parse(timeInput.GetValue());
+            time = DateFormat.getTimeInstance().format(date);
+        }
+        catch (ParseException e)
+        {
+            //TODO: Log this
+        }
+
         EditText editText = renderInternal(
                 context,
                 viewGroup,
                 timeInput,
-                timeInput.GetValue(),
+                time,
                 timeInput.GetPlaceholder(),
                 timeInputHandler,
                 inputActionHandlerList,
                 hostConfig);
         editText.setRawInputType(TYPE_NULL);
+        editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 TimeInputHandler timeInputHandler = (TimeInputHandler) v.getTag();
-                TimeInput timeInput = (TimeInput) timeInputHandler.getBaseInputElement();
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
-                timePickerFragment.initialize(timeInput, (EditText) v);
+                timePickerFragment.initialize((EditText) v);
                 Bundle args = new Bundle();
                 args.putString("title", TITLE);
                 timePickerFragment.setArguments(args);
