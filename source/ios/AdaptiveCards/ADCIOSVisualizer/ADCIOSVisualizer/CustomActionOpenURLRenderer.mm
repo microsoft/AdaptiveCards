@@ -35,7 +35,6 @@
         if(additionalProperty) {
             NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:additionalProperty options:NSJSONReadingMutableLeaves error:nil];
             userSpecifiedBackgroundColor = dictionary[@"color"];
-            NSLog(@"%@", userSpecifiedBackgroundColor);
         }
         UIColor *backgroundColor = nil;
         if(userSpecifiedBackgroundColor) {
