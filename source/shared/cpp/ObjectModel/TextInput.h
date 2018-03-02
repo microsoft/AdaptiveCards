@@ -30,7 +30,7 @@ public:
     void SetTextInputStyle(const TextInputStyle value);
 
 protected:
-    void PopulateKnownPropertiesSet(void);
+    void PopulateKnownPropertiesSet(void) override;
 
 private:
     std::string m_placeholder;

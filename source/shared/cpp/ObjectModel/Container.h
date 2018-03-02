@@ -28,7 +28,7 @@ public:
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
 protected:
-    void PopulateKnownPropertiesSet(void);
+    void PopulateKnownPropertiesSet(void) override;
 
 private:
     ContainerStyle m_style;

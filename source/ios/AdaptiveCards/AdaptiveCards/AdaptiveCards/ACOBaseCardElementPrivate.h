@@ -13,5 +13,6 @@ using namespace AdaptiveCards;
 
 - (std::shared_ptr<BaseCardElement>)element;
 - (void)setElem:(std::shared_ptr<BaseCardElement> const &)elem;
+- (NSData *)additionalProperty;
 
 @end

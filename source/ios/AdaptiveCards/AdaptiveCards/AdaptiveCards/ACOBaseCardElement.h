@@ -9,4 +9,6 @@
 
 @interface ACOBaseCardElement:NSObject
 
+- (NSData *)additionalProperty;
+
 @end

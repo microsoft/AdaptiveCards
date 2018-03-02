@@ -25,7 +25,7 @@ public:
     const std::vector<std::shared_ptr<Image>>& GetImages() const;
 
 protected:
-    void PopulateKnownPropertiesSet(void);
+    void PopulateKnownPropertiesSet(void) override;
 
 private:
     std::vector<std::shared_ptr<Image>> m_images;
