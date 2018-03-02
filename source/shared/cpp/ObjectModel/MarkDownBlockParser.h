@@ -41,7 +41,7 @@ namespace AdaptiveCards
         // and causes the emphasis parsing to terminate
         void Flush(int ch, std::string& currentToken);
         // check if given character is * or _
-        bool IsMarkDownDelimiter(char ch);
+        bool IsMarkDownDelimiter(int ch);
         void CaptureCurrentCollectedStringAsRegularToken(std::string&currentToken); 
         void CaptureCurrentCollectedStringAsRegularToken();
         void UpdateCurrentEmphasisRunState(DelimiterType emphasisType);
@@ -63,7 +63,7 @@ namespace AdaptiveCards
         bool TryCapturingLeftEmphasisToken(int ch, std::string &currentToken);
         void CaptureEmphasisToken(int ch, std::string &currentToken);
         void UpdateLookBehind(int ch);
-        static DelimiterType GetDelimiterTypeForCharAtCurrentPosition(char ch) { return (ch == '*')? Asterisk : Underscore; };
+        static DelimiterType GetDelimiterTypeForCharAtCurrentPosition(int ch) { return (ch == '*')? Asterisk : Underscore; };
 
         typedef EmphasisState (* MatchWithChar)(EmphasisParser&, std::stringstream &, std::string &);
         // Callback function that handles the Text State
