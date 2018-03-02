@@ -31,7 +31,7 @@ private:
     std::shared_ptr<BaseActionElement> m_selectAction;
 };
 
-class ColumnSetParser : public IBaseCardElementParser
+class ColumnSetParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

@@ -3493,13 +3493,13 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_IActionElementParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionElementParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
-  AdaptiveCards::IActionElementParser *arg1 = (AdaptiveCards::IActionElementParser *) 0 ;
+  AdaptiveCards::ActionElementParser *arg1 = (AdaptiveCards::ActionElementParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg3 ;
   Json::Value *arg4 = 0 ;
-  std::shared_ptr< AdaptiveCards::IActionElementParser > *smartarg1 = 0 ;
+  std::shared_ptr< AdaptiveCards::ActionElementParser > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *argp2 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *argp3 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > result;
@@ -3510,8 +3510,8 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   (void)jarg2_;
   (void)jarg3_;
   
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::IActionElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::IActionElementParser *)(smartarg1 ? smartarg1->get() : 0); 
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionElementParser > **)&jarg1;
+  arg1 = (AdaptiveCards::ActionElementParser *)(smartarg1 ? smartarg1->get() : 0); 
   argp2 = *(std::shared_ptr< AdaptiveCards::ElementParserRegistration > **)&jarg2; 
   if (argp2) arg2 = *argp2; 
   argp3 = *(std::shared_ptr< AdaptiveCards::ActionParserRegistration > **)&jarg3; 
@@ -3527,15 +3527,15 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1IActionElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::IActionElementParser *arg1 = (AdaptiveCards::IActionElementParser *) 0 ;
-  std::shared_ptr< AdaptiveCards::IActionElementParser > *smartarg1 = 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ActionElementParser *arg1 = (AdaptiveCards::ActionElementParser *) 0 ;
+  std::shared_ptr< AdaptiveCards::ActionElementParser > *smartarg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
   
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::IActionElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::IActionElementParser *)(smartarg1 ? smartarg1->get() : 0); 
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionElementParser > **)&jarg1;
+  arg1 = (AdaptiveCards::ActionElementParser *)(smartarg1 ? smartarg1->get() : 0); 
   (void)arg1; delete smartarg1;
 }
 
@@ -3557,9 +3557,9 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionParserRegistration_1AddParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
   AdaptiveCards::ActionParserRegistration *arg1 = (AdaptiveCards::ActionParserRegistration *) 0 ;
   std::string arg2 ;
-  std::shared_ptr< AdaptiveCards::IActionElementParser > arg3 ;
+  std::shared_ptr< AdaptiveCards::ActionElementParser > arg3 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *smartarg1 = 0 ;
-  std::shared_ptr< AdaptiveCards::IActionElementParser > *argp3 ;
+  std::shared_ptr< AdaptiveCards::ActionElementParser > *argp3 ;
   
   (void)jenv;
   (void)jcls;
@@ -3576,7 +3576,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
   if (!arg2_pstr) return ;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  argp3 = *(std::shared_ptr< AdaptiveCards::IActionElementParser > **)&jarg3; 
+  argp3 = *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&jarg3; 
   if (argp3) arg3 = *argp3; 
   (arg1)->AddParser(arg2,arg3);
 }
@@ -3610,7 +3610,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   AdaptiveCards::ActionParserRegistration *arg1 = (AdaptiveCards::ActionParserRegistration *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *smartarg1 = 0 ;
-  std::shared_ptr< AdaptiveCards::IActionElementParser > result;
+  std::shared_ptr< AdaptiveCards::ActionElementParser > result;
   
   (void)jenv;
   (void)jcls;
@@ -3627,7 +3627,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   result = (arg1)->GetParser(arg2);
-  *(std::shared_ptr< AdaptiveCards::IActionElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::IActionElementParser >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::ActionElementParser >(result) : 0; 
   return jresult;
 }
 
@@ -3645,13 +3645,13 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_IBaseCardElementParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElementParser_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4) {
   jlong jresult = 0 ;
-  AdaptiveCards::IBaseCardElementParser *arg1 = (AdaptiveCards::IBaseCardElementParser *) 0 ;
+  AdaptiveCards::BaseCardElementParser *arg1 = (AdaptiveCards::BaseCardElementParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > arg2 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > arg3 ;
   Json::Value *arg4 = 0 ;
-  std::shared_ptr< AdaptiveCards::IBaseCardElementParser > *smartarg1 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseCardElementParser > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *argp2 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *argp3 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > result;
@@ -3662,8 +3662,8 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   (void)jarg2_;
   (void)jarg3_;
   
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::IBaseCardElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::IBaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0); 
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElementParser > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0); 
   argp2 = *(std::shared_ptr< AdaptiveCards::ElementParserRegistration > **)&jarg2; 
   if (argp2) arg2 = *argp2; 
   argp3 = *(std::shared_ptr< AdaptiveCards::ActionParserRegistration > **)&jarg3; 
@@ -3679,15 +3679,15 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1IBaseCardElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::IBaseCardElementParser *arg1 = (AdaptiveCards::IBaseCardElementParser *) 0 ;
-  std::shared_ptr< AdaptiveCards::IBaseCardElementParser > *smartarg1 = 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseCardElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::BaseCardElementParser *arg1 = (AdaptiveCards::BaseCardElementParser *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseCardElementParser > *smartarg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
   
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::IBaseCardElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::IBaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0); 
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElementParser > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0); 
   (void)arg1; delete smartarg1;
 }
 
@@ -3709,9 +3709,9 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ElementParserRegistration_1AddParser(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
   AdaptiveCards::ElementParserRegistration *arg1 = (AdaptiveCards::ElementParserRegistration *) 0 ;
   std::string arg2 ;
-  std::shared_ptr< AdaptiveCards::IBaseCardElementParser > arg3 ;
+  std::shared_ptr< AdaptiveCards::BaseCardElementParser > arg3 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *smartarg1 = 0 ;
-  std::shared_ptr< AdaptiveCards::IBaseCardElementParser > *argp3 ;
+  std::shared_ptr< AdaptiveCards::BaseCardElementParser > *argp3 ;
   
   (void)jenv;
   (void)jcls;
@@ -3728,7 +3728,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
   if (!arg2_pstr) return ;
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
-  argp3 = *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&jarg3; 
+  argp3 = *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&jarg3; 
   if (argp3) arg3 = *argp3; 
   (arg1)->AddParser(arg2,arg3);
 }
@@ -3762,7 +3762,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   AdaptiveCards::ElementParserRegistration *arg1 = (AdaptiveCards::ElementParserRegistration *) 0 ;
   std::string arg2 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *smartarg1 = 0 ;
-  std::shared_ptr< AdaptiveCards::IBaseCardElementParser > result;
+  std::shared_ptr< AdaptiveCards::BaseCardElementParser > result;
   
   (void)jenv;
   (void)jcls;
@@ -3779,7 +3779,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   (&arg2)->assign(arg2_pstr);
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   result = (arg1)->GetParser(arg2);
-  *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(result) : 0; 
   return jresult;
 }
 
@@ -13388,7 +13388,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::ContainerParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13408,7 +13408,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::ImageParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13428,7 +13428,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::ImageSetParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13458,7 +13458,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::ColumnSetParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13478,7 +13478,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::FactSetParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13498,7 +13498,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::ChoiceSetInputParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13518,7 +13518,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::DateInputParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13538,7 +13538,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::NumberInputParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13558,7 +13558,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::TextInputParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13578,7 +13578,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::TimeInputParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13598,7 +13598,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::ToggleInputParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13618,7 +13618,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::OpenUrlActionParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IActionElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IActionElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::ActionElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13638,7 +13638,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::ShowCardActionParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IActionElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IActionElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::ActionElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13658,7 +13658,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::SubmitActionParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IActionElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IActionElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::ActionElementParser >(*argp1) : 0;
     return baseptr;
 }
 
@@ -13678,7 +13678,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     (void)jenv;
     (void)jcls;
     argp1 = *(std::shared_ptr< AdaptiveCards::TextBlockParser > **)&jarg1;
-    *(std::shared_ptr< AdaptiveCards::IBaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::IBaseCardElementParser >(*argp1) : 0;
+    *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&baseptr = argp1 ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(*argp1) : 0;
     return baseptr;
 }
 

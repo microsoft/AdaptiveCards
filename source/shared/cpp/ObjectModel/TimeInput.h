@@ -33,7 +33,7 @@ private:
     std::string m_value;
 };
 
-class TimeInputParser : public IBaseCardElementParser
+class TimeInputParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(
