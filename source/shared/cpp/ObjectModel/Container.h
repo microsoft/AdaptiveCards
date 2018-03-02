@@ -27,10 +27,9 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-protected:
+private:
     void PopulateKnownPropertiesSet();
 
-private:
     ContainerStyle m_style;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;

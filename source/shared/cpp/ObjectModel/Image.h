@@ -41,10 +41,9 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-protected:
+private:
     void PopulateKnownPropertiesSet();
 
-private:
     std::string m_url;
     ImageStyle m_imageStyle;
     ImageSize m_imageSize;

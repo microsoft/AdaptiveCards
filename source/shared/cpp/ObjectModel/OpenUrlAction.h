@@ -17,10 +17,9 @@ public:
     std::string GetUrl() const;
     void SetUrl(const std::string value);
 
-protected:
+private:
     void PopulateKnownPropertiesSet();
 
-private:
     std::string m_url;
 };
 

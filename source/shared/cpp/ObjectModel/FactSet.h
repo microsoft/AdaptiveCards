@@ -22,10 +22,9 @@ public:
     std::vector<std::shared_ptr<Fact>>& GetFacts();
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
 
-protected:
+private:
     void PopulateKnownPropertiesSet();
 
-private:
     std::vector<std::shared_ptr<Fact>> m_facts; 
 };
 

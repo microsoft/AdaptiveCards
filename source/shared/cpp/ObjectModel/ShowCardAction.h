@@ -18,10 +18,9 @@ public:
     std::shared_ptr<AdaptiveCards::AdaptiveCard> GetCard() const;
     void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);
 
-protected:
+private:
     void PopulateKnownPropertiesSet();
 
-private:
     std::shared_ptr<AdaptiveCard> m_card;
 };
 

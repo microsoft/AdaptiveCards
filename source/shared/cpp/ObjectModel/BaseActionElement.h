@@ -32,14 +32,14 @@ public:
     void SetAdditionalProperties(Json::Value additionalProperties);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     ActionType m_type;
     std::string m_title;
     std::string m_id;
     Json::Value m_additionalProperties;
 
 protected:
-    void PopulateKnownPropertiesSet();
-
     std::unordered_set<std::string> m_knownProperties;
 };
 

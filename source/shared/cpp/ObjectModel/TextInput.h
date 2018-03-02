@@ -29,10 +29,9 @@ public:
     TextInputStyle GetTextInputStyle() const;
     void SetTextInputStyle(const TextInputStyle value);
 
-protected:
+private:
     void PopulateKnownPropertiesSet();
 
-private:
     std::string m_placeholder;
     std::string m_value;
     bool m_isMultiline;

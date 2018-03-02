@@ -26,10 +26,9 @@ public:
     std::string GetValue() const;
     void SetValue(const std::string value);
 
-protected:
+private:
     void PopulateKnownPropertiesSet();
 
-private:
     std::string m_max;
     std::string m_min;
     std::string m_placeholder;

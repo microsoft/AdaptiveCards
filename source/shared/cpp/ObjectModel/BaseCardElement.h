@@ -50,11 +50,12 @@ public:
 
 protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
-    void PopulateKnownPropertiesSet();
 
     std::unordered_set<std::string> m_knownProperties;
 
 private:
+    void PopulateKnownPropertiesSet();
+
     CardElementType m_type;
     Spacing m_spacing;
     std::string m_id;

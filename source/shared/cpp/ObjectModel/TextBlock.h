@@ -50,9 +50,6 @@ public:
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
-protected:
-    void PopulateKnownPropertiesSet();
-
 private:
     std::string m_text;
     TextSize m_textSize;
@@ -64,6 +61,7 @@ private:
     HorizontalAlignment m_hAlignment;
     std::string ParseDateTime() const;
     static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
+    void PopulateKnownPropertiesSet();
 };
 
 class TextBlockParser : public IBaseCardElementParser

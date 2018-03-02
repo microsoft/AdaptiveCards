@@ -24,10 +24,9 @@ public:
     std::vector<std::shared_ptr<Image>>& GetImages();
     const std::vector<std::shared_ptr<Image>>& GetImages() const;
 
-protected:
+private:
     void PopulateKnownPropertiesSet();
 
-private:
     std::vector<std::shared_ptr<Image>> m_images;
     ImageSize m_imageSize;
 };
