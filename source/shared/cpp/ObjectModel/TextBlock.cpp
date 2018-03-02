@@ -352,7 +352,7 @@ std::shared_ptr<BaseCardElement> TextBlockParser::DeserializeFromString(
     return TextBlockParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void TextBlock::PopulateKnownPropertiesSet(void) 
+void TextBlock::PopulateKnownPropertiesSet() 
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size));

@@ -112,7 +112,7 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::DeserializeFromString(
     return ChoiceSetInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ChoiceSetInput::PopulateKnownPropertiesSet(void) 
+void ChoiceSetInput::PopulateKnownPropertiesSet() 
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect));

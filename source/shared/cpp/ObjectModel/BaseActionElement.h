@@ -38,7 +38,7 @@ private:
     Json::Value m_additionalProperties;
 
 protected:
-    virtual void PopulateKnownPropertiesSet(void) = 0;
+    void PopulateKnownPropertiesSet();
 
     std::unordered_set<std::string> m_knownProperties;
 };

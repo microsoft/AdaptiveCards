@@ -48,7 +48,7 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::DeserializeFromString(
     return SubmitActionParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void SubmitAction::PopulateKnownPropertiesSet(void) 
+void SubmitAction::PopulateKnownPropertiesSet() 
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data));
 }
