@@ -228,7 +228,7 @@ using namespace AdaptiveCards;
                 ACOHostConfig *acoConfig = [[ACOHostConfig alloc] initWithConfig:_hostConfig];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                     ^{
-                        std::string dateParsedString = [ACRTextBlockRenderer getLocalizedDate:txtElem];
+                        std::string dateParsedString = [ACOHostConfig getLocalizedDate:txtElem];
                         // MarkDownParser transforms text with MarkDown to a html string
                         std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(dateParsedString.c_str());
                         NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
@@ -397,7 +397,7 @@ using namespace AdaptiveCards;
                           std::size_t idx = id.find_last_of('_');
                           imgElem->SetId(id.substr(0, idx));
                       }
-                     
+
                       [self removeFromAsyncRenderingListAndNotifyIfNeeded:imgElem];
                   });
              }
