@@ -25,6 +25,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         // IAdaptiveChoiceSetInput
 
+        IFACEMETHODIMP get_Value(_Out_ HSTRING* value);
+        IFACEMETHODIMP put_Value(_In_ HSTRING value);
+
         IFACEMETHODIMP get_IsMultiSelect(_Out_ boolean* isMultiSelect);
         IFACEMETHODIMP put_IsMultiSelect(_In_ boolean isMultiSelect);
 
@@ -66,6 +69,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         boolean m_isRequired;
         boolean m_isMultiSelect;
         ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle m_choiceSetStyle;
+        Microsoft::WRL::Wrappers::HString m_value;
 
         boolean m_separator;
         Microsoft::WRL::Wrappers::HString m_id;

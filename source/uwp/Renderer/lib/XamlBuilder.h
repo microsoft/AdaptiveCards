@@ -28,7 +28,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         void BuildXamlTreeFromAdaptiveCard(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
             _In_ AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer,
             _In_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
             boolean isOuterCard = true,

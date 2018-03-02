@@ -39,6 +39,8 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
+    void SetLanguage(const std::string& language);
+
 private:
     std::string m_width;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;

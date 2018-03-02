@@ -4,7 +4,7 @@
 using namespace AdaptiveCards;
 
 BaseActionElement::BaseActionElement(ActionType type) :
-    m_type(type)
+    m_type(type), m_typeString(ActionTypeToString(type))
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
@@ -13,6 +13,16 @@ BaseActionElement::BaseActionElement(ActionType type) :
 
 AdaptiveCards::BaseActionElement::~BaseActionElement()
 {
+}
+
+std::string BaseActionElement::GetElementTypeString() const
+{
+    return m_typeString;
+}
+
+void BaseActionElement::SetElementTypeString(const std::string value)
+{
+    m_typeString = value;
 }
 
 std::string BaseActionElement::GetTitle() const

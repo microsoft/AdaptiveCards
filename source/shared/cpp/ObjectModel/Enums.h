@@ -94,6 +94,7 @@ enum class AdaptiveCardSchemaKey
     IsSelected,
     IsSubtle,
     Items,
+    Language,
     Large,
     Left,
     Light,
@@ -296,6 +297,14 @@ enum class WarningStatusCode {
     InteractivityNotSupported,
     MaxActionsExceeded,
     AssetLoadFailed
+};
+
+enum class DateTimePreparsedTokenFormat {
+    RegularString = 0,
+    Time,
+    DateCompact,
+    DateShort,
+    DateLong
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);

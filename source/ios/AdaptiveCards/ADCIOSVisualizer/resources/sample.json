@@ -67,8 +67,10 @@
                     "subtle": "#DDFF0000"
                 }
             },
-            "backgroundColor": "#08000000"
-        }
+            "backgroundColor": "#08000000",
+            "borderColor": "#FF000000",
+            "borderThickness": 2
+              }
     },
     "spacing": {
         "small": 3,
@@ -100,7 +102,7 @@
     },
     "imageSet": {
         "imageSize": "Medium",
-        "maxImageHeight": "maxImageHeight"
+        "maxImageHeight": 999
     },
     "factSet": {
         "title": {

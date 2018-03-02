@@ -19,6 +19,7 @@
 #include "AdaptiveCardRendererComponent.h"
 #include "MarkDownParser.h"
 #include "HtmlHelpers.h"
+#include "DateTimeParser.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -109,7 +110,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     _Use_decl_annotations_
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard,
-        IUIElement** xamlTreeRoot, 
+        IFrameworkElement** xamlTreeRoot, 
         AdaptiveCardRenderer* renderer,
         AdaptiveRenderContext* renderContext,
         boolean isOuterCard,
@@ -156,17 +157,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
             UINT32 actionsSize;
             THROW_IF_FAILED(actions->get_Size(&actionsSize));
-            if (SupportsInteractivity(hostConfig.Get()))
+            if (actionsSize > 0)
             {
-                unsigned int bodyCount;
-                THROW_IF_FAILED(body->get_Size(&bodyCount));
-                BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext);
-            }
-            else if (actionsSize > 0)
-            {
-                renderContext->AddWarning(
-                    ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
-                    HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
+                if (SupportsInteractivity(hostConfig.Get()))
+                {
+                    unsigned int bodyCount;
+                    THROW_IF_FAILED(body->get_Size(&bodyCount));
+                    BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext);
+                }
+                else
+                {
+                    renderContext->AddWarning(
+                        ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                        HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
+                }
             }
 
             if (isOuterCard)
@@ -178,7 +182,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", childElementContainerAsFE.Get()));
             }
 
-            THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
+            THROW_IF_FAILED(childElementContainerAsFE.CopyTo(xamlTreeRoot));
 
             if (isOuterCard)
             {
@@ -684,7 +688,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IAdaptiveCard> showCard;
         THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
 
-        ComPtr<IUIElement> localUiShowCard;
+        ComPtr<IFrameworkElement> localUiShowCard;
         BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), renderer, localRenderContext.Get(), false, showCardConfigStyle);
 
         ComPtr<IGrid2> showCardGrid;
@@ -714,10 +718,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         Thickness margin = { 0, (double)inlineTopMargin, 0, 0 };
         THROW_IF_FAILED(showCardFrameworkElement->put_Margin(margin));
 
-        // Set the visibility as Collapsed until the action is triggered
-        THROW_IF_FAILED(localUiShowCard->put_Visibility(Visibility_Collapsed));
+        ComPtr<IUIElement> showCardUIElement;
+        THROW_IF_FAILED(localUiShowCard.As(&showCardUIElement));
 
-        *uiShowCard = localUiShowCard.Detach();
+        // Set the visibility as Collapsed until the action is triggered
+        THROW_IF_FAILED(showCardUIElement->put_Visibility(Visibility_Collapsed));
+
+        *uiShowCard = showCardUIElement.Detach();
     }
 
     _Use_decl_annotations_
@@ -1132,9 +1139,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     HRESULT SetTextOnXamlTextBlock(
         IAdaptiveRenderContext* renderContext,
         HSTRING textIn,
+        HSTRING language,
         ITextBlock * textBlock)
     {
-        MarkDownParser markdownParser(HStringToUTF8(textIn));
+        DateTimeParser parser(HStringToUTF8(language));
+        auto textWithParsedDates = parser.GenerateString(HStringToUTF8(textIn));
+
+        MarkDownParser markdownParser(textWithParsedDates);
         auto htmlString = markdownParser.TransformToHtml();
 
         HString htmlHString;
@@ -1183,7 +1194,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         HString text;
         THROW_IF_FAILED(adaptiveTextBlock->get_Text(text.GetAddressOf()));
-        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), xamlTextBlock.Get()));
+        HString language;
+        THROW_IF_FAILED(adaptiveTextBlock->get_Language(language.GetAddressOf()));
+        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), language.Get(), xamlTextBlock.Get()));
 
         ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor;
         THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));
@@ -1953,6 +1966,36 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
     }
 
+    std::vector<std::string> GetChoiceSetValueVector(
+        IAdaptiveChoiceSetInput* adaptiveChoiceSetInput)
+    {
+        HString value;
+        THROW_IF_FAILED(adaptiveChoiceSetInput->get_Value(value.GetAddressOf()));
+
+        std::vector<std::string> values;
+        std::string stdValue = HStringToUTF8(value.Get());
+        std::stringstream streamValue(stdValue);
+
+        while (streamValue.good())
+        {
+            std::string subString;
+            std::getline(streamValue, subString, ',');
+            values.push_back(subString);
+        }
+
+        return values;
+    }
+
+    bool IsChoiceSelected(
+        std::vector<std::string> selectedValues,
+        IAdaptiveChoiceInput* choice)
+    {
+        HString value;
+        THROW_IF_FAILED(choice->get_Value(value.GetAddressOf()));
+        std::string stdValue = HStringToUTF8(value.Get());
+        return std::find(selectedValues.begin(), selectedValues.end(), stdValue) != selectedValues.end();
+    }
+
     void XamlBuilder::BuildCompactChoiceSetInput(
         IAdaptiveRenderContext* renderContext,
         IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
@@ -1977,9 +2020,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IVector<IAdaptiveChoiceInput*>> choices;
         THROW_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
+        std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
+
         int currentIndex = 0;
         int selectedIndex = -1;
-        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [&currentIndex, &selectedIndex, itemsVector](IAdaptiveChoiceInput* adaptiveChoiceInput)
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [&currentIndex, &selectedIndex, itemsVector, values](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
             HString title;
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
@@ -1988,9 +2033,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
             XamlHelpers::SetContent(comboBoxItem.Get(), title.Get());
 
-            boolean isSelected;
-            THROW_IF_FAILED(adaptiveChoiceInput->get_IsSelected(&isSelected));
-            if (isSelected)
+            if (IsChoiceSelected(values, adaptiveChoiceInput))
             {
                 selectedIndex = currentIndex;
             }
@@ -2030,7 +2073,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IPanel> panel;
         THROW_IF_FAILED(stackPanel.As(&panel));
 
-        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [panel, isMultiSelect, renderContext](IAdaptiveChoiceInput* adaptiveChoiceInput)
+        std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
+
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [panel, isMultiSelect, renderContext, values](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
             ComPtr<IUIElement> choiceItem;
             if (isMultiSelect)
@@ -2056,9 +2101,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
             XamlHelpers::SetContent(choiceItem.Get(), title.Get());
 
-            boolean isSelected;
-            THROW_IF_FAILED(adaptiveChoiceInput->get_IsSelected(&isSelected));
-            XamlHelpers::SetToggleValue(choiceItem.Get(), isSelected);
+            XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
 
             THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
             

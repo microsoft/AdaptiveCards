@@ -1,4 +1,7 @@
 #include "Container.h"
+#include "TextBlock.h"
+#include "ColumnSet.h"
+#include "Util.h"
 
 using namespace AdaptiveCards;
 
@@ -54,6 +57,11 @@ std::shared_ptr<BaseActionElement> Container::GetSelectAction() const
 void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 {
     m_selectAction = action;
+}
+
+void Container::SetLanguage(const std::string& value)
+{
+    PropagateLanguage(value, m_items);
 }
 
 Json::Value Container::SerializeToJsonValue()

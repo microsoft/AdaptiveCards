@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.TextInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -20,10 +21,6 @@ import com.microsoft.adaptivecards.objectmodel.TextInputStyle;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.Vector;
-
-/**
- * Created by bekao on 6/25/2017.
- */
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
@@ -115,6 +112,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         TextInput textInput = null;

@@ -28,6 +28,15 @@ void AdaptiveCards::ShowCardAction::SetCard(const std::shared_ptr<AdaptiveCard> 
     m_card = card;
 }
 
+void ShowCardAction::SetLanguage(const std::string& value)
+{
+    // If the card inside doesn't specify language, propagate
+    if (m_card->GetLanguage().empty())
+    {
+        m_card->SetLanguage(value);
+    }
+}
+
 std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,

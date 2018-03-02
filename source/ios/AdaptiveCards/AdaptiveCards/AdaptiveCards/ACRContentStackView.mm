@@ -24,7 +24,6 @@ using namespace AdaptiveCards;
     if(self){
 
         _style = style;
-
         if(style != ACRNone &&
             style != parentStyle) {
             std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];

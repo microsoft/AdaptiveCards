@@ -41,8 +41,8 @@ public class TextBlock extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_0(), true);
   }
 
-  public TextBlock(Spacing spacing, boolean separator, String text, TextSize textSize, TextWeight textWeight, ForegroundColor color, boolean isSubtle, boolean wrap, int maxLines, HorizontalAlignment hAlignment) {
-    this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(spacing.swigValue(), separator, text, textSize.swigValue(), textWeight.swigValue(), color.swigValue(), isSubtle, wrap, maxLines, hAlignment.swigValue()), true);
+  public TextBlock(Spacing spacing, boolean separator, String text, TextSize textSize, TextWeight textWeight, ForegroundColor color, boolean isSubtle, boolean wrap, int maxLines, HorizontalAlignment hAlignment, String language) {
+    this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(spacing.swigValue(), separator, text, textSize.swigValue(), textWeight.swigValue(), color.swigValue(), isSubtle, wrap, maxLines, hAlignment.swigValue(), language), true);
   }
 
   public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
@@ -55,6 +55,10 @@ public class TextBlock extends BaseCardElement {
 
   public void SetText(String value) {
     AdaptiveCardObjectModelJNI.TextBlock_SetText(swigCPtr, this, value);
+  }
+
+  public DateTimePreparser GetTextForDateParsing() {
+    return new DateTimePreparser(AdaptiveCardObjectModelJNI.TextBlock_GetTextForDateParsing(swigCPtr, this), true);
   }
 
   public TextSize GetTextSize() {
@@ -111,6 +115,14 @@ public class TextBlock extends BaseCardElement {
 
   public void SetHorizontalAlignment(HorizontalAlignment value) {
     AdaptiveCardObjectModelJNI.TextBlock_SetHorizontalAlignment(swigCPtr, this, value.swigValue());
+  }
+
+  public void SetLanguage(String value) {
+    AdaptiveCardObjectModelJNI.TextBlock_SetLanguage(swigCPtr, this, value);
+  }
+
+  public String GetLanguage() {
+    return AdaptiveCardObjectModelJNI.TextBlock_GetLanguage(swigCPtr, this);
   }
 
   public static TextBlock dynamic_cast(BaseCardElement baseCardElement) {

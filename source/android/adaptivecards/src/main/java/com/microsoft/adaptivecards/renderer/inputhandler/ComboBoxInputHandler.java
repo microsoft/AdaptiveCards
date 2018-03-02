@@ -8,10 +8,6 @@ import com.microsoft.adaptivecards.objectmodel.ChoiceSetInput;
 import java.text.ParseException;
 import java.util.Map;
 
-/**
- * Created by bekao on 7/5/2017.
- */
-
 public class ComboBoxInputHandler extends BaseInputHandler
 {
     public ComboBoxInputHandler(BaseInputElement baseInputElement)

@@ -1,5 +1,6 @@
 #include "ChoiceSetInput.h"
 #include "Column.h"
+#include "Util.h"
 
 using namespace AdaptiveCards;
 
@@ -133,4 +134,9 @@ std::shared_ptr<BaseActionElement> Column::GetSelectAction() const
 void Column::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 {
     m_selectAction = action;
+}
+
+void Column::SetLanguage(const std::string& language)
+{
+    PropagateLanguage(language, m_items);
 }

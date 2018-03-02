@@ -13,6 +13,11 @@
 #include <Image.h>
 #include <windows.foundation.collections.h>
 
+HRESULT WStringToHString(const std::wstring& in, HSTRING* out);
+
+std::string WstringToString(const std::wstring& in);
+std::wstring StringToWstring(const std::string& in);
+
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
 HRESULT UTF8ToHString(const std::string& in, HSTRING* out);

@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.Container;
@@ -13,10 +15,6 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Vector;
-
-/**
- * Created by bekao on 2/11/2017.
- */
 
 public class ContainerRenderer extends BaseCardElementRenderer
 {
@@ -41,6 +39,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
         Container container = null;
@@ -54,7 +53,15 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
 
         setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
-        return CardRendererRegistration.getInstance().render(context, fragmentManager, viewGroup, container, container.GetItems(), inputActionHandlerList, hostConfig);
+        View containerView =  CardRendererRegistration.getInstance().render(context, fragmentManager, viewGroup, container, container.GetItems(), inputActionHandlerList, cardActionHandler, hostConfig);
+
+        if (container.GetSelectAction() != null)
+        {
+            containerView.setClickable(true);
+            containerView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(container.GetSelectAction(),inputActionHandlerList, cardActionHandler));
+        }
+
+        return containerView;
     }
 
     private static ContainerRenderer s_instance = null;
