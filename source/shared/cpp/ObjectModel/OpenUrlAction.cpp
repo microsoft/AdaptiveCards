@@ -47,7 +47,7 @@ std::shared_ptr<BaseActionElement> OpenUrlActionParser::DeserializeFromString(
     return OpenUrlActionParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void OpenUrlAction::PopulateKnownPropertiesSet(void) 
+void OpenUrlAction::PopulateKnownPropertiesSet() 
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url));
 }

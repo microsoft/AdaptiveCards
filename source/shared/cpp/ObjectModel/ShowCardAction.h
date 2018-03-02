@@ -19,7 +19,7 @@ public:
     void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);
 
 protected:
-    void PopulateKnownPropertiesSet(void) override;
+    void PopulateKnownPropertiesSet();
 
 private:
     std::shared_ptr<AdaptiveCard> m_card;

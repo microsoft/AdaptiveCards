@@ -6,9 +6,7 @@ using namespace AdaptiveCards;
 BaseActionElement::BaseActionElement(ActionType type) :
     m_type(type)
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
+    PopulateKnownPropertiesSet();
 }
 
 AdaptiveCards::BaseActionElement::~BaseActionElement()
@@ -65,10 +63,10 @@ void BaseActionElement::SetAdditionalProperties(Json::Value value)
     m_additionalProperties = value;
 }
 
-void BaseActionElement::PopulateKnownPropertiesSet(void)
+void BaseActionElement::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
 }
 

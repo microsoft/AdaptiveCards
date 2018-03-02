@@ -14,16 +14,16 @@ BaseCardElement::BaseCardElement(
     m_spacing(spacing),
     m_separator(separator)
 {
-    BaseCardElement::PopulateKnownPropertiesSet();
+    PopulateKnownPropertiesSet();
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
     m_type(type), m_spacing(Spacing::Default)
 {
-    BaseCardElement::PopulateKnownPropertiesSet();
+    PopulateKnownPropertiesSet();
 }
 
-void BaseCardElement::PopulateKnownPropertiesSet(void)
+void BaseCardElement::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing));

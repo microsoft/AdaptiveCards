@@ -24,7 +24,7 @@ public:
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
 protected:
-    void PopulateKnownPropertiesSet(void) override;
+    void PopulateKnownPropertiesSet();
 
 private:
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;

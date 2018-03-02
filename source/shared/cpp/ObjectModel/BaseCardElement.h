@@ -50,7 +50,8 @@ public:
 
 protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
-    virtual void PopulateKnownPropertiesSet(void) = 0;
+    void PopulateKnownPropertiesSet();
+
     std::unordered_set<std::string> m_knownProperties;
 
 private:

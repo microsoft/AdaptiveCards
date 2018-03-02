@@ -32,7 +32,7 @@ public:
     void SetValue(std::string value);
 
 protected:
-    void PopulateKnownPropertiesSet(void) override;
+    void PopulateKnownPropertiesSet();
 
 private:
     std::string m_value;

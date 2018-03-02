@@ -51,7 +51,7 @@ public:
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
 protected:
-    void PopulateKnownPropertiesSet(void) override;
+    void PopulateKnownPropertiesSet();
 
 private:
     std::string m_text;

@@ -100,7 +100,7 @@ std::shared_ptr<BaseCardElement> TextInputParser::DeserializeFromString(
     return TextInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void TextInput::PopulateKnownPropertiesSet(void) 
+void TextInput::PopulateKnownPropertiesSet() 
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
