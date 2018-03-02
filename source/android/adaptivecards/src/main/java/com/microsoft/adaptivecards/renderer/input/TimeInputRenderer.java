@@ -62,10 +62,13 @@ public class TimeInputRenderer extends TextInputRenderer
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
         String time = timeInput.GetValue();
 
-        try {
+        try
+        {
             Date date = TimeInputHandler.s_simpleDateFormat.parse(timeInput.GetValue());
             time = DateFormat.getTimeInstance().format(date);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e)
+        {
             //TODO: Log this
         }
 

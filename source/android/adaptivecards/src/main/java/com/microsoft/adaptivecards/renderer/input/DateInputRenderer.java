@@ -64,10 +64,13 @@ public class DateInputRenderer extends TextInputRenderer
 
         String dateString = dateInput.GetValue();
 
-        try {
+        try
+        {
             Date date = DateInputHandler.s_simpleDateFormat.parse(dateInput.GetValue());
             dateString = DateFormat.getDateInstance().format(date);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e)
+        {
             //TODO: Log this
         }
 
