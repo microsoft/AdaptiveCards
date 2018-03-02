@@ -50,7 +50,7 @@ private:
     std::shared_ptr<BaseActionElement> m_selectAction;
 };
 
-class ImageParser : public IBaseCardElementParser
+class ImageParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

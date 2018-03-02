@@ -33,7 +33,7 @@ private:
     int m_min;
 };
 
-class NumberInputParser : public IBaseCardElementParser
+class NumberInputParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

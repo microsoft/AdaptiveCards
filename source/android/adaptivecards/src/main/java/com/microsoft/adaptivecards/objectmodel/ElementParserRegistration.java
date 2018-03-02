@@ -39,17 +39,17 @@ public class ElementParserRegistration {
     this(AdaptiveCardObjectModelJNI.new_ElementParserRegistration(), true);
   }
 
-  public void AddParser(String elementType, IBaseCardElementParser parser) {
-    AdaptiveCardObjectModelJNI.ElementParserRegistration_AddParser(swigCPtr, this, elementType, IBaseCardElementParser.getCPtr(parser), parser);
+  public void AddParser(String elementType, BaseCardElementParser parser) {
+    AdaptiveCardObjectModelJNI.ElementParserRegistration_AddParser(swigCPtr, this, elementType, BaseCardElementParser.getCPtr(parser), parser);
   }
 
   public void RemoveParser(String elementType) {
     AdaptiveCardObjectModelJNI.ElementParserRegistration_RemoveParser(swigCPtr, this, elementType);
   }
 
-  public IBaseCardElementParser GetParser(String elementType) {
+  public BaseCardElementParser GetParser(String elementType) {
     long cPtr = AdaptiveCardObjectModelJNI.ElementParserRegistration_GetParser(swigCPtr, this, elementType);
-    return (cPtr == 0) ? null : new IBaseCardElementParser(cPtr, true);
+    return (cPtr == 0) ? null : new BaseCardElementParser(cPtr, true);
   }
 
 }

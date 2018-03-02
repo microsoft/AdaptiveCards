@@ -8,16 +8,16 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class IBaseCardElementParser {
+public class BaseCardElementParser {
   private transient long swigCPtr;
   private transient boolean swigCMemOwn;
 
-  protected IBaseCardElementParser(long cPtr, boolean cMemoryOwn) {
+  protected BaseCardElementParser(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(IBaseCardElementParser obj) {
+  protected static long getCPtr(BaseCardElementParser obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -29,14 +29,14 @@ public class IBaseCardElementParser {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        AdaptiveCardObjectModelJNI.delete_IBaseCardElementParser(swigCPtr);
+        AdaptiveCardObjectModelJNI.delete_BaseCardElementParser(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
   public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value value) {
-    long cPtr = AdaptiveCardObjectModelJNI.IBaseCardElementParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(value));
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElementParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(value));
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 

@@ -8,7 +8,7 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class TextInputParser extends IBaseCardElementParser {
+public class TextInputParser extends BaseCardElementParser {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 

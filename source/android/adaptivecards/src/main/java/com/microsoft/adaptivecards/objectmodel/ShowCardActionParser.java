@@ -8,7 +8,7 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class ShowCardActionParser extends IActionElementParser {
+public class ShowCardActionParser extends ActionElementParser {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 

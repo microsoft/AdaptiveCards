@@ -21,7 +21,7 @@ private:
     std::string m_url;
 };
 
-class OpenUrlActionParser : public IActionElementParser
+class OpenUrlActionParser : public ActionElementParser
 {
     std::shared_ptr<BaseActionElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,

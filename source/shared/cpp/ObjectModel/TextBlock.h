@@ -68,7 +68,7 @@ private:
     std::string m_language;
 };
 
-class TextBlockParser : public IBaseCardElementParser
+class TextBlockParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

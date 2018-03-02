@@ -26,7 +26,7 @@ private:
     std::vector<std::shared_ptr<Fact>> m_facts; 
 };
 
-class FactSetParser : public IBaseCardElementParser
+class FactSetParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

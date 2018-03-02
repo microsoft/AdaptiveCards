@@ -51,8 +51,8 @@ public class DateTimePreparser {
     AdaptiveCardObjectModelJNI.DateTimePreparser_AddTextToken(swigCPtr, this, text, format.swigValue());
   }
 
-  public void AddDateToken(String text, SWIGTYPE_p_tm date, DateTimePreparsedTokenFormat format) {
-    AdaptiveCardObjectModelJNI.DateTimePreparser_AddDateToken(swigCPtr, this, text, SWIGTYPE_p_tm.getCPtr(date), format.swigValue());
+  public void AddDateToken(String text, CTime date, DateTimePreparsedTokenFormat format) {
+    AdaptiveCardObjectModelJNI.DateTimePreparser_AddDateToken(swigCPtr, this, text, CTime.getCPtr(date), date, format.swigValue());
   }
 
   public String Concatenate() {

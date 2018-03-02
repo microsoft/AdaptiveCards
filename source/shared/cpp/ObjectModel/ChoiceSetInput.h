@@ -39,7 +39,7 @@ private:
     std::vector<std::shared_ptr<ChoiceInput>> m_choices; 
 };
 
-class ChoiceSetInputParser : public IBaseCardElementParser
+class ChoiceSetInputParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

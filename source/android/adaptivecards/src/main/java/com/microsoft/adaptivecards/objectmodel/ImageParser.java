@@ -8,7 +8,7 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class ImageParser extends IBaseCardElementParser {
+public class ImageParser extends BaseCardElementParser {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
