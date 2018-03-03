@@ -1,0 +1,49 @@
+package io.adaptivecards.renderer.inputhandler;
+
+import android.widget.Spinner;
+
+import io.adaptivecards.objectmodel.BaseInputElement;
+import io.adaptivecards.objectmodel.ChoiceSetInput;
+
+import java.text.ParseException;
+import java.util.Map;
+
+public class ComboBoxInputHandler extends BaseInputHandler
+{
+    public ComboBoxInputHandler(BaseInputElement baseInputElement)
+    {
+        super(baseInputElement);
+    }
+
+    protected Spinner getSpinner()
+    {
+        return (Spinner) m_view;
+    }
+
+    @Override
+    protected void setDefaultTextColor()
+    {
+        //no op
+    }
+
+    @Override
+    protected void setInvalidTextColor()
+    {
+        // no op
+    }
+
+    @Override
+    protected void internalValidate()
+            throws ParseException
+    {
+        // no need to validate
+    }
+
+    public Exception getData(Map<String, String> data)
+    {
+        // no need to validate
+        ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
+        data.put(m_baseInputElement.GetId(), (String) getSpinner().getSelectedItem());
+        return null;
+    }
+}
