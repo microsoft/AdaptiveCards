@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -21,5 +22,6 @@ public interface IBaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig);
+            HostConfig hostConfig,
+            ContainerStyle containerStyle);
 }

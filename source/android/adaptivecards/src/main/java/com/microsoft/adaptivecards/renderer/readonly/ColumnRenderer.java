@@ -1,12 +1,15 @@
 package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
+import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -44,36 +47,45 @@ public class ColumnRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
-        throw new InternalError("Default renderer unsupported by Column Renderer.");
-    }
+        Column column;
+        if (baseCardElement instanceof Column)
+        {
+            column = (Column) baseCardElement;
+        }
+        else if ((column = Column.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
+        }
 
-    public View render(
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            Column column,
-            Vector<IInputHandler> inputActionHandlerList,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
-    {
         LinearLayout.LayoutParams layoutParams;
-        BaseCardElementVector baseCardElementVector = column.GetItems();
         setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, cardActionHandler, hostConfig);
+        ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : column.GetStyle();
+        View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, column.GetItems(), inputActionHandlerList, cardActionHandler, hostConfig, styleForThis);
+        if (styleForThis.swigValue() != containerStyle.swigValue())
+        {
+            int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
+            returnedView.setPadding(padding, padding, padding, padding);
+            String color = styleForThis.swigValue() == containerStyle.Emphasis.swigValue() ?
+                    hostConfig.getContainerStyles().getEmphasisPalette().getBackgroundColor() :
+                    hostConfig.getContainerStyles().getDefaultPalette().getBackgroundColor();
+            returnedView.setBackgroundColor(Color.parseColor(color));
+        }
+
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
 
-        if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeAuto))
+        if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
         {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.weight = 1;
             returnedView.setLayoutParams(layoutParams);
         }
-        else if (columnSize.equals(g_columnSizeStretch))
+        else if (columnSize.equals(g_columnSizeAuto))
         {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.weight = 1;
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             returnedView.setLayoutParams(layoutParams);
         }
         else

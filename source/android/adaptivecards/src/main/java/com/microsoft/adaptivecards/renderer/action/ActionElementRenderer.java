@@ -8,8 +8,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.objectmodel.ActionAlignment;
 import com.microsoft.adaptivecards.objectmodel.ActionMode;
 import com.microsoft.adaptivecards.objectmodel.ActionType;
+import com.microsoft.adaptivecards.objectmodel.ActionsOrientation;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.ShowCardAction;
@@ -93,6 +95,19 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             }
 
             m_invisibleCard.setVisibility(m_invisibleCard.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+            View mainCardView = ((ViewGroup) m_hiddenCardsLayout.getParent()).getChildAt(0);
+            int padding = mainCardView.getPaddingTop();
+
+            //remove bottom padding from top linear layout
+            if (m_invisibleCard.getVisibility() == View.VISIBLE)
+            {
+                mainCardView.setPadding(padding, padding, padding, 0);
+            }
+            else
+            {
+                mainCardView.setPadding(padding, padding, padding, padding);
+            }
         }
         private View m_invisibleCard;
         private ViewGroup m_hiddenCardsLayout;
@@ -103,11 +118,28 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     public Button renderButton(
             Context context,
             ViewGroup viewGroup,
-            BaseActionElement baseActionElement)
+            BaseActionElement baseActionElement,
+            HostConfig hostConfig)
     {
         Button button = new Button(context);
         button.setText(baseActionElement.GetTitle());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
+        int orientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        LinearLayout.LayoutParams layoutParams;
+        if (orientation == ActionsOrientation.Horizontal.swigValue())
+        {
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }
+        else
+        {
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        }
+
+        if (alignment == ActionAlignment.Stretch.swigValue())
+        {
+            layoutParams.weight = 1f;
+        }
+
         button.setLayoutParams(layoutParams);
         viewGroup.addView(button);
         return button;
@@ -127,8 +159,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             throw new IllegalArgumentException("Action Handler is null.");
         }
 
-        Button button = renderButton(context, viewGroup, baseActionElement);
-        button.setTextSize(hostConfig.getFontSizes().getDefaultFontSize());
+        Button button = renderButton(context, viewGroup, baseActionElement, hostConfig);
+
         if (baseActionElement.GetElementType().swigValue() == ActionType.ShowCard.swigValue()
                 && hostConfig.getActions().getShowCard().getActionMode().swigValue() == ActionMode.Inline.swigValue())
         {
@@ -143,12 +175,14 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
             }
 
-            View invisibleCard = AdaptiveCardRenderer.getInstance().render(context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig);
+            View invisibleCard = AdaptiveCardRenderer.getInstance().render(context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig, inputHandlerList, true);
             invisibleCard.setVisibility(View.GONE);
-            invisibleCard.setPadding(0,Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()),0,0);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()), 0, 0);
+            invisibleCard.setLayoutParams(layoutParams);
 
+            ViewGroup parent = (ViewGroup) viewGroup.getParent().getParent();
 
-            ViewGroup parent = (ViewGroup) viewGroup.getParent();
             ViewGroup hiddenCards = (ViewGroup) parent.getChildAt(1);
             hiddenCards.addView(invisibleCard);
 

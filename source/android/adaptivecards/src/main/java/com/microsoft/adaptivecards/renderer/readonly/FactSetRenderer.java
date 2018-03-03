@@ -2,12 +2,14 @@ package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -36,14 +38,16 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing)
+    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
 
-        TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle());
+        TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle(), containerStyle);
         TextBlockRenderer.setTextSize(context, textView, textConfig.getSize(), hostConfig);
         TextBlockRenderer.getInstance().setTextWeight(textView, textConfig.getWeight());
+        textView.setSingleLine(!textConfig.getWrap());
+        textView.setEllipsize(TextUtils.TruncateAt.END);
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
                 GridLayout.spec(GridLayout.UNDEFINED),
                 GridLayout.spec(GridLayout.UNDEFINED));
@@ -60,7 +64,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
         FactSet factSet = null;
         if (baseCardElement instanceof FactSet)
@@ -85,8 +90,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
-            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing));
-            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0));
+            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
+            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
         }
 
         viewGroup.addView(gridLayout);

@@ -19,6 +19,9 @@ import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.objectmodel.*;
 import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
     implements ICardActionHandler
@@ -39,45 +41,23 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         System.loadLibrary("adaptivecards-native-lib");
     }
 
-    private HostConfig m_hostConfig;
-    private AtomicBoolean m_fileLoaded;
+    private static String IS_CARD = "isCard";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m_fileLoaded = new AtomicBoolean(false);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
         setupTabs();
 
-        m_hostConfig = new HostConfig();
-
-        m_hostConfig.getImageSizes().setLargeSize(150);
-        m_hostConfig.getImageSizes().setMediumSize(90);
-        m_hostConfig.getImageSizes().setSmallSize(60);
-
-        m_hostConfig.getSpacing().setDefaultSpacing(6);
-        m_hostConfig.getSpacing().setSmallSpacing(4);
-        m_hostConfig.getSpacing().setMediumSpacing(8);
-        m_hostConfig.getSpacing().setLargeSpacing(10);
-        m_hostConfig.getSpacing().setExtraLargeSpacing(15);
-        m_hostConfig.getSpacing().setPaddingSpacing(12);
-
-        //m_hostConfig.getActions().setMaxActions(2);
-        m_hostConfig.getActions().getShowCard().setInlineTopMargin(10);
-
-
         // Add text change handler
         final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        jsonEditText.addTextChangedListener(new TextWatcher()
+        final EditText configEditText = (EditText) findViewById(R.id.hostConfig);
+
+        TextWatcher watcher = new TextWatcher()
         {
             @Override
             public void afterTextChanged(Editable editable)
             {
-                if (m_fileLoaded.compareAndSet(true, false))
-                {
-                    return;
-                }
-
                 m_timer.cancel();
                 m_timer = new Timer();
                 m_timer.schedule(new TimerTask()
@@ -88,7 +68,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                         {
                             public void run()
                             {
-                                renderAdaptiveCard(jsonEditText.getText().toString(), false);
+                                renderAdaptiveCard(true);
                             }
                         });
                     }
@@ -103,7 +83,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             private Timer m_timer=new Timer();
             private final long DELAY = 1000; // milliseconds
-        });
+        };
+
+        jsonEditText.addTextChangedListener(watcher);
+        configEditText.addTextChangedListener(watcher);
     }
 
     protected void setupTabs()
@@ -112,17 +95,36 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         tabHost.setup();
         tabHost.addTab(tabHost.newTabSpec("tab_visual").setIndicator("Visual").setContent(R.id.Visual));
         tabHost.addTab(tabHost.newTabSpec("tab_json").setIndicator("JSON").setContent(R.id.JSON));
+        tabHost.addTab(tabHost.newTabSpec("tab_config").setIndicator("Config").setContent(R.id.config));
         tabHost.setCurrentTab(0);
     }
 
-    private void renderAdaptiveCard(String jsonText, boolean showErrorToast)
+    private void renderAdaptiveCard(boolean showErrorToast)
     {
         try
         {
+            String jsonText = ((EditText) findViewById(R.id.jsonAdaptiveCard)).getText().toString();
+            if (jsonText == null)
+            {
+                return;
+            }
+
+            String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
+            HostConfig hostConfig;
+            if (hostConfigText.isEmpty())
+            {
+                hostConfig = new HostConfig();
+            }
+            else
+            {
+                hostConfig = HostConfig.DeserializeFromString(hostConfigText);
+            }
+
+
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, m_hostConfig));
+            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, hostConfig));
         }
         catch (Exception ex)
         {
@@ -133,69 +135,108 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
-    private static final int FILE_SELECT_CODE = 0;
+    private static final int FILE_SELECT_CARD = 0;
+    private static final int FILE_SELECT_CONFIG = 1;
     public void onClickFileBrowser(View view)
     {
         Intent fileBrowserIntent = new Intent(Intent.ACTION_GET_CONTENT);
         fileBrowserIntent.setType("*/*");
         fileBrowserIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        fileBrowserIntent.putExtra(IS_CARD, view.getId() == R.id.loadCardButton);
 
         try {
             startActivityForResult(
                     Intent.createChooser(fileBrowserIntent, "Select a JSON File to Open"),
-                    FILE_SELECT_CODE);
+                    view.getId() == R.id.loadCardButton ? FILE_SELECT_CARD : FILE_SELECT_CONFIG);
         } catch (android.content.ActivityNotFoundException ex) {
             // Potentially direct the user to the Market with a Dialog
             Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private String loadFile(Uri uri)
+    {
+        // Get the Uri of the selected file
+        if (uri == null)
+        {
+            Toast.makeText(this, "File was not selected.", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        InputStream inputStream = null;
+        try
+        {
+            inputStream = getContentResolver().openInputStream(uri);
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder total = new StringBuilder();
+            String line;
+
+            while ((line = r.readLine()) != null)
+            {
+                total.append(line + "\n");
+            }
+
+            return total.toString();
+        }
+        catch (FileNotFoundException e)
+        {
+            Toast.makeText(this, "File " + uri.getPath() + " was not found.", Toast.LENGTH_SHORT).show();
+        }
+        catch (IOException ioExcep)
+        {
+
+        }
+
+        return null;
+    }
+
+    private void loadAdaptiveCard(Intent data)
+    {
+
+        String fullString = loadFile(data.getData());
+        if (fullString.isEmpty())
+        {
+            return;
+        }
+        EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
+        jsonText.setText(fullString);
+
+        EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
+        List path = data.getData().getPathSegments();
+        fileEditText.setText((String)path.get(path.size()-1));
+
+    }
+
+    private void loadHostConfig(Intent data)
+    {
+        String fullString = loadFile(data.getData());
+        if (fullString.isEmpty())
+        {
+            return;
+        }
+
+        EditText configText = (EditText) findViewById(R.id.hostConfig);
+        configText.setText(fullString);
+
+        EditText fileEditText = (EditText) findViewById(R.id.hostConfigFileEditText);
+        List path = data.getData().getPathSegments();
+        fileEditText.setText((String)path.get(path.size()-1));
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case FILE_SELECT_CODE:
-                if (resultCode == RESULT_OK) {
-                    // Get the Uri of the selected file
-                    Uri uri = data.getData();
-                    if (uri == null)
-                    {
-                        Toast.makeText(this, "File was not selected.", Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-
-                    // TODO: Move this outside of UI thread
-                    InputStream inputStream = null;
-                    try
-                    {
-                        inputStream = getContentResolver().openInputStream(uri);
-                        BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-                        StringBuilder total = new StringBuilder();
-                        String line;
-
-                        while ((line = r.readLine()) != null)
-                        {
-                            total.append(line + "\n");
-                        }
-
-                        m_fileLoaded.set(true);
-                        EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-                        String fullString = total.toString();
-                        jsonText.setText(fullString);
-
-                        renderAdaptiveCard(fullString, true);
-
-                        EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
-                        List path = uri.getPathSegments();
-                        fileEditText.setText((String)path.get(path.size()-1));
-                    }
-                    catch (FileNotFoundException e)
-                    {
-                        Toast.makeText(this, "File " + uri.getPath() + " was not found.", Toast.LENGTH_SHORT).show();
-                    }
-                    catch (IOException ioExcep)
-                    {
-
-                    }
+            case FILE_SELECT_CARD:
+                if (resultCode == RESULT_OK)
+                {
+                    loadAdaptiveCard(data);
+                }
+                break;
+            case FILE_SELECT_CONFIG:
+                if (resultCode == RESULT_OK)
+                {
+                    loadHostConfig(data);
                 }
                 break;
         }
@@ -209,9 +250,29 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return true;
     }
 
-    private void onSubmit(Map<String, String> keyValueMap)
-    {
-        showToast("Submit: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+    private void onSubmit(BaseActionElement actionElement, Map<String, String> keyValueMap) {
+        SubmitAction submitAction = null;
+        if (actionElement instanceof SubmitAction) {
+            submitAction = (SubmitAction) actionElement;
+        } else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null) {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        String data = submitAction.GetDataJson();
+        if (!data.isEmpty())
+        {
+            try {
+                JSONObject object = new JSONObject(data);
+                showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+            } catch (JSONException e) {
+                //e.printStackTrace();
+                showToast(e.toString(), Toast.LENGTH_LONG);
+            }
+        }
+        else
+        {
+            showToast("Submit input: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+        }
     }
 
     private void onShowCard(BaseActionElement actionElement)
@@ -227,13 +288,18 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         ShowCardFragment showCardFragment = new ShowCardFragment();
-        HostConfig config = new HostConfig();
-        config.getFontSizes().setSmallFontSize(1);
-        config.getFontSizes().setMediumFontSize(1);
-        config.getFontSizes().setLargeFontSize(1);
-        config.getFontSizes().setExtraLargeFontSize(1);
+        String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
+        HostConfig hostConfig;
+        if (hostConfigText.isEmpty())
+        {
+            hostConfig = new HostConfig();
+        }
+        else
+        {
+            hostConfig = HostConfig.DeserializeFromString(hostConfigText);
+        }
 
-        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, config);
+        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, hostConfig);
         Bundle args = new Bundle();
         args.putString("title", showCardAction.GetTitle());
         showCardFragment.setArguments(args);
@@ -264,7 +330,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         int actionType = actionElement.GetElementType().swigValue();
         if (actionType == ActionType.Submit.swigValue())
         {
-            onSubmit(inputData);
+            onSubmit(actionElement, inputData);
         }
         else if (actionType == ActionType.ShowCard.swigValue())
         {

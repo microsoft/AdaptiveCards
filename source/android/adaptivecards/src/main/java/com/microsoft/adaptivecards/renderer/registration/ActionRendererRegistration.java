@@ -3,16 +3,20 @@ package com.microsoft.adaptivecards.renderer.registration;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.objectmodel.ActionAlignment;
 import com.microsoft.adaptivecards.objectmodel.ActionType;
+import com.microsoft.adaptivecards.objectmodel.ActionsOrientation;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.IBaseActionElementRenderer;
+import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -75,24 +79,31 @@ public class ActionRendererRegistration
             return null;
         }
 
-        LinearLayout actionsLayout = new LinearLayout(context);
-        actionsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        actionsLayout.setOrientation(LinearLayout.VERTICAL);
-
         LinearLayout actionButtonsLayout = new LinearLayout(context);
         actionButtonsLayout.setTag(tag);
         actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
+        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
+        if (alignment == ActionAlignment.Right.swigValue())
+        {
+            actionButtonsLayout.setGravity(Gravity.RIGHT);
+        }
+        else if (alignment == ActionAlignment.Center.swigValue())
+        {
+            actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
 
-        LinearLayout hiddenCardsLayout = new LinearLayout(context);
-        hiddenCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        hiddenCardsLayout.setOrientation(LinearLayout.VERTICAL);
-        actionsLayout.addView(actionButtonsLayout);
-        actionsLayout.addView(hiddenCardsLayout);
+        if (hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Vertical.swigValue())
+        {
+            actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
+        }
+        else
+        {
+            actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
+        }
 
         if (viewGroup != null)
         {
-            viewGroup.addView(actionsLayout);
+            viewGroup.addView(actionButtonsLayout);
         }
 
         for (int i = 0; i < size && i < hostConfig.getActions().getMaxActions(); i++)
@@ -108,7 +119,7 @@ public class ActionRendererRegistration
             renderer.render(context, fragmentManager, actionButtonsLayout, actionElement, inputActionHandlerList, cardActionHandler, hostConfig);
         }
 
-        return actionsLayout;
+        return actionButtonsLayout;
     }
 
     private static ActionRendererRegistration s_instance = null;

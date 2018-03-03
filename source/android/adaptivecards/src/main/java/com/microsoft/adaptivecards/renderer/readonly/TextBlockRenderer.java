@@ -4,17 +4,20 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
 import com.microsoft.adaptivecards.objectmodel.MarkDownParser;
-import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -25,6 +28,8 @@ import com.microsoft.adaptivecards.objectmodel.TextBlock;
 import com.microsoft.adaptivecards.objectmodel.TextSize;
 import com.microsoft.adaptivecards.objectmodel.TextWeight;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+
+import org.xml.sax.XMLReader;
 
 import java.util.HashMap;
 import java.util.Vector;
@@ -106,9 +111,64 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTypeface(null, m_textWeightMap.get(textWeight));
     }
 
-    static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle)
+    static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
-        textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
+        if (containerStyle.swigValue() == ContainerStyle.Emphasis.swigValue())
+        {
+            textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getEmphasisPalette().getForegroundColors(), isSubtle));
+        }
+        else
+        {
+            textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
+        }
+    }
+
+    // Class to replace ul and li tags
+    public class UlTagHandler implements Html.TagHandler{
+        @Override
+        public void handleTag(boolean opening, String tag, Editable output,
+                              XMLReader xmlReader) {
+            if(tag.equals("ul") && !opening) output.append("\n");
+            if(tag.equals("li") && opening) output.append("\n\t• ");
+        }
+    }
+
+    private CharSequence trimHtmlString(Spanned htmlString)
+    {
+        int numToRemoveFromEnd = 0;
+        int numToRemoveFromStart = 0;
+
+        for (int i = htmlString.length()-1; i >= 0; --i)
+        {
+            if (htmlString.charAt(i) == '\n')
+            {
+                numToRemoveFromEnd++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        for (int i = 0; i <= htmlString.length()-1; ++i)
+        {
+            if (htmlString.charAt(i) == '\n')
+            {
+                numToRemoveFromStart++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        //Sanity check
+        if (numToRemoveFromStart + numToRemoveFromEnd >= htmlString.length())
+        {
+            return htmlString;
+        }
+
+        return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
     }
 
     @Override
@@ -119,7 +179,8 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
         TextBlock textBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -141,42 +202,33 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         String textString = markDownParser.TransformToHtml();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            Spanned htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT);
-            if (htmlString.length() > 1)
-            {
-                CharSequence sequence = htmlString.subSequence(0, htmlString.length()-1);
-                textView.setText(sequence);
-            }
-            else
-            {
-                textView.setText(htmlString);
-            }
+            Spanned htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
+            textView.setText(trimHtmlString(htmlString));
         }
         else
         {
             // Before Android N, html.fromHtml adds two newline characters to end of string
-            Spanned htmlString = Html.fromHtml(textString);
-            if (htmlString.length() > 2)
-            {
-                CharSequence sequence = htmlString.subSequence(0, htmlString.length()-2);
-                textView.setText(sequence);textView.setText(sequence);
-            }
-            else
-            {
-                textView.setText(htmlString);
-            }
+            Spanned htmlString = Html.fromHtml(textString, null, new UlTagHandler());
+            textView.setText(trimHtmlString(htmlString));
         }
         textView.setSingleLine(!textBlock.GetWrap());
+        textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setHorizontallyScrolling(false);
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
-        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle());
+        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), containerStyle);
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();
-        if (maxLines > 0)
+        if (maxLines > 0 && textBlock.GetWrap())
         {
             textView.setMaxLines(maxLines);
+        }
+        else if (!textBlock.GetWrap())
+        {
+            textView.setMaxLines(1);
         }
 
         viewGroup.addView(textView);

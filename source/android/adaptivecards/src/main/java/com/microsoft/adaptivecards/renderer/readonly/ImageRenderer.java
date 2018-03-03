@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.action.ActionElementRenderer;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -116,6 +117,7 @@ public class ImageRenderer extends BaseCardElementRenderer
     }
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
         if (imageSize.swigValue() == ImageSize.Stretch.swigValue()) {
             //ImageView must match parent for stretch to work
             imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -126,7 +128,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getMediumSize()));
         } else if (imageSize.swigValue() == ImageSize.Large.swigValue()) {
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getLargeSize()));
-        } else if (imageSize.swigValue() != ImageSize.Auto.swigValue()){
+        } else if (imageSize.swigValue() != ImageSize.Auto.swigValue() && imageSize.swigValue() != ImageSize.None.swigValue()){
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
 
@@ -141,9 +143,10 @@ public class ImageRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
-        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, cardActionHandler, hostConfig, false);
+        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle, false);
     }
 
     public View render(
@@ -154,6 +157,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
+            ContainerStyle containerStyle,
             boolean isPartOfImageSet)
     {
         Image image;
@@ -175,7 +179,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         if (image.GetImageSize().swigValue() == ImageSize.Stretch.swigValue())
         {
             //ImageView must match parent for stretch to work
-            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
         else
         {

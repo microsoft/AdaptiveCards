@@ -4,9 +4,12 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.objectmodel.ContainerStyle;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+import com.microsoft.adaptivecards.renderer.Util;
 import com.microsoft.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
@@ -45,7 +48,8 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
         ImageSet imageSet = null;
         if (baseCardElement instanceof ImageSet)
@@ -59,6 +63,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
         setSpacingAndSeparator(context, viewGroup, imageSet.GetSpacing(), imageSet.GetSeparator(), hostConfig, true);
 
+        //TODO: Remove this cast. If someone overrides the image renderer in the registration, this will fail since the type may not extend from ImageRenderer.
         ImageRenderer imageRenderer = (ImageRenderer) CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)
         {
@@ -76,7 +81,8 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
             // TODO: temporary - this will be handled in the object model
             image.SetImageSize(imageSize);
-            imageRenderer.render(context, fragmentManager, horizFlowLayout, image, inputActionHandlerList, cardActionHandler, hostConfig, true);
+            View imageView = imageRenderer.render(context, fragmentManager, horizFlowLayout, image, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle, true);
+            ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.getImageSet().getMaxImageHeight()));
         }
 
         viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
