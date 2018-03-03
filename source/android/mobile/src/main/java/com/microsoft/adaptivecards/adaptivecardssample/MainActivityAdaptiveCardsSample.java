@@ -68,7 +68,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                         {
                             public void run()
                             {
-                                renderAdaptiveCard( true);
+                                renderAdaptiveCard(true);
                             }
                         });
                     }
