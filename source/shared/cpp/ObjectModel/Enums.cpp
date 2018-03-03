@@ -87,6 +87,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::MinVersion, "minVersion" },
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
+        { AdaptiveCardSchemaKey::Payload, "payload" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
         { AdaptiveCardSchemaKey::Right, "right" },
         { AdaptiveCardSchemaKey::SelectAction, "selectAction" },

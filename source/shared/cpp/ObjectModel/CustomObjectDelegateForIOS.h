@@ -1,0 +1,41 @@
+#pragma once
+
+#include "pch.h"
+#include "BaseCardElement.h"
+#include "Enums.h"
+#include <time.h>
+#include "ElementParserRegistration.h"
+#include "DateTimePreparser.h"
+
+namespace AdaptiveCards
+{
+class CustomObjectDelegateForIOS : public BaseCardElement
+{
+public:
+    CustomObjectDelegateForIOS();
+    CustomObjectDelegateForIOS(Json::Value const &paylaod);
+        
+    virtual Json::Value SerializeToJsonValue() override;
+    Json::Value GetJsonPayload();
+    void SetJsonPayload(const Json::Value& payload);
+
+private:
+    void PopulateKnownPropertiesSet();
+
+    Json::Value m_payload;
+};
+
+class CustomObjectDelegateForIOSParser : public BaseCardElementParser
+{
+public:
+    std::shared_ptr<BaseCardElement> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& root);
+
+    std::shared_ptr<BaseCardElement> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const std::string& jsonString);
+};
+}

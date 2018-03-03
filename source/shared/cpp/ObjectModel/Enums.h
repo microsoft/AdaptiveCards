@@ -113,6 +113,7 @@ enum class AdaptiveCardSchemaKey
     MinVersion,
     NumberInput,
     Padding,
+    Payload,
     Placeholder,
     Right,
     SelectAction,
