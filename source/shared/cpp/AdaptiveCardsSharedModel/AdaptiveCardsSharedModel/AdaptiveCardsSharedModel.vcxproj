@@ -121,6 +121,7 @@
     <ClCompile Include="..\..\ObjectModel\Column.cpp" />
     <ClCompile Include="..\..\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\Container.cpp" />
+    <ClCompile Include="..\..\ObjectModel\CustomObjectDelegateForIOS.cpp" />
     <ClCompile Include="..\..\ObjectModel\DateInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\DateTimePreparsedToken.cpp" />
     <ClCompile Include="..\..\ObjectModel\DateTimePreparser.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="..\..\ObjectModel\Column.h" />
     <ClInclude Include="..\..\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\ObjectModel\Container.h" />
+    <ClInclude Include="..\..\ObjectModel\CustomObjectDelegateForIOS.h" />
     <ClInclude Include="..\..\ObjectModel\DateInput.h" />
     <ClInclude Include="..\..\ObjectModel\DateTimePreparsedToken.h" />
     <ClInclude Include="..\..\ObjectModel\DateTimePreparser.h" />

@@ -113,6 +113,7 @@ enum class AdaptiveCardSchemaKey
     MinVersion,
     NumberInput,
     Padding,
+    Payload,
     Placeholder,
     Right,
     SelectAction,
@@ -223,7 +224,8 @@ enum class CardElementType
     TextInput,
     TimeInput,
     ToggleInput,
-    Custom
+    Custom,
+    CustomIOSDelegate,
 };
 
 enum class ActionType
