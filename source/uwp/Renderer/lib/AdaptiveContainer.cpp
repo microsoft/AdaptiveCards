@@ -40,6 +40,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedContainer->GetSpacing());
         m_separator = sharedContainer->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedContainer->GetId(), m_id.GetAddressOf()));
+        RETURN_IF_FAILED(JsonCppToJsonObject(sharedContainer->GetAdditionalProperties(), &m_additionalProperties));
 
         return S_OK;
     }
@@ -103,23 +104,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         *separator = m_separator;
         return S_OK;
-
-        //Issue #629 to make separator an object
-        //return GenerateSeparatorProjection(m_sharedContainer->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::put_Separator(boolean separator)
     {
         m_separator = separator;
-
-        /*Issue #629 to make separator an object
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
-
-        m_sharedContainer->SetSeparator(sharedSeparator);
-        */
-
         return S_OK;
     }
 
@@ -144,6 +134,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
+        HRESULT AdaptiveContainer::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return m_additionalProperties.CopyTo(result);
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveContainer::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    {
+        m_additionalProperties = jsonObject;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveContainer::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveCards::Container> sharedModel;
@@ -153,7 +156,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveCards::Container>& sharedModel)
+    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveCards::Container>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
 
@@ -172,5 +175,5 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         sharedModel = container;
         return S_OK;
-    }
+    }CATCH_RETURN;
 }}}

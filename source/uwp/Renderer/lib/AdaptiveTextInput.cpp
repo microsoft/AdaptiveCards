@@ -15,8 +15,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
-        m_sharedTextInput = std::make_shared<TextInput>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
+        return RuntimeClassInitialize(textInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
@@ -27,93 +27,95 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             return E_INVALIDARG;
         }
 
-        m_sharedTextInput = sharedTextInput;
+        RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetValue(), m_value.GetAddressOf()));
+        m_maxLength = sharedTextInput->GetMaxLength();
+        m_isMultiline = sharedTextInput->GetIsMultiline();
+        m_textInputStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+
+        m_isRequired = sharedTextInput->GetIsRequired();
+        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedTextInput->GetSpacing());
+        m_separator = sharedTextInput->GetSeparator();
+        RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetId(), m_id.GetAddressOf()));
+        RETURN_IF_FAILED(JsonCppToJsonObject(sharedTextInput->GetAdditionalProperties(), &m_additionalProperties));
+
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_Placeholder(HSTRING* placeholder)
     {
-        return UTF8ToHString(m_sharedTextInput->GetPlaceholder(), placeholder);
+        return m_placeholder.CopyTo(placeholder);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::put_Placeholder(HSTRING placeholder)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(placeholder, out));
-        m_sharedTextInput->SetPlaceholder(out);
-        return S_OK;
+        return m_placeholder.Set(placeholder);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextInput::get_Value(HSTRING* value)
+    HRESULT AdaptiveTextInput::get_Value(HSTRING* value)
     {
-        return UTF8ToHString(m_sharedTextInput->GetValue(), value);
+        return m_value.CopyTo(value);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextInput::put_Value(HSTRING value)
+    HRESULT AdaptiveTextInput::put_Value(HSTRING value)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(value, out));
-        m_sharedTextInput->SetValue(out);
-        return S_OK;
+        return m_value.Set(value);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_IsMultiline(boolean* isMultiline)
     {
-        *isMultiline = m_sharedTextInput->GetIsMultiline();
+        *isMultiline = m_isMultiline;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::put_IsMultiline(boolean isMultiline)
     {
-        m_sharedTextInput->SetIsMultiline(Boolify(isMultiline));
+        m_isMultiline = isMultiline;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_MaxLength(UINT32* maxLength)
     {
-        *maxLength = m_sharedTextInput->GetMaxLength();
+        *maxLength = m_maxLength;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::put_MaxLength(UINT32 maxLength)
     {
-        m_sharedTextInput->SetMaxLength(maxLength);
+        m_maxLength = maxLength;
         return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle * textInputStyle)
     {
-        *textInputStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle>(m_sharedTextInput->GetTextInputStyle());
+        *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle)
     {
-        m_sharedTextInput->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(textInputStyle));
+        m_textInputStyle = textInputStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedTextInput->GetId(), id);
+        return m_id.CopyTo(id);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::put_Id(HSTRING id)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedTextInput->SetId(out);
-        return S_OK;
+        return m_id.Set(id);
     }
 
     _Use_decl_annotations_
@@ -126,52 +128,42 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(m_sharedTextInput->GetSpacing());
+        *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
-        m_sharedTextInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        m_spacing = spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_Separator(boolean* separator)
     {
-        *separator = m_sharedTextInput->GetSeparator();
+        *separator = m_separator;
         return S_OK;
-
-        //Issue #629 to make separator an object
-        //return GenerateSeparatorProjection(m_sharedTextInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::put_Separator(boolean separator)
     {
-        m_sharedTextInput->SetSeparator(separator);
-
-        /*Issue #629 to make separator an object
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
-
-        m_sharedTextInput->SetSeparator(sharedSeparator);
-        */
+        m_separator = separator;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_IsRequired(boolean* isRequired)
     {
-        *isRequired = m_sharedTextInput->GetIsRequired();
+        *isRequired = m_isRequired;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::put_IsRequired(boolean isRequired)
     {
-        m_sharedTextInput->SetIsRequired(isRequired);
+        m_isRequired = isRequired;
         return S_OK;
     }
 
@@ -184,15 +176,47 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    HRESULT AdaptiveTextInput::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        return StringToJsonObject(m_sharedTextInput->Serialize(), result);
+        return m_additionalProperties.CopyTo(result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveCards::TextInput>& sharedModel)
+    HRESULT AdaptiveTextInput::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
     {
-        sharedModel = m_sharedTextInput;
+        m_additionalProperties = jsonObject;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        std::shared_ptr<AdaptiveCards::TextInput> sharedTextInput = std::make_shared<AdaptiveCards::TextInput>();
+        GetSharedModel(sharedTextInput);
+
+        return StringToJsonObject(sharedTextInput->Serialize(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveCards::TextInput>& sharedModel) try
+    {
+        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(textInput)));
+        textInput->SetIsRequired(m_isRequired);
+        
+        textInput->SetMaxLength(m_maxLength);
+        textInput->SetIsMultiline(m_isMultiline);
+        textInput->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(m_textInputStyle));
+
+        std::string placeholder;
+        RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
+        textInput->SetPlaceholder(placeholder);
+
+        std::string value;
+        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
+        textInput->SetValue(value);
+
+        return S_OK;
+    }CATCH_RETURN;
 }}}
