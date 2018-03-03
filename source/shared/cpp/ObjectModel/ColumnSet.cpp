@@ -7,10 +7,12 @@ using namespace AdaptiveCards;
 
 ColumnSet::ColumnSet() : BaseCardElement(CardElementType::ColumnSet)
 {
+    PopulateKnownPropertiesSet();
 }
 
 ColumnSet::ColumnSet(std::vector<std::shared_ptr<Column>>& columns) : BaseCardElement(CardElementType::ColumnSet), m_columns(columns)
 {
+    PopulateKnownPropertiesSet();
 }
 
 const std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns() const
@@ -85,4 +87,10 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return ColumnSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void ColumnSet::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }

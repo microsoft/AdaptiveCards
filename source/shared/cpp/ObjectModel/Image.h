@@ -42,6 +42,8 @@ public:
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::string m_url;
     ImageStyle m_imageStyle;
     ImageSize m_imageSize;

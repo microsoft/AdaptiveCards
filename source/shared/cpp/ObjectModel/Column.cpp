@@ -6,6 +6,7 @@ using namespace AdaptiveCards;
 
 Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto")
 {
+    PopulateKnownPropertiesSet();
 }
 
 Column::Column(
@@ -16,6 +17,7 @@ Column::Column(
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
     BaseCardElement(CardElementType::Column, spacing, separation), m_width(size), m_style(style), m_items(items)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Column::Column(
@@ -134,6 +136,14 @@ std::shared_ptr<BaseActionElement> Column::GetSelectAction() const
 void Column::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 {
     m_selectAction = action;
+}
+
+void Column::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
 }
 
 void Column::SetLanguage(const std::string& language)

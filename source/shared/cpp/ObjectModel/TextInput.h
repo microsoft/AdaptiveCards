@@ -30,6 +30,8 @@ public:
     void SetTextInputStyle(const TextInputStyle value);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::string m_placeholder;
     std::string m_value;
     bool m_isMultiline;

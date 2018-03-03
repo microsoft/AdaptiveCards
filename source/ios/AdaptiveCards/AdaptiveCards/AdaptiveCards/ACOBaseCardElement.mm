@@ -41,4 +41,15 @@ using namespace AdaptiveCards;
     _elem = elem;
 }
 
+- (NSData *)additionalProperty
+{
+    if(_elem){
+        Json::Value blob = _elem->GetAdditionalProperties();
+        Json::FastWriter fastWriter;
+        NSString *jsonString =
+            [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        return (jsonString.length > 0)? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+    }
+    return nil;
+}
 @end

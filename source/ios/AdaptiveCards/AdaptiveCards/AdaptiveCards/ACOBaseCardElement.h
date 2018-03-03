@@ -9,6 +9,8 @@
 
 @interface ACOBaseCardElement:NSObject
 
+- (NSData *)additionalProperty;
+
 typedef NS_ENUM(NSInteger, ACRCardElementType) {
     ACRUnsupported = 0,
     ACRAdaptiveCard,

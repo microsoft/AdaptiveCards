@@ -23,6 +23,8 @@ public:
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::vector<std::shared_ptr<Fact>> m_facts; 
 };
 

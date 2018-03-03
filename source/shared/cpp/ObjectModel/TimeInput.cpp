@@ -6,6 +6,7 @@ using namespace AdaptiveCards;
 TimeInput::TimeInput() :
     BaseInputElement(CardElementType::TimeInput)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Json::Value TimeInput::SerializeToJsonValue()
@@ -85,3 +86,10 @@ std::shared_ptr<BaseCardElement> TimeInputParser::DeserializeFromString(
     return TimeInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
+void TimeInput::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
+}

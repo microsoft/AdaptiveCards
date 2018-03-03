@@ -30,6 +30,8 @@ public:
     void SetLanguage(const std::string& value);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     ContainerStyle m_style;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;

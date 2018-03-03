@@ -8,6 +8,7 @@ TextInput::TextInput() :
     m_isMultiline(false),
     m_maxLength(0)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Json::Value TextInput::SerializeToJsonValue()
@@ -97,4 +98,13 @@ std::shared_ptr<BaseCardElement> TextInputParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return TextInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void TextInput::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextInput));
 }

@@ -21,6 +21,8 @@ public:
     void SetLanguage(const std::string& value);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::shared_ptr<AdaptiveCard> m_card;
 };
 

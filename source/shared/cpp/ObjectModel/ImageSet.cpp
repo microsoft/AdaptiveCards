@@ -8,6 +8,7 @@ ImageSet::ImageSet() :
     BaseCardElement(CardElementType::ImageSet),
     m_imageSize(ImageSize::None)
 {
+    PopulateKnownPropertiesSet();
 }
 
 ImageSet::ImageSet(
@@ -18,6 +19,7 @@ ImageSet::ImageSet(
     m_images(images),
     m_imageSize(ImageSize::None)
 {
+    PopulateKnownPropertiesSet();
 }
 
 ImageSet::ImageSet(
@@ -26,6 +28,7 @@ ImageSet::ImageSet(
     BaseCardElement(CardElementType::ImageSet, spacing, separation),
     m_imageSize(ImageSize::None)
 {
+    PopulateKnownPropertiesSet();
 }
 
 ImageSize ImageSet::GetImageSize() const
@@ -97,4 +100,10 @@ std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return ImageSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void ImageSet::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize));
 }

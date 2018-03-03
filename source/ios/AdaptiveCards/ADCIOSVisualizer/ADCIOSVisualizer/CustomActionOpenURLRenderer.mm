@@ -28,12 +28,30 @@
                                              superview:superview
                                      baseActionElement:acoElem
                                             hostConfig:acoConfig];
+    NSString *userSpecifiedBackgroundColor = nil;
     if(button)
     {
-        [button setBackgroundColor:[UIColor colorWithRed:1.0
-                                                   green:59.0/255.0
-                                                    blue:48.0/255.0
-                                                   alpha:1.0]];
+        NSData *additionalProperty = [acoElem additionalProperty];
+        if(additionalProperty) {
+            NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:additionalProperty options:NSJSONReadingMutableLeaves error:nil];
+            userSpecifiedBackgroundColor = dictionary[@"color"];
+        }
+        UIColor *backgroundColor = nil;
+        if(userSpecifiedBackgroundColor) {
+            if([userSpecifiedBackgroundColor isEqualToString: @"green"]) {
+                backgroundColor = [UIColor colorWithRed:76.0/255.0
+                                                 green:217.0/255.0
+                                                  blue:100.0/255.0
+                                                 alpha:1.0];
+            }
+        }
+        if(!backgroundColor){
+            backgroundColor = [UIColor colorWithRed:1.0
+                                              green:59.0/255.0
+                                               blue:48.0/255.0
+                                              alpha:1.0];
+        }
+        [button setBackgroundColor:backgroundColor];
     }
     return button;
 }

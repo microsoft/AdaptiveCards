@@ -32,6 +32,8 @@ public:
     void SetValue(std::string value);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::string m_value;
     bool m_isMultiSelect;
     ChoiceSetStyle m_choiceSetStyle;

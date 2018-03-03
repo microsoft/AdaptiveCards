@@ -35,6 +35,8 @@ public:
     void SetAdditionalProperties(Json::Value additionalProperties);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     ActionType m_type;
     std::string m_typeString;
     std::string m_title;

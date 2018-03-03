@@ -19,6 +19,7 @@ TextBlock::TextBlock() :
     m_maxLines(0),
     m_language()
 {
+    PopulateKnownPropertiesSet();
 }
 
 TextBlock::TextBlock(
@@ -44,6 +45,7 @@ TextBlock::TextBlock(
     m_hAlignment(hAlignment),
     m_language(language)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Json::Value TextBlock::SerializeToJsonValue()
@@ -185,4 +187,16 @@ std::shared_ptr<BaseCardElement> TextBlockParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return TextBlockParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void TextBlock::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment));
 }

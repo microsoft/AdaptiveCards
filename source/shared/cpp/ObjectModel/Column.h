@@ -42,6 +42,8 @@ public:
     void SetLanguage(const std::string& language);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::string m_width;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;

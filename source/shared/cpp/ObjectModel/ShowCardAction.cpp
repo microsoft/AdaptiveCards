@@ -6,7 +6,7 @@ using namespace AdaptiveCards;
 
 ShowCardAction::ShowCardAction() : BaseActionElement(ActionType::ShowCard)
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card));
+    PopulateKnownPropertiesSet();
 }
 
 Json::Value ShowCardAction::SerializeToJsonValue()
@@ -58,3 +58,7 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::DeserializeFromString(
     return ShowCardActionParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
+void ShowCardAction::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card));
+}
