@@ -8,13 +8,12 @@
 #import <UIKit/UIKit.h>
 #import "ACRIContentHoldingView.h"
 #import "SharedAdaptiveCard.h"
-#import "HostConfig.h"
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 
 @interface ACRShowCardTarget:NSObject<ACRSelectActionDelegate>
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard 
-                              config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
+                              config:(ACOHostConfig *)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                                   vc:(UIViewController *)vc;
 

@@ -33,7 +33,6 @@ rootViewController:(UIViewController *)vc
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
 
@@ -43,7 +42,7 @@ rootViewController:(UIViewController *)vc
      rootViewController:vc
                  inputs:inputs
           withCardElems:containerElem->GetItems()
-          andHostConfig:config];
+          andHostConfig:acoConfig];
 
     [viewGroup addArrangedSubview:container];
 
@@ -55,7 +54,7 @@ rootViewController:(UIViewController *)vc
                                                                  targetView:container
                                                               actionElement:selectAction
                                                                      inputs:inputs
-                                                                 hostConfig:config];
+                                                                 hostConfig:acoConfig];
     if(gestureRecognizer)
     {
         [container addGestureRecognizer:gestureRecognizer];
