@@ -223,14 +223,20 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseInputElement_SerializeToJsonValue(long jarg1, BaseInputElement jarg1_);
   public final static native void delete_BaseInputElement(long jarg1);
   public final static native long ActionElementParser_Deserialize(long jarg1, ActionElementParser jarg1_, long jarg2, ElementParserRegistration jarg2_, long jarg3, ActionParserRegistration jarg3_, long jarg4, JsonValue jarg4_);
+  public final static native long new_ActionElementParser();
   public final static native void delete_ActionElementParser(long jarg1);
+  public final static native void ActionElementParser_director_connect(ActionElementParser obj, long cptr, boolean mem_own, boolean weak_global);
+  public final static native void ActionElementParser_change_ownership(ActionElementParser obj, long cptr, boolean take_or_release);
   public final static native long new_ActionParserRegistration();
   public final static native void ActionParserRegistration_AddParser(long jarg1, ActionParserRegistration jarg1_, String jarg2, long jarg3, ActionElementParser jarg3_);
   public final static native void ActionParserRegistration_RemoveParser(long jarg1, ActionParserRegistration jarg1_, String jarg2);
   public final static native long ActionParserRegistration_GetParser(long jarg1, ActionParserRegistration jarg1_, String jarg2);
   public final static native void delete_ActionParserRegistration(long jarg1);
   public final static native long BaseCardElementParser_Deserialize(long jarg1, BaseCardElementParser jarg1_, long jarg2, ElementParserRegistration jarg2_, long jarg3, ActionParserRegistration jarg3_, long jarg4, JsonValue jarg4_);
+  public final static native long new_BaseCardElementParser();
   public final static native void delete_BaseCardElementParser(long jarg1);
+  public final static native void BaseCardElementParser_director_connect(BaseCardElementParser obj, long cptr, boolean mem_own, boolean weak_global);
+  public final static native void BaseCardElementParser_change_ownership(BaseCardElementParser obj, long cptr, boolean take_or_release);
   public final static native long new_ElementParserRegistration();
   public final static native void ElementParserRegistration_AddParser(long jarg1, ElementParserRegistration jarg1_, String jarg2, long jarg3, BaseCardElementParser jarg3_);
   public final static native void ElementParserRegistration_RemoveParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
@@ -833,6 +839,12 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static long SwigDirector_BaseActionElement_SerializeToJsonValue(BaseActionElement jself) {
     return JsonValue.getCPtr(jself.SerializeToJsonValue());
+  }
+  public static long SwigDirector_ActionElementParser_Deserialize(ActionElementParser jself, long elementParserRegistration, long actionParserRegistration, long value) {
+    return BaseActionElement.getCPtr(jself.Deserialize(new ElementParserRegistration(elementParserRegistration,true), new ActionParserRegistration(actionParserRegistration,true), new JsonValue(value, false)));
+  }
+  public static long SwigDirector_BaseCardElementParser_Deserialize(BaseCardElementParser jself, long elementParserRegistration, long actionParserRegistration, long value) {
+    return BaseCardElement.getCPtr(jself.Deserialize(new ElementParserRegistration(elementParserRegistration,true), new ActionParserRegistration(actionParserRegistration,true), new JsonValue(value, false)));
   }
 
   private final static native void swig_module_init();

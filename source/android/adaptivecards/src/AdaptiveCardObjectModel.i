@@ -148,8 +148,8 @@ namespace Json {
     }
 }
 
-%feature("director", assumeoverride=1) AdaptiveCards::IBaseCardElementParser;
-%feature("director", assumeoverride=1) AdaptiveCards::IActionElementParser;
+%feature("director", assumeoverride=1) AdaptiveCards::BaseCardElementParser;
+%feature("director", assumeoverride=1) AdaptiveCards::ActionElementParser;
 
 %typemap(in,numinputs=0) JNIEnv *jenv "$1 = jenv;"
 %extend AdaptiveCards::BaseCardElement {

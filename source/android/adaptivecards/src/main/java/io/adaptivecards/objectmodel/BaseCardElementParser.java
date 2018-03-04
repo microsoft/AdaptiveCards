@@ -35,9 +35,29 @@ public class BaseCardElementParser {
     }
   }
 
+  protected void swigDirectorDisconnect() {
+    swigCMemOwn = false;
+    delete();
+  }
+
+  public void swigReleaseOwnership() {
+    swigCMemOwn = false;
+    AdaptiveCardObjectModelJNI.BaseCardElementParser_change_ownership(this, swigCPtr, false);
+  }
+
+  public void swigTakeOwnership() {
+    swigCMemOwn = true;
+    AdaptiveCardObjectModelJNI.BaseCardElementParser_change_ownership(this, swigCPtr, true);
+  }
+
   public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue value) {
     long cPtr = AdaptiveCardObjectModelJNI.BaseCardElementParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(value), value);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
+  }
+
+  public BaseCardElementParser() {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElementParser(), true);
+    AdaptiveCardObjectModelJNI.BaseCardElementParser_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
 }
