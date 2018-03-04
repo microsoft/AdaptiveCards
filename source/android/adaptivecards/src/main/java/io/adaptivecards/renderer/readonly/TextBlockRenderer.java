@@ -58,23 +58,23 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     static void setTextSize(Context context, TextView textView, TextSize textSize, HostConfig hostConfig)
     {
         FontSizesConfig fontSizesConfig = hostConfig.getFontSizes();
-        if (textSize.swigValue() == TextSize.ExtraLarge.swigValue())
+        if (textSize == TextSize.ExtraLarge)
         {
             textView.setTextSize(fontSizesConfig.getExtraLargeFontSize());
         }
-        else if (textSize.swigValue() == TextSize.Large.swigValue())
+        else if (textSize == TextSize.Large)
         {
             textView.setTextSize(fontSizesConfig.getLargeFontSize());
         }
-        else if (textSize.swigValue() == TextSize.Medium.swigValue())
+        else if (textSize == TextSize.Medium)
         {
             textView.setTextSize(fontSizesConfig.getMediumFontSize());
         }
-        else if (textSize.swigValue() == TextSize.Default.swigValue())
+        else if (textSize == TextSize.Default)
         {
             textView.setTextSize(fontSizesConfig.getDefaultFontSize());
         }
-        else if (textSize.swigValue() == TextSize.Small.swigValue())
+        else if (textSize == TextSize.Small)
         {
             textView.setTextSize(fontSizesConfig.getSmallFontSize());
         }
@@ -87,15 +87,15 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
         int alignment;
-        if (textAlignment.swigValue() == HorizontalAlignment.Center.swigValue())
+        if (textAlignment == HorizontalAlignment.Center)
         {
             alignment = Gravity.CENTER;
         }
-        else if (textAlignment.swigValue() == HorizontalAlignment.Left.swigValue())
+        else if (textAlignment == HorizontalAlignment.Left)
         {
             alignment = Gravity.LEFT;
         }
-        else if (textAlignment.swigValue() == HorizontalAlignment.Right.swigValue())
+        else if (textAlignment == HorizontalAlignment.Right)
         {
             alignment = Gravity.RIGHT;
         }
@@ -114,7 +114,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
     static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
-        if (containerStyle.swigValue() == ContainerStyle.Emphasis.swigValue())
+        if (containerStyle == ContainerStyle.Emphasis)
         {
             textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getEmphasisPalette().getForegroundColors(), isSubtle));
         }

@@ -42,19 +42,19 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
     protected void setTextInputStyle(EditText editText, TextInputStyle textInputStyle)
     {
-        if (textInputStyle.swigValue() == TextInputStyle.Text.swigValue())
+        if (textInputStyle == TextInputStyle.Text)
         {
             // do nothing
         }
-        else if (textInputStyle.swigValue() == TextInputStyle.Tel.swigValue())
+        else if (textInputStyle == TextInputStyle.Tel)
         {
             editText.setInputType(InputType.TYPE_CLASS_PHONE);
         }
-        else if (textInputStyle.swigValue() == TextInputStyle.Url.swigValue())
+        else if (textInputStyle == TextInputStyle.Url)
         {
             editText.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         }
-        else if (textInputStyle.swigValue() == TextInputStyle.Email.swigValue())
+        else if (textInputStyle == TextInputStyle.Email)
         {
             editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         }

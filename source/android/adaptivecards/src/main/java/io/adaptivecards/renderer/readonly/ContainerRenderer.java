@@ -60,11 +60,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
         setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
         ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
         View containerView = CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, viewGroup, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);
-        if (styleForThis.swigValue() != containerStyle.swigValue())
+        if (styleForThis != containerStyle)
         {
             int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
             containerView.setPadding(padding, padding, padding, padding);
-            String color = styleForThis.swigValue() == containerStyle.Emphasis.swigValue() ?
+            String color = styleForThis == containerStyle.Emphasis ?
                     hostConfig.getContainerStyles().getEmphasisPalette().getBackgroundColor() :
                     hostConfig.getContainerStyles().getDefaultPalette().getBackgroundColor();
             containerView.setBackgroundColor(Color.parseColor(color));

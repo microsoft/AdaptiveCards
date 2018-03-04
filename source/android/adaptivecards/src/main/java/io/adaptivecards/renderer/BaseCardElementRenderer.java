@@ -17,31 +17,31 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
     protected static long getSpacingSize(Spacing spacing, SpacingConfig defaultSpacingConfig)
     {
         long spacingSize = 0;
-        if (spacing.swigValue() == Spacing.None.swigValue())
+        if (spacing == Spacing.None)
         {
             return 0;
         }
-        else if (spacing.swigValue() == Spacing.Default.swigValue())
+        else if (spacing == Spacing.Default)
         {
             spacingSize = defaultSpacingConfig.getDefaultSpacing();
         }
-        else if (spacing.swigValue() == Spacing.ExtraLarge.swigValue())
+        else if (spacing == Spacing.ExtraLarge)
         {
             spacingSize = defaultSpacingConfig.getExtraLargeSpacing();
         }
-        else if (spacing.swigValue() == Spacing.Large.swigValue())
+        else if (spacing == Spacing.Large)
         {
             spacingSize = defaultSpacingConfig.getLargeSpacing();
         }
-        else if (spacing.swigValue() == Spacing.Medium.swigValue())
+        else if (spacing == Spacing.Medium)
         {
             spacingSize = defaultSpacingConfig.getMediumSpacing();
         }
-        else if (spacing.swigValue() == Spacing.Small.swigValue())
+        else if (spacing == Spacing.Small)
         {
             spacingSize = defaultSpacingConfig.getSmallSpacing();
         }
-        else if (spacing.swigValue() == Spacing.Padding.swigValue())
+        else if (spacing == Spacing.Padding)
         {
             spacingSize = defaultSpacingConfig.getPaddingSpacing();
         }
@@ -56,31 +56,31 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
     protected static int getColor(ForegroundColor color, ColorsConfig colorsConfig, boolean isSubtle)
     {
         io.adaptivecards.objectmodel.ColorConfig colorConfig;
-        if (color.swigValue() == ForegroundColor.Accent.swigValue())
+        if (color == ForegroundColor.Accent)
         {
             colorConfig = colorsConfig.getAccent();
         }
-        else if (color.swigValue() == ForegroundColor.Attention.swigValue())
+        else if (color == ForegroundColor.Attention)
         {
             colorConfig = colorsConfig.getAttention();
         }
-        else if (color.swigValue() == ForegroundColor.Dark.swigValue())
+        else if (color == ForegroundColor.Dark)
         {
             colorConfig = colorsConfig.getDark();
         }
-        else if (color.swigValue() == ForegroundColor.Default.swigValue())
+        else if (color == ForegroundColor.Default)
         {
             colorConfig = colorsConfig.getDefaultColor();
         }
-        else if (color.swigValue() == ForegroundColor.Good.swigValue())
+        else if (color == ForegroundColor.Good)
         {
             colorConfig = colorsConfig.getGood();
         }
-        else if (color.swigValue() == ForegroundColor.Light.swigValue())
+        else if (color == ForegroundColor.Light)
         {
             colorConfig = colorsConfig.getLight();
         }
-        else if (color.swigValue() == ForegroundColor.Warning.swigValue())
+        else if (color == ForegroundColor.Warning)
         {
             colorConfig = colorsConfig.getWarning();
         }
