@@ -8,50 +8,48 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ActionType {
-  public final static ActionType Unsupported = new ActionType("Unsupported", AdaptiveCardObjectModelJNI.ActionType_Unsupported_get());
-  public final static ActionType ShowCard = new ActionType("ShowCard");
-  public final static ActionType Submit = new ActionType("Submit");
-  public final static ActionType OpenUrl = new ActionType("OpenUrl");
-  public final static ActionType Custom = new ActionType("Custom");
+public enum ActionType {
+  Unsupported(0),
+  ShowCard,
+  Submit,
+  OpenUrl,
+  Custom;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ActionType swigToEnum(int swigValue) {
+    ActionType[] swigValues = ActionType.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ActionType swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ActionType.class + " with value " + swigValue);
   }
 
-  private ActionType(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ActionType() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ActionType(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ActionType(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ActionType(String swigName, ActionType swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ActionType(ActionType swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ActionType[] swigValues = { Unsupported, ShowCard, Submit, OpenUrl, Custom };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

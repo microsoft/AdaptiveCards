@@ -83,8 +83,8 @@ public class SpacingConfig {
     return AdaptiveCardObjectModelJNI.SpacingConfig_paddingSpacing_get(swigCPtr, this);
   }
 
-  public static SpacingConfig Deserialize(SWIGTYPE_p_Json__Value json, SpacingConfig defaultValue) {
-    return new SpacingConfig(AdaptiveCardObjectModelJNI.SpacingConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), SpacingConfig.getCPtr(defaultValue), defaultValue), true);
+  public static SpacingConfig Deserialize(JsonValue json, SpacingConfig defaultValue) {
+    return new SpacingConfig(AdaptiveCardObjectModelJNI.SpacingConfig_Deserialize(JsonValue.getCPtr(json), json, SpacingConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public SpacingConfig() {

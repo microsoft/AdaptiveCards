@@ -35,8 +35,8 @@ public class ActionElementParser {
     }
   }
 
-  public BaseActionElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value value) {
-    long cPtr = AdaptiveCardObjectModelJNI.ActionElementParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(value));
+  public BaseActionElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue value) {
+    long cPtr = AdaptiveCardObjectModelJNI.ActionElementParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(value), value);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
   }
 

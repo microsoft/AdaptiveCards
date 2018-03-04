@@ -8,52 +8,50 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ForegroundColor {
-  public final static ForegroundColor Default = new ForegroundColor("Default", AdaptiveCardObjectModelJNI.ForegroundColor_Default_get());
-  public final static ForegroundColor Dark = new ForegroundColor("Dark");
-  public final static ForegroundColor Light = new ForegroundColor("Light");
-  public final static ForegroundColor Accent = new ForegroundColor("Accent");
-  public final static ForegroundColor Good = new ForegroundColor("Good");
-  public final static ForegroundColor Warning = new ForegroundColor("Warning");
-  public final static ForegroundColor Attention = new ForegroundColor("Attention");
+public enum ForegroundColor {
+  Default(0),
+  Dark,
+  Light,
+  Accent,
+  Good,
+  Warning,
+  Attention;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ForegroundColor swigToEnum(int swigValue) {
+    ForegroundColor[] swigValues = ForegroundColor.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ForegroundColor swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ForegroundColor.class + " with value " + swigValue);
   }
 
-  private ForegroundColor(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ForegroundColor() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ForegroundColor(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ForegroundColor(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ForegroundColor(String swigName, ForegroundColor swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ForegroundColor(ForegroundColor swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ForegroundColor[] swigValues = { Default, Dark, Light, Accent, Good, Warning, Attention };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 
