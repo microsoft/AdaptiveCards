@@ -3,7 +3,7 @@
 #include "AdaptiveRenderContext.h"
 #include "AdaptiveError.h"
 #include "AdaptiveWarning.h"
-#include "InputItem.h"
+#include "InputValue.h"
 #include "Util.h"
 
 using namespace Microsoft::WRL;

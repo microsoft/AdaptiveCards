@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
-#include "InputItem.h"
+#include "InputValue.h"
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp 
 {

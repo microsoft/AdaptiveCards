@@ -2,7 +2,7 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "util.h"
-#include "InputItem.h"
+#include "InputValue.h"
 #include "AdaptiveInputs.h"
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
