@@ -18,7 +18,6 @@
     <ClCompile Include="lib\AdaptiveShowCardAction.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitAction.cpp" />
     <ClCompile Include="lib\AdaptiveActionEventArgs.cpp" />
-    <ClCompile Include="lib\InputItem.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceInput.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInput.cpp" />
     <ClCompile Include="lib\AdaptiveDateInput.cpp" />
@@ -77,6 +76,7 @@
     <ClCompile Include="lib\AdaptiveWarning.cpp" />
     <ClCompile Include="lib\DateTimeParser.cpp" />
     <ClCompile Include="lib\HtmlHelpers.cpp" />
+    <ClCompile Include="lib\InputValue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -103,7 +103,6 @@
     <ClInclude Include="lib\AdaptiveShowCardAction.h" />
     <ClInclude Include="lib\AdaptiveSubmitAction.h" />
     <ClInclude Include="lib\AdaptiveActionEventArgs.h" />
-    <ClInclude Include="lib\InputItem.h" />
     <ClInclude Include="lib\AdaptiveChoiceInput.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInput.h" />
     <ClInclude Include="lib\AdaptiveDateInput.h" />
@@ -162,6 +161,7 @@
     <ClInclude Include="lib\AdaptiveWarning.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
     <ClInclude Include="lib\HtmlHelpers.h" />
+    <ClInclude Include="lib\InputValue.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

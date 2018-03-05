@@ -153,6 +153,7 @@
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
     <ClInclude Include="lib\HtmlHelpers.h" />
+    <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveSeparatorConfig.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
@@ -189,7 +190,6 @@
     <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\IImageLoadTrackerListener.h" />
     <ClInclude Include="lib\ImageLoadTracker.h" />
-    <ClInclude Include="lib\InputItem.h" />
     <ClInclude Include="lib\IXamlBuilderListener.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\Util.h" />
@@ -235,6 +235,7 @@
     <ClCompile Include="lib\CustomElementWrapper.cpp" />
     <ClCompile Include="lib\DateTimeParser.cpp" />
     <ClCompile Include="lib\HtmlHelpers.cpp" />
+    <ClCompile Include="lib\InputValue.cpp" />
     <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveSeparatorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionConfig.cpp" />
@@ -267,7 +268,6 @@
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\AdaptiveTextConfig.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
-    <ClCompile Include="lib\InputItem.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\WholeItemsPanel.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />

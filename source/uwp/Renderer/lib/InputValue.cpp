@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "InputItem.h"
+#include "InputValue.h"
 #include "json/json.h"
 #include "XamlHelpers.h"
 #include <windows.globalization.datetimeformatting.h>
@@ -15,7 +15,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace AdaptiveCards::Rendering::Uwp;
 
-std::string InputItem::SerializeTextInput() const
+std::string InputValue::SerializeTextInput() const
 {
     ComPtr<ITextBox> textBox;
     THROW_IF_FAILED(m_uiInputElement.As(&textBox));
@@ -32,7 +32,7 @@ std::string InputItem::SerializeTextInput() const
     return textString;
 }
 
-std::string InputItem::SerializeDateInput() const
+std::string InputValue::SerializeDateInput() const
 {
     ComPtr<ICalendarDatePicker> datePicker;
     THROW_IF_FAILED(m_uiInputElement.As(&datePicker));
@@ -61,7 +61,7 @@ std::string InputItem::SerializeDateInput() const
     return "";
 }
 
-std::string InputItem::SerializeTimeInput() const
+std::string InputValue::SerializeTimeInput() const
 {
     ComPtr<ITimePicker> timePicker;
     THROW_IF_FAILED(m_uiInputElement.As(&timePicker));
@@ -79,7 +79,7 @@ std::string InputItem::SerializeTimeInput() const
     return std::string(buffer);
 }
 
-std::string InputItem::SerializeToggleInput() const
+std::string InputValue::SerializeToggleInput() const
 {
     boolean checkedValue = false;
     XamlHelpers::GetToggleValue(m_uiInputElement.Get(), &checkedValue);
@@ -103,7 +103,7 @@ std::string InputItem::SerializeToggleInput() const
     return utf8Value;
 }
 
-std::string InputItem::GetChoiceValue(
+std::string InputValue::GetChoiceValue(
     IAdaptiveChoiceSetInput* choiceInput,
     INT32 selectedIndex) const
 {
@@ -123,7 +123,7 @@ std::string InputItem::GetChoiceValue(
     return "";
 }
 
-std::string InputItem::SerializeChoiceSetInput() const
+std::string InputValue::SerializeChoiceSetInput() const
 {
     ComPtr<IAdaptiveChoiceSetInput> choiceInput;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&choiceInput));
@@ -206,57 +206,54 @@ std::string InputItem::SerializeChoiceSetInput() const
     }
 }
 
-std::string InputItem::Serialize() const
+HRESULT InputValue::get_CurrentValue(HSTRING * result)
 {
     ComPtr<IAdaptiveCardElement> cardElement;
-    THROW_IF_FAILED(m_adaptiveInputElement.As(&cardElement));
+    RETURN_IF_FAILED(m_adaptiveInputElement.As(&cardElement));
 
     ABI::AdaptiveCards::Rendering::Uwp::ElementType elementType;
-    THROW_IF_FAILED(cardElement->get_ElementType(&elementType));
+    RETURN_IF_FAILED(cardElement->get_ElementType(&elementType));
 
-    std::string idString = GetIdString();
-
+    std::string serializedInput;
     switch (elementType)
     {
         case ElementType_TextInput:
         case ElementType_NumberInput:
         {
-            return SerializeTextInput();
+            serializedInput = SerializeTextInput();
+            break;
         }
         case ElementType_DateInput:
         {
-            return SerializeDateInput();
+            serializedInput = SerializeDateInput();
+            break;
         }
         case ElementType_TimeInput:
         {
-            return SerializeTimeInput();
+            serializedInput = SerializeTimeInput();
+            break;
         }
         case ElementType_ToggleInput:
         {
-            return SerializeToggleInput();
+            serializedInput = SerializeToggleInput();
+            break;
         }
         case ElementType_ChoiceSetInput:
         {
-            return SerializeChoiceSetInput();
+            serializedInput = SerializeChoiceSetInput();
+            break;
         }
         default:
-            return "";
+            serializedInput = "";
+            break;
     }
+
+    RETURN_IF_FAILED(UTF8ToHString(serializedInput, result));
+
+    return S_OK;
 }
 
-HSTRING InputItem::GetId() const
+HRESULT InputValue::get_InputElement(IAdaptiveInputElement ** inputElement)
 {
-    ComPtr<IAdaptiveCardElement> cardElement;
-    THROW_IF_FAILED(m_adaptiveInputElement.As(&cardElement));
-
-    HSTRING id;
-    THROW_IF_FAILED(cardElement->get_Id(&id));
-
-    return id;
-}
-
-std::string InputItem::GetIdString() const
-{
-    HSTRING idString = GetId();
-    return HStringToUTF8(idString);
+    return m_adaptiveInputElement.CopyTo(inputElement);
 }
