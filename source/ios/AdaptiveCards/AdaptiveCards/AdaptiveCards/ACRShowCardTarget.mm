@@ -48,6 +48,9 @@
                                             viewController:_vc
                                                 guideFrame:_superview.frame
                                                 hostconfig:_config];
+
+    [[(ACRViewController *)_vc card] appendInputs:inputs];
+
     unsigned int padding = 0;
 
     switch ([_config getHostConfig] ->actions.spacing)

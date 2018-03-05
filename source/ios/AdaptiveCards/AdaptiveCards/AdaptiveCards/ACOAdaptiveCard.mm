@@ -6,6 +6,7 @@
 //
 #import <Foundation/Foundation.h>
 #import "ACOAdaptiveCardParseResult.h"
+#import "ACRIBaseInputHandler.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "AdaptiveCardParseException.h"
@@ -16,6 +17,41 @@ using namespace AdaptiveCards;
 @implementation ACOAdaptiveCard
 {
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
+    NSMutableArray *_inputs;
+}
+
+- (void) setInputs:(NSMutableArray *) inputs
+{
+    _inputs = inputs;
+}
+
+- (void) appendInputs:(NSMutableArray *)inputs
+{
+    [_inputs addObjectsFromArray:inputs];
+}
+
+- (NSData *)inputs:(NSError **)error
+{
+    if(_inputs){
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        for(id<ACRIBaseInputHandler> input in _inputs)
+        {
+            if([input validate:error] == NO)
+            {
+                NSLog(@"input validation failed %@", *error);
+            }
+            else
+            {
+                [input getInput:dictionary];
+            }
+        }
+
+        error = nil;
+
+        return [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:error];
+    }
+
+    return nil;
 }
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
@@ -34,7 +70,7 @@ using namespace AdaptiveCards;
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
-            
+
             NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
                                                       code:errorCode
                                                   userInfo:nil];
@@ -45,7 +81,7 @@ using namespace AdaptiveCards;
     return result;
 }
 
-- (std::shared_ptr<AdaptiveCard> const &)getCard
+- (std::shared_ptr<AdaptiveCard> const &)card
 {
     return _adaptiveCard;
 }
