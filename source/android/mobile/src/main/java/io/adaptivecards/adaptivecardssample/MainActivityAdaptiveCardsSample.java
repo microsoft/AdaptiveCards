@@ -189,8 +189,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
 
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
-
-            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION);
+            
+            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, hostConfig);
