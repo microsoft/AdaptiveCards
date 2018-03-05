@@ -232,11 +232,18 @@ using namespace AdaptiveCards;
                         // MarkDownParser transforms text with MarkDown to a html string
                         std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(dateParsedString.c_str());
                         NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+                        // if correctly initialized, fonFamilyNames array is bigger than zero
+                        NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
+                        for(NSUInteger index = 0; index < [_hostConfig.fontFamilyNames count] - 1; ++index){
+                            [fontFamilyName appendString:@"', '"];
+                        }
+                        [fontFamilyName appendString:_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
+                        [fontFamilyName appendString:@"'"];
+                        
                         // Font and text size are applied as CSS style by appending it to the html string
                         const int fontWeight = [_hostConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
-                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@', '%@'; font-size:%dpx; font-weight: %d;}</style>",
-                                                                              _hostConfig.fontFamilyNames[0],
-                                                                              _hostConfig.fontFamilyNames[1],
+                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
+                                                                              fontFamilyName,
                                                                               [_hostConfig getTextBlockTextSize:txtElem->GetTextSize()],
                                                                               fontWeight]];
                         // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
