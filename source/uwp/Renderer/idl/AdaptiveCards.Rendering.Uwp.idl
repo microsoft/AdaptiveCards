@@ -428,9 +428,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propget] HRESULT Version([out, retval] HSTRING* value);
         [propput] HRESULT Version([in] HSTRING value);
 
-        [propget] HRESULT MinVersion([out, retval] HSTRING* value);
-        [propput] HRESULT MinVersion([in] HSTRING value);
-
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 

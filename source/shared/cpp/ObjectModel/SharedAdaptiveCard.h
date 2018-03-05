@@ -15,7 +15,6 @@ public:
     AdaptiveCard();
     AdaptiveCard(
         std::string version,
-        std::string minVersion,
         std::string fallbackText,
         std::string backgroundImage,
         ContainerStyle style,
@@ -23,7 +22,6 @@ public:
         std::string language);
     AdaptiveCard(
         std::string version,
-        std::string minVersion,
         std::string fallbackText,
         std::string backgroundImage,
         ContainerStyle style,
@@ -34,8 +32,6 @@ public:
 
     std::string GetVersion() const;
     void SetVersion(const std::string value);
-    std::string GetMinVersion() const;
-    void SetMinVersion(const std::string value);
     std::string GetFallbackText() const;
     void SetFallbackText(const std::string value);
     std::string GetBackgroundImage() const;
@@ -53,34 +49,47 @@ public:
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__
     static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string& jsonFile,
+        double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json,
+        double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString,
+        double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+    static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
+        const std::string& fallbackText,
+        const std::string& language) throw(AdaptiveCards::AdaptiveCardParseException);
 #else
     static std::shared_ptr<AdaptiveCard> DeserializeFromFile(
         const std::string& jsonFile,
+        double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
     static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json,
+        double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
     static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString,
+        double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
+
+    static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
+        const std::string& fallbackText,
+        const std::string& language);
+
 #endif // __ANDROID__
     Json::Value SerializeToJsonValue();
     std::string Serialize();
 
 private:
     std::string m_version;
-    std::string m_minVersion;
     std::string m_fallbackText;
     std::string m_backgroundImage;
     std::string m_speak;

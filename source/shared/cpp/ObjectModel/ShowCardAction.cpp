@@ -45,7 +45,7 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(
     std::shared_ptr<ShowCardAction> showCardAction = BaseActionElement::Deserialize<ShowCardAction>(json);
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card);
-    showCardAction->SetCard(AdaptiveCard::Deserialize(json.get(propertyName, Json::Value()), elementParserRegistration, actionParserRegistration));
+    showCardAction->SetCard(AdaptiveCard::Deserialize(json.get(propertyName, Json::Value()), std::numeric_limits<double>::max(), elementParserRegistration, actionParserRegistration));
 
     return showCardAction;
 }

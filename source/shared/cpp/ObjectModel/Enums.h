@@ -110,7 +110,6 @@ enum class AdaptiveCardSchemaKey
     Medium,
     Method,
     Min,
-    MinVersion,
     NumberInput,
     Padding,
     Placeholder,
