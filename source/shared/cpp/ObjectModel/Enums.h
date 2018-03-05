@@ -225,7 +225,7 @@ enum class CardElementType
     TimeInput,
     ToggleInput,
     Custom,
-    CustomIOSDelegate,
+    Unknown,
 };
 
 enum class ActionType

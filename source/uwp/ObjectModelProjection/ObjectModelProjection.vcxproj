@@ -31,7 +31,6 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseInputElement.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\CustomObjectDelegateForIOS.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HostConfig.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceInput.cpp" />
@@ -64,6 +63,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +75,6 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\CustomObjectDelegateForIOS.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
@@ -106,6 +105,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

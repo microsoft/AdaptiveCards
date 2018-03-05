@@ -11,7 +11,7 @@
 #include "TextInput.h"
 #include "TimeInput.h"
 #include "ToggleInput.h"
-#include "CustomObjectDelegateForIOS.h"
+#include "UnknownElement.h"
 
 namespace AdaptiveCards
 {
@@ -30,7 +30,7 @@ namespace AdaptiveCards
             CardElementTypeToString(CardElementType::TextInput),
             CardElementTypeToString(CardElementType::TimeInput),
             CardElementTypeToString(CardElementType::ToggleInput),
-            CardElementTypeToString(CardElementType::CustomIOSDelegate),
+            CardElementTypeToString(CardElementType::Unknown),
         });
 
         m_cardElementParsers.insert({
@@ -46,7 +46,7 @@ namespace AdaptiveCards
             { CardElementTypeToString(CardElementType::TextInput),  std::make_shared<TextInputParser>() },
             { CardElementTypeToString(CardElementType::TimeInput), std::make_shared<TimeInputParser>() },
             { CardElementTypeToString(CardElementType::ToggleInput), std::make_shared<ToggleInputParser>() },
-            { CardElementTypeToString(CardElementType::CustomIOSDelegate), std::make_shared<CustomObjectDelegateForIOSParser>() }
+            { CardElementTypeToString(CardElementType::Unknown), std::make_shared<UnknownElementParser>() }
         });
     }
 
