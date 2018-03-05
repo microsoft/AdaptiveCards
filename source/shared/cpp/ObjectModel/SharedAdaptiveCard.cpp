@@ -1,5 +1,7 @@
 #include "SharedAdaptiveCard.h"
 #include "ParseUtil.h"
+#include "Util.h"
+#include "ShowCardAction.h"
 
 using namespace AdaptiveCards;
 
@@ -12,13 +14,15 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string fallbackText,
     std::string backgroundImage,
     ContainerStyle style,
-    std::string speak) :
+    std::string speak,
+    std::string language) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
     m_style(style),
-    m_speak(speak)
+    m_speak(speak),
+    m_language(language)
 {
 }
 
@@ -28,6 +32,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string backgroundImage,
     ContainerStyle style,
     std::string speak,
+    std::string language,
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_minVersion(minVersion),
@@ -35,6 +40,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
     m_backgroundImage(backgroundImage),
     m_style(style),
     m_speak(speak),
+    m_language(language),
     m_body(body),
     m_actions(actions)
 {
@@ -85,6 +91,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
         ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
+    std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
 
     if (elementParserRegistration == nullptr)
     {
@@ -97,11 +104,11 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
 
     // Parse body
     auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false);
-
     // Parse actions if present
-    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions);
+    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false);
 
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, language, body, actions);
+    result->SetLanguage(language);
     return result;
 }
 
@@ -129,6 +136,7 @@ Json::Value AdaptiveCard::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText)] = GetFallbackText();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = GetBackgroundImage();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Language)] = GetLanguage();
 
     ContainerStyle style = GetStyle();
     if (style != ContainerStyle::None)
@@ -217,6 +225,30 @@ ContainerStyle AdaptiveCards::AdaptiveCard::GetStyle() const
 void AdaptiveCards::AdaptiveCard::SetStyle(const ContainerStyle value)
 {
     m_style = value;
+}
+
+std::string AdaptiveCard::GetLanguage() const
+{
+    return m_language;
+}
+
+void AdaptiveCard::SetLanguage(const std::string& value)
+{
+    m_language = value;
+    // Propagate language to ColumnSet, Containers, TextBlocks and showCardActions
+    PropagateLanguage(value, m_body);
+
+    for (auto& actionElement : m_actions)
+    {
+        if (actionElement->GetElementType() == ActionType::ShowCard)
+        {
+            auto showCard = std::static_pointer_cast<ShowCardAction>(actionElement);
+            if (showCard != nullptr)
+            {
+                showCard->SetLanguage(value);
+            }
+        }
+    }
 }
 
 const CardElementType AdaptiveCard::GetElementType() const

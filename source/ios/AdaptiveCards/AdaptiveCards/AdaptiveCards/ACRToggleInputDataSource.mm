@@ -9,6 +9,7 @@
 #import "ACRToggleInputDataSource.h"
 #import "ToggleInput.h"
 #import "ACRIBaseCardElementRenderer.h"
+#import "HostConfig.h"
 
 using namespace AdaptiveCards;
 

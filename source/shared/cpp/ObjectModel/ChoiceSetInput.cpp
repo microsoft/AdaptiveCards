@@ -6,6 +6,7 @@ using namespace AdaptiveCards;
 
 ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetInput)
 {
+    PopulateKnownPropertiesSet();
 }
 
 ChoiceSetInput::ChoiceSetInput(
@@ -15,6 +16,7 @@ ChoiceSetInput::ChoiceSetInput(
     BaseInputElement(CardElementType::ChoiceSetInput, spacing, separation),
     m_choices(choices)
 {
+    PopulateKnownPropertiesSet();
 }
 
 ChoiceSetInput::ChoiceSetInput(
@@ -108,4 +110,12 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return ChoiceSetInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void ChoiceSetInput::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
 }

@@ -325,6 +325,8 @@ namespace AdaptiveCardTestApp.ViewModels
                 var content = (element as ContentControl).Content as UIElement;
                 if (content != null)
                 {
+                    yield return content;
+
                     foreach (var descendant in GetAllDescendants(content))
                     {
                         yield return descendant;

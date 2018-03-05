@@ -23,13 +23,17 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
+    void SetLanguage(const std::string& language);
+
 private:
+    void PopulateKnownPropertiesSet();
+
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
     std::vector<std::shared_ptr<Column>> m_columns;
     std::shared_ptr<BaseActionElement> m_selectAction;
 };
 
-class ColumnSetParser : public IBaseCardElementParser
+class ColumnSetParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

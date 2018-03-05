@@ -8,6 +8,7 @@ ToggleInput::ToggleInput() :
     m_valueOn("true"),
     m_valueOff("false")
 {
+    PopulateKnownPropertiesSet();
 }
 
 Json::Value ToggleInput::SerializeToJsonValue()
@@ -94,4 +95,12 @@ std::shared_ptr<BaseCardElement> ToggleInputParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return ToggleInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void ToggleInput::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff));
 }

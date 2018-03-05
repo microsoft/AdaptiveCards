@@ -18,11 +18,15 @@ public:
     std::shared_ptr<AdaptiveCards::AdaptiveCard> GetCard() const;
     void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);
 
+    void SetLanguage(const std::string& value);
+
 private:
+    void PopulateKnownPropertiesSet();
+
     std::shared_ptr<AdaptiveCard> m_card;
 };
 
-class ShowCardActionParser : public IActionElementParser
+class ShowCardActionParser : public ActionElementParser
 {
     std::shared_ptr<BaseActionElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,

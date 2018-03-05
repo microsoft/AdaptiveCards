@@ -7,11 +7,15 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol ACRActionDelegate
+@protocol ACRActionDelegate <NSObject>
 
 - (void)didFetchUserResponses:(NSData *)json error:(NSError *)error;
 
 - (void)didFetchUserResponses:(NSData *)json data:(NSString *)data error:(NSError *)error;
 
 - (void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
+
+@optional
+- (void)didLoadElements;
+
 @end

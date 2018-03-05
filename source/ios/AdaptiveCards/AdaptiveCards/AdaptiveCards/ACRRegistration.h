@@ -8,6 +8,7 @@
 @class ACRBaseCardElementRenderer;
 
 #import "ACRBaseActionElementRenderer.h"
+#import "ACOBaseCardElement.h"
 
 @interface ACRRegistration:NSObject 
 
@@ -19,4 +20,5 @@
 
 - (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
 
+- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType;
 @end

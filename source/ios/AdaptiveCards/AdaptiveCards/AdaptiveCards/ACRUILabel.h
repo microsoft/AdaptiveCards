@@ -6,10 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Enums.h"
+#import "ACOBaseCardElement.h"
 
 @interface ACRUILabel:UILabel
 
-@property AdaptiveCards::ContainerStyle style;
+@property ACRContainerStyle style;
 
 @end

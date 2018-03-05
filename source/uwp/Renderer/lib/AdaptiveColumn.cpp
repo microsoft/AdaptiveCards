@@ -29,6 +29,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn)
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
+        GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
+
         m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedColumn->GetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
 
@@ -69,6 +71,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         return m_items.CopyTo(items);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_SelectAction(IAdaptiveActionElement** action)
+    {
+        return m_selectAction.CopyTo(action);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_SelectAction(IAdaptiveActionElement* action)
+    {
+        m_selectAction = action;
+        return S_OK;
+    }
+
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_ElementType(ElementType* elementType)
     {
@@ -153,6 +169,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
         column->SetWidth(HStringToUTF8(m_width.Get()));
+
+        if (m_selectAction != nullptr)
+        {
+            std::shared_ptr<BaseActionElement> sharedAction;
+            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
+            column->SetSelectAction(sharedAction);
+        }
 
         GenerateSharedElements(m_items.Get(), column->GetItems());
 

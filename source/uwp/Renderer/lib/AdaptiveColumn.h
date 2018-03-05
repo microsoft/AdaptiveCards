@@ -30,6 +30,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>** items);
 
+        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action);
+
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
@@ -57,6 +60,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     private:
 
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>> m_items; 
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_selectAction;
 
         Microsoft::WRL::Wrappers::HString m_width; 
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle m_style;

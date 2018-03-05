@@ -9,4 +9,6 @@
 
 @interface ACOBaseActionElement:NSObject
 
+- (NSData *)additionalProperty;
+
 @end    

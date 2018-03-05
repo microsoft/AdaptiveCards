@@ -117,6 +117,15 @@
     <ClCompile Include="..\..\ObjectModel\MarkDownParsedResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparsedToken.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\Util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h">
@@ -222,6 +231,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparsedToken.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\Util.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

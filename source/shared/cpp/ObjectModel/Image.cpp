@@ -9,6 +9,7 @@ Image::Image() :
     m_imageSize(ImageSize::None),
     m_hAlignment(HorizontalAlignment::Left)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Image::Image(
@@ -26,6 +27,7 @@ Image::Image(
     m_altText(altText),
     m_hAlignment(hAlignment)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Json::Value Image::SerializeToJsonValue()
@@ -145,4 +147,14 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     image->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction));
 
     return image;
+}
+
+void Image::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }
