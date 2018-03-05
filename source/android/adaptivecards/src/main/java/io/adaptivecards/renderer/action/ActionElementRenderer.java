@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionMode;
@@ -20,10 +19,6 @@ import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
-
-import java.util.HashMap;
-import java.util.Vector;
 
 public class ActionElementRenderer implements IBaseActionElementRenderer
 {

@@ -6,13 +6,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.CardElementType;
@@ -33,7 +31,6 @@ import io.adaptivecards.renderer.readonly.ImageSetRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
-import java.util.Vector;
 
 public class CardRendererRegistration
 {

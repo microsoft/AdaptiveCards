@@ -1,11 +1,7 @@
 package io.adaptivecards.renderer.inputhandler;
 
 import android.view.View;
-import android.widget.Toast;
-
 import io.adaptivecards.objectmodel.BaseInputElement;
-
-import java.text.ParseException;
 
 public abstract class BaseInputHandler implements IInputHandler
 {

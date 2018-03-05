@@ -268,7 +268,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 JSONObject object = new JSONObject(data);
                 showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
             } catch (JSONException e) {
-                //e.printStackTrace();
                 showToast(e.toString(), Toast.LENGTH_LONG);
             }
         }
