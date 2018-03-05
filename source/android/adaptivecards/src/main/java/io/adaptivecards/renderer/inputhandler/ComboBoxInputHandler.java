@@ -20,30 +20,10 @@ public class ComboBoxInputHandler extends BaseInputHandler
         return (Spinner) m_view;
     }
 
-    @Override
-    protected void setDefaultTextColor()
-    {
-        //no op
-    }
-
-    @Override
-    protected void setInvalidTextColor()
-    {
-        // no op
-    }
-
-    @Override
-    protected void internalValidate()
-            throws ParseException
-    {
-        // no need to validate
-    }
-
-    public Exception getData(Map<String, String> data)
+    public String getInput()
     {
         // no need to validate
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
-        data.put(m_baseInputElement.GetId(), (String) getSpinner().getSelectedItem());
-        return null;
+        return (String) getSpinner().getSelectedItem();
     }
 }

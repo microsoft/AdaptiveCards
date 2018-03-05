@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -85,12 +86,12 @@ public class CardRendererRegistration
     }
 
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             Object tag,
             BaseCardElementVector baseCardElementList,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -121,7 +122,7 @@ public class CardRendererRegistration
                 continue;
             }
 
-            renderer.render(context, fragmentManager, layout, cardElement, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle);
+            renderer.render(renderedCard, context, fragmentManager, layout, cardElement, cardActionHandler, hostConfig, containerStyle);
         }
 
         return layout;

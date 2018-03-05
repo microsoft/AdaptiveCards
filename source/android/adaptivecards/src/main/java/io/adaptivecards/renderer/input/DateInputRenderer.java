@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.DateInputHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -40,11 +41,11 @@ public class DateInputRenderer extends TextInputRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedcard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -76,13 +77,13 @@ public class DateInputRenderer extends TextInputRenderer
         }
 
         EditText editText = renderInternal(
+                renderedcard,
                 context,
                 viewGroup,
                 dateInput,
                 dateString,
                 dateInput.GetPlaceholder(),
                 dateInputHandler,
-                inputActionHandlerList,
                 hostConfig);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);

@@ -17,6 +17,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -43,32 +44,21 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     public static class ButtonOnClickListener implements View.OnClickListener
     {
 
-        public ButtonOnClickListener(BaseActionElement action, Vector< IInputHandler > inputHandlerList, ICardActionHandler cardActionHandler)
+        public ButtonOnClickListener(RenderedAdaptiveCard renderedCard, BaseActionElement action, ICardActionHandler cardActionHandler)
         {
             m_action = action;
-            m_inputHandlerList = inputHandlerList;
+            m_renderedAdaptiveCard = renderedCard;
             m_cardActionHandler = cardActionHandler;
         }
 
         @Override
         public void onClick(View v)
         {
-            HashMap<String, String> data = new HashMap<String, String>();
-            for (IInputHandler inputHandler  : m_inputHandlerList)
-            {
-                Exception excep = inputHandler.getData(data);
-                if (excep != null)
-                {
-                    Toast.makeText(v.getContext(), excep.getMessage(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            m_cardActionHandler.onAction(m_action, data);
+            m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
         }
 
         private BaseActionElement m_action;
-        private Vector<IInputHandler> m_inputHandlerList;
+        private RenderedAdaptiveCard m_renderedAdaptiveCard;
         private ICardActionHandler m_cardActionHandler;
     }
 
@@ -147,11 +137,11 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
     @Override
     public Button render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
-            Vector<IInputHandler> inputHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig) {
         if (cardActionHandler == null)
@@ -175,7 +165,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
             }
 
-            View invisibleCard = AdaptiveCardRenderer.getInstance().render(context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig, inputHandlerList, true);
+            View invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(renderedCard, context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig, true);
             invisibleCard.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()), 0, 0);
@@ -190,7 +180,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
         else
         {
-            button.setOnClickListener(new ButtonOnClickListener(baseActionElement, inputHandlerList, cardActionHandler));
+            button.setOnClickListener(new ButtonOnClickListener(renderedCard, baseActionElement, cardActionHandler));
         }
         return button;
     }

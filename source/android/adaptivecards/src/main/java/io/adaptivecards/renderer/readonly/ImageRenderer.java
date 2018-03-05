@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -32,6 +33,7 @@ import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -137,28 +139,14 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
-    {
-        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle, false);
-    }
-
-    public View render(
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            ContainerStyle containerStyle,
-            boolean isPartOfImageSet)
     {
         Image image;
         if (baseCardElement instanceof Image)
@@ -199,14 +187,14 @@ public class ImageRenderer extends BaseCardElementRenderer
         if (image.GetSelectAction() != null)
         {
             imageView.setClickable(true);
-            imageView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(image.GetSelectAction(),inputActionHandlerList, cardActionHandler));
+            imageView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
         }
 
         //set horizontalAlignment
         imageView.setLayoutParams(layoutParams);
 
         setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
-        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isPartOfImageSet /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !(viewGroup instanceof HorizontalFlowLayout) /* horizontal line */);
 
         viewGroup.addView(imageView);
         return imageView;

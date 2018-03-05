@@ -94,34 +94,41 @@ public class AdaptiveCardRenderer
         }
     }
 
-    public View render(
+    public RenderedAdaptiveCard render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler)
+    {
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig);
+    }
+
+    // AdaptiveCard ObjectModel is binded to the UI and Action
+    public RenderedAdaptiveCard render(
             Context context,
             FragmentManager fragmentManager,
             AdaptiveCard adaptiveCard,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, new Vector<IInputHandler>(), false);
+        RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
+        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false);
+        result.setView(cardView);
+        return result;
     }
 
-    public View render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler)
-    {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig, new Vector<IInputHandler>(), false);
-    }
-
-    // AdaptiveCard ObjectModel is binded to the UI and Action
-    public View render(
-            Context context,
-            FragmentManager fragmentManager,
-            AdaptiveCard adaptiveCard,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            Vector<IInputHandler> inputHandlerList,
-            boolean isInlineShowCard)
+    public View internalRender(RenderedAdaptiveCard renderedCard,
+                               Context context,
+                               FragmentManager fragmentManager,
+                               AdaptiveCard adaptiveCard,
+                               ICardActionHandler cardActionHandler,
+                               HostConfig hostConfig,
+                               boolean isInlineShowCard)
     {
         if (hostConfig == null)
         {
             throw new IllegalArgumentException("hostConfig is null");
+        }
+
+        if (renderedCard == null)
+        {
+            throw new IllegalArgumentException("renderedCard is null");
         }
 
         LinearLayout rootLayout = new LinearLayout(context);
@@ -167,7 +174,7 @@ public class AdaptiveCardRenderer
 
         layout.setBackgroundColor(Color.parseColor(color));
 
-        CardRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseCardElementList, inputHandlerList, cardActionHandler, hostConfig, style);
+        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, style);
 
         // Actions are optional
         BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
@@ -177,7 +184,7 @@ public class AdaptiveCardRenderer
             showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             rootLayout.addView(showCardsLayout);
 
-            ActionRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseActionElementList, inputHandlerList, cardActionHandler, hostConfig);
+            ActionRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseActionElementList, cardActionHandler, hostConfig);
         }
 
         String imageUrl = adaptiveCard.GetBackgroundImage();
