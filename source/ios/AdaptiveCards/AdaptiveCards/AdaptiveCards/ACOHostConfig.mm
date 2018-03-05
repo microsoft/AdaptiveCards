@@ -31,6 +31,15 @@ using namespace AdaptiveCards;
     self = [super init];
     if(self && config){
         _config = config;
+        // check if requested font family name is supported by iOS, if so save it for future uses
+        NSString *requestedFontFamilyName = [NSString stringWithCString:_config->fontFamily.c_str() encoding:NSUTF8StringEncoding];
+        if([UIFont.familyNames containsObject:requestedFontFamilyName]){
+            _fontFamilyNames = @[requestedFontFamilyName];
+        }
+        // if the requested font family name is not supported, use system font instead
+        if(!_fontFamilyNames){
+            _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
+        }
     }
     return self;
 }
@@ -43,8 +52,8 @@ using namespace AdaptiveCards;
     {
         try
         {
-            ACOHostConfig *config= [[ACOHostConfig alloc] init];
-            *config->_config.get() = AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String]));
+            std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
+            ACOHostConfig *config= [[ACOHostConfig alloc] initWithConfig:cHostConfig];
             result = [[ACOHostConfigParseResult alloc] init:config errors:nil];
         }
         catch(const AdaptiveCardParseException& e)

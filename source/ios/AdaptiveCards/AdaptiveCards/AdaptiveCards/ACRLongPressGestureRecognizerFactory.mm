@@ -25,7 +25,7 @@ using namespace AdaptiveCards;
                                                      targetView:(UIView *)view
                                                   actionElement:(std::shared_ptr<BaseActionElement> const &)action
                                                          inputs:(NSMutableArray *)inputs
-                                                     hostConfig:(std::shared_ptr<HostConfig> const &)config
+                                                     hostConfig:(ACOHostConfig *)config
 {
     if(action != nullptr)
     {

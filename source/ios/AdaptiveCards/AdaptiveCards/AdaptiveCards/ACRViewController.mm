@@ -27,7 +27,7 @@ using namespace AdaptiveCards;
 @implementation ACRViewController
 {
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
-    std::shared_ptr<HostConfig> _hostConfig;
+    ACOHostConfig *_hostConfig;
     CGRect _guideFrame;
     NSMutableDictionary *_imageViewMap;
     NSMutableDictionary *_textMap;
@@ -42,7 +42,8 @@ using namespace AdaptiveCards;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
         _guideFrame = CGRectMake(0, 0, 0, 0);
-        _hostConfig = std::make_shared<HostConfig>();
+        std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>();
+        _hostConfig = [[ACOHostConfig alloc] initWithConfig:cHostConfig];
         _imageViewMap = [[NSMutableDictionary alloc] init];
         _textMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", DISPATCH_QUEUE_SERIAL);
@@ -63,7 +64,7 @@ using namespace AdaptiveCards;
         _adaptiveCard = [card getCard];
         if(config)
         {
-            _hostConfig = [config getHostConfig];
+            _hostConfig = config;
         }
         _guideFrame = frame;
     }
@@ -101,17 +102,17 @@ using namespace AdaptiveCards;
            [imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
            ]];
     }
-    ContainerStyle style = (_hostConfig->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle(): ContainerStyle::Default;
+    ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle(): ContainerStyle::Default;
     if(style != ContainerStyle::None)
     {
         unsigned long num = 0;
         if(style == ContainerStyle::Emphasis)
         {
-            num = std::stoul(_hostConfig->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
+            num = std::stoul([_hostConfig getHostConfig]->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
         }
         else
         {
-            num = std::stoul(_hostConfig->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
+            num = std::stoul([_hostConfig getHostConfig]->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
         }
         view.backgroundColor =
         [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
@@ -225,20 +226,26 @@ using namespace AdaptiveCards;
                 [self tagBaseCardElement:elem];
                 /// dispatch to concurrent queue
                 std::shared_ptr<TextBlock> txtElem = std::dynamic_pointer_cast<TextBlock>(elem);
-                ACOHostConfig *acoConfig = [[ACOHostConfig alloc] initWithConfig:_hostConfig];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                     ^{
                         std::string dateParsedString = [ACOHostConfig getLocalizedDate:txtElem];
                         // MarkDownParser transforms text with MarkDown to a html string
                         std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(dateParsedString.c_str());
                         NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+                        // if correctly initialized, fonFamilyNames array is bigger than zero
+                        NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
+                        for(NSUInteger index = 0; index < [_hostConfig.fontFamilyNames count] - 1; ++index){
+                            [fontFamilyName appendString:_hostConfig.fontFamilyNames[index]];
+                            [fontFamilyName appendString:@"', '"];
+                        }
+                        [fontFamilyName appendString:_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
+                        [fontFamilyName appendString:@"'"];
 
                         // Font and text size are applied as CSS style by appending it to the html string
-                        NSString *fontFamily = [NSString stringWithCString:_hostConfig->fontFamily.c_str() encoding:NSUTF8StringEncoding];
-                        const int fontWeight = [acoConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
-                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx; font-weight: %d;}</style>",
-                                                                              fontFamily,
-                                                                              [acoConfig getTextBlockTextSize:txtElem->GetTextSize()],
+                        const int fontWeight = [_hostConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
+                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
+                                                                              fontFamilyName,
+                                                                              [_hostConfig getTextBlockTextSize:txtElem->GetTextSize()],
                                                                               fontWeight]];
                         // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
                         NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
@@ -272,8 +279,8 @@ using namespace AdaptiveCards;
 
                                       // Obtain text color to apply to the attributed string
                                       ACRContainerStyle style = lab.style;
-                                      ColorsConfig &colorConfig = (style == ACREmphasis)? _hostConfig->containerStyles.emphasisPalette.foregroundColors:
-                                                                                                             _hostConfig->containerStyles.defaultPalette.foregroundColors;
+                                      ColorsConfig &colorConfig = (style == ACREmphasis)? [_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
+                                                                                                             [_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
                                       // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
                                       [content addAttributes:@{
                                                                NSParagraphStyleAttributeName:paragraphStyle,
@@ -366,8 +373,7 @@ using namespace AdaptiveCards;
              NSURL *url = [NSURL URLWithString:urlStr];
              // download image
              UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-             ACOHostConfig *acoConfig = [[ACOHostConfig alloc] initWithConfig:_hostConfig];
-             CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
+             CGSize cgsize = [_hostConfig getImageSize:imgElem->GetImageSize()];
 
              // UITask can't be run on global queue, add task to main queue
              dispatch_async(dispatch_get_main_queue(),

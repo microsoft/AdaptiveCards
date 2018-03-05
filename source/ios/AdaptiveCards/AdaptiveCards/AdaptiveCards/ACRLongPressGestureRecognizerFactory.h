@@ -8,7 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ACRIContentHoldingView.h"
-#import "HostConfig.h"
 
 @interface ACRLongPressGestureRecognizerFactory:NSObject
 /// instantiates a target for UITapGestureRecognizer object
@@ -18,5 +17,5 @@
                                                      targetView:(UIView *)view
                                                   actionElement:(std::shared_ptr<AdaptiveCards::BaseActionElement> const &)action
                                                          inputs:(NSMutableArray *)inputs
-                                                     hostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
+                                                     hostConfig:(ACOHostConfig *)config;
 @end
