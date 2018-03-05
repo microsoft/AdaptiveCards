@@ -25,6 +25,9 @@ using namespace AdaptiveCards;
                   subtleOption:(bool)isSubtle;
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;
 - (CGSize)getImageSize:(ImageSize)imageSize;
++ (NSArray *)getConstraintsForImageAlignment:(HorizontalAlignment)alignment
+                               withSuperview:(UIView *)superview
+                                      toView:(UIView *)view;
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
 + (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck;
