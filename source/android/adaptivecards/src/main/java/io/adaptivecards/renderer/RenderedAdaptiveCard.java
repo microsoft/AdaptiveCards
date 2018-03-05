@@ -48,7 +48,7 @@ public class RenderedAdaptiveCard {
         HashMap<String, String> input = new HashMap<>();
         for(IInputHandler i : handlers)
         {
-            //gather input
+            input.put(i.getId(), i.getInput());
         }
         return input;
     }
