@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -118,7 +119,7 @@ public class CardRendererRegistration
             IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementType().toString());
             if (renderer == null)
             {
-                Toast.makeText(context, "Unsupported card element type: " + cardElement.GetElementType().toString(), Toast.LENGTH_SHORT).show();
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,"Unsupported card element type: " + cardElement.GetElementTypeString()));
                 continue;
             }
 

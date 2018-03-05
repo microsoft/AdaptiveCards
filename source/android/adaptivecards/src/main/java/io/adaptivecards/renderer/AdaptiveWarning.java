@@ -1,6 +1,9 @@
 package io.adaptivecards.renderer;
 
 public class AdaptiveWarning {
+    public static final int UNKNOWN_ELEMENT_TYPE = 1;
+    public static final int UNKNOWN_ACTION_ELEMENT_TYPE = 2;
+
     private int code;
     private String message;
 

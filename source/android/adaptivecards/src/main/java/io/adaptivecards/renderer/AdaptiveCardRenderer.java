@@ -7,20 +7,23 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.objectmodel.ActionAlignment;
+import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
-import io.adaptivecards.renderer.registration.ActionRendererRegistration;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.io.IOException;
@@ -183,8 +186,8 @@ public class AdaptiveCardRenderer
             LinearLayout showCardsLayout = new LinearLayout(context);
             showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             rootLayout.addView(showCardsLayout);
-
-            ActionRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseActionElementList, cardActionHandler, hostConfig);
+            
+            renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
         }
 
         String imageUrl = adaptiveCard.GetBackgroundImage();
@@ -195,6 +198,46 @@ public class AdaptiveCardRenderer
         }
 
         return rootLayout;
+    }
+
+    private void renderActions(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElementVector baseActionElementList, ICardActionHandler cardActionHandler, HostConfig hostConfig) {
+        long size;
+        if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
+        {
+            return;
+        }
+
+        LinearLayout actionButtonsLayout = new LinearLayout(context);
+        actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
+        if (alignment == ActionAlignment.Right.swigValue())
+        {
+            actionButtonsLayout.setGravity(Gravity.RIGHT);
+        }
+        else if (alignment == ActionAlignment.Center.swigValue())
+        {
+            actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+
+        if (hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Vertical.swigValue())
+        {
+            actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
+        }
+        else
+        {
+            actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
+        }
+
+        if (viewGroup != null)
+        {
+            viewGroup.addView(actionButtonsLayout);
+        }
+
+        for (int i = 0; i < size && i < hostConfig.getActions().getMaxActions(); i++)
+        {
+            BaseActionElement actionElement = baseActionElementList.get(i);
+            ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
+        }
     }
 
     private static AdaptiveCardRenderer s_instance = null;
