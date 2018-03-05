@@ -33,14 +33,12 @@ using namespace AdaptiveCards;
         _config = config;
         // check if requested font family name is supported by iOS, if so save it for future uses
         NSString *requestedFontFamilyName = [NSString stringWithCString:_config->fontFamily.c_str() encoding:NSUTF8StringEncoding];
-        for(NSString* fontFamilyName in UIFont.familyNames){
-            if([fontFamilyName isEqualToString:requestedFontFamilyName]){
-                _fontFamilyName = fontFamilyName;
-            }
+        if([UIFont.familyNames containsObject:requestedFontFamilyName]){
+            _fontFamilyNames = @[requestedFontFamilyName];
         }
         // if the requested font family name is not supported, use system font instead
-        if(!_fontFamilyName){
-            _fontFamilyName = @"-apple-system','HelveticaNeue";
+        if(!_fontFamilyNames){
+            _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
         }
     }
     return self;

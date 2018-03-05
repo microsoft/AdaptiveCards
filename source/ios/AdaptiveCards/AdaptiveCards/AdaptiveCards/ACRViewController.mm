@@ -232,12 +232,11 @@ using namespace AdaptiveCards;
                         // MarkDownParser transforms text with MarkDown to a html string
                         std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(dateParsedString.c_str());
                         NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
-
                         // Font and text size are applied as CSS style by appending it to the html string
-                        NSString *fontFamilyName = _hostConfig.fontFamilyName;
                         const int fontWeight = [_hostConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
-                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%dpx; font-weight: %d;}</style>",
-                                                                              fontFamilyName,
+                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@', '%@'; font-size:%dpx; font-weight: %d;}</style>",
+                                                                              _hostConfig.fontFamilyNames[0],
+                                                                              _hostConfig.fontFamilyNames[1],
                                                                               [_hostConfig getTextBlockTextSize:txtElem->GetTextSize()],
                                                                               fontWeight]];
                         // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags

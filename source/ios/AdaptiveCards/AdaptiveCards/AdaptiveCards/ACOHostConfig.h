@@ -10,7 +10,7 @@
 
 @interface ACOHostConfig:NSObject
 
-@property NSString *fontFamilyName;
+@property NSArray<NSString *> *fontFamilyNames;
 
 - (instancetype)init;
 
