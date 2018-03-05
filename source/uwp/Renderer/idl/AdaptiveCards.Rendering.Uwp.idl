@@ -289,7 +289,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [version(NTDDI_WIN10_RS1)]
     typedef [v1_enum] enum ErrorStatusCode {
         InvalidJson = 0,
-        UnsupportedSchemaVersion,
         RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
@@ -304,7 +303,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         NoRendererForType,
         InteractivityNotSupported,
         MaxActionsExceeded,
-        AssetLoadFailed
+        AssetLoadFailed,
+        UnsupportedSchemaVersion,
     } WarningStatusCode;
 
     declare
@@ -455,6 +455,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCard** value);
         [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
+        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
     };
 
     [

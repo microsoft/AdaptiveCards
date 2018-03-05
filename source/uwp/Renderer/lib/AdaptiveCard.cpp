@@ -5,6 +5,7 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveCardParseException.h"
 #include "AdaptiveError.h"
+#include "AdaptiveWarning.h"
 
 #include <json.h>
 #include "Util.h"
@@ -95,10 +96,27 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 try
                 {
                         const double c_rendererVersion = 1.0;
-                        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
+                        std::shared_ptr<::AdaptiveCards::ParseResult> sharedParseResult = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
                         ComPtr<IAdaptiveCard> adaptiveCard;
-                        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));
+                        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
                         RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
+
+                        for (auto sharedWarning : sharedParseResult->GetWarnings())
+                        {
+                            ComPtr<IVector<IAdaptiveWarning*>> warnings;
+                            RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
+
+                            HString warningMessage;
+                            RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
+                            
+                            ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode>(sharedWarning->GetStatusCode());
+
+                            ComPtr<IAdaptiveWarning> adaptiveWarning;
+                            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
+
+                            RETURN_IF_FAILED(warnings->Append(adaptiveWarning.Get()));
+                        }
+
                         return adaptiveParseResult.CopyTo(parseResult);
                 }
                 catch (const AdaptiveCardParseException& e)
