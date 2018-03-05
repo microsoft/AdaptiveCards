@@ -15,8 +15,7 @@ UnknownElement::UnknownElement() :
 
 UnknownElement::UnknownElement(
     Json::Value const &paylaod) :
-    BaseCardElement(CardElementType::Unknown),
-    m_payload(paylaod)
+    BaseCardElement(CardElementType::Unknown)
 {
 }
 
