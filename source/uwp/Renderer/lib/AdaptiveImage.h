@@ -37,6 +37,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* hAlignment);
         IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment hAlignment);
 
+        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action);
+
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
@@ -62,7 +65,17 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         }
 
     private:
-        std::shared_ptr<AdaptiveCards::Image> m_sharedImage;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_url;
+        ABI::AdaptiveCards::Rendering::Uwp::ImageStyle m_imageStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ImageSize m_imageSize;
+        Microsoft::WRL::Wrappers::HString m_altText;
+        ABI::AdaptiveCards::Rendering::Uwp::HAlignment m_horizontalAlignment;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_selectAction;
+
+        boolean m_separator;
+        Microsoft::WRL::Wrappers::HString m_id;
+        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
+
     };
 
     ActivatableClass(AdaptiveImage);

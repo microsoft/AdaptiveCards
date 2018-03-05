@@ -208,12 +208,22 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
         static bool SupportsInteractivity(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig);
 
-        static void WrapInFullWidthTouchTarget(
+        static void WrapInTouchTarget(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::Windows::UI::Xaml::IUIElement* elementToWrap,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
             _Inout_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+            bool fullWidth,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
+
+        void static HandleSelectAction(
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* selectAction,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement,
+            bool supportsInteractivity,
+            bool fullWidthTouchTarget,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** outUiElement);
 
         static void WireButtonClickToAction(
             _In_ ABI::Windows::UI::Xaml::Controls::IButton* button,

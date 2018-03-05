@@ -1478,7 +1478,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement.Get()));
 
-        THROW_IF_FAILED(frameworkElement.CopyTo(imageControl));
+        ComPtr<IAdaptiveActionElement> selectAction;
+        THROW_IF_FAILED(adaptiveImage->get_SelectAction(&selectAction));
+
+        ComPtr<IUIElement> imageAsUIElement;
+        THROW_IF_FAILED(frameworkElement.As(&imageAsUIElement));
+
+        HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, imageAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, imageControl);
     }
 
     _Use_decl_annotations_
@@ -1559,25 +1565,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveContainer->get_SelectAction(&selectAction));
-        if (selectAction != nullptr)
-        {
-            if (SupportsInteractivity(hostConfig.Get()))
-            {
-                ComPtr<IUIElement> containerBorderAsUIElement;
-                THROW_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
-                WrapInFullWidthTouchTarget(adaptiveCardElement, containerBorderAsUIElement.Get(), selectAction.Get(), renderContext, containerControl);
-            }
-            else
-            {
-                renderContext->AddWarning(
-                   ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
-                    HStringReference(L"SelectAction present in Container, but Interactivity is not supported").Get());
-            }
-        }
-        else
-        {
-            THROW_IF_FAILED(containerBorder.CopyTo(containerControl));
-        }
+
+        ComPtr<IUIElement> containerBorderAsUIElement;
+        THROW_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
+
+        HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, containerBorderAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, containerControl);
     }
 
     _Use_decl_annotations_
@@ -1637,7 +1629,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanelAsFrameworkElement.Get()));
 
-        THROW_IF_FAILED(columnPanel.CopyTo(ColumnControl));
+        ComPtr<IAdaptiveActionElement> selectAction;
+        THROW_IF_FAILED(adaptiveColumn->get_SelectAction(&selectAction));
+
+        ComPtr<IUIElement> columnAsUIElement;
+        THROW_IF_FAILED(columnPanel.As(&columnAsUIElement));
+
+        HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, columnAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), false, ColumnControl);
     }
 
     _Use_decl_annotations_
@@ -1771,25 +1769,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
-        if (selectAction != nullptr)
-        {
-            if (SupportsInteractivity(hostConfig.Get()))
-            {
-                ComPtr<IUIElement> gridAsUIElement;
-                THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
-                WrapInFullWidthTouchTarget(adaptiveCardElement, gridAsUIElement.Get(), selectAction.Get(), renderContext, columnSetControl);
-            }
-            else
-            {
-                renderContext->AddWarning(
-                   ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
-                    HStringReference(L"SelectAction present in ColumnSet, but Interactivity is not supported").Get());
-            }
-        }
-        else
-        {
-            THROW_IF_FAILED(xamlGrid.CopyTo(columnSetControl));
-        }
+
+        ComPtr<IUIElement> gridAsUIElement;
+        THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
+
+        HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, gridAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, columnSetControl);
     }
 
     _Use_decl_annotations_
@@ -2411,13 +2395,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return Boolify(supportsInteractivity);
     }
 
-    void XamlBuilder::WrapInFullWidthTouchTarget(
+    void XamlBuilder::WrapInTouchTarget(
         IAdaptiveCardElement* adaptiveCardElement,
         IUIElement* elementToWrap,
         IAdaptiveActionElement* action,
         IAdaptiveRenderContext* renderContext,
+        bool fullWidth,
         IUIElement** finalElement)
-    {        
+    {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
@@ -2450,8 +2435,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IAdaptiveSpacingConfig> spacingConfig;
         THROW_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
 
-        UINT32 cardPadding;
-        THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));
+        UINT32 cardPadding = 0;
+        if (fullWidth)
+        {
+            THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));
+        }
 
         // We want the hit target to equally split the vertical space above and below the current item.
         // However, all we know is the spacing of the current item, which only applies to the spacing above.
@@ -2481,6 +2469,33 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         WireButtonClickToAction(button.Get(), action, renderContext);
 
         THROW_IF_FAILED(button.CopyTo(finalElement));
+    }
+
+    void XamlBuilder::HandleSelectAction(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IAdaptiveActionElement* selectAction,
+        IAdaptiveRenderContext* renderContext,
+        IUIElement* uiElement,
+        bool supportsInteractivity,
+        bool fullWidthTouchTarget,
+        IUIElement** outUiElement)
+    {
+        if (selectAction != nullptr && supportsInteractivity)
+        {
+            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, outUiElement);
+        }
+        else
+        {
+            if (!supportsInteractivity)
+            {
+                renderContext->AddWarning(
+                    ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                    HStringReference(L"SelectAction present, but Interactivity is not supported").Get());
+            }
+
+            ComPtr<IUIElement> localUiElement(uiElement);
+            THROW_IF_FAILED(localUiElement.CopyTo(outUiElement));
+        }
     }
 
     void XamlBuilder::WireButtonClickToAction(
