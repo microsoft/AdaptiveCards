@@ -235,11 +235,12 @@ using namespace AdaptiveCards;
                         // if correctly initialized, fonFamilyNames array is bigger than zero
                         NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
                         for(NSUInteger index = 0; index < [_hostConfig.fontFamilyNames count] - 1; ++index){
+                            [fontFamilyName appendString:_hostConfig.fontFamilyNames[index]];
                             [fontFamilyName appendString:@"', '"];
                         }
                         [fontFamilyName appendString:_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
                         [fontFamilyName appendString:@"'"];
-                        
+
                         // Font and text size are applied as CSS style by appending it to the html string
                         const int fontWeight = [_hostConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
                         parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
