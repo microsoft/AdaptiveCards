@@ -126,7 +126,7 @@
     <ClCompile Include="..\..\ObjectModel\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ObjectModel\CustomObjectDelegateForIOS.cpp">
+    <ClCompile Include="..\..\ObjectModel\UnknownElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -245,7 +245,7 @@
     <ClInclude Include="..\..\ObjectModel\Util.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\CustomObjectDelegateForIOS.h">
+    <ClInclude Include="..\..\ObjectModel\UnknownElement.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

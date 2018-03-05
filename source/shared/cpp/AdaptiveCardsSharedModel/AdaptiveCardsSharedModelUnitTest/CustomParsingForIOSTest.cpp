@@ -6,7 +6,7 @@
 #include <StrSafe.h>
 #include "SharedAdaptiveCard.h"
 #include "BaseCardElement.h"
-#include "CustomObjectDelegateForIOS.h"
+#include "UnknownElement.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -26,19 +26,19 @@ namespace AdaptiveCardsSharedModelUnitTest
                 \"version\": \"1.0\",\
                 \"body\": [\
                     {\
-                        \"type\": \"CustomIOSDelegate\",\
+                        \"type\": \"Random\",\
                         \"payload\": \"You can even draw attention to certain text with color\"\
                     }\
                 ]\
             }";
             std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
-            std::shared_ptr<CustomObjectDelegateForIOS> delegate = std::static_pointer_cast<CustomObjectDelegateForIOS>(elem);
+            std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetJsonPayload(); 
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);
 
-            std::string expected = "\"You can even draw attention to certain text with color\"\n";
+            std::string expected = "{\"payload\":\"You can even draw attention to certain text with color\"}\n";
             Assert::AreEqual(expected, jsonString);
         }
 
@@ -51,7 +51,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 \"version\": \"1.0\",\
                 \"body\": [\
                     {\
-                        \"type\": \"CustomIOSDelegate\",\
+                        \"type\": \"Unknown\",\
                         \"payload\": \"You can even draw attention to certain text with color\"\
                     },\
                     {\
@@ -65,12 +65,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
-            std::shared_ptr<CustomObjectDelegateForIOS> delegate = std::static_pointer_cast<CustomObjectDelegateForIOS>(elem);
+            std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetJsonPayload(); 
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);
 
-            std::string expected = "\"You can even draw attention to certain text with color\"\n";
+            std::string expected = "{\"payload\":\"You can even draw attention to certain text with color\"}\n";
             Assert::AreEqual(expected, jsonString);
         }
 
@@ -83,7 +83,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 \"version\": \"1.0\",\
                 \"body\": [\
                     {\
-                        \"type\": \"CustomIOSDelegate\",\
+                        \"type\": \"RadioButton\",\
                         \"payload\": [\
                             {\
                                 \"testloadone\": \"You can even draw attention to certain text with color\"\
@@ -104,12 +104,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
-            std::shared_ptr<CustomObjectDelegateForIOS> delegate = std::static_pointer_cast<CustomObjectDelegateForIOS>(elem);
+            std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetJsonPayload(); 
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);
 
-            std::string expected = "[{\"testloadone\":\"You can even draw attention to certain text with color\"},{\"testloadtwo\":\"You can even draw attention to certain text with markdown\"}]\n";
+            std::string expected = "{\"payload\":[{\"testloadone\":\"You can even draw attention to certain text with color\"},{\"testloadtwo\":\"You can even draw attention to certain text with markdown\"}]}\n";
             Assert::AreEqual(expected, jsonString);
         }
     };
