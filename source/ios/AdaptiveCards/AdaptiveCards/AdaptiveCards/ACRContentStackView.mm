@@ -6,24 +6,27 @@
 //
 
 #include "ACRContentStackView.h"
+#include "ACOHostConfigPrivate.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRContentStackView
 {
     NSMutableArray* _targets;
-    ContainerStyle _style;
+    ACRContainerStyle _style;
 }
 
-- (instancetype)initWithStyle:(ContainerStyle)style
-                  parentStyle:(ContainerStyle)parentStyle
-                   hostConfig:(std::shared_ptr<HostConfig> const &)config
+- (instancetype)initWithStyle:(ACRContainerStyle)style
+                  parentStyle:(ACRContainerStyle)parentStyle
+                   hostConfig:(ACOHostConfig *)acoConfig
 {
     self = [self initWithFrame:CGRectMake(0,0,0,0)];
     if(self){
+
         _style = style;
-        if(style != ContainerStyle::None &&
+        if(style != ACRNone &&
             style != parentStyle) {
+            std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
             [self setBackgroundColorWithHostConfig:config];
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
@@ -59,12 +62,12 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (ContainerStyle)style
+- (ACRContainerStyle)style
 {
     return _style;
 }
 
-- (void)setStyle:(AdaptiveCards::ContainerStyle)style
+- (void)setStyle:(ACRContainerStyle)style
 {
     _style = style;
 }
@@ -81,7 +84,7 @@ using namespace AdaptiveCards;
 
 - (ContainerStyleDefinition&)paletteForHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    return (_style == ContainerStyle::Emphasis)
+    return (_style == ACREmphasis)
         ? config->containerStyles.emphasisPalette
         : config->containerStyles.defaultPalette;
 }

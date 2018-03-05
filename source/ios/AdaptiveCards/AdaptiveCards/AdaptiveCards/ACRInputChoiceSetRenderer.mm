@@ -21,9 +21,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::ChoiceSetInput;
+    return ACRChoiceSetInput;
 }
 
 - (UIView *)render:(UIView *)viewGroup

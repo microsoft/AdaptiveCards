@@ -11,17 +11,42 @@ namespace std {
     };
 }
 
+
 %module AdaptiveCardObjectModel
+
+%rename (CTime) tm;
+struct tm {
+    %rename (Sec) tm_sec;
+    %rename (Min) tm_min;
+    %rename (Hour) tm_hour;
+    %rename (MDay) tm_mday;
+    %rename (Mon) tm_mon;
+    %rename (Year) tm_year;
+    %rename (WDay) tm_wday;
+    %rename (YDay) tm_yday;
+    %rename (IsDst) tm_isdst;
+    int tm_sec;
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+};
 
 %include <std_string.i>
 %include <std_shared_ptr.i>
 %include <std_vector.i>
+%include <std_wstring.i>
 
 #define __ANDROID__ 1
 
 %{
 #include "pch.h"
 #include <memory>
+#include <time.h>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -29,7 +54,6 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
-#include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
 #include "../../../shared/cpp/ObjectModel/Column.h"
@@ -50,13 +74,16 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 #include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
+#include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseInputElement)
-%shared_ptr(AdaptiveCards::IActionElementParser)
-%shared_ptr(AdaptiveCards::IBaseCardElementParser)
+%shared_ptr(AdaptiveCards::ActionElementParser)
+%shared_ptr(AdaptiveCards::BaseCardElementParser)
 %shared_ptr(AdaptiveCards::ElementParserRegistration)
 %shared_ptr(AdaptiveCards::ActionParserRegistration)
 %shared_ptr(AdaptiveCards::Container)
@@ -93,6 +120,8 @@ namespace std {
 %shared_ptr(AdaptiveCards::SubmitActionParser)
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
+%shared_ptr(AdaptiveCards::DateTimePreparsedToken)
+
 
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
@@ -118,6 +147,7 @@ namespace std {
 %template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
 %template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >; 
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >; 
+%template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -384,7 +414,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
-%include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"
 %include "../../../shared/cpp/ObjectModel/Column.h"
@@ -405,3 +434,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
+%include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+%include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
+%include "../../../shared/cpp/ObjectModel/TextBlock.h"

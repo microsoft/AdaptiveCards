@@ -72,7 +72,7 @@ public:
 
 protected:
     Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> m_renderResult;
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_rootXamlElement;
+    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_rootXamlElement;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Core::ICoreDispatcher> m_dispatcher;
     Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard> m_card;
     Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer> m_renderer;

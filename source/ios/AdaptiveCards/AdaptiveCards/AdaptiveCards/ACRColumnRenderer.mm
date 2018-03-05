@@ -22,9 +22,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::Column;
+    return ACRColumn;
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
@@ -38,8 +38,8 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
-    ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:columnElem->GetStyle()
-                                                     parentStyle:[viewGroup style] hostConfig:config];
+    ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
+                                                     parentStyle:[viewGroup style] hostConfig:acoConfig];
     [ACRRenderer render:column
      rootViewController:vc
                  inputs:inputs

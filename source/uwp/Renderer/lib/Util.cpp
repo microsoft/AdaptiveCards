@@ -41,6 +41,15 @@ using namespace AdaptiveCards::Rendering::Uwp;
 using namespace Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
+HRESULT WStringToHString(const std::wstring& in, HSTRING* out)
+{
+    if (out == nullptr)
+    {
+        return E_INVALIDARG;
+    }
+    return WindowsCreateString(in.c_str(), static_cast<UINT32>(in.length()), out);
+}
+
 HRESULT UTF8ToHString(const string& in, HSTRING* out)
 {
     if (out == nullptr)
@@ -740,4 +749,27 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Rendering::Uwp::Elemen
 {
     CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
+}
+
+std::wstring StringToWstring(const std::string& in) 
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+    return utfConverter.from_bytes(in);
+}
+
+std::string WstringToString(const std::wstring& input)
+{
+    // Different platforms and compilers use different sizes for wchar_t, 
+    // in Windows the size for wchar_t is 2 bytes (https://docs.microsoft.com/en-us/cpp/cpp/char-wchar-t-char16-t-char32-t)
+    // while Android and iOS have a wchar_t size of 4 bytes
+    if (sizeof(wchar_t) == 2)
+    {
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+        return utfConverter.to_bytes(input);
+    }
+    else
+    {
+        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utfConverter;
+        return utfConverter.to_bytes(input);
+    }
 }

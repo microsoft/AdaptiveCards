@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="editTextBackground">@drawable/border</item>
+        <item name="android:editTextBackground">@drawable/border</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

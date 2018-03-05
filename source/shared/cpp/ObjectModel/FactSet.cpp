@@ -6,6 +6,7 @@ using namespace AdaptiveCards;
 
 FactSet::FactSet() : BaseCardElement(CardElementType::FactSet)
 {
+    PopulateKnownPropertiesSet();
 }
 
 FactSet::FactSet(
@@ -15,6 +16,7 @@ FactSet::FactSet(
     BaseCardElement(CardElementType::FactSet, spacing, separation),
     m_facts(facts)
 {
+    PopulateKnownPropertiesSet();
 }
 
 FactSet::FactSet(
@@ -22,6 +24,7 @@ FactSet::FactSet(
     bool separation) :
     BaseCardElement(CardElementType::FactSet, spacing, separation)
 {
+    PopulateKnownPropertiesSet();
 }
 
 const std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts() const
@@ -70,4 +73,9 @@ std::shared_ptr<BaseCardElement> FactSetParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return FactSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void FactSet::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts));
 }

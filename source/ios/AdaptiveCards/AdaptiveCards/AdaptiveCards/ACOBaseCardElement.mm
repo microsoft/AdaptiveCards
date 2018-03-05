@@ -15,9 +15,19 @@ using namespace AdaptiveCards;
     std::shared_ptr<BaseCardElement> _elem;
 }
 
-- (instancetype)init
+- (instancetype)initWithBaseCardElement:(std::shared_ptr<BaseCardElement> const &)element
 {
     self = [super init];
+    if(self && element) {
+        _elem = element;
+        _type = (ACRCardElementType)element->GetElementType();
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    self = [self initWithBaseCardElement:nil];
     return self;
 }
 
@@ -31,4 +41,15 @@ using namespace AdaptiveCards;
     _elem = elem;
 }
 
+- (NSData *)additionalProperty
+{
+    if(_elem){
+        Json::Value blob = _elem->GetAdditionalProperties();
+        Json::FastWriter fastWriter;
+        NSString *jsonString =
+            [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        return (jsonString.length > 0)? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+    }
+    return nil;
+}
 @end

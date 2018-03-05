@@ -4,8 +4,7 @@
 
 using namespace AdaptiveCards;
 
-ChoiceInput::ChoiceInput() :
-    m_isSelected(false)
+ChoiceInput::ChoiceInput()
 {
 }
 
@@ -18,7 +17,6 @@ std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(
 
     choice->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     choice->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, true));
-    choice->SetIsSelected(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSelected, false));
 
     return choice;
 }
@@ -43,7 +41,6 @@ Json::Value ChoiceInput::SerializeToJsonValue()
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSelected)] = GetIsSelected();
 
     return root;
 }
@@ -66,14 +63,4 @@ std::string ChoiceInput::GetValue() const
 void ChoiceInput::SetValue(const std::string value)
 {
     m_value = value;
-}
-
-bool AdaptiveCards::ChoiceInput::GetIsSelected() const
-{
-    return m_isSelected;
-}
-
-void AdaptiveCards::ChoiceInput::SetIsSelected(const bool isSelected)
-{
-    m_isSelected = isSelected;
 }

@@ -68,6 +68,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::IsSelected, "isSelected" },
         { AdaptiveCardSchemaKey::IsSubtle, "isSubtle" },
         { AdaptiveCardSchemaKey::Items, "items" },
+        { AdaptiveCardSchemaKey::Language, "lang" },
         { AdaptiveCardSchemaKey::Large, "large" },
         { AdaptiveCardSchemaKey::Left, "left" },
         { AdaptiveCardSchemaKey::Light, "light" },

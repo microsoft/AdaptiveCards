@@ -45,7 +45,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     ActivatableClass(AdaptiveActionParserRegistration);
 
-    class SharedModelActionParser : public AdaptiveCards::IActionElementParser
+    class SharedModelActionParser : public AdaptiveCards::ActionElementParser
     {
     public:
         SharedModelActionParser(AdaptiveCards::Rendering::Uwp::AdaptiveActionParserRegistration* parserRegistration) :

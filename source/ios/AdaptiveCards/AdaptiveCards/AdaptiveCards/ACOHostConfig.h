@@ -13,4 +13,5 @@
 - (instancetype)init;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
+
 @end    

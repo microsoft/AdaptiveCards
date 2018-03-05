@@ -2,6 +2,9 @@
 #include "AdaptiveCardParseException.h"
 #include "ElementParserRegistration.h"
 #include "ActionParserRegistration.h"
+#include "TextBlock.h"
+#include "Container.h"
+#include "ShowCardAction.h"
 
 namespace AdaptiveCards
 {
@@ -327,7 +330,7 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
         // Get the element's type
         std::string typeString = GetTypeAsString(curJsonValue);
 
-        std::shared_ptr<IBaseCardElementParser> parser = elementParserRegistration->GetParser(typeString);
+        std::shared_ptr<BaseCardElementParser> parser = elementParserRegistration->GetParser(typeString);
 
         //Parse it if it's allowed by the current parsers
         if (parser != nullptr)

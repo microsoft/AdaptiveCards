@@ -54,6 +54,9 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/MarkDownParsedResult.cpp
              ../../shared/cpp/ObjectModel/MarkDownBlockParser.cpp
              ../../shared/cpp/ObjectModel/MarkDownHtmlGenerator.cpp
+             ../../shared/cpp/ObjectModel/DateTimePreparser.cpp
+             ../../shared/cpp/ObjectModel/DateTimePreparsedToken.cpp
+             ../../shared/cpp/ObjectModel/Util.cpp
              src/main/cpp/objectmodel_wrap.cpp
              )
 

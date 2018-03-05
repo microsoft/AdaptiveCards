@@ -30,6 +30,8 @@ public:
     void SetTextInputStyle(const TextInputStyle value);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::string m_placeholder;
     std::string m_value;
     bool m_isMultiline;
@@ -37,7 +39,7 @@ private:
     TextInputStyle m_style;
 };
 
-class TextInputParser : public IBaseCardElementParser
+class TextInputParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

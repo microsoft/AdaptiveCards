@@ -8,6 +8,7 @@
 #import "ToggleInput.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRIBaseCardElementRenderer.h"
+#import "HostConfig.h"
 
 @interface ACRToggleInputDataSource:NSObject<UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler>
 
