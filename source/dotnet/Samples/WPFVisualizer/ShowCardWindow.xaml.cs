@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using AdaptiveCards;
 using AdaptiveCards.Rendering;
@@ -44,7 +45,7 @@ namespace WpfVisualizer
         {
             if (e.Action is AdaptiveOpenUrlAction openUrlAction)
             {
-                Process.Start(openUrlAction.Url.AbsoluteUri);
+                Process.Start(new Uri(openUrlAction.Url).AbsoluteUri);
             }
             else if (e.Action is AdaptiveShowCardAction)
             {
