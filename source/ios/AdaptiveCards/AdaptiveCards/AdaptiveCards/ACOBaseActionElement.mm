@@ -7,6 +7,8 @@
 #import <Foundation/Foundation.h>
 #import "ACOBaseActionElement.h"
 #import "BaseActionElement.h"
+#import "OpenUrlAction.h"
+#import "SubmitAction.h"
 
 using namespace AdaptiveCards;
 
@@ -17,7 +19,15 @@ using namespace AdaptiveCards;
 
 - (instancetype)init
 {
+    return [self initWithBaseActionElement:nil];
+}
+
+- (instancetype)initWithBaseActionElement:(std::shared_ptr<BaseActionElement> const &)element
+{
     self = [super init];
+    if(self){
+        [self setElem:element];
+    }
     return self;
 }
 
@@ -26,9 +36,12 @@ using namespace AdaptiveCards;
     return _elem;
 }
 
-- (void)setElem:(std::shared_ptr<BaseActionElement> const &)elem
+- (void)setElem:(std::shared_ptr<BaseActionElement> const &)element
 {
-    _elem = elem;
+    if(element){
+        _type = (ACRActionType)element->GetElementType();
+    }
+    _elem = element;
 }
 
 - (NSData *)additionalProperty
@@ -41,6 +54,40 @@ using namespace AdaptiveCards;
         return (jsonString.length > 0)? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
     }
     return nil;
+}
+
+- (NSString *)title
+{
+    if(_elem){
+        return [NSString stringWithCString:_elem->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+    }
+    return @"";
+}
+
+- (NSString *)elementId
+{
+    if(_elem){
+        return [NSString stringWithCString:_elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    }
+    return @"";
+}
+
+- (NSString *)url
+{
+    if(_elem && _type == ACROpenUrl){
+        std::shared_ptr<OpenUrlAction> openUrlAction = std::dynamic_pointer_cast<OpenUrlAction>(_elem);
+        return [NSString stringWithCString:openUrlAction->GetUrl().c_str() encoding:NSUTF8StringEncoding];
+    }
+    return @"";
+}
+
+- (NSString *)data
+{
+    if(_elem && _type == ACRSubmit){
+        std::shared_ptr<SubmitAction> submitAction = std::dynamic_pointer_cast<SubmitAction>(_elem);
+        return [NSString stringWithCString:submitAction->GetDataJson().c_str() encoding:NSUTF8StringEncoding];
+    }
+    return @"";
 }
 
 @end

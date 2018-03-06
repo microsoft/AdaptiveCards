@@ -61,8 +61,8 @@ public class FactSetConfig {
     return AdaptiveCardObjectModelJNI.FactSetConfig_spacing_get(swigCPtr, this);
   }
 
-  public static FactSetConfig Deserialize(SWIGTYPE_p_Json__Value json, FactSetConfig defaultValue) {
-    return new FactSetConfig(AdaptiveCardObjectModelJNI.FactSetConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), FactSetConfig.getCPtr(defaultValue), defaultValue), true);
+  public static FactSetConfig Deserialize(JsonValue json, FactSetConfig defaultValue) {
+    return new FactSetConfig(AdaptiveCardObjectModelJNI.FactSetConfig_Deserialize(JsonValue.getCPtr(json), json, FactSetConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public FactSetConfig() {

@@ -15,15 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
@@ -32,9 +32,9 @@ import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
 
 import java.io.IOException;
-import java.util.Vector;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
@@ -54,11 +54,12 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private class ImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
     {
-        ImageLoaderAsync(Context context, ImageView imageView, ImageStyle imageStyle)
+        ImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, ImageView imageView, ImageStyle imageStyle)
         {
             m_context = context;
             m_imageView = imageView;
             m_imageStyle = imageStyle;
+            m_renderedCard = renderedCard;
         }
 
         @Override
@@ -107,28 +108,29 @@ public class ImageRenderer extends BaseCardElementRenderer
             }
             else
             {
-                Toast.makeText(m_context, "Unable to load image: " + result.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                m_renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNABLE_TO_LOAD_IMAGE, result.getException().getMessage()));
             }
         }
 
         private Context m_context;
         private ImageView m_imageView;
         private ImageStyle m_imageStyle;
+        private RenderedAdaptiveCard m_renderedCard;
     }
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
         imageView.setScaleType(ImageView.ScaleType.CENTER);
-        if (imageSize.swigValue() == ImageSize.Stretch.swigValue()) {
+        if (imageSize == ImageSize.Stretch) {
             //ImageView must match parent for stretch to work
             imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        } else if (imageSize.swigValue() == ImageSize.Small.swigValue()) {
+        } else if (imageSize == ImageSize.Small) {
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getSmallSize()));
-        } else if (imageSize.swigValue() == ImageSize.Medium.swigValue()) {
+        } else if (imageSize == ImageSize.Medium) {
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getMediumSize()));
-        } else if (imageSize.swigValue() == ImageSize.Large.swigValue()) {
+        } else if (imageSize == ImageSize.Large) {
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getLargeSize()));
-        } else if (imageSize.swigValue() != ImageSize.Auto.swigValue() && imageSize.swigValue() != ImageSize.None.swigValue()){
+        } else if (imageSize != ImageSize.Auto && imageSize != ImageSize.None){
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
 
@@ -137,28 +139,14 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
-    {
-        return render(context, fragmentManager, viewGroup, baseCardElement, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle, false);
-    }
-
-    public View render(
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            ContainerStyle containerStyle,
-            boolean isPartOfImageSet)
     {
         Image image;
         if (baseCardElement instanceof Image)
@@ -172,11 +160,11 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(image);
-        ImageLoaderAsync imageLoaderAsync = new ImageLoaderAsync(context, imageView, image.GetImageStyle());
+        ImageLoaderAsync imageLoaderAsync = new ImageLoaderAsync(renderedCard, context, imageView, image.GetImageStyle());
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
-        if (image.GetImageSize().swigValue() == ImageSize.Stretch.swigValue())
+        if (image.GetImageSize() == ImageSize.Stretch)
         {
             //ImageView must match parent for stretch to work
             layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -187,11 +175,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
-        if (horizontalAlignment.swigValue() == HorizontalAlignment.Right.swigValue())
+        if (horizontalAlignment == HorizontalAlignment.Right)
         {
             layoutParams.gravity = Gravity.RIGHT;
         }
-        else if (horizontalAlignment.swigValue() == HorizontalAlignment.Center.swigValue())
+        else if (horizontalAlignment == HorizontalAlignment.Center)
         {
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
         }
@@ -199,14 +187,14 @@ public class ImageRenderer extends BaseCardElementRenderer
         if (image.GetSelectAction() != null)
         {
             imageView.setClickable(true);
-            imageView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(image.GetSelectAction(),inputActionHandlerList, cardActionHandler));
+            imageView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
         }
 
         //set horizontalAlignment
         imageView.setLayoutParams(layoutParams);
 
         setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
-        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isPartOfImageSet /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !(viewGroup instanceof HorizontalFlowLayout) /* horizontal line */);
 
         viewGroup.addView(imageView);
         return imageView;

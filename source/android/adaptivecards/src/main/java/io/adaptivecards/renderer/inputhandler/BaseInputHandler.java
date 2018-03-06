@@ -1,11 +1,7 @@
 package io.adaptivecards.renderer.inputhandler;
 
 import android.view.View;
-import android.widget.Toast;
-
 import io.adaptivecards.objectmodel.BaseInputElement;
-
-import java.text.ParseException;
 
 public abstract class BaseInputHandler implements IInputHandler
 {
@@ -24,26 +20,9 @@ public abstract class BaseInputHandler implements IInputHandler
         return m_baseInputElement;
     }
 
-    protected abstract void setDefaultTextColor();
-
-    protected abstract void setInvalidTextColor();
-
-    protected abstract void internalValidate() throws ParseException;
-
-    public Exception validate()
+    public String getId()
     {
-        try
-        {
-            internalValidate();
-            setDefaultTextColor();
-            return null;
-        }
-        catch (Exception excep)
-        {
-            setInvalidTextColor();
-            Toast.makeText(m_view.getContext(), excep.getMessage(), Toast.LENGTH_LONG).show();
-            return excep;
-        }
+        return m_baseInputElement.GetId();
     }
 
     protected BaseInputElement m_baseInputElement = null;

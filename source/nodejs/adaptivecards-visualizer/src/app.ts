@@ -12,6 +12,7 @@ import { OutlookContainer } from "./containers/outlook";
 import { BotFrameworkImageContainer } from "./containers/bf-image";
 
 import { adaptiveCardSchema } from "./adaptive-card-schema";
+import { CortanaContainer } from "./containers/cortana";
 
 var hostContainerOptions: Array<HostContainerOption> = [];
 var hostContainerPicker: HTMLSelectElement;
@@ -32,20 +33,41 @@ function renderCard(target: HTMLElement): HTMLElement {
     document.getElementById("errorContainer").hidden = true;
     lastValidationErrors = [];
 
-    var hostContainer = getSelectedHostContainer();
-
     var json = JSON.parse(currentCardPayload);
 
-    var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-    adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(currentConfigPayload);
 
-    adaptiveCard.parse(json);
+    // Show all Host Apps at once, not working yet (to test uncomment the - 1 below)
+    if (hostContainerPicker.selectedIndex === hostContainerPicker.length /* -1 */) {
 
-    lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
+        var wrapper = document.createElement("div");
+        hostContainerOptions.forEach(hostContainerOption => {
 
-    showValidationErrors();
+            var label = document.createElement("h4");
+            label.innerText = hostContainerOption.name;
+            wrapper.appendChild(label);
 
-    return hostContainer.render(adaptiveCard, target);
+            var cardContainer = document.createElement("div");
+
+            var adaptiveCard = new AdaptiveCards.AdaptiveCard();
+            adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostContainerOption.hostContainer.getHostConfig());
+            adaptiveCard.parse(json);
+
+            wrapper.appendChild(hostContainerOption.hostContainer.render(adaptiveCard, cardContainer));            
+        });
+
+        return target.appendChild(wrapper);
+    } else {
+        var adaptiveCard = new AdaptiveCards.AdaptiveCard();
+        adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(currentConfigPayload);
+
+        adaptiveCard.parse(json);
+
+        lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
+
+        showValidationErrors();
+
+        return getSelectedHostContainer().render(adaptiveCard, target);
+    }
 }
 
 function tryRenderCard() {
@@ -63,10 +85,13 @@ function tryRenderCard() {
 
     try {
         sessionStorage.setItem("AdaptivePayload", currentCardPayload);
+        history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, "index.html" + `?hostApp=${hostContainerPicker.value}`);
     }
     catch (e) {
         console.log("Unable to cache JSON payload.")
     }
+
+    isLoaded = true;
 }
 
 function openFilePicker() {
@@ -149,26 +174,19 @@ class HostContainerOption {
 
 var currentCardPayload: string = "";
 var currentConfigPayload: string = "";
+var isLoaded = false;;
 
 function hostContainerPickerChanged() {
-    // history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, "index.html" + `?hostApp=${hostContainerPicker.value}`);
-
     loadStyleSheetAndConfig();
-    tryRenderCard();
+
+    if (isLoaded) {
+        tryRenderCard();
+    }
 }
 
 function setupContainerPicker() {
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Microsoft Teams",
-            new TeamsContainer("css/teams.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Skype",
-            new SkypeContainer(350, "css/skype.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -177,23 +195,43 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Bot Framework Other Channels",
-            new BotFrameworkImageContainer(400, "css/bf.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Microsoft Outlook Actionable Messages",
-            new OutlookContainer("css/outlook.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Windows Notifications",
-            new ToastContainer(362, "css/toast.css")));
+            "Cortana Skills",
+            new CortanaContainer(true, "css/cortana.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Windows Timeline",
             new TimelineContainer(320, 176, "css/timeline.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Skype (Preview)",
+            new SkypeContainer(350, "css/skype.css")));
+            
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Outlook Actionable Messages (Preview)",
+            new OutlookContainer("css/outlook.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Microsoft Teams (Preview)",
+            new TeamsContainer("css/teams.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Windows Notifications (Preview)",
+            new ToastContainer(362, "css/toast.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Bot Framework Other Channels (Image render)",
+            new BotFrameworkImageContainer(400, "css/bf.css")));
+
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "All at once",
+    //         new BotFrameworkImageContainer(400, "css/bf.css")));
 
     hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
 
@@ -272,7 +310,7 @@ function actionExecuted(action: AdaptiveCards.Action) {
                 }
             ]
         });
-
+ 
     window.setTimeout(actionCompletedCallback, 2000, action);
     */
 
@@ -396,7 +434,7 @@ function monacoEditorLoaded() {
 
     /*
     Test additional events:
-
+ 
     Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
     Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
     */
@@ -430,12 +468,12 @@ function monacoEditorLoaded() {
             }
 
             tryRenderCard();
-        });    
+        });
 
     currentCardPayload = Constants.defaultPayload;
 
     var initialCardLaodedAsynchronously = false;
-    var cardUrl = document.location.search.substring(1).split('card=')[1];
+    var cardUrl = getParameterByName("card", null);
 
     if (cardUrl) {
         initialCardLaodedAsynchronously = true;
@@ -462,10 +500,12 @@ function monacoEditorLoaded() {
         var cachedPayload;
 
         try {
+            console.log("loading card from cache");
             cachedPayload = sessionStorage.getItem("AdaptivePayload");
         }
         catch {
             // Session storage is not accessible
+            console.log("Unable to load card from cache");
         }
 
         if (cachedPayload && cachedPayload != "") {

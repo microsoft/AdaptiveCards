@@ -8,7 +8,7 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRButton.h"
-#import "ACROpenURLTarget.h"
+#import "ACRAggregateTarget.h"
 #import "OpenUrlAction.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
@@ -34,12 +34,11 @@
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str()
                                           encoding:NSUTF8StringEncoding];
     UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
-    NSString *urlStr = [NSString stringWithCString:action->GetUrl().c_str()
-                                          encoding:[NSString defaultCStringEncoding]];
-    NSURL *url = [NSURL URLWithString:urlStr];
 
-    ACROpenURLTarget *target = [[ACROpenURLTarget alloc] initWithURL:url viewController:vc];
-    [button addTarget:target action:@selector(openURL) forControlEvents:UIControlEventTouchUpInside];
+    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootViewController:(ACRViewController *)vc];
+
+    [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
+
     [superview addTarget:target];
 
     [superview addArrangedSubview:button];

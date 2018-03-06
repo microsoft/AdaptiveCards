@@ -8,47 +8,45 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class SeparatorThickness {
-  public final static SeparatorThickness Default = new SeparatorThickness("Default", AdaptiveCardObjectModelJNI.SeparatorThickness_Default_get());
-  public final static SeparatorThickness Thick = new SeparatorThickness("Thick");
+public enum SeparatorThickness {
+  Default(0),
+  Thick;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static SeparatorThickness swigToEnum(int swigValue) {
+    SeparatorThickness[] swigValues = SeparatorThickness.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (SeparatorThickness swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + SeparatorThickness.class + " with value " + swigValue);
   }
 
-  private SeparatorThickness(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private SeparatorThickness() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private SeparatorThickness(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private SeparatorThickness(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private SeparatorThickness(String swigName, SeparatorThickness swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private SeparatorThickness(SeparatorThickness swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static SeparatorThickness[] swigValues = { Default, Thick };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

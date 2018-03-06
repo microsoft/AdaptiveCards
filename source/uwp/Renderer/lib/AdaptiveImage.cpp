@@ -51,6 +51,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedImage->GetSpacing());
         m_separator = sharedImage->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetId(), m_id.GetAddressOf()));
+        RETURN_IF_FAILED(JsonCppToJsonObject(sharedImage->GetAdditionalProperties(), &m_additionalProperties));
 
         return S_OK;
     } CATCH_RETURN;
@@ -148,23 +149,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         *separator = m_separator;
         return S_OK;
-
-        //Issue #629 to make separator an object
-        //return GenerateSeparatorProjection(m_sharedImage->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImage::put_Separator(boolean separator)
     {
         m_separator = separator;
-
-        /*Issue #629 to make separator an object
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
-
-        m_sharedImage->SetSeparator(sharedSeparator);
-        */
-
         return S_OK;
     }
 
@@ -186,6 +176,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ElementType typeEnum;
         RETURN_IF_FAILED(get_ElementType(&typeEnum));
         return ProjectedElementTypeToHString(typeEnum, type);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return m_additionalProperties.CopyTo(result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    {
+        m_additionalProperties = jsonObject;
+        return S_OK;
     }
 
     _Use_decl_annotations_

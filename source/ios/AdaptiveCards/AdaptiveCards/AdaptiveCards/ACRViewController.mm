@@ -26,7 +26,7 @@ using namespace AdaptiveCards;
 
 @implementation ACRViewController
 {
-    std::shared_ptr<AdaptiveCard> _adaptiveCard;
+    ACOAdaptiveCard *_adaptiveCard;
     ACOHostConfig *_hostConfig;
     CGRect _guideFrame;
     NSMutableDictionary *_imageViewMap;
@@ -61,7 +61,7 @@ using namespace AdaptiveCards;
     self = [self initWithNibName:nil bundle:nil];
     if(self)
     {
-        _adaptiveCard = [card getCard];
+        _adaptiveCard = card;
         if(config)
         {
             _hostConfig = config;
@@ -85,7 +85,7 @@ using namespace AdaptiveCards;
     view.frame = _guideFrame;
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
 
-    std::string backgroundImage = _adaptiveCard->GetBackgroundImage();
+    std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
     NSString* imgUrl = nil;
     if(!backgroundImage.empty())
         imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
@@ -102,7 +102,7 @@ using namespace AdaptiveCards;
            [imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
            ]];
     }
-    ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle(): ContainerStyle::Default;
+    ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
     if(style != ContainerStyle::None)
     {
         unsigned long num = 0;
@@ -120,10 +120,10 @@ using namespace AdaptiveCards;
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
-    std::vector<std::shared_ptr<BaseCardElement>> body = _adaptiveCard->GetBody();
+    std::vector<std::shared_ptr<BaseCardElement>> body = [_adaptiveCard card]->GetBody();
 
 
-    UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card]
                                                              inputs:inputs
                                                      viewController:self
                                                          guideFrame:_guideFrame
@@ -418,23 +418,27 @@ using namespace AdaptiveCards;
     ++_serialNumber;
 }
 
-- (NSMutableDictionary *) getImageMap
+- (NSMutableDictionary *)getImageMap
 {
     return _imageViewMap;
 }
-- (dispatch_queue_t) getSerialQueue
+- (dispatch_queue_t)getSerialQueue
 {
     return _serial_queue;
 }
 
-- (dispatch_queue_t) getSerialTextQueue
+- (dispatch_queue_t)getSerialTextQueue
 {
     return _serial_text_queue;
 }
 
-- (NSMutableDictionary *) getTextMap
+- (NSMutableDictionary *)getTextMap
 {
     return _textMap;
 }
 
+- (ACOAdaptiveCard *)card
+{
+    return _adaptiveCard;
+}
 @end

@@ -8,51 +8,49 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ErrorStatusCode {
-  public final static ErrorStatusCode InvalidJson = new ErrorStatusCode("InvalidJson", AdaptiveCardObjectModelJNI.ErrorStatusCode_InvalidJson_get());
-  public final static ErrorStatusCode UnsupportedSchemaVersion = new ErrorStatusCode("UnsupportedSchemaVersion");
-  public final static ErrorStatusCode RenderFailed = new ErrorStatusCode("RenderFailed");
-  public final static ErrorStatusCode RequiredPropertyMissing = new ErrorStatusCode("RequiredPropertyMissing");
-  public final static ErrorStatusCode InvalidPropertyValue = new ErrorStatusCode("InvalidPropertyValue");
-  public final static ErrorStatusCode UnsupportedParserOverride = new ErrorStatusCode("UnsupportedParserOverride");
+public enum ErrorStatusCode {
+  InvalidJson(0),
+  UnsupportedSchemaVersion,
+  RenderFailed,
+  RequiredPropertyMissing,
+  InvalidPropertyValue,
+  UnsupportedParserOverride;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ErrorStatusCode swigToEnum(int swigValue) {
+    ErrorStatusCode[] swigValues = ErrorStatusCode.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ErrorStatusCode swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ErrorStatusCode.class + " with value " + swigValue);
   }
 
-  private ErrorStatusCode(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ErrorStatusCode() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ErrorStatusCode(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ErrorStatusCode(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ErrorStatusCode(String swigName, ErrorStatusCode swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ErrorStatusCode(ErrorStatusCode swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ErrorStatusCode[] swigValues = { InvalidJson, UnsupportedSchemaVersion, RenderFailed, RequiredPropertyMissing, InvalidPropertyValue, UnsupportedParserOverride };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

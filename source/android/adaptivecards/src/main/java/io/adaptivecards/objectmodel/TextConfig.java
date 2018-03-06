@@ -83,8 +83,8 @@ public class TextConfig {
     return AdaptiveCardObjectModelJNI.TextConfig_maxWidth_get(swigCPtr, this);
   }
 
-  public static TextConfig Deserialize(SWIGTYPE_p_Json__Value json, TextConfig defaultValue) {
-    return new TextConfig(AdaptiveCardObjectModelJNI.TextConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), TextConfig.getCPtr(defaultValue), defaultValue), true);
+  public static TextConfig Deserialize(JsonValue json, TextConfig defaultValue) {
+    return new TextConfig(AdaptiveCardObjectModelJNI.TextConfig_Deserialize(JsonValue.getCPtr(json), json, TextConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public TextConfig() {

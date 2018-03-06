@@ -101,6 +101,16 @@ HRESULT SetSharedElementProperties(
     RETURN_IF_FAILED(adaptiveCardElement->get_Spacing(&spacing));
     sharedCardElement->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
 
+    ComPtr<IJsonObject> additionalProperties;
+    RETURN_IF_FAILED(adaptiveCardElement->get_AdditionalProperties(&additionalProperties));
+
+    if (additionalProperties != nullptr)
+    {
+        Json::Value jsonCpp;
+        RETURN_IF_FAILED(JsonObjectToJsonCpp(additionalProperties.Get(), &jsonCpp));
+        sharedCardElement->SetAdditionalProperties(jsonCpp);
+    }
+
     return S_OK;
 }
 

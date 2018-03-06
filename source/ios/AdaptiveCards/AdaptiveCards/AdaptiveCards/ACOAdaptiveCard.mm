@@ -6,6 +6,7 @@
 //
 #import <Foundation/Foundation.h>
 #import "ACOAdaptiveCardParseResult.h"
+#import "ACRIBaseInputHandler.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "AdaptiveCardParseException.h"
@@ -19,6 +20,32 @@ using namespace AdaptiveCards;
 @implementation ACOAdaptiveCard
 {
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
+    NSMutableArray *_inputs;
+}
+
+- (void)setInputs:(NSArray *) inputs
+{
+    _inputs = [[NSMutableArray alloc] initWithArray:inputs];
+}
+
+- (void)appendInputs:(NSArray *)inputs
+{
+    [_inputs addObjectsFromArray:inputs];
+}
+
+- (NSData *)inputs
+{
+    if(_inputs){
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        for(id<ACRIBaseInputHandler> input in _inputs)
+        {
+            [input getInput:dictionary];
+        }
+
+        return [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
+    }
+
+    return nil;
 }
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
@@ -55,7 +82,7 @@ using namespace AdaptiveCards;
     return result;
 }
 
-- (std::shared_ptr<AdaptiveCard> const &)getCard
+- (std::shared_ptr<AdaptiveCard> const &)card
 {
     return _adaptiveCard;
 }
