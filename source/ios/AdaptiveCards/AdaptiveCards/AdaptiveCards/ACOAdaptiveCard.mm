@@ -26,7 +26,7 @@ using namespace AdaptiveCards;
         try
         {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            card->_adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]));
+            card->_adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), 1.0);
             result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil];
         }
         catch(const AdaptiveCardParseException& e)
