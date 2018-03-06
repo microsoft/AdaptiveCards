@@ -6,10 +6,16 @@ import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Layout;
+import android.text.Selection;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -172,6 +178,67 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
     }
 
+    static class TouchTextView implements View.OnTouchListener
+    {
+        Spannable spannable;
+
+        public TouchTextView (Spannable spannable)
+        {
+            this.spannable = spannable;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            int action = event.getAction();
+            if (!(v instanceof TextView))
+            {
+                return false;
+            }
+            TextView textView  = (TextView) v;
+            if (action == MotionEvent.ACTION_UP ||
+                    action == MotionEvent.ACTION_DOWN)
+            {
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                x -= textView.getTotalPaddingLeft();
+                y -= textView.getTotalPaddingTop();
+
+                x += textView.getScrollX();
+                y += textView.getScrollY();
+
+                Layout layout = textView.getLayout();
+                int line = layout.getLineForVertical(y);
+                int off = layout.getOffsetForHorizontal(line, x);
+
+                ClickableSpan[] link = spannable.getSpans(off, off, ClickableSpan.class);
+
+                if (link.length != 0)
+                {
+                    if (action == MotionEvent.ACTION_UP)
+                    {
+                        link[0].onClick(textView);
+                    }
+                    else if (action == MotionEvent.ACTION_DOWN)
+                    {
+                        Selection.setSelection(spannable,
+                                spannable.getSpanStart(link[0]),
+                                spannable.getSpanEnd(link[0]));
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    Selection.removeSelection(spannable);
+                }
+            }
+
+            return false;
+        }
+    }
+
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -201,20 +268,20 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
         MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
         String textString = markDownParser.TransformToHtml();
+        Spanned htmlString;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            Spanned htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
-            textView.setText(trimHtmlString(htmlString));
+            htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
         }
         else
         {
             // Before Android N, html.fromHtml adds two newline characters to end of string
-            Spanned htmlString = Html.fromHtml(textString, null, new UlTagHandler());
-            textView.setText(trimHtmlString(htmlString));
+            htmlString = Html.fromHtml(textString, null, new UlTagHandler());
         }
+        textView.setText(trimHtmlString(htmlString));
         textView.setSingleLine(!textBlock.GetWrap());
         textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setOnTouchListener(new TouchTextView(new SpannableString(trimHtmlString(htmlString))));
         textView.setHorizontallyScrolling(false);
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
