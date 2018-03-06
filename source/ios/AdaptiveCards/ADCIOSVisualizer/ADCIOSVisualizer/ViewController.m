@@ -168,7 +168,7 @@
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
 
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-        [registration setCustomElementRenderer:progressBarRenderer];
+        [registration setCustomElementParser:progressBarRenderer];
         ACRViewController *adcVc = renderResult.viewcontroller;
         adcVc.acrActionDelegate = self;
         if(self.curView)

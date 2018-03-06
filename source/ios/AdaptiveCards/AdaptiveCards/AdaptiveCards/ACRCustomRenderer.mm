@@ -41,8 +41,8 @@ rootViewController:(UIViewController *)vc
         NSData *jsonPayload = nil;
         jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         if(jsonPayload && self.customElementParser &&
-            [self.customElementParser respondsToSelector: @selector(DeserializeToCustomUIElement:)]){
-            UIView *customUIElement = [self.customElementParser DeserializeToCustomUIElement:jsonPayload];
+            [self.customElementParser respondsToSelector: @selector(deserializeToCustomUIElement:)]){
+            UIView *customUIElement = [self.customElementParser deserializeToCustomUIElement:jsonPayload];
             ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:customUIElement.frame];
             wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
             [wrappingview addSubview:customUIElement];
