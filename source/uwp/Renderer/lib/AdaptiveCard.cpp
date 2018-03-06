@@ -91,46 +91,46 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             }
         }
 
-                ComPtr<AdaptiveCardParseResult> adaptiveParseResult;
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
-                try
-                {
-                        const double c_rendererVersion = 1.0;
-                        std::shared_ptr<::AdaptiveCards::ParseResult> sharedParseResult = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-                        ComPtr<IAdaptiveCard> adaptiveCard;
-                        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
-                        RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
+        ComPtr<AdaptiveCardParseResult> adaptiveParseResult;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
+        try
+        {
+            const double c_rendererVersion = 1.0;
+            std::shared_ptr<::AdaptiveCards::ParseResult> sharedParseResult = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
+            ComPtr<IAdaptiveCard> adaptiveCard;
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
+            RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
 
-                        for (auto sharedWarning : sharedParseResult->GetWarnings())
-                        {
-                            ComPtr<IVector<IAdaptiveWarning*>> warnings;
-                            RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
+            for (auto sharedWarning : sharedParseResult->GetWarnings())
+            {
+                ComPtr<IVector<IAdaptiveWarning*>> warnings;
+                RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
 
-                            HString warningMessage;
-                            RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
+                HString warningMessage;
+                RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
                             
-                            ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode>(sharedWarning->GetStatusCode());
+                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode>(sharedWarning->GetStatusCode());
 
-                            ComPtr<IAdaptiveWarning> adaptiveWarning;
-                            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
+                ComPtr<IAdaptiveWarning> adaptiveWarning;
+                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
 
-                            RETURN_IF_FAILED(warnings->Append(adaptiveWarning.Get()));
-                        }
+                RETURN_IF_FAILED(warnings->Append(adaptiveWarning.Get()));
+            }
 
-                        return adaptiveParseResult.CopyTo(parseResult);
-                }
-                catch (const AdaptiveCardParseException& e)
-                {
-                        ComPtr<IVector<IAdaptiveError*>> errors;
-                        RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
-                        HString errorMessage;
-                        ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode>(e.GetStatusCode());
-                        RETURN_IF_FAILED(UTF8ToHString(e.GetReason(), errorMessage.GetAddressOf()));
-                        ComPtr<IAdaptiveError> adaptiveError;
-                        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
-                        RETURN_IF_FAILED(errors->Append(adaptiveError.Get()));
-                        return adaptiveParseResult.CopyTo(parseResult);
-                }
+            return adaptiveParseResult.CopyTo(parseResult);
+        }
+        catch (const AdaptiveCardParseException& e)
+        {
+            ComPtr<IVector<IAdaptiveError*>> errors;
+            RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
+            HString errorMessage;
+            ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode>(e.GetStatusCode());
+            RETURN_IF_FAILED(UTF8ToHString(e.GetReason(), errorMessage.GetAddressOf()));
+            ComPtr<IAdaptiveError> adaptiveError;
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
+            RETURN_IF_FAILED(errors->Append(adaptiveError.Get()));
+            return adaptiveParseResult.CopyTo(parseResult);
+        }
     }
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
