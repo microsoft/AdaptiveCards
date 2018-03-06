@@ -41,6 +41,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedColumnSet->GetSpacing());
         m_separator = sharedColumnSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedColumnSet->GetId(), m_id.GetAddressOf()));
+        RETURN_IF_FAILED(JsonCppToJsonObject(sharedColumnSet->GetAdditionalProperties(), &m_additionalProperties));
 
         return S_OK;
     }
@@ -90,23 +91,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         *separator = m_separator;
         return S_OK;
-
-        // Issue #629 to make separator an object
-        //return GenerateSeparatorProjection(m_sharedColumnSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumnSet::put_Separator(boolean separator)
     {
         m_separator = separator;
-
-        /*Issue #629 to make separator an object
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
-
-        m_sharedColumnSet->SetSeparator(sharedSeparator);
-        */
-
         return S_OK;
     }
 
@@ -131,6 +121,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return m_additionalProperties.CopyTo(result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    {
+        m_additionalProperties = jsonObject;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveColumnSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveCards::ColumnSet> sharedModel;
@@ -140,7 +143,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveCards::ColumnSet>& sharedModel)
+    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveCards::ColumnSet>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
 
@@ -166,5 +169,5 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         sharedModel = columnSet;
         return S_OK;
-    }
+    }CATCH_RETURN;
 }}}

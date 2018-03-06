@@ -38,6 +38,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedFactSet->GetSpacing());
         m_separator = sharedFactSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedFactSet->GetId(), m_id.GetAddressOf()));
+        RETURN_IF_FAILED(JsonCppToJsonObject(sharedFactSet->GetAdditionalProperties(), &m_additionalProperties));
 
         return S_OK;
     }
@@ -74,23 +75,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         *separator = m_separator;
         return S_OK;
-
-        //Issue #629 to make separator an object
-        //return GenerateSeparatorProjection(m_sharedFactSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::put_Separator(boolean separator)
     {
         m_separator = separator;
-
-        /*Issue #629 to make separator an object
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
-
-        m_sharedFactSet->SetSeparator(sharedSeparator);
-        */
-
         return S_OK;
     }
 
@@ -115,6 +105,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return m_additionalProperties.CopyTo(result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    {
+        m_additionalProperties = jsonObject;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveFactSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveCards::FactSet> sharedModel;
@@ -124,7 +127,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveCards::FactSet>& sharedModel)
+    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveCards::FactSet>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
 
@@ -134,5 +137,5 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = factSet;
 
         return S_OK;
-    }
+    }CATCH_RETURN;
 }}}

@@ -46,6 +46,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
+
         HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::Container>& sharedModel);
 
         // ITypePeek method
@@ -62,6 +65,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         boolean m_separator;
         Microsoft::WRL::Wrappers::HString m_id;
         ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
+        Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
     };
 
     ActivatableClass(AdaptiveContainer);
