@@ -101,11 +101,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
             RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
 
+            ComPtr<IVector<IAdaptiveWarning*>> warnings;
+            RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
+
             for (auto sharedWarning : sharedParseResult->GetWarnings())
             {
-                ComPtr<IVector<IAdaptiveWarning*>> warnings;
-                RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
-
                 HString warningMessage;
                 RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
                             
