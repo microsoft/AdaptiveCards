@@ -23,7 +23,7 @@
 
 + (ACRCardElementType)elemType
 {
-    return ACRCustomIOSDelegate;
+    return ACRUnknown;
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup

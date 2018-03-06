@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, ACRCardElementType) {
     ACRTimeInput,
     ACRToggleInput,
     ACRCustom,
-    ACRCustomIOSDelegate,
+    ACRUnknown,
 };
 
 typedef NS_ENUM(NSInteger, ACRContainerStyle) {
