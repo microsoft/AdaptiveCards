@@ -10,7 +10,7 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRButton.h"
-#import "ACRSubmitTarget.h"
+#import "ACRAggregateTarget.h"
 #import "SubmitAction.h"
 
 @implementation ACRActionSubmitRenderer
@@ -35,13 +35,9 @@
                                         encoding:NSUTF8StringEncoding];
     UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
 
-    NSString *data = [NSString stringWithCString:action->GetDataJson().c_str()
-                                        encoding:NSUTF8StringEncoding];
-    ACRSubmitTarget *target = [[ACRSubmitTarget alloc] initWithDataString:data
-                                                                   inputs:inputs
-                                                                       vc:vc];
+    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootViewController:(ACRViewController *)vc];
 
-    [button addTarget:target action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
 
