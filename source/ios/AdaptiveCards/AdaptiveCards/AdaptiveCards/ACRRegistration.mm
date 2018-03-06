@@ -98,7 +98,7 @@ using namespace AdaptiveCards;
     [typeToRendererDict setObject:renderer forKey:[NSNumber numberWithInteger:cardElementType]];
 }
 
-- (void) setCustomElementRenderer:(NSObject<ACOIBaseCardElementParser> *)customElementParser
+- (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser
 {
     ACRCustomRenderer *customRenderer = [ACRCustomRenderer getInstance];
     customRenderer.customElementParser = customElementParser;

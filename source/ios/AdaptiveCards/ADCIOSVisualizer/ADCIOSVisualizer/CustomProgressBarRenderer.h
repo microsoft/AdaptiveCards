@@ -11,5 +11,5 @@
 
 @interface CustomProgressBarRenderer:NSObject<ACOIBaseCardElementParser>
 
-- (UIView *)DeserializeToCustomUIElement:(NSData* )json;
+- (UIView *)deserializeToCustomUIElement:(NSData* )json;
 @end

@@ -9,7 +9,7 @@
 
 @implementation CustomProgressBarRenderer
 
-- (UIView *)DeserializeToCustomUIElement:(NSData* )json
+- (UIView *)deserializeToCustomUIElement:(NSData* )json
 {
         if(json) {
             NSDictionary *data = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableLeaves error:nil];
