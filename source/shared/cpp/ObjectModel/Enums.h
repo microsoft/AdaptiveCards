@@ -281,7 +281,6 @@ enum class ContainerStyle {
 
 enum class ErrorStatusCode {
     InvalidJson = 0,
-    UnsupportedSchemaVersion,
     RenderFailed,
     RequiredPropertyMissing,
     InvalidPropertyValue,
@@ -295,7 +294,8 @@ enum class WarningStatusCode {
     NoRendererForType,
     InteractivityNotSupported,
     MaxActionsExceeded,
-    AssetLoadFailed
+    AssetLoadFailed,
+    UnsupportedSchemaVersion,
 };
 
 enum class DateTimePreparsedTokenFormat {
