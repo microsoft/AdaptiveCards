@@ -64,7 +64,7 @@ using namespace AdaptiveCards;
     return @"";
 }
 
-- (NSString *)id
+- (NSString *)elementId
 {
     if(_elem){
         return [NSString stringWithCString:_elem->GetId().c_str() encoding:NSUTF8StringEncoding];

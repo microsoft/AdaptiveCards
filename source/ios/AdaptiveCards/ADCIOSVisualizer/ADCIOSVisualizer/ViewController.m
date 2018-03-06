@@ -225,9 +225,7 @@
         [self presentViewController:svc animated:YES completion:nil];
     }
     else if(action.type == ACRSubmit){
-        NSError *error;
-        error = nil;
-        NSData * userInputsAsJson = [card inputs:&error];
+        NSData * userInputsAsJson = [card inputs];
         NSString *str = [[NSString alloc] initWithData:userInputsAsJson encoding:NSUTF8StringEncoding];
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
     }

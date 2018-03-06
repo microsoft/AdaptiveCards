@@ -20,35 +20,26 @@ using namespace AdaptiveCards;
     NSMutableArray *_inputs;
 }
 
-- (void) setInputs:(NSMutableArray *) inputs
+- (void) setInputs:(NSArray *) inputs
 {
-    _inputs = inputs;
+    _inputs = [[NSMutableArray alloc] initWithArray:inputs];
 }
 
-- (void) appendInputs:(NSMutableArray *)inputs
+- (void) appendInputs:(NSArray *)inputs
 {
     [_inputs addObjectsFromArray:inputs];
 }
 
-- (NSData *)inputs:(NSError **)error
+- (NSData *)inputs
 {
     if(_inputs){
         NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
         for(id<ACRIBaseInputHandler> input in _inputs)
         {
-            if([input validate:error] == NO)
-            {
-                NSLog(@"input validation failed %@", *error);
-            }
-            else
-            {
-                [input getInput:dictionary];
-            }
+            [input getInput:dictionary];
         }
 
-        error = nil;
-
-        return [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:error];
+        return [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
     }
 
     return nil;

@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
 @property ACRActionType type;
 
 - (NSString *)title;
-- (NSString *)id;
+- (NSString *)elementId;
 - (NSString *)url;
 - (NSString *)data;
 - (NSData *)additionalProperty;
