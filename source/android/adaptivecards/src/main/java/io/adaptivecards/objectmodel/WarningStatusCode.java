@@ -15,7 +15,8 @@ public enum WarningStatusCode {
   NoRendererForType,
   InteractivityNotSupported,
   MaxActionsExceeded,
-  AssetLoadFailed;
+  AssetLoadFailed,
+  UnsupportedSchemaVersion;
 
   public final int swigValue() {
     return swigValue;
