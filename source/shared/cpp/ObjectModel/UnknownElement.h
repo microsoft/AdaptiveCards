@@ -17,7 +17,6 @@ public:
         
     virtual Json::Value SerializeToJsonValue() override;
     Json::Value GetJsonPayload();
-    void SetJsonPayload(const Json::Value& payload);
 };
 
 class UnknownElementParser : public BaseCardElementParser
