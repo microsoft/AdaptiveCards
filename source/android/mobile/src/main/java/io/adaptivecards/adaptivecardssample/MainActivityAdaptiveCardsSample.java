@@ -8,17 +8,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,6 +95,27 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         configEditText.addTextChangedListener(watcher);
     }
 
+    public class CustomCardElement extends BaseCardElement
+    {
+
+        public CustomCardElement(CardElementType type) {
+            super(type);
+        }
+
+        public String getSecretString()
+        {
+            return secretString;
+        }
+
+        public void setSecretString(String secret)
+        {
+            secretString = secret;
+        }
+
+        private String secretString;
+
+    }
+
     protected void setupTabs()
     {
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
@@ -98,6 +124,44 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         tabHost.addTab(tabHost.newTabSpec("tab_json").setIndicator("JSON").setContent(R.id.JSON));
         tabHost.addTab(tabHost.newTabSpec("tab_config").setIndicator("Config").setContent(R.id.config));
         tabHost.setCurrentTab(0);
+    }
+
+    public class CustomBlahParser extends BaseCardElementParser
+    {
+        @Override
+        public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue value)
+        {
+            CustomCardElement element = new CustomCardElement(CardElementType.Custom);
+            element.SetElementTypeString("blah");
+            element.SetId("BlahDeserialize");
+            String val = value.getString();
+            try {
+                JSONObject obj = new JSONObject(val);
+                element.setSecretString(obj.getString("secret"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                element.setSecretString("Failed");
+            }
+            return element;
+        }
+    }
+
+    public class CustomBlahRenderer extends BaseCardElementRenderer
+    {
+        @Override
+        public View render(RenderedAdaptiveCard renderedAdaptiveCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, ContainerStyle containerStyle) {
+            TextView textView = new TextView(context);
+
+            CustomCardElement element = (CustomCardElement) baseCardElement.findImplObj();
+
+            textView.setText(element.getSecretString());
+
+            textView.setAllCaps(true);
+
+            viewGroup.addView(textView);
+
+            return textView;
+        }
     }
 
     private void renderAdaptiveCard(boolean showErrorToast)
@@ -121,8 +185,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 hostConfig = HostConfig.DeserializeFromString(hostConfigText);
             }
 
+            ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
+            elementParserRegistration.AddParser("blah", new CustomBlahParser());
 
-            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION);
+            CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+            
+            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, hostConfig);
@@ -329,16 +397,16 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     @Override
     public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedCard)
     {
-        int actionType = actionElement.GetElementType().swigValue();
-        if (actionType == ActionType.Submit.swigValue())
+        ActionType actionType = actionElement.GetElementType();
+        if (actionType == ActionType.Submit)
         {
             onSubmit(actionElement, renderedCard);
         }
-        else if (actionType == ActionType.ShowCard.swigValue())
+        else if (actionType == ActionType.ShowCard)
         {
             onShowCard(actionElement);
         }
-        else if (actionType == ActionType.OpenUrl.swigValue())
+        else if (actionType == ActionType.OpenUrl)
         {
             onOpenUrl(actionElement);
         }

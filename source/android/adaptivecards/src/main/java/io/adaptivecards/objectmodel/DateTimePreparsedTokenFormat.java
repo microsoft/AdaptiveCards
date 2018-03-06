@@ -8,50 +8,48 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class DateTimePreparsedTokenFormat {
-  public final static DateTimePreparsedTokenFormat RegularString = new DateTimePreparsedTokenFormat("RegularString", AdaptiveCardObjectModelJNI.DateTimePreparsedTokenFormat_RegularString_get());
-  public final static DateTimePreparsedTokenFormat Time = new DateTimePreparsedTokenFormat("Time");
-  public final static DateTimePreparsedTokenFormat DateCompact = new DateTimePreparsedTokenFormat("DateCompact");
-  public final static DateTimePreparsedTokenFormat DateShort = new DateTimePreparsedTokenFormat("DateShort");
-  public final static DateTimePreparsedTokenFormat DateLong = new DateTimePreparsedTokenFormat("DateLong");
+public enum DateTimePreparsedTokenFormat {
+  RegularString(0),
+  Time,
+  DateCompact,
+  DateShort,
+  DateLong;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static DateTimePreparsedTokenFormat swigToEnum(int swigValue) {
+    DateTimePreparsedTokenFormat[] swigValues = DateTimePreparsedTokenFormat.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (DateTimePreparsedTokenFormat swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + DateTimePreparsedTokenFormat.class + " with value " + swigValue);
   }
 
-  private DateTimePreparsedTokenFormat(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private DateTimePreparsedTokenFormat() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private DateTimePreparsedTokenFormat(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private DateTimePreparsedTokenFormat(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private DateTimePreparsedTokenFormat(String swigName, DateTimePreparsedTokenFormat swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private DateTimePreparsedTokenFormat(DateTimePreparsedTokenFormat swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static DateTimePreparsedTokenFormat[] swigValues = { RegularString, Time, DateCompact, DateShort, DateLong };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

@@ -8,52 +8,50 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class Spacing {
-  public final static Spacing Default = new Spacing("Default", AdaptiveCardObjectModelJNI.Spacing_Default_get());
-  public final static Spacing None = new Spacing("None");
-  public final static Spacing Small = new Spacing("Small");
-  public final static Spacing Medium = new Spacing("Medium");
-  public final static Spacing Large = new Spacing("Large");
-  public final static Spacing ExtraLarge = new Spacing("ExtraLarge");
-  public final static Spacing Padding = new Spacing("Padding");
+public enum Spacing {
+  Default(0),
+  None,
+  Small,
+  Medium,
+  Large,
+  ExtraLarge,
+  Padding;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static Spacing swigToEnum(int swigValue) {
+    Spacing[] swigValues = Spacing.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (Spacing swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + Spacing.class + " with value " + swigValue);
   }
 
-  private Spacing(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private Spacing() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private Spacing(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private Spacing(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private Spacing(String swigName, Spacing swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private Spacing(Spacing swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static Spacing[] swigValues = { Default, None, Small, Medium, Large, ExtraLarge, Padding };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

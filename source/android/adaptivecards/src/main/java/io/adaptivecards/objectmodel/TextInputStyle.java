@@ -8,49 +8,47 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class TextInputStyle {
-  public final static TextInputStyle Text = new TextInputStyle("Text", AdaptiveCardObjectModelJNI.TextInputStyle_Text_get());
-  public final static TextInputStyle Tel = new TextInputStyle("Tel");
-  public final static TextInputStyle Url = new TextInputStyle("Url");
-  public final static TextInputStyle Email = new TextInputStyle("Email");
+public enum TextInputStyle {
+  Text(0),
+  Tel,
+  Url,
+  Email;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static TextInputStyle swigToEnum(int swigValue) {
+    TextInputStyle[] swigValues = TextInputStyle.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (TextInputStyle swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + TextInputStyle.class + " with value " + swigValue);
   }
 
-  private TextInputStyle(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private TextInputStyle() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private TextInputStyle(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private TextInputStyle(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private TextInputStyle(String swigName, TextInputStyle swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private TextInputStyle(TextInputStyle swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static TextInputStyle[] swigValues = { Text, Tel, Url, Email };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

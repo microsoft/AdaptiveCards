@@ -120,17 +120,17 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
         imageView.setScaleType(ImageView.ScaleType.CENTER);
-        if (imageSize.swigValue() == ImageSize.Stretch.swigValue()) {
+        if (imageSize == ImageSize.Stretch) {
             //ImageView must match parent for stretch to work
             imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        } else if (imageSize.swigValue() == ImageSize.Small.swigValue()) {
+        } else if (imageSize == ImageSize.Small) {
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getSmallSize()));
-        } else if (imageSize.swigValue() == ImageSize.Medium.swigValue()) {
+        } else if (imageSize == ImageSize.Medium) {
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getMediumSize()));
-        } else if (imageSize.swigValue() == ImageSize.Large.swigValue()) {
+        } else if (imageSize == ImageSize.Large) {
             imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getLargeSize()));
-        } else if (imageSize.swigValue() != ImageSize.Auto.swigValue() && imageSize.swigValue() != ImageSize.None.swigValue()){
+        } else if (imageSize != ImageSize.Auto && imageSize != ImageSize.None){
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
 
@@ -164,7 +164,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
-        if (image.GetImageSize().swigValue() == ImageSize.Stretch.swigValue())
+        if (image.GetImageSize() == ImageSize.Stretch)
         {
             //ImageView must match parent for stretch to work
             layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -175,11 +175,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
-        if (horizontalAlignment.swigValue() == HorizontalAlignment.Right.swigValue())
+        if (horizontalAlignment == HorizontalAlignment.Right)
         {
             layoutParams.gravity = Gravity.RIGHT;
         }
-        else if (horizontalAlignment.swigValue() == HorizontalAlignment.Center.swigValue())
+        else if (horizontalAlignment == HorizontalAlignment.Center)
         {
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
         }

@@ -43,8 +43,8 @@ public class ImageConfig {
     return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageConfig_imageSize_get(swigCPtr, this));
   }
 
-  public static ImageConfig Deserialize(SWIGTYPE_p_Json__Value json, ImageConfig defaultValue) {
-    return new ImageConfig(AdaptiveCardObjectModelJNI.ImageConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ImageConfig.getCPtr(defaultValue), defaultValue), true);
+  public static ImageConfig Deserialize(JsonValue json, ImageConfig defaultValue) {
+    return new ImageConfig(AdaptiveCardObjectModelJNI.ImageConfig_Deserialize(JsonValue.getCPtr(json), json, ImageConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public ImageConfig() {

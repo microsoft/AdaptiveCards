@@ -49,8 +49,8 @@ public class ChoiceSetInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_2(spacing.swigValue(), separation, ChoiceInputVector.getCPtr(choices), choices), true);
   }
 
-  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
-    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ChoiceSetInput_SerializeToJsonValue(swigCPtr, this), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.ChoiceSetInput_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public boolean GetIsMultiSelect() {

@@ -51,8 +51,8 @@ public class ImageSetConfig {
     return AdaptiveCardObjectModelJNI.ImageSetConfig_maxImageHeight_get(swigCPtr, this);
   }
 
-  public static ImageSetConfig Deserialize(SWIGTYPE_p_Json__Value json, ImageSetConfig defaultValue) {
-    return new ImageSetConfig(AdaptiveCardObjectModelJNI.ImageSetConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ImageSetConfig.getCPtr(defaultValue), defaultValue), true);
+  public static ImageSetConfig Deserialize(JsonValue json, ImageSetConfig defaultValue) {
+    return new ImageSetConfig(AdaptiveCardObjectModelJNI.ImageSetConfig_Deserialize(JsonValue.getCPtr(json), json, ImageSetConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public ImageSetConfig() {

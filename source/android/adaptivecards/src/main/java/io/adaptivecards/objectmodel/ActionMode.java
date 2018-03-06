@@ -8,47 +8,45 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ActionMode {
-  public final static ActionMode Inline = new ActionMode("Inline", AdaptiveCardObjectModelJNI.ActionMode_Inline_get());
-  public final static ActionMode Popup = new ActionMode("Popup");
+public enum ActionMode {
+  Inline(0),
+  Popup;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ActionMode swigToEnum(int swigValue) {
+    ActionMode[] swigValues = ActionMode.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ActionMode swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ActionMode.class + " with value " + swigValue);
   }
 
-  private ActionMode(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ActionMode() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ActionMode(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ActionMode(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ActionMode(String swigName, ActionMode swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ActionMode(ActionMode swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ActionMode[] swigValues = { Inline, Popup };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

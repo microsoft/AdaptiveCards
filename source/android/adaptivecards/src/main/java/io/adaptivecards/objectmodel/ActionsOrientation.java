@@ -8,47 +8,45 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ActionsOrientation {
-  public final static ActionsOrientation Vertical = new ActionsOrientation("Vertical", AdaptiveCardObjectModelJNI.ActionsOrientation_Vertical_get());
-  public final static ActionsOrientation Horizontal = new ActionsOrientation("Horizontal");
+public enum ActionsOrientation {
+  Vertical(0),
+  Horizontal;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ActionsOrientation swigToEnum(int swigValue) {
+    ActionsOrientation[] swigValues = ActionsOrientation.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ActionsOrientation swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ActionsOrientation.class + " with value " + swigValue);
   }
 
-  private ActionsOrientation(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ActionsOrientation() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ActionsOrientation(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ActionsOrientation(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ActionsOrientation(String swigName, ActionsOrientation swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ActionsOrientation(ActionsOrientation swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ActionsOrientation[] swigValues = { Vertical, Horizontal };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

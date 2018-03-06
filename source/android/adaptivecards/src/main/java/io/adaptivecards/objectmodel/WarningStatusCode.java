@@ -8,52 +8,50 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class WarningStatusCode {
-  public final static WarningStatusCode UnknownElementType = new WarningStatusCode("UnknownElementType", AdaptiveCardObjectModelJNI.WarningStatusCode_UnknownElementType_get());
-  public final static WarningStatusCode UnknownPropertyOnElement = new WarningStatusCode("UnknownPropertyOnElement");
-  public final static WarningStatusCode UnknownEnumValue = new WarningStatusCode("UnknownEnumValue");
-  public final static WarningStatusCode NoRendererForType = new WarningStatusCode("NoRendererForType");
-  public final static WarningStatusCode InteractivityNotSupported = new WarningStatusCode("InteractivityNotSupported");
-  public final static WarningStatusCode MaxActionsExceeded = new WarningStatusCode("MaxActionsExceeded");
-  public final static WarningStatusCode AssetLoadFailed = new WarningStatusCode("AssetLoadFailed");
+public enum WarningStatusCode {
+  UnknownElementType(0),
+  UnknownPropertyOnElement,
+  UnknownEnumValue,
+  NoRendererForType,
+  InteractivityNotSupported,
+  MaxActionsExceeded,
+  AssetLoadFailed;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static WarningStatusCode swigToEnum(int swigValue) {
+    WarningStatusCode[] swigValues = WarningStatusCode.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (WarningStatusCode swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + WarningStatusCode.class + " with value " + swigValue);
   }
 
-  private WarningStatusCode(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private WarningStatusCode() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private WarningStatusCode(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private WarningStatusCode(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private WarningStatusCode(String swigName, WarningStatusCode swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private WarningStatusCode(WarningStatusCode swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static WarningStatusCode[] swigValues = { UnknownElementType, UnknownPropertyOnElement, UnknownEnumValue, NoRendererForType, InteractivityNotSupported, MaxActionsExceeded, AssetLoadFailed };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 
