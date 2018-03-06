@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class ShowCardFragment extends DialogFragment
@@ -34,7 +35,9 @@ public class ShowCardFragment extends DialogFragment
 
         View v = inflater.inflate(R.layout.popup_fragment, container);
 
-        ViewGroup viewGroup = (ViewGroup) AdaptiveCardRenderer.getInstance().render(m_context, m_fragmentManager, m_showCardAction.GetCard(), m_cardActionHandler, m_hostConfig);
+        RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(m_context, m_fragmentManager, m_showCardAction.GetCard(), m_cardActionHandler, m_hostConfig);
+
+        ViewGroup viewGroup = (ViewGroup) renderedCard.getView() ;
         getDialog().setTitle(m_showCardAction.GetTitle());
 
         ViewGroup insertPoint = (ViewGroup) v.findViewById(R.id.popup_fragment);

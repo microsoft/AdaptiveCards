@@ -16,11 +16,11 @@ import java.util.Vector;
 public interface IBaseCardElementRenderer
 {
     View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle);

@@ -26,24 +26,15 @@ public class TimeInputHandler extends TextInputHandler
     }
 
     @Override
-    protected void internalValidate()
-            throws ParseException
-    {
-
-    }
-
-    @Override
-    public Exception getData(Map<String, String> data)
+    public String getInput()
     {
         EditText editText = getEditText();
         try {
             Date time = DateFormat.getTimeInstance().parse(editText.getText().toString());
-            data.put(m_baseInputElement.GetId(), s_simpleDateFormat.format(time));
+           return s_simpleDateFormat.format(time);
         } catch (ParseException e) {
-            data.put(m_baseInputElement.GetId(), editText.getText().toString());
+            return editText.getText().toString();
         }
-
-        return null;
     }
 
     private FragmentManager m_fragmentManager;

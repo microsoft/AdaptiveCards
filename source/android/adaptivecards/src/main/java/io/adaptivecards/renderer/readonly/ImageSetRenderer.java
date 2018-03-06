@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.IBaseCardElementRenderer;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -42,11 +44,11 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -63,8 +65,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
         setSpacingAndSeparator(context, viewGroup, imageSet.GetSpacing(), imageSet.GetSeparator(), hostConfig, true);
 
-        //TODO: Remove this cast. If someone overrides the image renderer in the registration, this will fail since the type may not extend from ImageRenderer.
-        ImageRenderer imageRenderer = (ImageRenderer) CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
+        IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)
         {
             throw new IllegalArgumentException("No renderer registered for: " + CardElementType.Image.toString());
@@ -81,7 +82,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
             // TODO: temporary - this will be handled in the object model
             image.SetImageSize(imageSize);
-            View imageView = imageRenderer.render(context, fragmentManager, horizFlowLayout, image, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle, true);
+            View imageView = imageRenderer.render(renderedCard, context, fragmentManager, horizFlowLayout, image, cardActionHandler, hostConfig, containerStyle);
             ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.getImageSet().getMaxImageHeight()));
         }
 

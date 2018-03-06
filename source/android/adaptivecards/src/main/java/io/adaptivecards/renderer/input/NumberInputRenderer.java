@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.NumberInput;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
+import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 
 import java.util.Vector;
 
@@ -35,11 +36,11 @@ public class NumberInputRenderer extends TextInputRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -55,15 +56,15 @@ public class NumberInputRenderer extends TextInputRenderer
         }
         setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
-        NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
+        TextInputHandler numberInputHandler = new TextInputHandler(numberInput);
         EditText editText = renderInternal(
+                renderedCard,
                 context,
                 viewGroup,
                 numberInput,
                 String.valueOf(numberInput.GetValue()),
                 String.valueOf(numberInput.GetPlaceholder()),
                 numberInputHandler,
-                inputActionHandlerList,
                 hostConfig);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
@@ -124,7 +125,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, hostConfig));
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, hostConfig);
+            layout.addView(renderedCard.getView());
         }
         catch (Exception ex)
         {
@@ -250,7 +252,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return true;
     }
 
-    private void onSubmit(BaseActionElement actionElement, Map<String, String> keyValueMap) {
+    private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
         SubmitAction submitAction = null;
         if (actionElement instanceof SubmitAction) {
             submitAction = (SubmitAction) actionElement;
@@ -259,13 +261,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         String data = submitAction.GetDataJson();
+        Map<String, String> keyValueMap = renderedAdaptiveCard.getInputs();
         if (!data.isEmpty())
         {
             try {
                 JSONObject object = new JSONObject(data);
                 showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
             } catch (JSONException e) {
-                //e.printStackTrace();
                 showToast(e.toString(), Toast.LENGTH_LONG);
             }
         }
@@ -325,12 +327,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     @Override
-    public void onAction(BaseActionElement actionElement, Map<String, String> inputData)
+    public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedCard)
     {
         int actionType = actionElement.GetElementType().swigValue();
         if (actionType == ActionType.Submit.swigValue())
         {
-            onSubmit(actionElement, inputData);
+            onSubmit(actionElement, renderedCard);
         }
         else if (actionType == ActionType.ShowCard.swigValue())
         {

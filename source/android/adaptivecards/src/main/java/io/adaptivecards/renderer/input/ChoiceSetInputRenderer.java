@@ -15,6 +15,7 @@ import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
@@ -46,10 +47,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
     }
 
     public View renderCheckBoxSet(
+            RenderedAdaptiveCard renderedCard,
             Context context,
-            ChoiceSetInput choiceSetInput,
-            Vector<IInputHandler> inputActionHandlerList,
-            HostConfig hostConfig)
+            ChoiceSetInput choiceSetInput)
     {
         LinearLayout layout = new LinearLayout(context);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -78,15 +78,14 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         CheckBoxSetInputHandler checkBoxSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxList);
         checkBoxSetInputHandler.setView(layout);
         layout.setTag(checkBoxSetInputHandler);
-        inputActionHandlerList.addElement(checkBoxSetInputHandler);
+        renderedCard.registerInputHandler(checkBoxSetInputHandler);
         return layout;
     }
 
     public View renderRadioGroup(
+            RenderedAdaptiveCard renderedCard,
             Context context,
-            ChoiceSetInput choiceSetInput,
-            Vector<IInputHandler> inputActionHandlerList,
-            HostConfig hostConfig)
+            ChoiceSetInput choiceSetInput)
     {
         RadioGroup radioGroup = new RadioGroup(context);
         radioGroup.setOrientation(RadioGroup.VERTICAL);
@@ -109,15 +108,14 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
         radioGroupInputHandler.setView(radioGroup);
         radioGroup.setTag(radioGroupInputHandler);
-        inputActionHandlerList.addElement(radioGroupInputHandler);
+        renderedCard.registerInputHandler(radioGroupInputHandler);
         return radioGroup;
     }
 
     public View renderComboBox(
+            RenderedAdaptiveCard renderedCard,
             Context context,
-            ChoiceSetInput choiceSetInput,
-            Vector<IInputHandler> inputActionHandlerList,
-            HostConfig hostConfig)
+            ChoiceSetInput choiceSetInput)
     {
         Vector<String> titleList = new Vector<String>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -139,7 +137,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
         spinner.setTag(comboBoxInputHandler);
-        inputActionHandlerList.addElement(comboBoxInputHandler);
+        renderedCard.registerInputHandler(comboBoxInputHandler);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, titleList);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
@@ -149,11 +147,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -175,19 +173,19 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox
-            view = renderCheckBoxSet(context, choiceSetInput, inputActionHandlerList, hostConfig);
+            view = renderCheckBoxSet(renderedCard, context, choiceSetInput);
         }
         else
         {
             if (choiceSetInput.GetChoiceSetStyle().swigValue() == ChoiceSetStyle.Expanded.swigValue())
             {
                 // Create radio button group
-                view = renderRadioGroup(context, choiceSetInput, inputActionHandlerList, hostConfig);
+                view = renderRadioGroup(renderedCard, context, choiceSetInput);
             }
             else if (choiceSetInput.GetChoiceSetStyle().swigValue() == ChoiceSetStyle.Compact.swigValue())
             {
                 // create ComboBox (Spinner)
-                view = renderComboBox(context, choiceSetInput, inputActionHandlerList, hostConfig);
+                view = renderComboBox(renderedCard, context, choiceSetInput);
             }
             else
             {
