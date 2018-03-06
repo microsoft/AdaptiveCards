@@ -121,7 +121,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             }
 
 
-            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
+            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
             layout.addView(AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, hostConfig));
