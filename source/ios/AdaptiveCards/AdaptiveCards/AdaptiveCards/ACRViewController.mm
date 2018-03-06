@@ -84,7 +84,6 @@ using namespace AdaptiveCards;
     UIView *view = self.view;
     view.frame = _guideFrame;
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
-    [_adaptiveCard setInputs:inputs];
 
     std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
     NSString* imgUrl = nil;
