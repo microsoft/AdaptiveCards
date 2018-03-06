@@ -10,7 +10,6 @@ package io.adaptivecards.objectmodel;
 
 public enum ErrorStatusCode {
   InvalidJson(0),
-  UnsupportedSchemaVersion,
   RenderFailed,
   RequiredPropertyMissing,
   InvalidPropertyValue,
