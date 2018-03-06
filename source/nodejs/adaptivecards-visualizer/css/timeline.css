@@ -1,7 +1,7 @@
 .timeline-frame {
   background: url('../assets/timeline.jpg');
   height: 400px;
-  background-repeat: no-repeat
+  background-repeat: no-repeat;
 }
 
 .timeline-card {
