@@ -61,6 +61,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
+
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
         HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::TextBlock>& sharedModel);
@@ -72,7 +75,21 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         }
 
     private:
-        std::shared_ptr<AdaptiveCards::TextBlock> m_sharedTextBlock;
+        boolean m_wrap;
+        boolean m_subtle;
+        UINT32 m_maxLines;
+        Microsoft::WRL::Wrappers::HString m_text;
+        Microsoft::WRL::Wrappers::HString m_language;
+        ABI::AdaptiveCards::Rendering::Uwp::TextSize m_textSize;
+        ABI::AdaptiveCards::Rendering::Uwp::TextWeight m_textWeight;
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor m_foregroundColor;
+        ABI::AdaptiveCards::Rendering::Uwp::HAlignment m_horizontalAlignment;
+
+        boolean m_isRequired;
+        boolean m_separator;
+        Microsoft::WRL::Wrappers::HString m_id;
+        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
+        Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
     };
 
     ActivatableClass(AdaptiveTextBlock);

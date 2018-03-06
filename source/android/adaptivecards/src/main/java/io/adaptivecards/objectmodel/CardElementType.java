@@ -8,63 +8,62 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class CardElementType {
-  public final static CardElementType Unsupported = new CardElementType("Unsupported", AdaptiveCardObjectModelJNI.CardElementType_Unsupported_get());
-  public final static CardElementType AdaptiveCard = new CardElementType("AdaptiveCard");
-  public final static CardElementType TextBlock = new CardElementType("TextBlock");
-  public final static CardElementType Image = new CardElementType("Image");
-  public final static CardElementType Container = new CardElementType("Container");
-  public final static CardElementType Column = new CardElementType("Column");
-  public final static CardElementType ColumnSet = new CardElementType("ColumnSet");
-  public final static CardElementType FactSet = new CardElementType("FactSet");
-  public final static CardElementType Fact = new CardElementType("Fact");
-  public final static CardElementType ImageSet = new CardElementType("ImageSet");
-  public final static CardElementType ChoiceInput = new CardElementType("ChoiceInput");
-  public final static CardElementType ChoiceSetInput = new CardElementType("ChoiceSetInput");
-  public final static CardElementType DateInput = new CardElementType("DateInput");
-  public final static CardElementType NumberInput = new CardElementType("NumberInput");
-  public final static CardElementType TextInput = new CardElementType("TextInput");
-  public final static CardElementType TimeInput = new CardElementType("TimeInput");
-  public final static CardElementType ToggleInput = new CardElementType("ToggleInput");
-  public final static CardElementType Custom = new CardElementType("Custom");
+public enum CardElementType {
+  Unsupported(0),
+  AdaptiveCard,
+  TextBlock,
+  Image,
+  Container,
+  Column,
+  ColumnSet,
+  FactSet,
+  Fact,
+  ImageSet,
+  ChoiceInput,
+  ChoiceSetInput,
+  DateInput,
+  NumberInput,
+  TextInput,
+  TimeInput,
+  ToggleInput,
+  Custom,
+  Unknown;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static CardElementType swigToEnum(int swigValue) {
+    CardElementType[] swigValues = CardElementType.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (CardElementType swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + CardElementType.class + " with value " + swigValue);
   }
 
-  private CardElementType(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private CardElementType() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private CardElementType(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private CardElementType(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private CardElementType(String swigName, CardElementType swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private CardElementType(CardElementType swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static CardElementType[] swigValues = { Unsupported, AdaptiveCard, TextBlock, Image, Container, Column, ColumnSet, FactSet, Fact, ImageSet, ChoiceInput, ChoiceSetInput, DateInput, NumberInput, TextInput, TimeInput, ToggleInput, Custom };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

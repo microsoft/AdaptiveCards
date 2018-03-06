@@ -65,6 +65,8 @@ using namespace AdaptiveCards;
     
         [ACRRenderer render:verticalView rootViewController:vc inputs:inputs withCardElems:body andHostConfig:config];
 
+        [[(ACRViewController *)vc card] setInputs:inputs];
+
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
 
         [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];

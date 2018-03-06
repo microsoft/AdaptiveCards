@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -41,11 +42,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -76,13 +77,13 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
-            columnRenderer.render(context, fragmentManager, layout, column, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle);
+            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, containerStyle);
         }
 
         if (columnSet.GetSelectAction() != null)
         {
             layout.setClickable(true);
-            layout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(columnSet.GetSelectAction(),inputActionHandlerList, cardActionHandler));
+            layout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
         viewGroup.addView(layout);

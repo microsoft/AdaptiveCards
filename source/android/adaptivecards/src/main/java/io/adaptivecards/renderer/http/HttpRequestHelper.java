@@ -17,10 +17,6 @@ import static java.net.HttpURLConnection.HTTP_MOVED_PERM;
 import static java.net.HttpURLConnection.HTTP_MOVED_TEMP;
 import static java.net.HttpURLConnection.HTTP_SEE_OTHER;
 
-/**
- * Created by bekao on 7/4/2017.
- */
-
 public abstract class HttpRequestHelper
 {
     private static HttpURLConnection connect(String url, String method, Map<String, String> requestProperty, boolean doOutput /* for post/puts */, boolean useCaches)

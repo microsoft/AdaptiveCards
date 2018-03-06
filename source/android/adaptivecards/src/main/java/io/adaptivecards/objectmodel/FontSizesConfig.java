@@ -75,8 +75,8 @@ public class FontSizesConfig {
     return AdaptiveCardObjectModelJNI.FontSizesConfig_extraLargeFontSize_get(swigCPtr, this);
   }
 
-  public static FontSizesConfig Deserialize(SWIGTYPE_p_Json__Value json, FontSizesConfig defaultValue) {
-    return new FontSizesConfig(AdaptiveCardObjectModelJNI.FontSizesConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), FontSizesConfig.getCPtr(defaultValue), defaultValue), true);
+  public static FontSizesConfig Deserialize(JsonValue json, FontSizesConfig defaultValue) {
+    return new FontSizesConfig(AdaptiveCardObjectModelJNI.FontSizesConfig_Deserialize(JsonValue.getCPtr(json), json, FontSizesConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public FontSizesConfig() {

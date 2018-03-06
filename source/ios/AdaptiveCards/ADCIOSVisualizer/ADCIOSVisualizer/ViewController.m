@@ -5,6 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#import <SafariServices/SafariServices.h>
 #import "ViewController.h"
 #import "CustomActionOpenURLRenderer.h"
 #import "CustomInputNumberRenderer.h"
@@ -214,6 +215,20 @@
 - (void)source:(ACVTableViewController *)avcTabVc userconfig:(NSString *)payload
 {
     self.hostconfig = payload;
+}
+
+- (void) didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action
+{
+    if(action.type == ACROpenUrl){
+        NSURL *url = [NSURL URLWithString:[action url]];
+        SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
+        [self presentViewController:svc animated:YES completion:nil];
+    }
+    else if(action.type == ACRSubmit){
+        NSData * userInputsAsJson = [card inputs];
+        NSString *str = [[NSString alloc] initWithData:userInputsAsJson encoding:NSUTF8StringEncoding];
+        NSLog(@"user response fetched: %@ with %@", str, [action data]);
+    }
 }
 
 - (void)didFetchUserResponses:(NSData *)json error:(NSError *)error

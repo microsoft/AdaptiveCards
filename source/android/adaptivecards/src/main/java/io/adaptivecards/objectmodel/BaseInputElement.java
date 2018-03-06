@@ -61,8 +61,8 @@ public class BaseInputElement extends BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseInputElement_SetIsRequired(swigCPtr, this, isRequired);
   }
 
-  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
-    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.BaseInputElement_SerializeToJsonValue(swigCPtr, this), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.BaseInputElement_SerializeToJsonValue(swigCPtr, this), true);
   }
 
 }

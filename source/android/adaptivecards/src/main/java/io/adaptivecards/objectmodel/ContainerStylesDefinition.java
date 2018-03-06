@@ -53,8 +53,8 @@ public class ContainerStylesDefinition {
     return (cPtr == 0) ? null : new ContainerStyleDefinition(cPtr, false);
   }
 
-  public static ContainerStylesDefinition Deserialize(SWIGTYPE_p_Json__Value json, ContainerStylesDefinition defaultValue) {
-    return new ContainerStylesDefinition(AdaptiveCardObjectModelJNI.ContainerStylesDefinition_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ContainerStylesDefinition.getCPtr(defaultValue), defaultValue), true);
+  public static ContainerStylesDefinition Deserialize(JsonValue json, ContainerStylesDefinition defaultValue) {
+    return new ContainerStylesDefinition(AdaptiveCardObjectModelJNI.ContainerStylesDefinition_Deserialize(JsonValue.getCPtr(json), json, ContainerStylesDefinition.getCPtr(defaultValue), defaultValue), true);
   }
 
   public ContainerStylesDefinition() {

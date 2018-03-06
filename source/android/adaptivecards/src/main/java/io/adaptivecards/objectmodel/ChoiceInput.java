@@ -43,8 +43,8 @@ public class ChoiceInput {
     return AdaptiveCardObjectModelJNI.ChoiceInput_Serialize(swigCPtr, this);
   }
 
-  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
-    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ChoiceInput_SerializeToJsonValue(swigCPtr, this), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.ChoiceInput_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public String GetTitle() {
@@ -63,8 +63,8 @@ public class ChoiceInput {
     AdaptiveCardObjectModelJNI.ChoiceInput_SetValue(swigCPtr, this, value);
   }
 
-  public static ChoiceInput Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, SWIGTYPE_p_Json__Value root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, SWIGTYPE_p_Json__Value.getCPtr(root));
+  public static ChoiceInput Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new ChoiceInput(cPtr, true);
   }
 

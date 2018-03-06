@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
@@ -41,19 +42,19 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
     protected void setTextInputStyle(EditText editText, TextInputStyle textInputStyle)
     {
-        if (textInputStyle.swigValue() == TextInputStyle.Text.swigValue())
+        if (textInputStyle == TextInputStyle.Text)
         {
             // do nothing
         }
-        else if (textInputStyle.swigValue() == TextInputStyle.Tel.swigValue())
+        else if (textInputStyle == TextInputStyle.Tel)
         {
             editText.setInputType(InputType.TYPE_CLASS_PHONE);
         }
-        else if (textInputStyle.swigValue() == TextInputStyle.Url.swigValue())
+        else if (textInputStyle == TextInputStyle.Url)
         {
             editText.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         }
-        else if (textInputStyle.swigValue() == TextInputStyle.Email.swigValue())
+        else if (textInputStyle == TextInputStyle.Email)
         {
             editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         }
@@ -64,20 +65,20 @@ public class TextInputRenderer extends BaseCardElementRenderer
     }
 
     protected EditText renderInternal(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             ViewGroup viewGroup,
             BaseInputElement baseInputElement,
             String value,
             String placeHolder,
             TextInputHandler textInputHandler,
-            Vector<IInputHandler> inputActionHandlerList,
             HostConfig hostConfig)
     {
         EditText editText = new EditText(context);
         textInputHandler.setView(editText);
         editText.setTag(textInputHandler);
         editText.setTextColor(Color.BLACK);
-        inputActionHandlerList.add(textInputHandler);
+        renderedCard.registerInputHandler(textInputHandler);
 
         if (!TextUtils.isEmpty(value))
         {
@@ -89,30 +90,17 @@ public class TextInputRenderer extends BaseCardElementRenderer
             editText.setHint(placeHolder);
         }
 
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus)
-            {
-                if (!hasFocus)
-                {
-                    IInputHandler inputHandler = (IInputHandler) v.getTag();
-                    inputHandler.validate();
-                }
-            }
-        });
-
         viewGroup.addView(editText);
         return editText;
     }
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -130,13 +118,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
         setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
         EditText editText = renderInternal(
+                renderedCard,
                 context,
                 viewGroup,
                 textInput,
                 textInput.GetValue(),
                 textInput.GetPlaceholder(),
                 textInputHandler,
-                inputActionHandlerList,
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
         if (textInput.GetIsMultiline())

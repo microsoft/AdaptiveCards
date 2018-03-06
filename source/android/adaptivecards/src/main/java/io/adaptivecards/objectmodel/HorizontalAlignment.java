@@ -8,48 +8,46 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class HorizontalAlignment {
-  public final static HorizontalAlignment Left = new HorizontalAlignment("Left", AdaptiveCardObjectModelJNI.HorizontalAlignment_Left_get());
-  public final static HorizontalAlignment Center = new HorizontalAlignment("Center");
-  public final static HorizontalAlignment Right = new HorizontalAlignment("Right");
+public enum HorizontalAlignment {
+  Left(0),
+  Center,
+  Right;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static HorizontalAlignment swigToEnum(int swigValue) {
+    HorizontalAlignment[] swigValues = HorizontalAlignment.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (HorizontalAlignment swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + HorizontalAlignment.class + " with value " + swigValue);
   }
 
-  private HorizontalAlignment(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private HorizontalAlignment() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private HorizontalAlignment(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private HorizontalAlignment(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private HorizontalAlignment(String swigName, HorizontalAlignment swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private HorizontalAlignment(HorizontalAlignment swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static HorizontalAlignment[] swigValues = { Left, Center, Right };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

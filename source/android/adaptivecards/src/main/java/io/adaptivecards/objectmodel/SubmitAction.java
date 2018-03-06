@@ -49,8 +49,8 @@ public class SubmitAction extends BaseActionElement {
     AdaptiveCardObjectModelJNI.SubmitAction_SetDataJson(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
-    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.SubmitAction_SerializeToJsonValue(swigCPtr, this), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.SubmitAction_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public static SubmitAction dynamic_cast(BaseActionElement baseActionElement) {
