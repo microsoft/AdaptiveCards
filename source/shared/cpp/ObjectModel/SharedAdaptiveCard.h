@@ -4,6 +4,7 @@
 #include "BaseActionElement.h"
 #include "Enums.h"
 #include "pch.h"
+#include "ParseResult.h"
 
 namespace AdaptiveCards
 {
@@ -48,15 +49,15 @@ public:
 
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__
-    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string& jsonFile,
+    static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
-    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json,
+    static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
-    static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString,
+    static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
@@ -64,18 +65,18 @@ public:
         const std::string& fallbackText,
         const std::string& language) throw(AdaptiveCards::AdaptiveCardParseException);
 #else
-    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(
+    static std::shared_ptr<ParseResult> DeserializeFromFile(
         const std::string& jsonFile,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
-    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json,
+    static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
-    static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString,
+    static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);

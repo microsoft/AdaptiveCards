@@ -83,6 +83,8 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
+#include "../../../shared/cpp/ObjectModel/ParseResult.h"
+#include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 #include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
@@ -117,6 +119,8 @@ struct tm {
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
+%shared_ptr(AdaptiveCards::AdaptiveCardParseWarning)
+%shared_ptr(AdaptiveCards::ParseResult)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
 %shared_ptr(AdaptiveCards::ContainerParser)
 %shared_ptr(AdaptiveCards::TextBlockParser)
@@ -278,6 +282,7 @@ namespace Json {
   }
 %}
 
+%template(AdaptiveCardParseWarningVector) std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning> >;
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
 %template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
 %template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >; 
@@ -567,6 +572,8 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
+%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
+%include "../../../shared/cpp/ObjectModel/ParseResult.h"
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"

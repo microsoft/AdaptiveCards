@@ -3,6 +3,7 @@
 #include "Util.h"
 #include "ShowCardAction.h"
 #include "TextBlock.h"
+#include "AdaptiveCardParseWarning.h"
 
 using namespace AdaptiveCards;
 
@@ -44,13 +45,13 @@ AdaptiveCard::AdaptiveCard(std::string version,
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(
     const std::string& jsonFile,
     double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(
     const std::string& jsonFile,
     double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
@@ -66,13 +67,13 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
+std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     const Json::Value& json,
     double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
-std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
+std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     const Json::Value& json,
     double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
@@ -83,6 +84,8 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
 
     // Verify this is an adaptive card
     ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard);
+
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
 
     std::string version = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Version);
     std::string fallbackText = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FallbackText);
@@ -107,7 +110,8 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
                 fallbackText = "We're sorry, this card couldn't be displayed";
             }
 
-            return MakeFallbackTextCard(fallbackText, language);
+            warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveCards::WarningStatusCode::UnsupportedSchemaVersion, "Schema version not supported"));
+            return std::make_shared<ParseResult>(MakeFallbackTextCard(fallbackText, language), warnings);
         }
     }
 
@@ -133,17 +137,18 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
 
     auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, body, actions);
     result->SetLanguage(language);
-    return result;
+
+    return std::make_shared<ParseResult>(result, warnings);
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(
     const std::string& jsonString,
     double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(
     const std::string& jsonString,
     double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
@@ -195,7 +200,6 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
     const std::string& fallbackText,
     const std::string& language)
 #endif // __ANDROID__
-
 {
     std::shared_ptr<AdaptiveCard> fallbackCard = std::make_shared<AdaptiveCard>("1.0", fallbackText, "", ContainerStyle::Default, "", language);
 

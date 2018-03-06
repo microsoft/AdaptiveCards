@@ -190,10 +190,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
             
-            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
+            ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, hostConfig);
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, hostConfig);
             layout.addView(renderedCard.getView());
         }
         catch (Exception ex)
