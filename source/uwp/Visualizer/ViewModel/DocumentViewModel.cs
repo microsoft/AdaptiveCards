@@ -121,7 +121,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                         newErrors.Add(new ErrorViewModel()
                         {
                             Message = error.Message,
-                            Type = ErrorViewModelType.Warning
+                            Type = ErrorViewModelType.Error
                         });
                     }
                     foreach (var error in renderResult.Errors)
