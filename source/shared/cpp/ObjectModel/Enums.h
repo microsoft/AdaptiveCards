@@ -223,7 +223,8 @@ enum class CardElementType
     TextInput,
     TimeInput,
     ToggleInput,
-    Custom
+    Custom,
+    Unknown,
 };
 
 enum class ActionType
