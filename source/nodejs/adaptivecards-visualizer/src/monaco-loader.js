@@ -29,7 +29,7 @@ function loadMonacoEditor(jsonSchema, callback) {
                 }
             }
         );
-
+        
         window.addEventListener('resize', function () {
             monacoEditor.layout();
         });
