@@ -20,12 +20,12 @@ using namespace AdaptiveCards;
     NSMutableArray *_inputs;
 }
 
-- (void) setInputs:(NSArray *) inputs
+- (void)setInputs:(NSArray *) inputs
 {
     _inputs = [[NSMutableArray alloc] initWithArray:inputs];
 }
 
-- (void) appendInputs:(NSArray *)inputs
+- (void)appendInputs:(NSArray *)inputs
 {
     [_inputs addObjectsFromArray:inputs];
 }

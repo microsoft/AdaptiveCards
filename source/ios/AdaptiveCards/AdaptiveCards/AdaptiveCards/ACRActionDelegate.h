@@ -17,7 +17,7 @@
 
 - (void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
 
-- (void) didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action;
+- (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action;
 
 @optional
 - (void)didLoadElements;
