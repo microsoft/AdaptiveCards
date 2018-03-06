@@ -39,12 +39,12 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_0(), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, minVersion, fallbackText, backgroundImage, style.swigValue(), speak, language), true);
+  public AdaptiveCard(String version, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, fallbackText, backgroundImage, style.swigValue(), speak, language), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImage, style.swigValue(), speak, language, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, fallbackText, backgroundImage, style.swigValue(), speak, language, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -53,14 +53,6 @@ public class AdaptiveCard {
 
   public void SetVersion(String value) {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetVersion(swigCPtr, this, value);
-  }
-
-  public String GetMinVersion() {
-    return AdaptiveCardObjectModelJNI.AdaptiveCard_GetMinVersion(swigCPtr, this);
-  }
-
-  public void SetMinVersion(String value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCard_SetMinVersion(swigCPtr, this, value);
   }
 
   public String GetFallbackText() {
@@ -115,48 +107,53 @@ public class AdaptiveCard {
     return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCard_GetElementType(swigCPtr, this));
   }
 
-  public static AdaptiveCard DeserializeFromFile(String jsonFile, ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromFile__SWIG_0(jsonFile, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration);
+  public static AdaptiveCard DeserializeFromFile(String jsonFile, double rendererVersion, ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromFile__SWIG_0(jsonFile, rendererVersion, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard DeserializeFromFile(String jsonFile, ElementParserRegistration elementParserRegistration) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromFile__SWIG_1(jsonFile, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration);
+  public static AdaptiveCard DeserializeFromFile(String jsonFile, double rendererVersion, ElementParserRegistration elementParserRegistration) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromFile__SWIG_1(jsonFile, rendererVersion, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard DeserializeFromFile(String jsonFile) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromFile__SWIG_2(jsonFile);
+  public static AdaptiveCard DeserializeFromFile(String jsonFile, double rendererVersion) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromFile__SWIG_2(jsonFile, rendererVersion);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard Deserialize(SWIGTYPE_p_Json__Value json, ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_Deserialize__SWIG_0(SWIGTYPE_p_Json__Value.getCPtr(json), ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration);
+  public static AdaptiveCard Deserialize(SWIGTYPE_p_Json__Value json, double rendererVersion, ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_Deserialize__SWIG_0(SWIGTYPE_p_Json__Value.getCPtr(json), rendererVersion, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard Deserialize(SWIGTYPE_p_Json__Value json, ElementParserRegistration elementParserRegistration) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_Deserialize__SWIG_1(SWIGTYPE_p_Json__Value.getCPtr(json), ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration);
+  public static AdaptiveCard Deserialize(SWIGTYPE_p_Json__Value json, double rendererVersion, ElementParserRegistration elementParserRegistration) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_Deserialize__SWIG_1(SWIGTYPE_p_Json__Value.getCPtr(json), rendererVersion, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard Deserialize(SWIGTYPE_p_Json__Value json) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_Deserialize__SWIG_2(SWIGTYPE_p_Json__Value.getCPtr(json));
+  public static AdaptiveCard Deserialize(SWIGTYPE_p_Json__Value json, double rendererVersion) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_Deserialize__SWIG_2(SWIGTYPE_p_Json__Value.getCPtr(json), rendererVersion);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard DeserializeFromString(String jsonString, ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromString__SWIG_0(jsonString, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration);
+  public static AdaptiveCard DeserializeFromString(String jsonString, double rendererVersion, ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromString__SWIG_0(jsonString, rendererVersion, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard DeserializeFromString(String jsonString, ElementParserRegistration elementParserRegistration) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromString__SWIG_1(jsonString, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration);
+  public static AdaptiveCard DeserializeFromString(String jsonString, double rendererVersion, ElementParserRegistration elementParserRegistration) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromString__SWIG_1(jsonString, rendererVersion, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard DeserializeFromString(String jsonString) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromString__SWIG_2(jsonString);
+  public static AdaptiveCard DeserializeFromString(String jsonString, double rendererVersion) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromString__SWIG_2(jsonString, rendererVersion);
+    return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
+  }
+
+  public static AdaptiveCard MakeFallbackTextCard(String fallbackText, String language) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_MakeFallbackTextCard(fallbackText, language);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 

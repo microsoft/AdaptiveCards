@@ -46,7 +46,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
 #ifdef __ANDROID__
 std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(
     const std::string& jsonFile,
-    const std::string& rendererVersion,
+    double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
@@ -186,10 +186,16 @@ Json::Value AdaptiveCard::SerializeToJsonValue()
     return root;
 }
 
-
+#ifdef __ANDROID__
+std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
+    const std::string& fallbackText,
+    const std::string& language) throw(AdaptiveCards::AdaptiveCardParseException)
+#else
 std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
     const std::string& fallbackText,
     const std::string& language)
+#endif // __ANDROID__
+
 {
     std::shared_ptr<AdaptiveCard> fallbackCard = std::make_shared<AdaptiveCard>("1.0", fallbackText, "", ContainerStyle::Default, "", language);
 
