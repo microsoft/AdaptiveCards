@@ -29,7 +29,6 @@ using namespace AdaptiveCards;
         try
         {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            //card->_adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), 1.0)->GetAdaptiveCard();
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), 1.0);
             NSMutableArray *acrParseWarnings;
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> parseWarnings = parseResult->GetWarnings();
@@ -37,6 +36,7 @@ using namespace AdaptiveCards;
                 ACRParseWarning *acrParseWarning = [[ACRParseWarning alloc] initWithParseWarning:warning];
                 [acrParseWarnings addObject:acrParseWarning];
             }
+            card->_adaptiveCard = parseResult->GetAdaptiveCard();
             result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];
         }
         catch(const AdaptiveCardParseException& e)
