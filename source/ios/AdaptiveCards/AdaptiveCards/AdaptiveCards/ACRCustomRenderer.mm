@@ -7,7 +7,7 @@
 
 #import "ACRCustomRenderer.h"
 #import "ACRRendererPrivate.h"
-#import "CustomObjectDelegateForIOS.h"
+#import "UnknownElement.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRContentHoldingUIView.h"
@@ -32,8 +32,8 @@ rootViewController:(UIViewController *)vc
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<CustomObjectDelegateForIOS> customElem = std::dynamic_pointer_cast<CustomObjectDelegateForIOS>([acoElem element]);
-    Json::Value blob = customElem->GetJsonPayload();
+    std::shared_ptr<UnknownElement> customElem = std::dynamic_pointer_cast<UnknownElement>([acoElem element]);
+    Json::Value blob = customElem->GetAdditionalProperties();
     Json::FastWriter fastWriter;
 
     NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];

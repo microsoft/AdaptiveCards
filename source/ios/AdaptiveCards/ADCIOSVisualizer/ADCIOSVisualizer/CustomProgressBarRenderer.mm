@@ -12,8 +12,8 @@
 - (UIView *)DeserializeToCustomUIElement:(NSData* )json
 {
         if(json) {
-            NSArray *data = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableLeaves error:nil];
-            NSDictionary<NSString *, NSNumber *> *myval = [data objectAtIndex:0];
+            NSDictionary *data = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableLeaves error:nil];
+            NSDictionary<NSString *, NSNumber *> *myval = data[@"payload"][0];
             UIProgressView *progressView;
             progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
             NSNumber *red = myval[@"red"];
