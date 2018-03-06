@@ -88,9 +88,23 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(
     std::string fallbackText = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FallbackText);
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
 
-    double versionAsDouble = ::atof(version.c_str());
+    double versionAsDouble;
+    try
+    {
+        versionAsDouble = std::stod(version.c_str());
+    }
+    catch (...)
+    {
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Card version not valid");
+    }
+
     if (rendererVersion <  versionAsDouble)
     {
+        if (fallbackText.empty())
+        {
+            fallbackText = "We're sorry, this card couldn't be displayed";
+        }
+
         return MakeFallbackTextCard(fallbackText, language);
     }
 
