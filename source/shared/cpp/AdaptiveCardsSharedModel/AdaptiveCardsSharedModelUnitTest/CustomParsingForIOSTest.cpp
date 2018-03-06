@@ -34,7 +34,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
-            Json::Value value = delegate->GetJsonPayload(); 
+            Json::Value value = delegate->GetAdditionalProperties();
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);
 
@@ -66,7 +66,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
-            Json::Value value = delegate->GetJsonPayload(); 
+            Json::Value value = delegate->GetAdditionalProperties();
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);
 
@@ -105,7 +105,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
-            Json::Value value = delegate->GetJsonPayload(); 
+            Json::Value value = delegate->GetAdditionalProperties();
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);
 

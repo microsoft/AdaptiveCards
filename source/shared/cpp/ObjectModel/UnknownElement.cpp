@@ -21,14 +21,9 @@ UnknownElement::UnknownElement(
 
 Json::Value UnknownElement::SerializeToJsonValue()
 {
-    Json::Value root = GetJsonPayload();
+    Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(CardElementType::Unknown); 
     return root;
-}
-
-Json::Value UnknownElement::GetJsonPayload()
-{
-    return BaseCardElement::GetAdditionalProperties();
 }
 
 std::shared_ptr<BaseCardElement> UnknownElementParser::Deserialize(
