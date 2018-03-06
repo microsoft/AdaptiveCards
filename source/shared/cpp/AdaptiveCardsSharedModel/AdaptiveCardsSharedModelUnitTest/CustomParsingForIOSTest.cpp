@@ -31,7 +31,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
+            std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetAdditionalProperties();
@@ -63,7 +63,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
+            std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetAdditionalProperties();
@@ -102,7 +102,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString);
+            std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
             std::shared_ptr<BaseCardElement> elem = adaptiveCard->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetAdditionalProperties();
