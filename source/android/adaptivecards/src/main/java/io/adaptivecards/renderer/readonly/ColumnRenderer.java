@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -40,11 +41,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -63,7 +64,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
         ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : column.GetStyle();
-        View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, column.GetItems(), inputActionHandlerList, cardActionHandler, hostConfig, styleForThis);
+        View returnedView = CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, null, column, column.GetItems(), cardActionHandler, hostConfig, styleForThis);
         if (styleForThis.swigValue() != containerStyle.swigValue())
         {
             int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
@@ -106,7 +107,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         if (column.GetSelectAction() != null)
         {
             returnedView.setClickable(true);
-            returnedView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(column.GetSelectAction(),inputActionHandlerList, cardActionHandler));
+            returnedView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, column.GetSelectAction(), cardActionHandler));
         }
 
         viewGroup.addView(returnedView);

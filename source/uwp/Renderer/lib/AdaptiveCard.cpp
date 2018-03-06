@@ -94,7 +94,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
                 try
                 {
-                        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
+                        const double c_rendererVersion = 1.0;
+                        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
                         ComPtr<IAdaptiveCard> adaptiveCard;
                         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));
                         RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
@@ -139,7 +140,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(GenerateActionsProjection(sharedAdaptiveCard->GetActions(), m_actions.Get()));
 
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetVersion(), m_version.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetMinVersion(), m_minVersion.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
 
@@ -170,18 +170,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     HRESULT AdaptiveCard::put_Version(HSTRING version)
     {
         return m_version.Set(version);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_MinVersion(HSTRING* minVersion)
-    {
-        return m_minVersion.CopyTo(minVersion);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_MinVersion(HSTRING minVersion)
-    {
-        return m_minVersion.Set(minVersion);
     }
 
     _Use_decl_annotations_
@@ -269,7 +257,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
 
         adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
-        adaptiveCard->SetMinVersion(HStringToUTF8(m_minVersion.Get()));
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
 

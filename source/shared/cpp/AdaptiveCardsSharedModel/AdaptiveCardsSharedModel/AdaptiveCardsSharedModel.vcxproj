@@ -147,6 +147,7 @@
     <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +188,7 @@
     <ClInclude Include="..\..\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
+    <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\ObjectModel\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -11,6 +11,7 @@
 #include "TextInput.h"
 #include "TimeInput.h"
 #include "ToggleInput.h"
+#include "UnknownElement.h"
 
 namespace AdaptiveCards
 {
@@ -29,6 +30,7 @@ namespace AdaptiveCards
             CardElementTypeToString(CardElementType::TextInput),
             CardElementTypeToString(CardElementType::TimeInput),
             CardElementTypeToString(CardElementType::ToggleInput),
+            CardElementTypeToString(CardElementType::Unknown),
         });
 
         m_cardElementParsers.insert({
@@ -43,7 +45,8 @@ namespace AdaptiveCards
             { CardElementTypeToString(CardElementType::TextBlock), std::make_shared<TextBlockParser>() },
             { CardElementTypeToString(CardElementType::TextInput),  std::make_shared<TextInputParser>() },
             { CardElementTypeToString(CardElementType::TimeInput), std::make_shared<TimeInputParser>() },
-            { CardElementTypeToString(CardElementType::ToggleInput), std::make_shared<ToggleInputParser>() }
+            { CardElementTypeToString(CardElementType::ToggleInput), std::make_shared<ToggleInputParser>() },
+            { CardElementTypeToString(CardElementType::Unknown), std::make_shared<UnknownElementParser>() }
         });
     }
 

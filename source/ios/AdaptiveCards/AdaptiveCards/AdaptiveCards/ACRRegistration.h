@@ -21,4 +21,7 @@
 - (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
 
 - (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType;
+
+- (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser;
+
 @end

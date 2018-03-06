@@ -1,3 +1,7 @@
+html { 
+    overflow: auto;
+}
+
 body {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
@@ -31,60 +35,10 @@ body {
     margin-bottom: 20px;
 }
 
-.uiRoot {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-flow: column;
-            flex-flow: column;
-    height: inherit;
-}
-
-.uiHeader {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 auto;
-            flex: 0 0 auto;
-    padding: 10px;
-    background-color: #EAEAEA;
-}
-
-.uiFooter {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 auto;
-            flex: 0 0 auto;
-    margin: 0px 10px 10px 10px;
-}
-
-
-
 #editor {
     height: calc(100vh - 150px);
-    border: 1px solid #EEEEEE;    
-}
-
-.leftPane {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-flow: column;
-            flex-flow: column;
-    -webkit-box-flex: 1;
-        -ms-flex: 1 1 50%;
-            flex: 1 1 50%;
-    overflow: auto;
-    margin-right: 10px;
-}
-
-.rightPane {
-    -webkit-box-flex: 1;
-        -ms-flex: 1 1 50%;
-            flex: 1 1 50%;
-    overflow: auto;
-    margin-left: 10px;
+    border: 1px solid #EEEEEE;
+    overflow: hidden;
 }
 
 div.markupRender {
@@ -93,17 +47,17 @@ div.markupRender {
 }
 
 .button {
-    font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     border: none;
-    padding: 4px 10px 5px 10px;
+    padding: 3px 10px 3px 10px;
+    margin-bottom: 4px;
     min-width: 80px; 
     text-align: center;
     vertical-align: middle;  
-    cursor: default;
+    cursor: pointer;
     border: 1px solid #0078D7;
     background-color: #0078D7;
     color: white;    
@@ -132,11 +86,12 @@ div.markupRender {
     color: white;
 }
 
-.select {
-    font-family: 'Segoe UI', sans-serif;
+select.host-picker {
     font-size: 14px;
     border-color: #DDDDDD;
     border-width: 2px;
     border-style: solid;
-    padding: 2px 3px 3px 3px;
+    height: 31px;
+    max-width: 200px;
+    vertical-align: top;
 }

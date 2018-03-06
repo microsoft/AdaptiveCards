@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.CardElementType;
@@ -31,7 +31,6 @@ import io.adaptivecards.renderer.readonly.ImageSetRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
-import java.util.Vector;
 
 public class CardRendererRegistration
 {
@@ -85,12 +84,12 @@ public class CardRendererRegistration
     }
 
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             Object tag,
             BaseCardElementVector baseCardElementList,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -117,11 +116,11 @@ public class CardRendererRegistration
             IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementType().toString());
             if (renderer == null)
             {
-                Toast.makeText(context, "Unsupported card element type: " + cardElement.GetElementType().toString(), Toast.LENGTH_SHORT).show();
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,"Unsupported card element type: " + cardElement.GetElementTypeString()));
                 continue;
             }
 
-            renderer.render(context, fragmentManager, layout, cardElement, inputActionHandlerList, cardActionHandler, hostConfig, containerStyle);
+            renderer.render(renderedCard, context, fragmentManager, layout, cardElement, cardActionHandler, hostConfig, containerStyle);
         }
 
         return layout;

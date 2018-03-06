@@ -141,7 +141,7 @@ export class WebChatContainer extends HostContainer {
             actions: {
                 maxActions: 5,
                 spacing: Spacing.Default,
-                buttonSpacing: 20,
+                buttonSpacing: 10,
                 showCard: {
                     actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16

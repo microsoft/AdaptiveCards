@@ -40,6 +40,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -85,6 +86,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownElement.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

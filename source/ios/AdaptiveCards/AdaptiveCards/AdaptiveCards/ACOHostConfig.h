@@ -10,6 +10,8 @@
 
 @interface ACOHostConfig:NSObject
 
+@property NSArray<NSString *> *fontFamilyNames;
+
 - (instancetype)init;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;

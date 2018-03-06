@@ -110,7 +110,6 @@ enum class AdaptiveCardSchemaKey
     Medium,
     Method,
     Min,
-    MinVersion,
     NumberInput,
     Padding,
     Placeholder,
@@ -223,7 +222,8 @@ enum class CardElementType
     TextInput,
     TimeInput,
     ToggleInput,
-    Custom
+    Custom,
+    Unknown,
 };
 
 enum class ActionType

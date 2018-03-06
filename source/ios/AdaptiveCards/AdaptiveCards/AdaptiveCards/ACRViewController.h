@@ -27,4 +27,5 @@
 
 - (dispatch_queue_t) getSerialTextQueue;
 
+- (ACOAdaptiveCard *) card;
 @end

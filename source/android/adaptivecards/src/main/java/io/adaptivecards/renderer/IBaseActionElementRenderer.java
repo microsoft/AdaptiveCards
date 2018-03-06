@@ -15,11 +15,11 @@ import java.util.Vector;
 public interface IBaseActionElementRenderer
 {
     Button render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
-            Vector<IInputHandler> inputHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig);
 }

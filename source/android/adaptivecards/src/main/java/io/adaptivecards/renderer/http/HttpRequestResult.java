@@ -1,9 +1,5 @@
 package io.adaptivecards.renderer.http;
 
-/**
- * Created by bekao on 7/4/2017.
- */
-
 public class HttpRequestResult<RESULT>
 {
     public HttpRequestResult(Exception excep)
