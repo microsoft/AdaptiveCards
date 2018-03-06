@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
-  "title": "Microsoft Adaptive Card Schema",  
+  "title": "Microsoft Adaptive Card Schema",
   "additionalProperties": true,
   "allOf": [
     {
@@ -12,19 +12,26 @@
   "properties": {
     "version": {
       "type": "string",
-      "description": "version of schema that this card was authored "
-    },
-    "minVersion": {
-      "type": "string",
-      "description": "if a client doesn't support the minVersion the card should be rejected and return the fallbackText.  If it does, then the elements that are not supported are safe to ignore"
+      "description": "Schema version that this card requires. If a client is lower than this version the fallbackText will be rendered."
     },
     "fallbackText": {
       "type": "string",
-      "description": "if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. "
+      "description": "Text shown when the client doesn't support the version specified. This can be in markdown format."
+    },
+    "backgroundImage": {
+      "type": "string",
+      "description": "An image to use as the background of the card"
     },
     "speak": {
       "type": "string",
       "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
+    },
+    "lang": {
+      "type": "string",
+      "description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions",
+      "examples": [
+        "en", "fr", "es"
+      ]
     }
   },
   "required": [
@@ -48,16 +55,16 @@
       "additionalProperties": true,
       "description": "When Action.OpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ with embedded web browser.",
       "properties": {
-        "title": {
-          "type": "string",
-          "description": "Label for button or link that represents this action"
-        },
         "type": {
           "type": "string",
           "description": "Must be Action.OpenUrl",
           "enum": [
             "Action.OpenUrl"
           ]
+        },
+        "title": {
+          "type": "string",
+          "description": "Label for button or link that represents this action"
         },
         "url": {
           "type": "string",
@@ -66,6 +73,7 @@
       },
       "required": [
         "type",
+        "title",
         "url"
       ],
       "type": "object"
@@ -92,6 +100,7 @@
       },
       "required": [
         "type",
+        "title",
         "card"
       ]
     },
@@ -112,12 +121,16 @@
           "description": "Label for button or link that represents this action"
         },
         "data": {
-          "type": [ "string", "object" ],
+          "type": [
+            "string",
+            "object"
+          ],
           "description": "initial data that input fields will be combined with. This is essentially 'hidden' properties"
         }
       },
       "required": [
-        "type"
+        "type",
+        "title"
       ]
     },
     "Actions": {
@@ -168,15 +181,14 @@
         },
         "separator": {
           "type": "boolean",
-          "description": "The Separator object type describes the look and feel of a separation line between two elements.",
-          "default": false
+          "description": "The Separator object type describes the look and feel of a separation line between two elements."
         }
       },
       "required": [
         "type"
       ]
     },
-    "CardElements": { 
+    "CardElements": {
       "type": "array",
       "additionalItems": true,
       "items": [
@@ -227,8 +239,8 @@
       "description": "Describes a Choice input. The value should be a simple string without a \",\"",
       "additionalProperties": true,
       "properties": {
-        "type":{
-          "type":"string",
+        "type": {
+          "type": "string",
           "enum": [
             "Input.Choice"
           ]
@@ -270,8 +282,16 @@
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Column is tapped or selected",
+          "description": "An Action that will be invoked when the Column is tapped or selected. Action.ShowCard not supported",
           "$ref": "#/definitions/Action"
+        },
+        "style": {
+          "type": "string",
+          "description": "Style hint for Column",
+          "enum": [
+            "default",
+            "emphasis"
+          ]
         },
         "width": {
           "type": [
@@ -311,7 +331,7 @@
         },
         "selectAction": {
           "$ref": "#/definitions/Action",
-          "description": "The Action that is executed when the ColumnSet is clicked/tapped"
+          "description": "An Action that will be invoked when the ColumnSet is tapped or selected. Action.ShowCard not supported"
         },
         "type": {
           "type": "string",
@@ -337,7 +357,7 @@
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Image is tapped or selected",
+          "description": "An Action that will be invoked when the Container is tapped or selected. Action.ShowCard not supported",
           "$ref": "#/definitions/Action"
         },
         "style": {
@@ -374,7 +394,6 @@
         "title": {
           "type": "string",
           "description": "The title of the fact"
-          
         },
         "value": {
           "type": "string",
@@ -442,11 +461,10 @@
           "$ref": "#/definitions/HorizontalAlignment"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Image is tapped or selected",
+          "description": "An Action that will be invoked when the Image is tapped or selected. Action.ShowCard not supported",
           "$ref": "#/definitions/Action"
         },
         "size": {
-          "type": "object",
           "$ref": "#/definitions/ImageSize"
         },
         "style": {
@@ -523,7 +541,7 @@
     "Input.ChoiceSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Shows an array of Choice objects",      
+      "description": "Shows an array of Choice objects",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -543,8 +561,7 @@
         },
         "isMultiSelect": {
           "type": "boolean",
-          "description": "allow multiple choices to be selected",
-          "default": false
+          "description": "allow multiple choices to be selected"
         },
         "style": {
           "$ref": "#/definitions/ChoiceInputStyle"
@@ -764,15 +781,15 @@
         },
         "value": {
           "type": "string",
-          "description": "The current selected value (default:false)"
+          "description": "The current selected value (default: false)"
         },
         "valueOff": {
           "type": "string",
-          "description": "The value when toggle is off (default:false)"
+          "description": "The value when toggle is off (default: false)"
         },
         "valueOn": {
           "type": "string",
-          "description": "The value when toggle is on (default:true)"
+          "description": "The value when toggle is on (default: true)"
         }
       },
       "required": [

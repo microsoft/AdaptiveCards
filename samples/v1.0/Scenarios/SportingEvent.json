@@ -19,7 +19,7 @@
 									"url": "http://adaptivecards.io/content/cats/3.png",
 									"size": "medium"
 								},
-								{
+									{
 									"type": "TextBlock",
 									"text": "SHADES",
 									"horizontalAlignment": "center",

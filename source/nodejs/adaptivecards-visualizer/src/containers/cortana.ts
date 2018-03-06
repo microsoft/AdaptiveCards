@@ -12,147 +12,153 @@ import {
     ActionAlignment,
 } from "adaptivecards";
 
-export class TimelineContainer extends HostContainer {
-    // static backgroundColor: string = "#0078D7";
+export class CortanaContainer extends HostContainer {
 
-    private _width: number;
-    private _height: number;
+    private _renderFrame: boolean;
 
-    constructor(width: number, height: number, styleSheet: string) {
+    constructor(renderFrame: boolean, styleSheet: string) {
         super(styleSheet);
 
-        this._width = width;
-        this._height = height;
-        this.supportsActionBar = false;
+        this._renderFrame = renderFrame;
     }
 
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
-        AdaptiveCard.useAdvancedCardBottomTruncation = true;
 
         var wrapper = document.createElement("div");
-        wrapper.className = "timeline-frame";
+        wrapper.style.width = "342px";
+        
+        var cardContainer = document.createElement("div");
+
+        if (this._renderFrame) {
+            wrapper.className = "cortanaFrame";            
+            cardContainer.className = "cardWrapper";
+        }
+ 
+        adaptiveCard.render(cardContainer);
+
+        wrapper.appendChild(cardContainer);
         target.appendChild(wrapper);
 
-        var cardContainer = document.createElement("div");
-        cardContainer.className = "timeline-card"; 
-        wrapper.appendChild(cardContainer);
-
-        // Style must be set in code for fixed-height clipping to work
-        var clippingDiv = document.createElement("div");
-        clippingDiv.style.height = this._height + "px";
-        clippingDiv.style.width = this._width + "px";
-        clippingDiv.style.overflow = "hidden";
-        cardContainer.appendChild(clippingDiv);
-
-        var renderedCard = adaptiveCard.render();
-        renderedCard.style.height = "100%";
-        clippingDiv.appendChild(renderedCard);
-        adaptiveCard.updateLayout();
-        
-        return wrapper;
+        return cardContainer;
     }
 
     public getHostConfig(): HostConfig {
         return new HostConfig({
             spacing: {
-                small: 4,
-                default: 12,
+                small: 3,
+                default: 8,
                 medium: 20,
                 large: 30,
                 extraLarge: 40,
-                padding: 15
+                padding: 10
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"
+                lineColor: "#FF999999"
             },
-            supportsInteractivity: false,
+            supportsInteractivity: true,
             fontFamily: "Segoe UI",
             fontSizes: {
-                small: 12,
-                default: 14,
-                medium: 20,
+                small: 13,
+                default: 15,
+                medium: 18,
                 large: 20,
-                extraLarge: 26
+                extraLarge: 24
             },
             fontWeights: {
                 lighter: 200,
                 default: 400,
-                bolder: 700
+                bolder: 600
             },
             containerStyles: {
                 default: {
-                    backgroundColor: "#535454",
+                    backgroundColor: "#000000",
                     foregroundColors: {
                         default: {
-                            "default": "#FFFFFF",
-                            "subtle": "#9C9E9F"
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
                         },
                         accent: {
-                            "default": "#2E89FC",
-                            "subtle": "#882E89FC"
+                            default: "#FF2E89FC",
+                            subtle: "#CC2E89FC"
+                        },
+                        dark: {
+                            default: "#FF999999",
+                            subtle: "#99999999"
+                        },
+                        light: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
                         },
                         attention: {
-                            "default": "#FF0000",
-                            "subtle": "#DDFF0000"
+                            default: "#CCFF0000",
+                            subtle: "#99FF0000"
                         },
                         good: {
-                            "default": "#00FF00",
-                            "subtle": "#DD00FF00"
+                            default: "#CC00FF00",
+                            subtle: "#9900FF00"
                         },
                         warning: {
-                            "default": "#FFD800",
-                            "subtle": "#DDFFD800"
+                            default: "#CCFF9800",
+                            subtle: "#99FF9800"
                         }
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#33FFFFFF",
                     foregroundColors: {
                         default: {
-                            "default": "#FFFFFF",
-                            "subtle": "#9C9E9F"
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
                         },
                         accent: {
-                            "default": "#2E89FC",
-                            "subtle": "#882E89FC"
+                            default: "#FF2E89FC",
+                            subtle: "#CC2E89FC"
+                        },
+                        dark: {
+                            default: "#FF999999",
+                            subtle: "#99999999"
+                        },
+                        light: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
                         },
                         attention: {
-                            "default": "#FF0000",
-                            "subtle": "#DDFF0000"
+                            default: "#CCFF0000",
+                            subtle: "#99FF0000"
                         },
                         good: {
-                            "default": "#00FF00",
-                            "subtle": "#DD00FF00"
+                            default: "#CC00FF00",
+                            subtle: "#9900FF00"
                         },
                         warning: {
-                            "default": "#FFD800",
-                            "subtle": "#DDFFD800"
+                            default: "#CCFF9800",
+                            subtle: "#99FF9800"
                         }
                     }
                 }
             },
             imageSizes: {
                 small: 40,
-                medium: 80,
-                large: 120
+                medium: 68,
+                large: 320
             },
             actions: {
                 maxActions: 5,
                 spacing: Spacing.Default,
-                buttonSpacing: 20,
+                buttonSpacing: 5,
                 showCard: {
                     actionMode: ShowCardActionMode.Inline,
-                    inlineTopMargin: 16
+                    inlineTopMargin: 20
                 },
                 actionsOrientation: Orientation.Horizontal,
-                actionAlignment: ActionAlignment.Left
+                actionAlignment: ActionAlignment.Stretch
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
             imageSet: {
-                imageSize: Size.Medium,
+                imageSize: Size.Small,
                 maxImageHeight: 100
             },
             factSet: {
@@ -161,8 +167,7 @@ export class TimelineContainer extends HostContainer {
                     size: TextSize.Default,
                     isSubtle: false,
                     weight: TextWeight.Bolder,
-                    wrap: false,
-                    maxWidth: 150,
+                    wrap: true
                 },
                 value: {
                     color: TextColor.Default,
@@ -171,7 +176,7 @@ export class TimelineContainer extends HostContainer {
                     weight: TextWeight.Default,
                     wrap: true,
                 },
-                spacing: 10
+                spacing: 12
             }
         });
     }

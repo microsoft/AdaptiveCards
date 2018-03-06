@@ -1,28 +1,44 @@
 
 <div id="content-wrapper" class="w3-content sample-browser" style="max-width:1564px">
 
-
-  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
+  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-container w3-cell w3-hide-small w3-hide-medium w3-bar-block" style="width: 250px">
     <div class="sidebar__inner">
-      <div class="w3-panels w3-padding-larges">
-
-          <ul>
-             <% page.samples.forEach(function(sample) { %>
-              <li class='<%= is_current(sample.htmlPath) ? "selectedHolder" : "" %>'>
-                <a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
-              </li>
-            <% }) %>
-          </ul>
-
-      </div>
+      <ul>
+        <% page.samples.forEach(function(sample) { %>
+          <li class='<%= is_current(sample.htmlPath) ? "selectedHolder" : "" %>'>
+            <a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
+          </li>
+        <% }) %>
+      </ul>
     </div>
   </nav>
-  
+    
   <div class="w3-main" style="margin-left: 260px">
 
-      <h1 class="w3-container"><%= page.title %></h1>
-      <%- partial("_partial/code-example", { examplePath: page.sample.jsonPath }) %>
+    <div class="w3-container">
+      <h1><%= page.title %></h1>
+      <p>These samples are just a teaser of the type of cards you can create. Go ahead and tweak them to make any scenario possible!</p>
 
+      <h2><%= page.sample.name %></h2>
+      
+      <!-- mobile nav -->
+      <div class="w3-hide-large">
+        <select id="menu-nav">y
+          <% page.samples.forEach(function(sample) { %>
+          <% if(is_current(sample.htmlPath)) { %>
+            <option value='<%- url_for(sample.htmlPath) %>' selected="selected"><%= sample.name %></option>
+          <% } else { %>
+            <option value='<%- url_for(sample.htmlPath) %>'><%= sample.name %></option>
+          <% } %> 
+          <% }) %>
+        </select>
+      </div>
+    </div>
+
+
+    
+    <%- partial("_partial/code-example", { examplePath: page.sample.jsonPath }) %>
+ 
   </div>
-  
+
 </div>
