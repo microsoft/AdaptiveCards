@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -40,11 +41,11 @@ public class TimeInputRenderer extends TextInputRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -75,13 +76,13 @@ public class TimeInputRenderer extends TextInputRenderer
         }
 
         EditText editText = renderInternal(
+                renderedCard,
                 context,
                 viewGroup,
                 timeInput,
                 time,
                 timeInput.GetPlaceholder(),
                 timeInputHandler,
-                inputActionHandlerList,
                 hostConfig);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);

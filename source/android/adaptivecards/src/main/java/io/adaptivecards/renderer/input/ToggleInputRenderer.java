@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -36,11 +37,11 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            Vector<IInputHandler> inputActionHandlerList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             ContainerStyle containerStyle)
@@ -62,7 +63,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         toggleInputHandler.setView(checkBox);
         checkBox.setTag(toggleInputHandler);
         checkBox.setText(toggleInput.GetTitle());
-        inputActionHandlerList.add(toggleInputHandler);
+        renderedCard.registerInputHandler(toggleInputHandler);
 
         if (TextUtils.isEmpty(toggleInput.GetValueOn()))
         {
