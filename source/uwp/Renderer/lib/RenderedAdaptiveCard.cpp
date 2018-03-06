@@ -113,8 +113,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_originatingCard = value;
     }
 
-    std::shared_ptr<std::vector<InputItem>> RenderedAdaptiveCard::GetInputItems()
+    HRESULT RenderedAdaptiveCard::AddInputValue(IAdaptiveInputValue* inputItem)
     {
-        return m_inputs->GetInputItems();
+        return m_inputs->AddInputValue(inputItem);
     }
 }}}

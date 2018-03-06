@@ -16,12 +16,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     AdaptiveInputs::AdaptiveInputs()
     {
-        m_inputItems = std::make_shared<std::vector<InputItem>>();
+        m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>();
     }
 
     HRESULT AdaptiveInputs::RuntimeClassInitialize() noexcept
     {
-        m_inputItems = std::make_shared<std::vector<InputItem>>();
+        m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>();
         return S_OK;
     }
 
@@ -31,18 +31,30 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return StringToJsonObject(GetInputItemsAsJsonString(), value);
     }
 
-    std::shared_ptr<std::vector<InputItem>> AdaptiveInputs::GetInputItems()
+    HRESULT AdaptiveInputs::AddInputValue(IAdaptiveInputValue* inputValue)
     {
-        return m_inputItems;
+        m_inputValues->push_back(inputValue);
+        return S_OK;
     }
 
     std::string AdaptiveInputs::GetInputItemsAsJsonString()
     {
         Json::Value jsonValue;
-        for (auto& inputElement : *m_inputItems)
+        for (auto& inputValue : *m_inputValues)
         {
-            std::string key = inputElement.GetIdString();
-            std::string value = inputElement.Serialize();
+            ComPtr<IAdaptiveCardElement> cardElement;
+            ComPtr<IAdaptiveInputElement> inputElement;
+            THROW_IF_FAILED(inputValue->get_InputElement(&inputElement));
+            THROW_IF_FAILED(inputElement.As(&cardElement));
+
+            HString idString;
+            THROW_IF_FAILED(cardElement->get_Id(idString.GetAddressOf()));
+            std::string key = HStringToUTF8(idString.Get());
+
+            HString inputStringValue;
+            THROW_IF_FAILED(inputValue->get_CurrentValue(inputStringValue.GetAddressOf()));
+            std::string value = HStringToUTF8(inputStringValue.Get());
+
             jsonValue[key] = value;
         }
 
@@ -65,16 +77,24 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IPropertyValueStatics> propertyValueFactory;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueFactory));
 
-        ComPtr<IInspectable> propVal;
-        boolean replaced;
-        for (auto& inputElement : *m_inputItems)
+        for (auto& inputValue : *m_inputValues)
         {
-            HSTRING key = inputElement.GetId();
-            std::string value = inputElement.Serialize();
-            HSTRING valueHstring;
-            RETURN_IF_FAILED(UTF8ToHString(value, &valueHstring));
-            RETURN_IF_FAILED(propertyValueFactory->CreateString(valueHstring, propVal.ReleaseAndGetAddressOf()));
-            RETURN_IF_FAILED(propertySetMap->Insert(key, propVal.Get(), &replaced));
+            ComPtr<IAdaptiveCardElement> cardElement;
+            ComPtr<IAdaptiveInputElement> inputElement;
+            THROW_IF_FAILED(inputValue->get_InputElement(&inputElement));
+            THROW_IF_FAILED(inputElement.As(&cardElement));
+
+            HString key;
+            THROW_IF_FAILED(cardElement->get_Id(key.GetAddressOf()));
+
+            HString value;
+            RETURN_IF_FAILED(inputValue->get_CurrentValue(value.GetAddressOf()));
+
+            ComPtr<IInspectable> propVal;
+            RETURN_IF_FAILED(propertyValueFactory->CreateString(value.Get(), propVal.GetAddressOf()));
+
+            boolean replaced;
+            RETURN_IF_FAILED(propertySetMap->Insert(key.Get(), propVal.Get(), &replaced));
         }
         return valueSet.CopyTo(value);
     }

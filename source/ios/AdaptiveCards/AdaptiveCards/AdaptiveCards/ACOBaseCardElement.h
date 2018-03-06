@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface ACOBaseCardElement:NSObject
 
@@ -29,7 +30,8 @@ typedef NS_ENUM(NSInteger, ACRCardElementType) {
     ACRTextInput,
     ACRTimeInput,
     ACRToggleInput,
-    ACRCustom
+    ACRCustom,
+    ACRUnknown,
 };
 
 typedef NS_ENUM(NSInteger, ACRContainerStyle) {
@@ -39,5 +41,12 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
 };
 
 @property ACRCardElementType type;
+
+@end
+
+@protocol ACOIBaseCardElementParser
+
+@optional 
+- (UIView *)deserializeToCustomUIElement:(NSData* )json;
 
 @end

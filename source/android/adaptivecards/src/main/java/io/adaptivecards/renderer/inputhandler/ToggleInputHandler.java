@@ -21,30 +21,11 @@ public class ToggleInputHandler extends BaseInputHandler
     }
 
     @Override
-    protected void setDefaultTextColor()
-    {
-        //no op
-    }
-
-    @Override
-    protected void setInvalidTextColor()
-    {
-        // no op
-    }
-
-    @Override
-    protected void internalValidate()
-            throws ParseException
-    {
-        // no need to validate
-    }
-
-    public Exception getData(Map<String, String> data)
+    public String getInput()
     {
         // no need to validate
         ToggleInput toggleInput = (ToggleInput) m_baseInputElement;
         CheckBox checkBox = getCheckBox();
-        data.put(m_baseInputElement.GetId(), checkBox.isChecked() ? toggleInput.GetValueOn() : toggleInput.GetValueOff());
-        return null;
+        return checkBox.isChecked() ? toggleInput.GetValueOn() : toggleInput.GetValueOff();
     }
 }

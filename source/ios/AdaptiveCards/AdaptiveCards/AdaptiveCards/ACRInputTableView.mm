@@ -19,6 +19,7 @@ using namespace AdaptiveCards;
     {
         self.backgroundColor = UIColor.clearColor;
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.scrollEnabled = false;
     }
     return self;
 }

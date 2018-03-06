@@ -25,26 +25,7 @@ public class CheckBoxSetInputHandler extends BaseInputHandler
         return m_checkBoxList;
     }
 
-    @Override
-    protected void setDefaultTextColor()
-    {
-        //no op
-    }
-
-    @Override
-    protected void setInvalidTextColor()
-    {
-        // no op
-    }
-
-    @Override
-    protected void internalValidate()
-            throws ParseException
-    {
-        // no need to validate
-    }
-
-    public Exception getData(Map<String, String> data)
+    public String getInput()
     {
         // no need to validate
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
@@ -59,8 +40,7 @@ public class CheckBoxSetInputHandler extends BaseInputHandler
             }
         }
 
-        data.put(m_baseInputElement.GetId(), TextUtils.join(";", resultList));
-        return null;
+        return TextUtils.join(";", resultList);
     }
 
     private List<CheckBox> m_checkBoxList;

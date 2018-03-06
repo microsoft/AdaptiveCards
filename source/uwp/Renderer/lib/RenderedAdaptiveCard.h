@@ -2,7 +2,7 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "util.h"
-#include "InputItem.h"
+#include "InputValue.h"
 #include "AdaptiveInputs.h"
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
@@ -36,7 +36,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>** value);
         IFACEMETHODIMP get_Warnings(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>** value);
 
-        std::shared_ptr<std::vector<InputItem>> GetInputItems();
+        HRESULT AddInputValue(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue);
         void SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value);
         void SetOriginatingCard(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* value);
         HRESULT SendActionEvent(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* eventArgs);

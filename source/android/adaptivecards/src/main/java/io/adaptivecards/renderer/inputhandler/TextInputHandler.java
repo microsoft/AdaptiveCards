@@ -20,31 +20,8 @@ public class TextInputHandler extends BaseInputHandler
         return (EditText) m_view;
     }
 
-    @Override
-    protected void setDefaultTextColor()
+    public String getInput()
     {
-        //TypedValue typedValue = new TypedValue();
-        //m_editText.getContext().getTheme().resolveAttribute(android.R.attr.editTextColor, typedValue, true);
-        //m_editText.setTextColor(typedValue.data);
-        getEditText().setTextColor(Color.BLACK);
-    }
-
-    @Override
-    protected void setInvalidTextColor()
-    {
-        getEditText().setTextColor(Color.RED);
-    }
-
-    @Override
-    protected void internalValidate() throws ParseException {
-        //Do nothing.
-    }
-
-    public Exception getData(Map<String, String> data)
-    {
-
-        data.put(m_baseInputElement.GetId(), getEditText().getText().toString());
-
-        return null;
+        return getEditText().getText().toString();
     }
 }

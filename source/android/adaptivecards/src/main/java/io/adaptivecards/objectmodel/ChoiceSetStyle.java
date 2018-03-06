@@ -8,47 +8,45 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ChoiceSetStyle {
-  public final static ChoiceSetStyle Compact = new ChoiceSetStyle("Compact", AdaptiveCardObjectModelJNI.ChoiceSetStyle_Compact_get());
-  public final static ChoiceSetStyle Expanded = new ChoiceSetStyle("Expanded");
+public enum ChoiceSetStyle {
+  Compact(0),
+  Expanded;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ChoiceSetStyle swigToEnum(int swigValue) {
+    ChoiceSetStyle[] swigValues = ChoiceSetStyle.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ChoiceSetStyle swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ChoiceSetStyle.class + " with value " + swigValue);
   }
 
-  private ChoiceSetStyle(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ChoiceSetStyle() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ChoiceSetStyle(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ChoiceSetStyle(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ChoiceSetStyle(String swigName, ChoiceSetStyle swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ChoiceSetStyle(ChoiceSetStyle swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ChoiceSetStyle[] swigValues = { Compact, Expanded };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

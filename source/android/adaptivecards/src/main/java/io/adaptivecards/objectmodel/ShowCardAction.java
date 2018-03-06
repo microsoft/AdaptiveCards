@@ -41,8 +41,8 @@ public class ShowCardAction extends BaseActionElement {
     this(AdaptiveCardObjectModelJNI.new_ShowCardAction(), true);
   }
 
-  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
-    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ShowCardAction_SerializeToJsonValue(swigCPtr, this), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.ShowCardAction_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public AdaptiveCard GetCard() {

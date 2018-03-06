@@ -107,7 +107,7 @@
                                                                  targetView:columnSetView
                                                               actionElement:selectAction
                                                                      inputs:inputs
-                                                                 hostConfig:config];
+                                                                 hostConfig:acoConfig];
     if(gestureRecognizer)
     {
         [columnSetView addGestureRecognizer:gestureRecognizer];

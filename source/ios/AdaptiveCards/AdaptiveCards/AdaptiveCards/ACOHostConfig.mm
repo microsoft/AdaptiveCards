@@ -31,6 +31,15 @@ using namespace AdaptiveCards;
     self = [super init];
     if(self && config){
         _config = config;
+        // check if requested font family name is supported by iOS, if so save it for future uses
+        NSString *requestedFontFamilyName = [NSString stringWithCString:_config->fontFamily.c_str() encoding:NSUTF8StringEncoding];
+        if([UIFont.familyNames containsObject:requestedFontFamilyName]){
+            _fontFamilyNames = @[requestedFontFamilyName];
+        }
+        // if the requested font family name is not supported, use system font instead
+        if(!_fontFamilyNames){
+            _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
+        }
     }
     return self;
 }
@@ -43,8 +52,8 @@ using namespace AdaptiveCards;
     {
         try
         {
-            ACOHostConfig *config= [[ACOHostConfig alloc] init];
-            *config->_config.get() = AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String]));
+            std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
+            ACOHostConfig *config= [[ACOHostConfig alloc] initWithConfig:cHostConfig];
             result = [[ACOHostConfigParseResult alloc] init:config errors:nil];
         }
         catch(const AdaptiveCardParseException& e)
@@ -209,6 +218,73 @@ using namespace AdaptiveCards;
     return cgSize;
 }
 
++ (NSArray *)getConstraintsForImageAlignment:(HorizontalAlignment)alignment
+                               withSuperview:(UIView *)superview
+                                      toView:(UIView *)view
+{
+    NSMutableArray *constraints = [[NSMutableArray alloc] init];
+    [constraints addObject:
+        [NSLayoutConstraint constraintWithItem:superview
+                                     attribute:NSLayoutAttributeCenterY
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:view
+                                     attribute:NSLayoutAttributeCenterY
+                                    multiplier:1
+                                      constant:0]];
+
+    switch (alignment)
+    {
+        case HorizontalAlignment::Center:
+        {
+            [constraints addObject:
+                [NSLayoutConstraint constraintWithItem:superview
+                                             attribute:NSLayoutAttributeCenterX
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeCenterX
+                                            multiplier:1
+                                              constant:0]];
+                return constraints;
+        }
+        case HorizontalAlignment::Left:
+        {
+            [constraints addObject:
+                [NSLayoutConstraint constraintWithItem:superview
+                                             attribute:NSLayoutAttributeLeading
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeLeading
+                                            multiplier:1
+                                              constant:0]];
+            return constraints;
+        }
+        case HorizontalAlignment::Right:
+        {
+            [constraints addObject:
+                [NSLayoutConstraint constraintWithItem:superview
+                                             attribute:NSLayoutAttributeTrailing
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeTrailing
+                                            multiplier:1
+                                              constant:0]];
+            return constraints;
+        }
+        default:
+        {
+            [constraints addObject:
+                [NSLayoutConstraint constraintWithItem:superview
+                                             attribute:NSLayoutAttributeLeading
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeLeading
+                                            multiplier:1
+                                              constant:0]];
+            return constraints;
+        }
+    }
+    return constraints;
+}
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
 + (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck

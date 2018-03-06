@@ -29,82 +29,12 @@
     return ACRImage;
 }
 
-// code clean-up in progress
-- (NSArray *)setImageAlignment:(HorizontalAlignment)alignment
-                 withSuperview:(UIView *)superview
-                        toView:(UIView *)view
-{
-    NSMutableArray *constraints = [[NSMutableArray alloc] init];
-    [constraints addObject:
-        [NSLayoutConstraint constraintWithItem:superview
-                                     attribute:NSLayoutAttributeCenterY
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:view
-                                     attribute:NSLayoutAttributeCenterY
-                                    multiplier:1
-                                      constant:0]];
-
-    switch (alignment)
-    {
-        case HorizontalAlignment::Center:
-        {
-            [constraints addObject:
-                [NSLayoutConstraint constraintWithItem:superview
-                                             attribute:NSLayoutAttributeCenterX
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeCenterX
-                                            multiplier:1
-                                              constant:0]];
-                return constraints;
-        }
-        case HorizontalAlignment::Left:
-        {
-            [constraints addObject:
-                [NSLayoutConstraint constraintWithItem:superview
-                                             attribute:NSLayoutAttributeLeading
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeLeading
-                                            multiplier:1
-                                              constant:0]];
-            return constraints;
-        }
-        case HorizontalAlignment::Right:
-        {
-            [constraints addObject:
-                [NSLayoutConstraint constraintWithItem:superview
-                                             attribute:NSLayoutAttributeTrailing
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeTrailing
-                                            multiplier:1
-                                              constant:0]];
-            return constraints;
-        }
-        default:
-        {
-            [constraints addObject:
-                [NSLayoutConstraint constraintWithItem:superview
-                                             attribute:NSLayoutAttributeLeading
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeLeading
-                                            multiplier:1
-                                              constant:0]];
-            return constraints;
-        }
-    }
-    return constraints;
-}
-
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             rootViewController:(UIViewController *)vc
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
 
@@ -162,7 +92,7 @@
 
     [viewGroup addArrangedSubview:wrappingview];
 
-    [wrappingview addConstraints:[self setImageAlignment:imgElem->GetHorizontalAlignment()
+    [wrappingview addConstraints:[ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
                                            withSuperview:wrappingview
                                                   toView:view]];
 
@@ -176,7 +106,7 @@
                                                                  targetView:wrappingview
                                                               actionElement:selectAction
                                                                      inputs:inputs
-                                                                 hostConfig:config];
+                                                                 hostConfig:acoConfig];
     if(gestureRecognizer) {
         [view addGestureRecognizer:gestureRecognizer];
         view.userInteractionEnabled = YES;

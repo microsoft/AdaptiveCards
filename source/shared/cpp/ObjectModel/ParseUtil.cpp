@@ -338,6 +338,11 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
             // Use the parser that maps to the type
             elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
         }
+        else
+        {
+            parser = elementParserRegistration->GetParser("Unknown");
+            elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
+        }
     }
 
     return elements;

@@ -341,6 +341,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
+        [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
+        [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
+
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
     };
 
@@ -427,9 +430,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT Version([out, retval] HSTRING* value);
         [propput] HRESULT Version([in] HSTRING value);
-
-        [propget] HRESULT MinVersion([out, retval] HSTRING* value);
-        [propput] HRESULT MinVersion([in] HSTRING value);
 
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
@@ -1785,6 +1785,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
+        uuid(7855E78D-E217-4D12-9203-0136E79FF869 ),
+        version(NTDDI_WIN10_RS1),
+    ]
+    interface IAdaptiveInputValue : IInspectable
+    {
+        [propget] HRESULT InputElement([out, retval] IAdaptiveInputElement** inputCardElement);
+        [propget] HRESULT CurrentValue([out, retval] HSTRING * currentInputValue);
+    };
+
+    [
         uuid(d2ad59a2-01aa-4b39-b2a7-5ce1d4028fbb),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveRenderContext)
@@ -1801,7 +1811,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 
-        HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
+        HRESULT AddInputValue([in] IAdaptiveInputValue* inputValue);
         HRESULT AddError([in] ErrorStatusCode statusCode, [in] HSTRING message);
         HRESULT AddWarning([in] WarningStatusCode statusCode, [in] HSTRING message);
     };

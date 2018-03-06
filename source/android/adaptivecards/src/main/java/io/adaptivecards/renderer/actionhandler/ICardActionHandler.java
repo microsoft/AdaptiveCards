@@ -1,10 +1,9 @@
 package io.adaptivecards.renderer.actionhandler;
 
 import io.adaptivecards.objectmodel.BaseActionElement;
-
-import java.util.Map;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 
 public interface ICardActionHandler
 {
-    void onAction(BaseActionElement action, Map<String, String> inputData);
+    void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard);
 }

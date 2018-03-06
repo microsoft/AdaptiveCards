@@ -26,7 +26,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig** value);
         IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration** value);
         IFACEMETHODIMP get_ActionInvoker(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionInvoker** value);
-        IFACEMETHODIMP AddInputItem(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement, _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
+        IFACEMETHODIMP AddInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue);
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers** value);
         IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary);
         IFACEMETHODIMP AddError(_In_ ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode, _In_ HSTRING message);

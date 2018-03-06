@@ -9,5 +9,5 @@
 package io.adaptivecards.objectmodel;
 
 public interface AdaptiveCardObjectModelConstants {
-  public final static int __ANDROID__ = AdaptiveCardObjectModelJNI.__ANDROID___get();
+  public final static int __ANDROID__ = 1;
 }

@@ -84,8 +84,8 @@ public class ActionsConfig {
     return Spacing.swigToEnum(AdaptiveCardObjectModelJNI.ActionsConfig_spacing_get(swigCPtr, this));
   }
 
-  public static ActionsConfig Deserialize(SWIGTYPE_p_Json__Value json, ActionsConfig defaultValue) {
-    return new ActionsConfig(AdaptiveCardObjectModelJNI.ActionsConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ActionsConfig.getCPtr(defaultValue), defaultValue), true);
+  public static ActionsConfig Deserialize(JsonValue json, ActionsConfig defaultValue) {
+    return new ActionsConfig(AdaptiveCardObjectModelJNI.ActionsConfig_Deserialize(JsonValue.getCPtr(json), json, ActionsConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public ActionsConfig() {

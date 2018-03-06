@@ -73,9 +73,11 @@
 		F4D402161F7DB0BF00D0356B /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D402151F7DB0BF00D0356B /* sample.json */; };
 		F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
 		F4F4484A203FA48700A2F24C /* Container.Style-FixBugs.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F44849203FA48600A2F24C /* Container.Style-FixBugs.json */; };
-		F4F44B852048CDB300A2F24C /* AdditionalProperty.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F44B842048CDB300A2F24C /* AdditionalProperty.json */; };
 		F4F44B75203FE73D00A2F24C /* CustomInputNumberRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */; };
 		F4F44B8320478E1100A2F24C /* DateTimeTestTranslation.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F44B8220478E1100A2F24C /* DateTimeTestTranslation.json */; };
+		F4F44B852048CDB300A2F24C /* AdditionalProperty.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F44B842048CDB300A2F24C /* AdditionalProperty.json */; };
+		F4F44BA7204CF97200A2F24C /* CustomParsingTestUsingProgressBar.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F44BA6204CF97100A2F24C /* CustomParsingTestUsingProgressBar.json */; };
+		F4F44BAA204CF98900A2F24C /* CustomProgressBarRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,10 +187,13 @@
 		F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionOpenURLRenderer.mm; sourceTree = "<group>"; };
 		F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionOpenURLRenderer.h; sourceTree = "<group>"; };
 		F4F44849203FA48600A2F24C /* Container.Style-FixBugs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Container.Style-FixBugs.json"; path = "../../../../samples/v1.0/Elements/Container.Style-FixBugs.json"; sourceTree = "<group>"; };
-		F4F44B842048CDB300A2F24C /* AdditionalProperty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdditionalProperty.json; path = ../../../../samples/Tests/AdditionalProperty.json; sourceTree = "<group>"; };
 		F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomInputNumberRenderer.mm; sourceTree = "<group>"; };
 		F4F44B74203FE73D00A2F24C /* CustomInputNumberRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomInputNumberRenderer.h; sourceTree = "<group>"; };
 		F4F44B8220478E1100A2F24C /* DateTimeTestTranslation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DateTimeTestTranslation.json; path = ../../../../samples/Tests/DateTimeTestTranslation.json; sourceTree = "<group>"; };
+		F4F44B842048CDB300A2F24C /* AdditionalProperty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdditionalProperty.json; path = ../../../../samples/Tests/AdditionalProperty.json; sourceTree = "<group>"; };
+		F4F44BA6204CF97100A2F24C /* CustomParsingTestUsingProgressBar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CustomParsingTestUsingProgressBar.json; path = ../../../../samples/Tests/CustomParsingTestUsingProgressBar.json; sourceTree = "<group>"; };
+		F4F44BA8204CF98900A2F24C /* CustomProgressBarRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomProgressBarRenderer.h; sourceTree = "<group>"; };
+		F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomProgressBarRenderer.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +247,8 @@
 		F423C0741EE1FB6100905679 /* ADCIOSVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				F4F44BA8204CF98900A2F24C /* CustomProgressBarRenderer.h */,
+				F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */,
 				F4F44B74203FE73D00A2F24C /* CustomInputNumberRenderer.h */,
 				F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */,
 				F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */,
@@ -291,6 +298,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				F4F44BA6204CF97100A2F24C /* CustomParsingTestUsingProgressBar.json */,
 				F4F44B842048CDB300A2F24C /* AdditionalProperty.json */,
 				F4F44B8220478E1100A2F24C /* DateTimeTestTranslation.json */,
 				F4F44849203FA48600A2F24C /* Container.Style-FixBugs.json */,
@@ -514,6 +522,7 @@
 				F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */,
 				F4933CDF1F79852C00F6EBFD /* Input.Text.json in Resources */,
 				F4933CD11F79852C00F6EBFD /* Container.Spacing.json in Resources */,
+				F4F44BA7204CF97200A2F24C /* CustomParsingTestUsingProgressBar.json in Resources */,
 				F4933CCF1F79852C00F6EBFD /* Container.SelectAction.json in Resources */,
 				F4933CDC1F79852C00F6EBFD /* Input.ChoiceSet.json in Resources */,
 			);
@@ -540,6 +549,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4F44BAA204CF98900A2F24C /* CustomProgressBarRenderer.mm in Sources */,
 				F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */,
 				F423C07D1EE1FB6100905679 /* ViewController.m in Sources */,
 				F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */,

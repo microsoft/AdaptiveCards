@@ -8,51 +8,49 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ImageSize {
-  public final static ImageSize None = new ImageSize("None", AdaptiveCardObjectModelJNI.ImageSize_None_get());
-  public final static ImageSize Auto = new ImageSize("Auto");
-  public final static ImageSize Stretch = new ImageSize("Stretch");
-  public final static ImageSize Small = new ImageSize("Small");
-  public final static ImageSize Medium = new ImageSize("Medium");
-  public final static ImageSize Large = new ImageSize("Large");
+public enum ImageSize {
+  None(0),
+  Auto,
+  Stretch,
+  Small,
+  Medium,
+  Large;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ImageSize swigToEnum(int swigValue) {
+    ImageSize[] swigValues = ImageSize.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ImageSize swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ImageSize.class + " with value " + swigValue);
   }
 
-  private ImageSize(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ImageSize() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ImageSize(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ImageSize(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ImageSize(String swigName, ImageSize swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ImageSize(ImageSize swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ImageSize[] swigValues = { None, Auto, Stretch, Small, Medium, Large };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

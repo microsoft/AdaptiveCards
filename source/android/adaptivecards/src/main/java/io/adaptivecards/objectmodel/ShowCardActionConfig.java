@@ -59,8 +59,8 @@ public class ShowCardActionConfig {
     return AdaptiveCardObjectModelJNI.ShowCardActionConfig_inlineTopMargin_get(swigCPtr, this);
   }
 
-  public static ShowCardActionConfig Deserialize(SWIGTYPE_p_Json__Value json, ShowCardActionConfig defaultValue) {
-    return new ShowCardActionConfig(AdaptiveCardObjectModelJNI.ShowCardActionConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ShowCardActionConfig.getCPtr(defaultValue), defaultValue), true);
+  public static ShowCardActionConfig Deserialize(JsonValue json, ShowCardActionConfig defaultValue) {
+    return new ShowCardActionConfig(AdaptiveCardObjectModelJNI.ShowCardActionConfig_Deserialize(JsonValue.getCPtr(json), json, ShowCardActionConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public ShowCardActionConfig() {

@@ -15,7 +15,7 @@ using namespace AdaptiveCards;
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
     NSMutableDictionary *_userSelections;
     NSIndexPath *_lastSelectedIndexPath;
-    NSSet *_defaultValuesSet;
+    NSMutableSet *_defaultValuesSet;
     NSArray *_defaultValuesArray;
 }
 
@@ -35,7 +35,7 @@ using namespace AdaptiveCards;
         _defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
                                [NSCharacterSet characterSetWithCharactersInString:@","]];
         if (_isMultiChoicesAllowed || [_defaultValuesArray count] == 1){
-            _defaultValuesSet = [NSSet setWithArray:_defaultValuesArray];
+            _defaultValuesSet = [NSMutableSet setWithArray:_defaultValuesArray];
         }
     }
     return self;
@@ -73,6 +73,7 @@ using namespace AdaptiveCards;
 
     if([_defaultValuesSet containsObject:keyForDefaultValue]){
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
+        [_defaultValuesSet removeObject:keyForDefaultValue];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
