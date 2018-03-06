@@ -11,7 +11,7 @@ namespace AdaptiveCards
     {
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IList<T>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+            return typeof(List<T>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
