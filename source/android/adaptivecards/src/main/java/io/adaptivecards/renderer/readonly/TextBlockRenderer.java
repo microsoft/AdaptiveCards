@@ -178,21 +178,27 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
     }
 
-    static class TouchTextView implements View.OnTouchListener {
+    static class TouchTextView implements View.OnTouchListener
+    {
         Spannable spannable;
 
-        public TouchTextView (Spannable spannable){
+        public TouchTextView (Spannable spannable)
+        {
             this.spannable = spannable;
         }
+
         @Override
-        public boolean onTouch(View v, MotionEvent event) {
+        public boolean onTouch(View v, MotionEvent event)
+        {
             int action = event.getAction();
-            if(!(v instanceof TextView)){
+            if (!(v instanceof TextView))
+            {
                 return false;
             }
             TextView textView  = (TextView) v;
             if (action == MotionEvent.ACTION_UP ||
-                    action == MotionEvent.ACTION_DOWN) {
+                    action == MotionEvent.ACTION_DOWN)
+            {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
 
@@ -208,17 +214,23 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
                 ClickableSpan[] link = spannable.getSpans(off, off, ClickableSpan.class);
 
-                if (link.length != 0) {
-                    if (action == MotionEvent.ACTION_UP) {
+                if (link.length != 0)
+                {
+                    if (action == MotionEvent.ACTION_UP)
+                    {
                         link[0].onClick(textView);
-                    } else if (action == MotionEvent.ACTION_DOWN) {
+                    }
+                    else if (action == MotionEvent.ACTION_DOWN)
+                    {
                         Selection.setSelection(spannable,
                                 spannable.getSpanStart(link[0]),
                                 spannable.getSpanEnd(link[0]));
                     }
 
                     return true;
-                } else {
+                }
+                else
+                {
                     Selection.removeSelection(spannable);
                 }
             }
