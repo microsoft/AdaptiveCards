@@ -33,8 +33,8 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
-            std::shared_ptr<BaseCardElement> elem =  adaptiveCard->GetBody().front();
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
             Json::Value value = elem->GetAdditionalProperties();
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);

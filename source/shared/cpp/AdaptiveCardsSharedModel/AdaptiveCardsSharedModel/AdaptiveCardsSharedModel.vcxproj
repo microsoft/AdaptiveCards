@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -113,6 +113,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseWarning.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseInputElement.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="..\..\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\OpenUrlAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ParseResult.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\ObjectModel\Separator.cpp" />
     <ClCompile Include="..\..\ObjectModel\SharedAdaptiveCard.cpp" />
@@ -153,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\ObjectModel\BaseCardElement.h" />
     <ClInclude Include="..\..\ObjectModel\BaseInputElement.h" />
@@ -178,6 +181,7 @@
     <ClInclude Include="..\..\ObjectModel\MarkDownParser.h" />
     <ClInclude Include="..\..\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\ObjectModel\OpenUrlAction.h" />
+    <ClInclude Include="..\..\ObjectModel\ParseResult.h" />
     <ClInclude Include="..\..\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\ObjectModel\pch.h" />
     <ClInclude Include="..\..\ObjectModel\Separator.h" />
