@@ -49,8 +49,8 @@ public class FactSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_2(spacing.swigValue(), separation, FactVector.getCPtr(facts), facts), true);
   }
 
-  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
-    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.FactSet_SerializeToJsonValue(swigCPtr, this), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.FactSet_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public FactVector GetFacts() {

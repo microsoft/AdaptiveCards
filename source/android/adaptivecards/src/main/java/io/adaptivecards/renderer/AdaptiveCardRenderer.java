@@ -161,18 +161,18 @@ public class AdaptiveCardRenderer
 
         ContainerStyle style = ContainerStyle.Default;
 
-        if (isInlineShowCard && hostConfig.getActions().getShowCard().getStyle().swigValue() != ContainerStyle.None.swigValue())
+        if (isInlineShowCard && hostConfig.getActions().getShowCard().getStyle() != ContainerStyle.None)
         {
             style = hostConfig.getActions().getShowCard().getStyle();
         }
 
-        if (hostConfig.getAdaptiveCard().getAllowCustomStyle() && adaptiveCard.GetStyle().swigValue() != ContainerStyle.None.swigValue())
+        if (hostConfig.getAdaptiveCard().getAllowCustomStyle() && adaptiveCard.GetStyle() != ContainerStyle.None)
         {
             style = adaptiveCard.GetStyle();
         }
 
         String color;
-        if (style.swigValue() == ContainerStyle.Default.swigValue())
+        if (style == ContainerStyle.Default)
         {
             color = hostConfig.getContainerStyles().getDefaultPalette().getBackgroundColor();
         }

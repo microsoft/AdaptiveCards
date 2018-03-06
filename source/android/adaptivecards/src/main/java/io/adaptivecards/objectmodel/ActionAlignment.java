@@ -8,49 +8,47 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ActionAlignment {
-  public final static ActionAlignment Left = new ActionAlignment("Left", AdaptiveCardObjectModelJNI.ActionAlignment_Left_get());
-  public final static ActionAlignment Center = new ActionAlignment("Center");
-  public final static ActionAlignment Right = new ActionAlignment("Right");
-  public final static ActionAlignment Stretch = new ActionAlignment("Stretch");
+public enum ActionAlignment {
+  Left(0),
+  Center,
+  Right,
+  Stretch;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ActionAlignment swigToEnum(int swigValue) {
+    ActionAlignment[] swigValues = ActionAlignment.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ActionAlignment swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ActionAlignment.class + " with value " + swigValue);
   }
 
-  private ActionAlignment(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ActionAlignment() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ActionAlignment(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ActionAlignment(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ActionAlignment(String swigName, ActionAlignment swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ActionAlignment(ActionAlignment swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ActionAlignment[] swigValues = { Left, Center, Right, Stretch };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

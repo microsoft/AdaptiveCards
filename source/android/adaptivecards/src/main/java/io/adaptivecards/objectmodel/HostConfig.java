@@ -150,8 +150,8 @@ public class HostConfig {
     return (cPtr == 0) ? null : new ContainerStylesDefinition(cPtr, false);
   }
 
-  public static HostConfig Deserialize(SWIGTYPE_p_Json__Value json) {
-    return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json)), true);
+  public static HostConfig Deserialize(JsonValue json) {
+    return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_Deserialize(JsonValue.getCPtr(json), json), true);
   }
 
   public static HostConfig DeserializeFromString(String jsonString) {

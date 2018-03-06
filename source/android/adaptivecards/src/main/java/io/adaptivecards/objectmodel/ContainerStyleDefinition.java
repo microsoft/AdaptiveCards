@@ -68,8 +68,8 @@ public class ContainerStyleDefinition {
     return (cPtr == 0) ? null : new ColorsConfig(cPtr, false);
   }
 
-  public static ContainerStyleDefinition Deserialize(SWIGTYPE_p_Json__Value json, ContainerStyleDefinition defaultValue) {
-    return new ContainerStyleDefinition(AdaptiveCardObjectModelJNI.ContainerStyleDefinition_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ContainerStyleDefinition.getCPtr(defaultValue), defaultValue), true);
+  public static ContainerStyleDefinition Deserialize(JsonValue json, ContainerStyleDefinition defaultValue) {
+    return new ContainerStyleDefinition(AdaptiveCardObjectModelJNI.ContainerStyleDefinition_Deserialize(JsonValue.getCPtr(json), json, ContainerStyleDefinition.getCPtr(defaultValue), defaultValue), true);
   }
 
   public ContainerStyleDefinition() {

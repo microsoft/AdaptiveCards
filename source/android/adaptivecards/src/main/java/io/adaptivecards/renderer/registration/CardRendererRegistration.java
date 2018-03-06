@@ -32,26 +32,28 @@ import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
 
+import static io.adaptivecards.objectmodel.AdaptiveCardObjectModel.CardElementTypeToString;
+
 public class CardRendererRegistration
 {
     private CardRendererRegistration()
     {
         // Register Readonly Renderers
-        registerRenderer(CardElementType.Column.toString(), ColumnRenderer.getInstance());
-        registerRenderer(CardElementType.ColumnSet.toString(), ColumnSetRenderer.getInstance());
-        registerRenderer(CardElementType.Container.toString(), ContainerRenderer.getInstance());
-        registerRenderer(CardElementType.FactSet.toString(), FactSetRenderer.getInstance());
-        registerRenderer(CardElementType.Image.toString(), ImageRenderer.getInstance());
-        registerRenderer(CardElementType.ImageSet.toString(), ImageSetRenderer.getInstance());
-        registerRenderer(CardElementType.TextBlock.toString(), TextBlockRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.Column), ColumnRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.ColumnSet), ColumnSetRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.Container), ContainerRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.FactSet), FactSetRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.Image), ImageRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.ImageSet), ImageSetRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
 
         // Register Input Renderers
-        registerRenderer(CardElementType.TextInput.toString(), TextInputRenderer.getInstance());
-        registerRenderer(CardElementType.NumberInput.toString(), NumberInputRenderer.getInstance());
-        registerRenderer(CardElementType.DateInput.toString(), DateInputRenderer.getInstance());
-        registerRenderer(CardElementType.TimeInput.toString(), TimeInputRenderer.getInstance());
-        registerRenderer(CardElementType.ToggleInput.toString(), ToggleInputRenderer.getInstance());
-        registerRenderer(CardElementType.ChoiceSetInput.toString(), ChoiceSetInputRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.TextInput), TextInputRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.NumberInput), NumberInputRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.DateInput), DateInputRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.TimeInput), TimeInputRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.ToggleInput), ToggleInputRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.ChoiceSetInput), ChoiceSetInputRenderer.getInstance());
     }
 
     public static CardRendererRegistration getInstance()
@@ -113,7 +115,7 @@ public class CardRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
-            IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementType().toString());
+            IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementTypeString());
             if (renderer == null)
             {
                 renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,"Unsupported card element type: " + cardElement.GetElementTypeString()));

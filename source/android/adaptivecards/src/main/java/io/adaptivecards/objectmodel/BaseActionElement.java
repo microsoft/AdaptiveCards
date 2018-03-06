@@ -35,52 +35,78 @@ public class BaseActionElement {
     }
   }
 
+  protected void swigDirectorDisconnect() {
+    swigCMemOwn = false;
+    delete();
+  }
+
+  public void swigReleaseOwnership() {
+    swigCMemOwn = false;
+    AdaptiveCardObjectModelJNI.BaseActionElement_change_ownership(this, swigCPtr, false);
+  }
+
+  public void swigTakeOwnership() {
+    swigCMemOwn = true;
+    AdaptiveCardObjectModelJNI.BaseActionElement_change_ownership(this, swigCPtr, true);
+  }
+
+  // check if the C++ code finds an object and just return ourselves if it doesn't
+  public BaseActionElement findImplObj() {
+     Object o = swigOriginalObject();
+     return o != null ? (BaseActionElement)o : this; 
+  }
+
   public BaseActionElement(ActionType type) {
     this(AdaptiveCardObjectModelJNI.new_BaseActionElement(type.swigValue()), true);
+    AdaptiveCardObjectModelJNI.BaseActionElement_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
   public String GetElementTypeString() {
-    return AdaptiveCardObjectModelJNI.BaseActionElement_GetElementTypeString(swigCPtr, this);
+    return (getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetElementTypeString(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetElementTypeStringSwigExplicitBaseActionElement(swigCPtr, this);
   }
 
   public void SetElementTypeString(String value) {
-    AdaptiveCardObjectModelJNI.BaseActionElement_SetElementTypeString(swigCPtr, this, value);
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetElementTypeString(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetElementTypeStringSwigExplicitBaseActionElement(swigCPtr, this, value);
   }
 
   public String GetTitle() {
-    return AdaptiveCardObjectModelJNI.BaseActionElement_GetTitle(swigCPtr, this);
+    return (getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetTitle(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetTitleSwigExplicitBaseActionElement(swigCPtr, this);
   }
 
   public void SetTitle(String value) {
-    AdaptiveCardObjectModelJNI.BaseActionElement_SetTitle(swigCPtr, this, value);
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetTitle(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetTitleSwigExplicitBaseActionElement(swigCPtr, this, value);
   }
 
   public String GetId() {
-    return AdaptiveCardObjectModelJNI.BaseActionElement_GetId(swigCPtr, this);
+    return (getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetId(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetIdSwigExplicitBaseActionElement(swigCPtr, this);
   }
 
   public void SetId(String value) {
-    AdaptiveCardObjectModelJNI.BaseActionElement_SetId(swigCPtr, this, value);
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetId(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetIdSwigExplicitBaseActionElement(swigCPtr, this, value);
   }
 
   public ActionType GetElementType() {
-    return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.BaseActionElement_GetElementType(swigCPtr, this));
+    return ActionType.swigToEnum((getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetElementType(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetElementTypeSwigExplicitBaseActionElement(swigCPtr, this));
   }
 
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.BaseActionElement_Serialize(swigCPtr, this);
   }
 
-  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
-    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.BaseActionElement_SerializeToJsonValue(swigCPtr, this), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue((getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_SerializeToJsonValue(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_SerializeToJsonValueSwigExplicitBaseActionElement(swigCPtr, this), true);
   }
 
-  public SWIGTYPE_p_Json__Value GetAdditionalProperties() {
-    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.BaseActionElement_GetAdditionalProperties(swigCPtr, this), true);
+  public JsonValue GetAdditionalProperties() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.BaseActionElement_GetAdditionalProperties(swigCPtr, this), true);
   }
 
-  public void SetAdditionalProperties(SWIGTYPE_p_Json__Value additionalProperties) {
-    AdaptiveCardObjectModelJNI.BaseActionElement_SetAdditionalProperties(swigCPtr, this, SWIGTYPE_p_Json__Value.getCPtr(additionalProperties));
+  public void SetAdditionalProperties(JsonValue additionalProperties) {
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
+  }
+
+  public Object swigOriginalObject() {
+    return AdaptiveCardObjectModelJNI.BaseActionElement_swigOriginalObject(swigCPtr, this);
   }
 
 }

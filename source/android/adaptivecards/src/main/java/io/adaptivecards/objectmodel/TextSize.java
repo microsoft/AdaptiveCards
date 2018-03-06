@@ -8,50 +8,48 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class TextSize {
-  public final static TextSize Small = new TextSize("Small", AdaptiveCardObjectModelJNI.TextSize_Small_get());
-  public final static TextSize Default = new TextSize("Default");
-  public final static TextSize Medium = new TextSize("Medium");
-  public final static TextSize Large = new TextSize("Large");
-  public final static TextSize ExtraLarge = new TextSize("ExtraLarge");
+public enum TextSize {
+  Small(0),
+  Default,
+  Medium,
+  Large,
+  ExtraLarge;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static TextSize swigToEnum(int swigValue) {
+    TextSize[] swigValues = TextSize.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (TextSize swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + TextSize.class + " with value " + swigValue);
   }
 
-  private TextSize(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private TextSize() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private TextSize(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private TextSize(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private TextSize(String swigName, TextSize swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private TextSize(TextSize swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static TextSize[] swigValues = { Small, Default, Medium, Large, ExtraLarge };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

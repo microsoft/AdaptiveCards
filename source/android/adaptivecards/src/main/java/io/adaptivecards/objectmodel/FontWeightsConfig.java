@@ -59,8 +59,8 @@ public class FontWeightsConfig {
     return AdaptiveCardObjectModelJNI.FontWeightsConfig_bolderWeight_get(swigCPtr, this);
   }
 
-  public static FontWeightsConfig Deserialize(SWIGTYPE_p_Json__Value json, FontWeightsConfig defaultValue) {
-    return new FontWeightsConfig(AdaptiveCardObjectModelJNI.FontWeightsConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), FontWeightsConfig.getCPtr(defaultValue), defaultValue), true);
+  public static FontWeightsConfig Deserialize(JsonValue json, FontWeightsConfig defaultValue) {
+    return new FontWeightsConfig(AdaptiveCardObjectModelJNI.FontWeightsConfig_Deserialize(JsonValue.getCPtr(json), json, FontWeightsConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public FontWeightsConfig() {

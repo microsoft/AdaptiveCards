@@ -8,47 +8,45 @@
 
 package io.adaptivecards.objectmodel;
 
-public final class ImageStyle {
-  public final static ImageStyle Default = new ImageStyle("Default", AdaptiveCardObjectModelJNI.ImageStyle_Default_get());
-  public final static ImageStyle Person = new ImageStyle("Person");
+public enum ImageStyle {
+  Default(0),
+  Person;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public String toString() {
-    return swigName;
-  }
-
   public static ImageStyle swigToEnum(int swigValue) {
+    ImageStyle[] swigValues = ImageStyle.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (int i = 0; i < swigValues.length; i++)
-      if (swigValues[i].swigValue == swigValue)
-        return swigValues[i];
+    for (ImageStyle swigEnum : swigValues)
+      if (swigEnum.swigValue == swigValue)
+        return swigEnum;
     throw new IllegalArgumentException("No enum " + ImageStyle.class + " with value " + swigValue);
   }
 
-  private ImageStyle(String swigName) {
-    this.swigName = swigName;
-    this.swigValue = swigNext++;
+  @SuppressWarnings("unused")
+  private ImageStyle() {
+    this.swigValue = SwigNext.next++;
   }
 
-  private ImageStyle(String swigName, int swigValue) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ImageStyle(int swigValue) {
     this.swigValue = swigValue;
-    swigNext = swigValue+1;
+    SwigNext.next = swigValue+1;
   }
 
-  private ImageStyle(String swigName, ImageStyle swigEnum) {
-    this.swigName = swigName;
+  @SuppressWarnings("unused")
+  private ImageStyle(ImageStyle swigEnum) {
     this.swigValue = swigEnum.swigValue;
-    swigNext = this.swigValue+1;
+    SwigNext.next = this.swigValue+1;
   }
 
-  private static ImageStyle[] swigValues = { Default, Person };
-  private static int swigNext = 0;
   private final int swigValue;
-  private final String swigName;
+
+  private static class SwigNext {
+    private static int next = 0;
+  }
 }
 

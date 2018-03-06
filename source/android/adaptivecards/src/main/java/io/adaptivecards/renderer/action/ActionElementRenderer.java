@@ -108,10 +108,10 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     {
         Button button = new Button(context);
         button.setText(baseActionElement.GetTitle());
-        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
-        int orientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        ActionAlignment alignment = hostConfig.getActions().getActionAlignment();
+        ActionsOrientation orientation = hostConfig.getActions().getActionsOrientation();
         LinearLayout.LayoutParams layoutParams;
-        if (orientation == ActionsOrientation.Horizontal.swigValue())
+        if (orientation == ActionsOrientation.Horizontal)
         {
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }
@@ -120,7 +120,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }
 
-        if (alignment == ActionAlignment.Stretch.swigValue())
+        if (alignment == ActionAlignment.Stretch)
         {
             layoutParams.weight = 1f;
         }
@@ -146,8 +146,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig);
 
-        if (baseActionElement.GetElementType().swigValue() == ActionType.ShowCard.swigValue()
-                && hostConfig.getActions().getShowCard().getActionMode().swigValue() == ActionMode.Inline.swigValue())
+        if (baseActionElement.GetElementType() == ActionType.ShowCard
+                && hostConfig.getActions().getShowCard().getActionMode() == ActionMode.Inline)
         {
 
             ShowCardAction showCardAction = null;

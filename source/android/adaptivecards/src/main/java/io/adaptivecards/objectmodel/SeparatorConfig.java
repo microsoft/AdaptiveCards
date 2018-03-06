@@ -51,8 +51,8 @@ public class SeparatorConfig {
     return AdaptiveCardObjectModelJNI.SeparatorConfig_lineColor_get(swigCPtr, this);
   }
 
-  public static SeparatorConfig Deserialize(SWIGTYPE_p_Json__Value json, SeparatorConfig defaultValue) {
-    return new SeparatorConfig(AdaptiveCardObjectModelJNI.SeparatorConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), SeparatorConfig.getCPtr(defaultValue), defaultValue), true);
+  public static SeparatorConfig Deserialize(JsonValue json, SeparatorConfig defaultValue) {
+    return new SeparatorConfig(AdaptiveCardObjectModelJNI.SeparatorConfig_Deserialize(JsonValue.getCPtr(json), json, SeparatorConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public SeparatorConfig() {
