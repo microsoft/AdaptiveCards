@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.5.2;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net4.5.2;netstandard1.3;netstandard2.0</TargetFrameworks>
     <Authors>AdaptiveCards</Authors>
     <Summary>Adaptive Card renderer for generating HTML tags</Summary>
     <Description>This library provides the ability to render an Adaptive Card into HTML, typically used for server-side card rendering</Description>
