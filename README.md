@@ -1,4 +1,4 @@
-![adaptive-cards-1.0](http://adaptivecards.io/content/Adaptive1.0.png)
+![adaptive-cards-1.0](assets/Adaptive1.0.png)
 
 # Announcing Adaptive Cards 1.0! 
 
@@ -7,9 +7,10 @@ Today, we are excited to announce Adaptive Cards 1.0. We want to first give a hu
 When we first introduced Adaptive Cards at Microsoft Build 2017, we decided to make this project open source so that we could get direct feedback from our developer community since you are our driving force for this product. Over the last year, we have been so impressed by the amount of questions and feedback we've had from the Adaptive Cards community.
 
 We're absolutely humbled by the investment you've been willing to make in us and we want to make sure we can return that to you with a great 1.0 release!
-With today’s announcement, we are thrilled to have four fully supported SDKs and we're super excited to see the creative ways you'll use them.
+With today’s announcement, we are thrilled to have five fully supported SDKs and we're super excited to see the creative ways you'll use them.
 
 
+* JavaScript
 * Android
 * iOS
 * UWP
