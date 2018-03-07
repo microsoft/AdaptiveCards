@@ -190,6 +190,7 @@ public class AdaptiveCardRenderer
         if (baseActionElementList != null && baseActionElementList.size() > 0)
         {
             LinearLayout showCardsLayout = new LinearLayout(context);
+            showCardsLayout.setBackgroundColor(Color.parseColor(color));
             showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             rootLayout.addView(showCardsLayout);
             
