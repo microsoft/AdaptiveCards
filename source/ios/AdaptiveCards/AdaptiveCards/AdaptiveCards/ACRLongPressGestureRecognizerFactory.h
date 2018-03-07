@@ -13,7 +13,7 @@
 /// instantiates a target for UITapGestureRecognizer object
 /// and instantiate a tap gesture reconginizer with target, and return it
 + (UILongPressGestureRecognizer *)getLongPressGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
-                                             rootViewController:(UIViewController *)vc
+                                             rootViewController:(UIView *)vc
                                                      targetView:(UIView *)view
                                                   actionElement:(std::shared_ptr<AdaptiveCards::BaseActionElement> const &)action
                                                          inputs:(NSMutableArray *)inputs

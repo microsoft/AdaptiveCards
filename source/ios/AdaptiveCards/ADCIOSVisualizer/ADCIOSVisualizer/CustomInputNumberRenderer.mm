@@ -17,7 +17,7 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-            rootViewController:(UIViewController *)vc
+            rootViewController:(UIView *)vc
             inputs:(NSArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig

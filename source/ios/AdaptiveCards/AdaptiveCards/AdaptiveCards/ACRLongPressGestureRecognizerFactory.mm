@@ -21,7 +21,7 @@ using namespace AdaptiveCards;
 // and instantiate a tap gesture reconginizer with target, and return it
 // when failed, nil is returned
 + (UILongPressGestureRecognizer *)getLongPressGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
-                                             rootViewController:(UIViewController *)vc
+                                             rootViewController:(UIView *)vc
                                                      targetView:(UIView *)view
                                                   actionElement:(std::shared_ptr<BaseActionElement> const &)action
                                                          inputs:(NSMutableArray *)inputs

@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "ACRChoiceSetViewDataSourceCompactStyle.h"
 #import "ACRChoiceSetViewDataSource.h"
+#import "ACRViewController.h"
 
 using namespace AdaptiveCards;
 
@@ -22,7 +23,7 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
-                        viewController:(UIViewController *)vc;
+                        viewController:(UIView *)vc;
 {
     self = [super init];
     if(self)
@@ -98,7 +99,8 @@ using namespace AdaptiveCards;
             [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                           target:self
                                                           action:@selector(handleUIBarButtonSystemItemDoneEvent)];
-        [self.vc presentViewController:navController animated:YES completion:nil];
+
+        [((ACRViewController *)_vc).rootViewController presentViewController:navController animated:YES completion:nil];
     }
 }
 

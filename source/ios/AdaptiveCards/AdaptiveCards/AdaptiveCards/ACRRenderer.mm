@@ -29,7 +29,7 @@ using namespace AdaptiveCards;
 
 // This interface is exposed to outside, and returns ACRRenderResult object
 // This object contains a viewController instance which defer rendering adaptiveCard untill viewDidLoad is called.
-+ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame
++ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame rootViewController:(UIViewController *)rootViewController
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
 
@@ -37,7 +37,8 @@ using namespace AdaptiveCards;
     // ACRViewController does not render adaptiveCard untill viewDidLoad calls render
     ACRViewController *viewcontroller = [[ACRViewController alloc] init:card
                                                              hostconfig:config
-                                                                  frame:frame];
+                                                                  frame:frame
+                                                     rootViewController:rootViewController];
 
     result.viewcontroller = viewcontroller;
     result.succeeded = YES;
@@ -46,7 +47,7 @@ using namespace AdaptiveCards;
 // transforms (i.e. renders) an adaptiveCard to a new UIView instance
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs
-                     viewController:(UIViewController *)vc
+                     viewController:(UIView *)vc
                          guideFrame:(CGRect)guideFrame
                          hostconfig:(ACOHostConfig *)config
 {
@@ -77,7 +78,7 @@ using namespace AdaptiveCards;
     return verticalView;
 }
 
-+ (UIView<ACRIContentHoldingView> *)renderButton:(UIViewController *)vc
++ (UIView<ACRIContentHoldingView> *)renderButton:(UIView *)vc
                                           inputs:(NSMutableArray *)inputs
                                        superview:(UIView<ACRIContentHoldingView> *)superview
                                      actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
@@ -128,7 +129,7 @@ using namespace AdaptiveCards;
 }
 
 + (UIView *)render:(UIView<ACRIContentHoldingView> *)view
-            rootViewController:(UIViewController *)vc
+            rootViewController:(UIView *)vc
             inputs:(NSMutableArray *)inputs
      withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
      andHostConfig:(ACOHostConfig *)config

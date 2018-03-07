@@ -19,14 +19,14 @@
     std::shared_ptr<AdaptiveCards::AdaptiveCard> _adaptiveCard;
     ACOHostConfig *_config;
     __weak UIView<ACRIContentHoldingView> *_superview;
-    __weak UIViewController *_vc;
+    __weak UIView *_vc;
     __weak UIView *_adcView;
 }
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                               config:(ACOHostConfig *)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
-                                  vc:(UIViewController *)vc
+                                  vc:(UIView *)vc
 {
     self = [super init];
     if(self)

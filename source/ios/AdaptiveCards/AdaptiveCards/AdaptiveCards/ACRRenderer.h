@@ -14,6 +14,6 @@
 @interface ACRRenderer:NSObject
 
 - (instancetype)init;
-+ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect) frame;
++ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect) frame rootViewController:(UIViewController *)rootViewController;
 
 @end    

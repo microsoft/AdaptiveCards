@@ -158,7 +158,8 @@
     {
         renderResult = [ACRRenderer render:cardParseResult.card
                                     config:hostconfigParseResult.config
-                                     frame:CGRectMake(0, 0, 500, 0)];
+                                     frame:CGRectMake(0, 0, 500, 0)
+                        rootViewController:self];
     }	
     
     if(renderResult.succeeded)
@@ -179,13 +180,14 @@
             self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,0,0)];
             self.scrView.showsHorizontalScrollIndicator = YES;
         }
-        self.curView = adcVc.view;
+        self.curView = adcVc;//.view;
         self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
         
-        [self addChildViewController:adcVc];
-        [self.scrView addSubview:adcVc.view];
+        //[self addChildViewController:adcVc];
+        //[self.scrView addSubview:adcVc.view];
+        [self.scrView addSubview:adcVc];//.view];
 
-        [adcVc didMoveToParentViewController:self];
+        //[adcVc didMoveToParentViewController:self];
         self.scrView.contentSize = self.curView.frame.size;
         
         UIScrollView *scrollview = self.scrView;

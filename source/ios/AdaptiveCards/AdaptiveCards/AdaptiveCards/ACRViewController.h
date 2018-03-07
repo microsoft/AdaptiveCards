@@ -11,13 +11,15 @@
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
 
-@interface ACRViewController :UIViewController
+@interface ACRViewController :UIView
 
 @property (weak) id<ACRActionDelegate> acrActionDelegate;
+@property (readonly, weak) UIViewController *rootViewController;
 
 - (instancetype)init:(ACOAdaptiveCard *)card 
           hostconfig:(ACOHostConfig *)config
-               frame:(CGRect)frame;
+               frame:(CGRect)frame
+  rootViewController:(UIViewController *)rootViewController;
 
 - (NSMutableDictionary *) getImageMap;
 

@@ -14,5 +14,5 @@
 - (instancetype)init:(std::shared_ptr<AdaptiveCards::ImageSet> const&)imageSet
       WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
        WithSuperview:(UIView *)superview
-  rootViewController:(UIViewController *)vc;
+  rootViewController:(UIView *)vc;
 @end

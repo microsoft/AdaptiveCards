@@ -18,13 +18,13 @@ using namespace AdaptiveCards;
     ACOBaseCardElement *_acoElem;
     ACOHostConfig *_acoConfig;
     std::shared_ptr<ImageSet> _imgSet;
-    UIViewController* _vc;
+    UIView* _vc;
 }
 
 - (instancetype)init:(std::shared_ptr<ImageSet> const&)imageSet
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
        WithSuperview:(UIView *)view
-  rootViewController:(UIViewController *)vc
+  rootViewController:(UIView *)vc
 {
     self = [super initWithFrame:view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     if(self)

@@ -37,11 +37,11 @@ using namespace AdaptiveCards;
     std::list<const BaseCardElement*> _asyncRenderedElements;
 }
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithFrame:frame];
     if(self){
-        _guideFrame = CGRectMake(0, 0, 0, 0);
+        _guideFrame = frame;
         std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>();
         _hostConfig = [[ACOHostConfig alloc] initWithConfig:cHostConfig];
         _imageViewMap = [[NSMutableDictionary alloc] init];
@@ -57,20 +57,25 @@ using namespace AdaptiveCards;
 - (instancetype)init:(ACOAdaptiveCard *)card
           hostconfig:(ACOHostConfig *)config
                frame:(CGRect)frame
+  rootViewController:(UIViewController *)rootViewController
 {
-    self = [self initWithNibName:nil bundle:nil];
+    self = [self initWithFrame:frame];
     if(self)
     {
         _adaptiveCard = card;
+        _rootViewController = rootViewController;
+
         if(config)
         {
             _hostConfig = config;
         }
-        _guideFrame = frame;
+        [self render];
+
+        [self callDidLoadElementsIfNeeded];
     }
     return self;
 }
-
+/*
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -78,11 +83,11 @@ using namespace AdaptiveCards;
 
     [self callDidLoadElementsIfNeeded];
 }
+ */
 
 - (void)render
 {
-    UIView *view = self.view;
-    view.frame = _guideFrame;
+    //UIView *view = self.view;
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
 
     std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
@@ -94,12 +99,12 @@ using namespace AdaptiveCards;
         NSURL *url = [NSURL URLWithString:imgUrl];
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
         UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
-        [view addSubview:imgView];
-        [view sendSubviewToBack:imgView];
+        [self addSubview:imgView];
+        [self sendSubviewToBack:imgView];
         [NSLayoutConstraint activateConstraints:
-         @[[imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
-           [imgView.topAnchor constraintEqualToAnchor:view.topAnchor],
-           [imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
+         @[[imgView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+           [imgView.topAnchor constraintEqualToAnchor:self.topAnchor],
+           [imgView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
            ]];
     }
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
@@ -114,7 +119,7 @@ using namespace AdaptiveCards;
         {
             num = std::stoul([_hostConfig getHostConfig]->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
         }
-        view.backgroundColor =
+        self.backgroundColor =
         [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
                         green:((num & 0x0000FF00) >>  8) / 255.0
                          blue:((num & 0x000000FF)) / 255.0
@@ -129,51 +134,51 @@ using namespace AdaptiveCards;
                                                          guideFrame:_guideFrame
                                                          hostconfig:_hostConfig];
     // new rendered adaptiveCard view is added as a sub view
-    [view addSubview:newView];
+    [self addSubview:newView];
     // affix the left margin of the rendered adaptiveCard to current view
     NSLayoutConstraint *constraint =
-    [NSLayoutConstraint constraintWithItem:view
+    [NSLayoutConstraint constraintWithItem:self
                                  attribute:NSLayoutAttributeLeading
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:newView
                                  attribute:NSLayoutAttributeLeading
                                 multiplier:1.0
                                   constant:0];
-    [view addConstraint:constraint];
+    [self addConstraint:constraint];
     // affix the right margin of the rendered adaptiveCard to current view
     constraint =
-    [NSLayoutConstraint constraintWithItem:view
+    [NSLayoutConstraint constraintWithItem:self
                                  attribute:NSLayoutAttributeTrailing
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:newView
                                  attribute:NSLayoutAttributeTrailing
                                 multiplier:1.0
                                   constant:0];
-    [view addConstraint:constraint];
+    [self addConstraint:constraint];
 
     constraint =
-    [NSLayoutConstraint constraintWithItem:view
+    [NSLayoutConstraint constraintWithItem:self
                                  attribute:NSLayoutAttributeTop
                                  relatedBy:NSLayoutRelationLessThanOrEqual
                                     toItem:newView
                                  attribute:NSLayoutAttributeTop
                                 multiplier:1.0
                                   constant:0];
-    [view addConstraint:constraint];
+    [self addConstraint:constraint];
 
     constraint =
-    [NSLayoutConstraint constraintWithItem:view
+    [NSLayoutConstraint constraintWithItem:self
                                  attribute:NSLayoutAttributeBottom
                                  relatedBy:NSLayoutRelationGreaterThanOrEqual
                                     toItem:newView
                                  attribute:NSLayoutAttributeBottom
                                 multiplier:1.0
                                   constant:0];
-    [view addConstraint:constraint];
+    [self addConstraint:constraint];
 
     [NSLayoutConstraint activateConstraints:
-     @[[newView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
-       [newView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
+     @[[newView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+       [newView.topAnchor constraintEqualToAnchor:self.topAnchor]]];
 }
 
 - (void)addToAsyncRenderingList:(std::shared_ptr<BaseCardElement> const &)elem

@@ -15,10 +15,10 @@
 @property NSString *id;
 @property BOOL isMultiChoicesAllowed;
 @property NSMutableDictionary *results;
-@property (weak) UIViewController *vc;
+@property (weak) UIView *vc;
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
-                        viewController:(UIViewController *)vc;
+                        viewController:(UIView *)vc;
 
 - (void)handleUIBarButtonSystemItemDoneEvent;
 @end

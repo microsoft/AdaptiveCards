@@ -21,7 +21,7 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIViewController *)vc
+- (UIButton* )renderButton:(UIView *)vc
                     inputs:(NSMutableArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
