@@ -2,9 +2,9 @@
 
 # Announcing Adaptive Cards 1.0! 
 
-Today, we are excited to announce Adaptive Cards 1.0. We want to first give a huge thank you to you, for being an awesome community who have helped us push towards our goals over the last year. Our vision of Adaptive Cards is to build a universal card rendering framework for making developing and sharing card content easy for everyone and we can’t do that without having a great community behind us.  
+Today, we are excited to announce Adaptive Cards 1.0. We want to first give a huge thank you to you, for being an awesome community who have helped us push towards our goals over the last year. Our vision of Adaptive Cards is to build a universal card rendering framework for making, developing and sharing card content easy for everyone and we can’t do that without having a great community behind us.  
 
-When we first introduced Adaptive Cards at Microsoft Build 2017, we decided to make this project open source so that we could get direct feedback from our developer community since you are our driving force for this product. Over the last year, we are so impressed by the amount of questions and feedback we've had from the Adaptive Cards Community.
+When we first introduced Adaptive Cards at Microsoft Build 2017, we decided to make this project open source so that we could get direct feedback from our developer community since you are our driving force for this product. Over the last year, we have been so impressed by the amount of questions and feedback we've had from the Adaptive Cards community.
 
 We're absolutely humbled by the investment you've been willing to make in us and we want to make sure we can return that to you with a great 1.0 release!
 With today’s announcement, we are thrilled to have four fully supported SDKs and we're super excited to see the creative ways you'll use them.
@@ -15,7 +15,7 @@ With today’s announcement, we are thrilled to have four fully supported SDKs a
 * UWP
 * .NET
 
-Developers will be able to test these SDKs with Adaptive Cards in the Bot Framework WebChat, Cortana Skills, and for Windows Insiders in Windows Timeline. Check in here for future partner announcements.  Within Microsoft we've got amazing partner teams ideating with Adaptive Cards and as a company we've put our full weight behind integrating this into many current and future experiences you'll be seeing soon.
+Developers will be able to test these SDKs with Adaptive Cards in the Bot Framework WebChat, Cortana Skills, and for Windows Insiders in Windows Timeline. Check in here for future partner announcements.  Within Microsoft we have amazing partner teams ideating with Adaptive Cards and as a company we've put our full weight behind integrating this into many current and future experiences you'll be seeing soon.
 
 This is just the beginning of the journey for Adaptive Cards.  We're also are actively working on the vNext and as always, we’d love your input, feedback, and suggestions along the way.  Over the next few months we'll be engaging with the community early and often to understand what you need and we also hope to show a sneak peak at Microsoft Build 2018!
 
@@ -24,10 +24,10 @@ Thanks again for all you do - here's to many more releases together!
 
 
 ## Learn more at http://adaptivecards.io
-* [Documentation](http://adaptivecards.io/documentation/)
-* [Schema Explorer](http://adaptivecards.io/explorer/)
-* [Sample Cards](http://adaptivecards.io/samples/)
-* [Interactive visualizer](http://adaptivecards.io/visualizer/)
+* [Documentation](https://adaptivecards.io/documentation/)
+* [Schema Explorer](https://adaptivecards.io/explorer/)
+* [Sample Cards](https://adaptivecards.io/samples/)
+* [Interactive visualizer](https://adaptivecards.io/visualizer/)
 
 # Install and Build
 
@@ -50,7 +50,7 @@ There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/b
 * [Submit bugs](https://github.com/Microsoft/AdaptiveCards/issues) and help us verify fixes as they are checked in.
 * Review the [source code changes](https://github.com/Microsoft/AdaptiveCards/pulls).
 * Engage with Adaptive Cards users and developers on [StackOverflow](http://stackoverflow.com/questions/tagged/adaptive-cards). 
-* Join the [#adaptivecards](http://twitter.com/#!/search/realtime/%23adaptivecards) discussion on Twitter.
+* Join the [#adaptivecards](https://twitter.com/#!/search/realtime/%23adaptivecards) discussion on Twitter.
 * [Contribute bug fixes](https://github.com/Microsoft/AdaptiveCards/blob/master/CONTRIBUTING.md).
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see 
