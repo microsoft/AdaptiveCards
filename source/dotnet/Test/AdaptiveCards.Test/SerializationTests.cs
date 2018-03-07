@@ -16,7 +16,6 @@ namespace AdaptiveCards.Test
         {
             var card = new AdaptiveCard();
             card.Version = "1.0";
-            card.MinVersion = "1.0";
             card.FallbackText = "Fallback Text";
             card.Speak = "Speak";
             card.BackgroundImage = new Uri("http://adaptivecards.io/content/cats/1.png");
@@ -26,7 +25,6 @@ namespace AdaptiveCards.Test
             var expected = @"{
   ""type"": ""AdaptiveCard"",
   ""version"": ""1.0"",
-  ""minVersion"": ""1.0"",
   ""fallbackText"": ""Fallback Text"",
   ""speak"": ""Speak"",
   ""backgroundImage"": ""http://adaptivecards.io/content/cats/1.png"",

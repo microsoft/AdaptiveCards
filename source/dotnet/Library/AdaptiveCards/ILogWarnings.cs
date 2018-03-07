@@ -4,6 +4,6 @@ namespace AdaptiveCards
 {
     internal interface ILogWarnings
     {
-        IList<AdaptiveWarning> Warnings { get; set; }
+        List<AdaptiveWarning> Warnings { get; set; }
     }
 }
