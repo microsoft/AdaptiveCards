@@ -29,7 +29,7 @@ namespace AdaptiveCards.Rendering
         public virtual void EnsureCanRender(AdaptiveCard card)
         {
             if (card.Version > SupportedSchemaVersion)
-                throw new AdaptiveRenderException($"Payload MinVersion ({card.Version}) is greater than the renderer supported version ({SupportedSchemaVersion})");
+                throw new AdaptiveRenderException($"Payload Version ({card.Version}) is greater than the renderer supported version ({SupportedSchemaVersion})");
         }
     }
 }
