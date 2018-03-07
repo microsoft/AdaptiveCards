@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</PackageLicenseUrl>
     <RootNamespace>AdaptiveCards.Rendering.Wpf</RootNamespace>
+    <DefineConstants>WPF;$(DefineConstants);$(AdditionalConstants)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
