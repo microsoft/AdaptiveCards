@@ -10,7 +10,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public static FrameworkElement Render(AdaptiveImage image, AdaptiveRenderContext context)
         {
             var uiImage = new Image();
-            uiImage.SetSource(new Uri(image.Url), context);
+            uiImage.SetSource(image.Url, context);
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";

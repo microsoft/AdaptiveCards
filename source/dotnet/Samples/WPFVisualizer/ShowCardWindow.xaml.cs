@@ -45,7 +45,7 @@ namespace WpfVisualizer
         {
             if (e.Action is AdaptiveOpenUrlAction openUrlAction)
             {
-                Process.Start(new Uri(openUrlAction.Url).AbsoluteUri);
+                Process.Start(openUrlAction.Url.AbsoluteUri);
             }
             else if (e.Action is AdaptiveShowCardAction)
             {

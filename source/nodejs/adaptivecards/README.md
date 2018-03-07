@@ -87,7 +87,7 @@ var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 // Set its hostConfig property unless you want to use the default Host Config
 // Host Config defines the style and behavior of a card
 adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
-    fontFamily: "Segoe UI, Helvetica Nue, sans-serif"
+    fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
     // More host config options
 });
 

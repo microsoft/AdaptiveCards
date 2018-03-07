@@ -50,13 +50,13 @@ namespace AdaptiveCards.Rendering.Wpf
         public override void Visit(AdaptiveCard card)
         {
             if (card.BackgroundImage != null)
-                _tasks.Add(GetImage(new Uri(card.BackgroundImage)));
+                _tasks.Add(GetImage(card.BackgroundImage));
             base.Visit(card);
         }
 
         public override void Visit(AdaptiveImage image)
         {
-            _tasks.Add(GetImage(new Uri(image.Url)));
+            _tasks.Add(GetImage(image.Url));
             base.Visit(image);
         }
     }
