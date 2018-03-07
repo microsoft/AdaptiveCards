@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Image.h"
 #include "ParseUtil.h"
 

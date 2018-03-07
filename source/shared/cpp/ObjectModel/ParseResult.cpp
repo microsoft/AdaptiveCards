@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ParseResult.h"
 #include "ParseResult.h"
 #include "SharedAdaptiveCard.h"

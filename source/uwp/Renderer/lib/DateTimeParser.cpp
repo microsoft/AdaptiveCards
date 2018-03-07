@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DateTimeParser.h"
 #include "Util.h"
 #include <iomanip>
@@ -52,4 +53,3 @@ std::string DateTimeParser::GenerateString(DateTimePreparser text)
 
     return WstringToString(parsedostr.str());
 }
-

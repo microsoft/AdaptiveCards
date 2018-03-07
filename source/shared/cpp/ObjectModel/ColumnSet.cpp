@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ColumnSet.h"
 #include "ParseUtil.h"
 #include "Image.h"

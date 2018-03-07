@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ActionParserRegistration.h"
 #include "OpenUrlAction.h"
 #include "ShowCardAction.h"
