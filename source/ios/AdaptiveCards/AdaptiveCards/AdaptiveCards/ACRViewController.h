@@ -14,12 +14,10 @@
 @interface ACRViewController :UIView
 
 @property (weak) id<ACRActionDelegate> acrActionDelegate;
-@property (readonly, weak) UIViewController *rootViewController;
 
 - (instancetype)init:(ACOAdaptiveCard *)card 
           hostconfig:(ACOHostConfig *)config
-               frame:(CGRect)frame
-  rootViewController:(UIViewController *)rootViewController;
+               frame:(CGRect)frame;
 
 - (NSMutableDictionary *) getImageMap;
 

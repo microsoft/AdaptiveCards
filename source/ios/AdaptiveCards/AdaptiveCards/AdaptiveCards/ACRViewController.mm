@@ -57,14 +57,11 @@ using namespace AdaptiveCards;
 - (instancetype)init:(ACOAdaptiveCard *)card
           hostconfig:(ACOHostConfig *)config
                frame:(CGRect)frame
-  rootViewController:(UIViewController *)rootViewController
 {
     self = [self initWithFrame:frame];
     if(self)
     {
         _adaptiveCard = card;
-        _rootViewController = rootViewController;
-
         if(config)
         {
             _hostConfig = config;
@@ -75,15 +72,6 @@ using namespace AdaptiveCards;
     }
     return self;
 }
-/*
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    [self render];
-
-    [self callDidLoadElementsIfNeeded];
-}
- */
 
 - (void)render
 {
@@ -183,18 +171,11 @@ using namespace AdaptiveCards;
 
 - (void)addToAsyncRenderingList:(std::shared_ptr<BaseCardElement> const &)elem
 {
-#if DEBUG
-    NSLog(@"adding to async list. size: %ld, type: %d", _asyncRenderedElements.size(), elem->GetElementType());
-#endif
     _asyncRenderedElements.push_back(elem.get());
 }
 
 - (void)removeFromAsyncRenderingListAndNotifyIfNeeded:(std::shared_ptr<BaseCardElement> const &)elem
 {
-#if DEBUG
-    NSLog(@"removing from list. size: %ld, type: %d", _asyncRenderedElements.size(), elem->GetElementType());
-#endif
-
     _asyncRenderedElements.remove(elem.get());
 
     [self callDidLoadElementsIfNeeded];
@@ -204,10 +185,6 @@ using namespace AdaptiveCards;
 {
     if (_asyncRenderedElements.size() == 0)
     {
-#if DEBUG
-        NSLog(@"Call didLoadElements");
-#endif
-
         // Call back app with didLoadElements
         if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)])
         {

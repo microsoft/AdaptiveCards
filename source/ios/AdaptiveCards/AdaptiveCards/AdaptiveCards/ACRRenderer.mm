@@ -37,8 +37,7 @@ using namespace AdaptiveCards;
     // ACRViewController does not render adaptiveCard untill viewDidLoad calls render
     ACRViewController *viewcontroller = [[ACRViewController alloc] init:card
                                                              hostconfig:config
-                                                                  frame:frame
-                                                     rootViewController:rootViewController];
+                                                                  frame:frame];
 
     result.viewcontroller = viewcontroller;
     result.succeeded = YES;

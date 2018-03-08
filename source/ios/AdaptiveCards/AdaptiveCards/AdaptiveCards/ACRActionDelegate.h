@@ -11,13 +11,9 @@
 
 @protocol ACRActionDelegate <NSObject>
 
-- (void)didFetchUserResponses:(NSData *)json error:(NSError *)error;
-
-- (void)didFetchUserResponses:(NSData *)json data:(NSString *)data error:(NSError *)error;
-
-- (void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
-
 - (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action;
+
+- (void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)naviationController;
 
 @optional
 - (void)didLoadElements;

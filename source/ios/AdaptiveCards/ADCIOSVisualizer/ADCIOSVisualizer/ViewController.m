@@ -233,6 +233,10 @@
     }
 }
 
+- (void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)navigationController{
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
 - (void)didFetchUserResponses:(NSData *)json error:(NSError *)error
 {
     if(!error && json)
