@@ -4,6 +4,7 @@
 #include "ChoiceSetInput.h"
 #include "Enums.h"
 #include <windows.foundation.h>
+#include "AdaptiveInputElement.h"
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
@@ -13,7 +14,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput,
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement,
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
-            Microsoft::WRL::CloakedIid<ITypePeek>>
+            Microsoft::WRL::CloakedIid<ITypePeek>,
+            Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveInputElementBase>>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveChoiceSetInput, BaseTrust)
 
@@ -37,29 +39,29 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_Choices(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput*>** columns);
 
         // IAdaptiveInputElement
-        IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
-        IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
+        IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired) { return AdaptiveInputElementBase::get_IsRequired(isRequired); }
+        IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired) { return AdaptiveInputElementBase::put_IsRequired(isRequired); }
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing) { return AdaptiveCardElementBase::get_Spacing(spacing); }
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing) { return AdaptiveCardElementBase::put_Spacing(spacing); }
 
-        IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
-        IFACEMETHODIMP put_Separator(_In_ boolean separator);
-        
-        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
-        IFACEMETHODIMP put_Id(_In_ HSTRING id);
+        IFACEMETHODIMP get_Separator(_Out_ boolean* separator) { return AdaptiveCardElementBase::get_Separator(separator); }
+        IFACEMETHODIMP put_Separator(_In_ boolean separator) { return AdaptiveCardElementBase::put_Separator(separator); }
 
-        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
+        IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value) { return AdaptiveCardElementBase::get_ElementTypeString(value); }
 
-        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
-        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::get_AdditionalProperties(result); }
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value) { return AdaptiveCardElementBase::put_AdditionalProperties(value); }
 
-        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedModel);
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::ToJson(result); }
+
+        virtual HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -69,15 +71,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput*>> m_choices;
-        boolean m_isRequired;
         boolean m_isMultiSelect;
         ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle m_choiceSetStyle;
         Microsoft::WRL::Wrappers::HString m_value;
-
-        boolean m_separator;
-        Microsoft::WRL::Wrappers::HString m_id;
-        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
-        Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
     };
 
     ActivatableClass(AdaptiveChoiceSetInput);
