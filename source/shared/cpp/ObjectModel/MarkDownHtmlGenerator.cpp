@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MarkDownHtmlGenerator.h"
 
 using namespace AdaptiveCards;
