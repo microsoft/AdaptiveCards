@@ -10,6 +10,7 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRViewController.h"
+#import "ACOBaseActionElementPrivate.h"
 
 @implementation ACRAggregateTarget
 {
@@ -21,7 +22,7 @@
 {
     self = [super init];
     if(self) {
-        _actionElement = actionElement;
+        _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:[actionElement element]];
         _vc = rootViewController;
     }
     return self;
