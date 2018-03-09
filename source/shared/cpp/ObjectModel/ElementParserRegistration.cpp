@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ElementParserRegistration.h"
 #include "ChoiceSetInput.h"
 #include "ColumnSet.h"
