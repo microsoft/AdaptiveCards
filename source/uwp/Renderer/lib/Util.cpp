@@ -621,9 +621,8 @@ HRESULT GetBackgroundColorFromStyle(
 
 HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 {
-    HSTRING asHstring;
-    RETURN_IF_FAILED(UTF8ToHString(inputString, &asHstring));
-    return HStringToJsonObject(asHstring, result);
+    std::wstring asWstring = StringToWstring(inputString);
+    return HStringToJsonObject(HStringReference(asWstring.c_str()).Get(), result);
 }
 
 HRESULT HStringToJsonObject(const HSTRING& inputHString, IJsonObject** result)
@@ -644,9 +643,9 @@ HRESULT HStringToJsonObject(const HSTRING& inputHString, IJsonObject** result)
 
 HRESULT JsonObjectToString(IJsonObject* inputJson, string& result)
 {
-    HSTRING asHstring;
-    RETURN_IF_FAILED(JsonObjectToHString(inputJson, &asHstring));
-    return HStringToUTF8(asHstring, result);
+    HString asHstring;
+    RETURN_IF_FAILED(JsonObjectToHString(inputJson, asHstring.GetAddressOf()));
+    return HStringToUTF8(asHstring.Get(), result);
 }
 
 HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
@@ -663,9 +662,8 @@ HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
 
 HRESULT StringToJsonValue(const string inputString, IJsonValue** result)
 {
-    HSTRING asHstring;
-    RETURN_IF_FAILED(UTF8ToHString(inputString, &asHstring));
-    return HStringToJsonValue(asHstring, result);
+    std::wstring asWstring = StringToWstring(inputString);
+    return HStringToJsonValue(HStringReference(asWstring.c_str()).Get(), result);
 }
 
 HRESULT HStringToJsonValue(const HSTRING& inputHString, IJsonValue** result)
@@ -687,9 +685,9 @@ HRESULT HStringToJsonValue(const HSTRING& inputHString, IJsonValue** result)
 
 HRESULT JsonValueToString(IJsonValue* inputValue, string& result)
 {
-    HSTRING asHstring;
-    RETURN_IF_FAILED(JsonValueToHString(inputValue, &asHstring));
-    return HStringToUTF8(asHstring, result);
+    HString asHstring;
+    RETURN_IF_FAILED(JsonValueToHString(inputValue, asHstring.GetAddressOf()));
+    return HStringToUTF8(asHstring.Get(), result);
 }
 
 HRESULT JsonValueToHString(IJsonValue* inputJsonValue, HSTRING* result)
