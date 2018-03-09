@@ -1,6 +1,6 @@
 //
-//  ACRViewController.h
-//  ACRViewController
+//  ACRView.h
+//  ACRView
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
@@ -11,7 +11,7 @@
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
 
-@interface ACRViewController :UIView
+@interface ACRView :UIView
 
 @property (weak) id<ACRActionDelegate> acrActionDelegate;
 

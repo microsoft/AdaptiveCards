@@ -29,7 +29,7 @@ using namespace AdaptiveCards;
 }
 
 - (UIView *)render:(UIView *)viewGroup
-rootViewController:(UIView *)vc
+rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -40,7 +40,7 @@ rootViewController:(UIView *)vc
     ACRImageSetUICollectionView *view = [[ACRImageSetUICollectionView alloc] init:imgSetElem
                                                                    WithHostConfig:config
                                                                     WithSuperview:viewGroup
-                                                               rootViewController:vc];
+                                                                         rootView:rootView];
     [view registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"cellId"];
 
     [(UIStackView *)viewGroup addArrangedSubview:view];

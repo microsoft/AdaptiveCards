@@ -24,7 +24,7 @@
 }
 
 - (UIView *)render:(UIStackView *)viewGroup
-            rootViewController:(UIView *)vc
+            rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;

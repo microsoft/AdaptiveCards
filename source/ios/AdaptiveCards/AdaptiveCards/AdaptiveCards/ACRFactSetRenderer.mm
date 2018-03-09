@@ -4,7 +4,6 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-
 #import "ACRTextBlockRenderer.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRFactSetRenderer.h"
@@ -54,7 +53,7 @@
     return lab;
 }
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-rootViewController:(UIView *)vc
+rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;

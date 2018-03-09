@@ -158,8 +158,7 @@
     {
         renderResult = [ACRRenderer render:cardParseResult.card
                                     config:hostconfigParseResult.config
-                                     frame:CGRectMake(0, 0, 500, 0)
-                        rootViewController:self];
+                                     frame:CGRectMake(0, 0, 500, 0)];
     }	
     
     if(renderResult.succeeded)
@@ -171,7 +170,7 @@
 
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
-        ACRViewController *adcVc = renderResult.viewcontroller;
+        ACRView *adcVc = renderResult.viewcontroller;
         adcVc.acrActionDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];

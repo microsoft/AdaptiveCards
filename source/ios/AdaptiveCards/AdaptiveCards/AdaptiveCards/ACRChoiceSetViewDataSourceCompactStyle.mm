@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "ACRChoiceSetViewDataSourceCompactStyle.h"
 #import "ACRChoiceSetViewDataSource.h"
-#import "ACRViewController.h"
+#import "ACRView.h"
 #import "ACRActionDelegate.h"
 
 using namespace AdaptiveCards;
@@ -24,7 +24,7 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
-                        viewController:(ACRViewController *)vc;
+                              rootView:(ACRView *)rootView;
 {
     self = [super init];
     if(self)
@@ -33,7 +33,7 @@ using namespace AdaptiveCards;
                                            encoding:NSUTF8StringEncoding];
         _isMultiChoicesAllowed = choiceSet->GetIsMultiSelect();
         _choiceSetInput = choiceSet;
-        _vc = vc;
+        _rootView = rootView;
         _dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:_choiceSetInput];
         _delegate   = (NSObject<UITableViewDelegate> *)_dataSource;
         _tableView = nil;
@@ -45,7 +45,7 @@ using namespace AdaptiveCards;
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<ChoiceSetInput> const&)choiceSet
 {
-    return self = [self initWithInputChoiceSet:choiceSet viewController:nil];
+    return self = [self initWithInputChoiceSet:choiceSet rootView:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -87,7 +87,7 @@ using namespace AdaptiveCards;
 // when cell is selected, create a tableView with a navigator control bar.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(self.vc)
+    if(self.rootView)
     {
         _indexPath = indexPath;
         _tableView = tableView;
@@ -100,8 +100,8 @@ using namespace AdaptiveCards;
             [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                           target:self
                                                           action:@selector(handleUIBarButtonSystemItemDoneEvent)];
-        if ([_vc.acrActionDelegate respondsToSelector:@selector(didFetchSecondaryView:navigationController:)]){
-            [_vc.acrActionDelegate didFetchSecondaryView:[_vc card] navigationController:navController];
+        if ([_rootView.acrActionDelegate respondsToSelector:@selector(didFetchSecondaryView:navigationController:)]){
+            [_rootView.acrActionDelegate didFetchSecondaryView:[_rootView card] navigationController:navController];
         }
     }
 }

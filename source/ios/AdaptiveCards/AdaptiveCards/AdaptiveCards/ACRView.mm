@@ -1,11 +1,11 @@
 //
-//  ACRViewController.m
-//  ACRViewController
+//  ACRView.m
+//  ACRView
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRViewController.h"
+#import "ACRView.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "SharedAdaptiveCard.h"
@@ -24,7 +24,7 @@
 
 using namespace AdaptiveCards;
 
-@implementation ACRViewController
+@implementation ACRView
 {
     ACOAdaptiveCard *_adaptiveCard;
     ACOHostConfig *_hostConfig;
@@ -53,7 +53,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
-// Initializes ACRViewController instance with HostConfig and AdaptiveCard
+// Initializes ACRView instance with HostConfig and AdaptiveCard
 - (instancetype)init:(ACOAdaptiveCard *)card
           hostconfig:(ACOHostConfig *)config
                frame:(CGRect)frame
@@ -118,7 +118,7 @@ using namespace AdaptiveCards;
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card]
                                                              inputs:inputs
-                                                     viewController:self
+                                                           rootView:self
                                                          guideFrame:_guideFrame
                                                          hostconfig:_hostConfig];
     // new rendered adaptiveCard view is added as a sub view

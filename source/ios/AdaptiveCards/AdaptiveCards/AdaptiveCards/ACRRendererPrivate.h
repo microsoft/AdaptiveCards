@@ -20,17 +20,17 @@ using namespace AdaptiveCards;
 
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs
-                     viewController:(UIView *)vc
+                           rootView:(ACRView *)rootView
                          guideFrame:(CGRect)guideFrame
                          hostconfig:(ACOHostConfig *)config;
 
 + (UIView<ACRIContentHoldingView> *)render:(UIView *)view
-                        rootViewController:(UIView *)vc
+                                  rootView:(ACRView *)rootView
                                     inputs:(NSMutableArray *)inputs
                              withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
                              andHostConfig:(ACOHostConfig *)config;
 
-+ (UIView<ACRIContentHoldingView> *)renderButton:(UIView *)vc
++ (UIView<ACRIContentHoldingView> *)renderButton:(ACRView *)rootView
                                           inputs:(NSMutableArray *)inputs
                                        superview:(UIView<ACRIContentHoldingView> *)superview
                                      actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems

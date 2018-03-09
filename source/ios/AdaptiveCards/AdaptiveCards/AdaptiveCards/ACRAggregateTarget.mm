@@ -9,15 +9,15 @@
 #import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
-#import "ACRViewController.h"
+#import "ACRView.h"
 
 @implementation ACRAggregateTarget
 {
     ACOBaseActionElement *_actionElement;
-    __weak ACRViewController *_vc;
+    __weak ACRView *_vc;
 }
 
-- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootViewController:(ACRViewController *)rootViewController;
+- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView*)rootViewController;
 {
     self = [super init];
     if(self) {
