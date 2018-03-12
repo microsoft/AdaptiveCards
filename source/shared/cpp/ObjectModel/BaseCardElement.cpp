@@ -95,14 +95,6 @@ Json::Value BaseCardElement::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = GetSeparator();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
 
-    /* Issue #629 to make separator an object
-    Json::Value jsonSeparator;
-    jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(GetSeparator()->GetColor());
-    jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Thickness)] = SeparatorThicknessToString(GetSeparator()->GetThickness());
-
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = jsonSeparator;
-    */
-
     return root;
 }
 
@@ -137,4 +129,9 @@ Json::Value BaseCardElement::GetAdditionalProperties()
 void BaseCardElement::SetAdditionalProperties(Json::Value value)
 {
     m_additionalProperties = value;
+}
+
+void BaseCardElement::GetResourceUris(std::vector<std::string>&)
+{
+    return;
 }

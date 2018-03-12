@@ -46,6 +46,8 @@ public:
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
 
+    std::vector<std::string> GetResourceUris();
+
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__
     static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,

@@ -17,11 +17,6 @@ public:
 
     virtual ~BaseCardElement();
 
-    /* Issue #629 to make separator an object
-    std::shared_ptr<Separator> GetSeparator() const;
-    void SetSeparator(const std::shared_ptr<Separator> value);
-    */
-
     virtual std::string GetElementTypeString() const;
     virtual void SetElementTypeString(const std::string value);
 
@@ -50,6 +45,8 @@ public:
     Json::Value GetAdditionalProperties();
     void SetAdditionalProperties(Json::Value additionalProperties);
 
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris);
+
 protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
 
@@ -62,7 +59,6 @@ private:
     Spacing m_spacing;
     std::string m_id;
     std::string m_typeString;
-    //std::shared_ptr<Separator> m_separator; Issue #629 to make separator an object
     bool m_separator;
     Json::Value m_additionalProperties;
 };
@@ -79,14 +75,6 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString)); 
     baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
     baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
-  
-    /* Issue #629 to make separator an object
-    Json::Value separatorJson = json.get(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator), Json::Value());
-    if (!separatorJson.empty())
-    {
-        baseCardElement->SetSeparator(Separator::Deserialize(separatorJson));
-    }
-    */
 
     // Walk all properties and put any unknown ones in the additional properties json
     for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)

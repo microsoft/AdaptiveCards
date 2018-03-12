@@ -231,3 +231,10 @@ void Image::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }
+
+void Image::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto url = GetUrl();
+    resourceUris.push_back(url);
+    return;
+}
