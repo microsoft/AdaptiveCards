@@ -307,4 +307,34 @@ AdaptiveNamespaceStart
         sharedModel = adaptiveCard;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris)
+    {
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
+        GetSharedModel(sharedModel);
+
+        std::vector<std::string> resourceUriStrings = sharedModel->GetResourceUris();
+
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::Windows::Foundation::Uri*>> resourceUris = Make<Vector<Uri*>>();
+        for (auto resourceUriString : resourceUriStrings)
+        {
+            HString resourceUriHString;
+            RETURN_IF_FAILED(UTF8ToHString(resourceUriString, resourceUriHString.GetAddressOf()));
+         
+            ComPtr<IUriRuntimeClass> resourceUri;
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(resourceUriHString.Get(), resourceUri.GetAddressOf()));
+
+            RETURN_IF_FAILED(resourceUris->Append(resourceUri.Get()));
+        }
+
+        RETURN_IF_FAILED(resourceUris->GetView(uris));
+
+        return S_OK;
+    }
 AdaptiveNamespaceEnd
