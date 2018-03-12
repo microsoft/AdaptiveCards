@@ -266,8 +266,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
             ComPtr<IInspectable> dictionaryValue;
             ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
+
+            boolean hasKey{};
             if (SUCCEEDED(strongDictionary.As(&resourceDictionaryMap)) &&
-                SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
+                SUCCEEDED(resourceDictionaryMap->HasKey(resourceKey.Get(), &hasKey)) &&
+                hasKey && SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
             {
                 ComPtr<T> resourceToReturn;
                 if (SUCCEEDED(dictionaryValue.As(&resourceToReturn)))
