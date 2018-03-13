@@ -73,13 +73,13 @@ export class FactTextDefinition {
 
 export class FactTitleDefinition extends FactTextDefinition {
     maxWidth?: number = 150;
-    weight: Enums.TextWeight = Enums.TextWeight.Bolder;
 
     constructor(obj?: any) {
         super(obj);
 
         if (obj) {
             this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
+			this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
         }
     }
 }

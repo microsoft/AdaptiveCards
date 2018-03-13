@@ -2309,7 +2309,7 @@ class ActionCollection {
 
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
-        if (AdaptiveCard.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
+        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
@@ -3803,7 +3803,6 @@ export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: Version = new Version(1, 0);
 
     static useAutomaticContainerBleeding: boolean = false;
-    static preExpandSingleShowCardAction: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
