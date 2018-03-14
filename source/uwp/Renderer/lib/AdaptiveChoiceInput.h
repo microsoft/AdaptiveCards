@@ -25,12 +25,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_Value(_In_ HSTRING* value);
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
-        IFACEMETHODIMP get_IsSelected(_Out_ boolean* isSelected);
-        IFACEMETHODIMP put_IsSelected(_In_ boolean isSelected);
-
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override

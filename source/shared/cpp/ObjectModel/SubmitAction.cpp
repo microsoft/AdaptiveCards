@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
@@ -5,7 +6,7 @@ using namespace AdaptiveCards;
 
 SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit)
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data));
+    PopulateKnownPropertiesSet();
 }
 
 std::string SubmitAction::GetDataJson() const
@@ -48,3 +49,7 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::DeserializeFromString(
     return SubmitActionParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
+void SubmitAction::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data));
+}

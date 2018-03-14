@@ -29,19 +29,27 @@ export class TimelineContainer extends HostContainer {
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
         AdaptiveCard.useAdvancedCardBottomTruncation = true;
 
-        var element = document.createElement("div");
-        element.style.width = this._width + "px";
-        element.style.height = this._height + "px";
-        // element.style.backgroundColor = TimelineContainer.backgroundColor;
-        element.style.overflow = "hidden";
-        target.appendChild(element);
+        var wrapper = document.createElement("div");
+        wrapper.className = "timeline-frame";
+        target.appendChild(wrapper);
+
+        var cardContainer = document.createElement("div");
+        cardContainer.className = "timeline-card"; 
+        wrapper.appendChild(cardContainer);
+
+        // Style must be set in code for fixed-height clipping to work
+        var clippingDiv = document.createElement("div");
+        clippingDiv.style.height = this._height + "px";
+        clippingDiv.style.width = this._width + "px";
+        clippingDiv.style.overflow = "hidden";
+        cardContainer.appendChild(clippingDiv);
 
         var renderedCard = adaptiveCard.render();
         renderedCard.style.height = "100%";
-        element.appendChild(renderedCard);
+        clippingDiv.appendChild(renderedCard);
         adaptiveCard.updateLayout();
-
-        return element;
+        
+        return wrapper;
     }
 
     public getHostConfig(): HostConfig {

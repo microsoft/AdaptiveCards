@@ -94,6 +94,7 @@ enum class AdaptiveCardSchemaKey
     IsSelected,
     IsSubtle,
     Items,
+    Language,
     Large,
     Left,
     Light,
@@ -109,7 +110,6 @@ enum class AdaptiveCardSchemaKey
     Medium,
     Method,
     Min,
-    MinVersion,
     NumberInput,
     Padding,
     Placeholder,
@@ -222,7 +222,8 @@ enum class CardElementType
     TextInput,
     TimeInput,
     ToggleInput,
-    Custom
+    Custom,
+    Unknown,
 };
 
 enum class ActionType
@@ -281,7 +282,6 @@ enum class ContainerStyle {
 
 enum class ErrorStatusCode {
     InvalidJson = 0,
-    UnsupportedSchemaVersion,
     RenderFailed,
     RequiredPropertyMissing,
     InvalidPropertyValue,
@@ -295,7 +295,16 @@ enum class WarningStatusCode {
     NoRendererForType,
     InteractivityNotSupported,
     MaxActionsExceeded,
-    AssetLoadFailed
+    AssetLoadFailed,
+    UnsupportedSchemaVersion,
+};
+
+enum class DateTimePreparsedTokenFormat {
+    RegularString = 0,
+    Time,
+    DateCompact,
+    DateShort,
+    DateLong
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);

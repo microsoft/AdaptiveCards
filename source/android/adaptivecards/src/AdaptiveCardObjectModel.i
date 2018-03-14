@@ -11,17 +11,55 @@ namespace std {
     };
 }
 
-%module AdaptiveCardObjectModel
+
+%module(directors="1") AdaptiveCardObjectModel;
+
+%rename (CTime) tm;
+struct tm {
+    %rename (Sec) tm_sec;
+    %rename (Min) tm_min;
+    %rename (Hour) tm_hour;
+    %rename (MDay) tm_mday;
+    %rename (Mon) tm_mon;
+    %rename (Year) tm_year;
+    %rename (WDay) tm_wday;
+    %rename (YDay) tm_yday;
+    %rename (IsDst) tm_isdst;
+    int tm_sec;
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+};
 
 %include <std_string.i>
 %include <std_shared_ptr.i>
 %include <std_vector.i>
+%include <std_wstring.i>
+%include "enums.swg"
+%javaconst(1);
+
+%pragma(java) jniclasscode=%{
+    static {
+        try {
+            System.loadLibrary("adaptivecards-native-lib");
+        } catch (UnsatisfiedLinkError e) {
+            System.err.println("Native code library failed to load. \n" + e);
+            System.exit(1);
+        }
+    }
+%}
 
 #define __ANDROID__ 1
 
 %{
 #include "pch.h"
 #include <memory>
+#include <time.h>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -29,7 +67,6 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
-#include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
 #include "../../../shared/cpp/ObjectModel/Column.h"
@@ -46,17 +83,22 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
+#include "../../../shared/cpp/ObjectModel/ParseResult.h"
+#include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 #include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 #include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+#include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
+#include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseInputElement)
-%shared_ptr(AdaptiveCards::IActionElementParser)
-%shared_ptr(AdaptiveCards::IBaseCardElementParser)
+%shared_ptr(AdaptiveCards::ActionElementParser)
+%shared_ptr(AdaptiveCards::BaseCardElementParser)
 %shared_ptr(AdaptiveCards::ElementParserRegistration)
 %shared_ptr(AdaptiveCards::ActionParserRegistration)
 %shared_ptr(AdaptiveCards::Container)
@@ -77,6 +119,8 @@ namespace std {
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
+%shared_ptr(AdaptiveCards::AdaptiveCardParseWarning)
+%shared_ptr(AdaptiveCards::ParseResult)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
 %shared_ptr(AdaptiveCards::ContainerParser)
 %shared_ptr(AdaptiveCards::TextBlockParser)
@@ -93,6 +137,132 @@ namespace std {
 %shared_ptr(AdaptiveCards::SubmitActionParser)
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
+%shared_ptr(AdaptiveCards::DateTimePreparsedToken)
+
+namespace Json {
+    %rename(JsonValue) Value;
+    class Value { };
+
+    %extend Value {
+        std::string getString() {
+            Json::FastWriter fastWriter;
+            std::string jsonString = fastWriter.write(*self); 
+            return jsonString;
+        }
+    }
+}
+
+%feature("director", assumeoverride=1) AdaptiveCards::BaseCardElementParser;
+%feature("director", assumeoverride=1) AdaptiveCards::ActionElementParser;
+
+%typemap(in,numinputs=0) JNIEnv *jenv "$1 = jenv;"
+%extend AdaptiveCards::BaseCardElement {
+    // return the underlying Java object if this is a Director, or null otherwise
+    jobject swigOriginalObject(JNIEnv *jenv) {
+        Swig::Director *dir = dynamic_cast<Swig::Director*>($self);
+        if (dir) {
+            return dir->swig_get_self(jenv);
+        }
+        return NULL;
+    }
+}
+
+%typemap(javacode) AdaptiveCards::BaseCardElement %{
+  // check if the C++ code finds an object and just return ourselves if it doesn't
+  public BaseCardElement findImplObj() {
+     Object o = swigOriginalObject();
+     return o != null ? ($javaclassname)o : this; 
+  }
+%}
+
+%feature("director") AdaptiveCards::BaseCardElement;
+
+%typemap(in,numinputs=0) JNIEnv *jenv "$1 = jenv;"
+%extend AdaptiveCards::BaseActionElement {
+    // return the underlying Java object if this is a Director, or null otherwise
+    jobject swigOriginalObject(JNIEnv *jenv) {
+        Swig::Director *dir = dynamic_cast<Swig::Director*>($self);
+        if (dir) {
+            return dir->swig_get_self(jenv);
+        }
+        return NULL;
+    }
+}
+
+%typemap(javacode) AdaptiveCards::BaseActionElement %{
+  // check if the C++ code finds an object and just return ourselves if it doesn't
+  public BaseActionElement findImplObj() {
+     Object o = swigOriginalObject();
+     return o != null ? ($javaclassname)o : this; 
+  }
+%}
+
+%feature("director") AdaptiveCards::BaseActionElement;
+
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::ActionParserRegistration> "new $typemap(jstype, AdaptiveCards::ActionParserRegistration)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/ActionParserRegistration;") std::shared_ptr<AdaptiveCards::ActionParserRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::ActionParserRegistration> "$typemap(jstype, AdaptiveCards::ActionParserRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::ActionParserRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseCardElement> "new $typemap(jstype, AdaptiveCards::BaseCardElement)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/BaseCardElement;") std::shared_ptr<AdaptiveCards::BaseCardElement> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::BaseCardElement> "$typemap(jstype, AdaptiveCards::BaseCardElement).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::BaseCardElement> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseActionElement> "new $typemap(jstype, AdaptiveCards::BaseActionElement)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/BaseActionElement;") std::shared_ptr<AdaptiveCards::BaseActionElement> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::BaseActionElement> "$typemap(jstype, AdaptiveCards::BaseActionElement).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::BaseActionElement> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::ElementParserRegistration> "new $typemap(jstype, AdaptiveCards::ElementParserRegistration)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/ElementParserRegistration;") std::shared_ptr<AdaptiveCards::ElementParserRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::ElementParserRegistration> "$typemap(jstype, AdaptiveCards::ElementParserRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::ElementParserRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
 
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
@@ -112,12 +282,14 @@ namespace std {
   }
 %}
 
+%template(AdaptiveCardParseWarningVector) std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning> >;
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
 %template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
 %template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >; 
 %template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
 %template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >; 
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >; 
+%template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -384,7 +556,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
-%include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"
 %include "../../../shared/cpp/ObjectModel/Column.h"
@@ -401,7 +572,12 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
+%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
+%include "../../../shared/cpp/ObjectModel/ParseResult.h"
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
+%include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+%include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
+%include "../../../shared/cpp/ObjectModel/TextBlock.h"

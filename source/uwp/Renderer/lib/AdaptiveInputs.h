@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
-#include "InputItem.h"
+#include "InputValue.h"
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp 
 {
@@ -20,11 +20,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP AsJson(_Out_ ABI::Windows::Data::Json::IJsonObject** value);
         IFACEMETHODIMP AsValueSet(_COM_Outptr_ ABI::Windows::Foundation::Collections::IPropertySet** value);
 
-        std::shared_ptr<std::vector<InputItem>> GetInputItems();
+        HRESULT AddInputValue(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue);
 
     private:
         std::string GetInputItemsAsJsonString();
-        std::shared_ptr<std::vector<AdaptiveCards::Rendering::Uwp::InputItem>> m_inputItems;
+        std::shared_ptr<std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>>> m_inputValues;
     };
 
     ActivatableClass(AdaptiveInputs);

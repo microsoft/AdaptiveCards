@@ -1,9 +1,9 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using Com.Microsoft.Adaptivecards.Objectmodel;
-using Com.Microsoft.Adaptivecards.Renderer.Actionhandler;
-using Com.Microsoft.Adaptivecards.Renderer;
+using IO.Adaptivecards.Objectmodel;
+using IO.Adaptivecards.Renderer.Actionhandler;
+using IO.Adaptivecards.Renderer;
 using Android.Support.V4.App;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
     
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : FragmentActivity, IShowCardActionHandler, ISubmitActionHandler
+    public class MainActivity : FragmentActivity, ICardActionHandler
     {
         public MainActivity()
         {
@@ -59,13 +59,13 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
         {
             try
             {
-                AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
-                Toast.MakeText(this, adaptiveCard.Body.Capacity().ToString(), ToastLength.Short).Show();
+                ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.Version);
+                Toast.MakeText(this, parseResult.AdaptiveCard.Body.Capacity().ToString(), ToastLength.Short).Show();
                 LinearLayout layout = (LinearLayout)FindViewById(Resource.Id.visualAdaptiveCardLayout);
                 layout.RemoveAllViews();
 
-                var view = AdaptiveCardRenderer.Instance.Render(Application.Context, SupportFragmentManager, adaptiveCard, this, this, new HostConfig());
-                layout.AddView(view);
+                var renderedCard = AdaptiveCardRenderer.Instance.Render(Application.Context, SupportFragmentManager, parseResult.AdaptiveCard, this, new HostConfig());
+                layout.AddView(renderedCard.View);
             }
             catch (Java.IO.IOException ex)
             {
@@ -76,12 +76,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             }
         }
 
-        public void OnShowCard(ShowCardAction p0, AdaptiveCard p1)
-        {
-            
-        }
-
-        public void OnSubmit(SubmitAction p0, IDictionary<string, string> p1)
+        public void OnAction(BaseActionElement element, RenderedAdaptiveCard renderedCard)
         {
             
         }

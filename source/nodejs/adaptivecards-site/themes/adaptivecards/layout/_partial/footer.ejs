@@ -16,9 +16,9 @@
 </script>
 <% } %>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
 <%- js('js/sticky-sidebar.js') %>
 
@@ -26,27 +26,14 @@
 <script src="https://statics-uhf-eus.akamaized.net/shell/_scrf/js/themes=default/87-0bce27/f8-3b6b36/ea-962395/79-8a148a/f2-1d184e/90-1e650e/64-5bbd4a/5d-f9c916/e8-497be9/fb-9086e3/d7-748562/71-cabf1b/45-ab2026/65-eb25b1/21-de971d/df-f8d789/ea-955802/8b-daf680/7d-dec6ac/21-0be778/4a-4774eb/8c-131ebd/1f-2c26b9/75-61dbdc/fe-16c6b5/fe-7734a7/7a-6864d5/53-234da1/e2-5d02cf/6e-aaef0a?ver=2.0&iife=1"></script><script src="https://mem.gfx.ms/meversion?partner=MSDocsAdaptivecards&market=en-us"></script>
 
 
-<%- js('js/adaptivecards.js') %>
+<%- js('js/adaptivecards.min.js') %>
 
 <% if(is_current("visualizer")) { %>
   <%- js("visualizer/node_modules/monaco-editor/min/vs/loader.js") %>
   <%- js("visualizer/monaco-loader.js") %>
-  <%- js("visualizer/adaptivecards-visualizer.js") %>
+  <%- js("visualizer/adaptivecards-visualizer.min.js") %>
 <% } %>  
 
 <%- js('js/script') %>
 
-
-
-<script>
-
-  // Used to toggle the menu on small screens when clicking on the menu button
-  function toggleNav() {
-      var x = document.getElementById("nav");
-      if (x.className.indexOf("w3-show") == -1) {
-          x.className += " w3-show";
-      } else { 
-          x.className = x.className.replace(" w3-show", "");
-      }
-  }
-</script>
+<script type="text/javascript">  var appInsights=window.appInsights||function(a){    function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c    }({        instrumentationKey:"bd0c4f36-dd0f-4984-8f32-32cb44d6055a"    });      window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();</script>

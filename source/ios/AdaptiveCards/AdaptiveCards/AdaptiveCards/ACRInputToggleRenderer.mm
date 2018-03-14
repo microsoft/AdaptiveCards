@@ -23,9 +23,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::ToggleInput;
+    return ACRToggleInput;
 }
 
 - (UIView *)render:(UIView *)viewGroup

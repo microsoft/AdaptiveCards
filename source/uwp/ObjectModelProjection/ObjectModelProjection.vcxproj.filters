@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
@@ -37,6 +38,12 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseResult.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -79,6 +86,12 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

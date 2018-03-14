@@ -14,8 +14,8 @@ public:
     BaseInputElement(CardElementType elementType);
     BaseInputElement(CardElementType type, Spacing spacing, bool separator);
 
-    std::string GetId() const;
-    void SetId(const std::string value);
+    std::string GetId() const override;
+    void SetId(const std::string value) override;
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);

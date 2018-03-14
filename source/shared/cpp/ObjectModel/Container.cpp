@@ -1,9 +1,14 @@
+#include "pch.h"
 #include "Container.h"
+#include "TextBlock.h"
+#include "ColumnSet.h"
+#include "Util.h"
 
 using namespace AdaptiveCards;
 
 Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Container::Container(
@@ -15,6 +20,7 @@ Container::Container(
     m_style(style),
     m_items(items)
 {
+    PopulateKnownPropertiesSet();
 }
 
 Container::Container(
@@ -56,6 +62,11 @@ void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
+void Container::SetLanguage(const std::string& value)
+{
+    PropagateLanguage(value, m_items);
+}
+
 Json::Value Container::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
@@ -95,7 +106,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
         ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Items, true);
+    auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Items, false);
     container->m_items = std::move(cardElements);
 
     container->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction));
@@ -109,4 +120,11 @@ std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return ContainerParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void Container::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items));
 }

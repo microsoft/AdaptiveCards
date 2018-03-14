@@ -18,10 +18,12 @@ public:
     virtual Json::Value SerializeToJsonValue() override;
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::string m_dataJson;
 };
 
-class SubmitActionParser : public IActionElementParser
+class SubmitActionParser : public ActionElementParser
 {
     std::shared_ptr<BaseActionElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,

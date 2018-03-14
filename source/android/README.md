@@ -11,13 +11,13 @@
 ## Windows
 
 ```console
-<swig directory>\swig.exe -c++ -java -package com.microsoft.adaptivecards.objectmodel -outdir main\java\com\microsoft\adaptivecards\objectmodel -o main\cpp\objectmodel_wrap.cpp AdaptiveCardObjectModel.i
+<swig directory>\swig.exe -c++ -java -package io.adaptivecards.objectmodel -outdir main\java\io\adaptivecards\objectmodel -o main\cpp\objectmodel_wrap.cpp AdaptiveCardObjectModel.i
 ```
 
 ## Mac
 
 ```console
-swig -c++ -java -package com.microsoft.adaptivecards.objectmodel -outdir main/java/com/microsoft/adaptivecards/objectmodel -o main/cpp/objectmodel_wrap.cpp AdaptiveCardObjectModel.i
+swig -c++ -java -package io.adaptivecards.objectmodel -outdir main/java/io/adaptivecards/objectmodel -o main/cpp/objectmodel_wrap.cpp AdaptiveCardObjectModel.i
 ```
 
 # To compile:
@@ -39,8 +39,7 @@ If you get a build failure similar to "UnsupportedClassVersionError 52.0" then f
     compile 'io.adaptivecards:adaptivecards-android-arm:1.0.0'
 For more information, please go to http://search.maven.org/ and search adaptivecards-android-arm
 TODO:
-1. Scenario->Restaurant.json is not rendered correctly
-2. AdaptiveCard
+1. AdaptiveCard
     a. version
     b. minVersion
     c. fallbackText
@@ -48,11 +47,4 @@ TODO:
     a. Font Family
 4. Image
     a. altText
-5. Separation - Container/ColumnSet
-6. SelectAction (Column, Image)
-
-Questions:
-Action - HTTP:
-	- Should there be a callback to indicate success or failure and response data?
-	- HTTP Header is missing in shared model
 

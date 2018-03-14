@@ -26,6 +26,7 @@
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
+#import "ACRCustomRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 
@@ -33,7 +34,7 @@ using namespace AdaptiveCards;
 
 @implementation ACRRegistration
 {
-    NSDictionary *typeToRendererDict;
+    NSMutableDictionary *typeToRendererDict;
     NSMutableDictionary *actionRendererDict;
 }
 
@@ -43,7 +44,7 @@ using namespace AdaptiveCards;
     if(self)
     {
         typeToRendererDict =
-            [[NSDictionary alloc] initWithObjectsAndKeys:
+            [[NSMutableDictionary alloc] initWithObjectsAndKeys:
              [ACRImageRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
              [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],
@@ -57,6 +58,7 @@ using namespace AdaptiveCards;
              [ACRContainerRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRContainerRenderer elemType]],
              [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],
              [ACRColumnRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRColumnRenderer elemType]],
+             [ACRCustomRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRCustomRenderer elemType]],
              nil];
         actionRendererDict =
             [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -89,6 +91,17 @@ using namespace AdaptiveCards;
 - (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
 {
     [actionRendererDict setObject:renderer forKey:cardElementType];
+}
+
+- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
+{
+    [typeToRendererDict setObject:renderer forKey:[NSNumber numberWithInteger:cardElementType]];
+}
+
+- (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser
+{
+    ACRCustomRenderer *customRenderer = [ACRCustomRenderer getInstance];
+    customRenderer.customElementParser = customElementParser;
 }
 
 @end

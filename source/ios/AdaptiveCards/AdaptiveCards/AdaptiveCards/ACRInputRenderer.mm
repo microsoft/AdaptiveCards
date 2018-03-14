@@ -20,9 +20,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::TextInput;
+    return ACRTextInput;
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AdaptiveTextBlock.h"
 #include "Util.h"
+#include "DateTimeParser.h"
 #include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
@@ -14,133 +15,154 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
     {
-        m_sharedTextBlock = std::make_shared<TextBlock>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
+        return RuntimeClassInitialize(textBlock);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock)
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock) try
     {
         if (sharedTextBlock == nullptr)
         {
             return E_INVALIDARG;
         }
 
-        m_sharedTextBlock = sharedTextBlock;
+        m_wrap = sharedTextBlock->GetWrap();
+        m_subtle = sharedTextBlock->GetIsSubtle();
+        m_maxLines = sharedTextBlock->GetMaxLines();
+
+        m_textSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextSize>(sharedTextBlock->GetTextSize());
+        m_textWeight = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>(sharedTextBlock->GetTextWeight());
+        m_foregroundColor = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>(sharedTextBlock->GetTextColor());
+        m_horizontalAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+
+        RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetText(), m_text.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetLanguage(), m_language.GetAddressOf()));
+
+        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
         return S_OK;
-    }
+    } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
     {
-        return UTF8ToHString(m_sharedTextBlock->GetText(), text);
+        return m_text.CopyTo(text);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_Text(HSTRING text)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(text, out));
-        m_sharedTextBlock->SetText(out);
-        return S_OK;
+        return m_text.Set(text);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize* textSize)
     {
-        *textSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextSize>(m_sharedTextBlock->GetTextSize());
+        *textSize = m_textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize)
     {
-        m_sharedTextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(textSize));
+        m_textSize = textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight* textWeight)
     {
-        *textWeight = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>(m_sharedTextBlock->GetTextWeight());
+        *textWeight = m_textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight)
     {
-        m_sharedTextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeight));
+        m_textWeight = textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* textColor)
+    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* foregroundColor)
     {
-        *textColor = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>(m_sharedTextBlock->GetTextColor());
+        *foregroundColor = m_foregroundColor;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor foregroundColor)
     {
-        m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::ForegroundColor>(textColor));
+        m_foregroundColor = foregroundColor;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Wrap(boolean* wrap)
     {
-        *wrap = m_sharedTextBlock->GetWrap();
+        *wrap = m_wrap;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_Wrap(boolean wrap)
     {
-        m_sharedTextBlock->SetWrap(Boolify(wrap));
+        m_wrap = wrap;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* isSubtle)
     {
-        *isSubtle = m_sharedTextBlock->GetIsSubtle();
+        *isSubtle = m_subtle;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_IsSubtle(boolean isSubtle)
     {
-        m_sharedTextBlock->SetIsSubtle(Boolify(isSubtle));
+        m_subtle = isSubtle;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_MaxLines(UINT32* maxLines)
     {
-        *maxLines = m_sharedTextBlock->GetMaxLines();
+        *maxLines = m_maxLines;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_MaxLines(UINT32 maxLines)
     {
-        m_sharedTextBlock->SetMaxLines(maxLines);
+        m_maxLines = maxLines;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
     {
-        *alignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(m_sharedTextBlock->GetHorizontalAlignment());
+        *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
     {
-        m_sharedTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(alignment));
+        m_horizontalAlignment = alignment;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_Language(HSTRING* language)
+    {
+        return m_language.CopyTo(language);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_Language(HSTRING language)
+    {
+        return m_language.Set(language);
     }
 
     _Use_decl_annotations_
@@ -151,76 +173,29 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedTextBlock) try
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(m_sharedTextBlock->GetSpacing());
+        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(textBlock)));
+
+        textBlock->SetWrap(m_wrap);
+        textBlock->SetIsSubtle(m_subtle);
+        textBlock->SetMaxLines(m_maxLines);
+        textBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(m_textSize));
+        textBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(m_textWeight));
+        textBlock->SetTextColor(static_cast<AdaptiveCards::ForegroundColor>(m_foregroundColor));
+        textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+
+        std::string text;
+        RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));
+        textBlock->SetText(text);
+
+        std::string language;
+        RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
+        textBlock->SetLanguage(language);
+
+        sharedTextBlock = textBlock;
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
-    {
-        m_sharedTextBlock->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Separator(boolean* separator)
-    {
-        *separator = m_sharedTextBlock->GetSeparator();
-        return S_OK;
-
-        //Issue #629 to make separator an object
-        //return GenerateSeparatorProjection(m_sharedTextBlock->GetSeparator(), separator);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Separator(boolean separator)
-    {
-        m_sharedTextBlock->SetSeparator(separator);
-
-        /*Issue #629 to make separator an object
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
-
-        m_sharedTextBlock->SetSeparator(sharedSeparator);
-        */
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Id(HSTRING* id)
-    {
-        return UTF8ToHString(m_sharedTextBlock->GetId(), id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Id(HSTRING id)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedTextBlock->SetId(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_ElementTypeString(HSTRING* type)
-    {
-        ElementType typeEnum;
-        RETURN_IF_FAILED(get_ElementType(&typeEnum));
-        return ProjectedElementTypeToHString(typeEnum, type);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return StringToJsonObject(m_sharedTextBlock->Serialize(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock)
-    {
-        sharedTextBlock = m_sharedTextBlock;
-        return S_OK;
-    }
+    } CATCH_RETURN;
 }}}

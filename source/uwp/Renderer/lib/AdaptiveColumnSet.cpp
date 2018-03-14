@@ -28,7 +28,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ColumnSet>& sharedColumnSet)
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ColumnSet>& sharedColumnSet) try
     {
         if (sharedColumnSet == nullptr)
         {
@@ -38,12 +38,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         GenerateColumnsProjection(sharedColumnSet->GetColumns(), m_columns.Get());
         GenerateActionProjection(sharedColumnSet->GetSelectAction(), &m_selectAction);
 
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedColumnSet->GetSpacing());
-        m_separator = sharedColumnSet->GetSeparator();
-        RETURN_IF_FAILED(UTF8ToHString(sharedColumnSet->GetId(), m_id.GetAddressOf()));
+        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumnSet));
 
         return S_OK;
-    }
+    } CATCH_RETURN;
 
     _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveColumnSet::get_Columns(IVector<IAdaptiveColumn*>** columns)
@@ -72,79 +70,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
-    {
-        *spacing = m_spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
-    {
-        m_spacing = spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Separator(boolean* separator)
-    {
-        *separator = m_separator;
-        return S_OK;
-
-        // Issue #629 to make separator an object
-        //return GenerateSeparatorProjection(m_sharedColumnSet->GetSeparator(), separator);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Separator(boolean separator)
-    {
-        m_separator = separator;
-
-        /*Issue #629 to make separator an object
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
-
-        m_sharedColumnSet->SetSeparator(sharedSeparator);
-        */
-
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Id(HSTRING* id)
-    {
-        return m_id.CopyTo(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Id(HSTRING id)
-    {
-        return m_id.Set(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_ElementTypeString(HSTRING* type)
-    {
-        ElementType typeEnum;
-        RETURN_IF_FAILED(get_ElementType(&typeEnum));
-        return ProjectedElementTypeToHString(typeEnum, type);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        std::shared_ptr<AdaptiveCards::ColumnSet> sharedModel;
-        RETURN_IF_FAILED(GetSharedModel(sharedModel));
-
-        return StringToJsonObject(sharedModel->Serialize(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveCards::ColumnSet>& sharedModel)
+    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
-
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(columnSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(columnSet)));
 
         if (m_selectAction != nullptr)
         {
@@ -155,9 +84,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column)
         {
-            std::shared_ptr<Column> sharedColumn = std::make_shared<Column>();
             ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveColumn>(column);
-            RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumn));
+
+            std::shared_ptr<BaseCardElement> sharedColumnBaseElement;
+            RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumnBaseElement));
+
+            std::shared_ptr<AdaptiveCards::Column> sharedColumn = std::dynamic_pointer_cast<AdaptiveCards::Column>(sharedColumnBaseElement);
+            if (sharedColumn == nullptr)
+            {
+                return E_UNEXPECTED;
+            }
 
             columnSet->GetColumns().push_back(sharedColumn);
 
@@ -166,5 +102,5 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         sharedModel = columnSet;
         return S_OK;
-    }
+    }CATCH_RETURN;
 }}}

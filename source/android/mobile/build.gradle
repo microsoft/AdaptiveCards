@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     defaultConfig {
-        applicationId "com.microsoft.adaptivecards.adaptivecardssample"
-        minSdkVersion 21
+        applicationId "io.adaptivecards.adaptivecardssample"
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"

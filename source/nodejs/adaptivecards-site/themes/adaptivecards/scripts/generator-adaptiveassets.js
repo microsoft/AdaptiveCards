@@ -19,13 +19,13 @@ var assets = [
     },
     {
         // renderer script
-        path: "node_modules/adaptivecards/dist/adaptivecards.js",
-        dest: function (p) { return "js/adaptivecards.js"; }
+        path: "node_modules/adaptivecards/dist/adaptivecards.min.js",
+        dest: function (p) { return "js/adaptivecards.min.js"; }
     },
     {
         // visualizer script
-        path: "node_modules/adaptivecards-visualizer/dist/adaptivecards-visualizer.js",
-        dest: function (p) { return "visualizer/adaptivecards-visualizer.js"; }
+        path: "node_modules/adaptivecards-visualizer/dist/adaptivecards-visualizer.min.js",
+        dest: function (p) { return "visualizer/adaptivecards-visualizer.min.js"; }
     },
     {
         // visualizer css

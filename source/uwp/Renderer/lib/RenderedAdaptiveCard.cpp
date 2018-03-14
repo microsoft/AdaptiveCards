@@ -55,7 +55,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_FrameworkElement(IUIElement** value)
+    HRESULT RenderedAdaptiveCard::get_FrameworkElement(IFrameworkElement** value)
     {
         return m_frameworkElement.CopyTo(value);
     }
@@ -103,7 +103,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return m_events->InvokeAll(this, eventArgs.Get());
     }
 
-    void RenderedAdaptiveCard::SetFrameworkElement(ABI::Windows::UI::Xaml::IUIElement* value)
+    void RenderedAdaptiveCard::SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value)
     {
         m_frameworkElement = value;
     }
@@ -113,8 +113,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_originatingCard = value;
     }
 
-    std::shared_ptr<std::vector<InputItem>> RenderedAdaptiveCard::GetInputItems()
+    HRESULT RenderedAdaptiveCard::AddInputValue(IAdaptiveInputValue* inputItem)
     {
-        return m_inputs->GetInputItems();
+        return m_inputs->AddInputValue(inputItem);
     }
 }}}

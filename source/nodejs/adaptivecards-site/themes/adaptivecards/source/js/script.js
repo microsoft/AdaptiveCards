@@ -52,49 +52,49 @@
         backgroundColor: "#00000000",
         foregroundColors: {
           default: {
-            normal: "#333333",
+            default: "#333333",
             subtle: "#EE333333"
           },
           accent: {
-            normal: "#2E89FC",
+            default: "#2E89FC",
             subtle: "#882E89FC"
           },
           attention: {
-            normal: "#FF0000",
+            default: "#FF0000",
             subtle: "#DDFFD800"
           },
           good: {
-            normal: "#00FF00",
+            default: "#00FF00",
             subtle: "#DD00FF00"
           },
           warning: {
-            normal: "#FFD800",
+            default: "#FFD800",
             subtle: "#DDFF0000"
           }
         }
       },
       emphasis: {
-        backgroundColor: "08000000",
+        backgroundColor: "#08000000",
         foregroundColors: {
           default: {
-            normal: "#333333",
+            default: "#333333",
             subtle: "#EE333333"
           },
           accent: {
-            normal: "#2E89FC",
+            default: "#2E89FC",
             subtle: "#882E89FC"
           },
           attention: {
-            normal: "#FFD800",
-            subtle: "#DDFFD800"
+            default: "#FF0000",
+            subtle: "#DDFF0000"
           },
           good: {
-            normal: "#00FF00",
-            subtle: "#DD00FF00"
+            default: "#54a254",
+            subtle: "#DD54a254"
           },
           warning: {
-            normal: "#FF0000",
-            subtle: "#DDFF0000"
+            default: "#c3ab23",
+            subtle: "#DDc3ab23"
           }
         }
       }
@@ -143,8 +143,7 @@
       },
       spacing: 10
     },
-    // TODO: fix this. The Host Config ctor is blowing up if I don't provide it
-    getContainerStyleDefinition: function() { }
+
   };
 
 
@@ -163,9 +162,12 @@
 
   });
 
-  $('.ac-properties table').addClass("w3-table w3-bordered w3-responsive")
+  $('.ac-properties table').addClass("w3-table w3-bordered w3-responsive");
 
   $(document).ready(function () {
+    hljs.configure({
+      tabReplace: '  '
+    });
     $('pre code').each(function (i, block) {
       hljs.highlightBlock(block);
     });
@@ -175,6 +177,9 @@
     //   window.dispatchEvent(new Event('resize'));
     // }, 200);
 
+    $('#menu-nav').on('change', function () {
+      window.location = this.value;
+    });
   });
 
 

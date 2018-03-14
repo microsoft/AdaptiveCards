@@ -1,18 +1,27 @@
+#include "pch.h"
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveCards;
 
 BaseActionElement::BaseActionElement(ActionType type) :
-    m_type(type)
+    m_type(type), m_typeString(ActionTypeToString(type))
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
+    PopulateKnownPropertiesSet();
 }
 
 AdaptiveCards::BaseActionElement::~BaseActionElement()
 {
+}
+
+std::string BaseActionElement::GetElementTypeString() const
+{
+    return m_typeString;
+}
+
+void BaseActionElement::SetElementTypeString(const std::string value)
+{
+    m_typeString = value;
 }
 
 std::string BaseActionElement::GetTitle() const
@@ -64,3 +73,11 @@ void BaseActionElement::SetAdditionalProperties(Json::Value value)
 {
     m_additionalProperties = value;
 }
+
+void BaseActionElement::PopulateKnownPropertiesSet()
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
+}
+

@@ -10,7 +10,7 @@ namespace AdaptiveCards
     class ElementParserRegistration;
     class ActionParserRegistration;
 
-    class IBaseCardElementParser
+    class BaseCardElementParser
     {
     public:
         virtual std::shared_ptr<BaseCardElement> Deserialize(
@@ -25,12 +25,12 @@ namespace AdaptiveCards
 
         ElementParserRegistration();
 
-        void AddParser(std::string elementType, std::shared_ptr<AdaptiveCards::IBaseCardElementParser> parser);
+        void AddParser(std::string elementType, std::shared_ptr<AdaptiveCards::BaseCardElementParser> parser);
         void RemoveParser(std::string elementType);
-        std::shared_ptr<AdaptiveCards::IBaseCardElementParser> GetParser(std::string elementType);
+        std::shared_ptr<AdaptiveCards::BaseCardElementParser> GetParser(std::string elementType);
 
     private:
         std::unordered_set<std::string> m_knownElements;
-        std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::IBaseCardElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
+        std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::BaseCardElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
     };
 }

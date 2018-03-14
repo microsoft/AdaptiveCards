@@ -1,14 +1,12 @@
 
-<div class="w3-cell-row">
-    
-    <div class="w3-container w3-cell w3-mobile code-snippet">
-        <pre><code class='json'><%- getcontent(examplePath) %></code></pre>
-    </div>
 
-    <div class="w3-container w3-cell w3-mobile" style="width: 300px">
+<div class="w3-row reverse-order-mobile">
+    <div class="w3-container w3-col s12 m7 l8 code-snippet">
+        <pre><code class='json'><%- getcontent(examplePath) %></code></pre>
+    </div>   
+   
+    <div class="w3-container w3-col s12 m5 l4" >
         <div class="adaptivecard"><%- getcontent(examplePath) %></div>
         <%- trysamplelink(examplePath) %>
     </div>
-
-   
 </div>

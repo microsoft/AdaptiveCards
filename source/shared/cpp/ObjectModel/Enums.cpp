@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Enums.h"
 
 namespace AdaptiveCards
@@ -68,6 +69,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::IsSelected, "isSelected" },
         { AdaptiveCardSchemaKey::IsSubtle, "isSubtle" },
         { AdaptiveCardSchemaKey::Items, "items" },
+        { AdaptiveCardSchemaKey::Language, "lang" },
         { AdaptiveCardSchemaKey::Large, "large" },
         { AdaptiveCardSchemaKey::Left, "left" },
         { AdaptiveCardSchemaKey::Light, "light" },
@@ -83,7 +85,6 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::Medium, "medium" },
         { AdaptiveCardSchemaKey::Method, "method" },
         { AdaptiveCardSchemaKey::Min, "min" },
-        { AdaptiveCardSchemaKey::MinVersion, "minVersion" },
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
@@ -159,7 +160,8 @@ void GetCardElementTypeEnumMappings(
         { CardElementType::TimeInput, "Input.Time" },
         { CardElementType::ToggleInput, "Input.Toggle" },
         { CardElementType::TextBlock, "TextBlock" },
-        { CardElementType::Custom, "Custom" }
+        { CardElementType::Custom, "Custom" },
+        { CardElementType::Unknown, "Unknown" }
     };
     static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> cardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(cardElementTypeEnumToName);
 
@@ -596,7 +598,7 @@ CardElementType CardElementTypeFromString(const std::string& elementType)
 
     if (cardElementTypeNameToEnum.find(elementType) == cardElementTypeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid CardElementType: " + elementType);
+        return CardElementType::Unsupported;
     }
 
     return cardElementTypeNameToEnum[elementType];
@@ -622,7 +624,7 @@ ActionType ActionTypeFromString(const std::string& actionType)
 
     if (actionTypeNameToEnum.find(actionType) == actionTypeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ActionType: " + actionType);
+        return ActionType::Unsupported;
     }
 
     return actionTypeNameToEnum[actionType];
@@ -647,7 +649,7 @@ HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment)
 
     if (horizontalAlignmentNameToEnum.find(alignment) == horizontalAlignmentNameToEnum.end())
     {
-        throw std::out_of_range("Invalid HorizontalAlignment: " + alignment);
+        return HorizontalAlignment::Left;
     }
 
     return horizontalAlignmentNameToEnum[alignment];
@@ -672,7 +674,7 @@ ForegroundColor ForegroundColorFromString(const std::string& color)
 
     if (colorNameToEnum.find(color) == colorNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ForegroundColor: " + color);
+        return ForegroundColor::Default;
     }
 
     return colorNameToEnum[color];
@@ -697,7 +699,7 @@ TextWeight TextWeightFromString(const std::string& weight)
 
     if (textWeightNameToEnum.find(weight) == textWeightNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextWeight: " + weight);
+        return TextWeight::Default;
     }
 
     return textWeightNameToEnum[weight];
@@ -722,7 +724,7 @@ TextSize TextSizeFromString(const std::string& size)
 
     if (textSizeNameToEnum.find(size) == textSizeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextSize: " + size);
+        return TextSize::Default;
     }
 
     return textSizeNameToEnum[size];
@@ -747,7 +749,7 @@ ImageSize ImageSizeFromString(const std::string& size)
 
     if (imageSizeNameToEnum.find(size) == imageSizeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ImageSize: " + size);
+        return ImageSize::Auto;
     }
 
     return imageSizeNameToEnum[size];
@@ -772,7 +774,7 @@ Spacing SpacingFromString(const std::string& spacing)
 
     if (spacingNameToEnum.find(spacing) == spacingNameToEnum.end())
     {
-        throw std::out_of_range("Invalid Spacing: " + spacing);
+        return Spacing::Default;
     }
 
     return spacingNameToEnum[spacing];
@@ -797,7 +799,7 @@ SeparatorThickness SeparatorThicknessFromString(const std::string& thickness)
 
     if (separatorThicknessNameToEnum.find(thickness) == separatorThicknessNameToEnum.end())
     {
-        throw std::out_of_range("Invalid SeparatorThickness: " + thickness);
+        return SeparatorThickness::Default;
     }
 
     return separatorThicknessNameToEnum[thickness];
@@ -822,7 +824,7 @@ ImageStyle ImageStyleFromString(const std::string& style)
 
     if (imageStyleNameToEnum.find(style) == imageStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ImageStyle: " + style);
+        return ImageStyle::Default;
     }
 
     return imageStyleNameToEnum[style];
@@ -847,7 +849,7 @@ ActionsOrientation ActionsOrientationFromString(const std::string& orientation)
 
     if (actionsOrientationNameToEnum.find(orientation) == actionsOrientationNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ActionsOrientation: " + orientation);
+        return ActionsOrientation::Horizontal;
     }
     return actionsOrientationNameToEnum[orientation];
 }
@@ -871,7 +873,7 @@ ActionMode ActionModeFromString(const std::string& mode)
 
     if (actionModeNameToEnum.find(mode) == actionModeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ActionMode: " + mode);
+        return ActionMode::Inline;
     }
     return actionModeNameToEnum[mode];
 }
@@ -894,7 +896,7 @@ ChoiceSetStyle ChoiceSetStyleFromString(const std::string & style)
 
     if (choiceSetStyleNameToEnum.find(style) == choiceSetStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ChoiceSetStyle: " + style);
+        return ChoiceSetStyle::Compact;
     }
     return choiceSetStyleNameToEnum[style];
 }
@@ -918,7 +920,7 @@ TextInputStyle TextInputStyleFromString(const std::string & style)
 
     if (textInputStyleNameToEnum.find(style) == textInputStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextInputStyle: " + style);
+        return TextInputStyle::Text;
     }
     return textInputStyleNameToEnum[style];
 }
@@ -942,7 +944,7 @@ ContainerStyle ContainerStyleFromString(const std::string & style)
 
     if (containerStyleNameToEnum.find(style) == containerStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ContainerStyle: " + style);
+        return ContainerStyle::Default;
     }
     return containerStyleNameToEnum[style];
 }
@@ -966,7 +968,7 @@ ActionAlignment ActionAlignmentFromString(const std::string & alignment)
 
     if (actionAlignmentNameToEnum.find(alignment) == actionAlignmentNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ActionAlignment: " + alignment);
+        return ActionAlignment::Left;
     }
     return actionAlignmentNameToEnum[alignment];
 }

@@ -23,9 +23,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::ColumnSet;
+    return ACRColumnSet;
 }
 
 - (UIView* )render:(UIView<ACRIContentHoldingView> *)viewGroup
@@ -39,6 +39,7 @@
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
     ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] init];
+    [columnSetView setStyle:[viewGroup style]];
 
     ACRBaseCardElementRenderer *columRenderer =
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]] ;
@@ -106,7 +107,7 @@
                                                                  targetView:columnSetView
                                                               actionElement:selectAction
                                                                      inputs:inputs
-                                                                 hostConfig:config];
+                                                                 hostConfig:acoConfig];
     if(gestureRecognizer)
     {
         [columnSetView addGestureRecognizer:gestureRecognizer];

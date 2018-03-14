@@ -14,95 +14,73 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
     {
-        m_sharedDateInput = std::make_shared<DateInput>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
+        return RuntimeClassInitialize(dateInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput)
+    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput) try
     {
         if (sharedDateInput == nullptr)
         {
             return E_INVALIDARG;
         }
 
-        m_sharedDateInput = sharedDateInput;
+        RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetMax(), m_max.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetMin(), m_min.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetValue(), m_value.GetAddressOf()));
+
+        InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedDateInput));
         return S_OK;
-    }
+    }CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::get_Max(HSTRING* max)
     {
-        return UTF8ToHString(m_sharedDateInput->GetMax(), max);
+        return m_max.CopyTo(max);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::put_Max(HSTRING max)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(max, out));
-        m_sharedDateInput->SetMax(out);
-        return S_OK;
+        return m_max.Set(max);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::get_Min(HSTRING* min)
     {
-        return UTF8ToHString(m_sharedDateInput->GetMin(), min);
+        return m_min.CopyTo(min);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::put_Min(HSTRING min)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(min, out));
-        m_sharedDateInput->SetMin(out);
-        return S_OK;
+        return m_min.Set(min);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::get_Placeholder(HSTRING* placeholder)
     {
-        return UTF8ToHString(m_sharedDateInput->GetPlaceholder(), placeholder);
+        return m_placeholder.CopyTo(placeholder);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::put_Placeholder(HSTRING placeholder)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(placeholder, out));
-        m_sharedDateInput->SetPlaceholder(out);
-        return S_OK;
+        return m_placeholder.Set(placeholder);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::get_Value(HSTRING* value)
     {
-        return UTF8ToHString(m_sharedDateInput->GetValue(), value);
+        return m_value.CopyTo(value);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::put_Value(HSTRING value)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(value, out));
-        m_sharedDateInput->SetValue(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Id(HSTRING* id)
-    {
-        return UTF8ToHString(m_sharedDateInput->GetId(), id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Id(HSTRING id)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedDateInput->SetId(out);
-        return S_OK;
+        return m_value.Set(value);
     }
 
     _Use_decl_annotations_
@@ -113,76 +91,30 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
-    {
-        *spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(m_sharedDateInput->GetSpacing());
-        return S_OK;
-    }
+    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    { 
+        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
-    {
-        m_sharedDateInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
-        return S_OK;
-    }
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(dateInput)));
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Separator(boolean* separator)
-    {
-        *separator = m_sharedDateInput->GetSeparator();
-        return S_OK;
+        std::string max;
+        RETURN_IF_FAILED(HStringToUTF8(m_max.Get(), max));
+        dateInput->SetMax(max);
 
-        //Issue #629 to make separator an object
-        //return GenerateSeparatorProjection(m_sharedDateInput->GetSeparator(), separator);
-    }
+        std::string min;
+        RETURN_IF_FAILED(HStringToUTF8(m_min.Get(), min));
+        dateInput->SetMin(min);
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Separator(boolean separator)
-    {
-        m_sharedDateInput->SetSeparator(separator);
+        std::string placeholder;
+        RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
+        dateInput->SetPlaceholder(placeholder);
 
-        /*Issue #629 to make separator an object
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+        std::string value;
+        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
+        dateInput->SetValue(value);
 
-        m_sharedDateInput->SetSeparator(sharedSeparator);
-        */
+        sharedModel = dateInput;
 
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_IsRequired(boolean* isRequired)
-    {
-        *isRequired = m_sharedDateInput->GetIsRequired();
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_IsRequired(boolean isRequired)
-    {
-        m_sharedDateInput->SetIsRequired(isRequired);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_ElementTypeString(HSTRING* type)
-    {
-        ElementType typeEnum;
-        RETURN_IF_FAILED(get_ElementType(&typeEnum));
-        return ProjectedElementTypeToHString(typeEnum, type);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return StringToJsonObject(m_sharedDateInput->Serialize(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::DateInput>& sharedModel)
-    {
-        sharedModel = m_sharedDateInput;
-        return S_OK;
-    }
+    }CATCH_RETURN;
 }}}

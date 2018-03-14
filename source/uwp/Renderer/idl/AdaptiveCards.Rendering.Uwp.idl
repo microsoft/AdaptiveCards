@@ -289,7 +289,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [version(NTDDI_WIN10_RS1)]
     typedef [v1_enum] enum ErrorStatusCode {
         InvalidJson = 0,
-        UnsupportedSchemaVersion,
         RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
@@ -304,7 +303,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         NoRendererForType,
         InteractivityNotSupported,
         MaxActionsExceeded,
-        AssetLoadFailed
+        AssetLoadFailed,
+        UnsupportedSchemaVersion,
     } WarningStatusCode;
 
     declare
@@ -341,6 +341,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
+        [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
+        [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
+
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
     };
 
@@ -366,9 +369,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         [default] interface IAdaptiveSeparator;
     };
-
+    
     [
-        uuid(f3b844da-2d6a-4003-8a57-4e5541fcd078),
+        uuid(c4b68276-7cd0-4c3e-8498-3edb9ec6abfb),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveTextBlock)
     ]
@@ -397,6 +400,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT MaxLines([out, retval] UINT32* value);
         [propput] HRESULT MaxLines([in] UINT32 value);
+
+        [propget] HRESULT Language([out, retval] HSTRING* value);
+        [propput] HRESULT Language([in] HSTRING value);
     };
 
     [
@@ -424,9 +430,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT Version([out, retval] HSTRING* value);
         [propput] HRESULT Version([in] HSTRING value);
-
-        [propget] HRESULT MinVersion([out, retval] HSTRING* value);
-        [propput] HRESULT MinVersion([in] HSTRING value);
 
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
@@ -526,6 +529,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT AltText([out, retval] HSTRING* value);
         [propput] HRESULT AltText([in] HSTRING value);
+
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
     };
 
     [
@@ -584,9 +590,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT Value([out, retval] HSTRING* value);
         [propput] HRESULT Value([in] HSTRING value);
-            
-        [propget] HRESULT IsSelected([out, retval] boolean* value);
-        [propput] HRESULT IsSelected([in] boolean value);
     };
 
     [
@@ -604,6 +607,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     ]
     interface IAdaptiveChoiceSetInput : IInspectable
     {
+        [propget] HRESULT Value([out, retval] HSTRING * value);
+        [propput] HRESULT Value([in] HSTRING value);
+
         [propget] HRESULT IsMultiSelect([out, retval] boolean* value);
         [propput] HRESULT IsMultiSelect([in] boolean value);
 
@@ -820,6 +826,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propput] HRESULT Style([in] ContainerStyle value);
 
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
     };
 
     [
@@ -1444,7 +1453,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
         [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
-        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
     };
 
     [
@@ -1628,14 +1636,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         [propget] HRESULT OriginatingCard([out, retval] AdaptiveCard** value);
 
-        [propget] HRESULT FrameworkElement([out, retval] Windows.UI.Xaml.UIElement** value);
+        [propget] HRESULT FrameworkElement([out, retval] Windows.UI.Xaml.FrameworkElement** value);
 
         [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
 
         [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
 
         [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
-
 
         [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
         [eventremove] HRESULT Action([in] EventRegistrationToken token);
@@ -1779,6 +1786,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
+        uuid(7855E78D-E217-4D12-9203-0136E79FF869 ),
+        version(NTDDI_WIN10_RS1),
+    ]
+    interface IAdaptiveInputValue : IInspectable
+    {
+        [propget] HRESULT InputElement([out, retval] IAdaptiveInputElement** inputCardElement);
+        [propget] HRESULT CurrentValue([out, retval] HSTRING * currentInputValue);
+    };
+
+    [
         uuid(d2ad59a2-01aa-4b39-b2a7-5ce1d4028fbb),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveRenderContext)
@@ -1795,7 +1812,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 
-        HRESULT AddInputItem([in] IAdaptiveCardElement* cardElement, [in] Windows.UI.Xaml.UIElement* uiElement);
+        HRESULT AddInputValue([in] IAdaptiveInputValue* inputValue);
         HRESULT AddError([in] ErrorStatusCode statusCode, [in] HSTRING message);
         HRESULT AddWarning([in] WarningStatusCode statusCode, [in] HSTRING message);
     };

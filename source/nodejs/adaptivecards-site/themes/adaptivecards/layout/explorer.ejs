@@ -1,41 +1,55 @@
 
 <div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
-
-  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
+  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-container w3-cell w3-hide-small w3-hide-medium w3-bar-block" style="width: 250px">
     <div class="sidebar__inner">
-      <div class="w3-panels w3-padding-larges">
-        <ul aria-treegrid="true">
-          <% page.schema.forEach(function(root) { %>
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> <%= root.title %></span>
-                <ul>
-                  <% root.children.forEach(function(child) { %>
-                    <li class='<%= is_current(child.name + ".html") ? "selectedHolder" : "" %>'>
-                      <a href="<%- url_for('explorer/' + child.name + '.html') %>"><%= child.name %></a>
-                    </li>
-                  <% }) %>
-                </ul>
-              </li>
-          <% }) %>
-        </ul>
-      </div>
+      <ul aria-treegrid="true">
+        <% page.schema.forEach(function(root) { %>
+            <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> <%= root.title %></span>
+              <ul>
+                <% root.children.forEach(function(child) { %>
+                  <li class='<%= is_current("explorer/" + child.name + ".html") ? "selectedHolder" : "" %>'>
+                    <a href="<%- url_for('explorer/' + child.name + '.html') %>"><%= child.name %></a>
+                  </li>
+                <% }) %>
+              </ul>
+            </li>
+        <% }) %>
+      </ul>
     </div>
   </nav>
 
   <div class="w3-main" style="margin-left: 260px">
-    <div class="w3-cell-row ">
-      <div class="w3-container w3-cell w3-mobile">
-        <h1><%= page.element.name %></h1>
+  
+    <div class="w3-container w3-cell w3-mobile">
+      <h1>Schema Explorer</h1>
 
-        <p><%= page.element.description %></p>
-
-        <div class="ac-properties w3-margin-top"> 
-          <%- markdown(page.propertiesSummary) %>
-        </div>
-        
+      <!-- mobile nav -->
+      <div class="w3-hide-large">
+        <select id="menu-nav">
+          <% page.schema.forEach(function(root) { %>
+            <optgroup class="noLink" label='<%= root.title %>'>
+              <% root.children.forEach(function(child) { %>
+                <% if(is_current("explorer/" + child.name + ".html")) { %>
+                  <option value='<%- url_for("explorer/" + child.name + ".html") %>' selected="selected"><%= child.name %></option>
+                <% } else { %>
+                  <option value='<%- url_for("explorer/" + child.name + ".html") %>'><%= child.name %></option>
+                <% } %> 
+          
+              <% }) %>
+             </optgroup>
+          <% }) %>
+        </select>
       </div>
-    <div class="w3-container w3-cell w3-mobile" style="width: 300px">
-    </div>
+
+      <h2><%= page.element.name %></h2>
+
+      <p><%= page.element.description %></p>
+
+      <div class="ac-properties w3-margin-top"> 
+        <%- markdown(page.propertiesSummary) %>
+      </div>
+
   </div>
 
 

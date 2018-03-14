@@ -27,8 +27,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseInputElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.cpp" />
@@ -47,8 +51,11 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\NumberInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseResult.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.cpp" />
@@ -61,10 +68,13 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
@@ -83,8 +93,11 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.h" />
@@ -99,6 +112,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</ProjectGuid>
@@ -142,7 +157,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\shared\cpp\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

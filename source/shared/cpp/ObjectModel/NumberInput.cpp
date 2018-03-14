@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "NumberInput.h"
 #include "ParseUtil.h"
 
@@ -8,6 +9,7 @@ NumberInput::NumberInput() :
     m_min(std::numeric_limits<int>::min()),
     m_max(std::numeric_limits<int>::max())
 {
+    PopulateKnownPropertiesSet();
 }
 
 Json::Value NumberInput::SerializeToJsonValue()
@@ -85,4 +87,12 @@ std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return NumberInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void NumberInput::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min));
 }

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ElementParserRegistration.h"
 #include "ChoiceSetInput.h"
 #include "ColumnSet.h"
@@ -11,6 +12,7 @@
 #include "TextInput.h"
 #include "TimeInput.h"
 #include "ToggleInput.h"
+#include "UnknownElement.h"
 
 namespace AdaptiveCards
 {
@@ -29,6 +31,7 @@ namespace AdaptiveCards
             CardElementTypeToString(CardElementType::TextInput),
             CardElementTypeToString(CardElementType::TimeInput),
             CardElementTypeToString(CardElementType::ToggleInput),
+            CardElementTypeToString(CardElementType::Unknown),
         });
 
         m_cardElementParsers.insert({
@@ -43,11 +46,12 @@ namespace AdaptiveCards
             { CardElementTypeToString(CardElementType::TextBlock), std::make_shared<TextBlockParser>() },
             { CardElementTypeToString(CardElementType::TextInput),  std::make_shared<TextInputParser>() },
             { CardElementTypeToString(CardElementType::TimeInput), std::make_shared<TimeInputParser>() },
-            { CardElementTypeToString(CardElementType::ToggleInput), std::make_shared<ToggleInputParser>() }
+            { CardElementTypeToString(CardElementType::ToggleInput), std::make_shared<ToggleInputParser>() },
+            { CardElementTypeToString(CardElementType::Unknown), std::make_shared<UnknownElementParser>() }
         });
     }
 
-    void ElementParserRegistration::AddParser(std::string elementType, std::shared_ptr<IBaseCardElementParser> parser)
+    void ElementParserRegistration::AddParser(std::string elementType, std::shared_ptr<BaseCardElementParser> parser)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -71,7 +75,7 @@ namespace AdaptiveCards
         }
     }
 
-    std::shared_ptr<IBaseCardElementParser> ElementParserRegistration::GetParser(std::string elementType)
+    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())
@@ -80,7 +84,7 @@ namespace AdaptiveCards
         }
         else
         {
-            return std::shared_ptr<IBaseCardElementParser>(nullptr);
+            return std::shared_ptr<BaseCardElementParser>(nullptr);
         }
     }
 }

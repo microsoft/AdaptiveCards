@@ -27,13 +27,15 @@ public:
     void SetValueOn(const std::string value);
 
 private:
+    void PopulateKnownPropertiesSet();
+
     std::string m_title;
     std::string m_value;
     std::string m_valueOff;
     std::string m_valueOn;
 };
 
-class ToggleInputParser : public IBaseCardElementParser
+class ToggleInputParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(

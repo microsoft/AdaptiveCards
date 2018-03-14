@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -75,6 +75,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -82,6 +84,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,6 +95,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -104,6 +110,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -111,8 +119,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\ObjectModel\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseWarning.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseInputElement.cpp" />
@@ -122,6 +135,8 @@
     <ClCompile Include="..\..\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\ObjectModel\DateInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparsedToken.cpp" />
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparser.cpp" />
     <ClCompile Include="..\..\ObjectModel\ElementParserRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\ObjectModel\Fact.cpp" />
@@ -136,6 +151,7 @@
     <ClCompile Include="..\..\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\OpenUrlAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ParseResult.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\ObjectModel\Separator.cpp" />
     <ClCompile Include="..\..\ObjectModel\SharedAdaptiveCard.cpp" />
@@ -145,10 +161,13 @@
     <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\UnknownElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\ObjectModel\BaseCardElement.h" />
     <ClInclude Include="..\..\ObjectModel\BaseInputElement.h" />
@@ -158,6 +177,8 @@
     <ClInclude Include="..\..\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\ObjectModel\Container.h" />
     <ClInclude Include="..\..\ObjectModel\DateInput.h" />
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparsedToken.h" />
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparser.h" />
     <ClInclude Include="..\..\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\Enums.h" />
     <ClInclude Include="..\..\ObjectModel\Fact.h" />
@@ -172,6 +193,7 @@
     <ClInclude Include="..\..\ObjectModel\MarkDownParser.h" />
     <ClInclude Include="..\..\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\ObjectModel\OpenUrlAction.h" />
+    <ClInclude Include="..\..\ObjectModel\ParseResult.h" />
     <ClInclude Include="..\..\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\ObjectModel\pch.h" />
     <ClInclude Include="..\..\ObjectModel\Separator.h" />
@@ -182,6 +204,8 @@
     <ClInclude Include="..\..\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
+    <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
+    <ClInclude Include="..\..\ObjectModel\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

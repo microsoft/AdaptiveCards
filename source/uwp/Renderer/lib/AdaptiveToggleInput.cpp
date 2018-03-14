@@ -15,95 +15,73 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
     {
-        m_sharedToggleInput = std::make_shared<ToggleInput>();
-        return S_OK;
+        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        return RuntimeClassInitialize(toggleInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput)
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput) try
     {
         if (sharedToggleInput == nullptr)
         {
             return E_INVALIDARG;
         }
 
-        m_sharedToggleInput = sharedToggleInput;
+        RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetTitle(), m_title.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetValue(), m_value.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetValueOn(), m_valueOn.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetValueOff(), m_valueOff.GetAddressOf()));
+
+        InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedToggleInput));
         return S_OK;
-    }
+    }CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveToggleInput::get_Title(HSTRING* title)
     {
-        return UTF8ToHString(m_sharedToggleInput->GetTitle(), title);
+        return m_title.CopyTo(title);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveToggleInput::put_Title(HSTRING title)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(title, out));
-        m_sharedToggleInput->SetTitle(out);
-        return S_OK;
+        return m_title.Set(title);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveToggleInput::get_Value(HSTRING* value)
     {
-        return UTF8ToHString(m_sharedToggleInput->GetValue(), value);
+        return m_value.CopyTo(value);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveToggleInput::put_Value(HSTRING value)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(value, out));
-        m_sharedToggleInput->SetValue(out);
-        return S_OK;
+        return m_value.Set(value);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveToggleInput::get_ValueOff(HSTRING* valueOff)
+    HRESULT AdaptiveToggleInput::get_ValueOff(HSTRING* valueOff)
     {
-        return UTF8ToHString(m_sharedToggleInput->GetValueOff(), valueOff);
+        return m_valueOff.CopyTo(valueOff);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveToggleInput::put_ValueOff(HSTRING valueOff)
+    HRESULT AdaptiveToggleInput::put_ValueOff(HSTRING valueOff)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(valueOff, out));
-        m_sharedToggleInput->SetValueOff(out);
-        return S_OK;
+        return m_valueOff.Set(valueOff);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveToggleInput::get_ValueOn(HSTRING* valueOn)
+    HRESULT AdaptiveToggleInput::get_ValueOn(HSTRING* valueOn)
     {
-        return UTF8ToHString(m_sharedToggleInput->GetValueOn(), valueOn);
+        return m_valueOn.CopyTo(valueOn);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveToggleInput::put_ValueOn(HSTRING valueOn)
+    HRESULT AdaptiveToggleInput::put_ValueOn(HSTRING valueOn)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(valueOn, out));
-        m_sharedToggleInput->SetValueOn(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Id(HSTRING* id)
-    {
-        return UTF8ToHString(m_sharedToggleInput->GetId(), id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Id(HSTRING id)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(id, out));
-        m_sharedToggleInput->SetId(out);
-        return S_OK;
+        return m_valueOn.Set(valueOn);
     }
 
     _Use_decl_annotations_
@@ -114,74 +92,30 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
     {
-        *spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(m_sharedToggleInput->GetSpacing());
+        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(toggleInput)));
+
+        std::string title;
+        RETURN_IF_FAILED(HStringToUTF8(m_title.Get(), title));
+        toggleInput->SetTitle(title);
+
+        std::string value;
+        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
+        toggleInput->SetValue(value);
+
+        std::string valueOn;
+        RETURN_IF_FAILED(HStringToUTF8(m_valueOn.Get(), valueOn));
+        toggleInput->SetValueOn(valueOn);
+
+        std::string valueOff;
+        RETURN_IF_FAILED(HStringToUTF8(m_valueOff.Get(), valueOff));
+        toggleInput->SetValueOff(valueOff);
+
+        sharedModel = toggleInput;
+
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
-    {
-        m_sharedToggleInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Separator(boolean* separator)
-    {
-        *separator = m_sharedToggleInput->GetSeparator();
-        return S_OK;
-
-        //return GenerateSeparatorProjection(m_sharedToggleInput->GetSeparator(), separator);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Separator(boolean separator)
-    {
-        m_sharedToggleInput->SetSeparator(separator);
-
-        /*
-        std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
-
-        m_sharedToggleInput->SetSeparator(sharedSeparator);
-        */
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_IsRequired(boolean* isRequired)
-    {
-        *isRequired = m_sharedToggleInput->GetIsRequired();
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_IsRequired(boolean isRequired)
-    {
-        m_sharedToggleInput->SetIsRequired(isRequired);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_ElementTypeString(HSTRING* type)
-    {
-        ElementType typeEnum;
-        RETURN_IF_FAILED(get_ElementType(&typeEnum));
-        return ProjectedElementTypeToHString(typeEnum, type);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return StringToJsonObject(m_sharedToggleInput->Serialize(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ToggleInput>& sharedModel)
-    {
-        sharedModel = m_sharedToggleInput;
-        return S_OK;
-    }
+    }CATCH_RETURN;
 }}}

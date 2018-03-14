@@ -22,9 +22,9 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::Column;
+    return ACRColumn;
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
@@ -33,35 +33,18 @@
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
 {
-
-    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
-    ContainerStyle style = ContainerStyle::Default;
-
-    // Not set; apply parent's style
-    if(columnElem->GetStyle() == ContainerStyle::None)
-    {
-        style = [viewGroup getStyle];
-    }
-    // apply elem's style if custom style is allowed
-    else if (config->adaptiveCard.allowCustomStyle)
-    {
-        style = columnElem->GetStyle();
-    }
-    else
-    {
-        style = ContainerStyle::Default;
-    }
-
-    ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:style hostConfig:config];
-    [viewGroup addArrangedSubview:column];
+    ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
+                                                     parentStyle:[viewGroup style] hostConfig:acoConfig];
     [ACRRenderer render:column
      rootViewController:vc
                  inputs:inputs
           withCardElems:columnElem->GetItems()
-          andHostConfig:config];
+          andHostConfig:acoConfig];
+
+    [viewGroup addArrangedSubview:column];
 
     [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [column setClipsToBounds:TRUE];
@@ -80,7 +63,7 @@
                                                                  targetView:column
                                                               actionElement:selectAction
                                                                      inputs:inputs
-                                                                 hostConfig:config];
+                                                                 hostConfig:acoConfig];
     if(gestureRecognizer)
     {
         [column addGestureRecognizer:gestureRecognizer];
