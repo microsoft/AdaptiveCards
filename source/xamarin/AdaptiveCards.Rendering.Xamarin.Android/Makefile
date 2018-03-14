@@ -7,7 +7,7 @@ all: AdaptiveCards.dll
 AdaptiveCards.aar: clean
 	$(MAKE) -C ../../android
 
-AdaptiveCards.dll: Makefile AdaptiveCards.aar  Jars/adaptivecards-debug.aar 
+AdaptiveCards.dll: Makefile AdaptiveCards.aar 
 	$(MONOXBUILD) /p:Configuration=Release AdaptiveCards.Rendering.Xamarin.Android.csproj
 
 clean:
