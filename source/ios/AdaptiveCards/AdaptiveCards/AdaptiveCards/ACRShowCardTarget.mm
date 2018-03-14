@@ -42,13 +42,16 @@
 
 - (void)createShowCard
 {
-    NSMutableArray *inputs = [[NSMutableArray alloc] init];
+    NSMutableArray *inputs = [NSMutableArray arrayWithArray:[[(ACRViewController *)_vc card] getInputs]];
+    if(inputs == nil){
+        inputs = [[NSMutableArray alloc] init];
+    }
+    
     UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                     inputs:inputs
                                             viewController:_vc
                                                 guideFrame:_superview.frame
                                                 hostconfig:_config];
-
     [[(ACRViewController *)_vc card] appendInputs:inputs];
 
     unsigned int padding = 0;
