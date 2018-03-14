@@ -34,11 +34,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(GetActivationFactory(
             HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
             &uriActivationFactory));
-        HSTRING imageUri;
-        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), &imageUri));
-        if (imageUri != nullptr)
+        
+        std::wstring imageUri = StringToWstring(sharedImage->GetUrl());
+        if (!imageUri.empty())
         {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, m_url.GetAddressOf()));
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_url.GetAddressOf()));
         }
 
         m_imageStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageStyle>(sharedImage->GetImageStyle());

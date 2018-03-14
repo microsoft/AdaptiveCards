@@ -5,6 +5,7 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
@@ -80,11 +81,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         std::string type = ParseUtil::GetTypeAsString(value);
 
-        HSTRING typeAsHstring;
-        THROW_IF_FAILED(UTF8ToHString(type, &typeAsHstring));
+        HString typeAsHstring;
+        THROW_IF_FAILED(UTF8ToHString(type, typeAsHstring.GetAddressOf()));
 
         ComPtr<IAdaptiveElementParser> parser;
-        THROW_IF_FAILED(m_parserRegistration->Get(typeAsHstring, &parser));
+        THROW_IF_FAILED(m_parserRegistration->Get(typeAsHstring.Get(), &parser));
 
         ComPtr<ABI::Windows::Data::Json::IJsonObject>jsonObject;
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));

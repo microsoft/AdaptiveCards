@@ -452,14 +452,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IAdaptiveCardResourceResolvers* resolvers)
     {
         // Get the image url scheme
-        HSTRING schemeName;
-        THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
+        HString schemeName;
+        THROW_IF_FAILED(imageUri->get_SchemeName(schemeName.GetAddressOf()));
 
         // Get the resolver for the image
         ComPtr<IAdaptiveCardResourceResolver> resolver;
         if (resolvers != nullptr)
         {
-            THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
+            THROW_IF_FAILED(resolvers->Get(schemeName.Get(), &resolver));
             // If we have a resolver
             if (resolver != nullptr)
             {
