@@ -52,7 +52,7 @@
                                             viewController:_vc
                                                 guideFrame:_superview.frame
                                                 hostconfig:_config];
-    [[(ACRViewController *)_vc card] appendInputs:inputs];
+    [[(ACRViewController *)_vc card] setInputs:inputs];
 
     unsigned int padding = 0;
 
