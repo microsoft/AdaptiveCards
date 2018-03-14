@@ -277,3 +277,7 @@ source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
 source/nodejs/adaptivecards/built/card-elements.js
 source/nodejs/adaptivecards/built/card-elements.js.map
 *.tgz
+source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards.framework.zip
+AdaptiveCards.framework/
+*.dll
+*.aar
