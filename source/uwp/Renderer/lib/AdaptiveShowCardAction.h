@@ -40,7 +40,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveActionElementBase::ToJson(result); }
 
-        virtual HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel) override;
+        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel) override;
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override

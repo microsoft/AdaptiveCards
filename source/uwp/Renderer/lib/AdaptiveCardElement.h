@@ -29,7 +29,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveCards::BaseCardElement> sharedCardElement);
 
-        virtual HRESULT GetSharedModel(_In_ std::shared_ptr<BaseCardElement>& sharedModel) = 0;
+        virtual HRESULT GetSharedModel(std::shared_ptr<BaseCardElement>& sharedModel) = 0;
 
     private:
         boolean m_separator;

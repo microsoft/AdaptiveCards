@@ -84,11 +84,18 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column)
         {
-            std::shared_ptr<BaseCardElement> sharedColumn = std::make_shared<Column>();
             ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveColumn>(column);
-            RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumn));
 
-            columnSet->GetColumns().push_back(std::dynamic_pointer_cast<AdaptiveCards::Column>(sharedColumn));
+            std::shared_ptr<BaseCardElement> sharedColumnBaseElement;
+            RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumnBaseElement));
+
+            std::shared_ptr<AdaptiveCards::Column> sharedColumn = std::dynamic_pointer_cast<AdaptiveCards::Column>(sharedColumnBaseElement);
+            if (sharedColumn == nullptr)
+            {
+                return E_UNEXPECTED;
+            }
+
+            columnSet->GetColumns().push_back(sharedColumn);
 
             return S_OK;
         });

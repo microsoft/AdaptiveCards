@@ -26,7 +26,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveCards::BaseActionElement> sharedCardElement);
 
-        virtual HRESULT GetSharedModel(_In_ std::shared_ptr<BaseActionElement>& sharedModel) = 0;
+        virtual HRESULT GetSharedModel(std::shared_ptr<BaseActionElement>& sharedModel) = 0;
 
     private:
         Microsoft::WRL::Wrappers::HString m_id;
