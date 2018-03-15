@@ -94,13 +94,16 @@ using namespace AdaptiveCards;
         NSURL *url = [NSURL URLWithString:imgUrl];
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
         UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
+        //view.backgroundColor = [UIColor colorWithPatternImage:img];
         [view addSubview:imgView];
         [view sendSubviewToBack:imgView];
-        [NSLayoutConstraint activateConstraints:
-         @[[imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
-           [imgView.topAnchor constraintEqualToAnchor:view.topAnchor],
-           [imgView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
-           ]];
+        [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]|", nil];
+        NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, imgView);
+        for(NSString *constraint in visualFormats){
+            [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+        }
     }
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
     if(style != ContainerStyle::None)
@@ -391,6 +394,24 @@ using namespace AdaptiveCards;
                       // if view is available, set image to it, and continue image processing
                       if(view) {
                           view.image = img;
+                          if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None){
+                              CGFloat heightToWidthRatio = img.size.height / img.size.width;
+                              [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                                                      attribute:NSLayoutAttributeHeight
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:view
+                                                                                      attribute:NSLayoutAttributeWidth
+                                                                                     multiplier:heightToWidthRatio
+                                                                                       constant:0]]];
+                              CGFloat widthToHeightRatio = img.size.width/ img.size.height;
+                              [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                                                      attribute:NSLayoutAttributeWidth
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:view
+                                                                                      attribute:NSLayoutAttributeHeight
+                                                                                     multiplier:widthToHeightRatio
+                                                                                       constant:0]]];
+                          }
                           view.contentMode = UIViewContentModeScaleAspectFit;
                           view.clipsToBounds = NO;
                           if(imgElem->GetImageStyle() == ImageStyle::Person) {
