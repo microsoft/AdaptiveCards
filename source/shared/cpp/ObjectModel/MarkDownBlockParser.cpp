@@ -24,13 +24,13 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
     case ']': case ')':
     {
         // add these char as token to code gen list
-        m_parsedResult.AddNewTokenToParsedResult(stream.get());
+        m_parsedResult.AddNewTokenToParsedResult((char)stream.get());
         break;
     }
     case '\n': case '\r':
     {
         // add new line char as token to code gen list
-        m_parsedResult.AddNewLineTokenToParsedResult(stream.get());
+        m_parsedResult.AddNewLineTokenToParsedResult((char)stream.get());
         break;
     }
     // handles list block
@@ -99,13 +99,13 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, 
         }
 
         parser.UpdateCurrentEmphasisRunState(emphasisType);
-        token += stream.get();
+        token += (char)stream.get();
         return EmphasisState::Emphasis;
     }
     else
     {
         parser.UpdateLookBehind(stream.peek());
-        token += stream.get();
+        token += (char)stream.get();
         return EmphasisState::Text;
     }
 }
@@ -130,7 +130,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
             parser.UpdateCurrentEmphasisRunState(emphasisType);
         }
 
-        token += stream.get();
+        token += (char)stream.get();
     }
     /// delimiter run is ended, capture the current accumulated token as emphasis
     else
@@ -145,7 +145,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
 
         parser.ResetCurrentEmphasisState();
         parser.UpdateLookBehind(stream.peek());
-        token += stream.get();
+        token += (char)stream.get();
         return EmphasisState::Text;
     }
     return EmphasisState::Emphasis;
@@ -332,7 +332,7 @@ bool LinkParser::MatchAtLinkInit(std::stringstream &lookahead)
 {
     if (lookahead.peek() == '[')
     {
-        m_linkTextParsedResult.AddNewTokenToParsedResult(lookahead.get());
+        m_linkTextParsedResult.AddNewTokenToParsedResult((char)lookahead.get());
         return true;
     }
 
@@ -346,7 +346,7 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream &lookahead)
 {
     if (lookahead.peek() == ']')
     {
-        m_linkTextParsedResult.AddNewTokenToParsedResult(lookahead.get());
+        m_linkTextParsedResult.AddNewTokenToParsedResult((char)lookahead.get());
         return true;
     }
     else
@@ -365,7 +365,7 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream &lookahead)
             if (lookahead.peek() == ']')
             {
                 // move code gen objects to link text list to further process it 
-                m_linkTextParsedResult.AddNewTokenToParsedResult(lookahead.get());
+                m_linkTextParsedResult.AddNewTokenToParsedResult((char)lookahead.get());
                 return true;
             }
 
@@ -380,7 +380,7 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream &lookahead)
 {
     if (lookahead.peek() == '(')
     {
-        m_linkTextParsedResult.AddNewTokenToParsedResult(lookahead.get());
+        m_linkTextParsedResult.AddNewTokenToParsedResult((char)lookahead.get());
         return true;
     }
 
@@ -518,7 +518,7 @@ bool ListParser::MatchNewOrderedListItem(std::stringstream &stream, std::string 
 {
     do
     {
-        number_string += stream.get();
+        number_string += (char)stream.get();
     } while (isdigit(stream.peek()));
 
     if (stream.peek() == '.')
@@ -559,7 +559,7 @@ void ListParser::ParseSubBlocks(std::stringstream &stream)
                 break;
             }
 
-            m_parsedResult.AddNewTokenToParsedResult(newLineChar);
+            m_parsedResult.AddNewTokenToParsedResult((char)newLineChar);
         }
         ParseBlock(stream);
     }
@@ -633,7 +633,7 @@ void OrderedListParser::Match(std::stringstream &stream)
     {
         do
         {
-            number_string += stream.get();
+            number_string += (char)stream.get();
         } while (isdigit(stream.peek()));
 
         if (IsDot(stream.peek()))

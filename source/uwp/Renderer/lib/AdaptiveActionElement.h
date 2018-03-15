@@ -9,7 +9,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
     protected:
 
-        HRESULT InitializeBaseElement(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel);
+        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel);
 
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 

@@ -14,12 +14,6 @@ UnknownElement::UnknownElement() :
 {
 }
 
-UnknownElement::UnknownElement(
-    Json::Value const &paylaod) :
-    BaseCardElement(CardElementType::Unknown)
-{
-}
-
 Json::Value UnknownElement::SerializeToJsonValue()
 {
     Json::Value root = GetAdditionalProperties();
