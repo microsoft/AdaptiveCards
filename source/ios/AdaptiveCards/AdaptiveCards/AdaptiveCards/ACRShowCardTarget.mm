@@ -20,7 +20,8 @@
     ACOHostConfig *_config;
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak UIViewController *_vc;
-    __weak UIView *_adcView;
+    UIView *_adcView;
+    bool justCreated;
 }
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
@@ -35,15 +36,16 @@
         _config = config;
         _superview = superview;
         _vc = vc;
+        justCreated = true;
         _adcView = nil;
     }
     return self;
 }
 
-- (void)createShowCard
+- (void)createShowCard:(NSMutableArray*)inputs
 {
-    NSMutableArray *inputs = [NSMutableArray arrayWithArray:[[(ACRViewController *)_vc card] getInputs]];
-    if(inputs == nil){
+    [inputs setArray:[NSMutableArray arrayWithArray:[[(ACRViewController *)_vc card] getInputs]]];
+    if(!inputs){
         inputs = [[NSMutableArray alloc] init];
     }
     
@@ -127,18 +129,20 @@
                      blue:((num & 0x000000FF)) / 255.0
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
     [wrappingView setAlignmentForSubview:AdaptiveCards::HorizontalAlignment::Center];
-    [_superview addArrangedSubview:_adcView];
+    justCreated = true;
 }
 
 - (IBAction)toggleVisibilityOfShowCard
 {
-    // if there is no ShowCard UIView, create one
-    if(!_adcView)
+    // If the card has just been created but never shown, add to _superview
+    
+    if(justCreated)
     {
-        [self createShowCard];
+        [_superview addArrangedSubview:_adcView];
+        justCreated = false;
         return;
     }
-    // Toggle the visibility of a ShowCard UIView
+    
     _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
 }
 
