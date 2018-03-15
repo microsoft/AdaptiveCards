@@ -16,6 +16,7 @@
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
+#import "ACRViewController.h"
 
 using namespace AdaptiveCards;
 
@@ -32,17 +33,27 @@ using namespace AdaptiveCards;
 + (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
+    // Initializes ACRView instance with HostConfig and AdaptiveCard
+    // ACRViewController does not render adaptiveCard untill viewDidLoad calls render
+    ACRView *view = [[ACRView alloc] init:card hostconfig:config frame:frame];
+    result.view = view;
+    result.succeeded = YES;
+    return result;
+}
 
+// This interface is exposed to outside, and returns ACRRenderResult object
+// This object contains a viewController instance which defer rendering adaptiveCard untill viewDidLoad is called.
++ (ACRRenderResult *)renderAsViewController:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>)acrActionDelegate
+{
+    ACRRenderResult *result = [[ACRRenderResult alloc] init];
     // Initializes ACRView instance with HostConfig and AdaptiveCard
     // ACRView does not render adaptiveCard untill viewDidLoad calls render
-    ACRView *viewcontroller = [[ACRView alloc] init:card
-                                                             hostconfig:config
-                                                                  frame:frame];
-
+    ACRViewController *viewcontroller = [[ACRViewController alloc] init:card hostconfig:config frame:frame delegate:acrActionDelegate];
     result.viewcontroller = viewcontroller;
     result.succeeded = YES;
     return result;
 }
+
 // transforms (i.e. renders) an adaptiveCard to a new UIView instance
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs
@@ -62,7 +73,7 @@ using namespace AdaptiveCards;
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
         [verticalView setStyle:style];
-    
+
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
         [[rootView card] setInputs:inputs];

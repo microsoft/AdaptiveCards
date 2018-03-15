@@ -2,7 +2,7 @@
 //  ACRView.h
 //  ACRView
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,21 +11,19 @@
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
 
-@interface ACRView :UIView
+@interface ACRView:UIView
 
-@property (weak) id<ACRActionDelegate> acrActionDelegate;
+@property (weak) id<ACRActionDelegate>acrActionDelegate;
 
-- (instancetype)init:(ACOAdaptiveCard *)card 
-          hostconfig:(ACOHostConfig *)config
-               frame:(CGRect)frame;
+- (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config frame:(CGRect)frame;
 
-- (NSMutableDictionary *) getImageMap;
+- (NSMutableDictionary *)getImageMap;
 
-- (dispatch_queue_t) getSerialQueue;
+- (dispatch_queue_t)getSerialQueue;
 
-- (NSMutableDictionary *) getTextMap; 
+- (NSMutableDictionary *)getTextMap;
 
-- (dispatch_queue_t) getSerialTextQueue;
+- (dispatch_queue_t)getSerialTextQueue;
 
-- (ACOAdaptiveCard *) card;
+- (ACOAdaptiveCard *)card;
 @end

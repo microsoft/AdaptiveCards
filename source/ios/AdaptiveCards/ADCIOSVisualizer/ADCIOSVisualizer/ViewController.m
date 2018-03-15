@@ -154,11 +154,9 @@
     ACRRenderResult *renderResult;
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
-    if(cardParseResult.isValid)
-    {
-        renderResult = [ACRRenderer render:cardParseResult.card
-                                    config:hostconfigParseResult.config
-                                     frame:CGRectMake(0, 0, 500, 0)];
+    if(cardParseResult.isValid){
+        //renderResult = [ACRRenderer renderAsViewController:cardParseResult.card config:hostconfigParseResult.config frame:CGRectMake(0, 0, 500, 0) delegate:self];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config frame:CGRectMake(0, 0, 500, 0)];
     }	
     
     if(renderResult.succeeded)
@@ -170,8 +168,9 @@
 
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
-        ACRView *adcVc = renderResult.viewcontroller;
-        adcVc.acrActionDelegate = self;
+        ACRView *ad = renderResult.view;
+        //ACRViewController *adcVc = renderResult.viewcontroller;
+        ad.acrActionDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
         else
@@ -179,16 +178,13 @@
             self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,0,0)];
             self.scrView.showsHorizontalScrollIndicator = YES;
         }
-        self.curView = adcVc;//.view;
-        self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
-        
+        self.curView = ad;
         //[self addChildViewController:adcVc];
         //[self.scrView addSubview:adcVc.view];
-        [self.scrView addSubview:adcVc];//.view];
-
         //[adcVc didMoveToParentViewController:self];
+        [self.scrView addSubview:ad];
         self.scrView.contentSize = self.curView.frame.size;
-        
+        self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
         UIScrollView *scrollview = self.scrView;
         UIView *view = self.curView;
         view.translatesAutoresizingMaskIntoConstraints = NO;
