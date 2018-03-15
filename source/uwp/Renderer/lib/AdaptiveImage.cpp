@@ -34,11 +34,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(GetActivationFactory(
             HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
             &uriActivationFactory));
-        HSTRING imageUri;
-        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), &imageUri));
-        if (imageUri != nullptr)
+        
+        std::wstring imageUri = StringToWstring(sharedImage->GetUrl());
+        if (!imageUri.empty())
         {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, m_url.GetAddressOf()));
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_url.GetAddressOf()));
         }
 
         m_imageStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageStyle>(sharedImage->GetImageStyle());
@@ -48,11 +48,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
 
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedImage->GetSpacing());
-        m_separator = sharedImage->GetSeparator();
-        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetId(), m_id.GetAddressOf()));
-        RETURN_IF_FAILED(JsonCppToJsonObject(sharedImage->GetAdditionalProperties(), &m_additionalProperties));
-
+        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImage));
         return S_OK;
     } CATCH_RETURN;
 
@@ -131,67 +127,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
-    {
-        *spacing = m_spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
-    {
-        m_spacing = spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Separator(boolean* separator)
-    {
-        *separator = m_separator;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Separator(boolean separator)
-    {
-        m_separator = separator;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Id(HSTRING* id)
-    {
-        return m_id.CopyTo(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Id(HSTRING id)
-    {
-        return m_id.Set(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_ElementTypeString(HSTRING* type)
-    {
-        ElementType typeEnum;
-        RETURN_IF_FAILED(get_ElementType(&typeEnum));
-        return ProjectedElementTypeToHString(typeEnum, type);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return m_additionalProperties.CopyTo(result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
-    {
-        m_additionalProperties = jsonObject;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveImage::get_SelectAction(IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
@@ -205,20 +140,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        std::shared_ptr<AdaptiveCards::Image> image;
-        RETURN_IF_FAILED(GetSharedModel(image));
-
-        return StringToJsonObject(image->Serialize(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::Image>& sharedImage) try
+    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedImage) try
     {
         std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(image)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(image)));
 
         if (m_selectAction != nullptr)
         {

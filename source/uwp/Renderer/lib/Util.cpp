@@ -85,41 +85,12 @@ bool Boolify(const boolean value)
     return value > 0 ? true : false;
 }
 
-HRESULT SetSharedElementProperties(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement * adaptiveCardElement,
-    std::shared_ptr<AdaptiveCards::BaseCardElement> sharedCardElement)
-{
-    HString id;
-    RETURN_IF_FAILED(adaptiveCardElement->get_Id(id.GetAddressOf()));
-    sharedCardElement->SetId(HStringToUTF8(id.Get()));
-
-    boolean separator;
-    RETURN_IF_FAILED(adaptiveCardElement->get_Separator(&separator));
-    sharedCardElement->SetSeparator(separator);
-
-    ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing;
-    RETURN_IF_FAILED(adaptiveCardElement->get_Spacing(&spacing));
-    sharedCardElement->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
-
-    ComPtr<IJsonObject> additionalProperties;
-    RETURN_IF_FAILED(adaptiveCardElement->get_AdditionalProperties(&additionalProperties));
-
-    if (additionalProperties != nullptr)
-    {
-        Json::Value jsonCpp;
-        RETURN_IF_FAILED(JsonObjectToJsonCpp(additionalProperties.Get(), &jsonCpp));
-        sharedCardElement->SetAdditionalProperties(jsonCpp);
-    }
-
-    return S_OK;
-}
-
-template <typename TSharedBaseType, typename TSharedType, typename TAdaptiveBaseType, typename TAdaptiveType>
+template <typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>
 std::shared_ptr<TSharedBaseType> GetSharedModel(TAdaptiveBaseType * item)
 {
     ComPtr<TAdaptiveType> adaptiveElement = PeekInnards<TAdaptiveType>(item);
 
-    std::shared_ptr<TSharedType> sharedModelElement;
+    std::shared_ptr<TSharedBaseType> sharedModelElement;
     if (adaptiveElement && SUCCEEDED(adaptiveElement->GetSharedModel(sharedModelElement)))
         return sharedModelElement;
     else
@@ -141,40 +112,40 @@ HRESULT GenerateSharedElements(
         switch (elementType)
         {
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::ChoiceSetInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::ChoiceSetInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveChoiceSetInput>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveChoiceSetInput>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::ColumnSet:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::ColumnSet, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveColumnSet>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveColumnSet>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::Container:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::Container, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveContainer>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveContainer>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::DateInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::DateInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveDateInput>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveDateInput>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::FactSet:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::FactSet, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveFactSet>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveFactSet>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::Image:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::Image, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveImage>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveImage>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::ImageSet:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::ImageSet, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveImageSet>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveImageSet>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::NumberInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::NumberInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveNumberInput>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveNumberInput>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::TextBlock:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::TextBlock, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveTextBlock>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveTextBlock>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::TextInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::TextInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveTextInput>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveTextInput>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::TimeInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::TimeInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveTimeInput>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveTimeInput>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::ToggleInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::ToggleInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveToggleInput>(item);
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveToggleInput>(item);
                 break;
             case ABI::AdaptiveCards::Rendering::Uwp::ElementType::Custom:
                 baseCardElement = std::make_shared<CustomElementWrapper>(item);
@@ -203,13 +174,13 @@ HRESULT GenerateSharedAction(
     switch (actionType)
     {
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType::OpenUrl:
-            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, AdaptiveCards::OpenUrlAction, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement, AdaptiveCards::Rendering::Uwp::AdaptiveOpenUrlAction>(action);
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement, AdaptiveCards::Rendering::Uwp::AdaptiveOpenUrlAction>(action);
             break;
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard:
-            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, AdaptiveCards::ShowCardAction, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement, AdaptiveCards::Rendering::Uwp::AdaptiveShowCardAction>(action);
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement, AdaptiveCards::Rendering::Uwp::AdaptiveShowCardAction>(action);
             break;
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType::Submit:
-            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, AdaptiveCards::SubmitAction, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement, AdaptiveCards::Rendering::Uwp::AdaptiveSubmitAction>(action);
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement, AdaptiveCards::Rendering::Uwp::AdaptiveSubmitAction>(action);
             break;
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType::Custom:
             sharedAction = std::make_shared<CustomActionWrapper>(action);
@@ -248,7 +219,7 @@ HRESULT GenerateSharedImages(
         ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement> imageAsElement;
         localImage.As(&imageAsElement);
 
-        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedImage = GetSharedModel<AdaptiveCards::BaseCardElement, AdaptiveCards::Image, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveImage>(imageAsElement.Get());
+        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedImage = GetSharedModel<AdaptiveCards::BaseCardElement,ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveImage>(imageAsElement.Get());
         containedElements.push_back(std::dynamic_pointer_cast<AdaptiveCards::Image>(sharedImage));
 
         return S_OK;
@@ -650,9 +621,8 @@ HRESULT GetBackgroundColorFromStyle(
 
 HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 {
-    HSTRING asHstring;
-    RETURN_IF_FAILED(UTF8ToHString(inputString, &asHstring));
-    return HStringToJsonObject(asHstring, result);
+    std::wstring asWstring = StringToWstring(inputString);
+    return HStringToJsonObject(HStringReference(asWstring.c_str()).Get(), result);
 }
 
 HRESULT HStringToJsonObject(const HSTRING& inputHString, IJsonObject** result)
@@ -673,9 +643,9 @@ HRESULT HStringToJsonObject(const HSTRING& inputHString, IJsonObject** result)
 
 HRESULT JsonObjectToString(IJsonObject* inputJson, string& result)
 {
-    HSTRING asHstring;
-    RETURN_IF_FAILED(JsonObjectToHString(inputJson, &asHstring));
-    return HStringToUTF8(asHstring, result);
+    HString asHstring;
+    RETURN_IF_FAILED(JsonObjectToHString(inputJson, asHstring.GetAddressOf()));
+    return HStringToUTF8(asHstring.Get(), result);
 }
 
 HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
@@ -692,9 +662,8 @@ HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
 
 HRESULT StringToJsonValue(const string inputString, IJsonValue** result)
 {
-    HSTRING asHstring;
-    RETURN_IF_FAILED(UTF8ToHString(inputString, &asHstring));
-    return HStringToJsonValue(asHstring, result);
+    std::wstring asWstring = StringToWstring(inputString);
+    return HStringToJsonValue(HStringReference(asWstring.c_str()).Get(), result);
 }
 
 HRESULT HStringToJsonValue(const HSTRING& inputHString, IJsonValue** result)
@@ -716,9 +685,9 @@ HRESULT HStringToJsonValue(const HSTRING& inputHString, IJsonValue** result)
 
 HRESULT JsonValueToString(IJsonValue* inputValue, string& result)
 {
-    HSTRING asHstring;
-    RETURN_IF_FAILED(JsonValueToHString(inputValue, &asHstring));
-    return HStringToUTF8(asHstring, result);
+    HString asHstring;
+    RETURN_IF_FAILED(JsonValueToHString(inputValue, asHstring.GetAddressOf()));
+    return HStringToUTF8(asHstring.Get(), result);
 }
 
 HRESULT JsonValueToHString(IJsonValue* inputJsonValue, HSTRING* result)
