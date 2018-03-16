@@ -8,7 +8,7 @@
 #import "ACRViewController.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOAdaptiveCardPrivate.h"
-#import "ACRRendererPrivate.h"
+#import "ACRView.h"
 
 using namespace AdaptiveCards;
 
@@ -42,7 +42,6 @@ using namespace AdaptiveCards;
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -37,26 +37,25 @@
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-
+    UIImageView *view;
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
-    UIImageView *view = [[UIImageView alloc]
-                         initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-
-    // Add width/height constraints so image is resized accordingly
-    [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
-                                                        attribute:NSLayoutAttributeWidth
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:nil
-                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                       multiplier:1.0
-                                                         constant:cgsize.width],
-                           [NSLayoutConstraint constraintWithItem:view
-                                                        attribute:NSLayoutAttributeHeight
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:nil
-                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                       multiplier:1.0
-                                                         constant:cgsize.height]]];
+    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
+    if(imgElem->GetImageSize() != ImageSize::Auto && imgElem->GetImageSize() != ImageSize::Stretch && imgElem->GetImageSize() != ImageSize::None){
+        [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                                attribute:NSLayoutAttributeWidth
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:1.0
+                                                                 constant:cgsize.width],
+                                   [NSLayoutConstraint constraintWithItem:view
+                                                                attribute:NSLayoutAttributeHeight
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:1.0
+                                                                 constant:cgsize.height]]];
+    }
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
     __block UIImage *img = nil;
     // Generate key for ImageViewMap
@@ -74,6 +73,24 @@
 
     if(img) {// if image is ready, proceed to add it
         view.image = img;
+        if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None){
+            CGFloat heightToWidthRatio = img.size.height / img.size.width;
+            [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                                    attribute:NSLayoutAttributeHeight
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:view
+                                                                    attribute:NSLayoutAttributeWidth
+                                                                   multiplier:heightToWidthRatio
+                                                                     constant:0]]];
+            CGFloat widthToHeightRatio = img.size.width/ img.size.height;
+            [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                                    attribute:NSLayoutAttributeWidth
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:view
+                                                                    attribute:NSLayoutAttributeHeight
+                                                                   multiplier:widthToHeightRatio
+                                                                     constant:0]]];
+        }
         view.contentMode = UIViewContentModeScaleAspectFit;
         view.clipsToBounds = NO;
         if(imgElem->GetImageStyle() == ImageStyle::Person) {
@@ -95,9 +112,21 @@
     [wrappingview addConstraints:[ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
                                            withSuperview:wrappingview
                                                   toView:view]];
-
-    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    // ImageSize::Auto should maintain its intrinsic size
+    if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None){
+        NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:[view(<=wrappingview)]", @"V:|-[view(<=wrappingview)]-|", nil];
+        NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, wrappingview);
+        for(NSString *constraint in visualFormats){
+            [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+        }
+    } else {
+        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    }
+    if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::None){
+        [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    }
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
     UILongPressGestureRecognizer * gestureRecognizer =
