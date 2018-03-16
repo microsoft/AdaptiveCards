@@ -10,7 +10,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-    HRESULT AdaptiveCardElementBase::InitializeBaseElement(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
+    HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
     {
         m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedModel->GetSpacing());
         m_separator = sharedModel->GetSeparator();

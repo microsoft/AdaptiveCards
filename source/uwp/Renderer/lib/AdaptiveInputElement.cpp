@@ -10,7 +10,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-    HRESULT AdaptiveInputElementBase::InitializeBaseElement(std::shared_ptr<AdaptiveCards::BaseInputElement>& sharedModel)
+    HRESULT AdaptiveInputElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseInputElement>& sharedModel)
     {
         AdaptiveCardElementBase::InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(sharedModel));
         m_isRequired = sharedModel->GetIsRequired();
