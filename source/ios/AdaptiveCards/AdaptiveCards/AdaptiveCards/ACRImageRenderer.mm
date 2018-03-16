@@ -56,7 +56,7 @@
                                                                multiplier:1.0
                                                                  constant:cgsize.height]]];
     }
-    NSMutableDictionary *imageViewMap = [(ACRView *)rootView getImageMap];
+    NSMutableDictionary *imageViewMap = [rootView getImageMap];
     __block UIImage *img = nil;
     // Generate key for ImageViewMap
     NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
@@ -91,7 +91,6 @@
                                                                    multiplier:widthToHeightRatio
                                                                      constant:0]]];
         }
-        view.superview.frame.size = img.size;
         view.contentMode = UIViewContentModeScaleAspectFit;
         view.clipsToBounds = NO;
         if(imgElem->GetImageStyle() == ImageStyle::Person) {
