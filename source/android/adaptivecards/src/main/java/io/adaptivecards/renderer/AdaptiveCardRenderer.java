@@ -248,16 +248,16 @@ public class AdaptiveCardRenderer
         }
 
         int i = 0;
-        int maxActions = (int) hostConfig.getActions().getMaxActions();
+        long maxActions = hostConfig.getActions().getMaxActions();
         for (; i < size && i < maxActions; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
             ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
         }
 
-        if (i >= maxActions)
+        if (i >= maxActions && size != maxActions)
         {
-            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_REACHED, "A maximum of " + maxActions + " actions are allowed"));
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
         }
     }
 
