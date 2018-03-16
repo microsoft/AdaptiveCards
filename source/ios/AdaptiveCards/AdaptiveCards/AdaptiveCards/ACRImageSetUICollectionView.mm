@@ -18,14 +18,14 @@ using namespace AdaptiveCards;
     ACOBaseCardElement *_acoElem;
     ACOHostConfig *_acoConfig;
     std::shared_ptr<ImageSet> _imgSet;
-    UIViewController* _vc;
     ImageSize _imageSize;
+    ACRView* _rootView;
 }
 
 - (instancetype)init:(std::shared_ptr<ImageSet> const&)imageSet
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
        WithSuperview:(UIView *)view
-  rootViewController:(UIViewController *)vc
+  rootView:(ACRView *)rootView
 {
     self = [super initWithFrame:view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     if(self)
@@ -36,7 +36,7 @@ using namespace AdaptiveCards;
         _acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:imageSet];
         _acoConfig = [[ACOHostConfig alloc] initWithConfig:hostConfig];
         _imgSet = imageSet;
-        _vc = vc;
+        _rootView = rootView;
         _imageSize = _imgSet->GetImageSize();
         if(_imgSet->GetImageSize() == ImageSize::Auto || _imgSet->GetImageSize()  == ImageSize::Stretch || _imgSet->GetImageSize()  == ImageSize::None){
             _imageSize = ImageSize::Medium;
@@ -66,7 +66,7 @@ using namespace AdaptiveCards;
     if(cellSize  == ImageSize::Auto || cellSize  == ImageSize::Stretch || cellSize  == ImageSize::None){
         _imgSet->GetImages()[indexPath.row]->SetImageSize(_imageSize);
     }
-    UIView *content = [[ACRImageRenderer getInstance] render:nil rootViewController:_vc inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
+    UIView *content = [[ACRImageRenderer getInstance] render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell) {

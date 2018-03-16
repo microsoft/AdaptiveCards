@@ -15,5 +15,10 @@
 
 - (instancetype)init;
 + (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect) frame;
++ (ACRRenderResult *)renderAsViewController:(ACOAdaptiveCard *)card
+                                     config:(ACOHostConfig *)config
+                                      frame:(CGRect)frame
+                                   delegate:(id<ACRActionDelegate>) acrActionDelegate;
+;
 
 @end    
