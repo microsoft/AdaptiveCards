@@ -193,7 +193,7 @@ using namespace AdaptiveCards;
 
 - (CGSize)getImageSize:(ImageSize)imageSize
 {
-    float sz = _config->imageSizes.smallSize;
+    float sz;
     switch (imageSize)
     {
         case ImageSize::Large:{
@@ -211,7 +211,7 @@ using namespace AdaptiveCards;
         }
 
         default:{
-            NSLog(@"unimplemented");
+            sz = _config->imageSizes.largeSize;
         }
     }
     CGSize cgSize = CGSizeMake(sz, sz);
