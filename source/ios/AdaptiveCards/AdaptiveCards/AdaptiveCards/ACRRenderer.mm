@@ -139,7 +139,7 @@ using namespace AdaptiveCards;
 }
 
 + (UIView *)render:(UIView<ACRIContentHoldingView> *)view
-            rootView:(ACRView *)rootView
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
      withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
      andHostConfig:(ACOHostConfig *)config

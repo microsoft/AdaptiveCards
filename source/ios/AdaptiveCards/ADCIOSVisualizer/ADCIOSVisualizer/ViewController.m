@@ -155,7 +155,6 @@
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
     if(cardParseResult.isValid){
-        //renderResult = [ACRRenderer renderAsViewController:cardParseResult.card config:hostconfigParseResult.config frame:CGRectMake(0, 0, 500, 0) delegate:self];
         renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config frame:CGRectMake(0, 0, 500, 0)];
     }	
     
@@ -169,7 +168,6 @@
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
         ACRView *ad = renderResult.view;
-        //ACRViewController *adcVc = renderResult.viewcontroller;
         ad.acrActionDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
@@ -179,9 +177,6 @@
             self.scrView.showsHorizontalScrollIndicator = YES;
         }
         self.curView = ad;
-        //[self addChildViewController:adcVc];
-        //[self.scrView addSubview:adcVc.view];
-        //[adcVc didMoveToParentViewController:self];
         [self.scrView addSubview:ad];
         self.scrView.contentSize = self.curView.frame.size;
         self.scrView.translatesAutoresizingMaskIntoConstraints = NO;

@@ -52,8 +52,9 @@
     lab.font = [UIFont fontWithDescriptor:dec size:[acoConfig getTextBlockTextSize:txtConfig.size]];
     return lab;
 }
+
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-rootView:(ACRView *)rootView
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;

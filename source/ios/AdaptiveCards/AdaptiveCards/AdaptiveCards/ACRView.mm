@@ -28,7 +28,6 @@ using namespace AdaptiveCards;
 {
     ACOAdaptiveCard *_adaptiveCard;
     ACOHostConfig *_hostConfig;
-    CGRect _guideFrame;
     NSMutableDictionary *_imageViewMap;
     NSMutableDictionary *_textMap;
     dispatch_queue_t _serial_queue;
@@ -41,7 +40,6 @@ using namespace AdaptiveCards;
 {
     self = [super initWithFrame:frame];
     if(self){
-        _guideFrame = frame;
         std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>();
         _hostConfig = [[ACOHostConfig alloc] initWithConfig:cHostConfig];
         _imageViewMap = [[NSMutableDictionary alloc] init];
@@ -119,7 +117,7 @@ using namespace AdaptiveCards;
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card]
                                                              inputs:inputs
                                                            rootView:self
-                                                         guideFrame:_guideFrame
+                                                         guideFrame:self.frame
                                                          hostconfig:_hostConfig];
     // new rendered adaptiveCard view is added as a sub view
     [self addSubview:newView];

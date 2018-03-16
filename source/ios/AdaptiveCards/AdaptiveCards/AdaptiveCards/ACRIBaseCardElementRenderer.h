@@ -16,7 +16,7 @@
 + (ACRCardElementType)elemType;
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-            rootView:(ACRView *)rootView
+          rootView:(ACRView *)rootView
             inputs:(NSArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;

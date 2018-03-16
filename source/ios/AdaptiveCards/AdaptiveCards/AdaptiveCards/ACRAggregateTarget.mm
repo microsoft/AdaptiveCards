@@ -14,7 +14,7 @@
 @implementation ACRAggregateTarget
 {
     ACOBaseActionElement *_actionElement;
-    __weak ACRView *view;
+    __weak ACRView *_view;
 }
 
 - (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView*)rootViewController;
@@ -22,7 +22,7 @@
     self = [super init];
     if(self) {
         _actionElement = actionElement;
-        view = rootViewController;
+        _view = rootViewController;
     }
     return self;
 }
@@ -30,12 +30,12 @@
 - (IBAction)send:(UIButton *)sender
 {
     [sender setSelected:YES];
-    [view.acrActionDelegate didFetchUserResponses:[view card] action:_actionElement];
+    [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
 }
 
 - (void)doSelectAction
 {
-    [view.acrActionDelegate didFetchUserResponses:[view card] action:_actionElement];
+    [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
 }
 
 
