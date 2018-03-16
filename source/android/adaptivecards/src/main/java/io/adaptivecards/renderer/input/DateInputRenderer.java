@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.DateInputHandler;
@@ -41,7 +42,7 @@ public class DateInputRenderer extends TextInputRenderer
 
     @Override
     public View render(
-            RenderedAdaptiveCard renderedcard,
+            RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
@@ -50,6 +51,13 @@ public class DateInputRenderer extends TextInputRenderer
             HostConfig hostConfig,
             ContainerStyle containerStyle)
     {
+
+        if (!hostConfig.getSupportsInteractivity())
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.Date is not allowed"));
+            return null;
+        }
+
         DateInput dateInput = null;
         if (baseCardElement instanceof DateInput)
         {
@@ -77,7 +85,7 @@ public class DateInputRenderer extends TextInputRenderer
         }
 
         EditText editText = renderInternal(
-                renderedcard,
+                renderedCard,
                 context,
                 viewGroup,
                 dateInput,
