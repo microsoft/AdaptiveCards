@@ -21,7 +21,7 @@
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak UIViewController *_vc;
     UIView *_adcView;
-    bool justCreated;
+    BOOL _justCreated;
 }
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
@@ -36,7 +36,7 @@
         _config = config;
         _superview = superview;
         _vc = vc;
-        justCreated = true;
+        _justCreated = YES;
         _adcView = nil;
     }
     return self;
@@ -129,17 +129,16 @@
                      blue:((num & 0x000000FF)) / 255.0
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
     [wrappingView setAlignmentForSubview:AdaptiveCards::HorizontalAlignment::Center];
-    justCreated = true;
+    _justCreated = YES;
 }
 
 - (IBAction)toggleVisibilityOfShowCard
 {
     // If the card has just been created but never shown, add to _superview
-    
-    if(justCreated)
+    if(_justCreated)
     {
         [_superview addArrangedSubview:_adcView];
-        justCreated = false;
+        _justCreated = NO;
         return;
     }
     
