@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
   spec.name             = 'AdaptiveCards'
 
-  spec.version          = '1.0.0-beta1'
+  spec.version          = '1.0.0'
   
   spec.license          = { :type => 'MIT', :file => 'LICENSE.txt' } 
   
@@ -12,9 +12,9 @@ Pod::Spec.new do |spec|
   
   spec.summary          = 'Adaptive Cards are a new way for developers to exchange card content in a common and consistent way'
   
-  spec.source           = { :http => 'https://github.com/Microsoft/AdaptiveCards/releases/download/untagged-bf82881ad1f564e018b0/AdaptiveCards.framework.zip' }
+  spec.source           = { :http => 'https://github.com/Microsoft/AdaptiveCards/releases/download/v1.0/AdaptiveCards.framework.zip' }
  
   spec.vendored_frameworks = 'AdaptiveCards.framework'
   
-  spec.platform         = :ios, '10.3'
+  spec.platform         = :ios, '10'
 end

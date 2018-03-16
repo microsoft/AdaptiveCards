@@ -10,7 +10,7 @@
 #import "TextBlock.h"
 #import "HostConfig.h"
 #import "MarkDownParser.h"
-#import "ACRViewController.h"
+#import "ACRView.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRUILabel.h"
@@ -31,7 +31,7 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-rootViewController:(UIViewController *)vc
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -42,13 +42,12 @@ rootViewController:(UIViewController *)vc
     ACRUILabel *lab = [[ACRUILabel alloc] init];
     lab.style = [viewGroup style];
     __block NSMutableAttributedString *content = nil;
-    if(vc)
-    {
-        NSMutableDictionary *textMap = [(ACRViewController *)vc getTextMap];
+    if(rootView){
+        NSMutableDictionary *textMap = [rootView getTextMap];
         // Generate key for ImageViewMap
         NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
         // Syncronize access to imageViewMap
-        dispatch_sync([(ACRViewController *)vc getSerialTextQueue], ^{
+        dispatch_sync([rootView getSerialTextQueue], ^{
             if(textMap[key]) { // if content is available, get it, otherwise cache label, so it can be used used later
                 content = textMap[key];
             } else {

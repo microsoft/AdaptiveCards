@@ -21,7 +21,7 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIViewController *)vc
+- (UIButton* )renderButton:(ACRView *)rootView
                     inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
@@ -32,12 +32,12 @@
 
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str()
                                           encoding:NSUTF8StringEncoding];
-    UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:[acoConfig getHostConfig]];
+    UIButton *button = [UIButton acr_renderButton:rootView title:title andHostConfig:[acoConfig getHostConfig]];
 
     ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:action->GetCard()
                                                                          config:acoConfig
                                                                       superview:superview
-                                                                             vc:vc];
+                                                                       rootView:rootView];
     [button addTarget:target
                action:@selector(toggleVisibilityOfShowCard)
      forControlEvents:UIControlEventTouchUpInside];

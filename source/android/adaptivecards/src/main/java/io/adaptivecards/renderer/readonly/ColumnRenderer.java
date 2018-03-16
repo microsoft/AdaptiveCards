@@ -64,7 +64,12 @@ public class ColumnRenderer extends BaseCardElementRenderer
         setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
         ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : column.GetStyle();
-        View returnedView = CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, null, column, column.GetItems(), cardActionHandler, hostConfig, styleForThis);
+        LinearLayout returnedView = new LinearLayout(context);
+        returnedView.setOrientation(LinearLayout.VERTICAL);
+        if (!column.GetItems().isEmpty())
+        {
+            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, returnedView, column, column.GetItems(), cardActionHandler, hostConfig, styleForThis);
+        }
         if (styleForThis != containerStyle)
         {
             int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());

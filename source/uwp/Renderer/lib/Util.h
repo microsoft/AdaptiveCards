@@ -49,10 +49,6 @@ HRESULT GetSpacingSizeFromSpacing(
     ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing,
     UINT* spacingSize) noexcept;
 
-HRESULT SetSharedElementProperties(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement * adaptiveCardElement,
-    std::shared_ptr<AdaptiveCards::BaseCardElement> sharedCardElement);
-
 HRESULT GenerateSharedElements(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>* items,
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
