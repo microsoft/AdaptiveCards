@@ -1,5 +1,6 @@
 package io.adaptivecards.renderer.http;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
 import java.io.BufferedInputStream;
@@ -9,8 +10,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_MOVED_PERM;
@@ -22,7 +25,10 @@ public abstract class HttpRequestHelper
     private static HttpURLConnection connect(String url, String method, Map<String, String> requestProperty, boolean doOutput /* for post/puts */, boolean useCaches)
             throws MalformedURLException, URISyntaxException, IOException
     {
-        URL netURL = new URL(url);
+        //Decode the url since the url in the card may already be encoded
+        URL netURL = new URL(URLDecoder.decode(url, "UTF-8"));
+        URI uri = new URI(netURL.getProtocol(), netURL.getUserInfo(), netURL.getHost(), netURL.getPort(), netURL.getPath(), netURL.getQuery(), netURL.getRef());
+        netURL = uri.toURL();
 
         HttpURLConnection conn = (HttpURLConnection) netURL.openConnection();
         conn.setRequestMethod(method);
