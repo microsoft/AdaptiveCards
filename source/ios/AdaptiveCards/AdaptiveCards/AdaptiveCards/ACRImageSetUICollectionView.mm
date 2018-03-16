@@ -18,6 +18,7 @@ using namespace AdaptiveCards;
     ACOBaseCardElement *_acoElem;
     ACOHostConfig *_acoConfig;
     std::shared_ptr<ImageSet> _imgSet;
+    ImageSize _imageSize;
     ACRView* _rootView;
 }
 
@@ -36,10 +37,12 @@ using namespace AdaptiveCards;
         _acoConfig = [[ACOHostConfig alloc] initWithConfig:hostConfig];
         _imgSet = imageSet;
         _rootView = rootView;
-
-        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = [_acoConfig getImageSize:imageSet->GetImageSize()];
-        ((UICollectionViewFlowLayout *)self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
-
+        _imageSize = _imgSet->GetImageSize();
+        if(_imgSet->GetImageSize() == ImageSize::Auto || _imgSet->GetImageSize()  == ImageSize::Stretch || _imgSet->GetImageSize()  == ImageSize::None){
+            _imageSize = ImageSize::Medium;
+        }
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = [_acoConfig getImageSize:_imageSize];
+        self.scrollEnabled = NO;
         self.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return self;
@@ -59,14 +62,18 @@ using namespace AdaptiveCards;
 {
     static NSString *identifier = @"cellId";
     [_acoElem setElem:_imgSet->GetImages()[indexPath.row]];
-
+    ImageSize cellSize = _imgSet->GetImageSize();
+    if(cellSize  == ImageSize::Auto || cellSize  == ImageSize::Stretch || cellSize  == ImageSize::None){
+        _imgSet->GetImages()[indexPath.row]->SetImageSize(_imageSize);
+    }
     UIView *content = [[ACRImageRenderer getInstance] render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell) {
         cell = [[UICollectionViewCell alloc] initWithFrame:content.frame];
+    } else {
+        cell.contentView.frame = content.frame;
     }
-    cell.contentView.frame = content.frame;
     [cell.contentView addSubview:content];
     return cell;
 }
@@ -79,6 +86,14 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    return [self.collectionViewLayout collectionViewContentSize];
+    return [self collectionViewContentSize];
+}
+
+- (CGSize) collectionViewContentSize
+{
+    size_t cellCounts = _imgSet->GetImages().size();
+    int dimension = (ceil(sqrt(cellCounts)));
+    CGSize imageSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
+    return CGSizeMake(dimension * imageSize.width, dimension * imageSize.height);
 }
 @end
