@@ -268,34 +268,20 @@ export const defaultPayload: string = `{
 						"type": "Input.Date",
 						"id": "dueDate",
 						"title": "Select due date"
-					}
-				],
-				"actions": [
-				    {
-				        "type": "Action.Submit",
-				        "title": "OK"
-			        }
-				]
-			}
-		},
-		{
-			"type": "Action.ShowCard",
-			"title": "Comment",
-			"card": {
-				"type": "AdaptiveCard",
-				"body": [
+					},
 					{
 						"type": "Input.Text",
 						"id": "comment",
 						"isMultiline": true,
-						"placeholder": "Enter your comment"
+						"placeholder": "Add a comment"
 					}
 				],
 				"actions": [
-					{
-						"type": "Action.Submit",
-						"title": "OK"
-					}
+				    {
+				        "type": "Action.OpenUrl",
+						"title": "OK",
+						"url": "http://adaptivecards.io"
+			        }
 				]
 			}
 		},

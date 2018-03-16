@@ -266,8 +266,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
             ComPtr<IInspectable> dictionaryValue;
             ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
+
+            boolean hasKey{};
             if (SUCCEEDED(strongDictionary.As(&resourceDictionaryMap)) &&
-                SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
+                SUCCEEDED(resourceDictionaryMap->HasKey(resourceKey.Get(), &hasKey)) &&
+                hasKey && SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
             {
                 ComPtr<T> resourceToReturn;
                 if (SUCCEEDED(dictionaryValue.As(&resourceToReturn)))
@@ -449,14 +452,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IAdaptiveCardResourceResolvers* resolvers)
     {
         // Get the image url scheme
-        HSTRING schemeName;
-        THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
+        HString schemeName;
+        THROW_IF_FAILED(imageUri->get_SchemeName(schemeName.GetAddressOf()));
 
         // Get the resolver for the image
         ComPtr<IAdaptiveCardResourceResolver> resolver;
         if (resolvers != nullptr)
         {
-            THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
+            THROW_IF_FAILED(resolvers->Get(schemeName.Get(), &resolver));
             // If we have a resolver
             if (resolver != nullptr)
             {

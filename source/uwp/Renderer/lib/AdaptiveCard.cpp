@@ -140,19 +140,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
+        HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
     {
         m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_body == nullptr)
         {
             return E_FAIL;
         }
-        
+
         m_actions = Microsoft::WRL::Make<Vector<IAdaptiveActionElement*>>();
         if (m_actions == nullptr)
         {
             return E_FAIL;
-        }        
+        }
 
         RETURN_IF_FAILED(GenerateContainedElementsProjection(sharedAdaptiveCard->GetBody(), m_body.Get()));
         RETURN_IF_FAILED(GenerateActionsProjection(sharedAdaptiveCard->GetActions(), m_actions.Get()));
@@ -168,11 +168,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
             &uriActivationFactory));
 
-        HSTRING imageUri;
-        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), &imageUri));
-        if (imageUri != nullptr)
+        std::wstring imageUri = StringToWstring(sharedAdaptiveCard->GetBackgroundImage());
+        if (!imageUri.empty())
         {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, m_backgroundImage.GetAddressOf()));
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_backgroundImage.GetAddressOf()));
         }
 
         return S_OK;

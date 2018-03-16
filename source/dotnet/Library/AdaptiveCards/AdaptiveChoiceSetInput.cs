@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Xml.Serialization;
 using AdaptiveCards.Rendering;
 using Newtonsoft.Json;
 
@@ -9,28 +11,45 @@ namespace AdaptiveCards
     /// <summary>
     ///     Element which collects choice from the user
     /// </summary>
+#if !NETSTANDARD1_3
+    [XmlType(TypeName = AdaptiveChoiceSetInput.TypeName)]
+#endif
     public class AdaptiveChoiceSetInput : AdaptiveInput
     {
         public const string TypeName = "Input.ChoiceSet";
 
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         ///      Comma separated string of selected Choice values
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
         public string Value { get; set; }
 
         /// <summary>
         ///     Style for choice
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
         public AdaptiveChoiceInputStyle Style { get; set; }
 
         /// <summary>
         ///     allow multiple choices to be selected (default false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
         public bool IsMultiSelect { get; set; }
 
         /// <summary>
@@ -48,8 +67,8 @@ namespace AdaptiveCards
             var choices = Choices.Select(choice => choice.Title).ToList();
             if (Style == AdaptiveChoiceInputStyle.Compact)
             {
-                choiceText = IsMultiSelect 
-                    ? $"Choices: {RendererUtilities.JoinString(choices, ", ", " and ")}" 
+                choiceText = IsMultiSelect
+                    ? $"Choices: {RendererUtilities.JoinString(choices, ", ", " and ")}"
                     : $"Choices: {RendererUtilities.JoinString(choices, ", ", " or ")}";
             }
             else // if (adaptiveChoiceSetInput.Style == ChoiceInputStyle.Expanded)

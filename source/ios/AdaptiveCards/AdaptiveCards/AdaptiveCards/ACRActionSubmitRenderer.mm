@@ -28,7 +28,7 @@
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseActionElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseActionElement> elem = [acoElem element];
     std::shared_ptr<SubmitAction> action = std::dynamic_pointer_cast<SubmitAction>(elem);
 
     NSString *title = [NSString stringWithCString:action->GetTitle().c_str()

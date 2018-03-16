@@ -10,6 +10,8 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
+#import "ACRViewController.h"
+#import "ACOBaseActionElementPrivate.h"
 
 @implementation ACRAggregateTarget
 {
@@ -17,12 +19,12 @@
     __weak ACRView *_view;
 }
 
-- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView*)rootViewController;
+- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView*)rootView;
 {
     self = [super init];
     if(self) {
-        _actionElement = actionElement;
-        _view = rootViewController;
+        _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:[actionElement element]];
+        _view = rootView;
     }
     return self;
 }

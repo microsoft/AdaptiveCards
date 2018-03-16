@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "AdaptiveCardParseWarning.h"
 
 using namespace AdaptiveCards;

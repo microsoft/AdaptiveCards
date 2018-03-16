@@ -32,12 +32,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedTimeInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedTimeInput->GetValue(), m_value.GetAddressOf()));
 
-        m_isRequired = sharedTimeInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedTimeInput->GetSpacing());
-        m_separator = sharedTimeInput->GetSeparator();
-        RETURN_IF_FAILED(UTF8ToHString(sharedTimeInput->GetId(), m_id.GetAddressOf()));
-        RETURN_IF_FAILED(JsonCppToJsonObject(sharedTimeInput->GetAdditionalProperties(), &m_additionalProperties));
-        RETURN_IF_FAILED(JsonCppToJsonObject(sharedTimeInput->GetAdditionalProperties(), &m_additionalProperties));
+        InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedTimeInput));
 
         return S_OK;
     }CATCH_RETURN;
@@ -91,18 +86,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_Id(HSTRING* id)
-    {
-        return m_id.CopyTo(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_Id(HSTRING id)
-    {
-        return m_id.Set(id);
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveTimeInput::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::TimeInput;
@@ -110,84 +93,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
-    {
-        *spacing = m_spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
-    {
-        m_spacing = spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_Separator(boolean* separator)
-    {
-        *separator = m_separator;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_Separator(boolean separator)
-    {
-        m_separator = separator;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_IsRequired(boolean* isRequired)
-    {
-        *isRequired = m_isRequired;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_IsRequired(boolean isRequired)
-    {
-        m_isRequired = isRequired;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_ElementTypeString(HSTRING* type)
-    {
-        ElementType typeEnum;
-        RETURN_IF_FAILED(get_ElementType(&typeEnum));
-        return ProjectedElementTypeToHString(typeEnum, type);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return m_additionalProperties.CopyTo(result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
-    {
-        m_additionalProperties = jsonObject;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        std::shared_ptr<AdaptiveCards::TimeInput> sharedTimeInput = std::make_shared<AdaptiveCards::TimeInput>();
-        GetSharedModel(sharedTimeInput);
-
-        return StringToJsonObject(sharedTimeInput->Serialize(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveCards::TimeInput>& sharedModel) try
+    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(timeInput)));
-        timeInput->SetIsRequired(m_isRequired);
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(timeInput)));
 
         std::string max;
         RETURN_IF_FAILED(HStringToUTF8(m_max.Get(), max));
@@ -204,6 +114,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         std::string value;
         RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
         timeInput->SetValue(value);
+
+        sharedModel = timeInput;
 
         return S_OK;
     }CATCH_RETURN;

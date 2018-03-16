@@ -27,7 +27,7 @@
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<BaseActionElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseActionElement> elem = [acoElem element];
     std::shared_ptr<ShowCardAction> action = std::dynamic_pointer_cast<ShowCardAction>(elem);
 
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str()

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ParseUtil.h"
 #include "AdaptiveCardParseException.h"
 #include "ElementParserRegistration.h"
