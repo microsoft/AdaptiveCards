@@ -72,7 +72,7 @@ using namespace AdaptiveCards;
     if(!cell) {
         cell = [[UICollectionViewCell alloc] initWithFrame:content.frame];
     } else {
-    cell.contentView.frame = content.frame;
+        cell.contentView.frame = content.frame;
     }
     [cell.contentView addSubview:content];
     return cell;
