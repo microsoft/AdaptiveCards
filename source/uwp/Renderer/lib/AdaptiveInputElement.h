@@ -11,7 +11,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
     protected:
 
-        HRESULT InitializeBaseElement(std::shared_ptr<AdaptiveCards::BaseInputElement>& sharedModel);
+        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseInputElement>& sharedModel);
 
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);

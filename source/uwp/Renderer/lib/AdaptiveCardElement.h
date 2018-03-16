@@ -9,7 +9,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
     protected:
 
-        HRESULT InitializeBaseElement(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel);
+        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel);
 
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
         IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
