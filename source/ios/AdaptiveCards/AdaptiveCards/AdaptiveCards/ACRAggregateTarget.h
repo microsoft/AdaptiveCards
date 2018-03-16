@@ -10,11 +10,11 @@
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
 #import "ACRLongPressGestureRecognizerEventHandler.h"
-#import "ACRViewController.h"
+#import "ACRView.h"
 
 @interface ACRAggregateTarget:NSObject<ACRSelectActionDelegate>
 
-- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootViewController:(ACRViewController *)rootViewController;
+- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView *)rootView;
 
 - (IBAction)send:(UIButton *)sender;
 
