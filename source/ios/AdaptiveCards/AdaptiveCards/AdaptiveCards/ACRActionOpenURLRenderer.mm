@@ -21,7 +21,7 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIViewController *)vc
+- (UIButton* )renderButton:(UIView *)vc
                     inputs:(NSMutableArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
@@ -35,7 +35,7 @@
                                           encoding:NSUTF8StringEncoding];
     UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
 
-    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootViewController:(ACRViewController *)vc];
+    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView*)vc];
 
     [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
 

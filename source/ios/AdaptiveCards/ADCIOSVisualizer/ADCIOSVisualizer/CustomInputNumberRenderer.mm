@@ -17,7 +17,7 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-            rootViewController:(UIViewController *)vc
+            rootView:(ACRView *)rootView
             inputs:(NSArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig
@@ -25,7 +25,7 @@
     ACRInputNumberRenderer *defaultRenderer = [ACRInputNumberRenderer getInstance];
 
     UIView *input = [defaultRenderer render:viewGroup
-                         rootViewController:vc
+                                   rootView:rootView
                                      inputs:inputs
                             baseCardElement:acoElem
                                  hostConfig:acoConfig];

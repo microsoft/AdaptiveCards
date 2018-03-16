@@ -18,13 +18,13 @@ using namespace AdaptiveCards;
     ACOBaseCardElement *_acoElem;
     ACOHostConfig *_acoConfig;
     std::shared_ptr<ImageSet> _imgSet;
-    UIViewController* _vc;
+    ACRView* _rootView;
 }
 
 - (instancetype)init:(std::shared_ptr<ImageSet> const&)imageSet
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
        WithSuperview:(UIView *)view
-  rootViewController:(UIViewController *)vc
+  rootView:(ACRView *)rootView
 {
     self = [super initWithFrame:view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     if(self)
@@ -35,7 +35,7 @@ using namespace AdaptiveCards;
         _acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:imageSet];
         _acoConfig = [[ACOHostConfig alloc] initWithConfig:hostConfig];
         _imgSet = imageSet;
-        _vc = vc;
+        _rootView = rootView;
 
         ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = [_acoConfig getImageSize:imageSet->GetImageSize()];
         ((UICollectionViewFlowLayout *)self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -60,7 +60,7 @@ using namespace AdaptiveCards;
     static NSString *identifier = @"cellId";
     [_acoElem setElem:_imgSet->GetImages()[indexPath.row]];
 
-    UIView *content = [[ACRImageRenderer getInstance] render:nil rootViewController:_vc inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
+    UIView *content = [[ACRImageRenderer getInstance] render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell) {

@@ -12,7 +12,7 @@
 #import "SharedAdaptiveCard.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
-#import "ACRViewController.h"
+#import "ACRView.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 
@@ -30,7 +30,7 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-            rootViewController:(UIViewController *)vc
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -57,12 +57,12 @@
                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                        multiplier:1.0
                                                          constant:cgsize.height]]];
-    NSMutableDictionary *imageViewMap = [(ACRViewController *)vc getImageMap];
+    NSMutableDictionary *imageViewMap = [rootView getImageMap];
     __block UIImage *img = nil;
     // Generate key for ImageViewMap
     NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
     // Syncronize access to imageViewMap
-    dispatch_sync([(ACRViewController *)vc getSerialQueue], ^{
+    dispatch_sync([rootView getSerialQueue], ^{
         // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
         if(imageViewMap[key] && [imageViewMap[key] isKindOfClass:[UIImage class]]) {
             img = imageViewMap[key];
@@ -102,7 +102,7 @@
     // instantiate and add tap gesture recognizer
     UILongPressGestureRecognizer * gestureRecognizer =
         [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
-                                                         rootViewController:vc
+                                                                   rootView:rootView
                                                                  targetView:wrappingview
                                                               actionElement:selectAction
                                                                      inputs:inputs
