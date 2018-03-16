@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "ACOHostConfig.h"
 #import "ACOBaseActionElement.h"
+#import "ACRView.h"
 
 @protocol ACRIBaseActionElementRenderer
 
-- (UIButton* )renderButton:(UIViewController *)vc
+- (UIButton* )renderButton:(ACRView *)rootView
                     inputs:(NSMutableArray *)inputs
                  superview:(UIView *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
