@@ -263,6 +263,7 @@ static inline void fixNumericLocaleInput(char* begin, char* end) {
 #pragma warning(disable : 4996)
 #endif
 
+// Disable warnings for banned API usage: sscanf, sprintf and strcat
 #pragma warning(disable : 28726)
 #pragma warning(disable : 28719)
 
