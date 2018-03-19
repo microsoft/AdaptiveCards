@@ -109,7 +109,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
