@@ -268,7 +268,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveCard::GetSharedModel(std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel)
     {
         std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
