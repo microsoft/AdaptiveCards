@@ -69,6 +69,7 @@ namespace AdaptiveCardTestApp.Pages
             switch (status)
             {
                 case TestStatus.Passed:
+                case TestStatus.PassedButSourceWasChanged:
                     indicatorColor = Colors.Green;
                     symbol = Symbol.Accept;
                     break;

@@ -45,6 +45,7 @@ namespace AdaptiveCardTestApp.Pages
                 model.Passed,
                 model.Failed,
                 model.FailedButSourceWasChanged,
+                model.PassedButSourceWasChanged,
                 model.New
             };
 
@@ -56,6 +57,11 @@ namespace AdaptiveCardTestApp.Pages
             else if (model.FailedButSourceWasChanged.Results.Count > 0)
             {
                 ListViewCategories.SelectedItem = model.FailedButSourceWasChanged;
+            }
+
+            else if (model.PassedButSourceWasChanged.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.PassedButSourceWasChanged;
             }
 
             else if (model.New.Results.Count > 0)
