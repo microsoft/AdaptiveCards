@@ -25,8 +25,7 @@ export class CortanaContainer extends HostContainer {
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
 
         var wrapper = document.createElement("div");
-        wrapper.style.width = "342px";
-        
+
         var cardContainer = document.createElement("div");
 
         if (this._renderFrame) {

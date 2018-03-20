@@ -26,7 +26,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn)
+    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn) try
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
@@ -34,12 +34,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedColumn->GetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
 
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedColumn->GetSpacing());
-        m_separator = sharedColumn->GetSeparator();
-        RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetId(), m_id.GetAddressOf()));
-        RETURN_IF_FAILED(JsonCppToJsonObject(sharedColumn->GetAdditionalProperties(), &m_additionalProperties));
+        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
         return S_OK;
-    }
+    } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Width(HSTRING* width)
@@ -93,82 +90,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
-    {
-        *spacing = m_spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
-    {
-        m_spacing = spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Separator(boolean* separator)
-    {
-        *separator = m_separator;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Separator(boolean separator)
-    {
-        m_separator = separator;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Id(HSTRING* id)
-    {
-        return m_id.CopyTo(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Id(HSTRING id)
-    {
-        return m_id.Set(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_ElementTypeString(HSTRING* type)
-    {
-        ElementType typeEnum;
-        RETURN_IF_FAILED(get_ElementType(&typeEnum));
-        return ProjectedElementTypeToHString(typeEnum, type);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return m_additionalProperties.CopyTo(result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
-    {
-        m_additionalProperties = jsonObject;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        std::shared_ptr<AdaptiveCards::Column> sharedModel;
-        RETURN_IF_FAILED(GetSharedModel(sharedModel));
-
-        return StringToJsonObject(sharedModel->Serialize(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveCards::Column>& sharedModel) try
+    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
-
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(column)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(column)));
 
         column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
         column->SetWidth(HStringToUTF8(m_width.Get()));

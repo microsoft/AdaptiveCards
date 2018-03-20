@@ -9,21 +9,22 @@
 #import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
+#import "ACRView.h"
 #import "ACRViewController.h"
 #import "ACOBaseActionElementPrivate.h"
 
 @implementation ACRAggregateTarget
 {
     ACOBaseActionElement *_actionElement;
-    __weak ACRViewController *_vc;
+    __weak ACRView *_view;
 }
 
-- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootViewController:(ACRViewController *)rootViewController;
+- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView*)rootView;
 {
     self = [super init];
     if(self) {
         _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:[actionElement element]];
-        _vc = rootViewController;
+        _view = rootView;
     }
     return self;
 }
@@ -31,12 +32,12 @@
 - (IBAction)send:(UIButton *)sender
 {
     [sender setSelected:YES];
-    [_vc.acrActionDelegate didFetchUserResponses:[_vc card] action:_actionElement];
+    [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
 }
 
 - (void)doSelectAction
 {
-    [_vc.acrActionDelegate didFetchUserResponses:[_vc card] action:_actionElement];
+    [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
 }
 
 

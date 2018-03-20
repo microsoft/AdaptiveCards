@@ -6,20 +6,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <SafariServices/SafariServices.h>
 #import "ACRShowCardTarget.h"
 #import "ACRRendererPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
-#import "ACRViewController.h"
+#import "ACRView.h"
 
 @implementation ACRShowCardTarget
 {
     std::shared_ptr<AdaptiveCards::AdaptiveCard> _adaptiveCard;
     ACOHostConfig *_config;
     __weak UIView<ACRIContentHoldingView> *_superview;
-    __weak UIViewController *_vc;
+    __weak ACRView *_rootView;
     UIView *_adcView;
     BOOL _justCreated;
 }
@@ -27,7 +26,7 @@
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                               config:(ACOHostConfig *)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
-                                  vc:(UIViewController *)vc
+                            rootView:(ACRView *)rootView
 {
     self = [super init];
     if(self)
@@ -35,7 +34,7 @@
         _adaptiveCard = adaptiveCard;
         _config = config;
         _superview = superview;
-        _vc = vc;
+        _rootView = rootView;
         _justCreated = YES;
         _adcView = nil;
     }
@@ -44,18 +43,17 @@
 
 - (void)createShowCard:(NSMutableArray*)inputs
 {
-    [inputs setArray:[NSMutableArray arrayWithArray:[[(ACRViewController *)_vc card] getInputs]]];
+    [inputs setArray:[NSMutableArray arrayWithArray:[[_rootView card] getInputs]]];
     if(!inputs){
         inputs = [[NSMutableArray alloc] init];
     }
     
     UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                     inputs:inputs
-                                            viewController:_vc
+                                                  rootView:_rootView
                                                 guideFrame:_superview.frame
                                                 hostconfig:_config];
-    [[(ACRViewController *)_vc card] setInputs:inputs];
-
+    [[_rootView card] setInputs:inputs];
     unsigned int padding = 0;
 
     switch ([_config getHostConfig] ->actions.spacing)
