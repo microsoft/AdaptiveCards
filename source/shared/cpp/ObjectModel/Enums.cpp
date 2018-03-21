@@ -56,6 +56,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::FontWeights, "fontWeights" },
         { AdaptiveCardSchemaKey::Good, "good" },
         { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
+        { AdaptiveCardSchemaKey::IconUrl, "iconUrl" },
         { AdaptiveCardSchemaKey::Id, "id" },
         { AdaptiveCardSchemaKey::Image, "image" },
         { AdaptiveCardSchemaKey::Images, "images" },

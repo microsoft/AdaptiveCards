@@ -23,6 +23,9 @@ public:
     virtual std::string GetId() const;
     virtual void SetId(const std::string value);
 
+    virtual std::string GetIcon() const;
+    virtual void SetIcon(const std::string& value);
+
     virtual const ActionType GetElementType() const;
 
     std::string Serialize();
@@ -41,6 +44,7 @@ private:
     std::string m_typeString;
     std::string m_title;
     std::string m_id;
+    std::string m_icon;
     Json::Value m_additionalProperties;
 
 protected:
