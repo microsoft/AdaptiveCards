@@ -132,7 +132,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** childElementContainer);
+            _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** outerElementContainer,
+            _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
+
         void ApplyBackgroundToRoot(
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
             _In_ ABI::Windows::Foundation::IUriRuntimeClass* uri,
@@ -159,6 +161,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* children,
             _In_ AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
+            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
             _In_ bool insertSeparator,
             _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext);
 
