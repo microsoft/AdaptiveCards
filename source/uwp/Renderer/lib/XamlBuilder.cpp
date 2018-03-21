@@ -139,7 +139,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 }
             }
             ComPtr<IAdaptiveRenderArgs> renderArgs;
-            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr, nullptr));
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr));
 
             ComPtr<IPanel> outerElementContainer;
             ComPtr<IPanel> bodyElementContainer;
@@ -151,7 +151,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ComPtr<IVector<IAdaptiveCardElement*>> body;
             THROW_IF_FAILED(adaptiveCard->get_Body(&body));
             ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
-            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get(), nullptr));
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
             BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
 
             ComPtr<IVector<IAdaptiveActionElement*>> actions;
@@ -1589,26 +1589,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             }
         }
 
-        ComPtr<IAdaptiveCardElement> parentAdaptiveElement;
-        THROW_IF_FAILED(renderArgs->get_ParentAdaptiveElement(&parentAdaptiveElement));
-
-        // If this image is in an image set, get the max image height from host config
-        if (parentAdaptiveElement != nullptr)
-        {
-            ElementType type;
-            THROW_IF_FAILED(parentAdaptiveElement->get_ElementType(&type));
-
-            if (type == ElementType::ImageSet)
-            {
-                ComPtr<IAdaptiveImageSetConfig> imageSetHostConfig;
-                THROW_IF_FAILED(hostConfig->get_ImageSet(&imageSetHostConfig));
-
-                UINT32 maxImageHeight;
-                THROW_IF_FAILED(imageSetHostConfig->get_MaxImageHeight(&maxImageHeight));
-                THROW_IF_FAILED(frameworkElement->put_MaxHeight(maxImageHeight));
-            }
-        }
-
         ABI::AdaptiveCards::Rendering::Uwp::HAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
 
@@ -1671,7 +1651,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IFrameworkElement> parentElement;
         THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
-        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get(), adaptiveCardElement));
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get()));
 
         ComPtr<IPanel> containerPanelAsPanel;
         THROW_IF_FAILED(containerPanel.As(&containerPanelAsPanel));
@@ -1749,7 +1729,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IFrameworkElement> parentElement;
         THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
-        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get(), adaptiveCardElement));
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get()));
 
         // If container style was explicitly assigned, apply background
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -1822,7 +1802,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig, adaptiveCardElement](IAdaptiveColumn* column)
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column)
         {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
@@ -1897,7 +1877,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ComPtr<IAdaptiveRenderArgs> columnRenderArgs;
             ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style;
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&style));
-            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&columnRenderArgs, style, columnDefinition.Get(), adaptiveCardElement));
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&columnRenderArgs, style, columnDefinition.Get()));
 
             // Build the Column
             ComPtr<IUIElement> xamlColumn;
@@ -2049,15 +2029,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IVector<IAdaptiveImage*>> images;
         THROW_IF_FAILED(adaptiveImageSet->get_Images(&images));
 
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        ComPtr<IAdaptiveImageSetConfig> imageSetConfig;
+        THROW_IF_FAILED(hostConfig->get_ImageSet(&imageSetConfig));
+
         ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize;
         THROW_IF_FAILED(adaptiveImageSet->get_ImageSize(&imageSize));
 
         if (imageSize == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::None)
         {
-            ComPtr<IAdaptiveHostConfig> hostConfig;
-            THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-            ComPtr<IAdaptiveImageSetConfig> imageSetConfig;
-            THROW_IF_FAILED(hostConfig->get_ImageSet(&imageSetConfig));
             THROW_IF_FAILED(imageSetConfig->get_ImageSize(&imageSize));
         }
 
@@ -2071,9 +2052,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
             ComPtr<AdaptiveRenderArgs> childRenderArgs;
-            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, xamlGrid.Get(), adaptiveCardElement));
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, xamlGrid.Get()));
 
-            XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [imageSize, xamlGrid, renderContext, childRenderArgs, imageRenderer](IAdaptiveImage* adaptiveImage)
+            XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [imageSize, xamlGrid, renderContext, childRenderArgs, imageRenderer, imageSetConfig](IAdaptiveImage* adaptiveImage)
             {
                 ComPtr<IUIElement> uiImage;
                 ComPtr<IAdaptiveImage> localAdaptiveImage(adaptiveImage);
@@ -2082,6 +2063,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 ComPtr<IAdaptiveCardElement> adaptiveElementImage;
                 localAdaptiveImage.As(&adaptiveElementImage);
                 THROW_IF_FAILED(imageRenderer->Render(adaptiveElementImage.Get(), renderContext, childRenderArgs.Get(), &uiImage));
+
+                ComPtr<IFrameworkElement> imageAsFrameworkElement;
+                THROW_IF_FAILED(uiImage.As(&imageAsFrameworkElement));
+
+                UINT32 maxImageHeight;
+                THROW_IF_FAILED(imageSetConfig->get_MaxImageHeight(&maxImageHeight));
+                THROW_IF_FAILED(imageAsFrameworkElement->put_MaxHeight(maxImageHeight));
 
                 ComPtr<IPanel> gridAsPanel;
                 THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));

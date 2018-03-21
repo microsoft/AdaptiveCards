@@ -17,12 +17,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
-        IInspectable* parentElement,
-        IAdaptiveCardElement* parentAdaptiveElement) noexcept try
+        IInspectable* parentElement) noexcept try
     {
         m_containerStyle = containerStyle;
         m_parentElement = parentElement;
-        m_parentAdaptiveElement = parentAdaptiveElement;
         return S_OK;
     } CATCH_RETURN;
 
@@ -50,19 +48,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     HRESULT AdaptiveRenderArgs::put_ParentElement(_In_ IInspectable* value)
     {
         m_parentElement = value;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveRenderArgs::get_ParentAdaptiveElement(_COM_Outptr_ IAdaptiveCardElement** value)
-    {
-        return m_parentAdaptiveElement.CopyTo(value);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveRenderArgs::put_ParentAdaptiveElement(_In_ IAdaptiveCardElement* value)
-    {
-        m_parentAdaptiveElement = value;
         return S_OK;
     }
 }}}

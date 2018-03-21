@@ -1999,8 +1999,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propput] HRESULT ContainerStyle([in] ContainerStyle value);
         [propget] HRESULT ParentElement([out, retval] IInspectable** value);
         [propput] HRESULT ParentElement([in] IInspectable* value);
-        [propget] HRESULT ParentAdaptiveElement([out, retval] IAdaptiveCardElement** value);
-        [propput] HRESULT ParentAdaptiveElement([in] IAdaptiveCardElement* value);
     };
 
     [
