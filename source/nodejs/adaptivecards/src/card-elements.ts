@@ -2,7 +2,6 @@
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
-import { IAdaptiveCard } from "./schema";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -1351,6 +1350,19 @@ export class TextInput extends Input {
             return this._inputElement ? this._inputElement.value : null;
         }
     }
+
+    set value(text: string) {
+        if (this.isMultiline) {
+            if (this._textareaElement) {
+                this._textareaElement.value = text;
+            }
+        }
+        else {
+            if (this._inputElement) {
+                this._inputElement.value = text;
+            }
+        }
+    }
 }
 
 export class ToggleInput extends Input {
@@ -2575,7 +2587,13 @@ export class BackgroundImage {
     }
 }
 
-export class Container extends CardElement {
+export abstract class CardElementContainer extends CardElement {
+    abstract getItemCount(): number;
+    abstract getItemAt(index: number): CardElement;
+    abstract removeItem(item: CardElement): boolean;
+}
+
+export class Container extends CardElementContainer {
     private _selectAction: Action;
     private _items: Array<CardElement> = [];
     private _style?: string = null;
@@ -2927,6 +2945,14 @@ export class Container extends CardElement {
         this.setPadding(value);
     }
 
+    getItemCount(): number {
+        return this._items.length;
+    }
+
+    getItemAt(index: number): CardElement {
+        return this._items[index];
+    }
+
     getJsonTypeName(): string {
         return "Container";
     }
@@ -3055,6 +3081,18 @@ export class Container extends CardElement {
         else {
             throw new Error("The element already belongs to another container.")
         }
+    }
+
+    removeItem(item: CardElement): boolean {
+        if (item.parent == this) {
+            this._items.splice(this._items.indexOf(item), 1);
+
+            item.setParent(null);
+
+            return true;
+        }
+
+        return false;
     }
 
     clear() {
@@ -3251,7 +3289,7 @@ export class Column extends Container {
     }
 }
 
-export class ColumnSet extends CardElement {
+export class ColumnSet extends CardElementContainer {
     private _columns: Array<Column> = [];
     private _selectAction: Action;
 
@@ -3362,6 +3400,22 @@ export class ColumnSet extends CardElement {
         this.setPadding(value);
     }
 
+    getCount(): number {
+        return this._columns.length;
+    }
+
+    getItemCount(): number {
+        return this.getCount();
+    }
+
+    getColumnAt(index: number): Column {
+        return this._columns[index];
+    }
+
+    getItemAt(index: number): CardElement {
+        return this.getColumnAt(index);
+    }
+
     getJsonTypeName(): string {
         return "ColumnSet";
     }
@@ -3434,6 +3488,18 @@ export class ColumnSet extends CardElement {
         else {
             throw new Error("This column already belongs to another ColumnSet.");
         }
+    }
+
+    removeItem(item: CardElement): boolean {
+        if (item instanceof Column && item.parent == this) {
+            this._columns.splice(this._columns.indexOf(item), 1);
+
+            item.setParent(null);
+
+            return true;
+        }
+
+        return false;
     }
 
     isLeftMostElement(element: CardElement): boolean {
