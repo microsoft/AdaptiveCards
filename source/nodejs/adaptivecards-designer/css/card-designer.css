@@ -1,33 +1,35 @@
+* {
+    box-sizing: border-box;
+}
+
 .acd-peer {
 }
 
 .acd-peer:hover {
-    border: 1px solid blue;
+    border: 1px solid rgba(0, 0, 255, 0.2);
 }
 
 .acd-peer.selected {
-    border: 1px solid red;
+    border: 1px solid rgba(255, 0, 0, 0.2);
 }
 
 .acd-badge {
-    background-color: blue;
-    color: white;
+    background-color: rgba(0, 0, 255, 0.2);
+    color: blue;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 8px;
     padding: 1px 4px 2px 4px;
 }
 
 .acd-badge.selected {
-    background-color: red;
-    color: white;
+    background-color: rgba(255, 0, 0, 0.2);
+    color: red;
 }
 
 .acd-separation {
-    background-color: rgba(0, 0, 255, 0.1);
-    border: 1px solid rgba(0, 0, 255, 0.1);
+    background-color: rgba(0, 0, 255, 0.2);
 }
 
 .acd-separation.selected {
-    background-color: rgba(255, 0, 0, 0.1);
-    border: 1px solid rgba(255, 0, 0, 0.1);
+    background-color: rgba(255, 0, 0, 0.2);
 }
