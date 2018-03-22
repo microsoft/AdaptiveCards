@@ -207,6 +207,9 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
     result.spacing = ParseUtil::GetEnumValue<Spacing>(
         json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing, SpacingFromString);
 
+    result.iconPlacement = ParseUtil::GetEnumValue<IconPlacement>(
+        json, AdaptiveCardSchemaKey::IconPlacement, defaultValue.iconPlacement, IconPlacementFromString);
+
     return result;
 }
 
