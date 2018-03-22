@@ -307,6 +307,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         UnsupportedSchemaVersion,
     } WarningStatusCode;
 
+    [version(NTDDI_WIN10_RS1)]
+    typedef [v1_enum] enum IconPlacement
+    {
+        AboveTitle = 0,
+        LeftOfTitle
+    } IconPlacement;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -1363,7 +1370,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(c01e7195-0c83-4fed-9911-3845bdb8ebc6),
+        uuid(ce6981d7-8989-42a3-b335-30cbf7108183),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveActionsConfig)
     ]
@@ -1386,6 +1393,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT Spacing([out][retval] Spacing* value);
         [propput] HRESULT Spacing([in] Spacing value);
+
+        [propget] HRESULT IconPlacement([out][retval] IconPlacement* value);
+        [propput] HRESULT IconPlacement([in] IconPlacement value);
     };
 
     [
@@ -1486,7 +1496,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(f0076852-de82-4cc6-8cb3-26cf6ab3c196),
+        uuid(9ab61f28-0c62-4ad2-bda1-2c3d52bc461a),
         version(NTDDI_WIN10_RS1),
     ]
     interface IAdaptiveActionElement : IInspectable
@@ -1499,6 +1509,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
+
+        [propget] HRESULT IconUrl([out, retval] Windows.Foundation.Uri** value);
+        [propput] HRESULT IconUrl([in] Windows.Foundation.Uri* value);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);

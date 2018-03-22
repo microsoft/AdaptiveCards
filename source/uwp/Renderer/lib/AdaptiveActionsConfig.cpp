@@ -22,6 +22,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_buttonSpacing = actionsConfig.buttonSpacing;
         m_maxActions = actionsConfig.maxActions;
         m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(actionsConfig.spacing);
+        m_iconPlacement = static_cast<ABI::AdaptiveCards::Rendering::Uwp::IconPlacement>(actionsConfig.iconPlacement);
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveShowCardActionConfig>(m_showCardActionConfig.GetAddressOf(), actionsConfig.showCard));
 
@@ -108,6 +109,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     HRESULT AdaptiveActionsConfig::put_ActionsOrientation(ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation value)
     {
         m_actionsOrientation = value;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveActionsConfig::get_IconPlacement(ABI::AdaptiveCards::Rendering::Uwp::IconPlacement* value)
+    {
+        *value = m_iconPlacement;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveActionsConfig::put_IconPlacement(ABI::AdaptiveCards::Rendering::Uwp::IconPlacement value)
+    {
+        m_iconPlacement = value;
         return S_OK;
     }
 }}}
