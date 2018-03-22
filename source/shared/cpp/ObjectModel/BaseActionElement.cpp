@@ -45,14 +45,14 @@ void BaseActionElement::SetId(const std::string value)
     m_id = value;
 }
 
-std::string BaseActionElement::GetIcon() const
+std::string BaseActionElement::GetIconUrl() const
 {
-    return m_icon;
+    return m_iconUrl;
 }
 
-void BaseActionElement::SetIcon(const std::string& value)
+void BaseActionElement::SetIconUrl(const std::string& value)
 {
-    m_icon = value;
+    m_iconUrl = value;
 }
 
 const ActionType AdaptiveCards::BaseActionElement::GetElementType() const
@@ -72,7 +72,7 @@ Json::Value BaseActionElement::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(GetElementType());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)] = GetIcon();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)] = GetIconUrl();
 
     return root;
 }
