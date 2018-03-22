@@ -163,7 +163,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 {
                     unsigned int bodyCount;
                     THROW_IF_FAILED(body->get_Size(&bodyCount));
-                    BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext);
+                    BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderContext, containerStyle);
                 }
                 else
                 {
@@ -736,7 +736,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         AdaptiveCardRenderer* renderer,
         IPanel* parentPanel,
         bool insertSeparator,
-        AdaptiveRenderContext* renderContext)
+        AdaptiveRenderContext* renderContext,
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -854,7 +855,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IStackPanel> showCardsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IGridStatics> gridStatics;
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
-        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
+        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&, containerStyle, actionsConfig](IAdaptiveActionElement* child)
         {
             if (currentAction < maxActions)
             {
@@ -893,7 +894,54 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
                 HString title;
                 THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
-                XamlHelpers::SetContent(button.Get(), title.Get());
+                ComPtr<IUriRuntimeClass> iconUrl;
+                THROW_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
+                if (iconUrl.Get()) // Check if the button has an iconUrl
+                {
+                    ABI::AdaptiveCards::Rendering::Uwp::IconPlacement iconPlacement;
+                    THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
+
+                    ComPtr<IStackPanel> buttonContentsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+                    if (iconPlacement == ABI::AdaptiveCards::Rendering::Uwp::IconPlacement::AboveTitle)
+                    {
+                        THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
+                    }
+                    else
+                    {
+                        THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Horizontal));
+                    }
+                    ComPtr<IPanel> buttonContentsPanel;
+                    THROW_IF_FAILED(buttonContentsStackPanel.As(&buttonContentsPanel));
+                    
+                    ComPtr<IAdaptiveImage> adaptiveImage;
+                    THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
+                    adaptiveImage->put_Url(iconUrl.Get());
+                    adaptiveImage->put_Size(ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Stretch);
+                    adaptiveImage->put_HorizontalAlignment(HAlignment_Center);
+
+                    ComPtr<IAdaptiveCardElement> adaptiveCardElement;
+                    THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
+
+                    ComPtr<AdaptiveRenderArgs> childRenderArgs;
+                    THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, buttonContentsStackPanel.Get()));
+
+                    ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+                    THROW_IF_FAILED(buttonText->put_Text(title.Get()));
+                    THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
+                    XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get()); // Add text to stack panel
+
+                    ComPtr<IUIElement> buttonIcon;
+                    BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+                    XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
+
+                    ComPtr<IContentControl> buttonContentControl;
+                    THROW_IF_FAILED(button.As(&buttonContentControl));
+                    buttonContentControl->put_Content(buttonContentsPanel.Get());
+                } 
+                else
+                {
+                    XamlHelpers::SetContent(button.Get(), title.Get());
+                }
 
                 ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
                 THROW_IF_FAILED(action->get_ActionType(&actionType));
