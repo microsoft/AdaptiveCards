@@ -1237,6 +1237,14 @@ export abstract class Input extends CardElement implements Utils.IInput {
     title: string;
     defaultValue: string;
 
+    protected valueChanged() {
+        if (this.onValueChanged) {
+            this.onValueChanged(this);
+        }
+    }
+
+    onValueChanged: (sender: Input) => void;
+
     abstract get value(): string;
 
     validate(): Array<IValidationError> {
@@ -1300,6 +1308,8 @@ export class TextInput extends Input {
                 this._textareaElement.maxLength = this.maxLength;
             }
 
+            this._textareaElement.oninput = () => { this.valueChanged(); }
+
             return this._textareaElement;
         }
         else {
@@ -1321,6 +1331,8 @@ export class TextInput extends Input {
             if (this.maxLength > 0) {
                 this._inputElement.maxLength = this.maxLength;
             }
+
+            this._inputElement.oninput = () => { this.valueChanged(); }
 
             return this._inputElement;
         }
@@ -1350,19 +1362,6 @@ export class TextInput extends Input {
             return this._inputElement ? this._inputElement.value : null;
         }
     }
-
-    set value(text: string) {
-        if (this.isMultiline) {
-            if (this._textareaElement) {
-                this._textareaElement.value = text;
-            }
-        }
-        else {
-            if (this._inputElement) {
-                this._inputElement.value = text;
-            }
-        }
-    }
 }
 
 export class ToggleInput extends Input {
@@ -1386,6 +1385,8 @@ export class ToggleInput extends Input {
         if (this.defaultValue == this.valueOn) {
             this._checkboxInputElement.checked = true;
         }
+
+        this._checkboxInputElement.onchange = () => { this.valueChanged(); }
 
         var label = new TextBlock();
         label.hostConfig = this.hostConfig;
@@ -1435,6 +1436,11 @@ export class ToggleInput extends Input {
 export class Choice {
     title: string;
     value: string;
+
+    constructor(title: string = undefined, value: string = undefined) {
+        this.title = title;
+        this.value = value;
+    }
 }
 
 export class ChoiceSetInput extends Input {
@@ -1473,6 +1479,8 @@ export class ChoiceSetInput extends Input {
                     Utils.appendChild(this._selectElement, option);
                 }
 
+                this._selectElement.onchange = () => { this.valueChanged(); }
+
                 return this._selectElement;
             }
             else {
@@ -1497,6 +1505,8 @@ export class ChoiceSetInput extends Input {
                     if (this.choices[i].value == this.defaultValue) {
                         radioInput.checked = true;
                     }
+
+                    radioInput.onchange = () => { this.valueChanged(); }
 
                     this._toggleInputs.push(radioInput);
 
@@ -1547,6 +1557,8 @@ export class ChoiceSetInput extends Input {
                         checkboxInput.checked = true;
                     }
                 }
+
+                checkboxInput.onchange = () => { this.valueChanged(); }
 
                 this._toggleInputs.push(checkboxInput);
 
@@ -1683,13 +1695,14 @@ export class NumberInput extends Input {
             this._numberInputElement.setAttribute("aria-label", this.placeholder);
         }
 
+        this._numberInputElement.oninput = () => { this.valueChanged(); }
+
         return this._numberInputElement;
     }
 
     min: string;
     max: string;
     placeholder: string;
-
 
     getJsonTypeName(): string {
         return "Input.Number";
