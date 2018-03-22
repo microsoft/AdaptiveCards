@@ -1,0 +1,13 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}

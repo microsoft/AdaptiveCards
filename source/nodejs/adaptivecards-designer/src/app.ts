@@ -21,11 +21,19 @@ window.onload = () => {
     designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => { buildPropertySheet(peer); };
     designer.card = card;
 
+    /*
     document.getElementById("deleteSelected").onclick = () => {
         designer.deleteSelected();
     }
+    */
 
     window.addEventListener('resize', function () {
         designer.updateLayout();
     });
+
+    /*
+    document.getElementById("cardHost").onscroll = () => {
+        designer.updateLayout();
+    }
+    */
 };

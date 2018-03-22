@@ -1,56 +1,6 @@
 import * as Adaptive from "adaptivecards";
 import { Spacing, PaddingDefinition } from "adaptivecards";
 
-interface IPoint {
-    x: number,
-    y: number
-}
-
-class Rect {
-    constructor(public top: number, public right: number, public bottom: number, public left: number) {
-    }
-
-    get width(): number {
-        return this.right - this.left;
-    }
-
-    get height(): number {
-        return this.bottom - this.top;
-    }
-}
-
-function getScreenOffset(obj): IPoint {
-    var p: IPoint = { x: 0, y: 0 };
-
-    while (obj.offsetParent) {
-        p.x = p.x + obj.offsetParent.offsetLeft;
-        p.y = p.y + obj.offsetParent.offsetTop;
-
-        if (obj == document.getElementsByTagName("body")[0]) {
-            break;
-        }
-        else {
-            obj = obj.offsetParent;
-        }
-    }
-
-    return p;
-}
-
-function getBoundingClientRectIncludeMargins(element: HTMLElement): Rect {
-    var clientRect = element.getBoundingClientRect();
-    var computedStyles = window.getComputedStyle(element);
-
-    var result = new Rect(
-        clientRect.top - parseInt(computedStyles.marginTop),
-        clientRect.right - parseInt(computedStyles.marginRight),
-        clientRect.bottom - parseInt(computedStyles.marginBottom),
-        clientRect.left - parseInt(computedStyles.marginLeft)
-    );
-
-    return result;
-}
-
 interface ILabelAndInput<TInput extends Adaptive.Input> {
     label: Adaptive.TextBlock;
     input: TInput;
@@ -190,23 +140,21 @@ export abstract class CardElementPeer {
 
     updateLayout() {
         if (this._renderedElement) {
-            var clientRect = getBoundingClientRectIncludeMargins(this._cardElement.renderedElement);
-            var screenOffset = getScreenOffset(this._cardElement.renderedElement);
+            var clientRect = this.cardElement.renderedElement.getBoundingClientRect();
 
             this._renderedElement.style.width = clientRect.width + "px";
             this._renderedElement.style.height = clientRect.height + "px";
-            this._renderedElement.style.left = clientRect.left - screenOffset.x + "px";;
-            this._renderedElement.style.top = clientRect.top - screenOffset.y + "px";;
+            this._renderedElement.style.left = this.cardElement.renderedElement.offsetLeft + "px";;
+            this._renderedElement.style.top = this.cardElement.renderedElement.offsetTop + "px";;
         }
 
         if (this._separatorElement && this._cardElement.separatorElement) {
-            var clientRect = getBoundingClientRectIncludeMargins(this._cardElement.separatorElement);
-            var screenOffset = getScreenOffset(this._cardElement.separatorElement);            
+            var clientRect = this.cardElement.separatorElement.getBoundingClientRect();
 
             this._separatorElement.style.width = clientRect.width + "px";
             this._separatorElement.style.height = clientRect.height + "px";
-            this._separatorElement.style.left = clientRect.left - screenOffset.x + "px";;
-            this._separatorElement.style.top = clientRect.top - screenOffset.y + "px";;
+            this._separatorElement.style.left = this.cardElement.separatorElement.offsetLeft + "px";;
+            this._separatorElement.style.top = this.cardElement.separatorElement.offsetTop + "px";;
         }
 
         this._badgeElement.style.visibility = this.isSelected || this.isMouseOver ? "visible" : "hidden";
@@ -527,7 +475,7 @@ export class CardDesigner {
     static readonly peerRegistry: DesignerPeersRegistry = new DesignerPeersRegistry();
 
     private _card: Adaptive.AdaptiveCard;
-    private _renderedCardHost: HTMLElement;
+    private _cardHost: HTMLElement;
     private _designerSurface: HTMLDivElement;
     private _items: Array<CardElementPeer> = [];
     private _selectedPeer: CardElementPeer;
@@ -575,10 +523,10 @@ export class CardDesigner {
     }
 
     private renderCard() {
-        this._renderedCardHost.innerHTML = "";
+        this._cardHost.innerHTML = "";
 
         if (this.card) {
-            this._renderedCardHost.appendChild(this.card.render());
+            this._cardHost.appendChild(this.card.render());
         }
     }
 
@@ -592,9 +540,10 @@ export class CardDesigner {
         rootElement.style.width = "100%";
         rootElement.style.height = "auto";
 
-        this._renderedCardHost = document.createElement("div");
+        this._cardHost = document.createElement("div");
+        this._cardHost.style.border = "1px solid #EEEEEE";
 
-        rootElement.appendChild(this._renderedCardHost);
+        rootElement.appendChild(this._cardHost);
 
         this._designerSurface = document.createElement("div");
         this._designerSurface.style.position = "absolute";

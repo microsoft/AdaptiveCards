@@ -4,17 +4,18 @@
         <script src="node_modules/adaptivecards/dist/adaptivecards.js"></script>
         <script src="dist/adaptivecards-designer.js"></script>
 
+        <link rel="stylesheet" href="css/app.css" type="text/css" />
         <link rel="stylesheet" href="css/card-designer.css" type="text/css" />
         <link rel="stylesheet" href="css/outlook.css" type="text/css" />
     </head>
-    <body style="margin: 0; box-sizing: border-box;">
-        <div style="display: flex;">
-            <div style="flex: 1 0 450px; height: 100%; overflow: auto;">
-                <div id="designerHost" style="border: 1px solid #EEEEEE; margin: 10px;"></div>
-                <button id="deleteSelected">Delete selected</button>
-            </div>
-            <div style="flex: 1 1 100%; height: 100%; overflow: auto; margin: 10px; padding-right: 10px;">
-                <div id="propertySheetHost" style="width: 100%; height: 450px;"></div>
+    <body>
+        <div style="display: flex; height: 100%;">
+            <div id="designerHost" style="flex: 1 0 450px; padding: 10px; overflow: auto;"></div>
+            <!--
+            <button id="deleteSelected">Delete selected</button>
+            -->
+            <div style="flex: 1 1 100%; height: 100%; overflow: auto; padding: 10px;">
+                <div id="propertySheetHost" style="width: 100%;"></div>
             </div>
         </div>
     </body>

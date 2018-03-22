@@ -362,6 +362,14 @@ export abstract class CardElement {
         }
     }
 
+    getActionCount(): number {
+        return 0;
+    }
+
+    getActionAt(index: number): Action {
+        throw new Error("Index out of range.");
+    }
+
     validate(): Array<IValidationError> {
         return [];
     }
@@ -1771,14 +1779,23 @@ export class TimeInput extends Input {
     }
 }
 
+export abstract class ActionVisual {
+    readonly action: Action;
+
+    constructor(action: Action) {
+        this.action = action;
+    }
+
+    abstract get renderedElement(): HTMLElement;
+}
+
 enum ActionButtonState {
     Normal,
     Expanded,
     Subdued
 }
 
-class ActionButton {
-    private _action: Action;
+class ActionButton extends ActionVisual {
     private _element: HTMLButtonElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
@@ -1792,7 +1809,7 @@ class ActionButton {
     private updateCssStyle() {
         this._element.className = "ac-pushButton";
 
-        if (this._action instanceof ShowCardAction) {
+        if (this.action instanceof ShowCardAction) {
             this._element.classList.add("expandable");
         }
 
@@ -1807,7 +1824,7 @@ class ActionButton {
     }
 
     constructor(action: Action) {
-        this._action = action;
+        super(action);
 
         this._element = document.createElement("button");
         this._element.type = "button";
@@ -1822,10 +1839,6 @@ class ActionButton {
 
     onClick: (actionButton: ActionButton) => void = null;
 
-    get action() {
-        return this._action;
-    }
-
     get text(): string {
         return this._text;
     }
@@ -1836,7 +1849,7 @@ class ActionButton {
         this._element.setAttribute("aria-label", this._text);
     }
 
-    get element(): HTMLElement {
+    get renderedElement(): HTMLElement {
         return this._element;
     }
 
@@ -2409,15 +2422,15 @@ class ActionCollection {
             for (var i = 0; i < this.items.length; i++) {
                 if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
                     var actionButton = new ActionButton(this.items[i]);
-                    actionButton.element.style.overflow = "hidden";
-                    actionButton.element.style.overflow = "table-cell";
-                    actionButton.element.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
+                    actionButton.renderedElement.style.overflow = "hidden";
+                    actionButton.renderedElement.style.overflow = "table-cell";
+                    actionButton.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
                     actionButton.text = this.items[i].title;
                     actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                     this._actionButtons.push(actionButton);
 
-                    buttonStrip.appendChild(actionButton.element);
+                    buttonStrip.appendChild(actionButton.renderedElement);
 
                     this._renderedActionCount++;
 
@@ -3736,6 +3749,19 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection = new ActionCollection(this);
         this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer(null) };
         this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer(null) };
+    }
+
+    getActionCount(): number {
+        return this._actionCollection.items.length;
+    }
+
+    getActionAt(index: number): Action {
+        if (index >= 0 && index < this.getActionCount()) {
+            return this._actionCollection.items[index];
+        }
+        else {
+            super.getActionAt(index);
+        }
     }
 
     getActionById(id: string): Action {
