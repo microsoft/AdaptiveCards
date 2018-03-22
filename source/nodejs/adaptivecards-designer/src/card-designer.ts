@@ -307,7 +307,7 @@ export class GenericCardElementPeer extends TypedCardElementPeer<Adaptive.CardEl
 export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
         super.addPropertySheetEntries(card);
-        
+
         var url = addLabelAndInput(card, "Url:", Adaptive.TextInput);
         url.input.defaultValue = this.cardElement.url;
         url.input.onValueChanged = () => {
@@ -639,6 +639,7 @@ export class CardDesigner {
                 this._items.splice(this._items.indexOf(this.selectedPeer), 1);
 
                 this._designerSurface.removeChild(this.selectedPeer.renderedElement);
+                this._designerSurface.removeChild(this.selectedPeer.separatorElement);
 
                 this._selectedPeer = null;
 
