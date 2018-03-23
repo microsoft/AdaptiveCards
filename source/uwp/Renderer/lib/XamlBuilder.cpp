@@ -931,6 +931,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                     ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
                     THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
 
+                    UINT spacingSize;
+                    THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::Rendering::Uwp::Spacing::Default, &spacingSize));
+
+                    ABI::Windows::UI::Color color = {0};
+                    auto separator = CreateSeparator(renderContext, spacingSize, spacingSize, color, iconPlacement == ABI::AdaptiveCards::Rendering::Uwp::IconPlacement::AboveTitle);
+                    XamlHelpers::AppendXamlElementToPanel(separator.Get(), buttonContentsPanel.Get());
+
                     ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
                     THROW_IF_FAILED(buttonText->put_Text(title.Get()));
                     THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
