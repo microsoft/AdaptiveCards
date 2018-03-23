@@ -36,18 +36,16 @@ function addLabelAndInput<TInput extends Adaptive.Input>(
     return result;
 }
 
-export abstract class CardElementPeer {
+export abstract class DesignerPeer {
     private _renderedElement: HTMLElement;
-    private _separatorElement: HTMLElement;
-    private _badgeElement: HTMLElement;
     private _isSelected: boolean;
     private _isMouseOver: boolean;
 
-    private get isMouseOver(): boolean {
+    protected get isMouseOver(): boolean {
         return this._isMouseOver;
     }
 
-    private set isMouseOver(value: boolean) {
+    protected set isMouseOver(value: boolean) {
         if (value != this._isMouseOver) {
             this._isMouseOver = value;
 
@@ -55,16 +53,171 @@ export abstract class CardElementPeer {
         }
     }
 
-    protected _cardElement: Adaptive.CardElement;
+    protected abstract getBadgeText(): string;
+    protected abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard);
+    protected abstract getReferenceRenderedElement(): HTMLElement;
+
+    protected internalRender() {
+        this._renderedElement = document.createElement("div");
+        this._renderedElement.onclick = () => {
+            if (this.onSelectedChanged) {
+                this.onSelectedChanged(this);
+            }
+        }
+        this._renderedElement.classList.add("acd-peer");
+        this._renderedElement.style.position = "absolute";
+
+        this._renderedElement.onmouseenter = () => { this.isMouseOver = true; };
+        this._renderedElement.onmouseleave = () => { this.isMouseOver = false; };
+    }
+
+    protected updateCssStyles() {
+        if (this.isSelected) {
+            this.renderedElement.classList.add("selected");
+        }
+        else {
+            this.renderedElement.classList.remove("selected");
+        }
+    }
+
+    protected changed() {
+        if (this.onChanged) {
+            this.onChanged(this);
+        }
+    }
+
+    onSelectedChanged: (sender: DesignerPeer) => void;
+    onChanged: (sender: DesignerPeer) => void;
+
+    constructor() {
+    }
+
+    render() {
+        this.internalRender();
+        this.updateLayout();
+    }
+
+    updateLayout() {
+        if (this.renderedElement) {
+            var clientRect = this.getReferenceRenderedElement().getBoundingClientRect();
+
+            this.renderedElement.style.width = clientRect.width + "px";
+            this.renderedElement.style.height = clientRect.height + "px";
+            this.renderedElement.style.left = this.getReferenceRenderedElement().offsetLeft + "px";;
+            this.renderedElement.style.top = this.getReferenceRenderedElement().offsetTop + "px";;
+        }
+    }
+
+    addElemnentsToDesignerSurface(designerSurface: HTMLElement) {
+        designerSurface.appendChild(this.renderedElement);
+    }
+
+    buildPropertySheetCard(): Adaptive.AdaptiveCard {
+        var result = new Adaptive.AdaptiveCard();
+        result.padding = new PaddingDefinition(
+            Adaptive.Spacing.None,
+            Adaptive.Spacing.None,
+            Adaptive.Spacing.None,
+            Adaptive.Spacing.None);
+
+        this.addPropertySheetEntries(result);
+
+        return result;
+    }
+
+    get renderedElement(): HTMLElement {
+        return this._renderedElement;
+    }
+
+    get isSelected(): boolean {
+        return this._isSelected;
+    }
+
+    set isSelected(value: boolean) {
+        if (value != this._isSelected) {
+            this._isSelected = value;
+
+            this.updateCssStyles();
+            this.updateLayout();
+        }
+    }
+}
+
+export class ActionPeer extends DesignerPeer {
+    protected _action: Adaptive.Action;
+
+    protected getBadgeText(): string {
+        return this.action.getJsonTypeName();
+    }
+
+    protected getReferenceRenderedElement(): HTMLElement {
+        return this.action.renderedElement;
+    }
 
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
+        var elementType = new Adaptive.TextBlock();
+        elementType.text = "Action type: **" + this.action.getJsonTypeName() + "**";
+
+        card.addItem(elementType);
+
+        var id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
+        id.input.defaultValue = this.action.id;
+        id.input.placeholder = "(not set)";
+        id.input.onValueChanged = () => {
+            this.action.id = id.input.value;
+
+            this.changed();
+        }
+    }
+
+    constructor(action: Adaptive.Action) {
+        super();
+
+        this._action = action;
+    }
+
+    get action(): Adaptive.Action {
+        return this._action;
+    }
+}
+
+export class CardElementPeer extends DesignerPeer {
+    private _separatorElement: HTMLElement;
+
+    protected _cardElement: Adaptive.CardElement;
+
+    protected updateCssStyles() {
+        super.updateCssStyles();
+
+        if (this.isSelected) {
+            this.separatorElement.classList.add("selected");
+        }
+        else {
+            this.separatorElement.classList.remove("selected");
+        }
+    }
+
+    protected getBadgeText(): string {
+        return this.cardElement.getJsonTypeName();
+    }
+
+    protected getReferenceRenderedElement(): HTMLElement {
+        return this.cardElement.renderedElement;
+    }
+
+    protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
+        var elementType = new Adaptive.TextBlock();
+        elementType.text = "Element type: **" + this.cardElement.getJsonTypeName() + "**";
+
+        card.addItem(elementType);
+
         var id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
         id.input.defaultValue = this.cardElement.id;
         id.input.placeholder = "(not set)";
         id.input.onValueChanged = () => {
             this.cardElement.id = id.input.value;
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         var spacing = addLabelAndInput(card, "Spacing:", Adaptive.ChoiceSetInput);
@@ -79,7 +232,7 @@ export abstract class CardElementPeer {
         spacing.input.onValueChanged = () => {
             this.cardElement.spacing = <Adaptive.Spacing>parseInt(spacing.input.value);
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         var separator = new Adaptive.ToggleInput();
@@ -89,7 +242,7 @@ export abstract class CardElementPeer {
         separator.onValueChanged = () => {
             this.cardElement.separator = separator.value == "true";
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         card.addItem(separator);
@@ -110,7 +263,7 @@ export abstract class CardElementPeer {
                 this.cardElement.horizontalAlignment = <Adaptive.HorizontalAlignment>parseInt(horizontalAlignment.input.value);
             }
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         var height = addLabelAndInput(card, "Height:", Adaptive.ChoiceSetInput);
@@ -121,90 +274,44 @@ export abstract class CardElementPeer {
         height.input.onValueChanged = () => {
             this.cardElement.height = height.input.value === "auto" ? "auto" : "stretch";
 
-            this.cardElementChanged();
+            this.changed();
         }
     }
 
-    protected cardElementChanged() {
-        if (this.onCardElementChanged) {
-            this.onCardElementChanged(this);
-        }
-    }
+    protected internalRender() {
+        super.internalRender();
 
-    constructor(cardElement: Adaptive.CardElement) {
-        this._cardElement = cardElement;
-    }
-
-    onSelectedChanged: (sender: CardElementPeer) => void;
-    onCardElementChanged: (sender: CardElementPeer) => void;
-
-    updateLayout() {
-        if (this._renderedElement) {
-            var clientRect = this.cardElement.renderedElement.getBoundingClientRect();
-
-            this._renderedElement.style.width = clientRect.width + "px";
-            this._renderedElement.style.height = clientRect.height + "px";
-            this._renderedElement.style.left = this.cardElement.renderedElement.offsetLeft + "px";;
-            this._renderedElement.style.top = this.cardElement.renderedElement.offsetTop + "px";;
-        }
-
-        if (this._separatorElement && this._cardElement.separatorElement) {
-            var clientRect = this.cardElement.separatorElement.getBoundingClientRect();
-
-            this._separatorElement.style.width = clientRect.width + "px";
-            this._separatorElement.style.height = clientRect.height + "px";
-            this._separatorElement.style.left = this.cardElement.separatorElement.offsetLeft + "px";;
-            this._separatorElement.style.top = this.cardElement.separatorElement.offsetTop + "px";;
-        }
-
-        this._badgeElement.style.visibility = this.isSelected || this.isMouseOver ? "visible" : "hidden";
-        this._separatorElement.style.visibility = this.cardElement.spacing == Adaptive.Spacing.None ? "hidden" : this.isSelected || this.isMouseOver ? "visible" : "hidden";
-    }
-
-    render() {
         this._separatorElement = document.createElement("div");
         this._separatorElement.classList.add("acd-separation");
         this._separatorElement.style.position = "absolute";
         this._separatorElement.style.visibility = "hidden";
+    }
 
-        this._renderedElement = document.createElement("div");
-        this._renderedElement.onclick = () => {
-            if (this.onSelectedChanged) {
-                this.onSelectedChanged(this);
-            }
+    constructor(cardElement: Adaptive.CardElement) {
+        super();
+
+        this._cardElement = cardElement;
+    }
+
+    addElemnentsToDesignerSurface(designerSurface: HTMLElement) {
+        super.addElemnentsToDesignerSurface(designerSurface);
+
+        designerSurface.appendChild(this.separatorElement);
+    }
+
+    updateLayout() {
+        super.updateLayout();
+
+        if (this.separatorElement && this.cardElement.separatorElement) {
+            var clientRect = this.cardElement.separatorElement.getBoundingClientRect();
+
+            this.separatorElement.style.width = clientRect.width + "px";
+            this.separatorElement.style.height = clientRect.height + "px";
+            this.separatorElement.style.left = this.cardElement.separatorElement.offsetLeft + "px";;
+            this.separatorElement.style.top = this.cardElement.separatorElement.offsetTop + "px";;
         }
-        this._renderedElement.classList.add("acd-peer");
-        this._renderedElement.style.position = "absolute";
 
-        this._badgeElement = document.createElement("div");
-        this._badgeElement.classList.add("acd-badge");
-        this._badgeElement.style.cssFloat = "right";
-        this._badgeElement.style.visibility = "hidden";
-        this._badgeElement.innerText = (<any>this._cardElement).constructor.name.toUpperCase();
-
-        this._renderedElement.onmouseenter = () => { this.isMouseOver = true; };
-        this._renderedElement.onmouseleave = () => { this.isMouseOver = false; };
-
-        this._renderedElement.appendChild(this._badgeElement);
-
-        this.updateLayout();
-    }
-
-    buildPropertySheetCard(): Adaptive.AdaptiveCard {
-        var result = new Adaptive.AdaptiveCard();
-        result.padding = new PaddingDefinition(
-            Adaptive.Spacing.None,
-            Adaptive.Spacing.None,
-            Adaptive.Spacing.None,
-            Adaptive.Spacing.None);
-
-        this.addPropertySheetEntries(result);
-
-        return result;
-    }
-
-    get renderedElement(): HTMLElement {
-        return this._renderedElement;
+        this.separatorElement.style.visibility = this.cardElement.spacing == Adaptive.Spacing.None ? "hidden" : this.isSelected || this.isMouseOver ? "visible" : "hidden";
     }
 
     get separatorElement(): HTMLElement {
@@ -213,29 +320,6 @@ export abstract class CardElementPeer {
 
     get cardElement(): Adaptive.CardElement {
         return this._cardElement;
-    }
-
-    get isSelected(): boolean {
-        return this._isSelected;
-    }
-
-    set isSelected(value: boolean) {
-        if (value != this._isSelected) {
-            this._isSelected = value;
-
-            if (this._isSelected) {
-                this._renderedElement.classList.add("selected");
-                this._badgeElement.classList.add("selected");
-                this._separatorElement.classList.add("selected");
-            }
-            else {
-                this._renderedElement.classList.remove("selected");
-                this._badgeElement.classList.remove("selected");
-                this._separatorElement.classList.remove("selected");
-            }
-
-            this.updateLayout();
-        }
     }
 }
 
@@ -249,9 +333,6 @@ export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardEle
     }
 }
 
-export class GenericCardElementPeer extends TypedCardElementPeer<Adaptive.CardElement> {
-}
-
 export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
         super.addPropertySheetEntries(card);
@@ -261,7 +342,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         url.input.onValueChanged = () => {
             this.cardElement.url = url.input.value;
             
-            this.cardElementChanged();
+            this.changed();
         }
 
         var altText = addLabelAndInput(card, "Alternate text:", Adaptive.TextInput);
@@ -269,7 +350,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         altText.input.onValueChanged = () => {
             this.cardElement.altText = altText.input.value;
             
-            this.cardElementChanged();
+            this.changed();
         }
 
         var size = addLabelAndInput(card, "Size:", Adaptive.ChoiceSetInput);
@@ -283,7 +364,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         size.input.onValueChanged = () => {
             this.cardElement.size = <Adaptive.Size>parseInt(size.input.value);
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         var style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
@@ -294,7 +375,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         style.input.onValueChanged = () => {
             this.cardElement.style = <Adaptive.ImageStyle>parseInt(style.input.value);
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         var backgroundColor = addLabelAndInput(card, "Background color:", Adaptive.TextInput);
@@ -302,11 +383,10 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         backgroundColor.input.onValueChanged = () => {
             this.cardElement.backgroundColor = backgroundColor.input.value;
             
-            this.cardElementChanged();
+            this.changed();
         }
     }
 }
-
 
 export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
@@ -318,7 +398,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         text.input.onValueChanged = () => {
             this.cardElement.text = text.input.value;
             
-            this.cardElementChanged();
+            this.changed();
         }
 
         var wrap = new Adaptive.ToggleInput();
@@ -328,7 +408,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         wrap.onValueChanged = () => {
             this.cardElement.wrap = wrap.value == "true";
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         card.addItem(wrap);
@@ -342,7 +422,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 
                 this.cardElement.maxLines = newMaxLines;
             
-                this.cardElementChanged();
+                this.changed();
                 }
             catch (ex) {
                 // Do nothing
@@ -360,7 +440,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         size.input.onValueChanged = () => {
             this.cardElement.size = <Adaptive.TextSize>parseInt(size.input.value);
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         var weight = addLabelAndInput(card, "Weight:", Adaptive.ChoiceSetInput);
@@ -372,7 +452,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         weight.input.onValueChanged = () => {
             this.cardElement.weight = <Adaptive.TextWeight>parseInt(weight.input.value);
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         var color = addLabelAndInput(card, "Color:", Adaptive.ChoiceSetInput);
@@ -388,7 +468,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         color.input.onValueChanged = () => {
             this.cardElement.color = <Adaptive.TextColor>parseInt(color.input.value);
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         var isSubtle = new Adaptive.ToggleInput();
@@ -398,24 +478,29 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         isSubtle.onValueChanged = () => {
             this.cardElement.isSubtle = isSubtle.value == "true";
 
-            this.cardElementChanged();
+            this.changed();
         }
 
         card.addItem(isSubtle);
     }
 }
 
-interface IDesignerPeerRegistration {
-    cardElementType: { new(): Adaptive.CardElement },
-    peerType: { new(cardElement: Adaptive.CardElement): CardElementPeer}
+type CardElementType = { new(): Adaptive.CardElement };
+type ActionType = { new(): Adaptive.Action };
+type CardElementPeerType = { new(cardElement: Adaptive.CardElement): CardElementPeer };
+type ActionPeerType = { new(action: Adaptive.Action): ActionPeer };
+
+interface IDesignerPeerRegistration<TSource, TPeer> {
+    sourceType: TSource,
+    peerType: TPeer
 }
 
-export class DesignerPeersRegistry {
-    private _items: Array<IDesignerPeerRegistration> = [];
+export abstract class DesignerPeerRegistry<TSource, TPeer> {
+    private _items: Array<IDesignerPeerRegistration<TSource, TPeer>> = [];
 
-    private findTypeRegistration(cardElementType: { new(): Adaptive.CardElement }): IDesignerPeerRegistration {
+    protected findTypeRegistration(sourceType: TSource): IDesignerPeerRegistration<TSource, TPeer> {
         for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].cardElementType === cardElementType) {
+            if (this._items[i].sourceType === sourceType) {
                 return this._items[i];
             }
         }
@@ -427,26 +512,21 @@ export class DesignerPeersRegistry {
         this.reset();
     }
 
+    abstract reset();
+
     clear() {
         this._items = [];
     }
 
-    reset() {
-        this.clear();
-
-        this.registerPeer(Adaptive.TextBlock, TextBlockPeer);
-        this.registerPeer(Adaptive.Image, ImagePeer);
-    }
-
-    registerPeer(cardElementType: { new(): Adaptive.CardElement }, peerType: { new(cardElement: Adaptive.CardElement): CardElementPeer }) {
-        var registrationInfo = this.findTypeRegistration(cardElementType);
+    registerPeer(sourceType: TSource, peerType: TPeer) {
+        var registrationInfo = this.findTypeRegistration(sourceType);
 
         if (registrationInfo != null) {
             registrationInfo.peerType = peerType;
         }
         else {
             registrationInfo = {
-                cardElementType: cardElementType,
+                sourceType: sourceType,
                 peerType: peerType
             }
 
@@ -454,33 +534,60 @@ export class DesignerPeersRegistry {
         }
     }
 
-    unregisterPeer(cardElementType: { new(): Adaptive.CardElement }) {
+    unregisterPeer(sourceType: TSource) {
         for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].cardElementType === cardElementType) {
+            if (this._items[i].sourceType === sourceType) {
                 this._items.splice(i, 1);
 
                 return;
             }
         }
     }
+}
+
+export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementType, CardElementPeerType> {
+    reset() {
+        this.clear();
+
+        this.registerPeer(Adaptive.TextBlock, TextBlockPeer);
+        this.registerPeer(Adaptive.Image, ImagePeer);
+    }
 
     createPeerInstance(cardElement: Adaptive.CardElement): CardElementPeer {
         var registrationInfo = this.findTypeRegistration((<any>cardElement).constructor);
 
-        return registrationInfo ? new registrationInfo.peerType(cardElement) : new GenericCardElementPeer(cardElement);
+        return registrationInfo ? new registrationInfo.peerType(cardElement) : new CardElementPeer(cardElement);
+    }
+}
+
+export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionPeerType> {
+    reset() {
+        this.clear();
+
+        /*
+        this.registerPeer(Adaptive.TextBlock, TextBlockPeer);
+        this.registerPeer(Adaptive.Image, ImagePeer);
+        */
+    }
+
+    createPeerInstance(action: Adaptive.Action): ActionPeer {
+        var registrationInfo = this.findTypeRegistration((<any>action).constructor);
+
+        return registrationInfo ? new registrationInfo.peerType(action) : new ActionPeer(action);
     }
 }
 
 export class CardDesigner {
-    static readonly peerRegistry: DesignerPeersRegistry = new DesignerPeersRegistry();
+    static readonly cardElementPeerRegistry: CardElementPeerRegistry = new CardElementPeerRegistry();
+    static readonly actionPeerRegistry: ActionPeerRegistry = new ActionPeerRegistry();
 
     private _card: Adaptive.AdaptiveCard;
     private _cardHost: HTMLElement;
     private _designerSurface: HTMLDivElement;
-    private _items: Array<CardElementPeer> = [];
-    private _selectedPeer: CardElementPeer;
+    private _items: Array<DesignerPeer> = [];
+    private _selectedPeer: DesignerPeer;
 
-    private peerClicked(peer: CardElementPeer) {
+    private peerClicked(peer: DesignerPeer) {
         if (peer != this._selectedPeer) {
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = false;
@@ -498,22 +605,30 @@ export class CardDesigner {
         }
     }
 
-    private peerCardElementChanged(peer: CardElementPeer) {
+    private peerChanged(peer: DesignerPeer) {
         this.renderCard()
         this.updateLayout();
     }
 
-    private renderPeer(cardElement: Adaptive.CardElement) {
-        var peer = CardDesigner.peerRegistry.createPeerInstance(cardElement);
-
+    private initializePeer(peer: DesignerPeer) {
         this._items.push(peer);
 
-        peer.onSelectedChanged = (clickedPeer: CardElementPeer) => { this.peerClicked(clickedPeer); };
-        peer.onCardElementChanged = (sender: CardElementPeer) => { this.peerCardElementChanged(sender); };
+        peer.onSelectedChanged = (clickedPeer: DesignerPeer) => { this.peerClicked(clickedPeer); };
+        peer.onChanged = (sender: DesignerPeer) => { this.peerChanged(sender); };
         peer.render();
+        peer.addElemnentsToDesignerSurface(this._designerSurface);
+    }
 
-        this._designerSurface.appendChild(peer.separatorElement);
-        this._designerSurface.appendChild(peer.renderedElement);
+    private renderPeer(cardElement: Adaptive.CardElement) {
+        var cardElementPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(cardElement);
+
+        this.initializePeer(cardElementPeer);
+
+        for (var i = 0; i < cardElement.getActionCount(); i++) {
+            var actionPeer = CardDesigner.actionPeerRegistry.createPeerInstance(cardElement.getActionAt(i));
+            
+            this.initializePeer(actionPeer);
+        }
 
         if (cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < cardElement.getItemCount(); i++) {
@@ -558,7 +673,7 @@ export class CardDesigner {
         this.parentElement.appendChild(rootElement);
     }
 
-    onSelectedPeerChanged: (peer: CardElementPeer) => void;
+    onSelectedPeerChanged: (peer: DesignerPeer) => void;
 
     render() {
         this._designerSurface.innerHTML = "";
@@ -578,6 +693,7 @@ export class CardDesigner {
         }
     }
 
+    /*
     deleteSelected() {
         if (this.selectedPeer && this.selectedPeer.cardElement.parent) {
             if (this.selectedPeer.cardElement.parent instanceof Adaptive.CardElementContainer) {
@@ -596,8 +712,9 @@ export class CardDesigner {
             }
         }
     }
+    */
 
-    get selectedPeer(): CardElementPeer {
+    get selectedPeer(): DesignerPeer {
         return this._selectedPeer;
     }
 

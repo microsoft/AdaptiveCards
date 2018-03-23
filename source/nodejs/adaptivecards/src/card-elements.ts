@@ -1779,24 +1779,13 @@ export class TimeInput extends Input {
     }
 }
 
-export abstract class ActionVisual {
-    readonly action: Action;
-
-    constructor(action: Action) {
-        this.action = action;
-    }
-
-    abstract get renderedElement(): HTMLElement;
-}
-
 enum ActionButtonState {
     Normal,
     Expanded,
     Subdued
 }
 
-class ActionButton extends ActionVisual {
-    private _element: HTMLButtonElement = null;
+class ActionButton {
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
 
@@ -1807,32 +1796,29 @@ class ActionButton extends ActionVisual {
     }
 
     private updateCssStyle() {
-        this._element.className = "ac-pushButton";
+        this.action.renderedElement.className = "ac-pushButton";
 
         if (this.action instanceof ShowCardAction) {
-            this._element.classList.add("expandable");
+            this.action.renderedElement.classList.add("expandable");
         }
 
         switch (this._state) {
             case ActionButtonState.Expanded:
-                this._element.classList.add("expanded");
+                this.action.renderedElement.classList.add("expanded");
                 break;
             case ActionButtonState.Subdued:
-                this._element.classList.add("subdued");
+                this.action.renderedElement.classList.add("subdued");
                 break;
         }
     }
 
+    readonly action: Action;
+
     constructor(action: Action) {
-        super(action);
+        this.action = action;
 
-        this._element = document.createElement("button");
-        this._element.type = "button";
-
-        this._element.style.overflow = "hidden";
-        this._element.style.whiteSpace = "nowrap";
-        this._element.style.textOverflow = "ellipsis";
-        this._element.onclick = (e) => { this.click(); };
+        this.action.render();
+        this.action.renderedElement.onclick = (e) => { this.click(); };
 
         this.updateCssStyle();
     }
@@ -1845,12 +1831,8 @@ class ActionButton extends ActionVisual {
 
     set text(value: string) {
         this._text = value;
-        this._element.innerText = this._text;
-        this._element.setAttribute("aria-label", this._text);
-    }
-
-    get renderedElement(): HTMLElement {
-        return this._element;
+        this.action.renderedElement.innerText = this._text;
+        this.action.renderedElement.setAttribute("aria-label", this._text);
     }
 
     get state(): ActionButtonState {
@@ -1867,8 +1849,24 @@ class ActionButton extends ActionVisual {
 export abstract class Action {
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
+    private _renderedElement: HTMLElement = null;
+
+    private setCollection(actionCollection: ActionCollection) {
+        this._actionCollection = actionCollection;
+    }
 
     abstract getJsonTypeName(): string;
+
+    render() {
+        var buttonElement = document.createElement("button");
+        buttonElement.type = "button";
+
+        buttonElement.style.overflow = "hidden";
+        buttonElement.style.whiteSpace = "nowrap";
+        buttonElement.style.textOverflow = "ellipsis";
+
+        this._renderedElement = buttonElement;
+    }
 
     setParent(value: CardElement) {
         this._parent = value;
@@ -1876,10 +1874,6 @@ export abstract class Action {
 
     execute() {
         raiseExecuteActionEvent(this);
-    }
-
-    private setCollection(actionCollection: ActionCollection) {
-        this._actionCollection = actionCollection;
     }
 
     // Expand the action card pane with a inline status card
@@ -1927,6 +1921,10 @@ export abstract class Action {
 
     get parent(): CardElement {
         return this._parent;
+    }
+
+    get renderedElement(): HTMLElement {
+        return this._renderedElement;
     }
 }
 
@@ -2143,7 +2141,6 @@ export class ShowCardAction extends Action {
 
 class ActionCollection {
     private _owner: CardElement;
-    private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
     private _expandedAction: ShowCardAction = null;
     private _renderedActionCount: number = 0;
@@ -2237,8 +2234,8 @@ class ActionCollection {
 
     private actionClicked(actionButton: ActionButton) {
         if (!(actionButton.action instanceof ShowCardAction)) {
-            for (var i = 0; i < this._actionButtons.length; i++) {
-                this._actionButtons[i].state = ActionButtonState.Normal;
+            for (var i = 0; i < this.buttons.length; i++) {
+                this.buttons[i].state = ActionButtonState.Normal;
             }
 
             this.hideStatusCard();
@@ -2253,16 +2250,16 @@ class ActionCollection {
                 actionButton.action.execute();
             }
             else if (actionButton.action === this._expandedAction) {
-                for (var i = 0; i < this._actionButtons.length; i++) {
-                    this._actionButtons[i].state = ActionButtonState.Normal;
+                for (var i = 0; i < this.buttons.length; i++) {
+                    this.buttons[i].state = ActionButtonState.Normal;
                 }
 
                 this.hideActionCard();
             }
             else {
-                for (var i = 0; i < this._actionButtons.length; i++) {
-                    if (this._actionButtons[i] !== actionButton) {
-                        this._actionButtons[i].state = ActionButtonState.Subdued;
+                for (var i = 0; i < this.buttons.length; i++) {
+                    if (this.buttons[i] !== actionButton) {
+                        this.buttons[i].state = ActionButtonState.Subdued;
                     }
                 }
 
@@ -2274,6 +2271,7 @@ class ActionCollection {
     }
 
     items: Array<Action> = [];
+    buttons: Array<ActionButton> = [];
     onHideActionCardPane: () => void = null;
     onShowActionCardPane: (action: ShowCardAction) => void = null;
 
@@ -2422,15 +2420,15 @@ class ActionCollection {
             for (var i = 0; i < this.items.length; i++) {
                 if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
                     var actionButton = new ActionButton(this.items[i]);
-                    actionButton.renderedElement.style.overflow = "hidden";
-                    actionButton.renderedElement.style.overflow = "table-cell";
-                    actionButton.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
+                    actionButton.action.renderedElement.style.overflow = "hidden";
+                    actionButton.action.renderedElement.style.overflow = "table-cell";
+                    actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
                     actionButton.text = this.items[i].title;
                     actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
-                    this._actionButtons.push(actionButton);
+                    this.buttons.push(actionButton);
 
-                    buttonStrip.appendChild(actionButton.renderedElement);
+                    buttonStrip.appendChild(actionButton.action.renderedElement);
 
                     this._renderedActionCount++;
 
@@ -2514,6 +2512,19 @@ export class ActionSet extends CardElement {
 
     getJsonTypeName(): string {
         return "ActionSet";
+    }
+
+    getActionCount(): number {
+        return this._actionCollection.items.length;
+    }
+
+    getActionAt(index: number): Action {
+        if (index >= 0 && index < this.getActionCount()) {
+            return this._actionCollection.items[index];
+        }
+        else {
+            super.getActionAt(index);
+        }
     }
 
     validate(): Array<IValidationError> {

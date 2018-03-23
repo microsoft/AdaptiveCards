@@ -4,7 +4,7 @@ import * as Designer from "./card-designer";
 
 var designer: Designer.CardDesigner;
 
-function buildPropertySheet(peer: Designer.CardElementPeer) {
+function buildPropertySheet(peer: Designer.DesignerPeer) {
     var propertySheetHost = document.getElementById("propertySheetHost");
     propertySheetHost.innerHTML = "";
 
