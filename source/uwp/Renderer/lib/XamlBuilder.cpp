@@ -916,7 +916,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                     ComPtr<IAdaptiveImage> adaptiveImage;
                     THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
                     adaptiveImage->put_Url(iconUrl.Get());
-                    adaptiveImage->put_Size(ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Stretch);
+                    adaptiveImage->put_Size(ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Small);
                     adaptiveImage->put_HorizontalAlignment(HAlignment_Center);
 
                     ComPtr<IAdaptiveCardElement> adaptiveCardElement;
@@ -925,18 +925,30 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                     ComPtr<AdaptiveRenderArgs> childRenderArgs;
                     THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, buttonContentsStackPanel.Get()));
 
+                    ComPtr<IUIElement> buttonIcon;
+                    BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+                    XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
+                    ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
+                    THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
+
                     ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
                     THROW_IF_FAILED(buttonText->put_Text(title.Get()));
                     THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
                     XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get()); // Add text to stack panel
 
-                    ComPtr<IUIElement> buttonIcon;
-                    BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
-                    XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
+                    ComPtr<IImage> buttonIconAsImage;
+                    THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
+
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+                        [ buttonIconAsFrameworkElement, buttonText ](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                    {
+                        return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
+                    }).Get(), &eventToken));
 
                     ComPtr<IContentControl> buttonContentControl;
                     THROW_IF_FAILED(button.As(&buttonContentControl));
-                    buttonContentControl->put_Content(buttonContentsPanel.Get());
+                    THROW_IF_FAILED(buttonContentControl->put_Content(buttonContentsPanel.Get()));
                 } 
                 else
                 {
@@ -1355,6 +1367,25 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 RETURN_IF_FAILED(localElement->put_Width(pixelWidth));
             }
         }
+
+        ComPtr<IUIElement> frameworkElementAsUIElement;
+        RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
+        RETURN_IF_FAILED(frameworkElementAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+        HRESULT XamlBuilder::SetImageSizeAsTextBlockSize(IFrameworkElement* imageControl, ITextBlock* textBlock)
+    {
+        ComPtr<ITextBlock> localTextBlock(textBlock);
+        ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
+        RETURN_IF_FAILED(localTextBlock.As(&textBlockAsFrameworkElement));
+        DOUBLE textBlockHeight;
+        RETURN_IF_FAILED(textBlockAsFrameworkElement->get_ActualHeight(&textBlockHeight));
+        
+        ComPtr<IFrameworkElement> localElement(imageControl);
+        RETURN_IF_FAILED(localElement->put_Height(textBlockHeight));
+        RETURN_IF_FAILED(localElement->put_Width(textBlockHeight));
 
         ComPtr<IUIElement> frameworkElementAsUIElement;
         RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));

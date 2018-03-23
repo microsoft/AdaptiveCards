@@ -238,5 +238,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ IInspectable* parentElement,
             _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource);
 
+        static HRESULT SetImageSizeAsTextBlockSize(
+            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
+            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+
     };
 }}}
