@@ -334,11 +334,12 @@ HRESULT GenerateContainedElementsProjection(
         case CardElementType::Custom:
             RETURN_IF_FAILED(std::dynamic_pointer_cast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));
             break;
-        default:
-            return E_UNEXPECTED;
-            break;
         }
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+
+        if (projectedContainedElement != nullptr)
+        {
+            RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+        }
     }
     return S_OK;
 } CATCH_RETURN;
