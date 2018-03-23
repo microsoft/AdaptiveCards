@@ -161,7 +161,7 @@ namespace Adaptive.Cards.Rendering.Xamarin.IOS.Sample
                                                                               UIScreen.MainScreen.Bounds.Size.Height * 0.1f + 1, 
                                                                               UIScreen.MainScreen.Bounds.Size.Width - 20, 
                                                                               UIScreen.MainScreen.Bounds.Size.Height * 0.9f - 2));
-                return renderResult.Viewcontroller.View;
+                return renderResult.View;
             }
             return null;
         }

@@ -4,33 +4,73 @@ using UIKit;
 using Foundation;
 using ObjCRuntime;
 using CoreGraphics;
+using CoreFoundation;
 
 namespace AdaptiveCards.Rendering.Xamarin.iOS
 {
+
+	// @interface ACOBaseActionElement : NSObject
+	[BaseType (typeof(NSObject))]
+	interface ACOBaseActionElement
+	{
+		// @property ACRActionType type;
+		[Export ("type", ArgumentSemantic.Assign)]
+		ACRActionType Type { get; set; }
+
+		// -(NSString *)title;
+		[Export ("title")]
+		string Title { get; }
+
+		// -(NSString *)elementId;
+		[Export ("elementId")]
+		string ElementId { get; }
+
+		// -(NSString *)url;
+		[Export ("url")]
+		string Url { get; }
+
+		// -(NSString *)data;
+		[Export ("data")]
+		string Data { get; }
+
+		// -(NSData *)additionalProperty;
+		[Export ("additionalProperty")]
+		NSData AdditionalProperty { get; }
+	}
+
+
 	// @protocol ACRActionDelegate
 	[Protocol, Model]
 	[BaseType(typeof(NSObject))]
 	interface ACRActionDelegate
 	{
-		// @required -(void)didFetchUserResponses:(NSDictionary *)userResponses;
+		// @required -(void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action;
 		[Abstract]
-		[Export("didFetchUserResponses:")]
-		void DidFetchUserResponses(NSDictionary userResponses);
+		[Export("didFetchUserResponses:action:")]
+		void DidFetchUserResponses(ACOAdaptiveCard card, ACOBaseActionElement action);
 
-		// @required -(void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
+		// @required -(void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)naviationController;
 		[Abstract]
-		[Export("didFetchHttpRequest:")]
-		void DidFetchHttpRequest(NSUrlRequest urlRequest);
+		[Export("didFetchSecondaryView:navigationController:")]
+		void DidFetchSecondaryView(ACOAdaptiveCard card, UINavigationController naviationController);
+
+		// @optional -(void)didLoadElements;
+		[Export("didLoadElements")]
+		void DidLoadElements();
 	}
 
-	// @interface ACOParseResult : NSObject
-	// [BaseType(typeof(NSObject))]
-	// interface ACOParseResult
-	// {
-	//	// @property BOOL IsValid;
-	//	[Export("IsValid")]
-	//	bool IsValid { get; set; }
-	// }
+	// @interface ACRParseWarning : NSObject
+	[BaseType(typeof(NSObject))]
+	interface ACRParseWarning
+	{
+		// @property (readonly) ACRParseWarningStatusCode statusCode;
+		[Export("statusCode")]
+		ACRParseWarningStatusCode StatusCode { get; }
+
+		// @property (readonly) NSString * reason;
+		[Export("reason")]
+		string Reason { get; }
+	}
 
     // @interface ACOAdaptiveCardParseResult : NSObject
     [BaseType(typeof(NSObject))]
@@ -44,8 +84,13 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
         [Export("isValid")]
         bool IsValid { get; set; }
 
-        // @property NSArray<NSError *> *parseErrors
-        // [Export("parseErrors")]
+		[Export("parseErrors")]
+		NSError[] ParseErrors { get; }
+
+		// @property (readonly) NSArray<ACRParseWarning *> * parseWarnings;
+		[Export("parseWarnings")]
+		ACRParseWarning[] ParseWarnings { get; }
+
 
 	}
 
@@ -70,6 +115,11 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
         // @property BOOL isValid;
         [Export("isValid")]
         bool IsValid { get; set; }
+
+		// @property (readonly) NSArray<NSError *> * parseErrors;
+		[Export("parseErrors")]
+		NSError[] ParseErrors { get; }
+
 	}
 
 	// @interface ACOHostConfig : NSObject
@@ -86,22 +136,19 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
 	[BaseType(typeof(UIViewController))]
 	interface ACRViewController
 	{
-		[Wrap("WeakDelegate")]
-		ACRActionDelegate Delegate { get; set; }
-
-		// @property (weak) id<ACRActionDelegate> acrActionDelegate;
-		[NullAllowed, Export("acrActionDelegate", ArgumentSemantic.Weak)]
-		NSObject WeakDelegate { get; set; }
-
-		// -(instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config frame:(CGRect)frame;
-		[Export("init:hostconfig:frame:")]
-		IntPtr Constructor(ACOAdaptiveCard card, ACOHostConfig config, CGRect frame);
+		// -(instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>)acrActionDelegate;
+		[Export("init:hostconfig:frame:delegate:")]
+		IntPtr Constructor(ACOAdaptiveCard card, ACOHostConfig config, CGRect frame, ACRActionDelegate acrActionDelegate);
 	}
 
 	// @interface ACRRenderResult : NSObject
 	[BaseType(typeof(NSObject))]
 	interface ACRRenderResult
 	{
+		// @property ACRView * view;
+		[Export("view", ArgumentSemantic.Assign)]
+		ACRView View { get; set; }
+
 		// @property ACRViewController * viewcontroller;
 		[Export("viewcontroller", ArgumentSemantic.Assign)]
 		ACRViewController Viewcontroller { get; set; }
@@ -119,5 +166,47 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
 		[Static]
 		[Export("render:config:frame:")]
 		ACRRenderResult Render(ACOAdaptiveCard card, ACOHostConfig config, CGRect frame);
+
+		// +(ACRRenderResult *)renderAsViewController:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>)acrActionDelegate;
+		[Static]
+		[Export("renderAsViewController:config:frame:delegate:")]
+		ACRRenderResult RenderAsViewController(ACOAdaptiveCard card, ACOHostConfig config, CGRect frame, ACRActionDelegate acrActionDelegate);
 	}
+
+	// @interface ACRView : UIView
+	[BaseType(typeof(UIView))]
+	interface ACRView
+	{
+		[Wrap("WeakAcrActionDelegate")]
+		ACRActionDelegate AcrActionDelegate { get; set; }
+
+		// @property (weak) id<ACRActionDelegate> acrActionDelegate;
+		[NullAllowed, Export("acrActionDelegate", ArgumentSemantic.Weak)]
+		NSObject WeakAcrActionDelegate { get; set; }
+
+		// -(instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config frame:(CGRect)frame;
+		[Export("init:hostconfig:frame:")]
+		IntPtr Constructor(ACOAdaptiveCard card, ACOHostConfig config, CGRect frame);
+
+		// -(NSMutableDictionary *)getImageMap;
+		[Export("getImageMap")]
+		NSMutableDictionary ImageMap { get; }
+
+		// -(dispatch_queue_t)getSerialQueue;
+		[Export("getSerialQueue")]
+		DispatchQueue SerialQueue { get; }
+
+		// -(NSMutableDictionary *)getTextMap;
+		[Export("getTextMap")]
+		NSMutableDictionary TextMap { get; }
+
+		// -(dispatch_queue_t)getSerialTextQueue;
+		[Export("getSerialTextQueue")]
+		DispatchQueue SerialTextQueue { get; }
+
+		// -(ACOAdaptiveCard *)card;
+		[Export("card")]
+		ACOAdaptiveCard Card { get; }
+	}
+
 }
