@@ -36,6 +36,11 @@ function addLabelAndInput<TInput extends Adaptive.Input>(
     return result;
 }
 
+export interface IPeerCommand {
+    name: string;
+    execute: () => void
+}
+
 export abstract class DesignerPeer {
     private _renderedElement: HTMLElement;
     private _isSelected: boolean;
@@ -56,13 +61,26 @@ export abstract class DesignerPeer {
     protected abstract getBadgeText(): string;
     protected abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard);
     protected abstract getReferenceRenderedElement(): HTMLElement;
+    protected abstract internalRemove(): boolean;
+
+    protected internalAddCommands(commands: Array<IPeerCommand>) {
+        commands.push(
+            {
+                name: "Remove",
+                execute: () => { this.remove() }
+            }
+        );
+    }
 
     protected internalRender() {
         this._renderedElement = document.createElement("div");
         this._renderedElement.onclick = () => {
+            this.isSelected = true;
+            /*
             if (this.onSelectedChanged) {
                 this.onSelectedChanged(this);
             }
+            */
         }
         this._renderedElement.classList.add("acd-peer");
         this._renderedElement.style.position = "absolute";
@@ -80,16 +98,55 @@ export abstract class DesignerPeer {
         }
     }
 
+    protected removeElementsFromDesignerSurface() {
+        this.renderedElement.remove();
+    }
+
+    protected newPeerCreated(newPeer: DesignerPeer) {
+        this.changed();
+
+        if (this.onNewPeerCreated) {
+            this.onNewPeerCreated(this, newPeer);
+        }
+    }
+
     protected changed() {
         if (this.onChanged) {
             this.onChanged(this);
         }
     }
 
+    readonly designer: CardDesigner;
+
     onSelectedChanged: (sender: DesignerPeer) => void;
     onChanged: (sender: DesignerPeer) => void;
+    onPeerRemoved: (sender: DesignerPeer) => void;
+    onNewPeerCreated: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
-    constructor() {
+    constructor(designer: CardDesigner) {
+        this.designer = designer;
+    }
+
+    getCommands(): Array<IPeerCommand> {
+        var result: Array<IPeerCommand> = [];
+
+        this.internalAddCommands(result);
+
+        return result;
+    }
+
+    remove(): boolean {
+        var result = this.internalRemove();
+
+        if (result) {
+            this.removeElementsFromDesignerSurface();
+
+            if (this.onPeerRemoved) {
+                this.onPeerRemoved(this);
+            }
+        }
+
+        return result;
     }
 
     render() {
@@ -139,6 +196,10 @@ export abstract class DesignerPeer {
 
             this.updateCssStyles();
             this.updateLayout();
+
+            if (this.onSelectedChanged) {
+                this.onSelectedChanged(this);
+            }
         }
     }
 }
@@ -170,8 +231,12 @@ export class ActionPeer extends DesignerPeer {
         }
     }
 
-    constructor(action: Adaptive.Action) {
-        super();
+    protected internalRemove(): boolean {
+        return this.action.remove();
+    }
+
+    constructor(designer: CardDesigner, action: Adaptive.Action) {
+        super(designer);
 
         this._action = action;
     }
@@ -203,6 +268,34 @@ export class CardElementPeer extends DesignerPeer {
 
     protected getReferenceRenderedElement(): HTMLElement {
         return this.cardElement.renderedElement;
+    }
+
+    protected insertElementAfter(newElement: Adaptive.CardElement) {
+        if (this.cardElement.parent instanceof Adaptive.Container) {
+            this.cardElement.parent.insertItemAfter(newElement, this.cardElement);
+
+            var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, newElement);
+
+            this.newPeerCreated(newPeer);
+        }
+    }
+
+    protected internalAddCommands(commands: Array<IPeerCommand>) {
+        super.internalAddCommands(commands);
+
+        if (this.cardElement.parent instanceof Adaptive.Container) {
+            commands.push(
+                {
+                    name: "Insert TextBlox after",
+                    execute: () => {
+                        var textBlock = new Adaptive.TextBlock();
+                        textBlock.text = "New TextBlock";
+
+                        this.insertElementAfter(textBlock);
+                    }
+                }
+            );
+        }
     }
 
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
@@ -287,8 +380,18 @@ export class CardElementPeer extends DesignerPeer {
         this._separatorElement.style.visibility = "hidden";
     }
 
-    constructor(cardElement: Adaptive.CardElement) {
-        super();
+    protected internalRemove(): boolean {
+        return this.cardElement.remove();
+    }
+
+    protected removeElementsFromDesignerSurface() {
+        super.removeElementsFromDesignerSurface();
+
+        this.separatorElement.remove();
+    }
+
+    constructor(designer: CardDesigner, cardElement: Adaptive.CardElement) {
+        super(designer);
 
         this._cardElement = cardElement;
     }
@@ -324,12 +427,176 @@ export class CardElementPeer extends DesignerPeer {
 }
 
 export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardElement> extends CardElementPeer {
-    constructor(cardElement: TCardElement) {
-        super(cardElement);
+    constructor(designer: CardDesigner, cardElement: TCardElement) {
+        super(designer, cardElement);
     }
 
     get cardElement(): TCardElement {
         return <TCardElement>this._cardElement;
+    }
+}
+
+export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
+    protected addAction(action: Adaptive.Action) {
+        this.cardElement.addAction(action);
+
+        var newPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, action);
+
+        this.newPeerCreated(newPeer);
+    }
+
+    protected internalAddCommands(commands: Array<IPeerCommand>) {
+        super.internalAddCommands(commands);
+
+        commands.push(
+            {
+                name: "Add TextBlock inside",
+                execute: () => {
+                    var textBlock = new Adaptive.TextBlock();
+    
+                    this.cardElement.addItem(textBlock);
+    
+                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, textBlock);
+            
+                    this.newPeerCreated(newPeer);
+                }
+            },
+            {
+                name: "Add OpenUrl action",
+                execute: () => {
+                    var action = new Adaptive.OpenUrlAction();
+                    action.title = "New OpenUrl action";
+
+                    this.addAction(action);
+                }
+            },
+            {
+                name: "Add ShowCard action",
+                execute: () => {
+                    var action = new Adaptive.ShowCardAction();
+                    action.title = "New ShowCard action";
+
+                    this.addAction(action);
+                }
+            },
+            {
+                name: "Add Http action",
+                execute: () => {
+                    var action = new Adaptive.HttpAction();
+                    action.title = "New Http action";
+
+                    this.addAction(action);
+                }
+            }
+        );
+    }
+}
+
+export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
+    protected internalAddCommands(commands: Array<IPeerCommand>) {
+        super.internalAddCommands(commands);
+
+        commands.push(
+            {
+                name: "Add TextBlock inside",
+                execute: () => {
+                    var textBlock = new Adaptive.TextBlock();
+                    textBlock.text = "New TextBlock";
+    
+                    this.cardElement.addItem(textBlock);
+    
+                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, textBlock);
+            
+                    this.newPeerCreated(newPeer);
+                }
+            }
+        );
+    }
+}
+
+export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
+    protected internalAddCommands(commands: Array<IPeerCommand>) {
+        super.internalAddCommands(commands);
+
+        commands.push(
+            {
+                name: "Add Column",
+                execute: () => {
+                    var column = new Adaptive.Column();
+
+                    this.cardElement.addColumn(column);
+
+                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, column);
+            
+                    this.newPeerCreated(newPeer);
+                }
+            }
+        );
+    }    
+}
+
+export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
+    protected internalAddCommands(commands: Array<IPeerCommand>) {
+        super.internalAddCommands(commands);
+
+        commands.push(
+            {
+                name: "Add TextBlock inside",
+                execute: () => {
+                    var textBlock = new Adaptive.TextBlock();
+    
+                    this.cardElement.addItem(textBlock);
+    
+                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, textBlock);
+            
+                    this.newPeerCreated(newPeer);
+                }
+            }
+        );
+    }    
+}
+
+export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
+    protected addAction(action: Adaptive.Action) {
+        this.cardElement.addAction(action);
+
+        var newPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, action);
+
+        this.newPeerCreated(newPeer);
+    }
+
+    protected internalAddCommands(commands: Array<IPeerCommand>) {
+        super.internalAddCommands(commands);
+
+        commands.push(
+            {
+                name: "Add OpenUrl action",
+                execute: () => {
+                    var action = new Adaptive.OpenUrlAction();
+                    action.title = "New OpenUrl action";
+
+                    this.addAction(action);
+                }
+            },
+            {
+                name: "Add ShowCard action",
+                execute: () => {
+                    var action = new Adaptive.ShowCardAction();
+                    action.title = "New ShowCard action";
+
+                    this.addAction(action);
+                }
+            },
+            {
+                name: "Add Http action",
+                execute: () => {
+                    var action = new Adaptive.HttpAction();
+                    action.title = "New Http action";
+
+                    this.addAction(action);
+                }
+            }
+        );
     }
 }
 
@@ -487,8 +754,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 
 type CardElementType = { new(): Adaptive.CardElement };
 type ActionType = { new(): Adaptive.Action };
-type CardElementPeerType = { new(cardElement: Adaptive.CardElement): CardElementPeer };
-type ActionPeerType = { new(action: Adaptive.Action): ActionPeer };
+type CardElementPeerType = { new(designer: CardDesigner, cardElement: Adaptive.CardElement): CardElementPeer };
+type ActionPeerType = { new(designer: CardDesigner, action: Adaptive.Action): ActionPeer };
 
 interface IDesignerPeerRegistration<TSource, TPeer> {
     sourceType: TSource,
@@ -549,14 +816,19 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
     reset() {
         this.clear();
 
+        this.registerPeer(Adaptive.Container, ContainerPeer);
+        this.registerPeer(Adaptive.AdaptiveCard, AdaptiveCardPeer);
         this.registerPeer(Adaptive.TextBlock, TextBlockPeer);
         this.registerPeer(Adaptive.Image, ImagePeer);
+        this.registerPeer(Adaptive.ActionSet, ActionSetPeer);
+        this.registerPeer(Adaptive.ColumnSet, ColumnSetPeer);
+        this.registerPeer(Adaptive.Column, ColumnPeer);
     }
 
-    createPeerInstance(cardElement: Adaptive.CardElement): CardElementPeer {
+    createPeerInstance(designer: CardDesigner, cardElement: Adaptive.CardElement): CardElementPeer {
         var registrationInfo = this.findTypeRegistration((<any>cardElement).constructor);
 
-        return registrationInfo ? new registrationInfo.peerType(cardElement) : new CardElementPeer(cardElement);
+        return registrationInfo ? new registrationInfo.peerType(designer, cardElement) : new CardElementPeer(designer, cardElement);
     }
 }
 
@@ -564,16 +836,13 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
     reset() {
         this.clear();
 
-        /*
-        this.registerPeer(Adaptive.TextBlock, TextBlockPeer);
-        this.registerPeer(Adaptive.Image, ImagePeer);
-        */
+        // TODO
     }
 
-    createPeerInstance(action: Adaptive.Action): ActionPeer {
+    createPeerInstance(designer: CardDesigner, action: Adaptive.Action): ActionPeer {
         var registrationInfo = this.findTypeRegistration((<any>action).constructor);
 
-        return registrationInfo ? new registrationInfo.peerType(action) : new ActionPeer(action);
+        return registrationInfo ? new registrationInfo.peerType(designer, action) : new ActionPeer(designer, action);
     }
 }
 
@@ -587,13 +856,13 @@ export class CardDesigner {
     private _items: Array<DesignerPeer> = [];
     private _selectedPeer: DesignerPeer;
 
-    private peerClicked(peer: DesignerPeer) {
-        if (peer != this._selectedPeer) {
+    private setSelectedPeer(value: DesignerPeer) {
+        if (value != this._selectedPeer) {
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = false;
             }
 
-            this._selectedPeer = peer;
+            this._selectedPeer = value;
 
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
@@ -605,27 +874,50 @@ export class CardDesigner {
         }
     }
 
+    /*
+    private peerClicked(peer: DesignerPeer) {
+        this.setSelectedPeer(peer);
+    }
+    */
+
     private peerChanged(peer: DesignerPeer) {
         this.renderCard()
         this.updateLayout();
     }
 
+    private peerRemoved(peer: DesignerPeer) {
+        this._items.splice(this._items.indexOf(peer), 1);
+
+        if (peer == this._selectedPeer) {
+            this.setSelectedPeer(null);
+        }
+
+        this.renderCard();
+        this.updateLayout();
+}
+
     private initializePeer(peer: DesignerPeer) {
         this._items.push(peer);
 
-        peer.onSelectedChanged = (clickedPeer: DesignerPeer) => { this.peerClicked(clickedPeer); };
+        peer.onSelectedChanged = (clickedPeer: DesignerPeer) => { this.setSelectedPeer(clickedPeer); };
         peer.onChanged = (sender: DesignerPeer) => { this.peerChanged(sender); };
+        peer.onPeerRemoved = (sender: DesignerPeer) => { this.peerRemoved(sender); };
+        peer.onNewPeerCreated = (sender: DesignerPeer, newPeer: DesignerPeer) => {
+            this.initializePeer(newPeer);
+
+            newPeer.isSelected = true;
+        };
         peer.render();
         peer.addElemnentsToDesignerSurface(this._designerSurface);
     }
 
     private renderPeer(cardElement: Adaptive.CardElement) {
-        var cardElementPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(cardElement);
+        var cardElementPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement);
 
         this.initializePeer(cardElementPeer);
 
         for (var i = 0; i < cardElement.getActionCount(); i++) {
-            var actionPeer = CardDesigner.actionPeerRegistry.createPeerInstance(cardElement.getActionAt(i));
+            var actionPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this, cardElement.getActionAt(i));
             
             this.initializePeer(actionPeer);
         }
@@ -678,7 +970,8 @@ export class CardDesigner {
     render() {
         this._designerSurface.innerHTML = "";
         this._items = [];
-        this._selectedPeer = null;
+
+        this.setSelectedPeer(null);
 
         this.renderCard();
 
@@ -693,26 +986,11 @@ export class CardDesigner {
         }
     }
 
-    /*
-    deleteSelected() {
-        if (this.selectedPeer && this.selectedPeer.cardElement.parent) {
-            if (this.selectedPeer.cardElement.parent instanceof Adaptive.CardElementContainer) {
-                this.selectedPeer.cardElement.parent.removeItem(this.selectedPeer.cardElement);
-
-                this.renderCard();
-
-                this._items.splice(this._items.indexOf(this.selectedPeer), 1);
-
-                this._designerSurface.removeChild(this.selectedPeer.renderedElement);
-                this._designerSurface.removeChild(this.selectedPeer.separatorElement);
-
-                this._selectedPeer = null;
-
-                this.updateLayout();
-            }
+    removeSelected() {
+        if (this.selectedPeer) {
+            this.selectedPeer.remove();
         }
     }
-    */
 
     get selectedPeer(): DesignerPeer {
         return this._selectedPeer;

@@ -51,6 +51,47 @@ export const defaultPayload: string = `{
 			]
 		},
 		{
+			"type": "TextBlock",
+			"text": "Below is an ActionSet element"
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.ShowCard",
+					"title": "Set due date",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "Input.Date",
+								"id": "dueDate",
+								"title": "Select due date"
+							},
+							{
+								"type": "Input.Text",
+								"id": "comment",
+								"isMultiline": true,
+								"placeholder": "Add a comment"
+							}
+						],
+						"actions": [
+							{
+								"type": "Action.OpenUrl",
+								"title": "OK",
+								"url": "http://adaptivecards.io"
+							}
+						]
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"title": "View",
+					"url": "http://adaptivecards.io"
+				}
+			]					
+		},
+		{
 			"type": "Container",
 			"items": [
 				{

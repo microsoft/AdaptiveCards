@@ -251,6 +251,12 @@ export abstract class CardElement {
      */
     protected undoOverflowTruncation() { }
 
+    protected isDesignMode(): boolean {
+        var rootElement = this.getRootElement();
+            
+        return rootElement instanceof AdaptiveCard && rootElement.designMode;
+    }
+
     protected get useDefaultSizing(): boolean {
         return true;
     }
@@ -372,6 +378,14 @@ export abstract class CardElement {
 
     validate(): Array<IValidationError> {
         return [];
+    }
+
+    remove(): boolean {
+        if (this.parent && this.parent instanceof CardElementContainer) {
+            return this.parent.removeItem(this);
+        }
+
+        return false;
     }
 
     render(): HTMLElement {
@@ -1906,6 +1920,14 @@ export abstract class Action {
         this.title = json["title"];
     }
 
+    remove(): boolean {
+        if (this._actionCollection) {
+            return this._actionCollection.removeAction(this);
+        }
+
+        return false;
+    }
+
     getAllInputs(): Array<Input> {
         return [];
     }
@@ -2330,7 +2352,7 @@ class ActionCollection {
         return result;
     }
 
-    render(orientation: Enums.Orientation): HTMLElement {
+    render(orientation: Enums.Orientation, isDesignMode: boolean): HTMLElement {
         if (!this._owner.hostConfig.supportsInteractivity) {
             return null;
         }
@@ -2460,7 +2482,18 @@ class ActionCollection {
 
         Utils.appendChild(element, this._actionCardContainer);
 
-        return this._renderedActionCount > 0 ? element : null;
+        if (!isDesignMode) {
+            return this._renderedActionCount > 0 ? element : null;
+        }
+        else {
+            if (this._renderedActionCount == 0) {
+                element.style.border = "1px dashed #DDDDDD";
+                element.style.minWidth = "20px";
+                element.style.minHeight = "20px";
+            }
+
+            return element;
+        }
     }
 
     addAction(action: Action) {
@@ -2474,6 +2507,22 @@ class ActionCollection {
         else {
             throw new Error("The action already belongs to another element.")
         }
+    }
+
+    removeAction(action: Action): boolean {
+        var actionIndex = this.items.indexOf(action);
+
+        if (actionIndex >= 0) {
+            this.items.splice(actionIndex, 1);
+
+            action.setParent(null);
+
+            invokeSetCollection(action, null);
+
+            return true;
+        }
+
+        return false;
     }
 
     clear() {
@@ -2497,7 +2546,7 @@ export class ActionSet extends CardElement {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
-        return this._actionCollection.render(this.orientation ? this.orientation : this.hostConfig.actions.actionsOrientation);
+        return this._actionCollection.render(this.orientation ? this.orientation : this.hostConfig.actions.actionsOrientation, this.isDesignMode());
     }
 
     orientation?: Enums.Orientation = null;
@@ -2899,6 +2948,12 @@ export class Container extends CardElementContainer {
                 }
             }
         }
+        else {
+            if (this.isDesignMode()) {
+                element.style.border = "1px dashed #DDDDDD";
+                element.style.minHeight = "20px";
+            }
+        }
 
         return element;
     }
@@ -3104,10 +3159,15 @@ export class Container extends CardElementContainer {
         }
     }
 
-    addItem(item: CardElement) {
+    private insertItemAt(item: CardElement, index: number) {
         if (!item.parent) {
             if (item.isStandalone) {
-                this._items.push(item);
+                if (index < 0 || index >= this._items.length) {
+                    this._items.push(item);
+                }
+                else {
+                    this._items.splice(index, 0, item);
+                }
 
                 item.setParent(this);
             }
@@ -3120,9 +3180,19 @@ export class Container extends CardElementContainer {
         }
     }
 
+    addItem(item: CardElement) {
+        this.insertItemAt(item, -1);
+    }
+
+    insertItemAfter(item: CardElement, insertAfter: CardElement) {
+        this.insertItemAt(item, this._items.indexOf(insertAfter) + 1);
+    }
+
     removeItem(item: CardElement): boolean {
-        if (item.parent == this) {
-            this._items.splice(this._items.indexOf(item), 1);
+        var itemIndex = this._items.indexOf(item);
+
+        if (itemIndex >= 0) {
+            this._items.splice(itemIndex, 1);
 
             item.setParent(null);
 
@@ -3240,7 +3310,13 @@ export class Column extends Container {
     private _computedWeight: number = 0;
 
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
-        renderedElement.style.minWidth = "0";
+        if (this.isDesignMode()) {
+            renderedElement.style.minWidth = "20px";
+            renderedElement.style.minHeight = "20px";
+        }
+        else {
+            renderedElement.style.minWidth = "0";
+        }
 
         if (this.pixelWidth > 0) {
             renderedElement.style.flex = "0 0 " + this.pixelWidth + "px";
@@ -3528,12 +3604,16 @@ export class ColumnSet extends CardElementContainer {
     }
 
     removeItem(item: CardElement): boolean {
-        if (item instanceof Column && item.parent == this) {
-            this._columns.splice(this._columns.indexOf(item), 1);
+        if (item instanceof Column) {
+            var itemIndex = this._columns.indexOf(item);
 
-            item.setParent(null);
+            if (itemIndex >= 0) {
+                this._columns.splice(itemIndex, 1);
 
-            return true;
+                item.setParent(null);
+
+                return true;
+            }
         }
 
         return false;
@@ -3736,7 +3816,7 @@ export abstract class ContainerWithActions extends Container {
     protected internalRender(): HTMLElement {
         var element = super.internalRender();
 
-        var renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation);
+        var renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation, false);
 
         if (renderedActions) {
             Utils.appendChild(
@@ -4031,6 +4111,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     version?: Version = new Version(1, 0);
     fallbackText: string;
+    designMode: boolean = false;
 
     getJsonTypeName(): string {
         return "AdaptiveCard";

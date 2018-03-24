@@ -2,25 +2,12 @@
 }
 
 .acd-peer:hover {
-    border: 2px solid rgba(0, 0, 255, 0.2);
+    border: 2px solid rgba(0, 0, 255, 0.1);
 }
 
 .acd-peer.selected {
-    border: 2px solid rgba(255, 0, 0, 0.2);
     background-color: rgba(255, 0, 0, 0.05);
-}
-
-.acd-badge {
-    background-color: rgba(0, 0, 255, 0.2);
-    color: blue;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 8px;
-    padding: 1px 4px 2px 4px;
-}
-
-.acd-badge.selected {
-    background-color: rgba(255, 0, 0, 0.2);
-    color: red;
+    border: 2px solid rgba(255, 0, 0, 0.05);
 }
 
 .acd-separation {
