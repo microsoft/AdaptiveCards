@@ -36,6 +36,40 @@ function addLabelAndInput<TInput extends Adaptive.Input>(
     return result;
 }
 
+interface IPoint {
+    x: number;
+    y: number;
+}
+
+class Rect {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+
+    constructor(top: number = 0, right: number = 0, bottom: number = 0, left: number = 0) {
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
+        this.left = left;
+    }
+
+    union(otherRect: Rect) {
+        this.top = Math.min(this.top, otherRect.top);
+        this.left = Math.min(this.left, otherRect.left);
+        this.bottom = Math.max(this.bottom, otherRect.bottom);
+        this.right = Math.max(this.right, otherRect.right);
+    }
+
+    get width(): number {
+        return this.right - this.left;
+    }
+
+    get height(): number {
+        return this.bottom - this.top;
+    }
+}
+
 export interface IPeerCommand {
     name: string;
     execute: () => void
@@ -60,8 +94,8 @@ export abstract class DesignerPeer {
 
     protected abstract getBadgeText(): string;
     protected abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard);
-    protected abstract getReferenceRenderedElement(): HTMLElement;
     protected abstract internalRemove(): boolean;
+    protected abstract getBoundingRect(): Rect;
 
     protected internalAddCommands(commands: Array<IPeerCommand>) {
         commands.push(
@@ -75,12 +109,7 @@ export abstract class DesignerPeer {
     protected internalRender() {
         this._renderedElement = document.createElement("div");
         this._renderedElement.onclick = () => {
-            this.isSelected = true;
-            /*
-            if (this.onSelectedChanged) {
-                this.onSelectedChanged(this);
-            }
-            */
+            this.isSelected = !this.isSelected;
         }
         this._renderedElement.classList.add("acd-peer");
         this._renderedElement.style.position = "absolute";
@@ -156,12 +185,12 @@ export abstract class DesignerPeer {
 
     updateLayout() {
         if (this.renderedElement) {
-            var clientRect = this.getReferenceRenderedElement().getBoundingClientRect();
+            var clientRect = this.getBoundingRect();
 
             this.renderedElement.style.width = clientRect.width + "px";
             this.renderedElement.style.height = clientRect.height + "px";
-            this.renderedElement.style.left = this.getReferenceRenderedElement().offsetLeft + "px";;
-            this.renderedElement.style.top = this.getReferenceRenderedElement().offsetTop + "px";;
+            this.renderedElement.style.left = clientRect.left + "px";;
+            this.renderedElement.style.top = clientRect.top + "px";;
         }
     }
 
@@ -211,10 +240,6 @@ export class ActionPeer extends DesignerPeer {
         return this.action.getJsonTypeName();
     }
 
-    protected getReferenceRenderedElement(): HTMLElement {
-        return this.action.renderedElement;
-    }
-
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
         var elementType = new Adaptive.TextBlock();
         elementType.text = "Action type: **" + this.action.getJsonTypeName() + "**";
@@ -229,6 +254,17 @@ export class ActionPeer extends DesignerPeer {
 
             this.changed();
         }
+    }
+
+    protected getBoundingRect(): Rect {
+        var boundingRect = this.action.renderedElement.getBoundingClientRect();
+
+        return new Rect(
+            this.action.renderedElement.offsetTop,
+            this.action.renderedElement.offsetLeft + boundingRect.width,
+            this.action.renderedElement.offsetTop + boundingRect.height,
+            this.action.renderedElement.offsetLeft
+        );
     }
 
     protected internalRemove(): boolean {
@@ -247,27 +283,40 @@ export class ActionPeer extends DesignerPeer {
 }
 
 export class CardElementPeer extends DesignerPeer {
-    private _separatorElement: HTMLElement;
-
     protected _cardElement: Adaptive.CardElement;
 
     protected updateCssStyles() {
         super.updateCssStyles();
-
-        if (this.isSelected) {
-            this.separatorElement.classList.add("selected");
-        }
-        else {
-            this.separatorElement.classList.remove("selected");
-        }
     }
 
     protected getBadgeText(): string {
         return this.cardElement.getJsonTypeName();
     }
 
-    protected getReferenceRenderedElement(): HTMLElement {
-        return this.cardElement.renderedElement;
+    protected getBoundingRect(): Rect {
+        let offset: IPoint;
+        let cardElementBoundingRect = this.cardElement.renderedElement.getBoundingClientRect();
+
+        if (this.cardElement.separatorElement) {
+            offset = {
+                x: this.cardElement.separatorElement.offsetLeft,
+                y: this.cardElement.separatorElement.offsetTop
+            }
+            
+        }
+        else {
+            offset = {
+                x: this.cardElement.renderedElement.offsetLeft,
+                y: this.cardElement.renderedElement.offsetTop
+            }
+        }
+
+        return new Rect(
+            this.cardElement.renderedElement.offsetTop,
+            this.cardElement.renderedElement.offsetLeft + boundingRect.width,
+            this.cardElement.renderedElement.offsetTop + boundingRect.height,
+            this.cardElement.renderedElement.offsetLeft
+        );
     }
 
     protected insertElementAfter(newElement: Adaptive.CardElement) {
@@ -371,54 +420,14 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
-    protected internalRender() {
-        super.internalRender();
-
-        this._separatorElement = document.createElement("div");
-        this._separatorElement.classList.add("acd-separation");
-        this._separatorElement.style.position = "absolute";
-        this._separatorElement.style.visibility = "hidden";
-    }
-
     protected internalRemove(): boolean {
         return this.cardElement.remove();
-    }
-
-    protected removeElementsFromDesignerSurface() {
-        super.removeElementsFromDesignerSurface();
-
-        this.separatorElement.remove();
     }
 
     constructor(designer: CardDesigner, cardElement: Adaptive.CardElement) {
         super(designer);
 
         this._cardElement = cardElement;
-    }
-
-    addElemnentsToDesignerSurface(designerSurface: HTMLElement) {
-        super.addElemnentsToDesignerSurface(designerSurface);
-
-        designerSurface.appendChild(this.separatorElement);
-    }
-
-    updateLayout() {
-        super.updateLayout();
-
-        if (this.separatorElement && this.cardElement.separatorElement) {
-            var clientRect = this.cardElement.separatorElement.getBoundingClientRect();
-
-            this.separatorElement.style.width = clientRect.width + "px";
-            this.separatorElement.style.height = clientRect.height + "px";
-            this.separatorElement.style.left = this.cardElement.separatorElement.offsetLeft + "px";;
-            this.separatorElement.style.top = this.cardElement.separatorElement.offsetTop + "px";;
-        }
-
-        this.separatorElement.style.visibility = this.cardElement.spacing == Adaptive.Spacing.None ? "hidden" : this.isSelected || this.isMouseOver ? "visible" : "hidden";
-    }
-
-    get separatorElement(): HTMLElement {
-        return this._separatorElement;
     }
 
     get cardElement(): Adaptive.CardElement {
@@ -874,12 +883,6 @@ export class CardDesigner {
         }
     }
 
-    /*
-    private peerClicked(peer: DesignerPeer) {
-        this.setSelectedPeer(peer);
-    }
-    */
-
     private peerChanged(peer: DesignerPeer) {
         this.renderCard()
         this.updateLayout();
@@ -899,7 +902,7 @@ export class CardDesigner {
     private initializePeer(peer: DesignerPeer) {
         this._items.push(peer);
 
-        peer.onSelectedChanged = (clickedPeer: DesignerPeer) => { this.setSelectedPeer(clickedPeer); };
+        peer.onSelectedChanged = (clickedPeer: DesignerPeer) => { this.setSelectedPeer(clickedPeer.isSelected ? clickedPeer : null); };
         peer.onChanged = (sender: DesignerPeer) => { this.peerChanged(sender); };
         peer.onPeerRemoved = (sender: DesignerPeer) => { this.peerRemoved(sender); };
         peer.onNewPeerCreated = (sender: DesignerPeer, newPeer: DesignerPeer) => {
