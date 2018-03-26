@@ -163,7 +163,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
             _In_ bool insertSeparator,
-            _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext);
+            _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle);
 
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
             _Inout_  ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
