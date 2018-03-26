@@ -39,6 +39,7 @@ enum class AdaptiveCardSchemaKey
     ActionMode,
     ActionOrientation,
     Actions,
+    ActionSet,
     ActionSetConfig,
     ActionsOrientation,
     AdaptiveCard,
@@ -113,6 +114,7 @@ enum class AdaptiveCardSchemaKey
     Method,
     Min,
     NumberInput,
+    Orientation,
     Padding,
     Placeholder,
     Right,
@@ -226,6 +228,7 @@ enum class CardElementType
     ToggleInput,
     Custom,
     Unknown,
+    ActionSet
 };
 
 enum class ActionType
@@ -268,7 +271,8 @@ enum class Spacing {
 
 enum class ActionsOrientation {
     Vertical = 0,
-    Horizontal
+    Horizontal,
+    None,
 };
 
 enum class ActionMode {

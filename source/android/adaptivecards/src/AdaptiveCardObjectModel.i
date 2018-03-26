@@ -92,6 +92,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
 #include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
+#include "../../../shared/cpp/ObjectModel/ActionSet.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
@@ -138,6 +139,8 @@ struct tm {
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
 %shared_ptr(AdaptiveCards::DateTimePreparsedToken)
+%shared_ptr(AdaptiveCards::ActionSet)
+%shared_ptr(AdaptiveCards::ActionSetParser)
 
 namespace Json {
     %rename(JsonValue) Value;
@@ -548,6 +551,21 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::ActionSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ActionSet {
+    static AdaptiveCards::ActionSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ActionSet *>(baseCardElement);
+    }
+};
+
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
@@ -581,3 +599,4 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
 %include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
+%include "../../../shared/cpp/ObjectModel/ActionSet.h"

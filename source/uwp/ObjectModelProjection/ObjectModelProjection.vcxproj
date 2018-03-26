@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -73,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
