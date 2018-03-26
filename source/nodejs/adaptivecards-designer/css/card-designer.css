@@ -10,6 +10,10 @@
     border: 2px solid rgba(255, 0, 0, 0.05);
 }
 
+.acd-peer.dragover {
+    border: 2px solid rgba(255, 0, 255, 0.1);
+}
+
 .acd-separation {
     background-color: rgba(0, 0, 255, 0.2);
 }

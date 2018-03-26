@@ -1,6 +1,8 @@
 import * as Adaptive from "adaptivecards";
 import { Spacing, PaddingDefinition } from "adaptivecards";
 
+const DRAG_THRESHOLD = 5;
+
 interface ILabelAndInput<TInput extends Adaptive.Input> {
     label: Adaptive.TextBlock;
     input: TInput;
@@ -36,6 +38,51 @@ function addLabelAndInput<TInput extends Adaptive.Input>(
     return result;
 }
 
+function getEffectiveMargins(element: HTMLElement): Rect {
+    var computedStyles = window.getComputedStyle(element);
+
+    return new Rect(
+        parseInt(computedStyles.marginTop),
+        parseInt(computedStyles.marginRight),
+        parseInt(computedStyles.marginBottom),
+        parseInt(computedStyles.marginLeft)
+    );    
+}
+
+function getBoundingRectangleIncludingMargins(element: HTMLElement): Rect {
+    var effectiveMargins = getEffectiveMargins(element);
+    var boundingRect = element.getBoundingClientRect();
+
+    return new Rect(
+        boundingRect.top - effectiveMargins.top,
+        boundingRect.right + effectiveMargins.right,
+        boundingRect.bottom + effectiveMargins.bottom,
+        boundingRect.left - effectiveMargins.left
+    );
+}
+
+function getAbsoluteElementPosition(element): IPoint {
+    var result: IPoint = { x: 0, y: 0 };
+
+    while (element) {
+        if (element.tagName == "BODY") {
+            var xScroll = element.scrollLeft || document.documentElement.scrollLeft;
+            var yScroll = element.scrollTop || document.documentElement.scrollTop;
+
+            result.x += (element.offsetLeft - xScroll + element.clientLeft);
+            result.y += (element.offsetTop - yScroll + element.clientTop);
+        }
+        else {
+            result.x += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+            result.y += (element.offsetTop - element.scrollTop + element.clientTop);
+        }
+
+        element = element.offsetParent;
+    }
+
+    return result;
+}
+
 interface IPoint {
     x: number;
     y: number;
@@ -61,6 +108,10 @@ class Rect {
         this.right = Math.max(this.right, otherRect.right);
     }
 
+    isInside(point: IPoint): boolean {
+        return point.x >= this.left && point.x <= this.right && point.y >= this.top && point.y <= this.bottom;
+    }
+
     get width(): number {
         return this.right - this.left;
     }
@@ -76,17 +127,21 @@ export interface IPeerCommand {
 }
 
 export abstract class DesignerPeer {
+    private _children: Array<DesignerPeer> = [];
     private _renderedElement: HTMLElement;
     private _isSelected: boolean;
-    private _isMouseOver: boolean;
+    private _isPointerOver: boolean;
+    private _isPointerDown: boolean;
+    private _lastClickedPoint: IPoint;
+    private _dragging: boolean;
 
-    protected get isMouseOver(): boolean {
-        return this._isMouseOver;
+    protected get isPointerOver(): boolean {
+        return this._isPointerOver;
     }
 
-    protected set isMouseOver(value: boolean) {
-        if (value != this._isMouseOver) {
-            this._isMouseOver = value;
+    protected set isPointerOver(value: boolean) {
+        if (value != this._isPointerOver) {
+            this._isPointerOver = value;
 
             this.updateLayout();
         }
@@ -94,8 +149,7 @@ export abstract class DesignerPeer {
 
     protected abstract getBadgeText(): string;
     protected abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard);
-    protected abstract internalRemove(): boolean;
-    protected abstract getBoundingRect(): Rect;
+    abstract internalRemove(): boolean;
 
     protected internalAddCommands(commands: Array<IPeerCommand>) {
         commands.push(
@@ -106,16 +160,48 @@ export abstract class DesignerPeer {
         );
     }
 
+    protected isDraggable(): boolean {
+        return true;
+    }
+
+    protected startDrag() {
+        if (this.isDraggable() && !this._dragging) {
+            this._dragging = true;
+
+            if (this.onStartDrag) {
+                this.onStartDrag(this);
+            }
+        }
+    }
+
     protected internalRender() {
         this._renderedElement = document.createElement("div");
-        this._renderedElement.onclick = () => {
-            this.isSelected = !this.isSelected;
-        }
         this._renderedElement.classList.add("acd-peer");
         this._renderedElement.style.position = "absolute";
 
-        this._renderedElement.onmouseenter = () => { this.isMouseOver = true; };
-        this._renderedElement.onmouseleave = () => { this.isMouseOver = false; };
+        this._renderedElement.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
+        this._renderedElement.onpointerenter = () => { this.isPointerOver = true; };
+        this._renderedElement.onpointerleave = () => { this.isPointerOver = false; };
+        this._renderedElement.onpointerdown = (e: PointerEvent) => {
+            this.isSelected = true;
+
+            this._isPointerDown = true;
+            this._lastClickedPoint = { x: e.offsetX, y: e.offsetY };
+            this._renderedElement.setPointerCapture(e.pointerId);
+        };
+        this._renderedElement.onpointerup = (e: PointerEvent) => {
+            this._isPointerDown = false;
+            this._renderedElement.releasePointerCapture(e.pointerId);
+
+            this.endDrag();
+        };
+        this._renderedElement.onpointermove = (e: PointerEvent) => {
+            if (this._isPointerDown) {
+                if (Math.abs(e.offsetX - this._lastClickedPoint.x) >= DRAG_THRESHOLD || Math.abs(e.offsetY - this._lastClickedPoint.y) >= DRAG_THRESHOLD) {
+                    this.startDrag();
+                }
+            }
+        };
     }
 
     protected updateCssStyles() {
@@ -125,10 +211,6 @@ export abstract class DesignerPeer {
         else {
             this.renderedElement.classList.remove("selected");
         }
-    }
-
-    protected removeElementsFromDesignerSurface() {
-        this.renderedElement.remove();
     }
 
     protected newPeerCreated(newPeer: DesignerPeer) {
@@ -145,15 +227,65 @@ export abstract class DesignerPeer {
         }
     }
 
-    readonly designer: CardDesigner;
+    protected peerRemoved(peer: DesignerPeer) {
+        if (this.onPeerRemoved) {
+            this.onPeerRemoved(peer);
+        }
+    }
+
+    parent: DesignerPeer;
 
     onSelectedChanged: (sender: DesignerPeer) => void;
     onChanged: (sender: DesignerPeer) => void;
     onPeerRemoved: (sender: DesignerPeer) => void;
     onNewPeerCreated: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
+    onStartDrag: (sender: DesignerPeer) => void;
+    onEndDrag: (sender: DesignerPeer) => void;
 
-    constructor(designer: CardDesigner) {
-        this.designer = designer;
+    constructor(parent: DesignerPeer) {
+        this.parent = parent;
+    }
+
+    abstract getBoundingRect(): Rect;
+
+    canDrop(peer: DesignerPeer) {
+        return false;
+    }
+
+    drop(peer: DesignerPeer, insertionPoint: IPoint) {
+        // Do nothing is base implementation
+    }
+    
+    addChild(peer: DesignerPeer) {
+        this._children.push(peer);
+        peer.parent = this;
+    }
+
+    removeChild(peer: DesignerPeer) {
+        var index = this._children.indexOf(peer);
+
+        if (index >= 0) {
+            peer.parent = null;
+            this._children.splice(index, 1);
+        }
+    }
+
+    getChildCount(): number {
+        return this._children.length;
+    }
+
+    getChildAt(index: number): DesignerPeer {
+        return this._children[index];
+    }
+
+    endDrag() {
+        if (this._dragging) {
+            this._dragging = false;
+
+            if (this.onEndDrag) {
+                this.onEndDrag(this);
+            }
+        }
     }
 
     getCommands(): Array<IPeerCommand> {
@@ -168,11 +300,13 @@ export abstract class DesignerPeer {
         var result = this.internalRemove();
 
         if (result) {
+            if (this.parent) {
+                this.parent.removeChild(this);
+            }
+
             this.removeElementsFromDesignerSurface();
 
-            if (this.onPeerRemoved) {
-                this.onPeerRemoved(this);
-            }
+            this.peerRemoved(this);
         }
 
         return result;
@@ -196,6 +330,10 @@ export abstract class DesignerPeer {
 
     addElemnentsToDesignerSurface(designerSurface: HTMLElement) {
         designerSurface.appendChild(this.renderedElement);
+    }
+
+    removeElementsFromDesignerSurface() {
+        this.renderedElement.remove();
     }
 
     buildPropertySheetCard(): Adaptive.AdaptiveCard {
@@ -256,25 +394,30 @@ export class ActionPeer extends DesignerPeer {
         }
     }
 
-    protected getBoundingRect(): Rect {
-        var boundingRect = this.action.renderedElement.getBoundingClientRect();
-
-        return new Rect(
-            this.action.renderedElement.offsetTop,
-            this.action.renderedElement.offsetLeft + boundingRect.width,
-            this.action.renderedElement.offsetTop + boundingRect.height,
-            this.action.renderedElement.offsetLeft
-        );
-    }
-
-    protected internalRemove(): boolean {
+    internalRemove(): boolean {
         return this.action.remove();
     }
 
-    constructor(designer: CardDesigner, action: Adaptive.Action) {
-        super(designer);
+    protected isDraggable(): boolean {
+        return false;
+    }
+
+    constructor(parent: DesignerPeer, action: Adaptive.Action) {
+        super(parent);
 
         this._action = action;
+    }
+
+    getBoundingRect(): Rect {
+        var boundingRect = getBoundingRectangleIncludingMargins(this.action.renderedElement);
+        var effectiveMargins = getEffectiveMargins(this.action.renderedElement);
+
+        return new Rect(
+            this.action.renderedElement.offsetTop - effectiveMargins.top,
+            this.action.renderedElement.offsetLeft - effectiveMargins.left + boundingRect.width,
+            this.action.renderedElement.offsetTop - effectiveMargins.top + boundingRect.height,
+            this.action.renderedElement.offsetLeft - effectiveMargins.left
+        );
     }
 
     get action(): Adaptive.Action {
@@ -293,37 +436,11 @@ export class CardElementPeer extends DesignerPeer {
         return this.cardElement.getJsonTypeName();
     }
 
-    protected getBoundingRect(): Rect {
-        let offset: IPoint;
-        let cardElementBoundingRect = this.cardElement.renderedElement.getBoundingClientRect();
-
-        if (this.cardElement.separatorElement) {
-            offset = {
-                x: this.cardElement.separatorElement.offsetLeft,
-                y: this.cardElement.separatorElement.offsetTop
-            }
-            
-        }
-        else {
-            offset = {
-                x: this.cardElement.renderedElement.offsetLeft,
-                y: this.cardElement.renderedElement.offsetTop
-            }
-        }
-
-        return new Rect(
-            this.cardElement.renderedElement.offsetTop,
-            this.cardElement.renderedElement.offsetLeft + boundingRect.width,
-            this.cardElement.renderedElement.offsetTop + boundingRect.height,
-            this.cardElement.renderedElement.offsetLeft
-        );
-    }
-
     protected insertElementAfter(newElement: Adaptive.CardElement) {
         if (this.cardElement.parent instanceof Adaptive.Container) {
             this.cardElement.parent.insertItemAfter(newElement, this.cardElement);
 
-            var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, newElement);
+            var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, newElement);
 
             this.newPeerCreated(newPeer);
         }
@@ -420,14 +537,101 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
-    protected internalRemove(): boolean {
+    internalRemove(): boolean {
         return this.cardElement.remove();
     }
 
-    constructor(designer: CardDesigner, cardElement: Adaptive.CardElement) {
-        super(designer);
+    constructor(parent: DesignerPeer, cardElement: Adaptive.CardElement) {
+        super(parent);
 
         this._cardElement = cardElement;
+
+        for (var i = 0; i < this.cardElement.getActionCount(); i++) {
+            this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this, cardElement.getActionAt(i)));
+        }
+
+        if (cardElement instanceof Adaptive.Container) {
+            for (var i = 0; i < cardElement.getItemCount(); i++) {
+                this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement.getItemAt(i)));
+            }            
+        }
+    }
+
+    canDrop(peer: DesignerPeer) {
+        return this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer;
+    }
+
+    drop(peer: DesignerPeer, insertionPoint: IPoint) {
+        if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
+            let targetChild: DesignerPeer = null;
+            let insertAfter: boolean;
+
+            for (var i = 0; i< this.getChildCount(); i++) {
+                let rect = this.getChildAt(i).getBoundingRect();
+
+                if (rect.isInside(insertionPoint)) {
+                    targetChild = this.getChildAt(i);
+
+                    insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
+
+                    break;
+                }
+            }
+
+            if (targetChild != peer && peer.internalRemove()) {
+                peer.parent.removeChild(peer);
+
+                if (!targetChild) {
+                    let rect = this.getBoundingRect();
+
+                    insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
+
+                    if (this.cardElement.getItemCount() > 0 && insertAfter) {
+                        this.cardElement.insertItemAfter(peer.cardElement, this.cardElement.getItemAt(this.cardElement.getItemCount()));
+                    }
+                    else {
+                        this.cardElement.insertItemAfter(peer.cardElement, null);
+                    }
+                }
+                else {
+                    if (insertAfter) {
+                        this.cardElement.insertItemAfter(peer.cardElement, (<CardElementPeer>targetChild).cardElement);
+                    }
+                    else {
+                        this.cardElement.insertItemBefore(peer.cardElement, (<CardElementPeer>targetChild).cardElement);
+                    }
+                }
+    
+                this.addChild(peer);
+                this.changed();
+            }
+        }
+    }
+    
+    getBoundingRect(): Rect {
+        var cardElementBoundingRect = getBoundingRectangleIncludingMargins(this.cardElement.renderedElement);
+
+        if (this.cardElement.hasVisibleSeparator) {
+            let separatorBoundingRect = getBoundingRectangleIncludingMargins(this.cardElement.separatorElement);
+            let effectiveMargins = getEffectiveMargins(this.cardElement.separatorElement);
+
+            return new Rect(
+                this.cardElement.separatorElement.offsetTop - effectiveMargins.top,
+                this.cardElement.separatorElement.offsetLeft - effectiveMargins.left + (Math.max(cardElementBoundingRect.right, separatorBoundingRect.right) - Math.min(cardElementBoundingRect.left, separatorBoundingRect.left)),
+                this.cardElement.separatorElement.offsetTop - effectiveMargins.top + (Math.max(cardElementBoundingRect.bottom, separatorBoundingRect.bottom) - Math.min(cardElementBoundingRect.top, separatorBoundingRect.top)),
+                this.cardElement.separatorElement.offsetLeft - effectiveMargins.left
+            )
+        }
+        else {
+            let effectiveMargins = getEffectiveMargins(this.cardElement.renderedElement);
+
+            return new Rect(
+                this.cardElement.renderedElement.offsetTop - effectiveMargins.top,
+                this.cardElement.renderedElement.offsetLeft - effectiveMargins.left + cardElementBoundingRect.width,
+                this.cardElement.renderedElement.offsetTop - effectiveMargins.top + cardElementBoundingRect.height,
+                this.cardElement.renderedElement.offsetLeft - effectiveMargins.left
+            )
+        }
     }
 
     get cardElement(): Adaptive.CardElement {
@@ -436,8 +640,8 @@ export class CardElementPeer extends DesignerPeer {
 }
 
 export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardElement> extends CardElementPeer {
-    constructor(designer: CardDesigner, cardElement: TCardElement) {
-        super(designer, cardElement);
+    constructor(parent: DesignerPeer, cardElement: TCardElement) {
+        super(parent, cardElement);
     }
 
     get cardElement(): TCardElement {
@@ -449,9 +653,13 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
-        var newPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, action);
+        var newPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this, action);
 
         this.newPeerCreated(newPeer);
+    }
+
+    protected isDraggable(): boolean {
+        return false;
     }
 
     protected internalAddCommands(commands: Array<IPeerCommand>) {
@@ -465,7 +673,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
     
                     this.cardElement.addItem(textBlock);
     
-                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, textBlock);
+                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, textBlock);
             
                     this.newPeerCreated(newPeer);
                 }
@@ -502,6 +710,10 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 }
 
 export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
+    protected isDraggable(): boolean {
+        return false;
+    }
+
     protected internalAddCommands(commands: Array<IPeerCommand>) {
         super.internalAddCommands(commands);
 
@@ -514,7 +726,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
     
                     this.cardElement.addItem(textBlock);
     
-                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, textBlock);
+                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, textBlock);
             
                     this.newPeerCreated(newPeer);
                 }
@@ -535,13 +747,25 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
                     this.cardElement.addColumn(column);
 
-                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, column);
+                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, column);
             
                     this.newPeerCreated(newPeer);
                 }
             }
         );
-    }    
+    }
+
+    constructor(parent: DesignerPeer, cardElement: Adaptive.ColumnSet) {
+        super(parent, cardElement);
+
+        for (var i = 0; i < cardElement.getItemCount(); i++) {
+            this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement.getItemAt(i)));
+        }            
+    }
+
+    canDrop(peer: DesignerPeer) {
+        return false;
+    }
 }
 
 export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
@@ -556,20 +780,20 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
     
                     this.cardElement.addItem(textBlock);
     
-                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, textBlock);
+                    var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, textBlock);
             
                     this.newPeerCreated(newPeer);
                 }
             }
         );
-    }    
+    }
 }
 
 export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
-        var newPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, action);
+        var newPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this, action);
 
         this.newPeerCreated(newPeer);
     }
@@ -763,8 +987,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 
 type CardElementType = { new(): Adaptive.CardElement };
 type ActionType = { new(): Adaptive.Action };
-type CardElementPeerType = { new(designer: CardDesigner, cardElement: Adaptive.CardElement): CardElementPeer };
-type ActionPeerType = { new(designer: CardDesigner, action: Adaptive.Action): ActionPeer };
+type CardElementPeerType = { new(parent: DesignerPeer, cardElement: Adaptive.CardElement): CardElementPeer };
+type ActionPeerType = { new(parent: DesignerPeer, action: Adaptive.Action): ActionPeer };
 
 interface IDesignerPeerRegistration<TSource, TPeer> {
     sourceType: TSource,
@@ -834,10 +1058,10 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.Column, ColumnPeer);
     }
 
-    createPeerInstance(designer: CardDesigner, cardElement: Adaptive.CardElement): CardElementPeer {
+    createPeerInstance(parent: DesignerPeer, cardElement: Adaptive.CardElement): CardElementPeer {
         var registrationInfo = this.findTypeRegistration((<any>cardElement).constructor);
 
-        return registrationInfo ? new registrationInfo.peerType(designer, cardElement) : new CardElementPeer(designer, cardElement);
+        return registrationInfo ? new registrationInfo.peerType(parent, cardElement) : new CardElementPeer(parent, cardElement);
     }
 }
 
@@ -848,10 +1072,10 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
         // TODO
     }
 
-    createPeerInstance(designer: CardDesigner, action: Adaptive.Action): ActionPeer {
+    createPeerInstance(parent: DesignerPeer, action: Adaptive.Action): ActionPeer {
         var registrationInfo = this.findTypeRegistration((<any>action).constructor);
 
-        return registrationInfo ? new registrationInfo.peerType(designer, action) : new ActionPeer(designer, action);
+        return registrationInfo ? new registrationInfo.peerType(parent, action) : new ActionPeer(parent, action);
     }
 }
 
@@ -860,10 +1084,15 @@ export class CardDesigner {
     static readonly actionPeerRegistry: ActionPeerRegistry = new ActionPeerRegistry();
 
     private _card: Adaptive.AdaptiveCard;
+    private _rootPeer: DesignerPeer;
     private _cardHost: HTMLElement;
     private _designerSurface: HTMLDivElement;
-    private _items: Array<DesignerPeer> = [];
+    private _allPeers: Array<DesignerPeer> = [];
     private _selectedPeer: DesignerPeer;
+    private _draggedPeer: DesignerPeer;
+    private _dropTarget: DesignerPeer;
+    private _currentPointerOffset: IPoint;
+    private _initialDragPointerOffset: IPoint;
 
     private setSelectedPeer(value: DesignerPeer) {
         if (value != this._selectedPeer) {
@@ -875,6 +1104,12 @@ export class CardDesigner {
 
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
+
+                var rect = this._selectedPeer.getBoundingRect();
+                document.getElementById("status4").innerText = "Left: " + rect.left + ", Top: " + rect.top + ", Right: " + rect.right + ", Bottom: " + rect.bottom
+            }
+            else {
+                document.getElementById("status4").innerText = "";
             }
 
             if (this.onSelectedPeerChanged) {
@@ -889,7 +1124,7 @@ export class CardDesigner {
     }
 
     private peerRemoved(peer: DesignerPeer) {
-        this._items.splice(this._items.indexOf(peer), 1);
+        this._allPeers.splice(this._allPeers.indexOf(peer), 1);
 
         if (peer == this._selectedPeer) {
             this.setSelectedPeer(null);
@@ -897,39 +1132,21 @@ export class CardDesigner {
 
         this.renderCard();
         this.updateLayout();
-}
-
-    private initializePeer(peer: DesignerPeer) {
-        this._items.push(peer);
-
-        peer.onSelectedChanged = (clickedPeer: DesignerPeer) => { this.setSelectedPeer(clickedPeer.isSelected ? clickedPeer : null); };
-        peer.onChanged = (sender: DesignerPeer) => { this.peerChanged(sender); };
-        peer.onPeerRemoved = (sender: DesignerPeer) => { this.peerRemoved(sender); };
-        peer.onNewPeerCreated = (sender: DesignerPeer, newPeer: DesignerPeer) => {
-            this.initializePeer(newPeer);
-
-            newPeer.isSelected = true;
-        };
-        peer.render();
-        peer.addElemnentsToDesignerSurface(this._designerSurface);
     }
 
-    private renderPeer(cardElement: Adaptive.CardElement) {
-        var cardElementPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement);
+    private startDrag(peer: DesignerPeer) {
+        this._initialDragPointerOffset = this._currentPointerOffset;
+        this._draggedPeer = peer;
+    }
 
-        this.initializePeer(cardElementPeer);
+    private endDrag(peer: DesignerPeer) {
+        // Ensure that the dragged peer's elements are at the top in Z order
+        this._draggedPeer.removeElementsFromDesignerSurface();
+        this._draggedPeer.addElemnentsToDesignerSurface(this._designerSurface);
 
-        for (var i = 0; i < cardElement.getActionCount(); i++) {
-            var actionPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this, cardElement.getActionAt(i));
-            
-            this.initializePeer(actionPeer);
-        }
+        this._dropTarget.renderedElement.classList.remove("dragover");
 
-        if (cardElement instanceof Adaptive.CardElementContainer) {
-            for (var i = 0; i < cardElement.getItemCount(); i++) {
-                this.renderPeer(cardElement.getItemAt(i));
-            }            
-        }
+        this._draggedPeer = null;
     }
 
     private renderCard() {
@@ -938,6 +1155,52 @@ export class CardDesigner {
         if (this.card) {
             this._cardHost.appendChild(this.card.render());
         }
+    }
+
+    private addPeer(peer: DesignerPeer) {
+        this._allPeers.push(peer);
+
+        peer.onSelectedChanged = (clickedPeer: DesignerPeer) => { this.setSelectedPeer(clickedPeer.isSelected ? clickedPeer : null); };
+        peer.onChanged = (sender: DesignerPeer) => { this.peerChanged(sender); };
+        peer.onPeerRemoved = (sender: DesignerPeer) => { this.peerRemoved(sender); };
+        peer.onNewPeerCreated = (sender: DesignerPeer, newPeer: DesignerPeer) => {
+            this.addPeer(newPeer);
+
+            newPeer.isSelected = true;
+        };
+        peer.onStartDrag = (sender: DesignerPeer) => {
+            this.startDrag(sender);
+        }
+        peer.onEndDrag = (sender: DesignerPeer) => {
+            this.endDrag(sender);
+        }
+        peer.render();
+        peer.addElemnentsToDesignerSurface(this._designerSurface);
+
+        for (var i = 0; i < peer.getChildCount(); i++) {
+            this.addPeer(peer.getChildAt(i));
+        }
+    }
+
+    private internalFindDropTarget(currentPeer: DesignerPeer, forPeer: DesignerPeer): DesignerPeer {
+        var result: DesignerPeer = null;
+        var boundingRect = currentPeer.getBoundingRect();
+
+        if (boundingRect.isInside(this._currentPointerOffset)) {
+            if (currentPeer.canDrop(forPeer)) {
+                result = currentPeer;
+            }
+
+            for (var i = 0; i < currentPeer.getChildCount(); i++) {
+                var deeperResult = this.internalFindDropTarget(currentPeer.getChildAt(i), forPeer);
+
+                if (deeperResult) {
+                    result = deeperResult;
+                }
+            }
+        }
+
+        return result;
     }
 
     readonly parentElement: HTMLElement;
@@ -962,6 +1225,43 @@ export class CardDesigner {
         this._designerSurface.style.width = "100%";
         this._designerSurface.style.height = "100%";
 
+        this._designerSurface.onpointermove = (e: PointerEvent) => {
+            var designerPosition = getAbsoluteElementPosition(this._designerSurface);
+
+            this._currentPointerOffset = {
+                x: e.x - designerPosition.x,
+                y: e.y - designerPosition.y
+            };
+
+            document.getElementById("status").innerText = "x: " + this._currentPointerOffset.x + ", y: " + this._currentPointerOffset.y;
+
+            if (this._draggedPeer) {
+                if (this._dropTarget) {
+                    this._dropTarget.renderedElement.classList.remove("dragover");
+                }
+
+                document.getElementById("status2").innerHTML = "Dragging " + (<any>this._draggedPeer).constructor.name;
+
+                var newDropTarget = this.findDropTarget(this._draggedPeer);
+
+                if (newDropTarget) {
+                    this._dropTarget = newDropTarget;
+
+                    document.getElementById("status3").innerHTML = "Found drop target: " + (<any>newDropTarget).constructor.name;
+
+                    this._dropTarget.drop(this._draggedPeer, this._currentPointerOffset);
+
+                    this._dropTarget.renderedElement.classList.add("dragover");
+                }
+                else {
+                    document.getElementById("status3").innerHTML = "No drop target";
+                }
+            }
+            else {
+                document.getElementById("status2").innerHTML = "";
+            }
+        }
+
         rootElement.appendChild(this._designerSurface);
 
         this.parentElement.innerHTML = "";
@@ -970,22 +1270,28 @@ export class CardDesigner {
 
     onSelectedPeerChanged: (peer: DesignerPeer) => void;
 
+    findDropTarget(peer: DesignerPeer): DesignerPeer {
+        return this.internalFindDropTarget(this._rootPeer, peer);
+    }
+
     render() {
         this._designerSurface.innerHTML = "";
-        this._items = [];
+        this._allPeers = [];
 
         this.setSelectedPeer(null);
 
         this.renderCard();
 
         if (this.card) {
-            this.renderPeer(this.card);
+            this._rootPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(null, this.card);
+
+            this.addPeer(this._rootPeer);
         }
     }
 
     updateLayout() {
-        for (var i = 0; i < this._items.length; i++) {
-            this._items[i].updateLayout();
+        for (var i = 0; i < this._allPeers.length; i++) {
+            this._allPeers[i].updateLayout();
         }
     }
 

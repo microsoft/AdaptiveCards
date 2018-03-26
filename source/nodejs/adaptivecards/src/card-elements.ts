@@ -550,6 +550,17 @@ export abstract class CardElement {
         return this._isVisible;
     }
 
+    get hasVisibleSeparator(): boolean {
+        var parentContainer = this.getParentContainer();
+
+        if (parentContainer) {
+            return this.separatorElement && !parentContainer.isFirstElement(this);
+        }
+        else {
+            return false;
+        }
+    }
+
     set isVisible(value: boolean) {
         // If the element is going to be hidden, reset any changes that were due
         // to overflow truncation (this ensures that if the element is later
@@ -3184,6 +3195,10 @@ export class Container extends CardElementContainer {
         this.insertItemAt(item, -1);
     }
 
+    insertItemBefore(item: CardElement, insertBefore: CardElement) {
+        this.insertItemAt(item, this._items.indexOf(insertBefore));
+    }
+
     insertItemAfter(item: CardElement, insertAfter: CardElement) {
         this.insertItemAt(item, this._items.indexOf(insertAfter) + 1);
     }
@@ -3331,6 +3346,15 @@ export class Column extends Container {
             else {
                 renderedElement.style.flex = "1 1 50px";
             }
+        }
+    }
+
+    get hasVisibleSeparator(): boolean {
+        if (this.parent && this.parent instanceof ColumnSet) {
+            return !this.parent.isLeftMostElement(this);
+        }
+        else {
+            return false;
         }
     }
 
