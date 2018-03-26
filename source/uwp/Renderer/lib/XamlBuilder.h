@@ -26,11 +26,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         STDMETHODIMP AllImagesLoaded();
         STDMETHODIMP ImagesLoadingHadError();
 
-        void BuildXamlTreeFromAdaptiveCard(
+        static void BuildXamlTreeFromAdaptiveCard(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
             _Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
-            _In_ AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer,
-            _In_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+            std::shared_ptr<XamlBuilder> xamlBuilder,
             boolean isOuterCard = true,
             ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle defaultContainerStyle = ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::Default);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
@@ -104,6 +104,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
             _Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
+        static void BuildActionSet(
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
+
         template<typename T>
         static HRESULT TryGetResourceFromResourceDictionaries(
             _In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
@@ -128,14 +134,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         bool m_enableXamlImageHandling = false;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
 
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateRootCardElement(
+        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateRootCardElement(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** outerElementContainer,
+            std::shared_ptr<XamlBuilder> xamlBuilder,
             _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
 
-        void ApplyBackgroundToRoot(
+        static void ApplyBackgroundToRoot(
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
             _In_ ABI::Windows::Foundation::IUriRuntimeClass* uri,
             _Inout_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
@@ -151,27 +157,34 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
-        void BuildShowCard(
-            AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer,
+        static void BuildShowCard(
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveShowCardActionConfig* showCardActionConfig,
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
-            _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+            _Inout_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+            bool isBottomActionBar,
             ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
 
-        void ArrangeButtonContent(
+        static void ArrangeButtonContent(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionsConfig* actionsConfig,
-            _In_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
              ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
             _Inout_ ABI::Windows::UI::Xaml::Controls::IButton* button);
-        void BuildActions(
+
+        static void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* children,
-            _In_ AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer,
-            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
             _In_ bool insertSeparator,
-            _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+            _Inout_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle);
+
+        static void BuildActionSetHelper(
+            ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* children,
+            ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation actionsOrientation,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+            bool isBottomActionBar,
+            ABI::Windows::UI::Xaml::IUIElement** actionSetControl,
             ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle);
 
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(

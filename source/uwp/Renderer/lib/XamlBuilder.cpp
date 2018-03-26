@@ -111,8 +111,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard,
         IFrameworkElement** xamlTreeRoot, 
-        AdaptiveCardRenderer* renderer,
-        AdaptiveRenderContext* renderContext,
+        IAdaptiveRenderContext* renderContext,
+        std::shared_ptr<XamlBuilder> xamlBuilder,
         boolean isOuterCard,
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle defaultContainerStyle)
     {
@@ -141,9 +141,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ComPtr<IAdaptiveRenderArgs> renderArgs;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr));
 
-            ComPtr<IPanel> outerElementContainer;
             ComPtr<IPanel> bodyElementContainer;
-            ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), &outerElementContainer, &bodyElementContainer);
+            ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), xamlBuilder, &bodyElementContainer);
             ComPtr<IFrameworkElement> childElementContainerAsFE;
             THROW_IF_FAILED(rootElement.As(&childElementContainerAsFE));
 
@@ -164,7 +163,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 {
                     unsigned int bodyCount;
                     THROW_IF_FAILED(body->get_Size(&bodyCount));
-                    BuildActions(actions.Get(), renderer, outerElementContainer.Get(), bodyElementContainer.Get(), bodyCount > 0, renderContext, containerStyle);
+                    BuildActions(actions.Get(), bodyElementContainer.Get(), bodyCount > 0, renderContext, containerStyle);
                 }
                 else
                 {
@@ -185,19 +184,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
             THROW_IF_FAILED(childElementContainerAsFE.CopyTo(xamlTreeRoot));
 
-            if (isOuterCard)
+            if (isOuterCard && (xamlBuilder != nullptr))
             {
-                if (m_listeners.size() == 0)
+                if (xamlBuilder->m_listeners.size() == 0)
                 {
                     // If we're done and no one's listening for the images to load, make sure 
                     // any outstanding image loads are no longer tracked.
-                    m_imageLoadTracker.AbandonOutstandingImages();
+                    xamlBuilder->m_imageLoadTracker.AbandonOutstandingImages();
                 }
-                else if (m_imageLoadTracker.GetTotalImagesTracked() == 0)
+                else if (xamlBuilder->m_imageLoadTracker.GetTotalImagesTracked() == 0)
                 {
                     // If there are no images to track, fire the all images loaded
                     // event to signal the xaml is ready
-                    FireAllImagesLoaded();
+                    xamlBuilder->FireAllImagesLoaded();
                 }
             }
         }
@@ -309,7 +308,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IAdaptiveCard* adaptiveCard,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs,
-        IPanel** outerElementContainer,
+        std::shared_ptr<XamlBuilder> xamlBuilder,
         IPanel** bodyElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
@@ -343,12 +342,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get(), renderContext, renderArgs);
         }
 
-        // Outer panel that contains the main body and any inline show cards
-        ComPtr<WholeItemsPanel> outerPanel;
-        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&outerPanel));
-        ComPtr<IPanel> outerPanelAsPanel;
-        THROW_IF_FAILED(outerPanel.As(&outerPanelAsPanel));
-
         // Now create the inner stack panel to serve as the root host for all the 
         // body elements and apply padding from host configuration
         ComPtr<WholeItemsPanel> bodyElementHost;
@@ -364,19 +357,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         // still renders at the top even if the content is shorter than the full card
         THROW_IF_FAILED(bodyElementHostAsElement->put_VerticalAlignment(VerticalAlignment_Top));
 
-        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), outerPanelAsPanel.Get());
+        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get());
         THROW_IF_FAILED(bodyElementHost.CopyTo(bodyElementContainer));
-        
-        XamlHelpers::AppendXamlElementToPanel(outerPanelAsPanel.Get(), rootAsPanel.Get());
-        THROW_IF_FAILED(outerPanelAsPanel.CopyTo(outerElementContainer));
 
-        if (m_fixedDimensions)
+        if (xamlBuilder && xamlBuilder->m_fixedDimensions)
         {
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             THROW_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
-            rootAsFrameworkElement->put_Width(m_fixedWidth);
-            rootAsFrameworkElement->put_Height(m_fixedHeight);
-            rootAsFrameworkElement->put_MaxHeight(m_fixedHeight);
+            rootAsFrameworkElement->put_Width(xamlBuilder->m_fixedWidth);
+            rootAsFrameworkElement->put_Height(xamlBuilder->m_fixedHeight);
+            rootAsFrameworkElement->put_MaxHeight(xamlBuilder->m_fixedHeight);
         }
         
         ComPtr<IUIElement> rootAsUIElement;
@@ -400,7 +390,17 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
         ComPtr<IUIElement> backgroundImage;
-        BuildImage(adaptiveCardElement.Get(), renderContext, renderArgs, &backgroundImage);
+
+        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+        THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+
+        ComPtr<IAdaptiveElementRenderer> elementRenderer;
+        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
+        if (elementRenderer != nullptr)
+        {
+            elementRenderer->Render(adaptiveCardElement.Get(), renderContext, renderArgs, &backgroundImage);
+        }
+
         XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
 
         // All background images should be stretched to fill the whole card.
@@ -685,14 +685,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     void XamlBuilder::BuildShowCard(
-        AdaptiveCardRenderer* renderer,
         IAdaptiveShowCardActionConfig* showCardActionConfig,
         IAdaptiveActionElement* action,
-        AdaptiveRenderContext* renderContext,
+        IAdaptiveRenderContext* renderContext,
+        bool isBottomActionBar,
         IUIElement** uiShowCard)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<AdaptiveRenderContext> localRenderContext(renderContext);
+        ComPtr<IAdaptiveRenderContext> localRenderContext(renderContext);
         ComPtr<IAdaptiveShowCardAction> showCardAction;
         THROW_IF_FAILED(localAction.As(&showCardAction));
 
@@ -703,7 +703,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
 
         ComPtr<IFrameworkElement> localUiShowCard;
-        BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), renderer, localRenderContext.Get(), false, showCardConfigStyle);
+        BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), localRenderContext.Get(), nullptr, false, showCardConfigStyle);
 
         ComPtr<IGrid2> showCardGrid;
         THROW_IF_FAILED(localUiShowCard.As(&showCardGrid));
@@ -726,7 +726,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         UINT32 inlineTopMargin;
         THROW_IF_FAILED(showCardActionConfig->get_InlineTopMargin(&inlineTopMargin));
-        Thickness margin = { 0, (double)inlineTopMargin, 0, 0 };
+
+        double sideMargin = (double)padding * -1;
+        double topMargin = isBottomActionBar ? inlineTopMargin + padding : inlineTopMargin;
+        double bottomMargin = isBottomActionBar ? (double) padding * -1 : 0;
+
+        Thickness margin = { sideMargin, topMargin, sideMargin, bottomMargin };
         THROW_IF_FAILED(showCardFrameworkElement->put_Margin(margin));
 
         ComPtr<IUIElement> showCardUIElement;
@@ -742,7 +747,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     void XamlBuilder::ArrangeButtonContent(
         IAdaptiveActionElement* action,
         IAdaptiveActionsConfig* actionsConfig,
-        AdaptiveRenderContext* renderContext,
+        IAdaptiveRenderContext* renderContext,
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
         IButton* button)
@@ -783,8 +788,17 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ComPtr<AdaptiveRenderArgs> childRenderArgs;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, buttonContentsStackPanel.Get()));
 
+            ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+            THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+
             ComPtr<IUIElement> buttonIcon;
-            BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+            ComPtr<IAdaptiveElementRenderer> elementRenderer;
+            THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
+            if (elementRenderer != nullptr)
+            {
+                elementRenderer->Render(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+            }
+
             XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
             ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
             THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
@@ -805,11 +819,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             THROW_IF_FAILED(buttonText->put_Text(title.Get()));
             THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
             XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get()); // Add text to stack panel
-
-                                                                                                // Add event to the image to resize itself when the textblock is rendered
+                                                                                                
             ComPtr<IImage> buttonIconAsImage;
             THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
 
+            // Add event to the image to resize itself when the textblock is rendered
             EventRegistrationToken eventToken;
             THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
                 [ buttonIconAsFrameworkElement, buttonText ](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
@@ -827,26 +841,57 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         }
     }
 
+    void XamlBuilder::BuildActionSet(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
+        IUIElement** actionSetControl)
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        if (!SupportsInteractivity(hostConfig.Get()))
+        {
+            renderContext->AddWarning(
+                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"ActionSet was stripped from card because interactivity is not supported").Get());
+            return;
+        }
+
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveActionSet> adaptiveActionSet;
+        THROW_IF_FAILED(cardElement.As(&adaptiveActionSet));
+
+        ComPtr<IVector<IAdaptiveActionElement*>> actions;
+        THROW_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
+
+        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation orientation;
+        THROW_IF_FAILED(adaptiveActionSet->get_Orientation(&orientation));
+
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+        renderArgs->get_ContainerStyle(&containerStyle);
+
+        BuildActionSetHelper(actions.Get(), orientation, renderContext, false, actionSetControl, containerStyle);
+    }
+
     _Use_decl_annotations_
     void XamlBuilder::BuildActions(
         IVector<IAdaptiveActionElement*>* children,
-        AdaptiveCardRenderer* renderer,
-        IPanel* parentPanel,
         IPanel* bodyPanel,
         bool insertSeparator,
-        AdaptiveRenderContext* renderContext,
+        IAdaptiveRenderContext* renderContext,
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         ComPtr<IAdaptiveActionsConfig> actionsConfig;
         THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-        ComPtr<AdaptiveRenderContext> strongRenderContext(renderContext);
+
         // Create a separator between the body and the actions
         if (insertSeparator)
         {
             ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing;
-            THROW_IF_FAILED(actionsConfig->get_Spacing(&spacing)); 
+            THROW_IF_FAILED(actionsConfig->get_Spacing(&spacing));
 
             UINT spacingSize;
             THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), spacing, &spacingSize));
@@ -856,11 +901,33 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             XamlHelpers::AppendXamlElementToPanel(separator.Get(), bodyPanel);
         }
 
+        ComPtr<IUIElement> actionSetControl;
+        BuildActionSetHelper(children, ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::None, renderContext, true, &actionSetControl, containerStyle);
+
+        XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
+    }
+
+    void XamlBuilder::BuildActionSetHelper(
+        IVector<IAdaptiveActionElement*>* children,
+        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation actionsOrientation,
+        IAdaptiveRenderContext* renderContext,
+        bool isBottomActionBar,
+        IUIElement** actionSetControl,
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle)
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        ComPtr<IAdaptiveActionsConfig> actionsConfig;
+        THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
+        ComPtr<IAdaptiveRenderContext> strongRenderContext(renderContext);
+
         ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment actionAlignment;
         THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation actionsOrientation;
-        THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
+        if (actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::None)
+        {
+            THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
+        }
 
         // Declare the panel that will host the buttons
         ComPtr<IPanel> actionsPanel;
@@ -948,7 +1015,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         UINT currentAction = 0;
 
-        ComPtr<AdaptiveCardRenderer> strongRenderer(renderer);
         std::shared_ptr<std::vector<ComPtr<IUIElement>>> allShowCards = std::make_shared<std::vector<ComPtr<IUIElement>>>();
         ComPtr<IStackPanel> showCardsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IGridStatics> gridStatics;
@@ -1000,7 +1066,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                 if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard && 
                     showCardActionMode == ABI::AdaptiveCards::Rendering::Uwp::ActionMode::Inline)
                 {
-                    BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), strongRenderContext.Get(), uiShowCard.GetAddressOf());
+                    BuildShowCard(showCardActionConfig.Get(), action.Get(), strongRenderContext.Get(), isBottomActionBar, uiShowCard.GetAddressOf());
                     allShowCards->push_back(uiShowCard);
 
                     ComPtr<IPanel> showCardsPanel;
@@ -1071,9 +1137,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Actions", actionsPanelAsFrameworkElement.Get()));
 
-        // Buttons go into body panel, show cards go into outer panel so they're not inside the padding
-        XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), bodyPanel);
-        XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), parentPanel);
+        ComPtr<IStackPanel> actionSet = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<IPanel> actionSetAsPanel;
+        actionSet.As(&actionSetAsPanel);
+
+        // Add buttons and show cards to panel
+        XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), actionSetAsPanel.Get()); 
+        XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), actionSetAsPanel.Get());
+
+        THROW_IF_FAILED(actionSetAsPanel.CopyTo(actionSetControl));
     }
 
     _Use_decl_annotations_

@@ -118,6 +118,8 @@
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
+    <ClInclude Include="lib\AdaptiveActionSet.h" />
+    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
     <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnRenderer.h" />
@@ -199,6 +201,8 @@
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClCompile Include="lib\AdaptiveActionSet.cpp" />
+    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
     <ClCompile Include="lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

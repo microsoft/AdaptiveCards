@@ -28,6 +28,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     runtimeclass AdaptiveTimeInput;
     runtimeclass AdaptiveToggleInput;
     runtimeclass AdaptiveSeparator;
+    runtimeclass AdaptiveActionSet;
 
     runtimeclass AdaptiveFontSizesConfig;
     runtimeclass AdaptiveFontWeightsConfig;
@@ -103,6 +104,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     interface IAdaptiveSeparator;
     interface IAdaptiveError;
     interface IAdaptiveWarning;
+    interface IAdaptiveActionSet;
 
     interface IAdaptiveFontSizesConfig;
     interface IAdaptiveFontWeightsConfig;
@@ -199,7 +201,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         TextInput,
         TimeInput,
         ToggleInput,
-        Custom
+        Custom,
+        ActionSet
     } ElementType;
 
     [version(NTDDI_WIN10_RS1)]
@@ -248,7 +251,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [version(NTDDI_WIN10_RS1)]
     typedef [v1_enum] enum ActionsOrientation {
         Vertical = 0,
-        Horizontal
+        Horizontal,
+        None,
     } ActionsOrientation;
 
     [version(NTDDI_WIN10_RS1)]
@@ -913,6 +917,29 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     runtimeclass AdaptiveFactSet
     {
         [default] interface IAdaptiveFactSet;
+        interface IAdaptiveCardElement;
+    };
+
+    [
+        uuid(F9778A62-1317-486D-9D82-C71101FA01F8),
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveActionSet)
+    ]
+    interface IAdaptiveActionSet : IInspectable
+    {
+        [propget] HRESULT Actions([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>** value);
+
+        [propget] HRESULT Orientation([out][retval] ActionsOrientation* value);
+        [propput] HRESULT Orientation([in] ActionsOrientation value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1)
+    ]
+    runtimeclass AdaptiveActionSet
+    {
+        [default] interface IAdaptiveActionSet;
         interface IAdaptiveCardElement;
     };
 
@@ -1983,6 +2010,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         activatable(NTDDI_WIN10_RS1)
     ]
     runtimeclass AdaptiveFactSetRenderer
+    {
+        [default] interface IAdaptiveElementRenderer;
+        interface IAdaptiveElementParser;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1)
+    ]
+    runtimeclass AdaptiveActionSetRenderer
     {
         [default] interface IAdaptiveElementRenderer;
         interface IAdaptiveElementParser;
