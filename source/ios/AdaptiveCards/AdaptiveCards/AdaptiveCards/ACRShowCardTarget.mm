@@ -39,17 +39,19 @@
     return self;
 }
 
-- (void)createShowCard
+- (void)createShowCard:(NSMutableArray*)inputs
 {
-    NSMutableArray *inputs = [[NSMutableArray alloc] init];
+    [inputs setArray:[NSMutableArray arrayWithArray:[[_rootView card] getInputs]]];
+    if(!inputs){
+        inputs = [[NSMutableArray alloc] init];
+    }
+    
     UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                     inputs:inputs
                                                   rootView:_rootView
                                                 guideFrame:_superview.frame
                                                 hostconfig:_config];
-
-    [[_rootView card] appendInputs:inputs];
-
+    [[_rootView card] setInputs:inputs];
     unsigned int padding = 0;
 
     switch ([_config getHostConfig] ->actions.spacing)
@@ -124,17 +126,11 @@
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
     [wrappingView setAlignmentForSubview:AdaptiveCards::HorizontalAlignment::Center];
     [_superview addArrangedSubview:_adcView];
+    _adcView.hidden = YES;
 }
 
 - (IBAction)toggleVisibilityOfShowCard
 {
-    // if there is no ShowCard UIView, create one
-    if(!_adcView)
-    {
-        [self createShowCard];
-        return;
-    }
-    // Toggle the visibility of a ShowCard UIView
     _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
 }
 

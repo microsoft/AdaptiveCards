@@ -48,6 +48,11 @@ using namespace AdaptiveCards;
     return nil;
 }
 
+- (NSArray *)getInputs
+{
+    return _inputs;
+}
+
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 {
     ACOAdaptiveCardParseResult *result = nil;
