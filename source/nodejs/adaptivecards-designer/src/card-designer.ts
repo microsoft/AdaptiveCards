@@ -550,7 +550,7 @@ export class CardElementPeer extends DesignerPeer {
             this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this, cardElement.getActionAt(i)));
         }
 
-        if (cardElement instanceof Adaptive.Container) {
+        if (cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < cardElement.getItemCount(); i++) {
                 this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement.getItemAt(i)));
             }            
@@ -587,7 +587,7 @@ export class CardElementPeer extends DesignerPeer {
                     insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
 
                     if (this.cardElement.getItemCount() > 0 && insertAfter) {
-                        this.cardElement.insertItemAfter(peer.cardElement, this.cardElement.getItemAt(this.cardElement.getItemCount()));
+                        this.cardElement.insertItemAfter(peer.cardElement, this.cardElement.getItemAt(this.cardElement.getItemCount() - 1));
                     }
                     else {
                         this.cardElement.insertItemAfter(peer.cardElement, null);
@@ -755,6 +755,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         );
     }
 
+    /*
     constructor(parent: DesignerPeer, cardElement: Adaptive.ColumnSet) {
         super(parent, cardElement);
 
@@ -762,6 +763,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
             this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement.getItemAt(i)));
         }            
     }
+    */
 
     canDrop(peer: DesignerPeer) {
         return false;
@@ -1106,10 +1108,6 @@ export class CardDesigner {
                 this._selectedPeer.isSelected = true;
 
                 var rect = this._selectedPeer.getBoundingRect();
-                document.getElementById("status4").innerText = "Left: " + rect.left + ", Top: " + rect.top + ", Right: " + rect.right + ", Bottom: " + rect.bottom
-            }
-            else {
-                document.getElementById("status4").innerText = "";
             }
 
             if (this.onSelectedPeerChanged) {
@@ -1183,6 +1181,10 @@ export class CardDesigner {
     }
 
     private internalFindDropTarget(currentPeer: DesignerPeer, forPeer: DesignerPeer): DesignerPeer {
+        if (currentPeer == forPeer) {
+            return null;
+        }
+
         var result: DesignerPeer = null;
         var boundingRect = currentPeer.getBoundingRect();
 
@@ -1233,32 +1235,18 @@ export class CardDesigner {
                 y: e.y - designerPosition.y
             };
 
-            document.getElementById("status").innerText = "x: " + this._currentPointerOffset.x + ", y: " + this._currentPointerOffset.y;
-
             if (this._draggedPeer) {
                 if (this._dropTarget) {
                     this._dropTarget.renderedElement.classList.remove("dragover");
                 }
 
-                document.getElementById("status2").innerHTML = "Dragging " + (<any>this._draggedPeer).constructor.name;
-
                 var newDropTarget = this.findDropTarget(this._draggedPeer);
 
                 if (newDropTarget) {
                     this._dropTarget = newDropTarget;
-
-                    document.getElementById("status3").innerHTML = "Found drop target: " + (<any>newDropTarget).constructor.name;
-
                     this._dropTarget.drop(this._draggedPeer, this._currentPointerOffset);
-
                     this._dropTarget.renderedElement.classList.add("dragover");
                 }
-                else {
-                    document.getElementById("status3").innerHTML = "No drop target";
-                }
-            }
-            else {
-                document.getElementById("status2").innerHTML = "";
             }
         }
 
