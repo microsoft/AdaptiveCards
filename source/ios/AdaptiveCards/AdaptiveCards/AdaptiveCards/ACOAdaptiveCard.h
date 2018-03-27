@@ -12,6 +12,7 @@
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 - (NSData *)inputs;
+- (NSArray *)getInputs;
 - (void)setInputs:(NSArray *)inputs;
 - (void)appendInputs:(NSArray *)inputs;
 

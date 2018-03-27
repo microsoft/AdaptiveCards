@@ -139,7 +139,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedImage) try
     {
         std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();

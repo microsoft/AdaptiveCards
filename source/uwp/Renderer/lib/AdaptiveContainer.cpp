@@ -81,7 +81,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
