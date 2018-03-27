@@ -1120,6 +1120,17 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(localTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
         THROW_IF_FAILED(localTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
 
+        //Apply font family
+        HString fontFamilyName;
+        THROW_IF_FAILED(hostConfig->get_FontFamily(fontFamilyName.GetAddressOf()));
+
+        ComPtr<IInspectable> inspectable;
+        ComPtr<IFontFamily> fontFamily;
+        ComPtr<IFontFamilyFactory> fontFamilyFactory;
+        THROW_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(L"Windows.UI.Xaml.Media.FontFamily").Get(), &fontFamilyFactory));
+        THROW_IF_FAILED(fontFamilyFactory->CreateInstanceWithName(fontFamilyName.Get(), nullptr, inspectable.ReleaseAndGetAddressOf(), &fontFamily));
+        THROW_IF_FAILED(xamlTextBlock->put_FontFamily(fontFamily.Get()));
+
         ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
         THROW_IF_FAILED(localTextBlock.As(&textBlockAsFrameworkElement));
         THROW_IF_FAILED(textBlockAsFrameworkElement->put_MaxWidth(maxWidth));
