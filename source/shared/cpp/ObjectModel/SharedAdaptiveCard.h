@@ -81,6 +81,12 @@ public:
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
+    static std::shared_ptr<ParseResult> DeserializeFromStringWithFrame(const std::string& jsonString,
+        const std::string& jsonFrame,
+        double rendererVersion,
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
+
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
         const std::string& fallbackText,
         const std::string& language);

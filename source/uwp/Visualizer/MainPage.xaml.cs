@@ -123,5 +123,33 @@ namespace AdaptiveCardVisualizer
             AppBarHostConfigEditor.IsChecked = false;
             SetIsInHostConfigEditor(false);
         }
+
+        private void AppBarFrameEditor_Click(object sender, RoutedEventArgs e)
+        {
+            SetIsInFrameEditor(!IsInFrameEditor);
+        }
+
+        public bool IsInFrameEditor { get; private set; }
+
+        private void SetIsInFrameEditor(bool isInFrameEditor)
+        {
+            IsInFrameEditor = isInFrameEditor;
+
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ButtonBase>())
+            {
+                if (button != AppBarFrameEditor)
+                {
+                    button.IsEnabled = !isInFrameEditor;
+                }
+            }
+
+            FrameEditorView.Visibility = isInFrameEditor ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void FrameTransparentBackdrop_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AppBarFrameEditor.IsChecked = false;
+            SetIsInFrameEditor(false);
+        }
     }
 }

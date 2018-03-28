@@ -5,6 +5,7 @@
 #include "ShowCardAction.h"
 #include "TextBlock.h"
 #include "AdaptiveCardParseWarning.h"
+#include "FrameTranslator.h"
 
 using namespace AdaptiveCards;
 
@@ -65,6 +66,19 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(
     jsonFileStream >> root;
 
     return AdaptiveCard::Deserialize(root, rendererVersion, elementParserRegistration, actionParserRegistration);
+}
+
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromStringWithFrame(
+    const std::string& jsonString,
+    const std::string& jsonFrame,
+    double rendererVersion,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration)
+{
+    Json::Value jsonFramedCard;
+    ApplyFrame(ParseUtil::GetJsonValueFromString(jsonString), ParseUtil::GetJsonValueFromString(jsonFrame), jsonFramedCard);
+
+    return Deserialize(jsonFramedCard, rendererVersion, elementParserRegistration, actionParserRegistration);
 }
 
 #ifdef __ANDROID__
