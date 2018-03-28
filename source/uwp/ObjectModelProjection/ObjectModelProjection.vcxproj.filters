@@ -45,6 +45,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseResult.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\FrameTranslator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -94,6 +95,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionSet.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\FrameTranslator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

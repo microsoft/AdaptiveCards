@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\FrameTranslator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -61,7 +62,9 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseUtil.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\SharedAdaptiveCard.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\SharedAdaptiveCard.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Enums.cpp" />
@@ -86,6 +89,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\FrameTranslator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
