@@ -56,6 +56,8 @@ public enum AdaptiveCardSchemaKey {
   FontWeights,
   Good,
   HorizontalAlignment,
+  IconPlacement,
+  IconUrl,
   Id,
   Image,
   Images,
