@@ -61,7 +61,7 @@ function getBoundingRectangleIncludingMargins(element: HTMLElement): Rect {
     );
 }
 
-interface IPoint {
+export interface IPoint {
     x: number;
     y: number;
 }
@@ -99,20 +99,13 @@ class Rect {
     }
 }
 
-export interface IPeerCommand {
-    name: string;
-    execute: () => void
-}
-
-export abstract class DesignerPeer {
-    private _children: Array<DesignerPeer> = [];
+export abstract class DraggableElement {
     private _renderedElement: HTMLElement;
-    private _isSelected: boolean;
     private _isPointerOver: boolean;
     private _isPointerDown: boolean;
     private _lastClickedPoint: IPoint;
     private _dragging: boolean;
-
+    
     protected get isPointerOver(): boolean {
         return this._isPointerOver;
     }
@@ -123,19 +116,6 @@ export abstract class DesignerPeer {
 
             this.updateLayout();
         }
-    }
-
-    protected abstract getBadgeText(): string;
-    protected abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard);
-    abstract internalRemove(): boolean;
-
-    protected internalAddCommands(commands: Array<IPeerCommand>) {
-        commands.push(
-            {
-                name: "Remove",
-                execute: () => { this.remove() }
-            }
-        );
     }
 
     protected isDraggable(): boolean {
@@ -152,20 +132,39 @@ export abstract class DesignerPeer {
         }
     }
 
-    protected internalRender() {
-        this._renderedElement = document.createElement("div");
-        this._renderedElement.classList.add("acd-peer");
-        this._renderedElement.style.position = "absolute";
+    protected pointerDown(e: PointerEvent) {
+        this._isPointerDown = true;
+        this._lastClickedPoint = { x: e.offsetX, y: e.offsetY };
+        this.renderedElement.setPointerCapture(e.pointerId);
+    }
+
+    protected abstract internalRender(): HTMLElement;
+
+    onStartDrag: (sender: DraggableElement) => void;
+    onEndDrag: (sender: DraggableElement) => void;
+
+    updateLayout() {
+        // Do nothing in base implementation
+    }
+
+    endDrag() {
+        if (this._dragging) {
+            this._dragging = false;
+
+            if (this.onEndDrag) {
+                this.onEndDrag(this);
+            }
+        }
+    }
+
+    render() {
+        this._renderedElement = this.internalRender();
 
         this._renderedElement.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
         this._renderedElement.onpointerenter = () => { this.isPointerOver = true; };
         this._renderedElement.onpointerleave = () => { this.isPointerOver = false; };
         this._renderedElement.onpointerdown = (e: PointerEvent) => {
-            this.isSelected = true;
-
-            this._isPointerDown = true;
-            this._lastClickedPoint = { x: e.offsetX, y: e.offsetY };
-            this._renderedElement.setPointerCapture(e.pointerId);
+            this.pointerDown(e);
         };
         this._renderedElement.onpointerup = (e: PointerEvent) => {
             this._isPointerDown = false;
@@ -180,6 +179,49 @@ export abstract class DesignerPeer {
                 }
             }
         };
+
+        this.updateLayout();
+    }
+
+    get renderedElement(): HTMLElement {
+        return this._renderedElement;
+    }
+}
+
+export interface IPeerCommand {
+    name: string;
+    execute: () => void
+}
+
+export abstract class DesignerPeer extends DraggableElement {
+    private _children: Array<DesignerPeer> = [];
+    private _isSelected: boolean;
+
+    protected abstract getBadgeText(): string;
+    protected abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard);
+    abstract internalRemove(): boolean;
+
+    protected internalAddCommands(commands: Array<IPeerCommand>) {
+        commands.push(
+            {
+                name: "Remove",
+                execute: () => { this.remove() }
+            }
+        );
+    }
+
+    pointerDown(e: PointerEvent) {
+        super.pointerDown(e);
+
+        this.isSelected = true;
+    }
+
+    protected internalRender(): HTMLElement {
+        var element = document.createElement("div");
+        element.classList.add("acd-peer");
+        element.style.position = "absolute";
+
+        return element;
     }
 
     protected updateCssStyles() {
@@ -217,10 +259,9 @@ export abstract class DesignerPeer {
     onChanged: (sender: DesignerPeer) => void;
     onPeerRemoved: (sender: DesignerPeer) => void;
     onNewPeerCreated: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
-    onStartDrag: (sender: DesignerPeer) => void;
-    onEndDrag: (sender: DesignerPeer) => void;
 
     constructor() {
+        super();
     }
 
     abstract getBoundingRect(): Rect;
@@ -255,16 +296,6 @@ export abstract class DesignerPeer {
         return this._children[index];
     }
 
-    endDrag() {
-        if (this._dragging) {
-            this._dragging = false;
-
-            if (this.onEndDrag) {
-                this.onEndDrag(this);
-            }
-        }
-    }
-
     getCommands(): Array<IPeerCommand> {
         var result: Array<IPeerCommand> = [];
 
@@ -287,11 +318,6 @@ export abstract class DesignerPeer {
         }
 
         return result;
-    }
-
-    render() {
-        this.internalRender();
-        this.updateLayout();
     }
 
     updateLayout() {
@@ -332,10 +358,6 @@ export abstract class DesignerPeer {
         this.addPropertySheetEntries(result);
 
         return result;
-    }
-
-    get renderedElement(): HTMLElement {
-        return this._renderedElement;
     }
 
     get isSelected(): boolean {

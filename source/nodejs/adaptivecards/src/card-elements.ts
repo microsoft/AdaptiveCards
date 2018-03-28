@@ -3829,7 +3829,7 @@ function raiseParseError(error: IValidationError) {
     }
 }
 
-interface ITypeRegistration<T> {
+export interface ITypeRegistration<T> {
     typeName: string,
     createInstance: () => T;
 }
@@ -3987,6 +3987,14 @@ export abstract class TypeRegistry<T> {
         var registrationInfo = this.findTypeRegistration(typeName);
 
         return registrationInfo ? registrationInfo.createInstance() : null;
+    }
+
+    getItemCount(): number {
+        return this._items.length;
+    }
+
+    getItemAt(index: number): ITypeRegistration<T> {
+        return this._items[index];
     }
 }
 
