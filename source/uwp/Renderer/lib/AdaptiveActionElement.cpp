@@ -4,6 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -17,6 +18,18 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
+
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        std::wstring iconUrl = StringToWstring(sharedModel->GetIconUrl());
+        if (!iconUrl.empty())
+        {
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(iconUrl.c_str()).Get(), m_iconUrl.GetAddressOf()));
+        }
+
         return S_OK;
     }
 
@@ -38,6 +51,17 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     IFACEMETHODIMP AdaptiveActionElementBase::put_Id(HSTRING id)
     {
         return m_id.Set(id);
+    }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::get_IconUrl(IUriRuntimeClass** iconUrl)
+    {
+        return m_iconUrl.CopyTo(iconUrl);
+    }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::put_IconUrl(IUriRuntimeClass* iconUrl)
+    {
+        m_iconUrl = iconUrl;
+        return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)

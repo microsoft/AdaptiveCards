@@ -157,13 +157,22 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
             _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
             ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
+
+        void ArrangeButtonContent(
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionsConfig* actionsConfig,
+            _In_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+             ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+            _Inout_ ABI::Windows::UI::Xaml::Controls::IButton* button);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* children,
             _In_ AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
             _In_ bool insertSeparator,
-            _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext);
+            _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle);
 
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
             _Inout_  ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
@@ -239,6 +248,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
             _In_ IInspectable* parentElement,
             _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource);
+
+        static HRESULT SetImageSizeAsTextBlockSize(
+            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
+            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
 
     };
 }}}

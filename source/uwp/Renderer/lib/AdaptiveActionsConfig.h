@@ -35,12 +35,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* value);
         IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing value);
 
+        IFACEMETHODIMP get_IconPlacement(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IconPlacement* value);
+        IFACEMETHODIMP put_IconPlacement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IconPlacement value);
+
     private:
         ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment m_actionAlignment;
         ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation m_actionsOrientation;
         UINT m_buttonSpacing;
         UINT m_maxActions;
         ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
+        ABI::AdaptiveCards::Rendering::Uwp::IconPlacement m_iconPlacement;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveShowCardActionConfig> m_showCardActionConfig;
     };

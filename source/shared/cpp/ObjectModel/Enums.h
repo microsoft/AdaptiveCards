@@ -81,6 +81,8 @@ enum class AdaptiveCardSchemaKey
     FontWeights,
     Good,
     HorizontalAlignment,
+    IconPlacement,
+    IconUrl,
     Id,
     Image,
     Images,
@@ -307,6 +309,12 @@ enum class DateTimePreparsedTokenFormat {
     DateLong
 };
 
+enum class IconPlacement
+{
+    AboveTitle = 0,
+    LeftOfTitle
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 
@@ -357,6 +365,9 @@ ContainerStyle ContainerStyleFromString(const std::string& style);
 
 const std::string ActionAlignmentToString(ActionAlignment alignment);
 ActionAlignment ActionAlignmentFromString(const std::string& alignment);
+
+const std::string IconPlacementToString(IconPlacement placement);
+IconPlacement IconPlacementFromString(const std::string& placement);
 
 template <typename T>
 const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>
