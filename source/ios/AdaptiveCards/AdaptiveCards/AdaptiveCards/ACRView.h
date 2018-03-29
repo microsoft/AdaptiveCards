@@ -10,12 +10,13 @@
 #import "ACRActionDelegate.h"
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
+#import "ACRColumnView.h"
 
-@interface ACRView:UIView
+@interface ACRView:ACRColumnView
 
 @property (weak) id<ACRActionDelegate>acrActionDelegate;
 
-- (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config frame:(CGRect)frame;
+- (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config widthConstraint:(float)width;
 
 - (NSMutableDictionary *)getImageMap;
 
@@ -26,4 +27,6 @@
 - (dispatch_queue_t)getSerialTextQueue;
 
 - (ACOAdaptiveCard *)card;
+
+- (UIView *)render;
 @end
