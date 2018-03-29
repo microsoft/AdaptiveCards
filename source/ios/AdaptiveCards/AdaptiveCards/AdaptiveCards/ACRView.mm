@@ -34,13 +34,11 @@ using namespace AdaptiveCards;
     dispatch_queue_t _serial_text_queue;
     int _serialNumber;
     std::list<const BaseCardElement*> _asyncRenderedElements;
-    float _width;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    _width = frame.size.width;
     if(self){
         std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>();
         _hostConfig = [[ACOHostConfig alloc] initWithConfig:cHostConfig];
@@ -75,8 +73,8 @@ using namespace AdaptiveCards;
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
-    if(_width){
-        [NSLayoutConstraint constraintWithItem:newView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:_width].active = YES;
+    if(self.frame.size.width){
+        [NSLayoutConstraint constraintWithItem:newView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
     if(style != ContainerStyle::None)
@@ -144,7 +142,7 @@ using namespace AdaptiveCards;
 }
 
 // Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
-- (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)	body
+- (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
 {
     for(auto &elem : body)
     {

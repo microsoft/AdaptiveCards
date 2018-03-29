@@ -16,11 +16,4 @@
     super.stackView.distribution = UIStackViewDistributionFill;
 }
 
-- (void)addArrangedSubview:(UIView *)view
-{
-    [super addArrangedSubview:view];
-    CGRect frame = super.frame;
-    super.frame = frame;
-}
-
 @end
