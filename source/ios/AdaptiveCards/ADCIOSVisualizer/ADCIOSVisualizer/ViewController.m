@@ -100,6 +100,8 @@
     // try button
     buttonLayout.axis = UILayoutConstraintAxisHorizontal;
     self.tryButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [NSLayoutConstraint constraintWithItem:_tryButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
+
     [self.tryButton setTitle:@"Try Yourself" forState:UIControlStateNormal];
     [self.tryButton setTitleColor:[UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1] forState:UIControlStateSelected];
     [self.tryButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
@@ -117,31 +119,39 @@
 
     self.applyButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
     self.applyButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
+      [NSLayoutConstraint constraintWithItem:_applyButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
 
-    
     [self.applyButton addTarget:self action:@selector(applyText:)
                forControlEvents:UIControlEventTouchUpInside];
     [buttonLayout addArrangedSubview:self.applyButton];
     [self.view addSubview:buttonLayout];
     buttonLayout.translatesAutoresizingMaskIntoConstraints = NO;
-    buttonLayout.alignment = UIStackViewAlignmentLeading;
+    buttonLayout.alignment = UIStackViewAlignmentCenter;
     buttonLayout.distribution = UIStackViewDistributionFillEqually;
-    [self update:self.ACVTabVC.userSelectedJSon];
-    
+    buttonLayout.spacing = 10;
+
+    [NSLayoutConstraint constraintWithItem:buttonLayout attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30].active = YES;
+
+    _scrView = [[UIScrollView alloc] init];
+    _scrView.showsHorizontalScrollIndicator = NO;
+
     [self.view addSubview:self.scrView];
-    [self.scrView addSubview:self.curView];
+
     UIScrollView *scrollview = self.scrView;
     scrollview.showsVerticalScrollIndicator = YES;
-    UIView *view = self.curView;
-    view.translatesAutoresizingMaskIntoConstraints = NO;
+    _scrView.scrollEnabled = YES;
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, scrollview, buttonLayout);
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout, scrollview);
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-20-|",
+                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40@100-|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
+
     [ViewController applyConstraints:formats variables:viewMap];
+
+    [self update:self.ACVTabVC.userSelectedJSon];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -155,7 +165,7 @@
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
     if(cardParseResult.isValid){
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config frame:CGRectMake(0, 0, 500, 0)];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:300];
     }	
     
     if(renderResult.succeeded)
@@ -171,22 +181,16 @@
         ad.acrActionDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
-        else
-        {
-            self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,0,0)];
-            self.scrView.showsHorizontalScrollIndicator = YES;
-        }
+
         self.curView = ad;
-        [self.scrView addSubview:ad];
-        self.scrView.contentSize = self.curView.frame.size;
-        self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
-        UIScrollView *scrollview = self.scrView;
+        [_scrView addSubview:ad];
         UIView *view = self.curView;
         view.translatesAutoresizingMaskIntoConstraints = NO;
-        scrollview.translatesAutoresizingMaskIntoConstraints = NO;
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
-        NSArray<NSString *> *formats = [NSArray arrayWithObjects:@"H:|[view(<=scrollview)]|", @"V:|[view(>=scrollview)]|",nil];
-        [ViewController applyConstraints:formats variables:viewMap];
+
+        [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+        [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+        [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+        [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
     }
 }
 
@@ -270,11 +274,15 @@
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGRect kbFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGSize kbSize = kbFrame.size;
 
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    self.scrView.contentInset = contentInsets;
-    self.scrView.scrollIndicatorInsets = contentInsets;
+    CGRect scrollViewFrame = _scrView.frame;
+    if(scrollViewFrame.origin.y + scrollViewFrame.size.height > kbFrame.origin.y) {
+        self.scrView.contentInset = contentInsets;
+        self.scrView.scrollIndicatorInsets = contentInsets;
+    }
 }
 
 // Called when the UIKeyboardWillHideNotification is sent

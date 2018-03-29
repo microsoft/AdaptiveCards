@@ -30,12 +30,12 @@ using namespace AdaptiveCards;
 
 // This interface is exposed to outside, and returns ACRRenderResult object
 // This object contains a viewController instance which defer rendering adaptiveCard untill viewDidLoad is called.
-+ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame
++ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
     // Initializes ACRView instance with HostConfig and AdaptiveCard
     // ACRViewController does not render adaptiveCard untill viewDidLoad calls render
-    ACRView *view = [[ACRView alloc] init:card hostconfig:config frame:frame];
+    ACRView *view = [[ACRView alloc] init:card hostconfig:config widthConstraint:width];
     result.view = view;
     result.succeeded = YES;
     return result;
@@ -57,19 +57,18 @@ using namespace AdaptiveCards;
 // transforms (i.e. renders) an adaptiveCard to a new UIView instance
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs
-                           rootView:(ACRView *)rootView
-                         guideFrame:(CGRect)guideFrame
+                            context:(ACRView *)rootView
+                     containingView:(ACRColumnView *)containingView
                          hostconfig:(ACOHostConfig *)config
 {
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
 
-    ACRColumnView *verticalView = nil;
+    ACRColumnView *verticalView = containingView;
 
     if(!body.empty())
     {
         [rootView addTasksToConcurrentQueue:body];
 
-        verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
         [verticalView setStyle:style];

@@ -20,8 +20,8 @@ using namespace AdaptiveCards;
 
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs
-                           rootView:(ACRView *)rootView
-                         guideFrame:(CGRect)guideFrame
+                           context:(ACRView *)rootView
+                    containingView:(ACRColumnView *)guideFrame
                          hostconfig:(ACOHostConfig *)config;
 
 + (UIView<ACRIContentHoldingView> *)render:(UIView *)view

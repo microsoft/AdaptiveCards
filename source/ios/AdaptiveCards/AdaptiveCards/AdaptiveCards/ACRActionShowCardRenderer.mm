@@ -44,7 +44,7 @@
      forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
-
+    
     [superview addArrangedSubview:button];
 
     return button;
