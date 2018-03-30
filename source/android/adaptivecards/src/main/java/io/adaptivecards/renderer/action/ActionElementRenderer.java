@@ -37,6 +37,7 @@ import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
+import io.adaptivecards.renderer.ImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -155,93 +156,53 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         private ViewGroup m_hiddenCardsLayout;
     }
 
-    private class ImageLoaderAsync2 extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
+    private class ActionElementRendererImageLoaderAsync extends ImageLoaderAsync
     {
-        ImageLoaderAsync2(RenderedAdaptiveCard renderedCard, Context context, View containerView, ImageStyle imageStyle, boolean iconIsAboveTitle)
+
+        protected ActionElementRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, boolean iconIsAboveTitle)
         {
-            m_context = context;
-            m_view = containerView;
-            m_imageStyle = imageStyle;
-            m_renderedCard = renderedCard;
+            super(renderedCard, containerView);
             m_iconIsAboveTitle = iconIsAboveTitle;
         }
 
         @Override
         protected HttpRequestResult<Bitmap> doInBackground(String... args)
         {
-            try
-            {
-                Bitmap bitmap = null;
-                byte[] bytes = HttpRequestHelper.get(args[0]);
-                if (bytes == null)
-                {
-                    throw new IOException("Failed to retrieve content from " + args[0]);
-                }
-
-                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                if (bitmap != null && m_imageStyle == ImageStyle.Person && (m_view instanceof ImageView))
-                {
-                    Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-                    BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-                    Paint paint = new Paint();
-                    paint.setShader(shader);
-                    Canvas c = new Canvas(circleBitmap);
-                    c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
-                    bitmap = circleBitmap;
-                }
-
-                if (bitmap == null)
-                {
-                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
-                }
-
-                return new HttpRequestResult<Bitmap>(bitmap);
-            }
-            catch (Exception excep)
-            {
-                return new HttpRequestResult<Bitmap>(excep);
-            }
+            return super.doInBackground(args);
         }
 
         @Override
         protected void onPostExecute(HttpRequestResult<Bitmap> result)
         {
-            if (result.isSuccessful())
-            {
-                if( m_view instanceof ImageView ) {
-                    ImageView view = (ImageView) m_view ;
-                    view.setImageBitmap(result.getResult());
-                } else if(m_view instanceof Button){
-                    Button button = (Button) m_view;
+            super.onPostExecute(result);
+        }
 
-                    Bitmap originalBitmap = result.getResult();
-                    Drawable originalDrawableIcon = new BitmapDrawable(null, originalBitmap);
-                    double imageHeight = button.getTextSize();
-                    double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
-                    double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
+        @Override
+        protected Bitmap styleBitmap(Bitmap bitmap)
+        {
+            Button button = (Button) super.m_view;
 
-                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, (int)(imageWidth * 2), (int)(imageHeight * 2), false);
-                    Drawable drawableIcon = new BitmapDrawable(null, scaledBitmap);
+            Drawable originalDrawableIcon = new BitmapDrawable(null, bitmap);
+            double imageHeight = button.getTextSize();
+            double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
+            double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
 
-                    if( m_iconIsAboveTitle ) {
-                        button.setCompoundDrawablesWithIntrinsicBounds(null, drawableIcon, null, null);
-                    } else {
-                        button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
-                        button.requestLayout();
-                    }
+            return Bitmap.createScaledBitmap(bitmap, (int)(imageWidth * 2), (int)(imageHeight * 2), false);
+        }
 
-                }
-            }
-            else
-            {
-                m_renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNABLE_TO_LOAD_IMAGE, result.getException().getMessage()));
+        @Override
+        protected void renderBitmap(Bitmap bitmap) {
+            Button button = (Button) super.m_view;
+            Drawable drawableIcon = new BitmapDrawable(null, bitmap);
+
+            if( m_iconIsAboveTitle ) {
+                button.setCompoundDrawablesWithIntrinsicBounds(null, drawableIcon, null, null);
+            } else {
+                button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
+                button.requestLayout();
             }
         }
 
-        private Context m_context;
-        private View m_view; // button and imageview inherit from this
-        private ImageStyle m_imageStyle;
-        private RenderedAdaptiveCard m_renderedCard;
         private boolean m_iconIsAboveTitle;
     }
 
@@ -275,7 +236,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         String iconUrl = baseActionElement.GetIconUrl();
         if( !iconUrl.isEmpty() ) {
-            ImageLoaderAsync2 imageLoader = new ImageLoaderAsync2(renderedCard, context, button, null, (hostConfig.getActions().getIconPlacement() == IconPlacement.AboveTitle));
+            ActionElementRendererImageLoaderAsync imageLoader = new ActionElementRendererImageLoaderAsync(renderedCard, button, (hostConfig.getActions().getIconPlacement() == IconPlacement.AboveTitle));
             // imageLoader.execute("https://img.ifcdn.com/images/86f8b2e76659c6be8c566f0f0d353aaa89b8b8f7e8db5b49678cf982728aaff0_1.jpg");
             imageLoader.execute(baseActionElement.GetIconUrl());
 
