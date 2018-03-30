@@ -21,7 +21,7 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIView *)view
+- (UIButton* )renderButton:(ACRView *)view
                     inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
@@ -40,8 +40,6 @@
     [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
-
-    [superview addArrangedSubview:button];
 
     return button;
 }

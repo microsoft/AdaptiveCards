@@ -216,7 +216,7 @@
 		F4F6BA3C204F3109003741B6 /* ACRAggregateTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F6BA3A204F3109003741B6 /* ACRAggregateTarget.h */; };
 		F4FA2731201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FA272F201FF940005989F9 /* ACRLongPressGestureRecognizerFactory.mm */; };
 		F4FA2732201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA2730201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h */; };
-		F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */; };
+		F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4FE45671F196E7B0071D9E5 /* ACRColumnView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FE45651F196E7B0071D9E5 /* ACRColumnView.mm */; };
 		F4FE456A1F196F3D0071D9E5 /* ACRContentStackView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE45681F196F3D0071D9E5 /* ACRContentStackView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4FE456B1F196F3D0071D9E5 /* ACRContentStackView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */; };
@@ -765,6 +765,7 @@
 			files = (
 				F4960C042051FE8200780566 /* ACRView.h in Headers */,
 				F4D0694B205B27EA003645E4 /* ACRViewController.h in Headers */,
+				F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */,
 				F4F6BA36204F200F003741B6 /* ACRParseWarning.h in Headers */,
 				F4F44B9D204A16BC00A2F24C /* ACRTextBlockRenderer.h in Headers */,
 				F4F44B9C204A169D00A2F24C /* ACRErrors.h in Headers */,
@@ -820,7 +821,6 @@
 				F4CAE7861F75B25C00545555 /* ACRRendererPrivate.h in Headers */,
 				F4F44B7A20478C5C00A2F24C /* DateTimePreparsedToken.h in Headers */,
 				F429793E1F3155EF00E89914 /* ACRTextField.h in Headers */,
-				F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */,
 				F44872FA1EE2261F00FCAFAE /* BaseCardElement.h in Headers */,
 				F4FA2732201FF941005989F9 /* ACRLongPressGestureRecognizerFactory.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,

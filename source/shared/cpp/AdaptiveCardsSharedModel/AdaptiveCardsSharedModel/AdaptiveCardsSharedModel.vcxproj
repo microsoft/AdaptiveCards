@@ -123,7 +123,6 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
-    <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseWarning.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />

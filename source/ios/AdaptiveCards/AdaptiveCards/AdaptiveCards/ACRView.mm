@@ -54,44 +54,27 @@ using namespace AdaptiveCards;
 // Initializes ACRView instance with HostConfig and AdaptiveCard
 - (instancetype)init:(ACOAdaptiveCard *)card
           hostconfig:(ACOHostConfig *)config
-               frame:(CGRect)frame
+     widthConstraint:(float)width
 {
-    self = [self initWithFrame:frame];
-    if(self)
-    {
+    self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
+    if(self){
         _adaptiveCard = card;
-        if(config)
-        {
+        if(config){
             _hostConfig = config;
         }
         [self render];
-
-        [self callDidLoadElementsIfNeeded];
     }
     return self;
 }
 
-- (void)render
+- (UIView *)render
 {
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
-    std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
-    NSString* imgUrl = nil;
-    if(!backgroundImage.empty())
-        imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
-    if (imgUrl)
-    {
-        NSURL *url = [NSURL URLWithString:imgUrl];
-        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-        UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
-        [self addSubview:imgView];
-        [self sendSubviewToBack:imgView];
-        [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]|", nil];
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(imgView);
-        for(NSString *constraint in visualFormats){
-            [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
-        }
+
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
+
+    if(self.frame.size.width){
+        [NSLayoutConstraint constraintWithItem:newView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
     if(style != ContainerStyle::None)
@@ -105,66 +88,33 @@ using namespace AdaptiveCards;
         {
             num = std::stoul([_hostConfig getHostConfig]->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
         }
-        self.backgroundColor =
+        newView.backgroundColor =
         [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
                         green:((num & 0x0000FF00) >>  8) / 255.0
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
-    std::vector<std::shared_ptr<BaseCardElement>> body = [_adaptiveCard card]->GetBody();
-
-
-    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card]
-                                                             inputs:inputs
-                                                           rootView:self
-                                                         guideFrame:self.frame
-                                                         hostconfig:_hostConfig];
-    // new rendered adaptiveCard view is added as a sub view
-    [self addSubview:newView];
-    // affix the left margin of the rendered adaptiveCard to current view
-    NSLayoutConstraint *constraint =
-    [NSLayoutConstraint constraintWithItem:self
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:newView
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1.0
-                                  constant:0];
-    [self addConstraint:constraint];
-    // affix the right margin of the rendered adaptiveCard to current view
-    constraint =
-    [NSLayoutConstraint constraintWithItem:self
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:newView
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1.0
-                                  constant:0];
-    [self addConstraint:constraint];
-
-    constraint =
-    [NSLayoutConstraint constraintWithItem:self
-                                 attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:newView
-                                 attribute:NSLayoutAttributeTop
-                                multiplier:1.0
-                                  constant:0];
-    [self addConstraint:constraint];
-
-    constraint =
-    [NSLayoutConstraint constraintWithItem:self
-                                 attribute:NSLayoutAttributeBottom
-                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                    toItem:newView
-                                 attribute:NSLayoutAttributeBottom
-                                multiplier:1.0
-                                  constant:0];
-    [self addConstraint:constraint];
-
-    [NSLayoutConstraint activateConstraints:
-     @[[newView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-       [newView.topAnchor constraintEqualToAnchor:self.topAnchor]]];
+    std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
+    NSString* imgUrl = nil;
+    if(!backgroundImage.empty())
+        imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
+    if (imgUrl)
+    {
+        NSURL *url = [NSURL URLWithString:imgUrl];
+        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
+        [newView addSubview:imgView];
+        [newView sendSubviewToBack:imgView];
+        [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]|", nil];
+        NSDictionary *viewMap = NSDictionaryOfVariableBindings(imgView);
+        for(NSString *constraint in visualFormats){
+            [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+        }
+    }
+    [self callDidLoadElementsIfNeeded];
+    return newView;
 }
 
 - (void)addToAsyncRenderingList:(std::shared_ptr<BaseCardElement> const &)elem
@@ -192,7 +142,7 @@ using namespace AdaptiveCards;
 }
 
 // Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
-- (void) addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
+- (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
 {
     for(auto &elem : body)
     {
@@ -337,7 +287,7 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void) processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
+- (void)processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
 {
     [self addToAsyncRenderingList:imageElem];
 
@@ -408,7 +358,7 @@ using namespace AdaptiveCards;
     );
 }
 // add postfix to existing BaseCardElement ID to be used as key
--(void) tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &) elem
+-(void)tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
     std::string serial_number_as_string = std::to_string(_serialNumber);
     // concat a newly generated key to a existing id, the key will be removed after use

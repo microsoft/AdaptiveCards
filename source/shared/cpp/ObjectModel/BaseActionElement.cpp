@@ -1,3 +1,4 @@
+
 #include "pch.h"
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
@@ -44,6 +45,16 @@ void BaseActionElement::SetId(const std::string value)
     m_id = value;
 }
 
+std::string BaseActionElement::GetIconUrl() const
+{
+    return m_iconUrl;
+}
+
+void BaseActionElement::SetIconUrl(const std::string& value)
+{
+    m_iconUrl = value;
+}
+
 const ActionType AdaptiveCards::BaseActionElement::GetElementType() const
 {
     return m_type;
@@ -61,6 +72,8 @@ Json::Value BaseActionElement::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(GetElementType());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)] = GetIconUrl();
+
     return root;
 }
 
@@ -79,5 +92,6 @@ void BaseActionElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl));
 }
 

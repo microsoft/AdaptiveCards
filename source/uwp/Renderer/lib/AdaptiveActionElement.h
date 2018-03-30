@@ -1,11 +1,12 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
+#include <windows.foundation.h>
 #include "Enums.h"
 
 namespace AdaptiveCards { namespace Rendering { namespace Uwp
 {
-    class DECLSPEC_UUID("8CFF4A73-2DE3-4BB2-8179-971A8A19F7DE") AdaptiveActionElementBase : public IUnknown
+    class DECLSPEC_UUID("CDCCC115-7C53-4A04-9F5B-754BBC00C80E") AdaptiveActionElementBase : public IUnknown
     {
     protected:
 
@@ -19,6 +20,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
+        IFACEMETHODIMP get_IconUrl(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** iconUrl);
+        IFACEMETHODIMP put_IconUrl(_In_ ABI::Windows::Foundation::IUriRuntimeClass* iconUrl);
+
         IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
@@ -31,6 +35,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     private:
         Microsoft::WRL::Wrappers::HString m_id;
         Microsoft::WRL::Wrappers::HString m_title;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_iconUrl;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
     };
