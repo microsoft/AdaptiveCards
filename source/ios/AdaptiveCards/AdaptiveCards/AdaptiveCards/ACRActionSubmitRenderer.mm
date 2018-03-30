@@ -41,8 +41,6 @@
 
     [superview addTarget:target];
 
-    [superview addArrangedSubview:button];
-
     return button;
 }
 @end
