@@ -39,17 +39,19 @@
     return self;
 }
 
-- (void)createShowCard
+- (void)createShowCard:(NSMutableArray*)inputs
 {
-    NSMutableArray *inputs = [[NSMutableArray alloc] init];
+    [inputs setArray:[NSMutableArray arrayWithArray:[[_rootView card] getInputs]]];
+    if(!inputs){
+        inputs = [[NSMutableArray alloc] init];
+    }
+    ACRColumnView *containingView = [[ACRColumnView alloc] init];
     UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                     inputs:inputs
-                                                  rootView:_rootView
-                                                guideFrame:_superview.frame
+                                                  context:_rootView
+                                           containingView:containingView
                                                 hostconfig:_config];
-
-    [[_rootView card] appendInputs:inputs];
-
+    [[_rootView card] setInputs:inputs];
     unsigned int padding = 0;
 
     switch ([_config getHostConfig] ->actions.spacing)
@@ -72,15 +74,9 @@
         default:
             break;
     }
-    ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc]
-                                             initWithFrame:CGRectMake(0,0,
-                                                                      adcView.frame.size.width +
-                                                                      padding +
-                                                                      padding,
-                                                                      adcView.frame.size.height +
-                                                                      padding +
-                                                                      padding)];
+    ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
     [wrappingView addSubview:adcView];
+
     NSString *horString = [[NSString alloc] initWithFormat:@"H:|-%u-[adcView]-%u-|",
                            padding,
                            padding];
@@ -122,19 +118,13 @@
                     green:((num & 0x0000FF00) >>  8) / 255.0
                      blue:((num & 0x000000FF)) / 255.0
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
-    [wrappingView setAlignmentForSubview:AdaptiveCards::HorizontalAlignment::Center];
+
     [_superview addArrangedSubview:_adcView];
+    _adcView.hidden = YES;
 }
 
 - (IBAction)toggleVisibilityOfShowCard
 {
-    // if there is no ShowCard UIView, create one
-    if(!_adcView)
-    {
-        [self createShowCard];
-        return;
-    }
-    // Toggle the visibility of a ShowCard UIView
     _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
 }
 

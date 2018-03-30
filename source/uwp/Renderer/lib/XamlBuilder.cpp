@@ -739,6 +739,95 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
+    void XamlBuilder::ArrangeButtonContent(
+        IAdaptiveActionElement* action,
+        IAdaptiveActionsConfig* actionsConfig,
+        AdaptiveRenderContext* renderContext,
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+        IButton* button)
+    {
+        HString title;
+        THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+        ComPtr<IUriRuntimeClass> iconUrl;
+        THROW_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
+        ComPtr<IButton> localButton(button);
+
+        // Check if the button has an iconUrl
+        if (iconUrl.Get())
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::IconPlacement iconPlacement;
+            THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
+
+            // Define the alignment for the button contents
+            ComPtr<IStackPanel> buttonContentsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+            if (iconPlacement == ABI::AdaptiveCards::Rendering::Uwp::IconPlacement::AboveTitle)
+            {
+                THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
+            }
+            else
+            {
+                THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Horizontal));
+            }
+            ComPtr<IPanel> buttonContentsPanel;
+            THROW_IF_FAILED(buttonContentsStackPanel.As(&buttonContentsPanel));
+
+            // Create image and add it to the button
+            ComPtr<IAdaptiveImage> adaptiveImage;
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
+            adaptiveImage->put_Url(iconUrl.Get());
+            adaptiveImage->put_HorizontalAlignment(HAlignment_Center);
+
+            ComPtr<IAdaptiveCardElement> adaptiveCardElement;
+            THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
+            ComPtr<AdaptiveRenderArgs> childRenderArgs;
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, buttonContentsStackPanel.Get()));
+
+            ComPtr<IUIElement> buttonIcon;
+            BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+            XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
+            ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
+            THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
+
+            // Just add spacing when the icon must be located at the left of the title
+            if (iconPlacement == ABI::AdaptiveCards::Rendering::Uwp::IconPlacement::LeftOfTitle)
+            {
+                UINT spacingSize;
+                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveCards::Rendering::Uwp::Spacing::Default, &spacingSize));
+
+                ABI::Windows::UI::Color color = {0};
+                auto separator = CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
+                XamlHelpers::AppendXamlElementToPanel(separator.Get(), buttonContentsPanel.Get());
+            }
+
+            // Add text to button
+            ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            THROW_IF_FAILED(buttonText->put_Text(title.Get()));
+            THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
+            XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get()); // Add text to stack panel
+
+                                                                                                // Add event to the image to resize itself when the textblock is rendered
+            ComPtr<IImage> buttonIconAsImage;
+            THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
+
+            EventRegistrationToken eventToken;
+            THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+                [ buttonIconAsFrameworkElement, buttonText ](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+            {
+                return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
+            }).Get(), &eventToken));
+
+            ComPtr<IContentControl> buttonContentControl;
+            THROW_IF_FAILED(localButton.As(&buttonContentControl));
+            THROW_IF_FAILED(buttonContentControl->put_Content(buttonContentsPanel.Get()));
+        }
+        else
+        {
+            XamlHelpers::SetContent(localButton.Get(), title.Get());
+        }
+    }
+
+    _Use_decl_annotations_
     void XamlBuilder::BuildActions(
         IVector<IAdaptiveActionElement*>* children,
         AdaptiveCardRenderer* renderer,
@@ -901,82 +990,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                     }
                 }
 
-                HString title;
-                THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
-                ComPtr<IUriRuntimeClass> iconUrl;
-                THROW_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
-                // Check if the button has an iconUrl
-                if (iconUrl.Get()) 
-                {
-                    ABI::AdaptiveCards::Rendering::Uwp::IconPlacement iconPlacement;
-                    THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
-                    
-                    // Define the alignment for the button contents
-                    ComPtr<IStackPanel> buttonContentsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-                    if (iconPlacement == ABI::AdaptiveCards::Rendering::Uwp::IconPlacement::AboveTitle)
-                    {
-                        THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
-                    }
-                    else
-                    {
-                        THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Horizontal));
-                    }
-                    ComPtr<IPanel> buttonContentsPanel;
-                    THROW_IF_FAILED(buttonContentsStackPanel.As(&buttonContentsPanel));
-                    
-                    // Create image and add it to the button
-                    ComPtr<IAdaptiveImage> adaptiveImage;
-                    THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-                    adaptiveImage->put_Url(iconUrl.Get());
-                    adaptiveImage->put_HorizontalAlignment(HAlignment_Center);
-
-                    ComPtr<IAdaptiveCardElement> adaptiveCardElement;
-                    THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
-                    ComPtr<AdaptiveRenderArgs> childRenderArgs;
-                    THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, buttonContentsStackPanel.Get()));
-
-                    ComPtr<IUIElement> buttonIcon;
-                    BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
-                    XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
-                    ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
-                    THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
-
-                    // Just add spacing when the icon must be located at the left of the title
-                    if (iconPlacement == ABI::AdaptiveCards::Rendering::Uwp::IconPlacement::LeftOfTitle)
-                    {
-                        UINT spacingSize;
-                        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::Rendering::Uwp::Spacing::Default, &spacingSize));
-
-                        ABI::Windows::UI::Color color = {0};
-                        auto separator = CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
-                        XamlHelpers::AppendXamlElementToPanel(separator.Get(), buttonContentsPanel.Get());
-                    }
-
-                    // Add text to button
-                    ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-                    THROW_IF_FAILED(buttonText->put_Text(title.Get()));
-                    THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
-                    XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get()); // Add text to stack panel
-
-                    // Add event to the image to resize itself when the textblock is rendered
-                    ComPtr<IImage> buttonIconAsImage;
-                    THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
-
-                    EventRegistrationToken eventToken;
-                    THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-                        [ buttonIconAsFrameworkElement, buttonText ](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-                    {
-                        return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
-                    }).Get(), &eventToken));
-
-                    ComPtr<IContentControl> buttonContentControl;
-                    THROW_IF_FAILED(button.As(&buttonContentControl));
-                    THROW_IF_FAILED(buttonContentControl->put_Content(buttonContentsPanel.Get()));
-                } 
-                else
-                {
-                    XamlHelpers::SetContent(button.Get(), title.Get());
-                }
+                ArrangeButtonContent(action.Get(), actionsConfig.Get(), renderContext, containerStyle, hostConfig.Get(), button.Get());
 
                 ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
                 THROW_IF_FAILED(action->get_ActionType(&actionType));
@@ -1194,6 +1208,17 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(localTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
         THROW_IF_FAILED(localTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
 
+        //Apply font family
+        HString fontFamilyName;
+        THROW_IF_FAILED(hostConfig->get_FontFamily(fontFamilyName.GetAddressOf()));
+
+        ComPtr<IInspectable> inspectable;
+        ComPtr<IFontFamily> fontFamily;
+        ComPtr<IFontFamilyFactory> fontFamilyFactory;
+        THROW_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(L"Windows.UI.Xaml.Media.FontFamily").Get(), &fontFamilyFactory));
+        THROW_IF_FAILED(fontFamilyFactory->CreateInstanceWithName(fontFamilyName.Get(), nullptr, inspectable.ReleaseAndGetAddressOf(), &fontFamily));
+        THROW_IF_FAILED(xamlTextBlock->put_FontFamily(fontFamily.Get()));
+
         ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
         THROW_IF_FAILED(localTextBlock.As(&textBlockAsFrameworkElement));
         THROW_IF_FAILED(textBlockAsFrameworkElement->put_MaxWidth(maxWidth));
@@ -1397,7 +1422,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-        HRESULT XamlBuilder::SetImageSizeAsTextBlockSize(IFrameworkElement* imageControl, ITextBlock* textBlock)
+    HRESULT XamlBuilder::SetImageSizeAsTextBlockSize(IFrameworkElement* imageControl, ITextBlock* textBlock)
     {
         ComPtr<ITextBlock> localTextBlock(textBlock);
         ComPtr<IFrameworkElement> textBlockAsFrameworkElement;

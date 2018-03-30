@@ -113,14 +113,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionsConfig::get_IconPlacement(ABI::AdaptiveCards::Rendering::Uwp::IconPlacement* value)
+    HRESULT AdaptiveActionsConfig::get_IconPlacement(ABI::AdaptiveCards::Rendering::Uwp::IconPlacement* value)
     {
         *value = m_iconPlacement;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionsConfig::put_IconPlacement(ABI::AdaptiveCards::Rendering::Uwp::IconPlacement value)
+    HRESULT AdaptiveActionsConfig::put_IconPlacement(ABI::AdaptiveCards::Rendering::Uwp::IconPlacement value)
     {
         m_iconPlacement = value;
         return S_OK;

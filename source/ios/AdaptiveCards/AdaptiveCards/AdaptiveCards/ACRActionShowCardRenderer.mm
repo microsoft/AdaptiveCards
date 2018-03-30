@@ -22,7 +22,7 @@
 }
 
 - (UIButton* )renderButton:(ACRView *)rootView
-                    inputs:(NSArray *)inputs
+                    inputs:(NSMutableArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
@@ -38,12 +38,13 @@
                                                                          config:acoConfig
                                                                       superview:superview
                                                                        rootView:rootView];
+    [target createShowCard:inputs];
     [button addTarget:target
                action:@selector(toggleVisibilityOfShowCard)
      forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
-
+    
     [superview addArrangedSubview:button];
 
     return button;
