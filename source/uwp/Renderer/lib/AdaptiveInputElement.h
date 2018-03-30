@@ -5,8 +5,7 @@
 #include "BaseInputElement.h"
 #include "AdaptiveCardElement.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("E2E42BA6-A0AE-4B01-B161-29AF2F2B302B") AdaptiveInputElementBase : public AdaptiveCardElementBase
     {
     protected:
@@ -21,4 +20,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     private:
         boolean m_isRequired;
     };
-}}}
+AdaptiveNamespaceEnd

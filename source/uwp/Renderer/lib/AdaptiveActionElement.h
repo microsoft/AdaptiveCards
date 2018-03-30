@@ -4,8 +4,7 @@
 #include <windows.foundation.h>
 #include "Enums.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("CDCCC115-7C53-4A04-9F5B-754BBC00C80E") AdaptiveActionElementBase : public IUnknown
     {
     protected:
@@ -39,4 +38,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
     };
-}}}
+AdaptiveNamespaceEnd

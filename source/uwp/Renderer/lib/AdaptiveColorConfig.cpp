@@ -3,11 +3,10 @@
 #include "AdaptiveColorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept try
     {
         ColorConfig colorConfig;
@@ -49,5 +48,5 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_subtleColor = color;
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd
 

@@ -5,8 +5,7 @@
 #include "BaseActionElement.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class Column : public BaseCardElement
 {
 public:
@@ -49,4 +48,4 @@ private:
     std::shared_ptr<BaseActionElement> m_selectAction;
     ContainerStyle m_style;
 };
-}
+AdaptiveSharedNamespaceEnd

@@ -4,20 +4,19 @@
 #include "Util.h"
 #include "AdaptiveActionParserRegistration.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("fdf8457d-639f-4bbd-9e32-26c14bac3813") AdaptiveElementParserRegistration :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration>,
+        Microsoft::WRL::Implements<ABI::AdaptiveNamespaceRef::IAdaptiveElementParserRegistration>,
         Microsoft::WRL::CloakedIid<ITypePeek>,
         Microsoft::WRL::FtmBase>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveElementParserRegistration, BaseTrust)
+        AdaptiveRuntime(AdaptiveElementParserRegistration)
 
             typedef std::unordered_map<
             std::string,
-            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser>,
+            Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveElementParser>,
             CaseInsensitiveHash,
             CaseInsensitiveEqualTo> RegistrationMap;
 
@@ -27,8 +26,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ElementParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveElementParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser* Parser);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser** result);
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespaceRef::IAdaptiveElementParser* Parser);
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveElementParser** result);
         IFACEMETHODIMP Remove(_In_ HSTRING type);
 
         // ITypePeek method
@@ -49,7 +48,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     class SharedModelElementParser : public AdaptiveCards::BaseCardElementParser
     {
     public:
-        SharedModelElementParser(AdaptiveCards::Rendering::Uwp::AdaptiveElementParserRegistration* parserRegistration) :
+        SharedModelElementParser(AdaptiveNamespaceRef::AdaptiveElementParserRegistration* parserRegistration) :
             m_parserRegistration(parserRegistration)
         {}
 
@@ -60,7 +59,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             const Json::Value& value);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveElementParserRegistration> m_parserRegistration;
+        Microsoft::WRL::ComPtr<AdaptiveNamespaceRef::AdaptiveElementParserRegistration> m_parserRegistration;
     };
 
     template<
@@ -69,9 +68,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         typename TSharedModelParser>
         HRESULT FromJson(
             ABI::Windows::Data::Json::IJsonObject* jsonObject,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element)
+            ABI::AdaptiveNamespaceRef::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveNamespaceRef::IAdaptiveActionParserRegistration* actionParserRegistration,
+            ABI::AdaptiveNamespaceRef::IAdaptiveCardElement** element)
     {
         std::string jsonString;
         JsonObjectToString(jsonObject, jsonString);
@@ -101,8 +100,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
         std::shared_ptr<BaseCardElement> baseCardElement = parser->DeserializeFromString(sharedModelElementParserRegistration, sharedModelActionParserRegistration, jsonString);
 
-        THROW_IF_FAILED(MakeAndInitialize<TAdaptiveCardElement>(element, std::dynamic_pointer_cast<TSharedModelElement>(baseCardElement)));
+        THROW_IF_FAILED(MakeAndInitialize<TAdaptiveCardElement>(element, std::AdaptivePointerCast<TSharedModelElement>(baseCardElement)));
 
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

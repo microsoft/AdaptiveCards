@@ -9,13 +9,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveColumnSet::AdaptiveColumnSet()
     {
         m_columns = Microsoft::WRL::Make<Vector<IAdaptiveColumn*>>();
@@ -83,12 +82,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column)
         {
-            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveColumn>(column);
+            ComPtr<AdaptiveNamespaceRef::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveNamespaceRef::AdaptiveColumn>(column);
 
             std::shared_ptr<BaseCardElement> sharedColumnBaseElement;
             RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumnBaseElement));
 
-            std::shared_ptr<AdaptiveCards::Column> sharedColumn = std::dynamic_pointer_cast<AdaptiveCards::Column>(sharedColumnBaseElement);
+            std::shared_ptr<AdaptiveCards::Column> sharedColumn = std::AdaptivePointerCast<AdaptiveCards::Column>(sharedColumnBaseElement);
             if (sharedColumn == nullptr)
             {
                 return E_UNEXPECTED;
@@ -102,4 +101,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = columnSet;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

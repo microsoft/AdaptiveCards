@@ -3,8 +3,7 @@
 #include "pch.h"
 #include "Enums.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 class AdaptiveCardParseException : public std::exception
 {
@@ -21,4 +20,4 @@ private:
     const std::string m_message;
 };
 
-}
+AdaptiveSharedNamespaceEnd

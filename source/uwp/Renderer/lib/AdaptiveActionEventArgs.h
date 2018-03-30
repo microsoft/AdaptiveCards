@@ -1,25 +1,24 @@
 #pragma once
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class AdaptiveActionEventArgs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionEventArgs>
+        ABI::AdaptiveNamespaceRef::IAdaptiveActionEventArgs>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionEventArgs, BaseTrust)
+        AdaptiveRuntime(AdaptiveActionEventArgs)
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action, _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs* inputs);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespaceRef::IAdaptiveActionElement* action, _In_ ABI::AdaptiveNamespaceRef::IAdaptiveInputs* inputs);
 
         // IAdaptiveActionEventArgs
-        IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** action);
-        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** inputs);
+        IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveActionElement** action);
+        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveInputs** inputs);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_action;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs> m_inputs;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement> m_action;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveInputs> m_inputs;
     };
-}}}
+AdaptiveNamespaceEnd

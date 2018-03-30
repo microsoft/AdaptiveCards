@@ -3,11 +3,10 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::SubmitAction> submitAction = std::make_shared<AdaptiveCards::SubmitAction>();
@@ -28,9 +27,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveNamespaceRef::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::Submit;
+        *actionType = ABI::AdaptiveNamespaceRef::ActionType::Submit;
         return S_OK;
     }
 
@@ -59,4 +58,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = submitAction;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

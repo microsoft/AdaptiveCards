@@ -8,13 +8,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize() noexcept
     {
         return S_OK;
@@ -67,21 +66,21 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveNamespaceRef::ErrorStatusCode statusCode, HSTRING message)
     {
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>> errors;
+        ComPtr<IVector<ABI::AdaptiveNamespaceRef::IAdaptiveError*>> errors;
         RETURN_IF_FAILED(m_renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveNamespaceRef::WarningStatusCode statusCode, HSTRING message)
     {
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>> warnings;
+        ComPtr<IVector<ABI::AdaptiveNamespaceRef::IAdaptiveWarning*>> warnings;
         RETURN_IF_FAILED(m_renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }
@@ -91,4 +90,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         return m_renderResult->AddInputValue(inputValue);
     }
-}}}
+AdaptiveNamespaceEnd

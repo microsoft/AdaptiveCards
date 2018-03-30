@@ -4,29 +4,28 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class AdaptiveContainerStylesDefinition :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition>
+            ABI::AdaptiveNamespaceRef::IAdaptiveContainerStylesDefinition>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveContainerStylesDefinition, BaseTrust)
+        AdaptiveRuntime(AdaptiveContainerStylesDefinition)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ContainerStylesDefinition stylesDefinition) noexcept;
 
-        IFACEMETHODIMP get_Default(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Default(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition* value);
+        IFACEMETHODIMP get_Default(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition** value);
+        IFACEMETHODIMP put_Default(_In_ ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition* value);
 
-        IFACEMETHODIMP get_Emphasis(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Emphasis(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition* value);
+        IFACEMETHODIMP get_Emphasis(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition** value);
+        IFACEMETHODIMP put_Emphasis(_In_ ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition* value);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> m_default;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> m_emphasis;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition> m_default;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition> m_emphasis;
     };
 
     ActivatableClass(AdaptiveContainerStylesDefinition);
-}}}
+AdaptiveNamespaceEnd

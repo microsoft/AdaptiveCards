@@ -9,11 +9,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveToggleInputRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -32,10 +31,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     HRESULT AdaptiveToggleInputRenderer::FromJson(
         ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element)
+        ABI::AdaptiveNamespaceRef::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveNamespaceRef::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveNamespaceRef::IAdaptiveCardElement** element)
     {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveToggleInput, AdaptiveCards::ToggleInput, AdaptiveCards::ToggleInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
+        return AdaptiveNamespaceRef::FromJson<AdaptiveNamespaceRef::AdaptiveToggleInput, AdaptiveCards::ToggleInput, AdaptiveCards::ToggleInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
-}}}
+AdaptiveNamespaceEnd

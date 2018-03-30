@@ -5,28 +5,27 @@
 #include "ShowCardAction.h"
 #include "AdaptiveActionElement.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveShowCardAction,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement,
+            ABI::AdaptiveNamespaceRef::IAdaptiveShowCardAction,
+            ABI::AdaptiveNamespaceRef::IAdaptiveActionElement,
             Microsoft::WRL::CloakedIid<ITypePeek>,
-            Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase>>
+            Microsoft::WRL::CloakedIid<AdaptiveNamespaceRef::AdaptiveActionElementBase>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveShowCardAction, BaseTrust)
+        AdaptiveRuntime(AdaptiveShowCardAction)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction);
 
         // IAdaptiveShowCardAction
-        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** card);
-        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card);
+        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveCard** card);
+        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveCard* card);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespaceRef::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value) {return AdaptiveActionElementBase::get_ActionTypeString(value);}
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title) { return AdaptiveActionElementBase::get_Title(title); }
@@ -53,8 +52,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     private:
         
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard> m_card;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveCard> m_card;
     };
 
     ActivatableClass(AdaptiveShowCardAction);
-}}}
+AdaptiveNamespaceEnd

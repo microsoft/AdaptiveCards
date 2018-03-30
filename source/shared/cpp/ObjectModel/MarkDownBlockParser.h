@@ -4,8 +4,7 @@
 #include "BaseCardElement.h"
 #include "MarkDownParsedResult.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     class MarkDownBlockParser
     {
         public:
@@ -140,4 +139,4 @@ namespace AdaptiveCards
         private:
         void CaptureOrderedListToken(std::string&);
     };
-}
+AdaptiveSharedNamespaceEnd

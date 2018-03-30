@@ -2,7 +2,7 @@
 #include "BaseInputElement.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespaceRef;
 
 BaseInputElement::BaseInputElement(CardElementType elementType) :
     BaseCardElement(elementType)

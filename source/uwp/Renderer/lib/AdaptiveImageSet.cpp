@@ -7,13 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveImageSet::AdaptiveImageSet()
     {
         m_images = Microsoft::WRL::Make<Vector<IAdaptiveImage*>>();
@@ -35,7 +34,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
 
-        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImageSet->GetImageSize());
+        m_imageSize = static_cast<ABI::AdaptiveNamespaceRef::ImageSize>(sharedImageSet->GetImageSize());
         
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImageSet));
         return S_OK;
@@ -48,14 +47,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK; 
@@ -81,4 +80,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = imageSet;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

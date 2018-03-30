@@ -6,13 +6,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
@@ -31,7 +30,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetValue(), m_value.GetAddressOf()));
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
-        m_textInputStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+        m_textInputStyle = static_cast<ABI::AdaptiveNamespaceRef::TextInputStyle>(sharedTextInput->GetTextInputStyle());
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedTextInput));
 
@@ -90,13 +89,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle * textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveNamespaceRef::TextInputStyle * textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespaceRef::TextInputStyle textInputStyle)
     {
         m_textInputStyle = textInputStyle;
         return S_OK;
@@ -131,4 +130,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

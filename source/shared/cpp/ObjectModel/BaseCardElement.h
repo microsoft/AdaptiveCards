@@ -7,8 +7,7 @@
 #include "ParseUtil.h"
 #include "Separator.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class Container;
 class BaseCardElement
 {
@@ -101,4 +100,5 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
 
     return cardElement;
 }
-}
+AdaptiveSharedNamespaceEnd
+

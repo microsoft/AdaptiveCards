@@ -6,7 +6,7 @@
 #include "TextBlock.h"
 #include "AdaptiveCardParseWarning.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespaceRef;
 
 AdaptiveCard::AdaptiveCard()
 {
@@ -259,12 +259,12 @@ void AdaptiveCard::SetSpeak(const std::string value)
     m_speak = value;
 }
 
-ContainerStyle AdaptiveCards::AdaptiveCard::GetStyle() const
+ContainerStyle AdaptiveCard::GetStyle() const
 {
     return m_style;
 }
 
-void AdaptiveCards::AdaptiveCard::SetStyle(const ContainerStyle value)
+void AdaptiveCard::SetStyle(const ContainerStyle value)
 {
     m_style = value;
 }

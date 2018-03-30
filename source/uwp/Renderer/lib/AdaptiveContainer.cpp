@@ -7,13 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveContainer::AdaptiveContainer()
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
@@ -35,7 +34,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
         GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
-        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedContainer->GetStyle());
+        m_style = static_cast<ABI::AdaptiveNamespaceRef::ContainerStyle>(sharedContainer->GetStyle());
         
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
@@ -68,14 +67,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveNamespaceRef::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
+    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespaceRef::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
@@ -100,4 +99,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = container;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

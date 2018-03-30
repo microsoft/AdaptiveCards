@@ -9,8 +9,7 @@
 #include "MarkDownBlockParser.h"
 #include "MarkDownHtmlGenerator.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class MarkDownParser
 {
 public:
@@ -24,4 +23,4 @@ private:
     std::string m_text;
     MarkDownParsedResult m_parsedResult;
 };
-}
+AdaptiveSharedNamespaceEnd

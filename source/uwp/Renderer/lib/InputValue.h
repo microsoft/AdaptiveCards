@@ -2,17 +2,16 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>
+        ABI::AdaptiveNamespaceRef::IAdaptiveInputValue>
     {
     public:
 
         HRESULT RuntimeClassInitialize(
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+            ABI::AdaptiveNamespaceRef::IAdaptiveInputElement* adaptiveInputElement,
             ABI::Windows::UI::Xaml::IUIElement* uiInputElement)
         {
             m_adaptiveInputElement = adaptiveInputElement;
@@ -20,7 +19,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             return S_OK;
         }
 
-        IFACEMETHODIMP get_InputElement(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement** inputElement);
+        IFACEMETHODIMP get_InputElement(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveInputElement** inputElement);
         IFACEMETHODIMP get_CurrentValue(_Out_ HSTRING * serializedUserInput);
 
     private:
@@ -30,9 +29,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         std::string SerializeTimeInput() const;
         std::string SerializeToggleInput() const;
 
-        std::string GetChoiceValue(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
+        std::string GetChoiceValue(ABI::AdaptiveNamespaceRef::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement> m_adaptiveInputElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveInputElement> m_adaptiveInputElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_uiInputElement;
     };
-}}}
+AdaptiveNamespaceEnd

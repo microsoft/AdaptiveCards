@@ -4,8 +4,7 @@
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     ActionParserRegistration::ActionParserRegistration()
     {
         m_knownElements.insert({
@@ -57,4 +56,4 @@ namespace AdaptiveCards
             return std::shared_ptr<ActionElementParser>(nullptr);
         }
     }
-}
+AdaptiveSharedNamespaceEnd

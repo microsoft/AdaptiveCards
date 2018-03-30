@@ -2,30 +2,29 @@
 
 #include "util.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class AdaptiveHostConfigParseResult :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfigParseResult>>
+            Microsoft::WRL::Implements<ABI::AdaptiveNamespaceRef::IAdaptiveHostConfigParseResult>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveHostConfigParseResult, BaseTrust)
+        AdaptiveRuntime(AdaptiveHostConfigParseResult)
 
     public:
         AdaptiveHostConfigParseResult();
 
         HRESULT RuntimeClassInitialize(); 
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig);
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespaceRef::IAdaptiveHostConfig* hostConfig);
 
         // IAdaptiveHostConfigParseResult
-        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig** value);
+        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveHostConfig** value);
 
-        IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>** value);
+        IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveError*>** value);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig> m_hostConfig;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>> m_errors;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveHostConfig> m_hostConfig;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveError*>> m_errors;
     };
 
     ActivatableClass(AdaptiveHostConfigParseResult);
-}}}
+AdaptiveNamespaceEnd

@@ -6,13 +6,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
@@ -31,10 +30,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_subtle = sharedTextBlock->GetIsSubtle();
         m_maxLines = sharedTextBlock->GetMaxLines();
 
-        m_textSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextSize>(sharedTextBlock->GetTextSize());
-        m_textWeight = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>(sharedTextBlock->GetTextWeight());
-        m_foregroundColor = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>(sharedTextBlock->GetTextColor());
-        m_horizontalAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+        m_textSize = static_cast<ABI::AdaptiveNamespaceRef::TextSize>(sharedTextBlock->GetTextSize());
+        m_textWeight = static_cast<ABI::AdaptiveNamespaceRef::TextWeight>(sharedTextBlock->GetTextWeight());
+        m_foregroundColor = static_cast<ABI::AdaptiveNamespaceRef::ForegroundColor>(sharedTextBlock->GetTextColor());
+        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespaceRef::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetText(), m_text.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetLanguage(), m_language.GetAddressOf()));
@@ -56,42 +55,42 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize* textSize)
+    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveNamespaceRef::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize)
+    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveNamespaceRef::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight* textWeight)
+    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveNamespaceRef::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight)
+    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveNamespaceRef::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* foregroundColor)
+    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveNamespaceRef::ForegroundColor* foregroundColor)
     {
         *foregroundColor = m_foregroundColor;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor foregroundColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveNamespaceRef::ForegroundColor foregroundColor)
     {
         m_foregroundColor = foregroundColor;
         return S_OK;
@@ -140,14 +139,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveNamespaceRef::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespaceRef::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
@@ -197,4 +196,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedTextBlock = textBlock;
         return S_OK;
     } CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

@@ -2,7 +2,7 @@
 #include "OpenUrlAction.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespaceRef;
 
 OpenUrlAction::OpenUrlAction() : BaseActionElement(ActionType::OpenUrl)
 {

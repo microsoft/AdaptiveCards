@@ -3,13 +3,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveInputElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseInputElement>& sharedModel)
     {
         AdaptiveCardElementBase::InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(sharedModel));
@@ -38,4 +37,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedCardElement->SetIsRequired(m_isRequired);
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

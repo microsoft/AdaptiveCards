@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Enums.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> * adaptiveCardSchemaKeyEnumToNameOut,
@@ -1021,4 +1020,4 @@ IconPlacement IconPlacementFromString(const std::string& placement)
     return iconPlacementNameToEnum[placement];
 }
 
-}
+AdaptiveSharedNamespaceEnd

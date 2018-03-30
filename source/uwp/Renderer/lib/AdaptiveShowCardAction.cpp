@@ -4,10 +4,9 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
@@ -28,21 +27,21 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     } CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveNamespaceRef::IAdaptiveCard** card)
     {
         return m_card.CopyTo(card);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveNamespaceRef::IAdaptiveCard* card)
     {
         m_card = card;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveNamespaceRef::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard;
+        *actionType = ABI::AdaptiveNamespaceRef::ActionType::ShowCard;
         return S_OK;
     }
 
@@ -51,7 +50,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(showCardAction)));
 
-        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveCard> card = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveCard>(m_card);
+        ComPtr<AdaptiveNamespaceRef::AdaptiveCard> card = PeekInnards<AdaptiveNamespaceRef::AdaptiveCard>(m_card);
 
         std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedCard;
         RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
@@ -61,4 +60,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = showCardAction;
         return S_OK;
     } CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd
