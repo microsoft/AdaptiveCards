@@ -5,13 +5,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept try
     {
         m_sharedFact = std::make_shared<Fact>();
@@ -68,4 +67,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = m_sharedFact;
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

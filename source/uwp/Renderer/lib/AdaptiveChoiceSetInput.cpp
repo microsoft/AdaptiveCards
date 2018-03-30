@@ -7,13 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
         m_choices = Microsoft::WRL::Make<Vector<IAdaptiveChoiceInput*>>();
@@ -37,10 +36,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         m_isRequired = sharedChoiceSetInput->GetIsRequired();
         m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
-        m_choiceSetStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
+        m_choiceSetStyle = static_cast<ABI::AdaptiveNamespaceRef::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
 
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedChoiceSetInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedChoiceSetInput->GetSpacing());
         m_separator = sharedChoiceSetInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedChoiceSetInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -77,14 +76,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle* choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveNamespaceRef::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveNamespaceRef::ChoiceSetStyle choiceSetStyle)
     {
         m_choiceSetStyle = choiceSetStyle;
         return S_OK;
@@ -116,14 +115,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveChoiceSetInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    HRESULT AdaptiveChoiceSetInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -178,7 +177,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(choiceSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(choiceSet)));
 
         choiceSet->SetChoiceSetStyle(static_cast<AdaptiveCards::ChoiceSetStyle>(m_choiceSetStyle));
         choiceSet->SetIsMultiSelect(m_isMultiSelect);
@@ -201,4 +200,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_value.Set(value);
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

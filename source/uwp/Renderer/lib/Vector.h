@@ -8,8 +8,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     template <typename T>
     struct Wrap
     {
@@ -62,7 +61,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     template <class T>
     class Iterator : public RuntimeClass<IIterator<T>>
     {
-        InspectableClass(L"AdaptiveCards.Rendering.Uwp.Iterator", BaseTrust)
+        AdaptiveRuntimeStringClass(Iterator)
 
     private:
         typedef typename std::vector<typename Wrap<T>::type> WrappedVector;
@@ -147,7 +146,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IIterable<T>,
         Microsoft::WRL::FtmBase>
     {
-        InspectableClass(L"AdaptiveCards.Rendering.Uwp.Vector", BaseTrust)
+        AdaptiveRuntimeStringClass(Vector)
 
     private:
         typedef typename std::vector<typename Wrap<T>::type> WrappedVector;
@@ -261,4 +260,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     private:
         std::shared_ptr<WrappedVector> m_wrappedVector;
     };
-}}}
+AdaptiveNamespaceEnd

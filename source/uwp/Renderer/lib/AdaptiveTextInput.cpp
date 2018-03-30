@@ -6,13 +6,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
@@ -31,10 +30,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetValue(), m_value.GetAddressOf()));
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
-        m_textInputStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+        m_textInputStyle = static_cast<ABI::AdaptiveNamespaceRef::TextInputStyle>(sharedTextInput->GetTextInputStyle());
 
         m_isRequired = sharedTextInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedTextInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedTextInput->GetSpacing());
         m_separator = sharedTextInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedTextInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -94,13 +93,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle * textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveNamespaceRef::TextInputStyle * textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespaceRef::TextInputStyle textInputStyle)
     {
         m_textInputStyle = textInputStyle;
         return S_OK;
@@ -126,14 +125,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -202,7 +201,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(textInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(textInput)));
         textInput->SetIsRequired(m_isRequired);
         
         textInput->SetMaxLength(m_maxLength);
@@ -219,4 +218,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

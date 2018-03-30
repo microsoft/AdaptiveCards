@@ -3,12 +3,11 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class CustomActionWrapper : public AdaptiveCards::BaseActionElement
     {
     public:
-        CustomActionWrapper(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* actionElement) :
+        CustomActionWrapper(ABI::AdaptiveNamespaceRef::IAdaptiveActionElement* actionElement) :
             AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom),
             m_actionElement(actionElement)
         {}
@@ -21,9 +20,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         virtual Json::Value SerializeToJsonValue() override;
 
-        HRESULT GetWrappedElement(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** actionElement);
+        HRESULT GetWrappedElement(ABI::AdaptiveNamespaceRef::IAdaptiveActionElement** actionElement);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_actionElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement> m_actionElement;
     };
-}}}
+AdaptiveNamespaceEnd

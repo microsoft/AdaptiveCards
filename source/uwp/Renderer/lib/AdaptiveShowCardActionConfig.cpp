@@ -3,11 +3,10 @@
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
     {
         ShowCardActionConfig showCardActionConfig;
@@ -16,35 +15,35 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {
-        m_actionMode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ActionMode>(sharedShowCardActionConfig.actionMode);
-        m_containerStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedShowCardActionConfig.style);
+        m_actionMode = static_cast<ABI::AdaptiveNamespaceRef::ActionMode>(sharedShowCardActionConfig.actionMode);
+        m_containerStyle = static_cast<ABI::AdaptiveNamespaceRef::ContainerStyle>(sharedShowCardActionConfig.style);
         m_inlineTopMargin = sharedShowCardActionConfig.inlineTopMargin;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveCards::Rendering::Uwp::ActionMode* value)
+    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveNamespaceRef::ActionMode* value)
     {
         *value = m_actionMode;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Rendering::Uwp::ActionMode value)
+    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveNamespaceRef::ActionMode value)
     {
         m_actionMode = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
+        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveNamespaceRef::ContainerStyle* style)
     {
         *style = m_containerStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
+        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveNamespaceRef::ContainerStyle style)
     {
         m_containerStyle = style;
         return S_OK;
@@ -63,4 +62,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_inlineTopMargin = inlineTopMargin;
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

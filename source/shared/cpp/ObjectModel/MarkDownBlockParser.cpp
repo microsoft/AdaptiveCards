@@ -2,7 +2,7 @@
 #include <iostream>
 #include "MarkDownBlockParser.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespaceRef;
 
 // Parses according to each key words
 void MarkDownBlockParser::ParseBlock(std::stringstream &stream)

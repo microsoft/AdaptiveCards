@@ -6,8 +6,7 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class Container : public BaseCardElement
 {
 friend class ContainerParser;
@@ -50,4 +49,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

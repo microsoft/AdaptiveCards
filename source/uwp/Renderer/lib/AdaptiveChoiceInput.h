@@ -4,15 +4,14 @@
 #include "Enums.h"
 #include "ChoiceInput.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput,
+            ABI::AdaptiveNamespaceRef::IAdaptiveChoiceInput,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveChoiceInput, BaseTrust)
+        AdaptiveRuntime(AdaptiveChoiceInput)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -25,7 +24,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_Value(_In_ HSTRING* value);
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespaceRef::ElementType* elementType);
 
         HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
 
@@ -40,4 +39,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     ActivatableClass(AdaptiveChoiceInput);
-}}}
+AdaptiveNamespaceEnd

@@ -3,11 +3,10 @@
 #include "AdaptiveCardConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize() noexcept try
     {
         AdaptiveCards::AdaptiveCardConfig cardConfig;
@@ -33,4 +32,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_allowCustomStyle = allowCustomStyle;
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

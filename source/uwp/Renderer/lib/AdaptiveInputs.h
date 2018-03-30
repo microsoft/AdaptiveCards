@@ -3,14 +3,13 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "InputValue.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp 
-{
+AdaptiveNamespaceStart
     class AdaptiveInputs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs>
+        ABI::AdaptiveNamespaceRef::IAdaptiveInputs>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveInputs, BaseTrust)
+        AdaptiveRuntime(AdaptiveInputs)
 
     public:
         AdaptiveInputs();
@@ -20,12 +19,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP AsJson(_Out_ ABI::Windows::Data::Json::IJsonObject** value);
         IFACEMETHODIMP AsValueSet(_COM_Outptr_ ABI::Windows::Foundation::Collections::IPropertySet** value);
 
-        HRESULT AddInputValue(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue);
+        HRESULT AddInputValue(ABI::AdaptiveNamespaceRef::IAdaptiveInputValue* inputValue);
 
     private:
         std::string GetInputItemsAsJsonString();
-        std::shared_ptr<std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>>> m_inputValues;
+        std::shared_ptr<std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveInputValue>>> m_inputValues;
     };
 
     ActivatableClass(AdaptiveInputs);
-}}}
+AdaptiveNamespaceEnd

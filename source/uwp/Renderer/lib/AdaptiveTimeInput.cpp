@@ -6,13 +6,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
@@ -33,7 +32,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedTimeInput->GetValue(), m_value.GetAddressOf()));
 
         m_isRequired = sharedTimeInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedTimeInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedTimeInput->GetSpacing());
         m_separator = sharedTimeInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedTimeInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedTimeInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -110,14 +109,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveTimeInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    HRESULT AdaptiveTimeInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -186,7 +185,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(timeInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(timeInput)));
         timeInput->SetIsRequired(m_isRequired);
 
         std::string max;
@@ -207,4 +206,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

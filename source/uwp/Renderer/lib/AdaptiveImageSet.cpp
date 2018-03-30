@@ -7,13 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveImageSet::AdaptiveImageSet()
     {
         m_images = Microsoft::WRL::Make<Vector<IAdaptiveImage*>>();
@@ -35,9 +34,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
 
-        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImageSet->GetImageSize());
+        m_imageSize = static_cast<ABI::AdaptiveNamespaceRef::ImageSize>(sharedImageSet->GetImageSize());
 
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedImageSet->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedImageSet->GetSpacing());
         m_separator = sharedImageSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedImageSet->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedImageSet->GetAdditionalProperties(), &m_additionalProperties));
@@ -52,14 +51,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK; 
@@ -73,14 +72,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveImageSet::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    HRESULT AdaptiveImageSet::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -147,7 +146,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         std::shared_ptr<AdaptiveCards::ImageSet> imageSet = std::make_shared<AdaptiveCards::ImageSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(imageSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(imageSet)));
 
         imageSet->SetImageSize(static_cast<AdaptiveCards::ImageSize>(m_imageSize));
 
@@ -156,4 +155,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = imageSet;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

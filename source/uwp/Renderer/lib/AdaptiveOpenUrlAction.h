@@ -4,16 +4,15 @@
 #include "Enums.h"
 #include "OpenUrlAction.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveOpenUrlAction,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement,
+            ABI::AdaptiveNamespaceRef::IAdaptiveOpenUrlAction,
+            ABI::AdaptiveNamespaceRef::IAdaptiveActionElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveOpenUrlAction, BaseTrust)
+        AdaptiveRuntime(AdaptiveOpenUrlAction)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -24,7 +23,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespaceRef::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
@@ -51,4 +50,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     ActivatableClass(AdaptiveOpenUrlAction);
-}}}
+AdaptiveNamespaceEnd

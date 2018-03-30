@@ -4,8 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     class BaseActionElement;
     class ElementParserRegistration;
     class ActionParserRegistration;
@@ -33,4 +32,4 @@ namespace AdaptiveCards
         std::unordered_set<std::string> m_knownElements;
         std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::ActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
     };
-}
+AdaptiveSharedNamespaceEnd

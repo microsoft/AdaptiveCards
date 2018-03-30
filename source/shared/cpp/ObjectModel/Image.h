@@ -6,8 +6,7 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class Image : public BaseCardElement
 {
 public:
@@ -70,4 +69,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

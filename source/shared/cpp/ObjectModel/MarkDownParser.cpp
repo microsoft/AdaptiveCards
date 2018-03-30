@@ -4,7 +4,7 @@
 #include <iostream>
 #include "MarkDownParser.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespaceRef;
 
 MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt)
 {

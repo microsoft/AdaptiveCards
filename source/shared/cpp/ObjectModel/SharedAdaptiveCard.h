@@ -6,8 +6,7 @@
 #include "pch.h"
 #include "ParseResult.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class Container;
 
 class AdaptiveCard
@@ -101,4 +100,4 @@ private:
     std::vector<std::shared_ptr<BaseActionElement>> m_actions;
 
 };
-}
+AdaptiveSharedNamespaceEnd

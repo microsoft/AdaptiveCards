@@ -4,17 +4,24 @@
 #include "Enums.h"
 #include "ToggleInput.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("502edea9-72fd-4856-a89e-54565181bed8") AdaptiveToggleInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveToggleInput,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
+<<<<<<< HEAD
+            ABI::AdaptiveNamespaceRef::IAdaptiveToggleInput,
+            ABI::AdaptiveNamespaceRef::IAdaptiveInputElement,
+            ABI::AdaptiveNamespaceRef::IAdaptiveCardElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
+=======
+            ABI::AdaptiveNamespaceRef::IAdaptiveToggleInput,
+            ABI::AdaptiveNamespaceRef::IAdaptiveInputElement,
+            ABI::AdaptiveNamespaceRef::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>,
+            Microsoft::WRL::CloakedIid<AdaptiveNamespaceRef::AdaptiveInputElementBase>>
+>>>>>>> b69f14ae... Updating shared model and UWP code to use defined macros for namespace.
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveToggleInput, BaseTrust)
+        AdaptiveRuntime(AdaptiveToggleInput)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -38,13 +45,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespaceRef::ElementType* elementType);
 
-        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
-        IFACEMETHODIMP put_Id(_In_ HSTRING id);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespaceRef::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespaceRef::Spacing spacing);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespaceRef::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespaceRef::Spacing spacing);
 
         IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
         IFACEMETHODIMP put_Separator(_In_ boolean separator);
@@ -73,9 +80,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         boolean m_isRequired;
         boolean m_separator;
         Microsoft::WRL::Wrappers::HString m_id;
-        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
+        ABI::AdaptiveNamespaceRef::Spacing m_spacing;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
     };
 
     ActivatableClass(AdaptiveToggleInput);
-}}}
+AdaptiveNamespaceEnd

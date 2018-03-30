@@ -6,13 +6,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::NumberInput> numberInput = std::make_shared<AdaptiveCards::NumberInput>();
@@ -33,7 +32,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedNumberInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
 
         m_isRequired = sharedNumberInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedNumberInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedNumberInput->GetSpacing());
         m_separator = sharedNumberInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedNumberInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedNumberInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -114,14 +113,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveNumberInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    HRESULT AdaptiveNumberInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -190,7 +189,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         std::shared_ptr<AdaptiveCards::NumberInput> numberInput = std::make_shared<AdaptiveCards::NumberInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(numberInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(numberInput)));
         numberInput->SetIsRequired(m_isRequired);
 
         numberInput->SetMin(m_min);
@@ -203,4 +202,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

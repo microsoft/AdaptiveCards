@@ -5,13 +5,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
@@ -32,7 +31,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetValue(), m_value.GetAddressOf()));
 
         m_isRequired = sharedDateInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedDateInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedDateInput->GetSpacing());
         m_separator = sharedDateInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedDateInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -108,14 +107,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveDateInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    HRESULT AdaptiveDateInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -184,7 +183,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     { 
         std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(dateInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(dateInput)));
         dateInput->SetIsRequired(m_isRequired);
 
         std::string max;
@@ -205,4 +204,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

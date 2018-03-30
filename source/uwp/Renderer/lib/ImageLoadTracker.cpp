@@ -5,12 +5,11 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     ImageLoadTracker::~ImageLoadTracker()
     {
         for (auto& eventRegistration : m_eventRegistrations)
@@ -157,4 +156,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             listener->ImagesLoadingHadError();
         }
     }
-}}}
+AdaptiveNamespaceEnd

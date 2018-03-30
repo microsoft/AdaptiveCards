@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <sstream>
 
-using namespace AdaptiveCards;
+AdaptiveNamespaceStart
 
 DateTimeParser::DateTimeParser(const std::string& language)
 {
@@ -53,3 +53,5 @@ std::string DateTimeParser::GenerateString(DateTimePreparser text)
 
     return WstringToString(parsedostr.str());
 }
+
+AdaptiveNamespaceEnd

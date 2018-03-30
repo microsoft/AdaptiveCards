@@ -3,7 +3,7 @@
 #include "ParseUtil.h"
 #include "Fact.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespaceRef;
 
 FactSet::FactSet() : BaseCardElement(CardElementType::FactSet)
 {

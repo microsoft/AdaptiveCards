@@ -3,18 +3,18 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp {
+AdaptiveNamespaceStart
     class AdaptiveElementRendererRegistration :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration>,
+        Microsoft::WRL::Implements<ABI::AdaptiveNamespaceRef::IAdaptiveElementRendererRegistration>,
         Microsoft::WRL::FtmBase>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveElementRendererRegistration, BaseTrust)
+        AdaptiveRuntime(AdaptiveElementRendererRegistration)
 
         typedef std::unordered_map<
             std::string,
-            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>,
+            Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveElementRenderer>,
             CaseInsensitiveHash,
             CaseInsensitiveEqualTo> RegistrationMap;
 
@@ -22,8 +22,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp {
         AdaptiveElementRendererRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
 
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer* renderer);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer** result);
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespaceRef::IAdaptiveElementRenderer* renderer);
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveElementRenderer** result);
         IFACEMETHODIMP Remove(_In_ HSTRING type);
 
     private:
@@ -31,4 +31,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp {
     };
 
     ActivatableClass(AdaptiveElementRendererRegistration);
-}}}
+AdaptiveNamespaceEnd

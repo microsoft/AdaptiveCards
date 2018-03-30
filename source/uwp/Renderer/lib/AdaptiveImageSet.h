@@ -5,16 +5,15 @@
 #include "ImageSet.h"
 #include <windows.foundation.h>
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("04ed4200-de21-4587-8bc5-74b000809985") AdaptiveImageSet :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImageSet,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
+        ABI::AdaptiveNamespaceRef::IAdaptiveImageSet,
+        ABI::AdaptiveNamespaceRef::IAdaptiveCardElement,
         Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveImageSet, BaseTrust)
+        AdaptiveRuntime(AdaptiveImageSet)
 
     public:
         AdaptiveImageSet();
@@ -23,16 +22,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ImageSet>& sharedImageSet);
 
         // IAdaptiveImageSet
-        IFACEMETHODIMP get_Images(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage*>** columns);
+        IFACEMETHODIMP get_Images(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveImage*>** columns);
 
-        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize);
-        IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize);
+        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveNamespaceRef::ImageSize* imageSize);
+        IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveNamespaceRef::ImageSize imageSize);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespaceRef::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespaceRef::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespaceRef::Spacing spacing);
 
         IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
         IFACEMETHODIMP put_Separator(_In_ boolean separator);
@@ -56,14 +55,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage*>> m_images;
-        ABI::AdaptiveCards::Rendering::Uwp::ImageSize m_imageSize;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveImage*>> m_images;
+        ABI::AdaptiveNamespaceRef::ImageSize m_imageSize;
 
         boolean m_separator;
         Microsoft::WRL::Wrappers::HString m_id;
-        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
+        ABI::AdaptiveNamespaceRef::Spacing m_spacing;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
     };
 
     ActivatableClass(AdaptiveImageSet);
-}}}
+AdaptiveNamespaceEnd

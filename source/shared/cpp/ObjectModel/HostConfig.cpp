@@ -2,7 +2,7 @@
 #include "HostConfig.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespaceRef;
 
 HostConfig HostConfig::DeserializeFromString(const std::string jsonString)
 {
@@ -210,7 +210,7 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
     return result;
 }
 
-SpacingConfig AdaptiveCards::SpacingConfig::Deserialize(const Json::Value & json, const SpacingConfig & defaultValue)
+SpacingConfig SpacingConfig::Deserialize(const Json::Value & json, const SpacingConfig & defaultValue)
 {
     SpacingConfig result;
 
@@ -235,7 +235,7 @@ SpacingConfig AdaptiveCards::SpacingConfig::Deserialize(const Json::Value & json
     return result;
 }
 
-SeparatorConfig AdaptiveCards::SeparatorConfig::Deserialize(const Json::Value & json, const SeparatorConfig & defaultValue)
+SeparatorConfig SeparatorConfig::Deserialize(const Json::Value & json, const SeparatorConfig & defaultValue)
 {
     SeparatorConfig result;
 
@@ -248,7 +248,7 @@ SeparatorConfig AdaptiveCards::SeparatorConfig::Deserialize(const Json::Value & 
     return result;
 }
 
-ContainerStyleDefinition AdaptiveCards::ContainerStyleDefinition::Deserialize(const Json::Value & json, const ContainerStyleDefinition & defaultValue)
+ContainerStyleDefinition ContainerStyleDefinition::Deserialize(const Json::Value & json, const ContainerStyleDefinition & defaultValue)
 {
     ContainerStyleDefinition result;
 
@@ -266,7 +266,7 @@ ContainerStyleDefinition AdaptiveCards::ContainerStyleDefinition::Deserialize(co
     return result;
 }
 
-ContainerStylesDefinition AdaptiveCards::ContainerStylesDefinition::Deserialize(const Json::Value & json, const ContainerStylesDefinition & defaultValue)
+ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Value & json, const ContainerStylesDefinition & defaultValue)
 {
     ContainerStylesDefinition result;
 
@@ -279,7 +279,7 @@ ContainerStylesDefinition AdaptiveCards::ContainerStylesDefinition::Deserialize(
     return result;
 }
 
-FontWeightsConfig AdaptiveCards::FontWeightsConfig::Deserialize(const Json::Value & json, const FontWeightsConfig & defaultValue)
+FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value & json, const FontWeightsConfig & defaultValue)
 {
     FontWeightsConfig result;
 
@@ -295,7 +295,7 @@ FontWeightsConfig AdaptiveCards::FontWeightsConfig::Deserialize(const Json::Valu
     return result;
 }
 
-ImageConfig AdaptiveCards::ImageConfig::Deserialize(const Json::Value & json, const ImageConfig & defaultValue)
+ImageConfig ImageConfig::Deserialize(const Json::Value & json, const ImageConfig & defaultValue)
 {
     ImageConfig result;
 

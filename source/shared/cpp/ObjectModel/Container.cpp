@@ -4,7 +4,7 @@
 #include "ColumnSet.h"
 #include "Util.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespaceRef;
 
 Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None)
 {

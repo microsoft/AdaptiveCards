@@ -12,15 +12,14 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveCardParseResult::AdaptiveCardParseResult()
     {
     }
@@ -45,13 +44,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>** value)
+    HRESULT AdaptiveCardParseResult::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>** value)
+    HRESULT AdaptiveCardParseResult::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
@@ -62,4 +61,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             m_adaptiveCard = value;
             return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

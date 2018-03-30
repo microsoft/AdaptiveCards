@@ -7,13 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveFactSet::AdaptiveFactSet()
     {
         m_facts = Microsoft::WRL::Make<Vector<IAdaptiveFact*>>();
@@ -35,7 +34,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         GenerateFactsProjection(sharedFactSet->GetFacts(), m_facts.Get());
         
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedFactSet->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedFactSet->GetSpacing());
         m_separator = sharedFactSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedFactSet->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedFactSet->GetAdditionalProperties(), &m_additionalProperties));
@@ -57,14 +56,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -131,11 +130,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(factSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(factSet)));
         RETURN_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));
 
         sharedModel = factSet;
 
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

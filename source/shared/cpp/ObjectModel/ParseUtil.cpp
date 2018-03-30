@@ -7,8 +7,7 @@
 #include "Container.h"
 #include "ShowCardAction.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 void ParseUtil::ThrowIfNotJsonObject(const Json::Value& json)
 {
@@ -412,4 +411,4 @@ ParseUtil::~ParseUtil()
 {
 }
 
-}
+AdaptiveSharedNamespaceEnd

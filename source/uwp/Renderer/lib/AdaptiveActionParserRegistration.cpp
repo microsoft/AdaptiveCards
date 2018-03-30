@@ -6,11 +6,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveActionParserRegistration::AdaptiveActionParserRegistration()
     {
     }
@@ -91,10 +90,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
+        MakeAndInitialize<AdaptiveNamespaceRef::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
+        MakeAndInitialize<AdaptiveNamespaceRef::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
 
         ComPtr<IAdaptiveActionElement> actionElement;
         THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), &actionElement));
@@ -102,4 +101,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         std::shared_ptr<CustomActionWrapper> actionWrapper = std::make_shared<CustomActionWrapper>(actionElement.Get());
         return actionWrapper;
     }
-}}}
+AdaptiveNamespaceEnd

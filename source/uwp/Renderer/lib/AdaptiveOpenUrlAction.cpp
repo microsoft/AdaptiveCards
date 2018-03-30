@@ -4,11 +4,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespaceRef;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept try
     {
         m_sharedOpenUrlAction = std::make_shared<OpenUrlAction>();
@@ -77,9 +76,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveNamespaceRef::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveNamespaceRef::ActionType::OpenUrl;
         return S_OK;
     }
 
@@ -133,4 +132,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = m_sharedOpenUrlAction;
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd
