@@ -953,7 +953,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IStackPanel> showCardsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IGridStatics> gridStatics;
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
-        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&, containerStyle, actionsConfig](IAdaptiveActionElement* child)
+        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
         {
             if (currentAction < maxActions)
             {
