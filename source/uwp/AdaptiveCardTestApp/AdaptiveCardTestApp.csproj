@@ -125,6 +125,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="..\..\..\samples\Tests\FrameTest.json" />
     <None Include="AdaptiveCardTestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -139,8 +140,149 @@
     <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
       <Link>LinkedCards\v1.0\Scenarios\%(FileName)</Link>
     </Content>
-    <Content Include="..\..\..\samples\v1.0\Elements\*.json">
-      <Link>LinkedCards\v1.0\Elements\%(FileName)</Link>
+    <Content Include="..\..\..\samples\v1.0\Elements\Action.OpenUrl.json">
+      <Link>LinkedCards\v1.0\Elements\Action.OpenUrl</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Action.ShowCard.json">
+      <Link>LinkedCards\v1.0\Elements\Action.ShowCard</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Action.ShowCard.Style.json">
+      <Link>LinkedCards\v1.0\Elements\Action.ShowCard.Style</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Action.Submit.json">
+      <Link>LinkedCards\v1.0\Elements\Action.Submit</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\AdaptiveCard.json">
+      <Link>LinkedCards\v1.0\Elements\AdaptiveCard</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Column.json">
+      <Link>LinkedCards\v1.0\Elements\Column</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Column.SelectAction.json">
+      <Link>LinkedCards\v1.0\Elements\Column.SelectAction</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Column.Size.Ratio.json">
+      <Link>LinkedCards\v1.0\Elements\Column.Size.Ratio</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Column.Spacing.json">
+      <Link>LinkedCards\v1.0\Elements\Column.Spacing</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Column.Style.json">
+      <Link>LinkedCards\v1.0\Elements\Column.Style</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Column.Width.json">
+      <Link>LinkedCards\v1.0\Elements\Column.Width</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Column.Width.Ratio.json">
+      <Link>LinkedCards\v1.0\Elements\Column.Width.Ratio</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\ColumnSet.json">
+      <Link>LinkedCards\v1.0\Elements\ColumnSet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\ColumnSet.SelectAction.json">
+      <Link>LinkedCards\v1.0\Elements\ColumnSet.SelectAction</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\ColumnSet.Spacing.json">
+      <Link>LinkedCards\v1.0\Elements\ColumnSet.Spacing</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Container.json">
+      <Link>LinkedCards\v1.0\Elements\Container</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Container.SelectAction.json">
+      <Link>LinkedCards\v1.0\Elements\Container.SelectAction</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Container.Spacing.json">
+      <Link>LinkedCards\v1.0\Elements\Container.Spacing</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Container.Style.json">
+      <Link>LinkedCards\v1.0\Elements\Container.Style</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Fact.json">
+      <Link>LinkedCards\v1.0\Elements\Fact</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\FactSet.json">
+      <Link>LinkedCards\v1.0\Elements\FactSet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Image.HorizontalAlignment.json">
+      <Link>LinkedCards\v1.0\Elements\Image.HorizontalAlignment</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Image.json">
+      <Link>LinkedCards\v1.0\Elements\Image</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Image.SelectAction.json">
+      <Link>LinkedCards\v1.0\Elements\Image.SelectAction</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Image.Size.json">
+      <Link>LinkedCards\v1.0\Elements\Image.Size</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Image.Spacing.json">
+      <Link>LinkedCards\v1.0\Elements\Image.Spacing</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Image.Style.json">
+      <Link>LinkedCards\v1.0\Elements\Image.Style</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\ImageSet.ImageSize.json">
+      <Link>LinkedCards\v1.0\Elements\ImageSet.ImageSize</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\ImageSet.json">
+      <Link>LinkedCards\v1.0\Elements\ImageSet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Input.ChoiceSet.json">
+      <Link>LinkedCards\v1.0\Elements\Input.ChoiceSet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Input.Date.json">
+      <Link>LinkedCards\v1.0\Elements\Input.Date</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Input.Number.json">
+      <Link>LinkedCards\v1.0\Elements\Input.Number</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Input.Text.json">
+      <Link>LinkedCards\v1.0\Elements\Input.Text</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Input.Text.Style.json">
+      <Link>LinkedCards\v1.0\Elements\Input.Text.Style</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Input.Time.json">
+      <Link>LinkedCards\v1.0\Elements\Input.Time</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Input.Toggle.json">
+      <Link>LinkedCards\v1.0\Elements\Input.Toggle</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\Stylesheet.json">
+      <Link>LinkedCards\v1.0\Elements\Stylesheet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.Color.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.Color</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.DateTimeFormatting.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.DateTimeFormatting</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.HorizontalAlignment.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.HorizontalAlignment</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.IsSubtle.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.IsSubtle</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.Markdown.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.Markdown</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.MaxLines.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.MaxLines</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.Size.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.Size</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.Spacing.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.Spacing</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.Weight.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.Weight</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Elements\TextBlock.Wrap.json">
+      <Link>LinkedCards\v1.0\Elements\TextBlock.Wrap</Link>
     </Content>
     <Content Include="..\..\..\samples\Tests\*.json">
       <Link>LinkedCards\Tests\%(FileName)</Link>

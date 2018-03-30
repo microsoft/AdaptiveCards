@@ -123,6 +123,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ActionSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseWarning.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />
@@ -165,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h" />
+    <ClInclude Include="..\..\ObjectModel\ActionSet.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\ObjectModel\BaseActionElement.h" />

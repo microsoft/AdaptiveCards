@@ -8,38 +8,37 @@
 
 package io.adaptivecards.objectmodel;
 
-public enum ActionsOrientation {
-  Vertical(0),
-  Horizontal,
-  None;
+public enum IconPlacement {
+  AboveTitle(0),
+  LeftOfTitle;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public static ActionsOrientation swigToEnum(int swigValue) {
-    ActionsOrientation[] swigValues = ActionsOrientation.class.getEnumConstants();
+  public static IconPlacement swigToEnum(int swigValue) {
+    IconPlacement[] swigValues = IconPlacement.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (ActionsOrientation swigEnum : swigValues)
+    for (IconPlacement swigEnum : swigValues)
       if (swigEnum.swigValue == swigValue)
         return swigEnum;
-    throw new IllegalArgumentException("No enum " + ActionsOrientation.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + IconPlacement.class + " with value " + swigValue);
   }
 
   @SuppressWarnings("unused")
-  private ActionsOrientation() {
+  private IconPlacement() {
     this.swigValue = SwigNext.next++;
   }
 
   @SuppressWarnings("unused")
-  private ActionsOrientation(int swigValue) {
+  private IconPlacement(int swigValue) {
     this.swigValue = swigValue;
     SwigNext.next = swigValue+1;
   }
 
   @SuppressWarnings("unused")
-  private ActionsOrientation(ActionsOrientation swigEnum) {
+  private IconPlacement(IconPlacement swigEnum) {
     this.swigValue = swigEnum.swigValue;
     SwigNext.next = this.swigValue+1;
   }
