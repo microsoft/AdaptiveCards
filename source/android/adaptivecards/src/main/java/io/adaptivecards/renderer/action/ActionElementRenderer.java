@@ -13,11 +13,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
+import android.text.Layout;
+import android.util.LayoutDirection;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.io.IOException;
 
@@ -76,6 +80,40 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         private ICardActionHandler m_cardActionHandler;
     }
 
+    public static class ButtonOnLayoutChangedListener implements View.OnLayoutChangeListener
+    {
+        @Override
+        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
+        {
+            Button button = (Button)v;
+
+            double textHeight = button.getTextSize();
+
+            Rect bounds = new Rect();
+            String text = button.getText().toString().toUpperCase();
+
+            Paint paint = button.getPaint();
+            paint.setTextSize((float) textHeight);
+            paint.getTextBounds(text, 0, text.length(), bounds);
+
+            Drawable[] icons = button.getCompoundDrawables();
+            if(icons[0] != null) {
+                double iconWidth = icons[0].getIntrinsicWidth();
+                double buttonWidth = button.getWidth();
+                double boundsWidth = bounds.width();
+                double iconStartPosition = (buttonWidth - (iconWidth + mPadding + boundsWidth)) / 2;
+
+                button.setCompoundDrawablePadding((int) (-iconStartPosition + mPadding));
+                button.setPadding((int) iconStartPosition, 0, 0, 0);
+            }
+        }
+
+        void setPadding(int padding){
+            mPadding = padding;
+        }
+
+        private int mPadding;
+    }
 
     protected class ShowCardInlineClickListener implements View.OnClickListener
     {
@@ -119,12 +157,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
     private class ImageLoaderAsync2 extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
     {
-        ImageLoaderAsync2(RenderedAdaptiveCard renderedCard, Context context, View containerView, ImageStyle imageStyle)
+        ImageLoaderAsync2(RenderedAdaptiveCard renderedCard, Context context, View containerView, ImageStyle imageStyle, boolean iconIsAboveTitle)
         {
             m_context = context;
             m_view = containerView;
             m_imageStyle = imageStyle;
             m_renderedCard = renderedCard;
+            m_iconIsAboveTitle = iconIsAboveTitle;
         }
 
         @Override
@@ -174,28 +213,23 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                     view.setImageBitmap(result.getResult());
                 } else if(m_view instanceof Button){
                     Button button = (Button) m_view;
-                    Drawable drawable = new BitmapDrawable(null, result.getResult());
-                    double textHeight = button.getTextSize();
-                    double scaleRatio = textHeight / drawable.getIntrinsicHeight();
-                    double imageWidth = scaleRatio * drawable.getIntrinsicWidth();
 
-                    Paint paint = button.getPaint();
-                    Rect bounds = new Rect();
-                    String text = button.getText().toString().toUpperCase();
+                    Bitmap originalBitmap = result.getResult();
+                    Drawable originalDrawableIcon = new BitmapDrawable(null, originalBitmap);
+                    double imageHeight = button.getTextSize();
+                    double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
+                    double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
 
-                    // paint.setTypeface(Typeface.DEFAULT);
-                    paint.setTextSize((float)textHeight);
-                    paint.getTextBounds(text, 0, text.length(), bounds);
-                    double buttonWidth = button.getWidth(); // <- this is getting 0 when card is hidden
-                    double buttonPadding = button.getCompoundDrawablePadding();
-                    double boundsWidth  =  bounds.width();
-                    double startPosition = (buttonWidth - (imageWidth + buttonPadding + boundsWidth)) / 2;
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, (int)(imageWidth * 2), (int)(imageHeight * 2), false);
+                    Drawable drawableIcon = new BitmapDrawable(null, scaledBitmap);
 
-                    button.setCompoundDrawablePadding((int)(-startPosition + buttonPadding));
-                    button.setPadding((int)startPosition, 0, 0, 0);
+                    if( m_iconIsAboveTitle ) {
+                        button.setCompoundDrawablesWithIntrinsicBounds(null, drawableIcon, null, null);
+                    } else {
+                        button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
+                        button.requestLayout();
+                    }
 
-                    drawable.setBounds(0, 0, (int) (imageWidth), (int)textHeight );
-                    button.setCompoundDrawables(drawable, null, null, null);
                 }
             }
             else
@@ -208,6 +242,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         private View m_view; // button and imageview inherit from this
         private ImageStyle m_imageStyle;
         private RenderedAdaptiveCard m_renderedCard;
+        private boolean m_iconIsAboveTitle;
     }
 
     public Button renderButton(
@@ -237,15 +272,22 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
 
         button.setLayoutParams(layoutParams);
-        int padding = 8;
-        if(hostConfig.getActions().getIconPlacement() == IconPlacement.LeftOfTitle){
-            padding = (int)hostConfig.getSpacing().getDefaultSpacing();
-        }
-        button.setCompoundDrawablePadding(padding);
 
-        ImageLoaderAsync2 imageLoader = new ImageLoaderAsync2(renderedCard, context, button, null);
-        imageLoader.execute("https://img.ifcdn.com/images/86f8b2e76659c6be8c566f0f0d353aaa89b8b8f7e8db5b49678cf982728aaff0_1.jpg");
-        // imageLoader.execute(baseActionElement.GetIconUrl());
+        String iconUrl = baseActionElement.GetIconUrl();
+        if( !iconUrl.isEmpty() ) {
+            ImageLoaderAsync2 imageLoader = new ImageLoaderAsync2(renderedCard, context, button, null, (hostConfig.getActions().getIconPlacement() == IconPlacement.AboveTitle));
+            // imageLoader.execute("https://img.ifcdn.com/images/86f8b2e76659c6be8c566f0f0d353aaa89b8b8f7e8db5b49678cf982728aaff0_1.jpg");
+            imageLoader.execute(baseActionElement.GetIconUrl());
+
+            // Only when the icon must be placed to the left of the title, we have to do this
+            if (hostConfig.getActions().getIconPlacement() == IconPlacement.LeftOfTitle) {
+                int padding = (int) hostConfig.getSpacing().getDefaultSpacing();
+                ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
+                layoutChangedListener.setPadding(padding);
+                button.addOnLayoutChangeListener(layoutChangedListener);
+            }
+        }
+
         viewGroup.addView(button);
 
         return button;
