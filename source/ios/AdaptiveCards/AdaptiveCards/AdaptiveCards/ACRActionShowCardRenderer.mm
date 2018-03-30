@@ -38,14 +38,11 @@
                                                                          config:acoConfig
                                                                       superview:superview
                                                                        rootView:rootView];
-    [target createShowCard:inputs];
-    [button addTarget:target
-               action:@selector(toggleVisibilityOfShowCard)
-     forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
     
-    [superview addArrangedSubview:button];
+    [target createShowCard:inputs];
 
     return button;
 }
