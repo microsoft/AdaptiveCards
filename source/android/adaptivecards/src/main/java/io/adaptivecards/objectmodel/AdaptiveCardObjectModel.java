@@ -145,4 +145,12 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return ActionAlignment.swigToEnum(AdaptiveCardObjectModelJNI.ActionAlignmentFromString(alignment));
   }
 
+  public static String IconPlacementToString(IconPlacement placement) {
+    return AdaptiveCardObjectModelJNI.IconPlacementToString(placement.swigValue());
+  }
+
+  public static IconPlacement IconPlacementFromString(String placement) {
+    return IconPlacement.swigToEnum(AdaptiveCardObjectModelJNI.IconPlacementFromString(placement));
+  }
+
 }
