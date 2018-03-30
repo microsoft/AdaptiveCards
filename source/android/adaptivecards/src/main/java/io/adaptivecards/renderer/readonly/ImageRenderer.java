@@ -2,12 +2,10 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
@@ -17,13 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.ImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -34,8 +30,6 @@ import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
-
-import java.io.IOException;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
@@ -59,18 +53,6 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             super(renderedCard, imageView);
             m_imageStyle = imageStyle;
-        }
-
-        @Override
-        protected HttpRequestResult<Bitmap> doInBackground(String... args)
-        {
-            return super.doInBackground(args);
-        }
-
-        @Override
-        protected void onPostExecute(HttpRequestResult<Bitmap> result)
-        {
-            super.onPostExecute(result);
         }
 
         @Override

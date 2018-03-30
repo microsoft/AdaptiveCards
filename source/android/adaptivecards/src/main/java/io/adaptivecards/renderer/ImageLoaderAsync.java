@@ -1,22 +1,12 @@
 package io.adaptivecards.renderer;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import java.io.IOException;
 
-import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 

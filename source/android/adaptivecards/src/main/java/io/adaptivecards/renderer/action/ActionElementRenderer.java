@@ -2,28 +2,15 @@ package io.adaptivecards.renderer.action;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
-import android.text.Layout;
-import android.util.LayoutDirection;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
-import java.io.IOException;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionMode;
@@ -32,16 +19,13 @@ import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
-import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.ImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 
 public class ActionElementRenderer implements IBaseActionElementRenderer
@@ -159,22 +143,10 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     private class ActionElementRendererImageLoaderAsync extends ImageLoaderAsync
     {
 
-        protected ActionElementRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, boolean iconIsAboveTitle)
+        protected ActionElementRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, IconPlacement iconPlacement)
         {
             super(renderedCard, containerView);
-            m_iconIsAboveTitle = iconIsAboveTitle;
-        }
-
-        @Override
-        protected HttpRequestResult<Bitmap> doInBackground(String... args)
-        {
-            return super.doInBackground(args);
-        }
-
-        @Override
-        protected void onPostExecute(HttpRequestResult<Bitmap> result)
-        {
-            super.onPostExecute(result);
+            m_iconPlacement = iconPlacement;
         }
 
         @Override
@@ -195,7 +167,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             Button button = (Button) super.m_view;
             Drawable drawableIcon = new BitmapDrawable(null, bitmap);
 
-            if( m_iconIsAboveTitle ) {
+            if( m_iconPlacement == IconPlacement.AboveTitle ) {
                 button.setCompoundDrawablesWithIntrinsicBounds(null, drawableIcon, null, null);
             } else {
                 button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
@@ -203,7 +175,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             }
         }
 
-        private boolean m_iconIsAboveTitle;
+        private IconPlacement m_iconPlacement;
     }
 
     public Button renderButton(
@@ -236,8 +208,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         String iconUrl = baseActionElement.GetIconUrl();
         if( !iconUrl.isEmpty() ) {
-            ActionElementRendererImageLoaderAsync imageLoader = new ActionElementRendererImageLoaderAsync(renderedCard, button, (hostConfig.getActions().getIconPlacement() == IconPlacement.AboveTitle));
-            // imageLoader.execute("https://img.ifcdn.com/images/86f8b2e76659c6be8c566f0f0d353aaa89b8b8f7e8db5b49678cf982728aaff0_1.jpg");
+            ActionElementRendererImageLoaderAsync imageLoader = new ActionElementRendererImageLoaderAsync(renderedCard, button, hostConfig.getActions().getIconPlacement());
             imageLoader.execute(baseActionElement.GetIconUrl());
 
             // Only when the icon must be placed to the left of the title, we have to do this
