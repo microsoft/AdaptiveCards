@@ -79,7 +79,16 @@ namespace AdaptiveCardVisualizer.ViewModel
                 JsonObject jsonObject;
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
+                    JsonObject jsonFrame;
+                    AdaptiveCardParseResult parseResult;
+                    if (JsonObject.TryParse(MainPageViewModel.FrameEditor.Frame, out jsonFrame))
+                    {
+                        parseResult = AdaptiveCard.FromJsonWithFrame(jsonObject, jsonFrame);
+                    }
+                    else
+                    {
+                        parseResult = AdaptiveCard.FromJson(jsonObject);
+                    }
 
                     RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (renderResult.FrameworkElement != null)

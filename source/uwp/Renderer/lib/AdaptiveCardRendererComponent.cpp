@@ -81,7 +81,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::get_HostConfig(IAdaptiveHostConfig** hostConfig)
     {
-        *hostConfig = m_hostConfig.Get();
+        m_hostConfig.CopyTo(hostConfig);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardRenderer::put_AdaptiveFrame(ABI::Windows::Data::Json::IJsonObject * frame)
+    {
+        m_frame = frame;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCardRenderer::get_AdaptiveFrame(ABI::Windows::Data::Json::IJsonObject ** frame)
+    {
+        m_frame.CopyTo(frame);
         return S_OK;
     }
 

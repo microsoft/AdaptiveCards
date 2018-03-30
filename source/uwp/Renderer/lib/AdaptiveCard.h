@@ -79,6 +79,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
             _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
 
+        IFACEMETHODIMP FromJsonWithFrame(
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveFrame,
+            _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
+
         IFACEMETHODIMP FromJsonWithParserRegistration(
             _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
@@ -88,6 +93,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP FromJsonString(
             _In_ HSTRING adaptiveJson,
             _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
+
+        _Use_decl_annotations_
+        IFACEMETHODIMP FromJsonStringWithFrame(
+            const std::string jsonString,
+            const std::string jsonFrame,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult);
 
         IFACEMETHODIMP FromJsonStringWithParserRegistration(
             _In_ HSTRING adaptiveJson,
