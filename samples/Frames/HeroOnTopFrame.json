@@ -4,6 +4,10 @@
 	"version": "1.0",
     "body": [
         {
+            "type": "Image",
+            "url": "${heroImage}"
+        },
+        {
             "type": "TextBlock",
             "text": "${title}",
             "size": "extraLarge"
