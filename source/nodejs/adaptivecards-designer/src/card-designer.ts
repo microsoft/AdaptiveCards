@@ -103,9 +103,10 @@ export abstract class DraggableElement {
     private _renderedElement: HTMLElement;
     private _isPointerOver: boolean;
     private _isPointerDown: boolean;
+    private _capturedPointerId?: number;
     private _lastClickedPoint: IPoint;
     private _dragging: boolean;
-    
+
     protected get isPointerOver(): boolean {
         return this._isPointerOver;
     }
@@ -135,7 +136,33 @@ export abstract class DraggableElement {
     protected pointerDown(e: PointerEvent) {
         this._isPointerDown = true;
         this._lastClickedPoint = { x: e.offsetX, y: e.offsetY };
+
         this.renderedElement.setPointerCapture(e.pointerId);
+
+        this._capturedPointerId = e.pointerId;
+    }
+
+    protected pointerUp(e: PointerEvent) {
+        this._isPointerDown = false;
+
+        this.releasePointerCapture();
+        this.endDrag();
+    }
+
+    protected pointerMove(e: PointerEvent) {
+        if (this._isPointerDown) {
+            if (Math.abs(e.offsetX - this._lastClickedPoint.x) >= DRAG_THRESHOLD || Math.abs(e.offsetY - this._lastClickedPoint.y) >= DRAG_THRESHOLD) {
+                this.startDrag();
+            }
+        }
+    }
+
+    protected internalUpdateCssStyles() {
+        // Do nothing in base implementation
+    }
+
+    protected internalUpdateLayout() {
+        // Do nothing in base implementation
     }
 
     protected abstract internalRender(): HTMLElement;
@@ -143,10 +170,16 @@ export abstract class DraggableElement {
     onStartDrag: (sender: DraggableElement) => void;
     onEndDrag: (sender: DraggableElement) => void;
 
-    updateLayout() {
-        // Do nothing in base implementation
-    }
+    releasePointerCapture() {
+        if (this._capturedPointerId) {
+            this._renderedElement.releasePointerCapture(this._capturedPointerId);
 
+            this._capturedPointerId = null;
+            this._isPointerDown = false;
+            this._isPointerOver = false;
+        }
+    }
+    
     endDrag() {
         if (this._dragging) {
             this._dragging = false;
@@ -157,28 +190,20 @@ export abstract class DraggableElement {
         }
     }
 
+    updateLayout() {
+        this.internalUpdateCssStyles();
+        this.internalUpdateLayout();
+    }
+
     render() {
         this._renderedElement = this.internalRender();
 
         this._renderedElement.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
         this._renderedElement.onpointerenter = () => { this.isPointerOver = true; };
         this._renderedElement.onpointerleave = () => { this.isPointerOver = false; };
-        this._renderedElement.onpointerdown = (e: PointerEvent) => {
-            this.pointerDown(e);
-        };
-        this._renderedElement.onpointerup = (e: PointerEvent) => {
-            this._isPointerDown = false;
-            this._renderedElement.releasePointerCapture(e.pointerId);
-
-            this.endDrag();
-        };
-        this._renderedElement.onpointermove = (e: PointerEvent) => {
-            if (this._isPointerDown) {
-                if (Math.abs(e.offsetX - this._lastClickedPoint.x) >= DRAG_THRESHOLD || Math.abs(e.offsetY - this._lastClickedPoint.y) >= DRAG_THRESHOLD) {
-                    this.startDrag();
-                }
-            }
-        };
+        this._renderedElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
+        this._renderedElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
+        this._renderedElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
 
         this.updateLayout();
     }
@@ -199,7 +224,12 @@ export abstract class DesignerPeer extends DraggableElement {
 
     protected abstract getBadgeText(): string;
     protected abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard);
-    abstract internalRemove(): boolean;
+
+    protected pointerDown(e: PointerEvent) {
+        super.pointerDown(e);
+
+        this.isSelected = true;
+    }
 
     protected internalAddCommands(commands: Array<IPeerCommand>) {
         commands.push(
@@ -210,12 +240,6 @@ export abstract class DesignerPeer extends DraggableElement {
         );
     }
 
-    pointerDown(e: PointerEvent) {
-        super.pointerDown(e);
-
-        this.isSelected = true;
-    }
-
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
         element.classList.add("acd-peer");
@@ -224,7 +248,7 @@ export abstract class DesignerPeer extends DraggableElement {
         return element;
     }
 
-    protected updateCssStyles() {
+    protected internalUpdateCssStyles() {
         if (this.isSelected) {
             this.renderedElement.classList.add("selected");
         }
@@ -233,11 +257,11 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
-    protected newPeerCreated(newPeer: DesignerPeer) {
+    protected peerAdded(newPeer: DesignerPeer) {
         this.changed();
 
-        if (this.onNewPeerCreated) {
-            this.onNewPeerCreated(this, newPeer);
+        if (this.onPeerAdded) {
+            this.onPeerAdded(this, newPeer);
         }
     }
 
@@ -253,12 +277,25 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
+    protected internalUpdateLayout() {
+        if (this.renderedElement) {
+            var clientRect = this.getBoundingRect();
+
+            this.renderedElement.style.width = clientRect.width + "px";
+            this.renderedElement.style.height = clientRect.height + "px";
+            this.renderedElement.style.left = clientRect.left + "px";;
+            this.renderedElement.style.top = clientRect.top + "px";;
+        }
+    }
+
+    protected abstract internalRemove(): boolean;
+
     parent: DesignerPeer;
 
     onSelectedChanged: (sender: DesignerPeer) => void;
     onChanged: (sender: DesignerPeer) => void;
     onPeerRemoved: (sender: DesignerPeer) => void;
-    onNewPeerCreated: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
+    onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
     constructor() {
         super();
@@ -270,13 +307,15 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
 
-    drop(peer: DesignerPeer, insertionPoint: IPoint) {
-        // Do nothing is base implementation
+    tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
+        return false;
     }
     
     addChild(peer: DesignerPeer) {
         this._children.push(peer);
         peer.parent = this;
+
+        this.peerAdded(peer);
     }
 
     removeChild(peer: DesignerPeer) {
@@ -304,10 +343,10 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
-    remove(): boolean {
+    remove(onlyFromCard: boolean = false): boolean {
         var result = this.internalRemove();
 
-        if (result) {
+        if (result && !onlyFromCard) {
             if (this.parent) {
                 this.parent.removeChild(this);
             }
@@ -320,23 +359,8 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
-    updateLayout() {
-        if (this.renderedElement) {
-            var clientRect = this.getBoundingRect();
-
-            this.renderedElement.style.width = clientRect.width + "px";
-            this.renderedElement.style.height = clientRect.height + "px";
-            this.renderedElement.style.left = clientRect.left + "px";;
-            this.renderedElement.style.top = clientRect.top + "px";;
-        }
-    }
-
     addElementsToDesignerSurface(designerSurface: HTMLElement) {
         designerSurface.appendChild(this.renderedElement);
-
-        for (var i = 0; i < this.getChildCount(); i++) {
-            this.getChildAt(i).addElementsToDesignerSurface(designerSurface);
-        }
     }
 
     removeElementsFromDesignerSurface() {
@@ -368,7 +392,6 @@ export abstract class DesignerPeer extends DraggableElement {
         if (value != this._isSelected) {
             this._isSelected = value;
 
-            this.updateCssStyles();
             this.updateLayout();
 
             if (this.onSelectedChanged) {
@@ -401,7 +424,7 @@ export class ActionPeer extends DesignerPeer {
         }
     }
 
-    internalRemove(): boolean {
+    protected internalRemove(): boolean {
         return this.action.remove();
     }
 
@@ -435,10 +458,6 @@ export class ActionPeer extends DesignerPeer {
 export class CardElementPeer extends DesignerPeer {
     protected _cardElement: Adaptive.CardElement;
 
-    protected updateCssStyles() {
-        super.updateCssStyles();
-    }
-
     protected getBadgeText(): string {
         return this.cardElement.getJsonTypeName();
     }
@@ -449,7 +468,7 @@ export class CardElementPeer extends DesignerPeer {
 
             var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, newElement);
 
-            this.newPeerCreated(newPeer);
+            this.peerAdded(newPeer);
         }
     }
 
@@ -544,7 +563,7 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
-    internalRemove(): boolean {
+    protected internalRemove(): boolean {
         return this.cardElement.remove();
     }
 
@@ -564,11 +583,15 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
+    initializeCardElement() {
+        // Do nothing in base implementation
+    }
+
     canDrop(peer: DesignerPeer) {
         return this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer;
     }
 
-    drop(peer: DesignerPeer, insertionPoint: IPoint) {
+    tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
         if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
             let targetChild: DesignerPeer = null;
             let insertAfter: boolean;
@@ -585,8 +608,14 @@ export class CardElementPeer extends DesignerPeer {
                 }
             }
 
-            if (targetChild != peer && peer.internalRemove()) {
-                peer.parent.removeChild(peer);
+            if (targetChild != peer) {
+                if (peer.cardElement.parent) {
+                    if (!peer.remove(true)) {
+                        return false;
+                    }
+
+                    peer.parent.removeChild(peer);
+                }
 
                 if (!targetChild) {
                     let rect = this.getBoundingRect();
@@ -611,8 +640,12 @@ export class CardElementPeer extends DesignerPeer {
     
                 this.addChild(peer);
                 this.changed();
+
+                return true;
             }
         }
+
+        return false;
     }
     
     getBoundingRect(): Rect {
@@ -662,7 +695,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
         var newPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this, action);
 
-        this.newPeerCreated(newPeer);
+        this.peerAdded(newPeer);
     }
 
     protected isDraggable(): boolean {
@@ -682,7 +715,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
     
                     var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, textBlock);
             
-                    this.newPeerCreated(newPeer);
+                    this.peerAdded(newPeer);
                 }
             },
             {
@@ -735,7 +768,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
     
                     var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, textBlock);
             
-                    this.newPeerCreated(newPeer);
+                    this.peerAdded(newPeer);
                 }
             }
         );
@@ -756,21 +789,11 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
                     var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, column);
             
-                    this.newPeerCreated(newPeer);
+                    this.peerAdded(newPeer);
                 }
             }
         );
     }
-
-    /*
-    constructor(parent: DesignerPeer, cardElement: Adaptive.ColumnSet) {
-        super(parent, cardElement);
-
-        for (var i = 0; i < cardElement.getItemCount(); i++) {
-            this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement.getItemAt(i)));
-        }            
-    }
-    */
 
     canDrop(peer: DesignerPeer) {
         return false;
@@ -791,7 +814,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
     
                     var newPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(this, textBlock);
             
-                    this.newPeerCreated(newPeer);
+                    this.peerAdded(newPeer);
                 }
             }
         );
@@ -804,7 +827,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 
         var newPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this, action);
 
-        this.newPeerCreated(newPeer);
+        this.peerAdded(newPeer);
     }
 
     protected internalAddCommands(commands: Array<IPeerCommand>) {
@@ -992,6 +1015,10 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 
         card.addItem(isSubtle);
     }
+
+    initializeCardElement() {
+        this.cardElement.text = "New TextBlock";
+    }
 }
 
 type CardElementType = { new(): Adaptive.CardElement };
@@ -1106,11 +1133,11 @@ export class CardDesigner {
     private _selectedPeer: DesignerPeer;
     private _draggedPeer: DesignerPeer;
     private _dropTarget: DesignerPeer;
-    private _currentPointerOffset: IPoint;
+    private _currentPointerPosition: IPoint;
     private _initialDragPointerOffset: IPoint;
 
     private setSelectedPeer(value: DesignerPeer) {
-        if (value != this._selectedPeer) {
+        if (this._selectedPeer != value) {
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = false;
             }
@@ -1119,8 +1146,6 @@ export class CardDesigner {
 
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
-
-                var rect = this._selectedPeer.getBoundingRect();
             }
 
             if (this.onSelectedPeerChanged) {
@@ -1145,29 +1170,6 @@ export class CardDesigner {
         this.updateLayout();
     }
 
-    private startDrag(peer: DesignerPeer) {
-        if (!this._draggedPeer) {
-            this._initialDragPointerOffset = this._currentPointerOffset;
-            this._draggedPeer = peer;
-
-            this._designerSurface.classList.add("dragging");
-        }
-    }
-
-    private endDrag(peer: DesignerPeer) {
-        if (this._draggedPeer) {
-            // Ensure that the dragged peer's elements are at the top in Z order
-            this._draggedPeer.removeElementsFromDesignerSurface();
-            this._draggedPeer.addElementsToDesignerSurface(this._designerSurface);
-
-            this._dropTarget.renderedElement.classList.remove("dragover");
-
-            this._draggedPeer = null;
-
-            this._designerSurface.classList.remove("dragging");
-        }
-    }
-
     private renderCard() {
         this._cardHost.innerHTML = "";
 
@@ -1177,26 +1179,32 @@ export class CardDesigner {
     }
 
     private addPeer(peer: DesignerPeer) {
-        this._allPeers.push(peer);
+        if (this._allPeers.indexOf(peer) < 0) {
+            this._allPeers.push(peer);
 
-        peer.onSelectedChanged = (clickedPeer: DesignerPeer) => { this.setSelectedPeer(clickedPeer.isSelected ? clickedPeer : null); };
-        peer.onChanged = (sender: DesignerPeer) => { this.peerChanged(sender); };
-        peer.onPeerRemoved = (sender: DesignerPeer) => { this.peerRemoved(sender); };
-        peer.onNewPeerCreated = (sender: DesignerPeer, newPeer: DesignerPeer) => {
-            this.addPeer(newPeer);
+            peer.render();
 
-            newPeer.isSelected = true;
-        };
-        peer.onStartDrag = (sender: DesignerPeer) => {
-            this.startDrag(sender);
-        }
-        peer.onEndDrag = (sender: DesignerPeer) => {
-            this.endDrag(sender);
-        }
-        peer.render();
+            peer.onSelectedChanged = (peer: DesignerPeer) => {
+                if (peer.isSelected) {
+                    this.setSelectedPeer(peer);
+                }
+                else {
+                    if (this._selectedPeer == peer) {
+                        this.setSelectedPeer(null);
+                    }
+                }
+            };
+            peer.onChanged = (sender: DesignerPeer) => { this.peerChanged(sender); };
+            peer.onPeerRemoved = (sender: DesignerPeer) => { this.peerRemoved(sender); };
+            peer.onPeerAdded = (sender: DesignerPeer, newPeer: DesignerPeer) => { this.addPeer(newPeer); };
+            peer.onStartDrag = (sender: DesignerPeer) => { this.startDrag(sender); }
+            peer.onEndDrag = (sender: DesignerPeer) => { this.endDrag(sender); }
 
-        for (var i = 0; i < peer.getChildCount(); i++) {
-            this.addPeer(peer.getChildAt(i));
+            peer.addElementsToDesignerSurface(this._designerSurface);
+
+            for (var i = 0; i < peer.getChildCount(); i++) {
+                this.addPeer(peer.getChildAt(i));
+            }
         }
     }
 
@@ -1208,7 +1216,7 @@ export class CardDesigner {
         var result: DesignerPeer = null;
         var boundingRect = currentPeer.getBoundingRect();
 
-        if (boundingRect.isInside(this._currentPointerOffset)) {
+        if (boundingRect.isInside(this._currentPointerPosition)) {
             if (currentPeer.canDrop(forPeer)) {
                 result = currentPeer;
             }
@@ -1223,6 +1231,22 @@ export class CardDesigner {
         }
 
         return result;
+    }
+
+    private pointerMoved() {
+        if (this.onPointerMoved) {
+            this.onPointerMoved(this);
+        }
+    }
+
+    private pointerUp() {
+        if (this._draggedPeer) {
+            this.endDrag(this._draggedPeer);
+        }
+        
+        if (this.onPointerUp) {
+            this.onPointerUp(this);
+        }
     }
 
     readonly parentElement: HTMLElement;
@@ -1249,26 +1273,20 @@ export class CardDesigner {
         this._designerSurface.style.height = "100%";
 
         this._designerSurface.onpointermove = (e: PointerEvent) => {
-            this._currentPointerOffset = {
+            this._currentPointerPosition = {
                 x: e.x - rootElement.offsetLeft,
                 y: e.y - rootElement.offsetTop
             };
 
-            document.getElementById("status").innerText = "x: " + this._currentPointerOffset.x + ", y: " + this._currentPointerOffset.y;
+            document.getElementById("status").innerText = "x: " + this._currentPointerPosition.x + ", y: " + this._currentPointerPosition.y;
 
-            if (this._draggedPeer) {
-                if (this._dropTarget) {
-                    this._dropTarget.renderedElement.classList.remove("dragover");
-                }
+            this.tryDrop(this._draggedPeer);
 
-                var newDropTarget = this.findDropTarget(this._draggedPeer);
+            this.pointerMoved();
+        }
 
-                if (newDropTarget) {
-                    this._dropTarget = newDropTarget;
-                    this._dropTarget.drop(this._draggedPeer, this._currentPointerOffset);
-                    this._dropTarget.renderedElement.classList.add("dragover");
-                }
-            }
+        this._designerSurface.onpointerup = (e: PointerEvent) => {
+            this.pointerUp();
         }
 
         rootElement.appendChild(this._designerSurface);
@@ -1278,6 +1296,8 @@ export class CardDesigner {
     }
 
     onSelectedPeerChanged: (peer: DesignerPeer) => void;
+    onPointerMoved: (designer: CardDesigner) => void;
+    onPointerUp: (designer: CardDesigner) => void;
 
     findDropTarget(peer: DesignerPeer): DesignerPeer {
         return this.internalFindDropTarget(this._rootPeer, peer);
@@ -1295,7 +1315,6 @@ export class CardDesigner {
             this._rootPeer = CardDesigner.cardElementPeerRegistry.createPeerInstance(null, this.card);
 
             this.addPeer(this._rootPeer);
-            this._rootPeer.addElementsToDesignerSurface(this._designerSurface);
         }
     }
 
@@ -1311,11 +1330,58 @@ export class CardDesigner {
         }
     }
 
+    startDrag(peer: DesignerPeer) {
+        if (!this._draggedPeer) {
+            this._initialDragPointerOffset = this._currentPointerPosition;
+            this._draggedPeer = peer;
+
+            this.setSelectedPeer(this._draggedPeer);
+
+            this._designerSurface.classList.add("dragging");
+        }
+    }
+
+    endDrag(peer: DesignerPeer) {
+        if (this._draggedPeer) {
+            // Ensure that the dragged peer's elements are at the top in Z order
+            this._draggedPeer.removeElementsFromDesignerSurface();
+            this._draggedPeer.addElementsToDesignerSurface(this._designerSurface);
+
+            this._dropTarget.renderedElement.classList.remove("dragover");
+
+            this._draggedPeer = null;
+
+            this._designerSurface.classList.remove("dragging");
+        }
+    }
+
+    tryDrop(peer: DesignerPeer): boolean {
+        var result = false;
+
+        if (peer) {
+            if (this._dropTarget) {
+                this._dropTarget.renderedElement.classList.remove("dragover");
+            }
+
+            var newDropTarget = this.findDropTarget(peer);
+
+            if (newDropTarget) {
+                this._dropTarget = newDropTarget;
+
+                result = this._dropTarget.tryDrop(peer, this._currentPointerPosition);
+
+                this._dropTarget.renderedElement.classList.add("dragover");
+            }
+        }
+
+        return result;
+    }
+
     get selectedPeer(): DesignerPeer {
         return this._selectedPeer;
     }
 
-    get card(): Adaptive.AdaptiveCard {
+   get card(): Adaptive.AdaptiveCard {
         return this._card;
     }
 
@@ -1325,5 +1391,9 @@ export class CardDesigner {
 
             this.render();
         }
+    }
+
+    get pointerPosition(): IPoint {
+        return this._currentPointerPosition;
     }
 }
