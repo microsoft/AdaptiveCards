@@ -164,13 +164,13 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
 	{
 		// +(ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame;
 		[Static]
-		[Export("render:config:frame:")]
-		ACRRenderResult Render(ACOAdaptiveCard card, ACOHostConfig config, CGRect frame);
+		[Export("render:config:widthConstraint:")]
+		ACRRenderResult Render(ACOAdaptiveCard card, ACOHostConfig config, nfloat widthConstraint);
 
 		// +(ACRRenderResult *)renderAsViewController:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>)acrActionDelegate;
 		[Static]
-		[Export("renderAsViewController:config:widthConstraint:delegate:")]
-		ACRRenderResult RenderAsViewController(ACOAdaptiveCard card, ACOHostConfig config, float widthConstraint, ACRActionDelegate acrActionDelegate);
+		[Export("renderAsViewController:config:frame:delegate:")]
+		ACRRenderResult RenderAsViewController(ACOAdaptiveCard card, ACOHostConfig config, CGRect frame, ACRActionDelegate acrActionDelegate);
 	}
 
 	// @interface ACRView : UIView
