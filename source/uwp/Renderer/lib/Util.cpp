@@ -3,6 +3,7 @@
 #include <codecvt>
 #include <string>
 
+#include "AdaptiveActionSet.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
 #include "AdaptiveContainer.h"
@@ -330,6 +331,10 @@ HRESULT GenerateContainedElementsProjection(
         case CardElementType::ToggleInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveToggleInput>(&projectedContainedElement,
                 std::dynamic_pointer_cast<AdaptiveCards::ToggleInput>(containedElement)));
+            break;
+        case CardElementType::ActionSet:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveActionSet>(&projectedContainedElement,
+                std::dynamic_pointer_cast<AdaptiveCards::ActionSet>(containedElement)));
             break;
         case CardElementType::Custom:
             RETURN_IF_FAILED(std::dynamic_pointer_cast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));

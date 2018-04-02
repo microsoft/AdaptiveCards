@@ -14,6 +14,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment" },
         { AdaptiveCardSchemaKey::ActionMode, "actionMode" },
         { AdaptiveCardSchemaKey::Actions, "actions" },
+        { AdaptiveCardSchemaKey::ActionSet, "ActionSet" },
         { AdaptiveCardSchemaKey::ActionSetConfig, "actionSetConfig" },
         { AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation" },
         { AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard" },
@@ -88,6 +89,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::Method, "method" },
         { AdaptiveCardSchemaKey::Min, "min" },
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
+        { AdaptiveCardSchemaKey::Orientation, "orientation" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
         { AdaptiveCardSchemaKey::Right, "right" },
@@ -163,7 +165,8 @@ void GetCardElementTypeEnumMappings(
         { CardElementType::ToggleInput, "Input.Toggle" },
         { CardElementType::TextBlock, "TextBlock" },
         { CardElementType::Custom, "Custom" },
-        { CardElementType::Unknown, "Unknown" }
+        { CardElementType::Unknown, "Unknown" },
+        { CardElementType::ActionSet, "ActionSet" }
     };
     static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> cardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(cardElementTypeEnumToName);
 

@@ -10,7 +10,8 @@ package io.adaptivecards.objectmodel;
 
 public enum ActionsOrientation {
   Vertical(0),
-  Horizontal;
+  Horizontal,
+  None;
 
   public final int swigValue() {
     return swigValue;

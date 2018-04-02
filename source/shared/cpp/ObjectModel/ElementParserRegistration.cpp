@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ElementParserRegistration.h"
+#include "ActionSet.h"
 #include "ChoiceSetInput.h"
 #include "ColumnSet.h"
 #include "Container.h"
@@ -19,6 +20,7 @@ namespace AdaptiveCards
     ElementParserRegistration::ElementParserRegistration()
     {
         m_knownElements.insert({ 
+            CardElementTypeToString(CardElementType::ActionSet),
             CardElementTypeToString(CardElementType::Container),
             CardElementTypeToString(CardElementType::ColumnSet),
             CardElementTypeToString(CardElementType::FactSet),
@@ -35,6 +37,7 @@ namespace AdaptiveCards
         });
 
         m_cardElementParsers.insert({
+            { CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>() },
             { CardElementTypeToString(CardElementType::Container), std::make_shared<ContainerParser>() },
             { CardElementTypeToString(CardElementType::ColumnSet), std::make_shared<ColumnSetParser>() },
             { CardElementTypeToString(CardElementType::FactSet), std::make_shared<FactSetParser>() },
