@@ -24,8 +24,7 @@
                         {
                             "type": "Image",
                             "url": "${heroImage}",
-                            "style": "person",
-                            "size": "medium"
+                            "style": "person"
                         }
                     ]
                 },

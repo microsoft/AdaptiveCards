@@ -36,7 +36,21 @@ void DataBindFrameStringFromSource(
         valueEndPosition == frameString.length() - 1)
     {
         std::string key = frameString.substr(2, frameString.length() - 3);
-        result = sourceCard[key];
+
+        Json::Value sourceValue = sourceCard;
+        std::string dot(".");
+        size_t startPosition = 0;
+        size_t dotPosition = key.find(dot, 0);
+        while (dotPosition != std::string::npos)
+        {
+            std::string subKey = key.substr(0, dotPosition);
+            sourceValue = sourceValue[subKey];
+
+            key = key.substr(dotPosition + 1, key.length());
+            dotPosition = key.find(dot, dotPosition + 1);
+        }
+
+        result = sourceValue[key];
     }
     else
     {
@@ -61,7 +75,7 @@ void ApplyFrame(
     }
     else if (frame.isArray() || frame.isObject())
     {
-        // Walk the frame and plug in results from the source card
+        // Walk the sub elements
         for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
         {
             Json::Value elementResult;
@@ -69,7 +83,7 @@ void ApplyFrame(
 
             if (elementResult.empty())
             {
-                // If this is empty, don't add it to the json
+                // If the result is empty, don't add it to the json
                 continue;
             }
             else if (frame.isArray())
@@ -83,6 +97,7 @@ void ApplyFrame(
             }
         }
 
+        // Check if the object should be pruned. If so, return an empty result
         if (frame.isObject() && ShouldJsonObjectBePruned(localResult))
         {
             localResult = Json::Value();
