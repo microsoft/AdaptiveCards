@@ -78,7 +78,11 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromStringWithFrame(
     Json::Value jsonFramedCard;
     ApplyFrame(ParseUtil::GetJsonValueFromString(jsonString), ParseUtil::GetJsonValueFromString(jsonFrame), jsonFramedCard);
 
-    return Deserialize(jsonFramedCard, rendererVersion, elementParserRegistration, actionParserRegistration);
+    auto parseResult = Deserialize(jsonFramedCard, rendererVersion, elementParserRegistration, actionParserRegistration);
+
+    PruneCard(parseResult->GetAdaptiveCard());
+
+    return parseResult;
 }
 
 #ifdef __ANDROID__
@@ -98,7 +102,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     ParseUtil::ThrowIfNotJsonObject(json);
 
     // Verify this is an adaptive card
-    ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard);
+    // ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard); // Temporarily removed to support AdaptiveView
 
     std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
 
