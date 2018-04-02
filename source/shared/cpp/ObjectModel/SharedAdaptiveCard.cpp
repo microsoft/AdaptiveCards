@@ -80,8 +80,6 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromStringWithFrame(
 
     auto parseResult = Deserialize(jsonFramedCard, rendererVersion, elementParserRegistration, actionParserRegistration);
 
-    PruneCard(parseResult->GetAdaptiveCard());
-
     return parseResult;
 }
 

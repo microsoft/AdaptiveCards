@@ -15,6 +15,8 @@
 
 using namespace AdaptiveCards;
 
+bool ShouldJsonObjectBePruned(Json::Value value);
+
 void DataBindFrameStringFromSource(
     const Json::Value& sourceCard,
     const Json::Value& frame,
@@ -52,18 +54,12 @@ void ApplyFrame(
     std::string frameString = fastWriter.write(frame);
 
     Json::Value localResult;
-    if (frame.begin() == frame.end())
+
+    if (frame.isString())
     {
-        if (frame.isString())
-        {
-            DataBindFrameStringFromSource(sourceCard, frame, localResult);
-        }
-        else
-        {
-            localResult = frame;
-        }
+        DataBindFrameStringFromSource(sourceCard, frame, localResult);
     }
-    else
+    else if (frame.isArray() || frame.isObject())
     {
         // Walk the frame and plug in results from the source card
         for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
@@ -80,12 +76,21 @@ void ApplyFrame(
             {
                 localResult.append(elementResult);
             }
-            else
+            else if (frame.isObject())
             {
                 std::string key = it.key().asCString();
                 localResult[key] = elementResult;
             }
         }
+
+        if (frame.isObject() && ShouldJsonObjectBePruned(localResult))
+        {
+            localResult = Json::Value();
+        }
+    }
+    else
+    {
+        localResult = frame;
     }
 
     result = localResult;
@@ -93,79 +98,62 @@ void ApplyFrame(
     std::string resultString = fastWriter.write(result);
 }
 
-bool HasPrimaryValue(std::shared_ptr<BaseActionElement> cardElement);
-bool HasPrimaryValue(std::shared_ptr<BaseCardElement> cardElement);
-bool HasPrimaryValue(std::shared_ptr<ChoiceInput> cardElement);
-bool HasPrimaryValue(std::shared_ptr<Fact> cardElement);
-
-template<typename T>
-bool PruneElementArray(std::vector<std::shared_ptr<T>>& elements)
+bool ShouldJsonObjectBePruned(Json::Value value)
 {
-    elements.erase(std::remove_if(elements.begin(), elements.end(), [](std::shared_ptr<T> element) {return !HasPrimaryValue(element); }), elements.end());
-    return !elements.empty();
-}
-
-bool HasPrimaryValue(std::shared_ptr<BaseActionElement> action)
-{
-    return true;
-}
-
-bool HasPrimaryValue(std::shared_ptr<ChoiceInput> choiceInput)
-{
-    
-    return !choiceInput->GetTitle().empty();
-}
-
-bool HasPrimaryValue(std::shared_ptr<Fact> fact)
-{
-    return !fact->GetTitle().empty() && !fact->GetValue().empty();
-}
-
-bool HasPrimaryValue(std::shared_ptr<BaseCardElement> cardElement)
-{
-    switch (cardElement->GetElementType())
+    auto elementType = CardElementTypeFromString(ParseUtil::GetTypeAsString(value));
+    if (elementType != CardElementType::Unsupported)
     {
-        case CardElementType::ActionSet:
-            return PruneElementArray(std::dynamic_pointer_cast<AdaptiveCards::ActionSet>(cardElement)->GetActions());
+        // BECKYTODO - un-hardcode the strings and confirm these properties are right for pruning (spec issue)
+        switch (elementType)
+        {
+            case CardElementType::ActionSet:
+                return value["actions"].empty();
 
-        case CardElementType::ChoiceSetInput:
-            return PruneElementArray(std::dynamic_pointer_cast<AdaptiveCards::ChoiceSetInput>(cardElement)->GetChoices());
+            case CardElementType::ChoiceSetInput:
+                return value["choices"].empty();
 
-        case CardElementType::Column:
-            return PruneElementArray(std::dynamic_pointer_cast<AdaptiveCards::Column>(cardElement)->GetItems());
+            case CardElementType::Column:
+            case CardElementType::Container:
+                return value["items"].empty();
 
-        case CardElementType::ColumnSet:
-            return PruneElementArray(std::dynamic_pointer_cast<AdaptiveCards::ColumnSet>(cardElement)->GetColumns());
+            case CardElementType::ColumnSet:
+                return value["columns"].empty();
 
-        case CardElementType::Container:
-            return PruneElementArray(std::dynamic_pointer_cast<AdaptiveCards::Container>(cardElement)->GetItems());
+            case CardElementType::FactSet:
+                return value["facts"].empty();
 
-        case CardElementType::FactSet:
-            return PruneElementArray(std::dynamic_pointer_cast<AdaptiveCards::FactSet>(cardElement)->GetFacts());
+            case CardElementType::ImageSet:
+                return value["images"].empty();
 
-        case CardElementType::ImageSet:
-            return PruneElementArray(std::dynamic_pointer_cast<AdaptiveCards::ImageSet>(cardElement)->GetImages());
+            case CardElementType::Image:
+                return value["url"].empty();
 
-        case CardElementType::Image:
-            return !std::dynamic_pointer_cast<AdaptiveCards::Image>(cardElement)->GetUrl().empty();
+            case CardElementType::TextBlock:
+                return value["text"].empty();
 
-        case CardElementType::TextBlock:
-            return !std::dynamic_pointer_cast<AdaptiveCards::TextBlock>(cardElement)->GetText().empty();
+            case CardElementType::ChoiceInput:
+                return value["title"].empty();
 
-        case CardElementType::DateInput:
-        case CardElementType::NumberInput:
-        case CardElementType::TextInput:
-        case CardElementType::TimeInput:
-        case CardElementType::ToggleInput:
-        case CardElementType::Custom:
-        case CardElementType::Unknown:
-            return true;
+            case CardElementType::Fact:
+                return (value["title"].empty() || value["value"].empty());
+
+            case CardElementType::DateInput:
+            case CardElementType::NumberInput:
+            case CardElementType::TextInput:
+            case CardElementType::TimeInput:
+            case CardElementType::ToggleInput:
+            case CardElementType::Custom:
+            case CardElementType::Unknown:
+            default:
+                return false;
+        }
     }
-
-    return true;
-}
-
-void PruneCard(std::shared_ptr<AdaptiveCard> card)
-{
-    PruneElementArray(card->GetBody());
+    else if (ActionTypeFromString(ParseUtil::GetTypeAsString(value)) != ActionType::Unsupported)
+    {
+        return value["title"].empty();
+    }
+    else
+    {
+        return false;
+    }
 }
