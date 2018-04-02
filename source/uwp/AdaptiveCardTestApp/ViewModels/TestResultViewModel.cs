@@ -125,15 +125,14 @@ namespace AdaptiveCardTestApp.ViewModels
                     answer.Status = TestStatus.Failed;
                 }
 
-                // See if we should promote to FailedButSourceChanged
-                if (answer.Status == TestStatus.Failed)
+                // See if the source chagned by checking
+                // if the hashes have changed since the stored info
+                if (storedInfo.HostConfigHash != hostConfigFile.Hash
+                    || storedInfo.CardHash != cardFile.Hash)
                 {
-                    // If the hashes have changed since the stored info
-                    if (storedInfo.HostConfigHash != hostConfigFile.Hash
-                        || storedInfo.CardHash != cardFile.Hash)
-                    {
-                        answer.Status = TestStatus.FailedButSourceWasChanged;
-                    }
+                    answer.Status = (answer.Status == TestStatus.Failed) ? 
+                        TestStatus.FailedButSourceWasChanged : 
+                        TestStatus.PassedButSourceWasChanged;
                 }
             }
             catch
@@ -258,12 +257,18 @@ namespace AdaptiveCardTestApp.ViewModels
                 {
                     var sourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, HostConfigFile.Hash), CreationCollisionOption.FailIfExists);
                     await FileIO.WriteTextAsync(sourceHostConfigFile, HostConfigFile.Contents);
+
+                    var oldSourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, _oldHostConfigHash), CreationCollisionOption.OpenIfExists);
+                    await oldSourceHostConfigFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
                 }
                 catch { }
                 try
                 {
                     var sourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, CardFile.Hash), CreationCollisionOption.FailIfExists);
                     await FileIO.WriteTextAsync(sourceCardFile, CardFile.Contents);
+
+                    var oldSourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, _oldCardHash), CreationCollisionOption.OpenIfExists);
+                    await oldSourceCardFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
                 }
                 catch { }
 
@@ -299,6 +304,11 @@ namespace AdaptiveCardTestApp.ViewModels
         /// Visual identically matched
         /// </summary>
         Passed,
+
+        /// <summary>
+        /// Visual did match, but source files (payload and host config) changed, so changes are possibly expected
+        /// </summary>
+        PassedButSourceWasChanged,
 
         /// <summary>
         /// Visual did NOT match, and source files (payload and host config) were identical
