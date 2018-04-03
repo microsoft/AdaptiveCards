@@ -359,15 +359,23 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
-    addElementsToDesignerSurface(designerSurface: HTMLElement) {
+    addElementsToDesignerSurface(designerSurface: HTMLElement, processChildren: boolean = false) {
         designerSurface.appendChild(this.renderedElement);
+
+        if (processChildren) {
+            for (var i = 0; i < this.getChildCount(); i++) {
+                this.getChildAt(i).addElementsToDesignerSurface(designerSurface, processChildren);
+            }
+        }
     }
 
-    removeElementsFromDesignerSurface() {
+    removeElementsFromDesignerSurface(processChildren: boolean = false) {
         this.renderedElement.remove();
 
-        for (var i = 0; i < this.getChildCount(); i++) {
-            this.getChildAt(i).removeElementsFromDesignerSurface();
+        if (processChildren) {
+            for (var i = 0; i < this.getChildCount(); i++) {
+                this.getChildAt(i).removeElementsFromDesignerSurface(processChildren);
+            }
         }
     }
 
@@ -1392,8 +1400,8 @@ export class CardDesigner {
     endDrag(peer: DesignerPeer) {
         if (this._draggedPeer) {
             // Ensure that the dragged peer's elements are at the top in Z order
-            this._draggedPeer.removeElementsFromDesignerSurface();
-            this._draggedPeer.addElementsToDesignerSurface(this._designerSurface);
+            this._draggedPeer.removeElementsFromDesignerSurface(true);
+            this._draggedPeer.addElementsToDesignerSurface(this._designerSurface, true);
 
             this._dropTarget.renderedElement.classList.remove("dragover");
 
