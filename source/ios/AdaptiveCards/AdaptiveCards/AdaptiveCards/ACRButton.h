@@ -13,5 +13,8 @@
 @interface UIButton(ACRButton)
 + (UIButton *)acr_renderButton:(ACRView *)view
                          title:(NSString *)title
+                       iconUrl:(NSString *)iconUrl
                  andHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
+
++ (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)newSize;
 @end
