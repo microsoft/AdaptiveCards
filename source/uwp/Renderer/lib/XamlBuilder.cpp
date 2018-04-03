@@ -1816,7 +1816,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         ComPtr<IColumnDefinition> titleColumn = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
         ComPtr<IColumnDefinition> valueColumn = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-        GridLength factSetGridLength = { 1, GridUnitType::GridUnitType_Star };
+        GridLength factSetGridLength = { 0, GridUnitType::GridUnitType_Auto };
 
         THROW_IF_FAILED(titleColumn->put_Width(factSetGridLength));
         THROW_IF_FAILED(valueColumn->put_Width(factSetGridLength));
