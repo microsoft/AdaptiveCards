@@ -781,6 +781,22 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             }
         );
     }
+    protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
+        super.addPropertySheetEntries(card);
+        
+        var verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
+        verticalContentAlignment.input.isCompact = true;
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
+        verticalContentAlignment.input.defaultValue = this.cardElement.spacing.toString();
+        verticalContentAlignment.input.placeholder = "(not set)";
+        verticalContentAlignment.input.onValueChanged = () => {
+            this.cardElement.verticalContentAlignment = <Adaptive.VerticalAlignment>parseInt(verticalContentAlignment.input.value);
+
+            this.changed();
+        }
+    }
 }
 
 export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
