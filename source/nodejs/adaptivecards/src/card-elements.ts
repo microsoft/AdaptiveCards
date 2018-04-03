@@ -875,6 +875,11 @@ export class Fact {
     value: string;
     speak: string;
 
+    constructor(name: string = undefined, value: string = undefined) {
+        this.name = name;
+        this.value = value;
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak + '\n';
@@ -919,7 +924,7 @@ export class FactSet extends CardElement {
 
                 var textBlock = new TextBlock();
                 textBlock.hostConfig = this.hostConfig;
-                textBlock.text = this.facts[i].name;
+                textBlock.text = Utils.isNullOrEmpty(this.facts[i].name) ? "Title" : this.facts[i].name;
                 textBlock.size = this.hostConfig.factSet.title.size;
                 textBlock.color = this.hostConfig.factSet.title.color;
                 textBlock.isSubtle = this.hostConfig.factSet.title.isSubtle;
@@ -936,7 +941,7 @@ export class FactSet extends CardElement {
 
                 textBlock = new TextBlock();
                 textBlock.hostConfig = this.hostConfig;
-                textBlock.text = this.facts[i].value;
+                textBlock.text = Utils.isNullOrEmpty(this.facts[i].value) ? "Value" : this.facts[i].value;
                 textBlock.size = this.hostConfig.factSet.value.size;
                 textBlock.color = this.hostConfig.factSet.value.color;
                 textBlock.isSubtle = this.hostConfig.factSet.value.isSubtle;
@@ -1423,7 +1428,7 @@ export class ToggleInput extends Input {
 
         var label = new TextBlock();
         label.hostConfig = this.hostConfig;
-        label.text = this.title;
+        label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
         label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
         var labelElement = label.render();
@@ -1545,7 +1550,7 @@ export class ChoiceSetInput extends Input {
 
                     var label = new TextBlock();
                     label.hostConfig = this.hostConfig;
-                    label.text = this.choices[i].title;
+                    label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                     label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
                     var labelElement = label.render();
@@ -1597,7 +1602,7 @@ export class ChoiceSetInput extends Input {
 
                 var label = new TextBlock();
                 label.hostConfig = this.hostConfig;
-                label.text = this.choices[i].title;
+                label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                 label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
                 var labelElement = label.render();

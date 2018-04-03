@@ -920,6 +920,52 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
     }
 }
 
+export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
+    initializeCardElement() {
+        this.cardElement.facts.push(
+            new Adaptive.Fact("Fact 1", "Value 1"),
+            new Adaptive.Fact("Fact 2", "Value 2")
+        );
+    }
+}
+
+export class ChoiceSetInputPeer extends TypedCardElementPeer<Adaptive.ChoiceSetInput> {
+    protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
+        super.addPropertySheetEntries(card);
+
+        var isCompact = new Adaptive.ToggleInput();
+        isCompact.title = "Compact style";
+        isCompact.spacing = Adaptive.Spacing.Small;
+        isCompact.defaultValue = String(this.cardElement.isCompact);
+        isCompact.onValueChanged = () => {
+            this.cardElement.isCompact = isCompact.value == "true";
+
+            this.changed();
+        }
+
+        card.addItem(isCompact);
+
+        var isMultiSelect = new Adaptive.ToggleInput();
+        isMultiSelect.title = "Allow multi selection";
+        isMultiSelect.spacing = Adaptive.Spacing.Small;
+        isMultiSelect.defaultValue = String(this.cardElement.isMultiSelect);
+        isMultiSelect.onValueChanged = () => {
+            this.cardElement.isMultiSelect = isMultiSelect.value == "true";
+
+            this.changed();
+        }
+
+        card.addItem(isMultiSelect);
+    }
+
+    initializeCardElement() {
+        this.cardElement.choices.push(
+            new Adaptive.Choice("Choice 1", "Choice 1"),
+            new Adaptive.Choice("Choice 2", "Choice 2")
+        );
+    }
+}
+
 export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
         super.addPropertySheetEntries(card);
@@ -1088,10 +1134,12 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.Container, ContainerPeer);
         this.registerPeer(Adaptive.AdaptiveCard, AdaptiveCardPeer);
         this.registerPeer(Adaptive.TextBlock, TextBlockPeer);
+        this.registerPeer(Adaptive.FactSet, FactSetPeer);
         this.registerPeer(Adaptive.Image, ImagePeer);
         this.registerPeer(Adaptive.ActionSet, ActionSetPeer);
         this.registerPeer(Adaptive.ColumnSet, ColumnSetPeer);
         this.registerPeer(Adaptive.Column, ColumnPeer);
+        this.registerPeer(Adaptive.ChoiceSetInput, ChoiceSetInputPeer);
     }
 
     createPeerInstance(parent: DesignerPeer, cardElement: Adaptive.CardElement): CardElementPeer {
