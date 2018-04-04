@@ -379,15 +379,17 @@ using namespace AdaptiveCards;
 {
     [self addToAsyncRenderingList:action];
     
+    std::shared_ptr<BaseActionElement> act = action;
+    
     /// generate a string key to uniquely identify Image
-    if(!(action->GetIconUrl().empty()))
+    if(!(act->GetIconUrl().empty()))
     {
         // run image downloading and processing on global queue which is concurrent and different from main queue
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
             ^{
-                NSString *urlStr = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+                NSString *urlStr = [NSString stringWithCString:act->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
                 // generate key for imageMap from image element's id
-                NSString *key = [NSString stringWithCString:action->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+                NSString *key = [NSString stringWithCString:act->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                 NSURL *url = [NSURL URLWithString:urlStr];
                 
                 // download image
@@ -434,12 +436,12 @@ using namespace AdaptiveCards;
                             }
                             
                             // remove tag
-                            std::string id = action->GetId();
+                            std::string id = act->GetId();
                             std::size_t idx = id.find_last_of('_');
-                            action->SetId(id.substr(0, idx));
+                            act->SetId(id.substr(0, idx));
                         }
                                           
-                        [self removeFromAsyncRenderingListAndNotifyIfNeeded:action];
+                        [self removeFromAsyncRenderingListAndNotifyIfNeeded:act];
                     });
                 }
             );
