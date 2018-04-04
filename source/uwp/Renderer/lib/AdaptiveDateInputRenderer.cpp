@@ -35,6 +35,6 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveDateInput, AdaptiveCards::DateInput, AdaptiveCards::DateInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveDateInput, AdaptiveSharedNamespace::DateInput, AdaptiveSharedNamespace::DateInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
 AdaptiveNamespaceEnd

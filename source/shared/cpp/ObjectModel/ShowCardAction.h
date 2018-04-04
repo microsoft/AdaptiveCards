@@ -14,8 +14,8 @@ public:
 
     virtual Json::Value SerializeToJsonValue() override;
 
-    std::shared_ptr<AdaptiveCards::AdaptiveCard> GetCard() const;
-    void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);
+    std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> GetCard() const;
+    void SetCard(const std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>);
 
     void SetLanguage(const std::string& value);
 

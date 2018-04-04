@@ -18,7 +18,7 @@ AdaptiveNamespaceStart
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction);
 
         // IAdaptiveShowCardAction
         IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveNamespace::IAdaptiveCard** card);
@@ -42,7 +42,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveActionElementBase::ToJson(result); }
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel) override;
+        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) override;
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override

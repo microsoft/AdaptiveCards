@@ -10,12 +10,12 @@ AdaptiveNamespaceStart
     {
     protected:
 
-        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseInputElement>& sharedModel);
+        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement>& sharedModel);
 
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
 
-        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveCards::BaseInputElement> sharedCardElement);
+        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement);
 
     private:
         boolean m_isRequired;

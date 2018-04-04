@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
         return RuntimeClassInitialize(textBlock);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock) try
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock) try
     {
         if (sharedTextBlock == nullptr)
         {
@@ -171,19 +171,19 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedTextBlock) try
+    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedTextBlock) try
     {
-        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(textBlock)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(textBlock)));
 
         textBlock->SetWrap(m_wrap);
         textBlock->SetIsSubtle(m_subtle);
         textBlock->SetMaxLines(m_maxLines);
-        textBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(m_textSize));
-        textBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(m_textWeight));
-        textBlock->SetTextColor(static_cast<AdaptiveCards::ForegroundColor>(m_foregroundColor));
-        textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+        textBlock->SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
+        textBlock->SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
+        textBlock->SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));
+        textBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         std::string text;
         RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));

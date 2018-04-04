@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
         return RuntimeClassInitialize(textInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextInput>& sharedTextInput) try
+    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextInput>& sharedTextInput) try
     {
         if (sharedTextInput == nullptr)
         {
@@ -108,15 +108,15 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(textInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(textInput)));
         
         textInput->SetMaxLength(m_maxLength);
         textInput->SetIsMultiline(m_isMultiline);
-        textInput->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(m_textInputStyle));
+        textInput->SetTextInputStyle(static_cast<AdaptiveSharedNamespace::TextInputStyle>(m_textInputStyle));
 
         std::string placeholder;
         RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));

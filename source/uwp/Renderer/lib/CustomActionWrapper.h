@@ -4,11 +4,11 @@
 #include "Util.h"
 
 AdaptiveNamespaceStart
-    class CustomActionWrapper : public AdaptiveCards::BaseActionElement
+    class CustomActionWrapper : public AdaptiveSharedNamespace::BaseActionElement
     {
     public:
         CustomActionWrapper(ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
-            AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom),
+            AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom),
             m_actionElement(actionElement)
         {}
 

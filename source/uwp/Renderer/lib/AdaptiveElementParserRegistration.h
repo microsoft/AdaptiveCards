@@ -23,7 +23,7 @@ AdaptiveNamespaceStart
     public:
         AdaptiveElementParserRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ElementParserRegistration> sharedParserRegistration) noexcept;
+        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveElementParserRegistration
         IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveElementParser* Parser);
@@ -45,7 +45,7 @@ AdaptiveNamespaceStart
 
     ActivatableClass(AdaptiveElementParserRegistration);
 
-    class SharedModelElementParser : public AdaptiveCards::BaseCardElementParser
+    class SharedModelElementParser : public AdaptiveSharedNamespace::BaseCardElementParser
     {
     public:
         SharedModelElementParser(AdaptiveNamespace::AdaptiveElementParserRegistration* parserRegistration) :
@@ -54,8 +54,8 @@ AdaptiveNamespaceStart
 
         // IBaseCardElementParser
         std::shared_ptr<BaseCardElement> Deserialize(
-            std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
+            std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
             const Json::Value& value);
 
     private:
@@ -75,7 +75,7 @@ AdaptiveNamespaceStart
         std::string jsonString;
         JsonObjectToString(jsonObject, jsonString);
 
-        std::shared_ptr<AdaptiveCards::ElementParserRegistration> sharedModelElementParserRegistration;
+        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedModelElementParserRegistration;
         ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl = PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
         if (elementParserRegistrationImpl != nullptr)
         {
@@ -83,10 +83,10 @@ AdaptiveNamespaceStart
         }
         else
         {
-            sharedModelElementParserRegistration = std::make_shared<AdaptiveCards::ElementParserRegistration>();
+            sharedModelElementParserRegistration = std::make_shared<AdaptiveSharedNamespace::ElementParserRegistration>();
         }
 
-        std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedModelActionParserRegistration;
+        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedModelActionParserRegistration;
         ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl = PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
         if (actionParserRegistrationImpl != nullptr)
         {
@@ -94,7 +94,7 @@ AdaptiveNamespaceStart
         }
         else
         {
-            sharedModelActionParserRegistration = std::make_shared<AdaptiveCards::ActionParserRegistration>();
+            sharedModelActionParserRegistration = std::make_shared<AdaptiveSharedNamespace::ActionParserRegistration>();
         }
 
         std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();

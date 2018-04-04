@@ -13,7 +13,7 @@ AdaptiveNamespaceStart
         return RuntimeClassInitialize(showCardActionConfig);
     } CATCH_RETURN;
 
-    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept
+    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveSharedNamespace::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {
         m_actionMode = static_cast<ABI::AdaptiveNamespace::ActionMode>(sharedShowCardActionConfig.actionMode);
         m_containerStyle = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedShowCardActionConfig.style);

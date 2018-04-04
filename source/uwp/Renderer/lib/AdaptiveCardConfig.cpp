@@ -9,11 +9,11 @@ using namespace ABI::Windows::UI;
 AdaptiveNamespaceStart
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize() noexcept try
     {
-        AdaptiveCards::AdaptiveCardConfig cardConfig;
+        AdaptiveSharedNamespace::AdaptiveCardConfig cardConfig;
         return RuntimeClassInitialize(cardConfig);
     } CATCH_RETURN;
 
-    HRESULT AdaptiveCardConfig::RuntimeClassInitialize(AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig) noexcept
+    HRESULT AdaptiveCardConfig::RuntimeClassInitialize(AdaptiveSharedNamespace::AdaptiveCardConfig adaptiveCardConfig) noexcept
     {
         m_allowCustomStyle = adaptiveCardConfig.allowCustomStyle;
         return S_OK;

@@ -14,7 +14,7 @@ AdaptiveNamespaceStart
         return RuntimeClassInitialize(actionsConfig);
     } CATCH_RETURN;
 
-    HRESULT AdaptiveActionsConfig::RuntimeClassInitialize(AdaptiveCards::ActionsConfig actionsConfig) noexcept
+    HRESULT AdaptiveActionsConfig::RuntimeClassInitialize(AdaptiveSharedNamespace::ActionsConfig actionsConfig) noexcept
     {
         m_actionAlignment = static_cast<ABI::AdaptiveNamespace::ActionAlignment>(actionsConfig.actionAlignment);
         m_actionsOrientation = static_cast<ABI::AdaptiveNamespace::ActionsOrientation> (actionsConfig.actionsOrientation);

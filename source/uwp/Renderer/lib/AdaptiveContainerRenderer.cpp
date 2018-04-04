@@ -35,6 +35,6 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveContainer, AdaptiveCards::Container, AdaptiveCards::ContainerParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveContainer, AdaptiveSharedNamespace::Container, AdaptiveSharedNamespace::ContainerParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
 AdaptiveNamespaceEnd

@@ -9,7 +9,7 @@ AdaptiveNamespaceStart
     {
     protected:
 
-        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel);
+        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel);
 
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
@@ -27,7 +27,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveCards::BaseActionElement> sharedCardElement);
+        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedCardElement);
 
         virtual HRESULT GetSharedModel(std::shared_ptr<BaseActionElement>& sharedModel) = 0;
 

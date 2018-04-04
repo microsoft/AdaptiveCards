@@ -18,7 +18,7 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFact::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Fact>& sharedFact)
+    HRESULT AdaptiveFact::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact)
     {
         m_sharedFact = sharedFact;
         return S_OK;
@@ -61,7 +61,7 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveFact::GetSharedModel(std::shared_ptr<AdaptiveCards::Fact>& sharedModel)
+    HRESULT AdaptiveFact::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel)
     {
         sharedModel = m_sharedFact;
         return S_OK;

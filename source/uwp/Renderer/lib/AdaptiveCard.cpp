@@ -95,7 +95,7 @@ AdaptiveNamespaceStart
         try
         {
             const double c_rendererVersion = 1.0;
-            std::shared_ptr<AdaptiveCards::ParseResult> sharedParseResult = AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
+            std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult = AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
             ComPtr<IAdaptiveCard> adaptiveCard;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
             RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
@@ -134,12 +134,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveSharedNamespace::AdaptiveCard>();
         return RuntimeClassInitialize(adaptiveCard);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
+        HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedAdaptiveCard)
     {
         m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_body == nullptr)
@@ -261,15 +261,15 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveCard::ToJson(IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
-    HRESULT AdaptiveCard::GetSharedModel(std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel)
+    HRESULT AdaptiveCard::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel)
     {
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveSharedNamespace::AdaptiveCard>();
 
         adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
@@ -284,7 +284,7 @@ AdaptiveNamespaceStart
             adaptiveCard->SetBackgroundImage(urlString);
         }
 
-        adaptiveCard->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+        adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());

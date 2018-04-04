@@ -9,7 +9,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
 AdaptiveNamespaceStart
-    HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
+    HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
     {
         m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedModel->GetSpacing());
         m_separator = sharedModel->GetSeparator();
@@ -71,18 +71,18 @@ AdaptiveNamespaceStart
 
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
     HRESULT AdaptiveCardElementBase::SetSharedElementProperties(
-        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedCardElement)
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedCardElement)
     {
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetSeparator(m_separator);
-        sharedCardElement->SetSpacing(static_cast<AdaptiveCards::Spacing>(m_spacing));
+        sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
 
         if (m_additionalProperties != nullptr)
         {

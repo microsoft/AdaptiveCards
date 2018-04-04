@@ -14,7 +14,7 @@ AdaptiveNamespaceStart
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Separator>& sharedSeparator);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Separator>& sharedSeparator);
 
         // IAdaptiveSeparator
         IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* color);
@@ -24,7 +24,7 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP put_Thickness(_In_ ABI::AdaptiveNamespace::SeparatorThickness thickness);
 
     private:
-        std::shared_ptr<AdaptiveCards::Separator> m_sharedSeparator;
+        std::shared_ptr<AdaptiveSharedNamespace::Separator> m_sharedSeparator;
     };
 
     ActivatableClass(AdaptiveSeparator);

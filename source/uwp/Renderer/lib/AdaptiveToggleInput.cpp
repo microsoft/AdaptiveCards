@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput = std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
         return RuntimeClassInitialize(toggleInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput) try
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput) try
     {
         if (sharedToggleInput == nullptr)
         {
@@ -90,11 +90,11 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput = std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(toggleInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(toggleInput)));
 
         std::string title;
         RETURN_IF_FAILED(HStringToUTF8(m_title.Get(), title));

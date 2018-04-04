@@ -9,9 +9,9 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
 AdaptiveNamespaceStart
-    HRESULT AdaptiveInputElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseInputElement>& sharedModel)
+    HRESULT AdaptiveInputElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement>& sharedModel)
     {
-        AdaptiveCardElementBase::InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(sharedModel));
+        AdaptiveCardElementBase::InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel));
         m_isRequired = sharedModel->GetIsRequired();
         return S_OK;
     }
@@ -31,7 +31,7 @@ AdaptiveNamespaceStart
     }
 
     HRESULT AdaptiveInputElementBase::SetSharedElementProperties(
-        std::shared_ptr<AdaptiveCards::BaseInputElement> sharedCardElement)
+        std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement)
     {
         AdaptiveCardElementBase::SetSharedElementProperties(sharedCardElement);
         sharedCardElement->SetIsRequired(m_isRequired);

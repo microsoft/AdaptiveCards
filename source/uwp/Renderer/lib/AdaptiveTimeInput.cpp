@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
         return RuntimeClassInitialize(timeInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TimeInput>& sharedTimeInput) try
+    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedTimeInput) try
     {
         if (sharedTimeInput == nullptr)
         {
@@ -91,11 +91,11 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(timeInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(timeInput)));
 
         std::string max;
         RETURN_IF_FAILED(HStringToUTF8(m_max.Get(), max));

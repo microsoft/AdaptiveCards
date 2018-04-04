@@ -4,11 +4,11 @@
 #include "Util.h"
 
 AdaptiveNamespaceStart
-    class CustomElementWrapper : public AdaptiveCards::BaseCardElement
+    class CustomElementWrapper : public AdaptiveSharedNamespace::BaseCardElement
     {
     public:
         CustomElementWrapper(ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement):
-            BaseCardElement(AdaptiveCards::CardElementType::Custom),
+            BaseCardElement(AdaptiveSharedNamespace::CardElementType::Custom),
             m_cardElement(cardElement)
         {}
 

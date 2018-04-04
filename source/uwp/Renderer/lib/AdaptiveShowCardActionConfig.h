@@ -14,7 +14,7 @@ AdaptiveNamespaceStart
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig showCardActionConfig) noexcept;
+        HRESULT RuntimeClassInitialize(AdaptiveSharedNamespace::ShowCardActionConfig showCardActionConfig) noexcept;
 
         IFACEMETHODIMP get_ActionMode(_Out_ ABI::AdaptiveNamespace::ActionMode* value);
         IFACEMETHODIMP put_ActionMode(_In_ ABI::AdaptiveNamespace::ActionMode value);

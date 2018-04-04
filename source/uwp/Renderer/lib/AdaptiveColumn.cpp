@@ -20,12 +20,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
+        std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
         return RuntimeClassInitialize(column);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn) try
+    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn) try
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
@@ -89,12 +89,12 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(column)));
+        std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(column)));
 
-        column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+        column->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         column->SetWidth(HStringToUTF8(m_width.Get()));
 
         if (m_selectAction != nullptr)

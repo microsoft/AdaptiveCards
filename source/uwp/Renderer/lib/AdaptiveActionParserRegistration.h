@@ -22,7 +22,7 @@ AdaptiveNamespaceStart
     public:
         AdaptiveActionParserRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept;
+        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveActionParserRegistration
         IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveActionParser* Parser);
@@ -44,7 +44,7 @@ AdaptiveNamespaceStart
 
     ActivatableClass(AdaptiveActionParserRegistration);
 
-    class SharedModelActionParser : public AdaptiveCards::ActionElementParser
+    class SharedModelActionParser : public AdaptiveSharedNamespace::ActionElementParser
     {
     public:
         SharedModelActionParser(AdaptiveNamespace::AdaptiveActionParserRegistration* parserRegistration) :
@@ -53,8 +53,8 @@ AdaptiveNamespaceStart
 
         // IBaseCardActionParser
         std::shared_ptr<BaseActionElement> Deserialize(
-            std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
+            std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
             const Json::Value& value);
 
     private:

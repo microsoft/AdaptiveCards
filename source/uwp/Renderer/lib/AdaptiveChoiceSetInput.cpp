@@ -20,12 +20,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
         return RuntimeClassInitialize(choiceSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedChoiceSetInput) try
+    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput) try
     {
         if (sharedChoiceSetInput == nullptr)
         {
@@ -97,13 +97,13 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(choiceSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(choiceSet)));
 
-        choiceSet->SetChoiceSetStyle(static_cast<AdaptiveCards::ChoiceSetStyle>(m_choiceSetStyle));
+        choiceSet->SetChoiceSetStyle(static_cast<AdaptiveSharedNamespace::ChoiceSetStyle>(m_choiceSetStyle));
         choiceSet->SetIsMultiSelect(m_isMultiSelect);
 
         RETURN_IF_FAILED(GenerateSharedChoices(m_choices.Get(), choiceSet->GetChoices()));

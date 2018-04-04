@@ -13,12 +13,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
         return RuntimeClassInitialize(dateInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput) try
+    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput) try
     {
         if (sharedDateInput == nullptr)
         {
@@ -89,11 +89,11 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     { 
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(dateInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(dateInput)));
 
         std::string max;
         RETURN_IF_FAILED(HStringToUTF8(m_max.Get(), max));

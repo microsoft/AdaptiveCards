@@ -18,7 +18,7 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedChoiceInput)
+    HRESULT AdaptiveChoiceInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedChoiceInput)
     {
         m_sharedChoiceInput = sharedChoiceInput;
         return S_OK;
@@ -61,7 +61,7 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel)
+    HRESULT AdaptiveChoiceInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedModel)
     {
         sharedModel = m_sharedChoiceInput;
         return S_OK;

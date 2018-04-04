@@ -24,7 +24,7 @@ AdaptiveNamespaceStart
 
 
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize(
-        std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept try
+        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedParserRegistration) noexcept try
     {
         m_registration = std::make_shared<RegistrationMap>();
         m_sharedParserRegistration = sharedParserRegistration;
@@ -74,8 +74,8 @@ AdaptiveNamespaceStart
     }
 
     std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(
-        std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
+        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
         const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);

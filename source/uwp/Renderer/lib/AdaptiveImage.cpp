@@ -17,12 +17,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveImage::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();
+        std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
         return RuntimeClassInitialize(image);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Image>& sharedImage) try
+    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage) try
     {
         if (sharedImage == nullptr)
         {
@@ -138,11 +138,11 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedImage) try
+    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedImage) try
     {
-        std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();
+        std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(image)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(image)));
 
         if (m_selectAction != nullptr)
         {
@@ -168,9 +168,9 @@ AdaptiveNamespaceStart
             image->SetAltText(out);
         }
             
-        image->SetImageStyle(static_cast<AdaptiveCards::ImageStyle>(m_imageStyle));
-        image->SetImageSize(static_cast<AdaptiveCards::ImageSize>(m_imageSize));
-        image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+        image->SetImageStyle(static_cast<AdaptiveSharedNamespace::ImageStyle>(m_imageStyle));
+        image->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
+        image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         sharedImage = image;
         return S_OK;

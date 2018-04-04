@@ -10,7 +10,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
 AdaptiveNamespaceStart
-    HRESULT AdaptiveActionElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
+    HRESULT AdaptiveActionElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetTitle(), m_title.GetAddressOf()));
@@ -81,14 +81,14 @@ AdaptiveNamespaceStart
 
     IFACEMETHODIMP AdaptiveActionElementBase::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::BaseActionElement> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
     HRESULT AdaptiveActionElementBase::SetSharedElementProperties(
-        std::shared_ptr<AdaptiveCards::BaseActionElement> sharedCardElement)
+        std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedCardElement)
     {
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));

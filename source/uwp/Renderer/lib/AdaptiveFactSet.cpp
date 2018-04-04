@@ -20,12 +20,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
         return RuntimeClassInitialize(factSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::FactSet>& sharedFactSet) try
+    HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::FactSet>& sharedFactSet) try
     {
         if (sharedFactSet == nullptr)
         {
@@ -51,11 +51,11 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(factSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(factSet)));
         RETURN_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));
 
         sharedModel = factSet;

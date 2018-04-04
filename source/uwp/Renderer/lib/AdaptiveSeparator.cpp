@@ -18,7 +18,7 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSeparator::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Separator>& sharedSeparator)
+    HRESULT AdaptiveSeparator::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Separator>& sharedSeparator)
     {
         m_sharedSeparator = sharedSeparator;
         return S_OK;
@@ -34,7 +34,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveSeparator::put_Color(ABI::AdaptiveNamespace::ForegroundColor color)
     {
-        m_sharedSeparator->SetColor(static_cast<AdaptiveCards::ForegroundColor>(color));
+        m_sharedSeparator->SetColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(color));
         return S_OK;
     }
 
@@ -48,7 +48,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveSeparator::put_Thickness(ABI::AdaptiveNamespace::SeparatorThickness thickness)
     {
-        m_sharedSeparator->SetThickness(static_cast<AdaptiveCards::SeparatorThickness>(thickness));
+        m_sharedSeparator->SetThickness(static_cast<AdaptiveSharedNamespace::SeparatorThickness>(thickness));
         return S_OK;
     }
 AdaptiveNamespaceEnd

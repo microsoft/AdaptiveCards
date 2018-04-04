@@ -55,63 +55,63 @@ HRESULT GetSpacingSizeFromSpacing(
 
 HRESULT GenerateSharedElements(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements);
 
 HRESULT GenerateSharedAction(
     ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-    std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction); 
+    std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedAction); 
 
 HRESULT GenerateSharedActions(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& containedElements);
 
 HRESULT GenerateSharedImages(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements);
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements);
 
 HRESULT GenerateSharedFacts(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveFact*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements);
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::Fact>>& containedElements);
 
 HRESULT GenerateSharedChoices(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements);
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements);
 
 HRESULT GenerateContainedElementsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateActionsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& actions,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateActionProjection(
-    const std::shared_ptr<AdaptiveCards::BaseActionElement> action,
+    const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> action,
     ABI::AdaptiveNamespace::IAdaptiveActionElement** projectedAction) noexcept;
 
 HRESULT GenerateColumnsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Column>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveColumn*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateFactsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements,
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Fact>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveFact*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateImagesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements,
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateInputChoicesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateSeparatorProjection(
-    std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
+    std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,
     ABI::AdaptiveNamespace::IAdaptiveSeparator** projectedSeparator) noexcept;
 
 HRESULT GenerateSharedSeparator(
     ABI::AdaptiveNamespace::IAdaptiveSeparator* separator,
-    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut)noexcept;
+    std::shared_ptr<AdaptiveSharedNamespace::Separator>* sharedSeparatorOut)noexcept;
 
 HRESULT StringToJsonObject(const std::string inputString, ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT HStringToJsonObject(const HSTRING& inputHString, ABI::Windows::Data::Json::IJsonObject** result);

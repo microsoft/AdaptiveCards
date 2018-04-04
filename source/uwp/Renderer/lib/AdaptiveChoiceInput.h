@@ -15,7 +15,7 @@ AdaptiveNamespaceStart
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedChoiceInput);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedChoiceInput);
 
         // IAdaptiveChoiceInput
         IFACEMETHODIMP get_Title(_In_ HSTRING* title);
@@ -26,7 +26,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -35,7 +35,7 @@ AdaptiveNamespaceStart
         }
 
     private:
-        std::shared_ptr<AdaptiveCards::ChoiceInput> m_sharedChoiceInput;
+        std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput> m_sharedChoiceInput;
     };
 
     ActivatableClass(AdaptiveChoiceInput);

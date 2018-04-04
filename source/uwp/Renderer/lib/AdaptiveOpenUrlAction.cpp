@@ -10,12 +10,12 @@ using namespace ABI::Windows::Foundation;
 AdaptiveNamespaceStart
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
+        std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();
         return RuntimeClassInitialize(openUrlAction);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction) try
+    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction) try
     {
         if (sharedOpenUrlAction == nullptr)
         {
@@ -29,7 +29,7 @@ AdaptiveNamespaceStart
         std::wstring imageUri = StringToWstring(sharedOpenUrlAction->GetUrl());
         RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_url.GetAddressOf()));
 
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedOpenUrlAction));
+        InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedOpenUrlAction));
         return S_OK;
     } CATCH_RETURN;
 
@@ -53,10 +53,10 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel) try
+    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(openUrlAction)));
+        std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(openUrlAction)));
 
         if (m_url != nullptr)
         {

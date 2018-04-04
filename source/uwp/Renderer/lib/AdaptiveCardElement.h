@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     {
     protected:
 
-        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel);
+        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel);
 
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing);
         IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
@@ -26,7 +26,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveCards::BaseCardElement> sharedCardElement);
+        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedCardElement);
 
         virtual HRESULT GetSharedModel(std::shared_ptr<BaseCardElement>& sharedModel) = 0;
 

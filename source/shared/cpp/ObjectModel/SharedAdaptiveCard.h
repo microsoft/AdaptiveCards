@@ -51,18 +51,18 @@ public:
     static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
         const std::string& fallbackText,
-        const std::string& language) throw(AdaptiveCards::AdaptiveCardParseException);
+        const std::string& language) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 #else
     static std::shared_ptr<ParseResult> DeserializeFromFile(
         const std::string& jsonFile,

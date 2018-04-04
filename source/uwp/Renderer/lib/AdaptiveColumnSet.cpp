@@ -22,12 +22,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> columnSet = std::make_shared<AdaptiveSharedNamespace::ColumnSet>();
         return RuntimeClassInitialize(columnSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ColumnSet>& sharedColumnSet) try
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedColumnSet) try
     {
         if (sharedColumnSet == nullptr)
         {
@@ -68,10 +68,10 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(columnSet)));
+        std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> columnSet = std::make_shared<AdaptiveSharedNamespace::ColumnSet>();
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(columnSet)));
 
         if (m_selectAction != nullptr)
         {
@@ -87,7 +87,7 @@ AdaptiveNamespaceStart
             std::shared_ptr<BaseCardElement> sharedColumnBaseElement;
             RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumnBaseElement));
 
-            std::shared_ptr<AdaptiveCards::Column> sharedColumn = std::AdaptivePointerCast<AdaptiveCards::Column>(sharedColumnBaseElement);
+            std::shared_ptr<AdaptiveSharedNamespace::Column> sharedColumn = std::AdaptivePointerCast<AdaptiveSharedNamespace::Column>(sharedColumnBaseElement);
             if (sharedColumn == nullptr)
             {
                 return E_UNEXPECTED;
