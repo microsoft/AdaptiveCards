@@ -24,9 +24,13 @@
 
 - (NSMutableDictionary *)getTextMap;
 
+- (NSMutableDictionary *)getActionsMap;
+
 - (dispatch_queue_t)getSerialTextQueue;
 
 - (ACOAdaptiveCard *)card;
 
 - (UIView *)render;
+
+- (UIImage*) scaleImage:(UIImage*)image toSize:(CGSize)size;
 @end

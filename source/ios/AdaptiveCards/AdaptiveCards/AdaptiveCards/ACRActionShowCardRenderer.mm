@@ -33,7 +33,7 @@
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
     NSString *iconUrl = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:NSUTF8StringEncoding];
     
-    UIButton *button = [UIButton acr_renderButton:rootView title:title iconUrl:iconUrl andHostConfig:[acoConfig getHostConfig]];
+    UIButton *button = [UIButton rootView:rootView baseActionElement:acoElem title:title iconUrl:iconUrl andHostConfig:[acoConfig getHostConfig]];
 
     ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:action->GetCard()
                                                                          config:acoConfig

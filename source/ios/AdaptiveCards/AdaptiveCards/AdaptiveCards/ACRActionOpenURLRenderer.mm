@@ -34,7 +34,7 @@
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
     NSString *iconUrl = [NSString stringWithCString:action->GetUrl().c_str() encoding:(NSUTF8StringEncoding)];
     
-    UIButton *button = [UIButton acr_renderButton:rootView title:title iconUrl:iconUrl andHostConfig:config];
+    UIButton *button = [UIButton rootView:rootView baseActionElement:acoElem title:title iconUrl:iconUrl andHostConfig:config];
 
     ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView *)rootView];
 
