@@ -3,7 +3,7 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
 AdaptiveNamespaceStart
@@ -14,7 +14,7 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction)
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction)
     {
         if (sharedSubmitAction == nullptr)
         {
@@ -41,9 +41,9 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveNamespaceRef::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespaceRef::ActionType::Submit;
+        *actionType = ABI::AdaptiveNamespace::ActionType::Submit;
         return S_OK;
     }
 
@@ -107,7 +107,7 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveCards::SubmitAction>& sharedModel)
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedModel)
     {
         sharedModel = m_sharedSubmitAction;
         return S_OK;

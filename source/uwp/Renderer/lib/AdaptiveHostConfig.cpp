@@ -16,7 +16,7 @@
 #include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
 AdaptiveNamespaceStart
@@ -134,13 +134,13 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveNamespaceRef::IAdaptiveContainerStylesDefinition** value)
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition** value)
     {
         return m_containerStyles.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveNamespaceRef::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
     {
         m_containerStyles = containerStylesDefinition;
         return S_OK;
@@ -160,26 +160,26 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveNamespaceRef::IAdaptiveSpacingConfig** spacingConfig)
+    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveNamespace::IAdaptiveSpacingConfig** spacingConfig)
     {
         return m_spacing.CopyTo(spacingConfig);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveNamespaceRef::IAdaptiveSpacingConfig* spacingConfig)
+    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveNamespace::IAdaptiveSpacingConfig* spacingConfig)
     {
         m_spacing = spacingConfig;
         return S_OK;
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveNamespaceRef::IAdaptiveSeparatorConfig** separatorConfig)
+    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig** separatorConfig)
     {
         return m_separator.CopyTo(separatorConfig);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveNamespaceRef::IAdaptiveSeparatorConfig* separatorConfig)
+    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig* separatorConfig)
     {
         m_separator = separatorConfig;
         return S_OK;

@@ -2,7 +2,7 @@
 #include "AdaptiveSpacingConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
     HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize() noexcept try

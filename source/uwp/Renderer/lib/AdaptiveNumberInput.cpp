@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::NumberInput> numberInput = std::make_shared<AdaptiveCards::NumberInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput = std::make_shared<AdaptiveSharedNamespace::NumberInput>();
         return RuntimeClassInitialize(numberInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::NumberInput>& sharedNumberInput) try
+    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput) try
     {
         if (sharedNumberInput == nullptr)
         {
@@ -32,7 +32,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedNumberInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
 
         m_isRequired = sharedNumberInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedNumberInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedNumberInput->GetSpacing());
         m_separator = sharedNumberInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedNumberInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedNumberInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -113,14 +113,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveNumberInput::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveNumberInput::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -178,18 +178,19 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveNumberInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::NumberInput> sharedNumberInput = std::make_shared<AdaptiveCards::NumberInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::NumberInput> sharedNumberInput = std::make_shared<AdaptiveSharedNamespace::NumberInput>();
         GetSharedModel(sharedNumberInput);
 
         return StringToJsonObject(sharedNumberInput->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveCards::NumberInput>& sharedModel) try
+    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::NumberInput> numberInput = std::make_shared<AdaptiveCards::NumberInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput = std::make_shared<AdaptiveSharedNamespace::NumberInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(numberInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(numberInput)));
+
         numberInput->SetIsRequired(m_isRequired);
 
         numberInput->SetMin(m_min);

@@ -8,13 +8,13 @@ AdaptiveNamespaceStart
     class AdaptiveCardConfig :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespaceRef::IAdaptiveCardConfig>
+        ABI::AdaptiveNamespace::IAdaptiveCardConfig>
     {
         AdaptiveRuntime(AdaptiveCardConfig)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig) noexcept;
+        HRESULT RuntimeClassInitialize(AdaptiveSharedNamespace::AdaptiveCardConfig adaptiveCardConfig) noexcept;
 
         IFACEMETHODIMP get_AllowCustomStyle(_Out_ boolean* allowCustomStyle);
         IFACEMETHODIMP put_AllowCustomStyle(_In_ boolean allowCustomStyle);

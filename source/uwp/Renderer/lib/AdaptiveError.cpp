@@ -3,7 +3,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
 
@@ -13,7 +13,7 @@ AdaptiveNamespaceStart
     }
 
     HRESULT AdaptiveError::RuntimeClassInitialize(
-        ABI::AdaptiveNamespaceRef::ErrorStatusCode statusCode,
+        ABI::AdaptiveNamespace::ErrorStatusCode statusCode,
         HSTRING message)
     {
         m_statusCode = statusCode;
@@ -22,14 +22,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveError::get_StatusCode(ABI::AdaptiveNamespaceRef::ErrorStatusCode* value)
+    HRESULT AdaptiveError::get_StatusCode(ABI::AdaptiveNamespace::ErrorStatusCode* value)
     {
         *value = m_statusCode;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveError::put_StatusCode(ABI::AdaptiveNamespaceRef::ErrorStatusCode value)
+    HRESULT AdaptiveError::put_StatusCode(ABI::AdaptiveNamespace::ErrorStatusCode value)
     {
         m_statusCode = value;
         return S_OK;

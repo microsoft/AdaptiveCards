@@ -7,7 +7,7 @@
 #include "DateTimePreparser.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock),

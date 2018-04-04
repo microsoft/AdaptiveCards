@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
 AdaptiveNamespaceStart
@@ -23,7 +23,7 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize(
-        std::shared_ptr<AdaptiveCards::ElementParserRegistration> sharedParserRegistration) noexcept try
+        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedParserRegistration) noexcept try
     {
         m_registration = std::make_shared<RegistrationMap>();
         m_sharedParserRegistration = sharedParserRegistration;
@@ -74,8 +74,8 @@ AdaptiveNamespaceStart
     }
 
     std::shared_ptr<BaseCardElement> SharedModelElementParser::Deserialize(
-        std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
+        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
         const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
@@ -90,10 +90,10 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        MakeAndInitialize<AdaptiveNamespaceRef::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration , elementParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration , elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        MakeAndInitialize<AdaptiveNamespaceRef::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
 
         ComPtr<IAdaptiveCardElement> cardElement;
         THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), &cardElement));

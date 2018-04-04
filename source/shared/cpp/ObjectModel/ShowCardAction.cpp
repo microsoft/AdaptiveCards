@@ -3,7 +3,7 @@
 #include "ParseUtil.h"
 #include "ShowCardAction.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 ShowCardAction::ShowCardAction() : BaseActionElement(ActionType::ShowCard)
 {

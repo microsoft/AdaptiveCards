@@ -2,7 +2,7 @@
 #include "ToggleInput.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 ToggleInput::ToggleInput() :
     BaseInputElement(CardElementType::ToggleInput),

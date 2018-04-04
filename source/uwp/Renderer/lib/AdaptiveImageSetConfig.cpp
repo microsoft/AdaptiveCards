@@ -2,7 +2,7 @@
 #include "AdaptiveImageSetConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept try
@@ -13,20 +13,20 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize(ImageSetConfig sharedImageSetConfig) noexcept
     {
-        m_imageSize = static_cast<ABI::AdaptiveNamespaceRef::ImageSize>(sharedImageSetConfig.imageSize);
+        m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImageSetConfig.imageSize);
         m_maxImageHeight = sharedImageSetConfig.maxImageHeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::get_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize* imageSize)
+    HRESULT AdaptiveImageSetConfig::get_ImageSize(ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize imageSize)
+    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;

@@ -8,18 +8,18 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("32114ce2-7e10-4f7f-8225-bfd661c6794c") AdaptiveSubmitAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveSubmitAction,
-            ABI::AdaptiveNamespaceRef::IAdaptiveActionElement,
+            ABI::AdaptiveNamespace::IAdaptiveSubmitAction,
+            ABI::AdaptiveNamespace::IAdaptiveActionElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveSubmitAction)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespaceRef::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
@@ -36,7 +36,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::SubmitAction>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -45,7 +45,7 @@ AdaptiveNamespaceStart
         }
 
     private:
-        std::shared_ptr<AdaptiveCards::SubmitAction> m_sharedSubmitAction;
+        std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> m_sharedSubmitAction;
     };
 
     ActivatableClass(AdaptiveSubmitAction);

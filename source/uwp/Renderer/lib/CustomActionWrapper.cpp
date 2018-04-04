@@ -2,7 +2,7 @@
 #include "CustomActionWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
 
@@ -45,7 +45,7 @@ Json::Value CustomActionWrapper::SerializeToJsonValue()
     return jsonCppValue;
 }
 
-HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveNamespaceRef::IAdaptiveActionElement** actionElement)
+HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement)
 {
     return m_actionElement.CopyTo(actionElement);
 }

@@ -4,11 +4,11 @@
 #include "Util.h"
 
 AdaptiveNamespaceStart
-    class CustomActionWrapper : public AdaptiveCards::BaseActionElement
+    class CustomActionWrapper : public AdaptiveSharedNamespace::BaseActionElement
     {
     public:
-        CustomActionWrapper(ABI::AdaptiveNamespaceRef::IAdaptiveActionElement* actionElement) :
-            AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom),
+        CustomActionWrapper(ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
+            AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom),
             m_actionElement(actionElement)
         {}
 
@@ -20,9 +20,9 @@ AdaptiveNamespaceStart
 
         virtual Json::Value SerializeToJsonValue() override;
 
-        HRESULT GetWrappedElement(ABI::AdaptiveNamespaceRef::IAdaptiveActionElement** actionElement);
+        HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement> m_actionElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_actionElement;
     };
 AdaptiveNamespaceEnd

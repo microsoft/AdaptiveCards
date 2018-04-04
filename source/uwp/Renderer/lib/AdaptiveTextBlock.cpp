@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
         return RuntimeClassInitialize(textBlock);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock) try
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock) try
     {
         if (sharedTextBlock == nullptr)
         {
@@ -30,15 +30,15 @@ AdaptiveNamespaceStart
         m_subtle = sharedTextBlock->GetIsSubtle();
         m_maxLines = sharedTextBlock->GetMaxLines();
 
-        m_textSize = static_cast<ABI::AdaptiveNamespaceRef::TextSize>(sharedTextBlock->GetTextSize());
-        m_textWeight = static_cast<ABI::AdaptiveNamespaceRef::TextWeight>(sharedTextBlock->GetTextWeight());
-        m_foregroundColor = static_cast<ABI::AdaptiveNamespaceRef::ForegroundColor>(sharedTextBlock->GetTextColor());
-        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespaceRef::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+        m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(sharedTextBlock->GetTextSize());
+        m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(sharedTextBlock->GetTextWeight());
+        m_foregroundColor = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(sharedTextBlock->GetTextColor());
+        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetText(), m_text.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetLanguage(), m_language.GetAddressOf()));
 
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedTextBlock->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedTextBlock->GetSpacing());
         m_separator = sharedTextBlock->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedTextBlock->GetAdditionalProperties(), &m_additionalProperties));
@@ -58,42 +58,42 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveNamespaceRef::TextSize* textSize)
+    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveNamespace::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveNamespaceRef::TextSize textSize)
+    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveNamespaceRef::TextWeight* textWeight)
+    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveNamespace::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveNamespaceRef::TextWeight textWeight)
+    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveNamespaceRef::ForegroundColor* foregroundColor)
+    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveNamespace::ForegroundColor* foregroundColor)
     {
         *foregroundColor = m_foregroundColor;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveNamespaceRef::ForegroundColor foregroundColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveNamespace::ForegroundColor foregroundColor)
     {
         m_foregroundColor = foregroundColor;
         return S_OK;
@@ -142,14 +142,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveNamespaceRef::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespaceRef::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
@@ -175,14 +175,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveTextBlock::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveTextBlock::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -238,26 +238,26 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
         GetSharedModel(textBlock);
 
         return StringToJsonObject(textBlock->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock) try
+    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock) try
     {
-        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(textBlock)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(textBlock)));
 
         textBlock->SetWrap(m_wrap);
         textBlock->SetIsSubtle(m_subtle);
         textBlock->SetMaxLines(m_maxLines);
-        textBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(m_textSize));
-        textBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(m_textWeight));
-        textBlock->SetTextColor(static_cast<AdaptiveCards::ForegroundColor>(m_foregroundColor));
-        textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+        textBlock->SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
+        textBlock->SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
+        textBlock->SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));
+        textBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         std::string text;
         RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));

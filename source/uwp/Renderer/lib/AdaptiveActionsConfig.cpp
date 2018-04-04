@@ -4,7 +4,7 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
 AdaptiveNamespaceStart
@@ -14,13 +14,13 @@ AdaptiveNamespaceStart
         return RuntimeClassInitialize(actionsConfig);
     } CATCH_RETURN;
 
-    HRESULT AdaptiveActionsConfig::RuntimeClassInitialize(AdaptiveCards::ActionsConfig actionsConfig) noexcept
+    HRESULT AdaptiveActionsConfig::RuntimeClassInitialize(AdaptiveSharedNamespace::ActionsConfig actionsConfig) noexcept
     {
-        m_actionAlignment = static_cast<ABI::AdaptiveNamespaceRef::ActionAlignment>(actionsConfig.actionAlignment);
-        m_actionsOrientation = static_cast<ABI::AdaptiveNamespaceRef::ActionsOrientation> (actionsConfig.actionsOrientation);
+        m_actionAlignment = static_cast<ABI::AdaptiveNamespace::ActionAlignment>(actionsConfig.actionAlignment);
+        m_actionsOrientation = static_cast<ABI::AdaptiveNamespace::ActionsOrientation> (actionsConfig.actionsOrientation);
         m_buttonSpacing = actionsConfig.buttonSpacing;
         m_maxActions = actionsConfig.maxActions;
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(actionsConfig.spacing);
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(actionsConfig.spacing);
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveShowCardActionConfig>(m_showCardActionConfig.GetAddressOf(), actionsConfig.showCard));
 
@@ -69,42 +69,42 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* value)
+    HRESULT AdaptiveActionsConfig::get_Spacing(ABI::AdaptiveNamespace::Spacing* value)
     {
         *value = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing value)
+    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveNamespace::Spacing value)
     {
         m_spacing = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::get_ActionAlignment(ABI::AdaptiveNamespaceRef::ActionAlignment* value)
+    HRESULT AdaptiveActionsConfig::get_ActionAlignment(ABI::AdaptiveNamespace::ActionAlignment* value)
     {
         *value = m_actionAlignment;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::put_ActionAlignment(ABI::AdaptiveNamespaceRef::ActionAlignment value)
+    HRESULT AdaptiveActionsConfig::put_ActionAlignment(ABI::AdaptiveNamespace::ActionAlignment value)
     {
         m_actionAlignment = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::get_ActionsOrientation(ABI::AdaptiveNamespaceRef::ActionsOrientation* value)
+    HRESULT AdaptiveActionsConfig::get_ActionsOrientation(ABI::AdaptiveNamespace::ActionsOrientation* value)
     {
         *value = m_actionsOrientation;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::put_ActionsOrientation(ABI::AdaptiveNamespaceRef::ActionsOrientation value)
+    HRESULT AdaptiveActionsConfig::put_ActionsOrientation(ABI::AdaptiveNamespace::ActionsOrientation value)
     {
         m_actionsOrientation = value;
         return S_OK;

@@ -8,22 +8,22 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveOpenUrlAction,
-            ABI::AdaptiveNamespaceRef::IAdaptiveActionElement,
+            ABI::AdaptiveNamespace::IAdaptiveOpenUrlAction,
+            ABI::AdaptiveNamespace::IAdaptiveActionElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveOpenUrlAction)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction);
 
         // IAdaptiveOpenUrlAction
         IFACEMETHODIMP get_Url(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
         IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespaceRef::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
@@ -37,7 +37,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -46,7 +46,7 @@ AdaptiveNamespaceStart
         }
 
     private:
-        std::shared_ptr<AdaptiveCards::OpenUrlAction> m_sharedOpenUrlAction;
+        std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> m_sharedOpenUrlAction;
     };
 
     ActivatableClass(AdaptiveOpenUrlAction);

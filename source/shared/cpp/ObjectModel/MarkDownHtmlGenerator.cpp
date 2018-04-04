@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MarkDownHtmlGenerator.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 {

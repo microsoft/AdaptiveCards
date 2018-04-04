@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -20,12 +20,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
         return RuntimeClassInitialize(factSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::FactSet>& sharedFactSet)
+    HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::FactSet>& sharedFactSet)
     {
         if (sharedFactSet == nullptr)
         {
@@ -34,7 +34,7 @@ AdaptiveNamespaceStart
 
         GenerateFactsProjection(sharedFactSet->GetFacts(), m_facts.Get());
         
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedFactSet->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedFactSet->GetSpacing());
         m_separator = sharedFactSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedFactSet->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedFactSet->GetAdditionalProperties(), &m_additionalProperties));
@@ -56,14 +56,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -119,18 +119,18 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveFactSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::FactSet> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::FactSet> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveCards::FactSet>& sharedModel) try
+    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::FactSet>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(factSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(factSet)));
         RETURN_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));
 
         sharedModel = factSet;

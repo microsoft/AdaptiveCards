@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveSpacingConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveSpacingConfig>
+            ABI::AdaptiveNamespace::IAdaptiveSpacingConfig>
     {
         AdaptiveRuntime(AdaptiveSpacingConfig)
 

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MarkDownParsedResult.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 void MarkDownParsedResult::Translate()
 {

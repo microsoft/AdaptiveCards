@@ -2,7 +2,7 @@
 #include "Fact.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 Fact::Fact()
 {

@@ -2,7 +2,7 @@
 #include "ParseUtil.h"
 #include "TextInput.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 TextInput::TextInput() :
     BaseInputElement(CardElementType::TextInput),

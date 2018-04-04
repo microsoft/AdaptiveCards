@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveColorConfig :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespaceRef::IAdaptiveColorConfig>
+        ABI::AdaptiveNamespace::IAdaptiveColorConfig>
     {
         AdaptiveRuntime(AdaptiveColorConfig)
 

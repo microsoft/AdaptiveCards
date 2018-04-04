@@ -21,26 +21,26 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition ** value)
+    HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition ** value)
     {
         return m_default.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition * value)
+    HRESULT  AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition * value)
     {
         m_default = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition ** value)
+    HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition ** value)
     {
         return m_emphasis.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition * value)
+    HRESULT  AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition * value)
     {
         m_emphasis = value;
         return S_OK;

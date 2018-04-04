@@ -9,7 +9,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             Microsoft::WRL::FtmBase,
-            ABI::AdaptiveCards::XamlCardRenderer::IImageRenderResult>
+            ABI::AdaptiveSharedNamespace::XamlCardRenderer::IImageRenderResult>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_ImageRenderResult)
 

@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -20,12 +20,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::ImageSet> imageSet = std::make_shared<AdaptiveCards::ImageSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
         return RuntimeClassInitialize(imageSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ImageSet>& sharedImageSet)
+    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet)
     {
         if (sharedImageSet == nullptr)
         {
@@ -34,9 +34,9 @@ AdaptiveNamespaceStart
 
         GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
 
-        m_imageSize = static_cast<ABI::AdaptiveNamespaceRef::ImageSize>(sharedImageSet->GetImageSize());
+        m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImageSet->GetImageSize());
 
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedImageSet->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedImageSet->GetSpacing());
         m_separator = sharedImageSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedImageSet->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedImageSet->GetAdditionalProperties(), &m_additionalProperties));
@@ -51,14 +51,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK; 
@@ -72,14 +72,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveImageSet::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveImageSet::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -135,20 +135,20 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::ImageSet> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::ImageSet> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveCards::ImageSet>& sharedModel) try
+    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::ImageSet> imageSet = std::make_shared<AdaptiveCards::ImageSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(imageSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(imageSet)));
 
-        imageSet->SetImageSize(static_cast<AdaptiveCards::ImageSize>(m_imageSize));
+        imageSet->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
 
         RETURN_IF_FAILED(GenerateSharedImages(m_images.Get(), imageSet->GetImages()));
 

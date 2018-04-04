@@ -5,7 +5,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -13,12 +13,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
         return RuntimeClassInitialize(dateInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput) try
+    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput) try
     {
         if (sharedDateInput == nullptr)
         {
@@ -31,7 +31,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetValue(), m_value.GetAddressOf()));
 
         m_isRequired = sharedDateInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedDateInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedDateInput->GetSpacing());
         m_separator = sharedDateInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedDateInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -107,14 +107,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveDateInput::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveDateInput::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -172,18 +172,18 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveDateInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::DateInput> sharedDateInput = std::make_shared<AdaptiveCards::DateInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::DateInput> sharedDateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
         GetSharedModel(sharedDateInput);
 
         return StringToJsonObject(sharedDateInput->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::DateInput>& sharedModel) try
+    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedModel) try
     { 
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(dateInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(dateInput)));
         dateInput->SetIsRequired(m_isRequired);
 
         std::string max;

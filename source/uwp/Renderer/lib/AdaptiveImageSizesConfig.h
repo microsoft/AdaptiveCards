@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveImageSizesConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveImageSizesConfig>
+            ABI::AdaptiveNamespace::IAdaptiveImageSizesConfig>
     {
         AdaptiveRuntime(AdaptiveImageSizesConfig)
 

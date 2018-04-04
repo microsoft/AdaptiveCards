@@ -8,24 +8,16 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("502edea9-72fd-4856-a89e-54565181bed8") AdaptiveToggleInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-<<<<<<< HEAD
-            ABI::AdaptiveNamespaceRef::IAdaptiveToggleInput,
-            ABI::AdaptiveNamespaceRef::IAdaptiveInputElement,
-            ABI::AdaptiveNamespaceRef::IAdaptiveCardElement,
+            ABI::AdaptiveNamespace::IAdaptiveToggleInput,
+            ABI::AdaptiveNamespace::IAdaptiveInputElement,
+            ABI::AdaptiveNamespace::IAdaptiveCardElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
-=======
-            ABI::AdaptiveNamespaceRef::IAdaptiveToggleInput,
-            ABI::AdaptiveNamespaceRef::IAdaptiveInputElement,
-            ABI::AdaptiveNamespaceRef::IAdaptiveCardElement,
-            Microsoft::WRL::CloakedIid<ITypePeek>,
-            Microsoft::WRL::CloakedIid<AdaptiveNamespaceRef::AdaptiveInputElementBase>>
->>>>>>> b69f14ae... Updating shared model and UWP code to use defined macros for namespace.
     {
         AdaptiveRuntime(AdaptiveToggleInput)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput);
 
         // IAdaptiveToggleInput
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
@@ -45,13 +37,13 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespaceRef::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespaceRef::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespaceRef::Spacing spacing);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespaceRef::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespaceRef::Spacing spacing);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
 
         IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
         IFACEMETHODIMP put_Separator(_In_ boolean separator);
@@ -63,7 +55,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::ToggleInput>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -80,7 +72,7 @@ AdaptiveNamespaceStart
         boolean m_isRequired;
         boolean m_separator;
         Microsoft::WRL::Wrappers::HString m_id;
-        ABI::AdaptiveNamespaceRef::Spacing m_spacing;
+        ABI::AdaptiveNamespace::Spacing m_spacing;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
     };
 

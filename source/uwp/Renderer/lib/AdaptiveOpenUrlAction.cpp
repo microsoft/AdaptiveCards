@@ -4,7 +4,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
 AdaptiveNamespaceStart
@@ -15,7 +15,7 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
+    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction)
     {
         if (sharedOpenUrlAction == nullptr)
         {
@@ -76,9 +76,9 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveNamespaceRef::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespaceRef::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveNamespace::ActionType::OpenUrl;
         return S_OK;
     }
 
@@ -127,7 +127,7 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedModel)
+    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedModel)
     {
         sharedModel = m_sharedOpenUrlAction;
         return S_OK;

@@ -5,7 +5,7 @@
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 BaseCardElement::BaseCardElement(
     CardElementType type,

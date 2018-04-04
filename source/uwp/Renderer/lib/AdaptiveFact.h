@@ -8,14 +8,14 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveFact :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveFact,
+            ABI::AdaptiveNamespace::IAdaptiveFact,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveFact)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Fact>& sharedFact);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact);
 
         // IAdaptiveFact
         IFACEMETHODIMP get_Title(_In_ HSTRING* title);
@@ -24,9 +24,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Value(_In_ HSTRING* value);
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespaceRef::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
-        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::Fact>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -35,7 +35,7 @@ AdaptiveNamespaceStart
         }
 
     private:
-        std::shared_ptr<AdaptiveCards::Fact> m_sharedFact;
+        std::shared_ptr<AdaptiveSharedNamespace::Fact> m_sharedFact;
     };
 
     ActivatableClass(AdaptiveFact);

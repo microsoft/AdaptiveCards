@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -20,12 +20,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveContainer::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
+        std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
         return RuntimeClassInitialize(container);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Container>& sharedContainer)
+    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedContainer)
     {
         if (sharedContainer == nullptr)
         {
@@ -34,9 +34,9 @@ AdaptiveNamespaceStart
 
         GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
         GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
-        m_style = static_cast<ABI::AdaptiveNamespaceRef::ContainerStyle>(sharedContainer->GetStyle());
+        m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
         
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedContainer->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedContainer->GetSpacing());
         m_separator = sharedContainer->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedContainer->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedContainer->GetAdditionalProperties(), &m_additionalProperties));
@@ -71,28 +71,28 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveNamespaceRef::ContainerStyle* style)
+    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespaceRef::ContainerStyle style)
+    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveContainer::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveContainer::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -148,18 +148,18 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::Container> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::Container> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveCards::Container>& sharedModel) try
+    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
+        std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(container)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(container)));
 
         if (m_selectAction != nullptr)
         {
@@ -168,7 +168,7 @@ AdaptiveNamespaceStart
             container->SetSelectAction(sharedAction);
         }
 
-        container->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+        container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 

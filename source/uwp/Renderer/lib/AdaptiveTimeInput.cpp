@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
         return RuntimeClassInitialize(timeInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TimeInput>& sharedTimeInput) try
+    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedTimeInput) try
     {
         if (sharedTimeInput == nullptr)
         {
@@ -32,7 +32,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedTimeInput->GetValue(), m_value.GetAddressOf()));
 
         m_isRequired = sharedTimeInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedTimeInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedTimeInput->GetSpacing());
         m_separator = sharedTimeInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedTimeInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedTimeInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -109,14 +109,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveTimeInput::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveTimeInput::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -174,18 +174,18 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveTimeInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::TimeInput> sharedTimeInput = std::make_shared<AdaptiveCards::TimeInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TimeInput> sharedTimeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
         GetSharedModel(sharedTimeInput);
 
         return StringToJsonObject(sharedTimeInput->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveCards::TimeInput>& sharedModel) try
+    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(timeInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(timeInput)));
         timeInput->SetIsRequired(m_isRequired);
 
         std::string max;

@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveFontSizesConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveFontSizesConfig>
+            ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig>
     {
         AdaptiveRuntime(AdaptiveFontSizesConfig)
 

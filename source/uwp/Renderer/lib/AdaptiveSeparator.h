@@ -8,23 +8,23 @@ AdaptiveNamespaceStart
     class AdaptiveSeparator :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveSeparator>
+            ABI::AdaptiveNamespace::IAdaptiveSeparator>
     {
         AdaptiveRuntime(AdaptiveSeparator)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Separator>& sharedSeparator);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Separator>& sharedSeparator);
 
         // IAdaptiveSeparator
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveNamespaceRef::ForegroundColor* color);
-        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveNamespaceRef::ForegroundColor color);
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* color);
+        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveNamespace::ForegroundColor color);
 
-        IFACEMETHODIMP get_Thickness(_Out_ ABI::AdaptiveNamespaceRef::SeparatorThickness* thickness);
-        IFACEMETHODIMP put_Thickness(_In_ ABI::AdaptiveNamespaceRef::SeparatorThickness thickness);
+        IFACEMETHODIMP get_Thickness(_Out_ ABI::AdaptiveNamespace::SeparatorThickness* thickness);
+        IFACEMETHODIMP put_Thickness(_In_ ABI::AdaptiveNamespace::SeparatorThickness thickness);
 
     private:
-        std::shared_ptr<AdaptiveCards::Separator> m_sharedSeparator;
+        std::shared_ptr<AdaptiveSharedNamespace::Separator> m_sharedSeparator;
     };
 
     ActivatableClass(AdaptiveSeparator);

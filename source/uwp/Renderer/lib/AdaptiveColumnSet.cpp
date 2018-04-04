@@ -9,7 +9,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -22,12 +22,12 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> columnSet = std::make_shared<AdaptiveSharedNamespace::ColumnSet>();
         return RuntimeClassInitialize(columnSet);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ColumnSet>& sharedColumnSet)
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedColumnSet)
     {
         if (sharedColumnSet == nullptr)
         {
@@ -37,7 +37,7 @@ AdaptiveNamespaceStart
         GenerateColumnsProjection(sharedColumnSet->GetColumns(), m_columns.Get());
         GenerateActionProjection(sharedColumnSet->GetSelectAction(), &m_selectAction);
 
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedColumnSet->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedColumnSet->GetSpacing());
         m_separator = sharedColumnSet->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedColumnSet->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedColumnSet->GetAdditionalProperties(), &m_additionalProperties));
@@ -72,14 +72,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveColumnSet::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveColumnSet::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -135,18 +135,18 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveColumnSet::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::ColumnSet> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveCards::ColumnSet>& sharedModel) try
+    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
+        std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> columnSet = std::make_shared<AdaptiveSharedNamespace::ColumnSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(columnSet)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(columnSet)));
 
         if (m_selectAction != nullptr)
         {
@@ -158,7 +158,7 @@ AdaptiveNamespaceStart
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column)
         {
             std::shared_ptr<Column> sharedColumn = std::make_shared<Column>();
-            ComPtr<AdaptiveNamespaceRef::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveNamespaceRef::AdaptiveColumn>(column);
+            ComPtr<AdaptiveNamespace::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveNamespace::AdaptiveColumn>(column);
             RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumn));
 
             columnSet->GetColumns().push_back(sharedColumn);

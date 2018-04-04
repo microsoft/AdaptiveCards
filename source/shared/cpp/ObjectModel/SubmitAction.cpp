@@ -2,7 +2,7 @@
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit)
 {

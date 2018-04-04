@@ -2,7 +2,7 @@
 #include "HostConfig.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 HostConfig HostConfig::DeserializeFromString(const std::string jsonString)
 {

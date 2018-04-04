@@ -3,7 +3,7 @@
 #include "AdaptiveColorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
 AdaptiveNamespaceStart

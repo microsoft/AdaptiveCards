@@ -7,14 +7,14 @@ AdaptiveNamespaceStart
     class AdaptiveElementRendererRegistration :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveNamespaceRef::IAdaptiveElementRendererRegistration>,
+        Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration>,
         Microsoft::WRL::FtmBase>
     {
         AdaptiveRuntime(AdaptiveElementRendererRegistration)
 
         typedef std::unordered_map<
             std::string,
-            Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveElementRenderer>,
+            Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRenderer>,
             CaseInsensitiveHash,
             CaseInsensitiveEqualTo> RegistrationMap;
 
@@ -22,8 +22,8 @@ AdaptiveNamespaceStart
         AdaptiveElementRendererRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
 
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespaceRef::IAdaptiveElementRenderer* renderer);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveElementRenderer** result);
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveElementRenderer* renderer);
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementRenderer** result);
         IFACEMETHODIMP Remove(_In_ HSTRING type);
 
     private:

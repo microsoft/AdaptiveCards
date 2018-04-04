@@ -2,7 +2,7 @@
 #include "Image.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 Image::Image() :
     BaseCardElement(CardElementType::Image),

@@ -4,17 +4,17 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
+        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction = std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
         return RuntimeClassInitialize(showCardAction);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction)
+    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction)
     {
         if (sharedShowCardAction == nullptr)
         {
@@ -29,12 +29,12 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveNamespaceRef::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveNamespace::IAdaptiveCard** card)
     {
         return m_card.CopyTo(card);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveNamespaceRef::IAdaptiveCard* card)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveNamespace::IAdaptiveCard* card)
     {
         m_card = card;
         return S_OK;
@@ -53,9 +53,9 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveNamespaceRef::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespaceRef::ActionType::ShowCard;
+        *actionType = ABI::AdaptiveNamespace::ActionType::ShowCard;
         return S_OK;
     }
 
@@ -95,16 +95,16 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveShowCardAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::ShowCardAction> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::GetSharedModel(std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedModel)
+    HRESULT AdaptiveShowCardAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedModel)
     {
-        std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
+        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction = std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
 
         showCardAction->SetId(HStringToUTF8(m_id.Get()));
         showCardAction->SetTitle(HStringToUTF8(m_title.Get()));
@@ -113,9 +113,9 @@ AdaptiveNamespaceStart
         JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonValue);
         showCardAction->SetAdditionalProperties(jsonValue);
 
-        ComPtr<AdaptiveNamespaceRef::AdaptiveCard> card = PeekInnards<AdaptiveNamespaceRef::AdaptiveCard>(m_card);
+        ComPtr<AdaptiveNamespace::AdaptiveCard> card = PeekInnards<AdaptiveNamespace::AdaptiveCard>(m_card);
         
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedCard;
+        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedCard;
         RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
 
         showCardAction->SetCard(sharedCard);

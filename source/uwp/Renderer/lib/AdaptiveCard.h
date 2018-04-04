@@ -7,14 +7,14 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("6a88e6d4-373a-48ba-840e-16c4b39278b1") AdaptiveCard :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveCard,
+            ABI::AdaptiveNamespace::IAdaptiveCard,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveCard)
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedAdaptiveCard);
+        HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedAdaptiveCard);
 
         // IAdaptiveCard
         IFACEMETHODIMP get_Version(_Out_ HSTRING* version);
@@ -26,21 +26,21 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_BackgroundImage(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
-        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespaceRef::ContainerStyle* style);
-        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveNamespaceRef::ContainerStyle style);
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style);
+        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveNamespace::ContainerStyle style);
 
         IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
         IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
-        IFACEMETHODIMP get_Body(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveCardElement*>** body);
+        IFACEMETHODIMP get_Body(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>** body);
 
-        IFACEMETHODIMP get_Actions(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement*>** actions);
+        IFACEMETHODIMP get_Actions(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>** actions);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespaceRef::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel);
+        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel);
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -49,8 +49,8 @@ AdaptiveNamespaceStart
         }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveCardElement*>> m_body;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement*>> m_actions;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>> m_body;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>> m_actions;
 
         Microsoft::WRL::Wrappers::HString m_version;
         Microsoft::WRL::Wrappers::HString m_minVersion;
@@ -58,12 +58,12 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_speak;
 
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_backgroundImage;
-        ABI::AdaptiveNamespaceRef::ContainerStyle m_style;
+        ABI::AdaptiveNamespace::ContainerStyle m_style;
     };
 
     class AdaptiveCardStaticsImpl WrlFinal
         : public Microsoft::WRL::AgileActivationFactory<
-        ABI::AdaptiveNamespaceRef::IAdaptiveCardStatics>
+        ABI::AdaptiveNamespace::IAdaptiveCardStatics>
     {
         AdaptiveRuntimeStatic(AdaptiveCard)
 
@@ -76,30 +76,30 @@ AdaptiveNamespaceStart
         // IAdaptiveCardStatics
         IFACEMETHODIMP FromJson(
             _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
-            _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveCardParseResult** parseResult) noexcept;
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
         IFACEMETHODIMP FromJsonWithParserRegistration(
             _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
-            ABI::AdaptiveNamespaceRef::IAdaptiveElementParserRegistration* elementParserRegistration,
-            ABI::AdaptiveNamespaceRef::IAdaptiveActionParserRegistration* actionParserRegistration,
-            _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveCardParseResult** parseResult) noexcept;
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
         IFACEMETHODIMP FromJsonString(
             _In_ HSTRING adaptiveJson,
-            _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveCardParseResult** parseResult) noexcept;
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
         IFACEMETHODIMP FromJsonStringWithParserRegistration(
             _In_ HSTRING adaptiveJson,
-            ABI::AdaptiveNamespaceRef::IAdaptiveElementParserRegistration* elementParserRegistration,
-            ABI::AdaptiveNamespaceRef::IAdaptiveActionParserRegistration* actionParserRegistration,
-            _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveCardParseResult** parseResult) noexcept;
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
     private:
         HRESULT FromJsonString(
             _In_ const std::string jsonString,
-            ABI::AdaptiveNamespaceRef::IAdaptiveElementParserRegistration* elementParserRegistration,
-            ABI::AdaptiveNamespaceRef::IAdaptiveActionParserRegistration* actionParserRegistration,
-            _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveCardParseResult** parseResult);
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult);
     };
 
     ActivatableClassWithFactory(AdaptiveCard, AdaptiveCardStaticsImpl);

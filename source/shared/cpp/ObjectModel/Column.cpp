@@ -3,7 +3,7 @@
 #include "Column.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto")
 {

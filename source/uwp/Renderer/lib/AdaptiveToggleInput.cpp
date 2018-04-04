@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput = std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
         return RuntimeClassInitialize(toggleInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput) try
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput) try
     {
         if (sharedToggleInput == nullptr)
         {
@@ -32,7 +32,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetValueOff(), m_valueOff.GetAddressOf()));
 
         m_isRequired = sharedToggleInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedToggleInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedToggleInput->GetSpacing());
         m_separator = sharedToggleInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedToggleInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -107,14 +107,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveToggleInput::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveToggleInput::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -172,18 +172,18 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveToggleInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::ToggleInput> sharedToggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> sharedToggleInput = std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
         GetSharedModel(sharedToggleInput);
 
         return StringToJsonObject(sharedToggleInput->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ToggleInput>& sharedModel) try
+    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput = std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(toggleInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(toggleInput)));
         toggleInput->SetIsRequired(m_isRequired);
 
         std::string title;

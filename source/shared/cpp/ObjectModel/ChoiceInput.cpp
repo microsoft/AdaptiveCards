@@ -3,7 +3,7 @@
 #include "ParseUtil.h"
 #include "Enums.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 ChoiceInput::ChoiceInput()
 {

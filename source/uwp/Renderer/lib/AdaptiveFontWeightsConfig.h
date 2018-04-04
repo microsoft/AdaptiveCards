@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveFontWeightsConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveFontWeightsConfig>
+            ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig>
     {
         AdaptiveRuntime(AdaptiveFontWeightsConfig)
 

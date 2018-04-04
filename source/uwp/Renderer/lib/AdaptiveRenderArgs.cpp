@@ -4,7 +4,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
@@ -15,7 +15,7 @@ AdaptiveNamespaceStart
     }
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(
-        ABI::AdaptiveNamespaceRef::ContainerStyle containerStyle,
+        ABI::AdaptiveNamespace::ContainerStyle containerStyle,
         IInspectable* parentElement) noexcept try
     {
         m_containerStyle = containerStyle;
@@ -24,14 +24,14 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderArgs::get_ContainerStyle(ABI::AdaptiveNamespaceRef::ContainerStyle *value)
+    HRESULT AdaptiveRenderArgs::get_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle *value)
     {
         *value = m_containerStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveNamespaceRef::ContainerStyle value)
+    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle value)
     {
         m_containerStyle = value;
         return S_OK;

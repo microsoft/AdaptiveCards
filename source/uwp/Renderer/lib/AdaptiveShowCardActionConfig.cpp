@@ -3,7 +3,7 @@
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
 AdaptiveNamespaceStart
@@ -13,37 +13,37 @@ AdaptiveNamespaceStart
         return RuntimeClassInitialize(showCardActionConfig);
     } CATCH_RETURN;
 
-    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept
+    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveSharedNamespace::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {
-        m_actionMode = static_cast<ABI::AdaptiveNamespaceRef::ActionMode>(sharedShowCardActionConfig.actionMode);
-        m_containerStyle = static_cast<ABI::AdaptiveNamespaceRef::ContainerStyle>(sharedShowCardActionConfig.style);
+        m_actionMode = static_cast<ABI::AdaptiveNamespace::ActionMode>(sharedShowCardActionConfig.actionMode);
+        m_containerStyle = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedShowCardActionConfig.style);
         m_inlineTopMargin = sharedShowCardActionConfig.inlineTopMargin;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveNamespaceRef::ActionMode* value)
+    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveNamespace::ActionMode* value)
     {
         *value = m_actionMode;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveNamespaceRef::ActionMode value)
+    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveNamespace::ActionMode value)
     {
         m_actionMode = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveNamespaceRef::ContainerStyle* style)
+        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_containerStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveNamespaceRef::ContainerStyle style)
+        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_containerStyle = style;
         return S_OK;

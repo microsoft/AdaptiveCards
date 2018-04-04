@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -14,12 +14,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
         return RuntimeClassInitialize(textInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextInput>& sharedTextInput)
+    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextInput>& sharedTextInput)
     {
         if (sharedTextInput == nullptr)
         {
@@ -30,10 +30,10 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetValue(), m_value.GetAddressOf()));
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
-        m_textInputStyle = static_cast<ABI::AdaptiveNamespaceRef::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+        m_textInputStyle = static_cast<ABI::AdaptiveNamespace::TextInputStyle>(sharedTextInput->GetTextInputStyle());
 
         m_isRequired = sharedTextInput->GetIsRequired();
-        m_spacing = static_cast<ABI::AdaptiveNamespaceRef::Spacing>(sharedTextInput->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedTextInput->GetSpacing());
         m_separator = sharedTextInput->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedTextInput->GetAdditionalProperties(), &m_additionalProperties));
@@ -93,13 +93,13 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveNamespaceRef::TextInputStyle * textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveNamespace::TextInputStyle * textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespaceRef::TextInputStyle textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespace::TextInputStyle textInputStyle)
     {
         m_textInputStyle = textInputStyle;
         return S_OK;
@@ -125,14 +125,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveNamespaceRef::Spacing* spacing)
+    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveNamespaceRef::Spacing spacing)
+    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -190,23 +190,23 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveTextInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::TextInput> sharedTextInput = std::make_shared<AdaptiveCards::TextInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextInput> sharedTextInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
         GetSharedModel(sharedTextInput);
 
         return StringToJsonObject(sharedTextInput->Serialize(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveCards::TextInput>& sharedModel) try
+    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextInput>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveCards::BaseCardElement>(textInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(this, std::AdaptivePointerCast<AdaptiveSharedNamespace::BaseCardElement>(textInput)));
         textInput->SetIsRequired(m_isRequired);
         
         textInput->SetMaxLength(m_maxLength);
         textInput->SetIsMultiline(m_isMultiline);
-        textInput->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(m_textInputStyle));
+        textInput->SetTextInputStyle(static_cast<AdaptiveSharedNamespace::TextInputStyle>(m_textInputStyle));
 
         std::string placeholder;
         RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
