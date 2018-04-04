@@ -70,7 +70,7 @@ export class FactTextDefinition {
             color: Enums.TextColor[this.color],
             isSubtle: this.isSubtle,
             weight: Enums.TextWeight[this.weight],
-            warp: this.wrap
+            wrap: this.wrap
         }
     }
 }
