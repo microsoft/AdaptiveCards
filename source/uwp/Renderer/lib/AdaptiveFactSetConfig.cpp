@@ -3,7 +3,7 @@
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept try
@@ -22,26 +22,26 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveNamespaceRef::IAdaptiveTextConfig** titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveNamespace::IAdaptiveTextConfig** titleTextConfig)
     {
         return m_title.CopyTo(titleTextConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveNamespaceRef::IAdaptiveTextConfig* titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveNamespace::IAdaptiveTextConfig* titleTextConfig)
     {
         m_title = titleTextConfig;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveNamespaceRef::IAdaptiveTextConfig** valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveNamespace::IAdaptiveTextConfig** valueTextConfig)
     {
         return m_value.CopyTo(valueTextConfig);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveNamespaceRef::IAdaptiveTextConfig* valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveNamespace::IAdaptiveTextConfig* valueTextConfig)
     {
         m_value = valueTextConfig;
         return S_OK;

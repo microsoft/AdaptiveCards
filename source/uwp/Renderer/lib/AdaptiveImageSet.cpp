@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -34,7 +34,7 @@ AdaptiveNamespaceStart
 
         GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
 
-        m_imageSize = static_cast<ABI::AdaptiveNamespaceRef::ImageSize>(sharedImageSet->GetImageSize());
+        m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImageSet->GetImageSize());
         
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImageSet));
         return S_OK;
@@ -47,14 +47,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespaceRef::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK; 

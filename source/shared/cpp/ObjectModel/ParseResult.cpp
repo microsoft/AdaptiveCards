@@ -3,7 +3,7 @@
 #include "ParseResult.h"
 #include "SharedAdaptiveCard.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 ParseResult::ParseResult(
     std::shared_ptr<AdaptiveCard> adaptiveCard,

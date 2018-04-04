@@ -10,7 +10,7 @@
 #define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_Rendering_Uwp_##cls, BaseTrust)
 #define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.Rendering.Uwp." L#cls, BaseTrust)
 #define AdaptiveNamespaceStart namespace AdaptiveCards { namespace Rendering { namespace Uwp { 
-#define AdaptiveNamespaceRef AdaptiveCards::Rendering::Uwp
+#define AdaptiveNamespace AdaptiveCards::Rendering::Uwp
 #define AdaptiveNamespaceEnd }}}
 #define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_Rendering_Uwp
 #define AdaptivePointerCast dynamic_pointer_cast

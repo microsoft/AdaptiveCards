@@ -7,19 +7,19 @@ AdaptiveNamespaceStart
     class AdaptiveActionInvoker :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespaceRef::IAdaptiveActionInvoker>
+        ABI::AdaptiveNamespace::IAdaptiveActionInvoker>
     {
         AdaptiveRuntime(AdaptiveActionInvoker)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(AdaptiveNamespaceRef::RenderedAdaptiveCard* renderResult) noexcept;
+        HRESULT RuntimeClassInitialize(AdaptiveNamespace::RenderedAdaptiveCard* renderResult) noexcept;
 
-        IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveNamespaceRef::IAdaptiveActionElement* actionElement);
+        IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveNamespaceRef::RenderedAdaptiveCard> m_renderResult;
+        Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;
     };
 
     ActivatableClass(AdaptiveActionInvoker);

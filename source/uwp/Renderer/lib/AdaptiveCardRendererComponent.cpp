@@ -31,7 +31,7 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -104,8 +104,8 @@ AdaptiveNamespaceStart
         IAdaptiveCard* adaptiveCard,
         IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveNamespaceRef::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveNamespace::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::RenderedAdaptiveCard>(&renderedCard));
         renderedCard->SetOriginatingCard(adaptiveCard);
 
         if (adaptiveCard)
@@ -138,7 +138,7 @@ AdaptiveNamespaceStart
             catch (...)
             {
                 RETURN_IF_FAILED(renderContext->AddError(
-                    ABI::AdaptiveNamespaceRef::ErrorStatusCode::RenderFailed,
+                    ABI::AdaptiveNamespace::ErrorStatusCode::RenderFailed,
                     HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
                 renderedCard->SetFrameworkElement(nullptr);
             }
@@ -150,7 +150,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RenderCardAsXamlAsync(
         IAdaptiveCard* adaptiveCard,
-        IAsyncOperation<ABI::AdaptiveNamespaceRef::RenderedAdaptiveCard*>** result)
+        IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result)
     {
         *result = Make<RenderCardAsXamlAsyncOperation>(adaptiveCard, this).Detach();
         return S_OK;
@@ -161,8 +161,8 @@ AdaptiveNamespaceStart
         HSTRING adaptiveJson,
         IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveNamespaceRef::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveNamespace::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::RenderedAdaptiveCard>(&renderedCard));
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
@@ -203,7 +203,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::RenderAdaptiveJsonAsXamlAsync(
         HSTRING adaptiveJson,
-        IAsyncOperation<ABI::AdaptiveNamespaceRef::RenderedAdaptiveCard*>** result)
+        IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result)
     {
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
@@ -214,7 +214,7 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveNamespaceRef::IAdaptiveCardParseResult** parseResult)
+    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult)
     {
         ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));

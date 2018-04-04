@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveColumnRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespaceRef::IAdaptiveElementRenderer>
+        ABI::AdaptiveNamespace::IAdaptiveElementRenderer>
     {
         AdaptiveRuntime(AdaptiveColumnRenderer)
 
@@ -16,9 +16,9 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(
-            _In_ ABI::AdaptiveNamespaceRef::IAdaptiveCardElement* cardElement,
-            _In_ ABI::AdaptiveNamespaceRef::IAdaptiveRenderContext* renderContext,
-            _In_ ABI::AdaptiveNamespaceRef::IAdaptiveRenderArgs* renderArgs,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
     };
 

@@ -9,11 +9,11 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("2e716e94-a83a-4e9b-9873-bff858af068d") AdaptiveTextInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveTextInput,
-            ABI::AdaptiveNamespaceRef::IAdaptiveInputElement,
-            ABI::AdaptiveNamespaceRef::IAdaptiveCardElement,
+            ABI::AdaptiveNamespace::IAdaptiveTextInput,
+            ABI::AdaptiveNamespace::IAdaptiveInputElement,
+            ABI::AdaptiveNamespace::IAdaptiveCardElement,
             Microsoft::WRL::CloakedIid<ITypePeek>,
-            Microsoft::WRL::CloakedIid<AdaptiveNamespaceRef::AdaptiveInputElementBase>>
+            Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveInputElementBase>>
     {
         AdaptiveRuntime(AdaptiveTextInput)
 
@@ -34,18 +34,18 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_MaxLength(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxLength(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveNamespaceRef::TextInputStyle *textInputStyle);
-        IFACEMETHODIMP put_TextInputStyle(_In_ ABI::AdaptiveNamespaceRef::TextInputStyle textInputStyle);
+        IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveNamespace::TextInputStyle *textInputStyle);
+        IFACEMETHODIMP put_TextInputStyle(_In_ ABI::AdaptiveNamespace::TextInputStyle textInputStyle);
 
         // IAdaptiveInputElement
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired) { return AdaptiveInputElementBase::get_IsRequired(isRequired); }
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired) { return AdaptiveInputElementBase::put_IsRequired(isRequired); }
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespaceRef::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespaceRef::Spacing* spacing) { return AdaptiveCardElementBase::get_Spacing(spacing); }
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespaceRef::Spacing spacing) { return AdaptiveCardElementBase::put_Spacing(spacing); }
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing) { return AdaptiveCardElementBase::get_Spacing(spacing); }
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing) { return AdaptiveCardElementBase::put_Spacing(spacing); }
 
         IFACEMETHODIMP get_Separator(_Out_ boolean* separator) { return AdaptiveCardElementBase::get_Separator(separator); }
         IFACEMETHODIMP put_Separator(_In_ boolean separator) { return AdaptiveCardElementBase::put_Separator(separator); }
@@ -73,7 +73,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_value;
         UINT32 m_maxLength;
         boolean m_isMultiline;
-        ABI::AdaptiveNamespaceRef::TextInputStyle m_textInputStyle;
+        ABI::AdaptiveNamespace::TextInputStyle m_textInputStyle;
     };
 
     ActivatableClass(AdaptiveTextInput);

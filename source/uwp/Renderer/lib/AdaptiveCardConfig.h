@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveCardConfig :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespaceRef::IAdaptiveCardConfig>
+        ABI::AdaptiveNamespace::IAdaptiveCardConfig>
     {
         AdaptiveRuntime(AdaptiveCardConfig)
 

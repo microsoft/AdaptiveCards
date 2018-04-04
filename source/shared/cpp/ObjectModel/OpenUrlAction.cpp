@@ -2,7 +2,7 @@
 #include "OpenUrlAction.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 OpenUrlAction::OpenUrlAction() : BaseActionElement(ActionType::OpenUrl)
 {

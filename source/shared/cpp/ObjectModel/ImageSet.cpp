@@ -3,7 +3,7 @@
 #include "ParseUtil.h"
 #include "Image.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 ImageSet::ImageSet() : 
     BaseCardElement(CardElementType::ImageSet),

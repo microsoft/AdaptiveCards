@@ -7,7 +7,7 @@
 #include "DateTimePreparser.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 UnknownElement::UnknownElement() :
     BaseCardElement(CardElementType::Unknown)

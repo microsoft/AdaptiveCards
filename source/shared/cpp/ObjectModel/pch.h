@@ -6,7 +6,7 @@
 
 #ifndef AdaptiveSharedNamespaceStart
 #define AdaptiveSharedNamespaceStart namespace AdaptiveCards { 
-#define AdaptiveSharedNamespaceRef AdaptiveCards
+#define AdaptiveSharedNamespace AdaptiveCards
 #define AdaptiveSharedNamespaceEnd }
 #endif
 

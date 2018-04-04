@@ -37,7 +37,7 @@ using namespace ABI::Windows::UI;
 using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace AdaptiveNamespaceRef;
+using namespace AdaptiveNamespace;
 using namespace Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
@@ -98,56 +98,56 @@ std::shared_ptr<TSharedBaseType> GetSharedModel(TAdaptiveBaseType * item)
 }
 
 HRESULT GenerateSharedElements(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveCardElement*>* items,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* items,
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespaceRef::IAdaptiveCardElement>(items, [&](ABI::AdaptiveNamespaceRef::IAdaptiveCardElement* item)
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveCardElement>(items, [&](ABI::AdaptiveNamespace::IAdaptiveCardElement* item)
     {
-        ABI::AdaptiveNamespaceRef::ElementType elementType;
+        ABI::AdaptiveNamespace::ElementType elementType;
         RETURN_IF_FAILED(item->get_ElementType(&elementType));
 
         std::shared_ptr<AdaptiveCards::BaseCardElement> baseCardElement;
         switch (elementType)
         {
-            case ABI::AdaptiveNamespaceRef::ElementType::ChoiceSetInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveChoiceSetInput>(item);
+            case ABI::AdaptiveNamespace::ElementType::ChoiceSetInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveChoiceSetInput>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::ColumnSet:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveColumnSet>(item);
+            case ABI::AdaptiveNamespace::ElementType::ColumnSet:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveColumnSet>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::Container:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveContainer>(item);
+            case ABI::AdaptiveNamespace::ElementType::Container:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveContainer>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::DateInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveDateInput>(item);
+            case ABI::AdaptiveNamespace::ElementType::DateInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveDateInput>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::FactSet:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveFactSet>(item);
+            case ABI::AdaptiveNamespace::ElementType::FactSet:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveFactSet>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::Image:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveImage>(item);
+            case ABI::AdaptiveNamespace::ElementType::Image:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImage>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::ImageSet:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveImageSet>(item);
+            case ABI::AdaptiveNamespace::ElementType::ImageSet:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImageSet>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::NumberInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveNumberInput>(item);
+            case ABI::AdaptiveNamespace::ElementType::NumberInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveNumberInput>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::TextBlock:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveTextBlock>(item);
+            case ABI::AdaptiveNamespace::ElementType::TextBlock:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTextBlock>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::TextInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveTextInput>(item);
+            case ABI::AdaptiveNamespace::ElementType::TextInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTextInput>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::TimeInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveTimeInput>(item);
+            case ABI::AdaptiveNamespace::ElementType::TimeInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTimeInput>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::ToggleInput:
-                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveToggleInput>(item);
+            case ABI::AdaptiveNamespace::ElementType::ToggleInput:
+                baseCardElement = GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveToggleInput>(item);
                 break;
-            case ABI::AdaptiveNamespaceRef::ElementType::Custom:
+            case ABI::AdaptiveNamespace::ElementType::Custom:
                 baseCardElement = std::make_shared<CustomElementWrapper>(item);
                 break;
         }
@@ -165,24 +165,24 @@ HRESULT GenerateSharedElements(
 }
 
 HRESULT GenerateSharedAction(
-    ABI::AdaptiveNamespaceRef::IAdaptiveActionElement* action,
+    ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
     std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction)
 {
-    ABI::AdaptiveNamespaceRef::ActionType actionType;
+    ABI::AdaptiveNamespace::ActionType actionType;
     RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
     switch (actionType)
     {
-        case ABI::AdaptiveNamespaceRef::ActionType::OpenUrl:
-            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveNamespaceRef::IAdaptiveActionElement, AdaptiveNamespaceRef::AdaptiveOpenUrlAction>(action);
+        case ABI::AdaptiveNamespace::ActionType::OpenUrl:
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveOpenUrlAction>(action);
             break;
-        case ABI::AdaptiveNamespaceRef::ActionType::ShowCard:
-            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveNamespaceRef::IAdaptiveActionElement, AdaptiveNamespaceRef::AdaptiveShowCardAction>(action);
+        case ABI::AdaptiveNamespace::ActionType::ShowCard:
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveShowCardAction>(action);
             break;
-        case ABI::AdaptiveNamespaceRef::ActionType::Submit:
-            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveNamespaceRef::IAdaptiveActionElement, AdaptiveNamespaceRef::AdaptiveSubmitAction>(action);
+        case ABI::AdaptiveNamespace::ActionType::Submit:
+            sharedAction = GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveSubmitAction>(action);
             break;
-        case ABI::AdaptiveNamespaceRef::ActionType::Custom:
+        case ABI::AdaptiveNamespace::ActionType::Custom:
             sharedAction = std::make_shared<CustomActionWrapper>(action);
             break;
     }
@@ -191,12 +191,12 @@ HRESULT GenerateSharedAction(
 }
 
 HRESULT GenerateSharedActions(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement*>* actions,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* actions,
     std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements)
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement>(actions, [&](ABI::AdaptiveNamespaceRef::IAdaptiveActionElement* action)
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveActionElement>(actions, [&](ABI::AdaptiveNamespace::IAdaptiveActionElement* action)
     {
         std::shared_ptr<AdaptiveCards::BaseActionElement> baseActionElement;
         GenerateSharedAction(action, baseActionElement);
@@ -208,18 +208,18 @@ HRESULT GenerateSharedActions(
 }
 
 HRESULT GenerateSharedImages(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveImage*>* images,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>* images,
     std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements)
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespaceRef::IAdaptiveImage>(images, [&](ABI::AdaptiveNamespaceRef::IAdaptiveImage* image)
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveImage>(images, [&](ABI::AdaptiveNamespace::IAdaptiveImage* image)
     {
-        ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveImage> localImage = image;
-        ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveCardElement> imageAsElement;
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveImage> localImage = image;
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> imageAsElement;
         localImage.As(&imageAsElement);
 
-        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedImage = GetSharedModel<AdaptiveCards::BaseCardElement,ABI::AdaptiveNamespaceRef::IAdaptiveCardElement, AdaptiveNamespaceRef::AdaptiveImage>(imageAsElement.Get());
+        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedImage = GetSharedModel<AdaptiveCards::BaseCardElement,ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImage>(imageAsElement.Get());
         containedElements.push_back(std::AdaptivePointerCast<AdaptiveCards::Image>(sharedImage));
 
         return S_OK;
@@ -229,14 +229,14 @@ HRESULT GenerateSharedImages(
 }
 
 HRESULT GenerateSharedFacts(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveFact*>* facts,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveFact*>* facts,
     std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements)
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespaceRef::IAdaptiveFact>(facts, [&](ABI::AdaptiveNamespaceRef::IAdaptiveFact* fact)
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveFact>(facts, [&](ABI::AdaptiveNamespace::IAdaptiveFact* fact)
     {
-        ComPtr<AdaptiveNamespaceRef::AdaptiveFact> adaptiveElement = PeekInnards<AdaptiveNamespaceRef::AdaptiveFact>(fact);
+        ComPtr<AdaptiveNamespace::AdaptiveFact> adaptiveElement = PeekInnards<AdaptiveNamespace::AdaptiveFact>(fact);
         if (adaptiveElement == nullptr)
         {
             return E_INVALIDARG;
@@ -252,14 +252,14 @@ HRESULT GenerateSharedFacts(
 }
 
 HRESULT GenerateSharedChoices(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveChoiceInput*>* choices,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* choices,
     std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements)
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespaceRef::IAdaptiveChoiceInput>(choices, [&](ABI::AdaptiveNamespaceRef::IAdaptiveChoiceInput* choice)
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput>(choices, [&](ABI::AdaptiveNamespace::IAdaptiveChoiceInput* choice)
     {
-        ComPtr<AdaptiveNamespaceRef::AdaptiveChoiceInput> adaptiveElement = PeekInnards<AdaptiveNamespaceRef::AdaptiveChoiceInput>(choice);
+        ComPtr<AdaptiveNamespace::AdaptiveChoiceInput> adaptiveElement = PeekInnards<AdaptiveNamespace::AdaptiveChoiceInput>(choice);
         if (adaptiveElement == nullptr)
         {
             return E_INVALIDARG;
@@ -276,59 +276,59 @@ HRESULT GenerateSharedChoices(
 
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveCardElement> projectedContainedElement;
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> projectedContainedElement;
         switch(containedElement->GetElementType())
         {
         case CardElementType::TextBlock:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveTextBlock>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextBlock>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::TextBlock>(containedElement)));
             break;
         case CardElementType::Image:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveImage>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImage>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::Image>(containedElement)));
             break;
         case CardElementType::Container:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveContainer>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveContainer>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::Container>(containedElement)));
             break;
         case CardElementType::ColumnSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveColumnSet>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumnSet>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::ColumnSet>(containedElement)));
             break;
         case CardElementType::FactSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveFactSet>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveFactSet>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::FactSet>(containedElement)));
             break;
         case CardElementType::ImageSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveImageSet>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImageSet>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::ImageSet>(containedElement)));
             break;
         case CardElementType::ChoiceSetInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveChoiceSetInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveChoiceSetInput>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::ChoiceSetInput>(containedElement)));
             break;
         case CardElementType::DateInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveDateInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveDateInput>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::DateInput>(containedElement)));
             break;
         case CardElementType::NumberInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveNumberInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveNumberInput>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::NumberInput>(containedElement)));
             break;
         case CardElementType::TextInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveTextInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextInput>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::TextInput>(containedElement)));
             break;
         case CardElementType::TimeInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveTimeInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTimeInput>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::TimeInput>(containedElement)));
             break;
         case CardElementType::ToggleInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveToggleInput>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleInput>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveCards::ToggleInput>(containedElement)));
             break;
         case CardElementType::Custom:
@@ -346,11 +346,11 @@ HRESULT GenerateContainedElementsProjection(
 
 HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* projectedParentContainer) noexcept try
 {
     for (auto& containedAction : containedActions)
     {
-        ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement> projectedContainedAction;
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> projectedContainedAction;
         RETURN_IF_FAILED(GenerateActionProjection(containedAction, &projectedContainedAction));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedAction.Detach()));
@@ -360,7 +360,7 @@ HRESULT GenerateActionsProjection(
 
 HRESULT GenerateActionProjection(
     const std::shared_ptr<AdaptiveCards::BaseActionElement> action,
-    ABI::AdaptiveNamespaceRef::IAdaptiveActionElement** projectedAction) noexcept try
+    ABI::AdaptiveNamespace::IAdaptiveActionElement** projectedAction) noexcept try
 {
     if (action == nullptr)
     {
@@ -371,15 +371,15 @@ HRESULT GenerateActionProjection(
     switch (action->GetElementType())
     {
         case ActionType::OpenUrl:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveOpenUrlAction>(projectedAction,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveOpenUrlAction>(projectedAction,
                 std::AdaptivePointerCast<AdaptiveCards::OpenUrlAction>(action)));
             break;
         case ActionType::ShowCard:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveShowCardAction>(projectedAction,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveShowCardAction>(projectedAction,
                 std::AdaptivePointerCast<AdaptiveCards::ShowCardAction>(action)));
             break;
         case ActionType::Submit:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveSubmitAction>(projectedAction,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveSubmitAction>(projectedAction,
                 std::AdaptivePointerCast<AdaptiveCards::SubmitAction>(action)));
             break;
         case ActionType::Custom:
@@ -395,12 +395,12 @@ HRESULT GenerateActionProjection(
 
 HRESULT GenerateColumnsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveColumn*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveColumn*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveColumn> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveColumn>(&projectedContainedElement,
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveColumn> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumn>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::Column>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -410,12 +410,12 @@ HRESULT GenerateColumnsProjection(
 
 HRESULT GenerateFactsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveFact*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveFact*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveFact> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveFact>(&projectedContainedElement,
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveFact> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveFact>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::Fact>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -425,12 +425,12 @@ HRESULT GenerateFactsProjection(
 
 HRESULT GenerateImagesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveImage*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveImage> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveImage>(&projectedContainedElement,
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveImage> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImage>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::Image>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -440,12 +440,12 @@ HRESULT GenerateImagesProjection(
 
 HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespaceRef::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveChoiceInput> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveChoiceInput>(&projectedContainedElement,
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveChoiceInput> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveChoiceInput>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::ChoiceInput>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -455,24 +455,24 @@ HRESULT GenerateInputChoicesProjection(
 
 HRESULT GenerateSeparatorProjection(
     std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
-    ABI::AdaptiveNamespaceRef::IAdaptiveSeparator** projectedSeparator) noexcept try
+    ABI::AdaptiveNamespace::IAdaptiveSeparator** projectedSeparator) noexcept try
 {
     *projectedSeparator = nullptr;
     if (sharedSeparator != nullptr)
     {
-        return MakeAndInitialize<::AdaptiveNamespaceRef::AdaptiveSeparator>(projectedSeparator, sharedSeparator);
+        return MakeAndInitialize<::AdaptiveNamespace::AdaptiveSeparator>(projectedSeparator, sharedSeparator);
     }
     return S_OK;
 } CATCH_RETURN;
 
 HRESULT GenerateSharedSeparator(
-    ABI::AdaptiveNamespaceRef::IAdaptiveSeparator* separator,
+    ABI::AdaptiveNamespace::IAdaptiveSeparator* separator,
     std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut) noexcept try
 {
-    ABI::AdaptiveNamespaceRef::ForegroundColor color;
+    ABI::AdaptiveNamespace::ForegroundColor color;
     RETURN_IF_FAILED(separator->get_Color(&color));
 
-    ABI::AdaptiveNamespaceRef::SeparatorThickness thickness;
+    ABI::AdaptiveNamespace::SeparatorThickness thickness;
     RETURN_IF_FAILED(separator->get_Thickness(&thickness));
 
     auto sharedSeparator = std::make_shared<Separator>();
@@ -506,17 +506,17 @@ HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *col
 } CATCH_RETURN;
 
 HRESULT GetColorFromAdaptiveColor(
-    ABI::AdaptiveNamespaceRef::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveNamespaceRef::ForegroundColor adaptiveColor,
-    ABI::AdaptiveNamespaceRef::ContainerStyle containerStyle,
+    ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveNamespace::ForegroundColor adaptiveColor,
+    ABI::AdaptiveNamespace::ContainerStyle containerStyle,
     bool isSubtle,
     ABI::Windows::UI::Color * uiColor) noexcept try
 {
-    ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveContainerStylesDefinition> styles;
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> styles;
     RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&styles));
 
-    ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition> styleDefinition;
-    if (containerStyle == ABI::AdaptiveNamespaceRef::ContainerStyle_Default)
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> styleDefinition;
+    if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle_Default)
     {
         RETURN_IF_FAILED(styles->get_Default(&styleDefinition));
     }
@@ -525,31 +525,31 @@ HRESULT GetColorFromAdaptiveColor(
         RETURN_IF_FAILED(styles->get_Emphasis(&styleDefinition));
     }
 
-    ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveColorsConfig> colorsConfig;
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> colorsConfig;
     RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig)); 
 
-    ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveColorConfig> colorConfig;
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorConfig> colorConfig;
     switch (adaptiveColor)
     {
-    case ABI::AdaptiveNamespaceRef::ForegroundColor::Accent:
+    case ABI::AdaptiveNamespace::ForegroundColor::Accent:
         RETURN_IF_FAILED(colorsConfig->get_Accent(&colorConfig));
         break;
-    case ABI::AdaptiveNamespaceRef::ForegroundColor::Dark:
+    case ABI::AdaptiveNamespace::ForegroundColor::Dark:
         RETURN_IF_FAILED(colorsConfig->get_Dark(&colorConfig));
         break;
-    case ABI::AdaptiveNamespaceRef::ForegroundColor::Light:
+    case ABI::AdaptiveNamespace::ForegroundColor::Light:
         RETURN_IF_FAILED(colorsConfig->get_Light(&colorConfig));
         break;
-    case ABI::AdaptiveNamespaceRef::ForegroundColor::Good:
+    case ABI::AdaptiveNamespace::ForegroundColor::Good:
         RETURN_IF_FAILED(colorsConfig->get_Good(&colorConfig));
         break;
-    case ABI::AdaptiveNamespaceRef::ForegroundColor::Warning:
+    case ABI::AdaptiveNamespace::ForegroundColor::Warning:
         RETURN_IF_FAILED(colorsConfig->get_Warning(&colorConfig));
         break;
-    case ABI::AdaptiveNamespaceRef::ForegroundColor::Attention:
+    case ABI::AdaptiveNamespace::ForegroundColor::Attention:
         RETURN_IF_FAILED(colorsConfig->get_Attention(&colorConfig));
         break;
-    case ABI::AdaptiveNamespaceRef::ForegroundColor::Default:
+    case ABI::AdaptiveNamespace::ForegroundColor::Default:
     default:
         RETURN_IF_FAILED(colorsConfig->get_Default(&colorConfig));
         break;
@@ -561,34 +561,34 @@ HRESULT GetColorFromAdaptiveColor(
 } CATCH_RETURN;
 
 HRESULT GetSpacingSizeFromSpacing(
-    ABI::AdaptiveNamespaceRef::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveNamespaceRef::Spacing spacing,
+    ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveNamespace::Spacing spacing,
     UINT* spacingSize) noexcept try
 {
-    ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveSpacingConfig> spacingConfig;
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveSpacingConfig> spacingConfig;
     RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
 
     switch (spacing)
     {
-    case ABI::AdaptiveNamespaceRef::Spacing::None:
+    case ABI::AdaptiveNamespace::Spacing::None:
         *spacingSize = 0;
         break;
-    case ABI::AdaptiveNamespaceRef::Spacing::Small:
+    case ABI::AdaptiveNamespace::Spacing::Small:
         RETURN_IF_FAILED(spacingConfig->get_Small(spacingSize));
         break;
-    case ABI::AdaptiveNamespaceRef::Spacing::Medium:
+    case ABI::AdaptiveNamespace::Spacing::Medium:
         RETURN_IF_FAILED(spacingConfig->get_Medium(spacingSize));
         break;
-    case ABI::AdaptiveNamespaceRef::Spacing::Large:
+    case ABI::AdaptiveNamespace::Spacing::Large:
         RETURN_IF_FAILED(spacingConfig->get_Large(spacingSize));
         break;
-    case ABI::AdaptiveNamespaceRef::Spacing::ExtraLarge:
+    case ABI::AdaptiveNamespace::Spacing::ExtraLarge:
         RETURN_IF_FAILED(spacingConfig->get_ExtraLarge(spacingSize));
         break;
-    case ABI::AdaptiveNamespaceRef::Spacing::Padding:
+    case ABI::AdaptiveNamespace::Spacing::Padding:
         RETURN_IF_FAILED(spacingConfig->get_Padding(spacingSize));
         break;
-    case ABI::AdaptiveNamespaceRef::Spacing::Default:
+    case ABI::AdaptiveNamespace::Spacing::Default:
     default:
         RETURN_IF_FAILED(spacingConfig->get_Default(spacingSize));
         break;
@@ -598,15 +598,15 @@ HRESULT GetSpacingSizeFromSpacing(
 } CATCH_RETURN;
 
 HRESULT GetBackgroundColorFromStyle(
-    ABI::AdaptiveNamespaceRef::ContainerStyle style,
-    _In_ ABI::AdaptiveNamespaceRef::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveNamespace::ContainerStyle style,
+    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept try
 {
-    ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveContainerStylesDefinition> containerStyles;
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> containerStyles;
     RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
 
-    ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition> styleDefinition;
-    if (style == ABI::AdaptiveNamespaceRef::ContainerStyle::Default)
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> styleDefinition;
+    if (style == ABI::AdaptiveNamespace::ContainerStyle::Default)
     {
         RETURN_IF_FAILED(containerStyles->get_Default(&styleDefinition));
     }
@@ -719,13 +719,13 @@ HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject * jsonObject, 
     return S_OK;
 }
 
-HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespaceRef::ActionType projectedActionType, HSTRING* result)
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projectedActionType, HSTRING* result)
 {
     ActionType sharedActionType = static_cast<ActionType>(projectedActionType);
     return UTF8ToHString(ActionTypeToString(sharedActionType), result);
 }
 
-HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespaceRef::ElementType projectedElementType, HSTRING* result)
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projectedElementType, HSTRING* result)
 {
     CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);

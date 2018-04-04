@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveImageConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveImageConfig>
+            ABI::AdaptiveNamespace::IAdaptiveImageConfig>
     {
         AdaptiveRuntime(AdaptiveImageConfig)
 
@@ -16,11 +16,11 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ImageConfig ImageConfig) noexcept;
 
-        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveNamespaceRef::ImageSize* imageSize);
-        IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveNamespaceRef::ImageSize imageSize);
+        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize);
+        IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveNamespace::ImageSize imageSize);
 
     private:
-        ABI::AdaptiveNamespaceRef::ImageSize m_imageSize;
+        ABI::AdaptiveNamespace::ImageSize m_imageSize;
     };
 
     ActivatableClass(AdaptiveImageConfig);

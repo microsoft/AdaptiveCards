@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -30,10 +30,10 @@ AdaptiveNamespaceStart
         m_subtle = sharedTextBlock->GetIsSubtle();
         m_maxLines = sharedTextBlock->GetMaxLines();
 
-        m_textSize = static_cast<ABI::AdaptiveNamespaceRef::TextSize>(sharedTextBlock->GetTextSize());
-        m_textWeight = static_cast<ABI::AdaptiveNamespaceRef::TextWeight>(sharedTextBlock->GetTextWeight());
-        m_foregroundColor = static_cast<ABI::AdaptiveNamespaceRef::ForegroundColor>(sharedTextBlock->GetTextColor());
-        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespaceRef::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+        m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(sharedTextBlock->GetTextSize());
+        m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(sharedTextBlock->GetTextWeight());
+        m_foregroundColor = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(sharedTextBlock->GetTextColor());
+        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetText(), m_text.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetLanguage(), m_language.GetAddressOf()));
@@ -55,42 +55,42 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveNamespaceRef::TextSize* textSize)
+    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveNamespace::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveNamespaceRef::TextSize textSize)
+    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveNamespaceRef::TextWeight* textWeight)
+    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveNamespace::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveNamespaceRef::TextWeight textWeight)
+    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveNamespaceRef::ForegroundColor* foregroundColor)
+    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveNamespace::ForegroundColor* foregroundColor)
     {
         *foregroundColor = m_foregroundColor;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveNamespaceRef::ForegroundColor foregroundColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveNamespace::ForegroundColor foregroundColor)
     {
         m_foregroundColor = foregroundColor;
         return S_OK;
@@ -139,14 +139,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveNamespaceRef::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespaceRef::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;

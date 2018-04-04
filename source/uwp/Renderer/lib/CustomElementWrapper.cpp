@@ -2,7 +2,7 @@
 #include "CustomElementWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
 
@@ -20,7 +20,7 @@ AdaptiveNamespaceStart
 
     Spacing CustomElementWrapper::GetSpacing() const
     {
-        ABI::AdaptiveNamespaceRef::Spacing spacing;
+        ABI::AdaptiveNamespace::Spacing spacing;
         THROW_IF_FAILED(m_cardElement->get_Spacing(&spacing));
 
         return static_cast<Spacing> (spacing);
@@ -28,7 +28,7 @@ AdaptiveNamespaceStart
 
     void CustomElementWrapper::SetSpacing(const Spacing value)
     {
-        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveNamespaceRef::Spacing>(value)));
+        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveNamespace::Spacing>(value)));
     }
 
     std::string CustomElementWrapper::GetId() const
@@ -56,7 +56,7 @@ AdaptiveNamespaceStart
         return jsonCppValue;
     }
 
-    HRESULT CustomElementWrapper::GetWrappedElement(ABI::AdaptiveNamespaceRef::IAdaptiveCardElement** cardElement)
+    HRESULT CustomElementWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement)
     {
         return m_cardElement.CopyTo(cardElement);
     }

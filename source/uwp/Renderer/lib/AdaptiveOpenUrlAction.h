@@ -9,10 +9,10 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveOpenUrlAction,
-            ABI::AdaptiveNamespaceRef::IAdaptiveActionElement,
+            ABI::AdaptiveNamespace::IAdaptiveOpenUrlAction,
+            ABI::AdaptiveNamespace::IAdaptiveActionElement,
             Microsoft::WRL::CloakedIid<ITypePeek>,
-            Microsoft::WRL::CloakedIid<AdaptiveNamespaceRef::AdaptiveActionElementBase>>
+            Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveActionElementBase>>
     {
         AdaptiveRuntime(AdaptiveOpenUrlAction)
 
@@ -25,7 +25,7 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespaceRef::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value) { return AdaptiveActionElementBase::get_ActionTypeString(value); }
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title) { return AdaptiveActionElementBase::get_Title(title); }

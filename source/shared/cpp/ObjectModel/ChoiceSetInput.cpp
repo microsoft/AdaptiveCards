@@ -3,7 +3,7 @@
 #include "ChoiceSetInput.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetInput)
 {

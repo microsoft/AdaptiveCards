@@ -7,7 +7,7 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveNamespaceRef::IAdaptiveActionParserRegistration>,
+        Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration>,
         Microsoft::WRL::CloakedIid<ITypePeek>,
         Microsoft::WRL::FtmBase>
     {
@@ -15,7 +15,7 @@ AdaptiveNamespaceStart
 
         typedef std::unordered_map<
             std::string,
-            Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveActionParser>,
+            Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionParser>,
             CaseInsensitiveHash,
             CaseInsensitiveEqualTo> RegistrationMap;
 
@@ -25,8 +25,8 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveActionParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespaceRef::IAdaptiveActionParser* Parser);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveActionParser** result);
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveActionParser* Parser);
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParser** result);
         IFACEMETHODIMP Remove(_In_ HSTRING type);
 
         // ITypePeek method
@@ -47,7 +47,7 @@ AdaptiveNamespaceStart
     class SharedModelActionParser : public AdaptiveCards::ActionElementParser
     {
     public:
-        SharedModelActionParser(AdaptiveNamespaceRef::AdaptiveActionParserRegistration* parserRegistration) :
+        SharedModelActionParser(AdaptiveNamespace::AdaptiveActionParserRegistration* parserRegistration) :
             m_parserRegistration(parserRegistration)
         {}
 
@@ -58,6 +58,6 @@ AdaptiveNamespaceStart
             const Json::Value& value);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveNamespaceRef::AdaptiveActionParserRegistration> m_parserRegistration;
+        Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveActionParserRegistration> m_parserRegistration;
     };
 AdaptiveNamespaceEnd

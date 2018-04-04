@@ -3,7 +3,7 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
 AdaptiveNamespaceStart
@@ -27,9 +27,9 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveNamespaceRef::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespaceRef::ActionType::Submit;
+        *actionType = ABI::AdaptiveNamespace::ActionType::Submit;
         return S_OK;
     }
 

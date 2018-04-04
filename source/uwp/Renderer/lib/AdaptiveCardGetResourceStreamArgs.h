@@ -5,7 +5,7 @@ AdaptiveNamespaceStart
     class AdaptiveCardGetResourceStreamArgs :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveCardGetResourceStreamArgs>
+            ABI::AdaptiveNamespace::IAdaptiveCardGetResourceStreamArgs>
     {
         AdaptiveRuntime(AdaptiveCardGetResourceStreamArgs)
 

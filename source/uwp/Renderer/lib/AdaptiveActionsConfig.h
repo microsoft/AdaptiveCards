@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveActionsConfig :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespaceRef::IAdaptiveActionsConfig>
+        ABI::AdaptiveNamespace::IAdaptiveActionsConfig>
     {
         AdaptiveRuntime(AdaptiveActionsConfig)
 
@@ -16,14 +16,14 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(AdaptiveCards::ActionsConfig actionsConfig) noexcept;
 
-        IFACEMETHODIMP get_ShowCard(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveShowCardActionConfig** value);
-        IFACEMETHODIMP put_ShowCard(_In_ ABI::AdaptiveNamespaceRef::IAdaptiveShowCardActionConfig* value);
+        IFACEMETHODIMP get_ShowCard(_Out_ ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig** value);
+        IFACEMETHODIMP put_ShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig* value);
 
-        IFACEMETHODIMP get_ActionsOrientation(_Out_ ABI::AdaptiveNamespaceRef::ActionsOrientation* value);
-        IFACEMETHODIMP put_ActionsOrientation(_In_ ABI::AdaptiveNamespaceRef::ActionsOrientation value);
+        IFACEMETHODIMP get_ActionsOrientation(_Out_ ABI::AdaptiveNamespace::ActionsOrientation* value);
+        IFACEMETHODIMP put_ActionsOrientation(_In_ ABI::AdaptiveNamespace::ActionsOrientation value);
 
-        IFACEMETHODIMP get_ActionAlignment(_Out_ ABI::AdaptiveNamespaceRef::ActionAlignment* value);
-        IFACEMETHODIMP put_ActionAlignment(_In_ ABI::AdaptiveNamespaceRef::ActionAlignment value);
+        IFACEMETHODIMP get_ActionAlignment(_Out_ ABI::AdaptiveNamespace::ActionAlignment* value);
+        IFACEMETHODIMP put_ActionAlignment(_In_ ABI::AdaptiveNamespace::ActionAlignment value);
 
         IFACEMETHODIMP get_ButtonSpacing(_Out_ UINT32* value);
         IFACEMETHODIMP put_ButtonSpacing(_In_ UINT32 value);
@@ -31,21 +31,21 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_MaxActions(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxActions(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespaceRef::Spacing* value);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespaceRef::Spacing value);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* value);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing value);
 
-        IFACEMETHODIMP get_IconPlacement(_Out_ ABI::AdaptiveNamespaceRef::IconPlacement* value);
-        IFACEMETHODIMP put_IconPlacement(_In_ ABI::AdaptiveNamespaceRef::IconPlacement value);
+        IFACEMETHODIMP get_IconPlacement(_Out_ ABI::AdaptiveNamespace::IconPlacement* value);
+        IFACEMETHODIMP put_IconPlacement(_In_ ABI::AdaptiveNamespace::IconPlacement value);
 
     private:
-        ABI::AdaptiveNamespaceRef::ActionAlignment m_actionAlignment;
-        ABI::AdaptiveNamespaceRef::ActionsOrientation m_actionsOrientation;
+        ABI::AdaptiveNamespace::ActionAlignment m_actionAlignment;
+        ABI::AdaptiveNamespace::ActionsOrientation m_actionsOrientation;
         UINT m_buttonSpacing;
         UINT m_maxActions;
-        ABI::AdaptiveNamespaceRef::Spacing m_spacing;
-        ABI::AdaptiveNamespaceRef::IconPlacement m_iconPlacement;
+        ABI::AdaptiveNamespace::Spacing m_spacing;
+        ABI::AdaptiveNamespace::IconPlacement m_iconPlacement;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveShowCardActionConfig> m_showCardActionConfig;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig> m_showCardActionConfig;
     };
 
     ActivatableClass(AdaptiveActionsConfig);

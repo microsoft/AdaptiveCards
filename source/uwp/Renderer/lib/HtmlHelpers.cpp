@@ -4,10 +4,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
-using namespace AdaptiveNamespaceRef;
+using namespace AdaptiveNamespace;
 
 HRESULT GetTextFromXmlNode(
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,

@@ -9,7 +9,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -82,7 +82,7 @@ AdaptiveNamespaceStart
 
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column)
         {
-            ComPtr<AdaptiveNamespaceRef::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveNamespaceRef::AdaptiveColumn>(column);
+            ComPtr<AdaptiveNamespace::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveNamespace::AdaptiveColumn>(column);
 
             std::shared_ptr<BaseCardElement> sharedColumnBaseElement;
             RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumnBaseElement));

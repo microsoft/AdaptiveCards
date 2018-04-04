@@ -4,7 +4,7 @@
 #include <windows.ui.xaml.shapes.h>
 
 AdaptiveNamespaceStart
-    class WholeItemsPanel : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveNamespaceRef::IWholeItemsPanel,
+    class WholeItemsPanel : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveNamespace::IWholeItemsPanel,
         ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
         Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
     {

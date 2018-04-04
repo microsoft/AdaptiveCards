@@ -3,7 +3,7 @@
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept try
@@ -14,9 +14,9 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize(TextConfig textConfig) noexcept
     {
-        m_textWeight = static_cast<ABI::AdaptiveNamespaceRef::TextWeight>(textConfig.weight);
-        m_textSize = static_cast<ABI::AdaptiveNamespaceRef::TextSize>(textConfig.size);
-        m_textColor = static_cast<ABI::AdaptiveNamespaceRef::ForegroundColor>(textConfig.color);
+        m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(textConfig.weight);
+        m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(textConfig.size);
+        m_textColor = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(textConfig.color);
         m_isSubtle = textConfig.isSubtle;
         m_wrap = textConfig.wrap;
         m_maxWidth = textConfig.maxWidth;
@@ -25,42 +25,42 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::get_Size(ABI::AdaptiveNamespaceRef::TextSize* textSize)
+    HRESULT AdaptiveTextConfig::get_Size(ABI::AdaptiveNamespace::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::put_Size(ABI::AdaptiveNamespaceRef::TextSize textSize)
+    HRESULT AdaptiveTextConfig::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::get_Weight(ABI::AdaptiveNamespaceRef::TextWeight* textWeight)
+    HRESULT AdaptiveTextConfig::get_Weight(ABI::AdaptiveNamespace::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::put_Weight(ABI::AdaptiveNamespaceRef::TextWeight textWeight)
+    HRESULT AdaptiveTextConfig::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::get_Color(ABI::AdaptiveNamespaceRef::ForegroundColor* textColor)
+    HRESULT AdaptiveTextConfig::get_Color(ABI::AdaptiveNamespace::ForegroundColor* textColor)
     {
         *textColor = m_textColor;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveNamespaceRef::ForegroundColor textColor)
+    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveNamespace::ForegroundColor textColor)
     {
         m_textColor = textColor;
         return S_OK;

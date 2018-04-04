@@ -9,10 +9,10 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveShowCardAction,
-            ABI::AdaptiveNamespaceRef::IAdaptiveActionElement,
+            ABI::AdaptiveNamespace::IAdaptiveShowCardAction,
+            ABI::AdaptiveNamespace::IAdaptiveActionElement,
             Microsoft::WRL::CloakedIid<ITypePeek>,
-            Microsoft::WRL::CloakedIid<AdaptiveNamespaceRef::AdaptiveActionElementBase>>
+            Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveActionElementBase>>
     {
         AdaptiveRuntime(AdaptiveShowCardAction)
 
@@ -21,11 +21,11 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction);
 
         // IAdaptiveShowCardAction
-        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveCard** card);
-        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveCard* card);
+        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveNamespace::IAdaptiveCard** card);
+        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveNamespace::IAdaptiveCard* card);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespaceRef::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value) {return AdaptiveActionElementBase::get_ActionTypeString(value);}
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title) { return AdaptiveActionElementBase::get_Title(title); }
@@ -52,7 +52,7 @@ AdaptiveNamespaceStart
 
     private:
         
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveCard> m_card;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_card;
     };
 
     ActivatableClass(AdaptiveShowCardAction);

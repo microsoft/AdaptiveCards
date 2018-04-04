@@ -2,7 +2,7 @@
 #include "NumberInput.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 NumberInput::NumberInput() :
     BaseInputElement(CardElementType::NumberInput),

@@ -2,7 +2,7 @@
 #include "Separator.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 Separator::Separator()
 {

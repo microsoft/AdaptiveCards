@@ -8,8 +8,8 @@ AdaptiveNamespaceStart
     class AdaptiveFactSetRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespaceRef::IAdaptiveElementRenderer,
-        ABI::AdaptiveNamespaceRef::IAdaptiveElementParser>
+        ABI::AdaptiveNamespace::IAdaptiveElementRenderer,
+        ABI::AdaptiveNamespace::IAdaptiveElementParser>
     {
         AdaptiveRuntime(AdaptiveFactSetRenderer)
 
@@ -17,16 +17,16 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(
-            _In_ ABI::AdaptiveNamespaceRef::IAdaptiveCardElement* cardElement,
-            _In_ ABI::AdaptiveNamespaceRef::IAdaptiveRenderContext* renderContext,
-            _In_ ABI::AdaptiveNamespaceRef::IAdaptiveRenderArgs* renderArgs,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
 
         IFACEMETHODIMP FromJson(
             ABI::Windows::Data::Json::IJsonObject *,
-            ABI::AdaptiveNamespaceRef::IAdaptiveElementParserRegistration* elementParsers,
-            ABI::AdaptiveNamespaceRef::IAdaptiveActionParserRegistration* actionParsers,
-            ABI::AdaptiveNamespaceRef::IAdaptiveCardElement** element);
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParsers,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
+            ABI::AdaptiveNamespace::IAdaptiveCardElement** element);
     };
 
     ActivatableClass(AdaptiveFactSetRenderer);

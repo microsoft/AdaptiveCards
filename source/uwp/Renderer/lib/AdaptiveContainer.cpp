@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -34,7 +34,7 @@ AdaptiveNamespaceStart
 
         GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
         GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
-        m_style = static_cast<ABI::AdaptiveNamespaceRef::ContainerStyle>(sharedContainer->GetStyle());
+        m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
         
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
@@ -67,14 +67,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveNamespaceRef::ContainerStyle* style)
+    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespaceRef::ContainerStyle style)
+    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;

@@ -18,7 +18,7 @@
 #include <iostream>
 #include <codecvt>
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 DateTimePreparser::DateTimePreparser()
 {

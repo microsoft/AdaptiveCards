@@ -11,7 +11,7 @@ import "Windows.Data.Json.idl";
 
 #ifndef AdaptiveNamespaceStart
 #define AdaptiveNamespaceStart namespace AdaptiveCards { namespace Rendering { namespace Uwp {
-#define AdaptiveNamespaceRef AdaptiveCards::Rendering::Uwp
+#define AdaptiveNamespace AdaptiveCards::Rendering::Uwp
 #define AdaptiveNamespaceEnd }}}
 #endif
 

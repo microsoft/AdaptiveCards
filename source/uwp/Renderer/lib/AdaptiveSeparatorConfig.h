@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveSeparatorConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveSeparatorConfig>
+            ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig>
     {
         AdaptiveRuntime(AdaptiveSeparatorConfig)
 

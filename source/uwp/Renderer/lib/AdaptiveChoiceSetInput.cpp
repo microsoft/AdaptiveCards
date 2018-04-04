@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -35,7 +35,7 @@ AdaptiveNamespaceStart
         GenerateInputChoicesProjection(sharedChoiceSetInput->GetChoices(), m_choices.Get());
 
         m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
-        m_choiceSetStyle = static_cast<ABI::AdaptiveNamespaceRef::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
+        m_choiceSetStyle = static_cast<ABI::AdaptiveNamespace::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedChoiceSetInput));
@@ -57,14 +57,14 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveNamespaceRef::ChoiceSetStyle* choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveNamespaceRef::ChoiceSetStyle choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle)
     {
         m_choiceSetStyle = choiceSetStyle;
         return S_OK;

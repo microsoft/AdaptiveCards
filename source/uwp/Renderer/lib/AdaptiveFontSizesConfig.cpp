@@ -2,7 +2,7 @@
 #include "AdaptiveFontSizesConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize() noexcept try

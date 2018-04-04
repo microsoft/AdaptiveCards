@@ -9,7 +9,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
 AdaptiveNamespaceStart
@@ -31,10 +31,10 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveTextInputRenderer::FromJson(
         ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        ABI::AdaptiveNamespaceRef::IAdaptiveElementParserRegistration* elementParserRegistration,
-        ABI::AdaptiveNamespaceRef::IAdaptiveActionParserRegistration* actionParserRegistration,
-        ABI::AdaptiveNamespaceRef::IAdaptiveCardElement** element)
+        ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
     {
-        return AdaptiveNamespaceRef::FromJson<AdaptiveNamespaceRef::AdaptiveTextInput, AdaptiveCards::TextInput, AdaptiveCards::TextInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveTextInput, AdaptiveCards::TextInput, AdaptiveCards::TextInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
 AdaptiveNamespaceEnd

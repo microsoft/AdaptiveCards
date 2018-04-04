@@ -12,7 +12,7 @@
 #include "Vector.h"
 #include <windows.foundation.collections.h>
 
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -108,7 +108,7 @@ AdaptiveNamespaceStart
                 HString warningMessage;
                 RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
                             
-                ABI::AdaptiveNamespaceRef::WarningStatusCode statusCode = static_cast<ABI::AdaptiveNamespaceRef::WarningStatusCode>(sharedWarning->GetStatusCode());
+                ABI::AdaptiveNamespace::WarningStatusCode statusCode = static_cast<ABI::AdaptiveNamespace::WarningStatusCode>(sharedWarning->GetStatusCode());
 
                 ComPtr<IAdaptiveWarning> adaptiveWarning;
                 RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
@@ -123,7 +123,7 @@ AdaptiveNamespaceStart
             ComPtr<IVector<IAdaptiveError*>> errors;
             RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
             HString errorMessage;
-            ABI::AdaptiveNamespaceRef::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveNamespaceRef::ErrorStatusCode>(e.GetStatusCode());
+            ABI::AdaptiveNamespace::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveNamespace::ErrorStatusCode>(e.GetStatusCode());
             RETURN_IF_FAILED(UTF8ToHString(e.GetReason(), errorMessage.GetAddressOf()));
             ComPtr<IAdaptiveError> adaptiveError;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
@@ -160,7 +160,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
 
-        m_style = static_cast<ABI::AdaptiveNamespaceRef::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+        m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
 
         ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
         RETURN_IF_FAILED(GetActivationFactory(
@@ -233,14 +233,14 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveNamespaceRef::ContainerStyle* style)
+    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveNamespaceRef::ContainerStyle style)
+    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;

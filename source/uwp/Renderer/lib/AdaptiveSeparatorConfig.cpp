@@ -2,7 +2,7 @@
 #include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 
 AdaptiveNamespaceStart
     HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize() noexcept try

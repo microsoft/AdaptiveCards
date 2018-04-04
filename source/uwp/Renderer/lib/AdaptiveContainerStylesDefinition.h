@@ -8,7 +8,7 @@ AdaptiveNamespaceStart
     class AdaptiveContainerStylesDefinition :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveContainerStylesDefinition>
+            ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition>
     {
         AdaptiveRuntime(AdaptiveContainerStylesDefinition)
 
@@ -16,15 +16,15 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ContainerStylesDefinition stylesDefinition) noexcept;
 
-        IFACEMETHODIMP get_Default(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Default(_In_ ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition* value);
+        IFACEMETHODIMP get_Default(_Out_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** value);
+        IFACEMETHODIMP put_Default(_In_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition* value);
 
-        IFACEMETHODIMP get_Emphasis(_Out_ ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Emphasis(_In_ ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition* value);
+        IFACEMETHODIMP get_Emphasis(_Out_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** value);
+        IFACEMETHODIMP put_Emphasis(_In_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition* value);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition> m_default;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveContainerStyleDefinition> m_emphasis;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> m_default;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> m_emphasis;
     };
 
     ActivatableClass(AdaptiveContainerStylesDefinition);

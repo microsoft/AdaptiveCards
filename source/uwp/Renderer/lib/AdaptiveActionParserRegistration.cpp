@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
 AdaptiveNamespaceStart
@@ -90,10 +90,10 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        MakeAndInitialize<AdaptiveNamespaceRef::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        MakeAndInitialize<AdaptiveNamespaceRef::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
 
         ComPtr<IAdaptiveActionElement> actionElement;
         THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), &actionElement));

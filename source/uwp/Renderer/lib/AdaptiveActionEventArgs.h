@@ -5,20 +5,20 @@ AdaptiveNamespaceStart
     class AdaptiveActionEventArgs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-        ABI::AdaptiveNamespaceRef::IAdaptiveActionEventArgs>
+        ABI::AdaptiveNamespace::IAdaptiveActionEventArgs>
     {
         AdaptiveRuntime(AdaptiveActionEventArgs)
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespaceRef::IAdaptiveActionElement* action, _In_ ABI::AdaptiveNamespaceRef::IAdaptiveInputs* inputs);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action, _In_ ABI::AdaptiveNamespace::IAdaptiveInputs* inputs);
 
         // IAdaptiveActionEventArgs
-        IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveActionElement** action);
-        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::AdaptiveNamespaceRef::IAdaptiveInputs** inputs);
+        IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
+        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputs** inputs);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement> m_action;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveInputs> m_inputs;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_action;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputs> m_inputs;
     };
 AdaptiveNamespaceEnd

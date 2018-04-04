@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -30,7 +30,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetValue(), m_value.GetAddressOf()));
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
-        m_textInputStyle = static_cast<ABI::AdaptiveNamespaceRef::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+        m_textInputStyle = static_cast<ABI::AdaptiveNamespace::TextInputStyle>(sharedTextInput->GetTextInputStyle());
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedTextInput));
 
@@ -89,13 +89,13 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveNamespaceRef::TextInputStyle * textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveNamespace::TextInputStyle * textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespaceRef::TextInputStyle textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespace::TextInputStyle textInputStyle)
     {
         m_textInputStyle = textInputStyle;
         return S_OK;

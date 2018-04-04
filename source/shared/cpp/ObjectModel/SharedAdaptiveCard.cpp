@@ -6,7 +6,7 @@
 #include "TextBlock.h"
 #include "AdaptiveCardParseWarning.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 AdaptiveCard::AdaptiveCard()
 {

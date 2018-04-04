@@ -7,7 +7,7 @@ AdaptiveNamespaceStart
     class CustomActionWrapper : public AdaptiveCards::BaseActionElement
     {
     public:
-        CustomActionWrapper(ABI::AdaptiveNamespaceRef::IAdaptiveActionElement* actionElement) :
+        CustomActionWrapper(ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
             AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom),
             m_actionElement(actionElement)
         {}
@@ -20,9 +20,9 @@ AdaptiveNamespaceStart
 
         virtual Json::Value SerializeToJsonValue() override;
 
-        HRESULT GetWrappedElement(ABI::AdaptiveNamespaceRef::IAdaptiveActionElement** actionElement);
+        HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespaceRef::IAdaptiveActionElement> m_actionElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_actionElement;
     };
 AdaptiveNamespaceEnd

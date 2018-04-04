@@ -3,7 +3,7 @@
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespaceRef;
+using namespace AdaptiveSharedNamespace;
 
 BaseActionElement::BaseActionElement(ActionType type) :
     m_type(type), m_typeString(ActionTypeToString(type))

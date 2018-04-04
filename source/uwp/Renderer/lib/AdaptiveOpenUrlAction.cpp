@@ -4,7 +4,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespaceRef;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
 AdaptiveNamespaceStart
@@ -47,9 +47,9 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveNamespaceRef::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespaceRef::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveNamespace::ActionType::OpenUrl;
         return S_OK;
     }
 
