@@ -4,8 +4,7 @@
 #include <codecvt>
 #include <string>
 
-namespace AdaptiveCards
-{
+AdaptiveNamespaceStart
     class DateTimeParser
     {
     public:
@@ -15,4 +14,4 @@ namespace AdaptiveCards
     private:
         std::locale m_language;
     };
-}
+AdaptiveNamespaceEnd

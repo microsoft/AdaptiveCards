@@ -5,8 +5,7 @@
 #include "BaseActionElement.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class Column : public BaseCardElement
 {
 public:
@@ -45,8 +44,8 @@ private:
     void PopulateKnownPropertiesSet();
 
     std::string m_width;
-    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;
     ContainerStyle m_style;
 };
-}
+AdaptiveSharedNamespaceEnd

@@ -3,7 +3,7 @@
 #include "ParseResult.h"
 #include "SharedAdaptiveCard.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 ParseResult::ParseResult(
     std::shared_ptr<AdaptiveCard> adaptiveCard,
@@ -18,7 +18,7 @@ std::shared_ptr<AdaptiveCard> ParseResult::GetAdaptiveCard()
     return m_adaptiveCard;
 }
 
-std::vector<std::shared_ptr<AdaptiveCardParseWarning>> AdaptiveCards::ParseResult::GetWarnings()
+std::vector<std::shared_ptr<AdaptiveCardParseWarning>> ParseResult::GetWarnings()
 {
     return m_warnings;
 }

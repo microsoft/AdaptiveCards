@@ -5,7 +5,7 @@
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 BaseCardElement::BaseCardElement(
     CardElementType type,
@@ -32,7 +32,7 @@ void BaseCardElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator));
 }
 
-AdaptiveCards::BaseCardElement::~BaseCardElement()
+BaseCardElement::~BaseCardElement()
 {
 }
 
@@ -76,7 +76,7 @@ void BaseCardElement::SetId(const std::string value)
     m_id = value;
 }
 
-const CardElementType AdaptiveCards::BaseCardElement::GetElementType() const
+const CardElementType BaseCardElement::GetElementType() const
 {
     return m_type;
 }

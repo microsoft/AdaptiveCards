@@ -3,7 +3,7 @@
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 BaseActionElement::BaseActionElement(ActionType type) :
     m_type(type), m_typeString(ActionTypeToString(type))
@@ -11,7 +11,7 @@ BaseActionElement::BaseActionElement(ActionType type) :
     PopulateKnownPropertiesSet();
 }
 
-AdaptiveCards::BaseActionElement::~BaseActionElement()
+BaseActionElement::~BaseActionElement()
 {
 }
 
@@ -55,7 +55,7 @@ void BaseActionElement::SetIconUrl(const std::string& value)
     m_iconUrl = value;
 }
 
-const ActionType AdaptiveCards::BaseActionElement::GetElementType() const
+const ActionType BaseActionElement::GetElementType() const
 {
     return m_type;
 }

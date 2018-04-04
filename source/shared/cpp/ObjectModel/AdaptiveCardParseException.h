@@ -3,22 +3,21 @@
 #include "pch.h"
 #include "Enums.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 class AdaptiveCardParseException : public std::exception
 {
 public:
-    AdaptiveCardParseException(const AdaptiveCards::ErrorStatusCode statusCode, const std::string& message);
+    AdaptiveCardParseException(const AdaptiveSharedNamespace::ErrorStatusCode statusCode, const std::string& message);
     ~AdaptiveCardParseException();
 
     virtual const char* what() const throw();
-    const AdaptiveCards::ErrorStatusCode GetStatusCode() const;
+    const AdaptiveSharedNamespace::ErrorStatusCode GetStatusCode() const;
     const std::string& GetReason() const;
 
 private:
-    const AdaptiveCards::ErrorStatusCode m_statusCode;
+    const AdaptiveSharedNamespace::ErrorStatusCode m_statusCode;
     const std::string m_message;
 };
 
-}
+AdaptiveSharedNamespaceEnd

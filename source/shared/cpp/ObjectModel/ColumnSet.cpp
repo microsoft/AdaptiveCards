@@ -4,7 +4,7 @@
 #include "Image.h"
 #include "TextBlock.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 ColumnSet::ColumnSet() : BaseCardElement(CardElementType::ColumnSet)
 {

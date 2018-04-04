@@ -3,13 +3,12 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include <windows.ui.xaml.shapes.h>
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
-    class WholeItemsPanel : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::Uwp::IWholeItemsPanel,
+AdaptiveNamespaceStart
+    class WholeItemsPanel : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveNamespace::IWholeItemsPanel,
         ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
         Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
     {
-        InspectableClass(L"AdaptiveCards.Rendering.Uwp.WholeItemsPanel", BaseTrust)
+        AdaptiveRuntimeStringClass(WholeItemsPanel)
 
         public:
             HRESULT STDMETHODCALLTYPE RuntimeClassInitialize();
@@ -66,4 +65,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     ActivatableClass(WholeItemsPanel);
-}}}
+AdaptiveNamespaceEnd

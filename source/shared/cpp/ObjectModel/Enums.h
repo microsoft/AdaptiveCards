@@ -8,8 +8,7 @@
 #include <strings.h>
 #endif // _WIN32
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 struct EnumHash
 {
@@ -380,4 +379,4 @@ GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyT
     }
     return result;
 }
-}
+AdaptiveSharedNamespaceEnd

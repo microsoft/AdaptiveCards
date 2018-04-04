@@ -9,11 +9,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveImageSetRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -32,10 +31,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     HRESULT AdaptiveImageSetRenderer::FromJson(
         ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element)
+        ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
     {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveImageSet, AdaptiveCards::ImageSet, AdaptiveCards::ImageSetParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveImageSet, AdaptiveSharedNamespace::ImageSet, AdaptiveSharedNamespace::ImageSetParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
     }
-}}}
+AdaptiveNamespaceEnd

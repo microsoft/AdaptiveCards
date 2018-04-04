@@ -2,7 +2,7 @@
 #include "Image.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 Image::Image() :
     BaseCardElement(CardElementType::Image),
@@ -56,52 +56,52 @@ Json::Value Image::SerializeToJsonValue()
     return root;
 }
 
-std::string AdaptiveCards::Image::GetUrl() const
+std::string Image::GetUrl() const
 {
     return m_url;
 }
 
-void AdaptiveCards::Image::SetUrl(const std::string value)
+void Image::SetUrl(const std::string value)
 {
     m_url = value;
 }
 
-ImageStyle AdaptiveCards::Image::GetImageStyle() const
+ImageStyle Image::GetImageStyle() const
 {
     return m_imageStyle;
 }
 
-void AdaptiveCards::Image::SetImageStyle(const ImageStyle value)
+void Image::SetImageStyle(const ImageStyle value)
 {
     m_imageStyle = value;
 }
 
-ImageSize AdaptiveCards::Image::GetImageSize() const
+ImageSize Image::GetImageSize() const
 {
     return m_imageSize;
 }
 
-void AdaptiveCards::Image::SetImageSize(const ImageSize value)
+void Image::SetImageSize(const ImageSize value)
 {
     m_imageSize = value;
 }
 
-std::string AdaptiveCards::Image::GetAltText() const
+std::string Image::GetAltText() const
 {
     return m_altText;
 }
 
-void AdaptiveCards::Image::SetAltText(const std::string value)
+void Image::SetAltText(const std::string value)
 {
     m_altText = value;
 }
 
-HorizontalAlignment AdaptiveCards::Image::GetHorizontalAlignment() const
+HorizontalAlignment Image::GetHorizontalAlignment() const
 {
     return m_hAlignment;
 }
 
-void AdaptiveCards::Image::SetHorizontalAlignment(const HorizontalAlignment value)
+void Image::SetHorizontalAlignment(const HorizontalAlignment value)
 {
     m_hAlignment = value;
 }

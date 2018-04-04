@@ -3,7 +3,7 @@
 #include "Column.h"
 #include "Util.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto")
 {
@@ -40,12 +40,12 @@ void Column::SetWidth(const std::string value)
     m_width = ParseUtil::ToLowercase(value);
 }
 
-ContainerStyle AdaptiveCards::Column::GetStyle() const
+ContainerStyle Column::GetStyle() const
 {
     return m_style;
 }
 
-void AdaptiveCards::Column::SetStyle(const ContainerStyle value)
+void Column::SetStyle(const ContainerStyle value)
 {
     m_style = value;
 }
