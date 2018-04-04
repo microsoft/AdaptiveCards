@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DateTimePreparsedToken.h"
 
 using namespace AdaptiveCards;

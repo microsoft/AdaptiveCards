@@ -13,7 +13,6 @@ class UnknownElement: public BaseCardElement
 {
 public:
     UnknownElement();
-    UnknownElement(Json::Value const &paylaod);
         
     virtual Json::Value SerializeToJsonValue() override;
 };

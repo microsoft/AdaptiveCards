@@ -84,6 +84,14 @@ public class ActionsConfig {
     return Spacing.swigToEnum(AdaptiveCardObjectModelJNI.ActionsConfig_spacing_get(swigCPtr, this));
   }
 
+  public void setIconPlacement(IconPlacement value) {
+    AdaptiveCardObjectModelJNI.ActionsConfig_iconPlacement_set(swigCPtr, this, value.swigValue());
+  }
+
+  public IconPlacement getIconPlacement() {
+    return IconPlacement.swigToEnum(AdaptiveCardObjectModelJNI.ActionsConfig_iconPlacement_get(swigCPtr, this));
+  }
+
   public static ActionsConfig Deserialize(JsonValue json, ActionsConfig defaultValue) {
     return new ActionsConfig(AdaptiveCardObjectModelJNI.ActionsConfig_Deserialize(JsonValue.getCPtr(json), json, ActionsConfig.getCPtr(defaultValue), defaultValue), true);
   }

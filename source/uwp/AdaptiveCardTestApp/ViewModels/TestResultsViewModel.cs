@@ -12,6 +12,7 @@ namespace AdaptiveCardTestApp.ViewModels
         public TestResultsCategoryViewModel Passed { get; }
         public TestResultsCategoryViewModel Failed { get; }
         public TestResultsCategoryViewModel FailedButSourceWasChanged { get; }
+        public TestResultsCategoryViewModel PassedButSourceWasChanged { get; }
         public TestResultsCategoryViewModel New { get; }
 
         public TestResultsViewModel(IEnumerable<TestResultViewModel> results)
@@ -19,6 +20,7 @@ namespace AdaptiveCardTestApp.ViewModels
             Passed = new TestResultsCategoryViewModel("Passed", results.Where(i => i.Status == TestStatus.Passed));
             Failed = new TestResultsCategoryViewModel("Failed", results.Where(i => i.Status == TestStatus.Failed));
             FailedButSourceWasChanged = new TestResultsCategoryViewModel("Failed/source changed", results.Where(i => i.Status == TestStatus.FailedButSourceWasChanged));
+            PassedButSourceWasChanged = new TestResultsCategoryViewModel("Passed/source changed", results.Where(i => i.Status == TestStatus.PassedButSourceWasChanged));
             New = new TestResultsCategoryViewModel("New", results.Where(i => i.Status == TestStatus.New));
 
             foreach (var r in results)
@@ -36,6 +38,7 @@ namespace AdaptiveCardTestApp.ViewModels
                 Passed.Results.Remove(item);
                 Failed.Results.Remove(item);
                 FailedButSourceWasChanged.Results.Remove(item);
+                PassedButSourceWasChanged.Results.Remove(item);
                 New.Results.Remove(item);
 
                 switch (item.Status)

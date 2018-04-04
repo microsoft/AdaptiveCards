@@ -185,15 +185,23 @@ public class AdaptiveCardRenderer
 
         CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, style);
 
-        // Actions are optional
-        BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
-        if (baseActionElementList != null && baseActionElementList.size() > 0)
+        if (hostConfig.getSupportsInteractivity())
         {
-            LinearLayout showCardsLayout = new LinearLayout(context);
-            showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            rootLayout.addView(showCardsLayout);
-            
-            renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+            // Actions are optional
+            BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
+            if (baseActionElementList != null && baseActionElementList.size() > 0)
+            {
+                LinearLayout showCardsLayout = new LinearLayout(context);
+                showCardsLayout.setBackgroundColor(Color.parseColor(color));
+                showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                rootLayout.addView(showCardsLayout);
+
+                renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+            }
+        }
+        else
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Interactivity is not allowed. Actions not rendered."));
         }
 
         String imageUrl = adaptiveCard.GetBackgroundImage();
@@ -239,10 +247,17 @@ public class AdaptiveCardRenderer
             viewGroup.addView(actionButtonsLayout);
         }
 
-        for (int i = 0; i < size && i < hostConfig.getActions().getMaxActions(); i++)
+        int i = 0;
+        long maxActions = hostConfig.getActions().getMaxActions();
+        for (; i < size && i < maxActions; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
             ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
+        }
+
+        if (i >= maxActions && size != maxActions)
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
         }
     }
 

@@ -28,7 +28,7 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-            rootViewController:(UIViewController *)vc
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -39,7 +39,7 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig];
     [ACRRenderer render:column
-     rootViewController:vc
+               rootView:rootView
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
@@ -48,7 +48,7 @@
 
     [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [column setClipsToBounds:TRUE];
-    if(columnElem->GetWidth() == "stretch")
+    if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "")
     {
         [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     }
@@ -59,7 +59,7 @@
     // instantiate and add tap gesture recognizer
     UILongPressGestureRecognizer * gestureRecognizer =
         [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
-                                                         rootViewController:vc
+                                                                   rootView:rootView
                                                                  targetView:column
                                                               actionElement:selectAction
                                                                      inputs:inputs

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -45,6 +46,12 @@ public class NumberInputRenderer extends TextInputRenderer
             HostConfig hostConfig,
             ContainerStyle containerStyle)
     {
+        if (!hostConfig.getSupportsInteractivity())
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.Number is not allowed"));
+            return null;
+        }
+
         NumberInput numberInput = null;
         if (baseCardElement instanceof NumberInput)
         {

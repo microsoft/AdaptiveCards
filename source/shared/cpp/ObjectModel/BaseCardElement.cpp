@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "BaseCardElement.h"
 #include "ShowCardAction.h"
 #include "OpenUrlAction.h"

@@ -28,7 +28,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         void BuildXamlTreeFromAdaptiveCard(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
+            _Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
             _In_ AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer,
             _In_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
             boolean isOuterCard = true,
@@ -42,68 +42,68 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
 
         static void BuildTextBlock(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBlockControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBlockControl);
         static void BuildContainer(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
         static void BuildColumn(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnControl);
         static void BuildColumnSet(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnSetControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnSetControl);
         static void BuildFactSet(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** factSetControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** factSetControl);
         static void BuildImageSet(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageSetControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageSetControl);
         static void BuildChoiceSetInput(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
         static void BuildDateInput(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** dateInputControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** dateInputControl);
         static void BuildNumberInput(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** numberInputControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** numberInputControl);
         static void BuildTextInput(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textInputControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** textInputControl);
         static void BuildTimeInput(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** timeInputControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** timeInputControl);
         static void BuildToggleInput(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
         template<typename T>
         static HRESULT TryGetResourceFromResourceDictionaries(
             _In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
@@ -132,7 +132,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** childElementContainer);
+            _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** outerElementContainer,
+            _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
+
         void ApplyBackgroundToRoot(
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
             _In_ ABI::Windows::Foundation::IUriRuntimeClass* uri,
@@ -155,12 +157,22 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
             _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
             ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
+
+        void ArrangeButtonContent(
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionsConfig* actionsConfig,
+            _In_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+             ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+            _Inout_ ABI::Windows::UI::Xaml::Controls::IButton* button);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* children,
             _In_ AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
+            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
             _In_ bool insertSeparator,
-            _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext);
+            _Inout_ AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext* renderContext,
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle);
 
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
             _Inout_  ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
@@ -200,12 +212,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         static void BuildCompactChoiceSetInput(
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSetControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSetControl);
         static void BuildExpandedChoiceSetInput(
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceInputSet,
             boolean isMultiSelect,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
         static bool SupportsInteractivity(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig);
 
         static void WrapInTouchTarget(
@@ -214,7 +226,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
             _Inout_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
             bool fullWidth,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
         void static HandleSelectAction(
             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* adaptiveCardElement,
@@ -223,7 +235,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement,
             bool supportsInteractivity,
             bool fullWidthTouchTarget,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** outUiElement);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** outUiElement);
 
         static void WireButtonClickToAction(
             _In_ ABI::Windows::UI::Xaml::Controls::IButton* button,
@@ -236,6 +248,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
             _In_ IInspectable* parentElement,
             _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource);
+
+        static HRESULT SetImageSizeAsTextBlockSize(
+            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
+            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
 
     };
 }}}

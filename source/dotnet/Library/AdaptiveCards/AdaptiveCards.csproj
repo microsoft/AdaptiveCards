@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.5.2;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net4.5.2;netstandard1.3;netstandard2.0</TargetFrameworks>
     <Authors>AdaptiveCards</Authors>
     <Summary>Adaptive Card object model for .NET</Summary>
     <Description>This library implements classes for building and serializing adaptive card objects</Description>
@@ -11,6 +11,8 @@
     <PackageIconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</PackageLicenseUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
   </PropertyGroup>
 
   <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output --> 

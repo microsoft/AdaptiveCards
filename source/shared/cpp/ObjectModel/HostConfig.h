@@ -166,6 +166,7 @@ struct ActionsConfig
     unsigned int buttonSpacing = 10;
     unsigned int maxActions = 5;
     Spacing spacing = Spacing::Default;
+    IconPlacement iconPlacement = IconPlacement::AboveTitle;
 
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
 };

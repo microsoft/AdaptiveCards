@@ -15,7 +15,7 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIViewController *)vc
+- (UIButton* )renderButton:(ACRView *)rootView
                     inputs:(NSMutableArray *)inputs
                  superview:(UIView *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
@@ -23,7 +23,7 @@
 {
     ACRActionOpenURLRenderer *defaultRenderer = [ACRActionOpenURLRenderer getInstance];
 
-    UIButton *button = [defaultRenderer renderButton:vc
+    UIButton *button = [defaultRenderer renderButton:rootView
                                                 inputs:inputs
                                              superview:superview
                                      baseActionElement:acoElem

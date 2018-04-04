@@ -65,7 +65,7 @@ namespace AdaptiveCards.Rendering
             SHORT
         }
 
-        public static string JoinString(IList<string> choices, string sep, string last)
+        public static string JoinString(List<string> choices, string sep, string last)
         {
             if (choices == null || choices.Count == 0)
                 return "";

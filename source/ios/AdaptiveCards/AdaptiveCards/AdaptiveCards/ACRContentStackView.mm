@@ -117,8 +117,8 @@ using namespace AdaptiveCards;
     }
     [self addSubview:self.stackView];
     [self applyPadding:0 priority:1000];
-    self.stackView.translatesAutoresizingMaskIntoConstraints = false;
-    self.translatesAutoresizingMaskIntoConstraints = false;
+    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.translatesAutoresizingMaskIntoConstraints = NO;
 
     _targets = [[NSMutableArray alloc] init];
 }

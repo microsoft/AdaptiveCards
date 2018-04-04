@@ -1,3 +1,4 @@
+#include "pch.h"
 #include <iomanip>
 #include <regex>
 #include <iostream>
@@ -9,12 +10,6 @@
 using namespace AdaptiveCards;
 
 UnknownElement::UnknownElement() :
-    BaseCardElement(CardElementType::Unknown)
-{
-}
-
-UnknownElement::UnknownElement(
-    Json::Value const &paylaod) :
     BaseCardElement(CardElementType::Unknown)
 {
 }

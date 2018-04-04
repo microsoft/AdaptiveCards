@@ -52,6 +52,10 @@ namespace AdaptiveCardTestApp.Views
                             ButtonSaveAsExpected.Content = "Accept new version";
                             break;
 
+                        case TestStatus.PassedButSourceWasChanged:
+                            ButtonSaveAsExpected.Content = "Accept new source";
+                            break;
+
                         case TestStatus.Passed:
                             ButtonSaveAsExpected.Content = "Set as expected";
                             break;

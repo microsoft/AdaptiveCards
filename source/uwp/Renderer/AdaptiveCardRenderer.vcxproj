@@ -65,7 +65,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>
@@ -114,9 +114,11 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
+    <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnSetRenderer.h" />
@@ -139,6 +141,7 @@
     <ClInclude Include="lib\AdaptiveImageRenderer.h" />
     <ClInclude Include="lib\AdaptiveImageSetRenderer.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
+    <ClInclude Include="lib\AdaptiveInputElement.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
     <ClInclude Include="lib\AdaptiveNumberInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
@@ -196,9 +199,14 @@
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClCompile Include="lib\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="lib\AdaptiveActionElement.cpp" />
     <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveActionParserRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveCardElement.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveColumnRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveColumnSetRenderer.cpp" />
@@ -221,6 +229,7 @@
     <ClCompile Include="lib\AdaptiveImageRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveImageSetRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputElement.cpp" />
     <ClCompile Include="lib\AdaptiveInputs.cpp" />
     <ClCompile Include="lib\AdaptiveNumberInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveRenderArgs.cpp" />

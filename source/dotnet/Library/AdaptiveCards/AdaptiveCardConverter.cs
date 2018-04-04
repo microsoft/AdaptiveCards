@@ -8,7 +8,7 @@ namespace AdaptiveCards
 {
     public class AdaptiveCardConverter : JsonConverter, ILogWarnings
     {
-        public IList<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
+        public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
