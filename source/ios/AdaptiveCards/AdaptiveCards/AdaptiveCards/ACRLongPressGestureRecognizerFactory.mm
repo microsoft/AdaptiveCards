@@ -21,7 +21,7 @@ using namespace AdaptiveCards;
 // and instantiate a tap gesture reconginizer with target, and return it
 // when failed, nil is returned
 + (UILongPressGestureRecognizer *)getLongPressGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
-                                             rootViewController:(UIViewController *)vc
+                                             rootView:(ACRView *)rootView
                                                      targetView:(UIView *)view
                                                   actionElement:(std::shared_ptr<BaseActionElement> const &)action
                                                          inputs:(NSMutableArray *)inputs
@@ -39,7 +39,7 @@ using namespace AdaptiveCards;
             case ActionType::Submit:
             case ActionType::OpenUrl:
             {
-                target = [[ACRAggregateTarget alloc] initWithActionElement:actionElement rootViewController:(ACRViewController *)vc];
+                target = [[ACRAggregateTarget alloc] initWithActionElement:actionElement rootView:rootView];
                 break;
             }
             // instantiates a target that handles ShowCard action
@@ -47,7 +47,7 @@ using namespace AdaptiveCards;
             {
                 std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
                 // instantiate a ShowCardTarget
-                target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:showCardAction->GetCard() config:config superview:viewGroup vc:vc];
+                target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:showCardAction->GetCard() config:config superview:viewGroup rootView:rootView];
                 break;
             }
             // everything else is not valid request

@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #if defined(__ANDROID__) || (__APPLE__) || (__linux__)
 #define LOCALTIME(X,Y) (nullptr == localtime_r(Y, X))
 #else
@@ -6,7 +8,6 @@
 
 #include "DateTimePreparsedToken.h"
 
-#include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
 #include <time.h>

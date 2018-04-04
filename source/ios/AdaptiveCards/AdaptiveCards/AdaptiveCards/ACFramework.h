@@ -13,7 +13,7 @@ FOUNDATION_EXPORT double AdaptiveCardsFrameworkVersionNumber;
 //! Project version string for AFramework.
 FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
-#import <AdaptiveCards/ACRViewController.h>
+#import <AdaptiveCards/ACRView.h>
 
 #import <AdaptiveCards/ACRActionDelegate.h>
 

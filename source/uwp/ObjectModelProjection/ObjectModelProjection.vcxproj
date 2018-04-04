@@ -27,6 +27,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.cpp" />
@@ -154,7 +157,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\shared\cpp\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

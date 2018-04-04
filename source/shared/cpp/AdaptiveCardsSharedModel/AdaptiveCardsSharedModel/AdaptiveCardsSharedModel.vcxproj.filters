@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\ObjectModel\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

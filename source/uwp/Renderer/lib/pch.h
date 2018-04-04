@@ -18,3 +18,5 @@
 
 #include "ErrorHandling.h"
 #include "Util.h"
+
+#include "AdaptiveCards.Rendering.Uwp.h"

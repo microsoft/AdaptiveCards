@@ -52,9 +52,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
             &uriActivationFactory));
 
-        HSTRING imageUri;
-        RETURN_IF_FAILED(UTF8ToHString(m_sharedOpenUrlAction->GetUrl(), &imageUri));
-        RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, url));
+        std::wstring imageUri = StringToWstring(m_sharedOpenUrlAction->GetUrl());
+        RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), url));
 
         return S_OK;
     }

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using AdaptiveCards;
 using AdaptiveCards.Rendering;

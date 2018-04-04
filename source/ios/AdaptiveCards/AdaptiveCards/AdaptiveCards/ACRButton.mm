@@ -8,7 +8,7 @@
 #import "ACRButton.h"
 
 @implementation UIButton(ACRButton)
-+ (UIButton* )acr_renderButton:(UIViewController *)vc
++ (UIButton* )acr_renderButton:(UIView *)view
                          title:(NSString *)title
                  andHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
 {

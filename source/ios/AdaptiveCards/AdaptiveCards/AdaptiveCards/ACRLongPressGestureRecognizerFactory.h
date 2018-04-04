@@ -5,6 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 #import "BaseActionElement.h"
+#import "ACRView.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ACRIContentHoldingView.h"
@@ -13,7 +14,7 @@
 /// instantiates a target for UITapGestureRecognizer object
 /// and instantiate a tap gesture reconginizer with target, and return it
 + (UILongPressGestureRecognizer *)getLongPressGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
-                                             rootViewController:(UIViewController *)vc
+                                             rootView:(ACRView *)rootView
                                                      targetView:(UIView *)view
                                                   actionElement:(std::shared_ptr<AdaptiveCards::BaseActionElement> const &)action
                                                          inputs:(NSMutableArray *)inputs

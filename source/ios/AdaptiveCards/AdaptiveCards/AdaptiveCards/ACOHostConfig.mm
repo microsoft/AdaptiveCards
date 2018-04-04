@@ -36,10 +36,10 @@ using namespace AdaptiveCards;
         if([UIFont.familyNames containsObject:requestedFontFamilyName]){
             _fontFamilyNames = @[requestedFontFamilyName];
         }
-        // if the requested font family name is not supported, use system font instead
-        if(!_fontFamilyNames){
-            _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
-        }
+    }
+    // if the requested font family name is not supported, use system font instead
+    if(self && !_fontFamilyNames){
+        _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
     }
     return self;
 }
@@ -193,7 +193,7 @@ using namespace AdaptiveCards;
 
 - (CGSize)getImageSize:(ImageSize)imageSize
 {
-    float sz = _config->imageSizes.smallSize;
+    float sz;
     switch (imageSize)
     {
         case ImageSize::Large:{
@@ -211,7 +211,7 @@ using namespace AdaptiveCards;
         }
 
         default:{
-            NSLog(@"unimplemented");
+            sz = _config->imageSizes.largeSize;
         }
     }
     CGSize cgSize = CGSizeMake(sz, sz);

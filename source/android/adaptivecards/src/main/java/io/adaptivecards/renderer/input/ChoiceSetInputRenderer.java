@@ -15,6 +15,7 @@ import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
@@ -156,6 +157,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             ContainerStyle containerStyle)
     {
+        if (!hostConfig.getSupportsInteractivity())
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.ChoiceSet is not allowed"));
+            return null;
+        }
+
         ChoiceSetInput choiceSetInput = null;
         if (baseCardElement instanceof ChoiceSetInput)
         {

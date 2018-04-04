@@ -1,6 +1,7 @@
 //
 //    Copyright (C) Microsoft.  All rights reserved.
 //
+#include "pch.h"
 #include <windows.h>
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>

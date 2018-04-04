@@ -196,9 +196,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             IJsonObject* adaptiveJson,
             IRenderedAdaptiveCard** result)
     {
-        HSTRING adaptiveJsonAsHstring;
-        RETURN_IF_FAILED(JsonObjectToHString(adaptiveJson, &adaptiveJsonAsHstring));
-        return RenderAdaptiveCardFromJsonString(adaptiveJsonAsHstring, result);
+        HString adaptiveJsonAsHstring;
+        RETURN_IF_FAILED(JsonObjectToHString(adaptiveJson, adaptiveJsonAsHstring.GetAddressOf()));
+        return RenderAdaptiveCardFromJsonString(adaptiveJsonAsHstring.Get(), result);
     }
 
     _Use_decl_annotations_
