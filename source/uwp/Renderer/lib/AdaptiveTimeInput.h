@@ -8,9 +8,9 @@ AdaptiveNamespaceStart
     class DECLSPEC_UUID("5d05c3fe-f808-4181-9f44-3a802b556a43")  AdaptiveTimeInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespaceRef::IAdaptiveTimeInput,
-            ABI::AdaptiveNamespaceRef::IAdaptiveInputElement,
-            ABI::AdaptiveNamespaceRef::IAdaptiveCardElement,
+            ABI::AdaptiveNamespace::IAdaptiveTimeInput,
+            ABI::AdaptiveNamespace::IAdaptiveInputElement,
+            ABI::AdaptiveNamespace::IAdaptiveCardElement,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveTimeInput)
