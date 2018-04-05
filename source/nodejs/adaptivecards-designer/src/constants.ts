@@ -1,3 +1,48 @@
+export const otherTestPayload: string = `{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.ShowCard",
+					"title": "Set due date",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "Input.Date",
+								"id": "dueDate",
+								"title": "Select due date"
+							},
+							{
+								"type": "Input.Text",
+								"id": "comment",
+								"isMultiline": true,
+								"placeholder": "Add a comment"
+							}
+						],
+						"actions": [
+							{
+								"type": "Action.OpenUrl",
+								"title": "OK",
+								"url": "http://adaptivecards.io"
+							}
+						]
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"title": "View",
+					"url": "http://adaptivecards.io"
+				}
+			]					
+		}
+	]
+}`;
+
 export const defaultPayload: string = `{
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",

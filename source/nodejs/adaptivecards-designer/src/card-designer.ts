@@ -352,6 +352,10 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     remove(onlyFromCard: boolean = false): boolean {
+        while (this._children.length > 0) {
+            this._children[0].remove(onlyFromCard);
+        }
+
         var result = this.internalRemove();
 
         if (result && !onlyFromCard) {
@@ -736,6 +740,10 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
     protected isDraggable(): boolean {
         return false;
+    }
+
+    protected internalRemove(): boolean {
+        return true;
     }
 
     protected internalAddCommands(commands: Array<IPeerCommand>) {
@@ -1238,11 +1246,10 @@ export class CardDesigner {
     static readonly actionPeerRegistry: ActionPeerRegistry = new ActionPeerRegistry();
 
     private _card: Adaptive.AdaptiveCard;
-    private _expandedInlineCards: Array<Adaptive.AdaptiveCard> = [];
+    private _allPeers: Array<DesignerPeer> = [];
     private _rootPeer: DesignerPeer;
     private _cardHost: HTMLElement;
     private _designerSurface: HTMLDivElement;
-    private _allPeers: Array<DesignerPeer> = [];
     private _selectedPeer: DesignerPeer;
     private _draggedPeer: DesignerPeer;
     private _dropTarget: DesignerPeer;
@@ -1362,12 +1369,46 @@ export class CardDesigner {
         }
     }
 
+    private findCardElementPeer(cardElement: Adaptive.CardElement): CardElementPeer {
+        for (var i = 0; i < this._allPeers.length; i++) {
+            var peer = this._allPeers[i];
+
+            if (peer instanceof CardElementPeer && peer.cardElement == cardElement) {
+                return peer;
+            } 
+        }
+
+        return null;
+    }
+
+    private findActionPeer(action: Adaptive.Action): ActionPeer {
+        for (var i = 0; i < this._allPeers.length; i++) {
+            var peer = this._allPeers[i];
+
+            if (peer instanceof ActionPeer && peer.action == action) {
+                return peer;
+            } 
+        }
+
+        return null;
+    }
+
     private inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
         this.updateLayout();
 
-        if (isExpanded && this._expandedInlineCards.indexOf(action.card) < 0) {
-            this._rootPeer.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this._rootPeer, action.card));
-            this._expandedInlineCards.push(action.card);
+        var peer = this.findCardElementPeer(action.card);
+
+        if (isExpanded && !peer) {
+            peer = new AdaptiveCardPeer(action.card);
+            
+            var parentPeer = this.findActionPeer(action);
+
+            if (parentPeer) {
+                parentPeer.addChild(peer);
+            }
+            else {
+                this._rootPeer.addChild(peer);
+            }
         }
     }
 
