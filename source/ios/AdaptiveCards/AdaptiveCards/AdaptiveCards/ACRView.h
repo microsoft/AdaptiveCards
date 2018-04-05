@@ -31,6 +31,4 @@
 - (ACOAdaptiveCard *)card;
 
 - (UIView *)render;
-
-- (UIImage*) scaleImage:(UIImage*)image toSize:(CGSize)size;
 @end

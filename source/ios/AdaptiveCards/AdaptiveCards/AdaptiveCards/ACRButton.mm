@@ -48,26 +48,26 @@
         
         if(img){
             // Format the image so it fits in the button and is placed where it must be placed
+            CGSize contentSize = [button.titleLabel intrinsicContentSize];
             double imageHeight = contentSize.height;
             CGSize originalImageSize = [img size];
             double scaleRatio = imageHeight / originalImageSize.height;
             double imageWidth = scaleRatio * originalImageSize.width;
             
-            UIImage *scaledImage = [rootView scaleImage:img toSize:CGSizeMake(imageWidth, imageHeight)];
-            [button setImage:scaledImage forState:UIControlStateNormal];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
             
-            AdaptiveCards::IconPlacement iconPlacement = config->actions.iconPlacement;
+            IconPlacement iconPlacement = config->actions.iconPlacement;
             if( iconPlacement == AdaptiveCards::IconPlacement::AboveTitle ){
-                // Changes the insets for image, title and contents so the icon is rendered above the title
-                CGFloat totalHeight = (imageHeight + contentSize.height);
-                [button setImageEdgeInsets:UIEdgeInsetsMake(-(totalHeight - 2 * imageHeight), 0.0f, 0.0f, -contentSize.width)];
-                [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, -imageWidth, - (totalHeight - contentSize.height), 0.0f)];
+                [imageView setFrame:CGRectMake( (button.frame.size.width - imageWidth) / 2, 5, imageWidth, imageHeight)];
+                [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, 5, -imageHeight, 5)];
                 [button setContentEdgeInsets:UIEdgeInsetsMake(5, 5, 5 + imageHeight, 5)];
             } else {
-                // The icons are drawn to the left of the title by default, so we only set the padding to the right for the image
                 int iconPadding = config->spacing.defaultSpacing;
-                [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, iconPadding)];
+                [button setTitleEdgeInsets:UIEdgeInsetsMake(5, (iconPadding + imageWidth), 5, 0)];
+                double titleOriginX = button.titleLabel.frame.origin.x;
+                [imageView setFrame:CGRectMake( titleOriginX - (iconPadding + imageWidth) / 2, 5, imageWidth, imageHeight)];
             }
+            [button addSubview:imageView];
             
             // remove postfix added for imageMap access
             std::string id = action->GetId();

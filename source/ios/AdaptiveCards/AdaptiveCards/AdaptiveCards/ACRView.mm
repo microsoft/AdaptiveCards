@@ -419,21 +419,20 @@ using namespace AdaptiveCards;
                             double scaleRatio = imageHeight / originalImageSize.height;
                             double imageWidth = scaleRatio * originalImageSize.width;
                             
-                            UIImage *scaledImage = [self scaleImage:img toSize:CGSizeMake(imageWidth, imageHeight)];
-                            [button setImage:scaledImage forState:UIControlStateNormal];
-                            
+                            UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+                           
                             IconPlacement iconPlacement = [_hostConfig getHostConfig]->actions.iconPlacement;
                             if( iconPlacement == AdaptiveCards::IconPlacement::AboveTitle ){
-                                // Changes the insets for image, title and contents so the icon is rendered above the title
-                                CGFloat totalHeight = (imageHeight + contentSize.height);
-                                [button setImageEdgeInsets:UIEdgeInsetsMake(-(totalHeight - 2 * imageHeight), 0.0f, 0.0f, -contentSize.width)];
-                                [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, -imageWidth, - (totalHeight - contentSize.height), 0.0f)];
+                                [imageView setFrame:CGRectMake( (button.frame.size.width - imageWidth) / 2, 5, imageWidth, imageHeight)];
+                                [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, 5, -imageHeight, 5)];
                                 [button setContentEdgeInsets:UIEdgeInsetsMake(5, 5, 5 + imageHeight, 5)];
                             } else {
-                                // The icons are drawn to the left of the title by default, so we only set the padding to the right for the image
                                 int iconPadding = [_hostConfig getHostConfig]->spacing.defaultSpacing;
-                                [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, iconPadding)];
+                                [button setTitleEdgeInsets:UIEdgeInsetsMake(5, (iconPadding + imageWidth), 5, 0)];
+                                double titleOriginX = button.titleLabel.frame.origin.x;
+                                [imageView setFrame:CGRectMake( titleOriginX - (iconPadding + imageWidth) / 2, 5, imageWidth, imageHeight)];
                             }
+                            [button addSubview:imageView];
                             
                             // remove tag
                             std::string id = act->GetId();
@@ -493,16 +492,5 @@ using namespace AdaptiveCards;
 - (ACOAdaptiveCard *)card
 {
     return _adaptiveCard;
-}
-
-- (UIImage*)scaleImage:(UIImage *)image toSize:(CGSize)newSize {
-    //UIGraphicsBeginImageContext(newSize);
-    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
-    // Pass 1.0 to force exact pixel size.
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return scaledImage;
 }
 @end
