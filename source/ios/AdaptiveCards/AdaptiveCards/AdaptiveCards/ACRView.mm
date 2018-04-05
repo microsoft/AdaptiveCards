@@ -394,6 +394,7 @@ using namespace AdaptiveCards;
                 
                 // download image
                 UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
                 
                 // UITask can't be run on global queue, add task to main queue
                 dispatch_async(dispatch_get_main_queue(),
@@ -402,8 +403,8 @@ using namespace AdaptiveCards;
                         // syncronize access to image map
                         dispatch_sync(_serial_queue,
                             ^{
-                                if(!_actionsMap[key]) {// UIButton is not ready, cache UIImage
-                                    _actionsMap[key] = img;
+                                if(!_actionsMap[key]) {// UIButton is not ready, cache UIImageView
+                                    _actionsMap[key] = imageView;
                                 } else {// UIButton ready, get view
                                     button = _actionsMap[key];
                                 }
@@ -418,8 +419,6 @@ using namespace AdaptiveCards;
                             CGSize originalImageSize = [img size];
                             double scaleRatio = imageHeight / originalImageSize.height;
                             double imageWidth = scaleRatio * originalImageSize.width;
-                            
-                            UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
                            
                             IconPlacement iconPlacement = [_hostConfig getHostConfig]->actions.iconPlacement;
                             if( iconPlacement == AdaptiveCards::IconPlacement::AboveTitle ){

@@ -29,45 +29,42 @@
     [button setContentEdgeInsets:UIEdgeInsetsMake(5,5,5,5)];
     
     std::shared_ptr<AdaptiveCards::BaseActionElement> action = [acoAction element];
-    
     if( [iconUrl length] != 0 ){
         NSMutableDictionary *actionsViewMap = [rootView getActionsMap];
-        __block UIImage *img = nil;
+        __block UIImageView *imgView = nil;
         // Generate key for ImageViewMap
         NSString *key = [NSString stringWithCString:action->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
         // Syncronize access to imageViewMap
         dispatch_sync([rootView getSerialQueue], ^{
-            // if image is available, get it, otherwise cache UIButton, so it can be used once images are ready
-            if(actionsViewMap[key] && [actionsViewMap[key] isKindOfClass:[UIImage class]]) {
-                img = actionsViewMap[key];
+            // if imageView is available, get it, otherwise cache UIButton, so it can be used once images are ready
+            if(actionsViewMap[key] && [actionsViewMap[key] isKindOfClass:[UIImageView class]]) {
+                imgView = actionsViewMap[key];
             }
             else {
                 actionsViewMap[key] = button;
             }
         });
         
-        if(img){
+        if(imgView){
             // Format the image so it fits in the button and is placed where it must be placed
             CGSize contentSize = [button.titleLabel intrinsicContentSize];
             double imageHeight = contentSize.height;
-            CGSize originalImageSize = [img size];
+            CGSize originalImageSize = [imgView intrinsicContentSize];
             double scaleRatio = imageHeight / originalImageSize.height;
             double imageWidth = scaleRatio * originalImageSize.width;
             
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
-            
             IconPlacement iconPlacement = config->actions.iconPlacement;
             if( iconPlacement == AdaptiveCards::IconPlacement::AboveTitle ){
-                [imageView setFrame:CGRectMake( (button.frame.size.width - imageWidth) / 2, 5, imageWidth, imageHeight)];
+                [imgView setFrame:CGRectMake( (button.frame.size.width - imageWidth) / 2, 5, imageWidth, imageHeight)];
                 [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, 5, -imageHeight, 5)];
                 [button setContentEdgeInsets:UIEdgeInsetsMake(5, 5, 5 + imageHeight, 5)];
             } else {
                 int iconPadding = config->spacing.defaultSpacing;
                 [button setTitleEdgeInsets:UIEdgeInsetsMake(5, (iconPadding + imageWidth), 5, 0)];
                 double titleOriginX = button.titleLabel.frame.origin.x;
-                [imageView setFrame:CGRectMake( titleOriginX - (iconPadding + imageWidth) / 2, 5, imageWidth, imageHeight)];
+                [imgView setFrame:CGRectMake( titleOriginX - (iconPadding + imageWidth) / 2, 5, imageWidth, imageHeight)];
             }
-            [button addSubview:imageView];
+            [button addSubview:imgView];
             
             // remove postfix added for imageMap access
             std::string id = action->GetId();
