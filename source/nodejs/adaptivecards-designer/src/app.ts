@@ -157,6 +157,8 @@ class DesignerApp {
             }
         }
 
+        document.getElementById("btnUpdateLayout").onclick = (e) => { this._designer.updateLayout(); };
+
         window.addEventListener(
             'resize',
             () => {
@@ -220,6 +222,10 @@ window.onload = () => {
     Adaptive.AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new Adaptive.ActionSet(); });
     Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
     Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+
+    Adaptive.AdaptiveCard.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => {
+
+    }
 
     var card = new Adaptive.AdaptiveCard();
     card.designMode = true;

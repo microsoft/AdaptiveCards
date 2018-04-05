@@ -157,6 +157,12 @@ export abstract class DraggableElement {
         }
     }
 
+    protected doubleClick(e: MouseEvent) {
+        if (this.onDoubleClick) {
+            this.onDoubleClick(this);
+        }
+    }
+
     protected internalUpdateCssStyles() {
         // Do nothing in base implementation
     }
@@ -169,6 +175,7 @@ export abstract class DraggableElement {
 
     onStartDrag: (sender: DraggableElement) => void;
     onEndDrag: (sender: DraggableElement) => void;
+    onDoubleClick: (sender: DraggableElement) => void;
 
     releasePointerCapture() {
         if (this._capturedPointerId) {
@@ -204,6 +211,7 @@ export abstract class DraggableElement {
         this._renderedElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
         this._renderedElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
         this._renderedElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
+        this._renderedElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
 
         this.updateLayout();
     }
@@ -432,6 +440,12 @@ export class ActionPeer extends DesignerPeer {
         }
     }
 
+    protected doubleClick(e: MouseEvent) {
+        super.doubleClick(e);
+
+        this.action.renderedElement.click();
+    }
+
     protected internalRemove(): boolean {
         return this.action.remove();
     }
@@ -461,6 +475,20 @@ export class ActionPeer extends DesignerPeer {
     get action(): Adaptive.Action {
         return this._action;
     }
+}
+
+export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends ActionPeer {
+    constructor(action: TAction) {
+        super(action);
+    }
+
+    get action(): TAction {
+        return <TAction>this._action;
+    }
+}
+
+export class ShowCardActionPeer extends TypedActionPeer<Adaptive.ShowCardAction> {
+
 }
 
 export class CardElementPeer extends DesignerPeer {
@@ -500,7 +528,7 @@ export class CardElementPeer extends DesignerPeer {
 
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
         var elementType = new Adaptive.TextBlock();
-        elementType.text = "Element type: **" + this.cardElement.getJsonTypeName() + "**";
+        elementType.text = "Element type: **" + this.cardElement.getJsonTypeName() + "** (peer type: " + (<any>this).constructor.name + ")";
 
         card.addItem(elementType);
 
@@ -1102,7 +1130,7 @@ interface IDesignerPeerRegistration<TSource, TPeer> {
 }
 
 export abstract class DesignerPeerRegistry<TSource, TPeer> {
-    private _items: Array<IDesignerPeerRegistration<TSource, TPeer>> = [];
+    protected _items: Array<IDesignerPeerRegistration<TSource, TPeer>> = [];
 
     protected findTypeRegistration(sourceType: TSource): IDesignerPeerRegistration<TSource, TPeer> {
         for (var i = 0; i < this._items.length; i++) {
@@ -1167,7 +1195,19 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
     }
 
     createPeerInstance(parent: DesignerPeer, cardElement: Adaptive.CardElement): CardElementPeer {
+        var registrationInfo: IDesignerPeerRegistration<CardElementType, CardElementPeerType> = undefined;
+
+        for (var i = 0; i < this._items.length; i++) {
+            if (cardElement instanceof this._items[i].sourceType) {
+                registrationInfo = this._items[i];
+
+                break;
+            }
+        }
+
+        /*
         var registrationInfo = this.findTypeRegistration((<any>cardElement).constructor);
+        */
 
         var peer = registrationInfo ? new registrationInfo.peerType(cardElement) : new CardElementPeer(cardElement);
         peer.parent = parent;
@@ -1198,6 +1238,7 @@ export class CardDesigner {
     static readonly actionPeerRegistry: ActionPeerRegistry = new ActionPeerRegistry();
 
     private _card: Adaptive.AdaptiveCard;
+    private _expandedInlineCards: Array<Adaptive.AdaptiveCard> = [];
     private _rootPeer: DesignerPeer;
     private _cardHost: HTMLElement;
     private _designerSurface: HTMLDivElement;
@@ -1318,6 +1359,15 @@ export class CardDesigner {
         
         if (this.onPointerUp) {
             this.onPointerUp(this);
+        }
+    }
+
+    private inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
+        this.updateLayout();
+
+        if (isExpanded && this._expandedInlineCards.indexOf(action.card) < 0) {
+            this._rootPeer.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this._rootPeer, action.card));
+            this._expandedInlineCards.push(action.card);
         }
     }
 
@@ -1453,13 +1503,21 @@ export class CardDesigner {
         return this._selectedPeer;
     }
 
-   get card(): Adaptive.AdaptiveCard {
+    get card(): Adaptive.AdaptiveCard {
         return this._card;
     }
 
     set card(value: Adaptive.AdaptiveCard) {
         if (value != this._card) {
+            if (this._card) {
+                this._card.onInlineCardExpanded = null;
+            }
+
             this._card = value;
+
+            if (this._card) {
+                this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
+            }
 
             this.render();
         }
