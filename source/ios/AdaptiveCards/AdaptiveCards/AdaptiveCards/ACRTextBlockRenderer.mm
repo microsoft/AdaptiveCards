@@ -39,7 +39,10 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
-    ACRUILabel *lab = [[ACRUILabel alloc] init];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    ACRUILabel *lab = //[[ACRUILabel alloc] init];
+        [bundle loadNibNamed:@"ACRLabelView" owner:rootView options:nil][0];
+
     lab.style = [viewGroup style];
     __block NSMutableAttributedString *content = nil;
     if(rootView){
@@ -56,8 +59,7 @@
         });
     }
 
-    if(content)
-    {
+    if(content){
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;

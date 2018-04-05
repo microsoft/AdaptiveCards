@@ -12,6 +12,15 @@ using namespace AdaptiveCards;
 
 @implementation ACRInputTableView
 
+-(instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if(self){
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return self;
+}
+
 - (instancetype)initWithSuperview:(UIView *)view
 {
     self = [super initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height) style:UITableViewStyleGrouped ];
@@ -26,7 +35,7 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    [self layoutIfNeeded];
+    //[self layoutIfNeeded];
     return self.contentSize;
 }
 

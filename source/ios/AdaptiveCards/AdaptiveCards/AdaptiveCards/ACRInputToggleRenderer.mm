@@ -37,8 +37,8 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
-
-    ACRInputTableView *inputView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    ACRInputTableView *inputView = [bundle loadNibNamed:@"ACRInputTableView" owner:rootView options:nil][0];//[[ACRInputTableView alloc] initWithSuperview:viewGroup];
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
     [inputs addObject:dataSource];
     inputView.dataSource = dataSource;
@@ -49,22 +49,20 @@
         [(UIStackView *)viewGroup addArrangedSubview:inputView];
     }
     [inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeLeading
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeLeading
-                                 multiplier:1.0
-                                   constant:0]];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeTrailing
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeTrailing
-                                 multiplier:1.0
-                                   constant:0]];
+    [NSLayoutConstraint constraintWithItem:inputView
+                                 attribute:NSLayoutAttributeLeading
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:viewGroup
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0
+                                  constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:inputView
+                                 attribute:NSLayoutAttributeTrailing
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:viewGroup
+                                 attribute:NSLayoutAttributeTrailing
+                                multiplier:1.0
+                                  constant:0].active = YES;
     return inputView;
 }
 

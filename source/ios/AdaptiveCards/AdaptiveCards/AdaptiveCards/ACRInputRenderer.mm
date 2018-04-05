@@ -34,7 +34,8 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
-    ACRTextField *txtInput = [[ACRTextField alloc] init];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    ACRTextField *txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];//[[ACRTextField alloc] init];
     NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
                                                 encoding:NSUTF8StringEncoding];
     txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
@@ -42,7 +43,7 @@
     txtInput.placeholder = placeHolderStr;
     txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
     txtInput.allowsEditingTextAttributes = YES;
-    txtInput.borderStyle = UITextBorderStyleLine;
+    //txtInput.borderStyle = UITextBorderStyleLine;
     txtInput.isRequired  = inputBlck->GetIsRequired();
     txtInput.delegate = txtInput;
 
