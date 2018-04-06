@@ -86,5 +86,10 @@ namespace AdaptiveCards
                 }
             }
         }
+
+        public override AdaptiveTypedElement GetElementById(string id)
+        {
+            return Id == id ? this : null;
+        }
     }
 }

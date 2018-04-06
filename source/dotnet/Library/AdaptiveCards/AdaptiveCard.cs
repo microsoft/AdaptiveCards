@@ -218,5 +218,20 @@ namespace AdaptiveCards
         {
             return false;
         }
+
+        public override AdaptiveTypedElement GetElementById(string id)
+        {
+            if (Id == id)
+                return this;
+
+            foreach (var element in Body)
+            {
+                var result = element.GetElementById(id);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
     }
 }

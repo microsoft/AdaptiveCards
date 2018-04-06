@@ -38,5 +38,20 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
+
+        public override AdaptiveTypedElement GetElementById(string id)
+        {
+            if (Id == id)
+                return this;
+
+            foreach (var column in Columns)
+            {
+                var result = column.GetElementById(id);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
     }
 }

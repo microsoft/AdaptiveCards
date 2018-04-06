@@ -60,5 +60,20 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveContainerStyle), "0")]
         public AdaptiveContainerStyle Style { get; set; }
+
+        public override AdaptiveTypedElement GetElementById(string id)
+        {
+            if (Id == id)
+                return this;
+
+            foreach (var element in Items)
+            {
+                var result = element.GetElementById(id);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
     }
 }

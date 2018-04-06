@@ -27,6 +27,10 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("ActionBase.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
-    }
 
+        public override AdaptiveTypedElement GetElementById(string id)
+        {
+            return Id == id ? this : null;
+        }
+    }
 }

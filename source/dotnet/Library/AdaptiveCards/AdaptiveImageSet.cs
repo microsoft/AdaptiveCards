@@ -39,5 +39,20 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveImageSize), "auto")]
         public AdaptiveImageSize ImageSize { get; set; }
+
+        public override AdaptiveTypedElement GetElementById(string id)
+        {
+            if (Id == id)
+                return this;
+
+            foreach (var image in Images)
+            {
+                var result = image.GetElementById(id);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
     }
 }
