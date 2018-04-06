@@ -70,10 +70,10 @@ Json::Value GetValue(
     std::string currentKey = key;
     while ((dotPosition != std::string::npos) && (dotPosition < openBracePosition))
     {
-        std::string beforeDotKey = key.substr(0, dotPosition);
-        std::string afterDotKey = key.substr(dotPosition + 1, key.length() - dotPosition);
+        std::string beforeDotKey = currentKey.substr(0, dotPosition);
+        std::string afterDotKey = currentKey.substr(dotPosition + 1, currentKey.length() - dotPosition);
         
-        currentSourceScope = sourceValue[beforeDotKey];
+        currentSourceScope = currentSourceScope[beforeDotKey];
         currentKey = afterDotKey;
         dotPosition = afterDotKey.find(dot, 0);
     }
@@ -133,9 +133,7 @@ Json::Value DataBindString(
         bracesEndPosition == frameString.length() - 1)
     {
         // If the entire string is a data binding element, return the result of GetValue, which may be of any type.
-        // If the result is empty, just return the frame as is.
-        Json::Value result = GetValue(key, sourceCard);
-        return result.empty() ? frame : result;
+        return GetValue(key, sourceCard);
     }
     else if (!key.empty())
     {
@@ -178,8 +176,7 @@ Json::Value DataBindString(
 
 Json::Value DataBindArray(
     const Json::Value& sourceCard,
-    const Json::Value& frame
-)
+    const Json::Value& frame)
 {
     // Loop through the sub elements of the array and bind each one
     Json::Value result;
@@ -205,6 +202,35 @@ Json::Value DataBindObject(
     Json::Value result;
     for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
     {
+        std::string key = it.key().asCString();
+
+        size_t startPosition, endPosition;
+        std::string specialKey = GetKey(key, 0, "{{", "}}", &startPosition, &endPosition);
+        if ((!specialKey.empty()) && (specialKey[0] == '#'))
+        {
+            if (!specialKey.compare(0, 5, "#each"))
+            {
+                size_t arrayStart = specialKey.find_first_not_of(" ", 5);
+                std::string arrayName = specialKey.substr(arrayStart, specialKey.length() - arrayStart);
+
+                Json::Value eachArray = sourceCard[arrayName];
+                if (eachArray.isArray())
+                {
+                    for (Json::Value::const_iterator itArray = eachArray.begin(); itArray != eachArray.end(); itArray++)
+                    {
+                        result.append(DataBindObject(*itArray, *it));
+                    }
+
+                    return result;
+                }
+            }
+
+            else if (!specialKey.compare(0, 5, "#if"))
+            {
+            }
+        }
+
+
         Json::Value elementResult = DataBindJson(sourceCard, *it);
 
         if (elementResult.empty())
@@ -212,7 +238,6 @@ Json::Value DataBindObject(
             // If the result is empty, don't add it to the json
             continue;
         }
-        std::string key = it.key().asCString();
         result[key] = elementResult;
     }
 
