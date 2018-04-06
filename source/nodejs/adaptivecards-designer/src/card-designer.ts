@@ -1,7 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import { Spacing, PaddingDefinition } from "adaptivecards";
 
-const DRAG_THRESHOLD = 5;
+const DRAG_THRESHOLD = 10;
 
 interface ILabelAndInput<TInput extends Adaptive.Input> {
     label: Adaptive.TextBlock;
@@ -124,8 +124,8 @@ export abstract class DraggableElement {
     }
 
     protected startDrag() {
-        if (this.isDraggable() && !this._dragging) {
-            this._dragging = true;
+        if (this.isDraggable() && !this.dragging) {
+            this.dragging = true;
 
             if (this.onStartDrag) {
                 this.onStartDrag(this);
@@ -188,8 +188,8 @@ export abstract class DraggableElement {
     }
     
     endDrag() {
-        if (this._dragging) {
-            this._dragging = false;
+        if (this.dragging) {
+            this.dragging = false;
 
             if (this.onEndDrag) {
                 this.onEndDrag(this);
@@ -219,18 +219,69 @@ export abstract class DraggableElement {
     get renderedElement(): HTMLElement {
         return this._renderedElement;
     }
+
+    get dragging(): boolean {
+        return this._dragging;
+    }
+
+    set dragging(value: boolean) {
+        this._dragging = value;
+
+        this.internalUpdateCssStyles();
+    }
 }
 
-export interface IPeerCommand {
+class PeerCommand {
+    private _renderedElement: HTMLElement;
+
+    protected internalRender(): HTMLElement {
+        var buttonElement = document.createElement("button");
+        buttonElement.type = "button";
+        buttonElement.title = this.name;
+        buttonElement.classList.add("acd-peer-command");
+        buttonElement.onclick = (e: MouseEvent) => {
+            if (this.execute) {
+                this.execute();
+            }
+        }
+        buttonElement.onpointerdown = (e: PointerEvent) => { e.cancelBubble = true; };
+
+        var imageElement = document.createElement("img");
+        imageElement.src = this.iconUrl ? this.iconUrl : "./assets/default-peer-command-icon.png";
+        imageElement.style.width = "100%";
+        imageElement.style.height = "100%";
+        imageElement.style.padding = "4px";
+
+        buttonElement.appendChild(imageElement);
+
+        return buttonElement;
+    }
+
     name: string;
-    execute: () => void
+    iconUrl?: string;
+    execute: () => void;
+
+    constructor(init?: Partial<PeerCommand>) {
+        Object.assign(this, init);
+    }
+
+    render(): HTMLElement {
+        this._renderedElement = this.internalRender();
+
+        return this._renderedElement;
+    }
+
+    get renderedElement(): HTMLElement {
+        return this._renderedElement;
+    }
 }
 
 export abstract class DesignerPeer extends DraggableElement {
     private _children: Array<DesignerPeer> = [];
     private _isSelected: boolean;
+    private _commandHostElement: HTMLElement;
 
-    protected abstract getBadgeText(): string;
+    protected abstract getCardObjectTypeName(): string;
     protected abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard);
 
     protected pointerDown(e: PointerEvent) {
@@ -239,19 +290,44 @@ export abstract class DesignerPeer extends DraggableElement {
         this.isSelected = true;
     }
 
-    protected internalAddCommands(commands: Array<IPeerCommand>) {
-        commands.push(
-            {
-                name: "Remove",
-                execute: () => { this.remove(false, true) }
-            }
-        );
+    protected canBeRemoved(): boolean {
+        return true;
+    }
+
+    protected internalAddCommands(commands: Array<PeerCommand>) {
+        if (this.canBeRemoved()) {
+            commands.push(
+                new PeerCommand(
+                    {
+                        name: "Remove this " + this.getCardObjectTypeName(),
+                        iconUrl: "./assets/remove.png",
+                        execute: () => { this.remove(false, true) }
+                    })
+            );
+        }
     }
 
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
         element.classList.add("acd-peer");
         element.style.position = "absolute";
+        element.style.display = "flex";
+        element.style.flexDirection = "column";
+        element.style.alignItems = "flex-end";
+        element.style.justifyContent = "flex-end";
+
+        this._commandHostElement = document.createElement("div");
+        this._commandHostElement.style.position = "relative";
+        this._commandHostElement.style.display = "flex";
+        this._commandHostElement.style.transform = "translate(0, 100%)";
+
+        var commands = this.getCommands();
+
+        for (var i = commands.length - 1; i >= 0; i--) {
+            this._commandHostElement.appendChild(commands[i].render());
+        }
+
+        element.appendChild(this._commandHostElement);
 
         return element;
     }
@@ -262,6 +338,13 @@ export abstract class DesignerPeer extends DraggableElement {
         }
         else {
             this.renderedElement.classList.remove("selected");
+        }
+
+        if (this.dragging) {
+            this.renderedElement.classList.add("dragging");
+        }
+        else {
+            this.renderedElement.classList.remove("dragging");
         }
     }
 
@@ -291,8 +374,16 @@ export abstract class DesignerPeer extends DraggableElement {
 
             this.renderedElement.style.width = clientRect.width + "px";
             this.renderedElement.style.height = clientRect.height + "px";
-            this.renderedElement.style.left = clientRect.left + "px";;
-            this.renderedElement.style.top = clientRect.top + "px";;
+            this.renderedElement.style.left = clientRect.left + "px";
+            this.renderedElement.style.top = clientRect.top + "px";
+
+            if (this.isSelected && this._commandHostElement.children.length > 0) {
+                this._commandHostElement.style.visibility = "visible";
+                this._commandHostElement.style.zIndex = "1";
+            }
+            else {
+                this._commandHostElement.style.visibility = "hidden";
+            }
         }
     }
 
@@ -343,8 +434,8 @@ export abstract class DesignerPeer extends DraggableElement {
         return this._children[index];
     }
 
-    getCommands(): Array<IPeerCommand> {
-        var result: Array<IPeerCommand> = [];
+    getCommands(): Array<PeerCommand> {
+        var result: Array<PeerCommand> = [];
 
         this.internalAddCommands(result);
 
@@ -426,7 +517,7 @@ export abstract class DesignerPeer extends DraggableElement {
 export class ActionPeer extends DesignerPeer {
     protected _action: Adaptive.Action;
 
-    protected getBadgeText(): string {
+    protected getCardObjectTypeName(): string {
         return this.action.getJsonTypeName();
     }
 
@@ -500,7 +591,7 @@ export class ShowCardActionPeer extends TypedActionPeer<Adaptive.ShowCardAction>
 export class CardElementPeer extends DesignerPeer {
     protected _cardElement: Adaptive.CardElement;
 
-    protected getBadgeText(): string {
+    protected getCardObjectTypeName(): string {
         return this.cardElement.getJsonTypeName();
     }
 
@@ -516,7 +607,7 @@ export class CardElementPeer extends DesignerPeer {
 
     protected addPropertySheetEntries(card: Adaptive.AdaptiveCard) {
         var elementType = new Adaptive.TextBlock();
-        elementType.text = "Element type: **" + this.cardElement.getJsonTypeName() + "** (peer type: " + (<any>this).constructor.name + ")";
+        elementType.text = "Element type: **" + this.cardElement.getJsonTypeName() + "**";
 
         card.addItem(elementType);
 
@@ -596,14 +687,14 @@ export class CardElementPeer extends DesignerPeer {
 
         this._cardElement = cardElement;
 
-        for (var i = 0; i < this.cardElement.getActionCount(); i++) {
-            this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this, cardElement.getActionAt(i)));
-        }
-
         if (cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < cardElement.getItemCount(); i++) {
                 this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement.getItemAt(i)));
             }            
+        }
+
+        for (var i = 0; i < this.cardElement.getActionCount(); i++) {
+            this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this, cardElement.getActionAt(i)));
         }
     }
 
@@ -728,37 +819,44 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         return true;
     }
 
-    protected internalAddCommands(commands: Array<IPeerCommand>) {
+    protected canBeRemoved(): boolean {
+        return false;
+    }
+
+    protected internalAddCommands(commands: Array<PeerCommand>) {
         super.internalAddCommands(commands);
 
         commands.push(
-            {
-                name: "Add OpenUrl action",
-                execute: () => {
-                    var action = new Adaptive.OpenUrlAction();
-                    action.title = "New OpenUrl action";
+            new PeerCommand(
+                {
+                    name: "Add OpenUrl action",
+                    execute: () => {
+                        var action = new Adaptive.OpenUrlAction();
+                        action.title = "New OpenUrl action";
 
-                    this.addAction(action);
-                }
-            },
-            {
-                name: "Add ShowCard action",
-                execute: () => {
-                    var action = new Adaptive.ShowCardAction();
-                    action.title = "New ShowCard action";
+                        this.addAction(action);
+                    }
+                }),
+            new PeerCommand(
+                {
+                    name: "Add ShowCard action",
+                    execute: () => {
+                        var action = new Adaptive.ShowCardAction();
+                        action.title = "New ShowCard action";
 
-                    this.addAction(action);
-                }
-            },
-            {
-                name: "Add Http action",
-                execute: () => {
-                    var action = new Adaptive.HttpAction();
-                    action.title = "New Http action";
+                        this.addAction(action);
+                    }
+                }),
+            new PeerCommand(
+                {
+                    name: "Add Http action",
+                    execute: () => {
+                        var action = new Adaptive.HttpAction();
+                        action.title = "New Http action";
 
-                    this.addAction(action);
-                }
-            }
+                        this.addAction(action);
+                    }
+                })
         );
     }
 }
@@ -787,20 +885,21 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 }
 
 export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
-    protected internalAddCommands(commands: Array<IPeerCommand>) {
+    protected internalAddCommands(commands: Array<PeerCommand>) {
         super.internalAddCommands(commands);
 
         commands.push(
-            {
-                name: "Add Column",
-                execute: () => {
-                    var column = new Adaptive.Column();
+            new PeerCommand(
+                {
+                    name: "Add Column",
+                    execute: () => {
+                        var column = new Adaptive.Column();
 
-                    this.cardElement.addColumn(column);
+                        this.cardElement.addColumn(column);
 
-                    this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, column));
-                }
-            }
+                        this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, column));
+                    }
+                })
         );
     }
 
@@ -819,37 +918,40 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
         this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this, action));
     }
 
-    protected internalAddCommands(commands: Array<IPeerCommand>) {
+    protected internalAddCommands(commands: Array<PeerCommand>) {
         super.internalAddCommands(commands);
 
         commands.push(
-            {
-                name: "Add OpenUrl action",
-                execute: () => {
-                    var action = new Adaptive.OpenUrlAction();
-                    action.title = "New OpenUrl action";
+            new PeerCommand(
+                {
+                    name: "Add OpenUrl action",
+                    execute: () => {
+                        var action = new Adaptive.OpenUrlAction();
+                        action.title = "New OpenUrl action";
 
-                    this.addAction(action);
-                }
-            },
-            {
-                name: "Add ShowCard action",
-                execute: () => {
-                    var action = new Adaptive.ShowCardAction();
-                    action.title = "New ShowCard action";
+                        this.addAction(action);
+                    }
+                }),
+            new PeerCommand(
+                {
+                    name: "Add ShowCard action",
+                    execute: () => {
+                        var action = new Adaptive.ShowCardAction();
+                        action.title = "New ShowCard action";
 
-                    this.addAction(action);
-                }
-            },
-            {
-                name: "Add Http action",
-                execute: () => {
-                    var action = new Adaptive.HttpAction();
-                    action.title = "New Http action";
+                        this.addAction(action);
+                    }
+                }),
+            new PeerCommand(
+                {
+                    name: "Add Http action",
+                    execute: () => {
+                        var action = new Adaptive.HttpAction();
+                        action.title = "New Http action";
 
-                    this.addAction(action);
-                }
-            }
+                        this.addAction(action);
+                    }
+                })
         );
     }
 }
@@ -1257,7 +1359,7 @@ export class CardDesigner {
         }
     }
 
-    private internalFindDropTarget(currentPeer: DesignerPeer, forPeer: DesignerPeer): DesignerPeer {
+    private internalFindDropTarget(pointerPosition: IPoint, currentPeer: DesignerPeer, forPeer: DesignerPeer): DesignerPeer {
         if (currentPeer == forPeer) {
             return null;
         }
@@ -1268,7 +1370,7 @@ export class CardDesigner {
         if (!lookDeeper) {
             var boundingRect = currentPeer.getBoundingRect();
 
-            lookDeeper = boundingRect.isInside(this._currentPointerPosition);
+            lookDeeper = boundingRect.isInside(pointerPosition);
         }
 
         if (lookDeeper) {
@@ -1277,7 +1379,7 @@ export class CardDesigner {
             }
 
             for (var i = 0; i < currentPeer.getChildCount(); i++) {
-                var deeperResult = this.internalFindDropTarget(currentPeer.getChildAt(i), forPeer);
+                var deeperResult = this.internalFindDropTarget(pointerPosition, currentPeer.getChildAt(i), forPeer);
 
                 if (deeperResult) {
                     result = deeperResult;
@@ -1295,8 +1397,8 @@ export class CardDesigner {
     }
 
     private pointerUp() {
-        if (this._draggedPeer) {
-            this.endDrag(this._draggedPeer);
+        if (this.draggedPeer) {
+            this.endDrag(this.draggedPeer);
         }
         
         if (this.onPointerUp) {
@@ -1357,6 +1459,24 @@ export class CardDesigner {
         this.updateLayout();
     }
 
+    private get draggedPeer(): DesignerPeer {
+        return this._draggedPeer;
+    }
+
+    private set draggedPeer(value: DesignerPeer) {
+        if (this._draggedPeer != value) {
+            if (this._draggedPeer) {
+                this._draggedPeer.dragging = false;
+            }
+
+            this._draggedPeer = value;
+
+            if (this._draggedPeer) {
+                this._draggedPeer.dragging = true;
+            }
+        }
+    }
+
     readonly parentElement: HTMLElement;
 
     constructor(parentElement: HTMLElement) {
@@ -1385,10 +1505,8 @@ export class CardDesigner {
                 x: e.x - rootElement.offsetLeft,
                 y: e.y - rootElement.offsetTop
             };
-
-            document.getElementById("status").innerText = "x: " + this._currentPointerPosition.x + ", y: " + this._currentPointerPosition.y;
-
-            this.tryDrop(this._draggedPeer);
+    
+            this.tryDrop(this._currentPointerPosition, this.draggedPeer);
 
             this.pointerMoved();
         }
@@ -1407,8 +1525,8 @@ export class CardDesigner {
     onPointerMoved: (designer: CardDesigner) => void;
     onPointerUp: (designer: CardDesigner) => void;
 
-    findDropTarget(peer: DesignerPeer): DesignerPeer {
-        return this.internalFindDropTarget(this._rootPeer, peer);
+    findDropTarget(pointerPosition: IPoint, peer: DesignerPeer): DesignerPeer {
+        return this.internalFindDropTarget(pointerPosition, this._rootPeer, peer);
     }
 
     render() {
@@ -1439,31 +1557,31 @@ export class CardDesigner {
     }
 
     startDrag(peer: DesignerPeer) {
-        if (!this._draggedPeer) {
-            this._initialDragPointerOffset = this._currentPointerPosition;
-            this._draggedPeer = peer;
-
-            this.setSelectedPeer(this._draggedPeer);
-
+        if (!this.draggedPeer) {
             this._designerSurface.classList.add("dragging");
+
+            this._initialDragPointerOffset = this._currentPointerPosition;
+            this.draggedPeer = peer;
+
+            this.setSelectedPeer(this.draggedPeer);
         }
     }
 
     endDrag(peer: DesignerPeer) {
-        if (this._draggedPeer) {
+        if (this.draggedPeer) {
             // Ensure that the dragged peer's elements are at the top in Z order
-            this._draggedPeer.removeElementsFromDesignerSurface(true);
-            this._draggedPeer.addElementsToDesignerSurface(this._designerSurface, true);
+            this.draggedPeer.removeElementsFromDesignerSurface(true);
+            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, true);
 
             this._dropTarget.renderedElement.classList.remove("dragover");
 
-            this._draggedPeer = null;
+            this.draggedPeer = null;
 
             this._designerSurface.classList.remove("dragging");
         }
     }
 
-    tryDrop(peer: DesignerPeer): boolean {
+    tryDrop(pointerPosition: IPoint, peer: DesignerPeer): boolean {
         var result = false;
 
         if (peer) {
@@ -1471,18 +1589,24 @@ export class CardDesigner {
                 this._dropTarget.renderedElement.classList.remove("dragover");
             }
 
-            var newDropTarget = this.findDropTarget(peer);
+            var newDropTarget = this.findDropTarget(pointerPosition, peer);
 
             if (newDropTarget) {
                 this._dropTarget = newDropTarget;
 
-                result = this._dropTarget.tryDrop(peer, this._currentPointerPosition);
+                result = this._dropTarget.tryDrop(peer, pointerPosition);
 
                 this._dropTarget.renderedElement.classList.add("dragover");
             }
         }
 
         return result;
+    }
+
+    isPointerOver(x: number, y: number) {
+        var clientRect = this._designerSurface.getBoundingClientRect();
+
+        return (x >= clientRect.left) && (x <= clientRect.right) && (y >= clientRect.top) && (y <= clientRect.bottom);
     }
 
     get selectedPeer(): DesignerPeer {

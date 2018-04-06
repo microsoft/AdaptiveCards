@@ -176,9 +176,8 @@ export abstract class CardElement {
         var element = document.createElement("div");
         element.style.border = "1px dashed #DDDDDD";
         element.style.padding = "4px";
-        element.style.minHeight = "20px";
+        element.style.minHeight = "32px";
         element.style.fontSize = "10px";
-        element.style.textAlign = "center";
         element.innerText = "Empty " + this.getJsonTypeName();
 
         return element;

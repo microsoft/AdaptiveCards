@@ -2,29 +2,47 @@
     cursor: move;
 }
 
+.acd-designersurface.dragging > .acd-peer:hover {
+    background-color: transparent;
+}
+
 .acd-palette-item {
-    border: 1px solid red;
+    border: 1px solid #CCCCCC;
     padding: 8px;
-    cursor: pointer;
+    background-color: white;
+    cursor: default;
+}
+
+.acd-palette-item:hover {
+    background-color: #EEEEEE;
 }
 
 .acd-peer {
 }
 
 .acd-peer:hover {
-    border: 2px solid rgba(0, 0, 255, 0.1);
+    background-color: rgba(0, 0, 255, 0.05);
 }
 
 .acd-peer.selected {
     background-color: rgba(255, 0, 0, 0.05);
-    border: 2px solid rgba(255, 0, 0, 1);
 }
 
 .acd-peer.dragover {
-    border: 2px solid rgba(0, 255, 128, 0.2);
+    border: 1px dashed red;
+}
+
+.acd-peer.dragover:hover {
+    background-color: none;
 }
 
 .acd-peer.dragging {
+    border: 1px solid red;
+}
+
+.acd-peer.dragging:hover {
+    border: 1px solid red;
+    background-color: rgba(255, 0, 0, 0.05) !important;
 }
 
 .acd-separation {
@@ -32,5 +50,23 @@
 }
 
 .acd-separation.selected {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+.acd-peer-command {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: rgba(255, 0, 0, 0.05);
+    border: 1px solid rgba(255, 0, 0, 0.1);
+}
+
+.acd-peer-command:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.acd-peer-command:active {
     background-color: rgba(255, 0, 0, 0.2);
 }

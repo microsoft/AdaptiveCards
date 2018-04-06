@@ -67,45 +67,42 @@ class DesignerApp {
     private _card: Adaptive.AdaptiveCard;
 
     private buildPropertySheet(peer: Designer.DesignerPeer) {
-        if (this.propertySheetHostElement && peer) {
+        if (this.propertySheetHostElement) {
             this.propertySheetHostElement.innerHTML = "";
 
-            var card = peer.buildPropertySheetCard();
-    
-            this.propertySheetHostElement.appendChild(card.render());
-        }
-    }
-    
-    private buildCommandList(peer: Designer.DesignerPeer) {
-        if (this.commandListHostElement && peer) {
-            this.commandListHostElement.innerHTML = "";
-
-            var commands = peer.getCommands();
-    
-            for (var i = 0; i < commands.length; i++) {
-                let button = document.createElement("button");
-                button.type = "button";
-                button.innerText = commands[i].name;
-    
-                let command = commands[i];
-    
-                button.onclick = () => { command.execute(); };
-    
-                this.commandListHostElement.appendChild(button);
+            if (peer) {
+                var card = peer.buildPropertySheetCard();
+        
+                this.propertySheetHostElement.appendChild(card.render());
             }
         }
     }
-
+    
     private buildPalette() {
         if (this.paletteHostElement) {
             this.paletteHostElement.innerHTML = "";
 
+            var sortedRegisteredTypes: Array<Adaptive.ITypeRegistration<Adaptive.CardElement>> = [];
+
             for (var i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
-                var paletteItem = new PaletteItem(Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i));
+                sortedRegisteredTypes.push(Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i));
+            }
+
+            sortedRegisteredTypes.sort(
+                (a, b) => {
+                    if (a.typeName < b.typeName) {
+                        return -1
+                    }
+                    else {
+                        return 1;
+                    }
+                }
+            )
+
+            for (var i = 0; i < sortedRegisteredTypes.length; i++) {
+                var paletteItem = new PaletteItem(sortedRegisteredTypes[i]);
                 paletteItem.render();
                 paletteItem.onStartDrag = (sender: PaletteItem) => {
-                    document.getElementById("paletteStatus").innerText = "Start drag: " + sender.typeRegistration.typeName;
-        
                     this._draggedPaletteItem = sender;
         
                     this._draggedElement = sender.cloneElement();
@@ -140,12 +137,10 @@ class DesignerApp {
 
         this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
             this.buildPropertySheet(peer);
-            this.buildCommandList(peer);
         };
     
+        /*
         this._designer.onPointerMoved = (designer: Designer.CardDesigner) => {
-            document.getElementById("paletteStatus2").innerText = "x: " + this._designer.pointerPosition.x + ", y: " + this._designer.pointerPosition.y;
-    
             if (this._draggedPaletteItem) {
                 let peer = this._draggedPaletteItem.createPeer();
 
@@ -156,31 +151,37 @@ class DesignerApp {
                 }
             }
         }
+        */
 
-        document.getElementById("btnUpdateLayout").onclick = (e) => { this._designer.updateLayout(); };
+    }
 
-        window.addEventListener(
-            'resize',
-            () => {
-                this._designer.updateLayout();
-            });
-    
-        window.addEventListener(
-            'mousemove',
-            (e: MouseEvent) => {
-                this._currentMousePosition = { x: e.x, y: e.y };
-    
-                if (this._draggedElement) {
-                    this._draggedElement.style.left = this._currentMousePosition.x + "px";
-                    this._draggedElement.style.top = this._currentMousePosition.y + "px";
-                }
-            });
-    
-        window.addEventListener(
-            'mouseup',
-            (e: MouseEvent) => {
+    handlePointerMove(e: PointerEvent) {
+        this._currentMousePosition = { x: e.x, y: e.y };
+
+        document.getElementById("windowMouseMoveStatus").innerText = "x: " + this._currentMousePosition.x + ", y: " + this._currentMousePosition.y;
+
+        var isPointerOverDesigner = this.designer.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
+
+        document.getElementById("isOverDesignerStatus").innerText = "Over designer: " + isPointerOverDesigner;
+
+        if (this._draggedElement) {
+            this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
+            this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+        }
+
+        if (this._draggedPaletteItem && isPointerOverDesigner) {
+            let peer = this._draggedPaletteItem.createPeer();
+
+            if (this.designer.tryDrop(this._currentMousePosition, peer)) {
+                this.designer.startDrag(peer);
+
                 this.endDrag();
-            });
+            }
+        }
+    }
+
+    handlePointerUp(e: PointerEvent) {
+        this.endDrag();
     }
 
     get paletteHostElement(): HTMLElement {
@@ -211,8 +212,12 @@ class DesignerApp {
                 this._card.designMode = true;
             }
 
-            this._designer.card = this._card;
+            this.designer.card = this._card;
         }
+    }
+
+    get designer(): Designer.CardDesigner {
+        return this._designer;
     }
 }
 
@@ -223,10 +228,6 @@ window.onload = () => {
     Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
     Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 
-    Adaptive.AdaptiveCard.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => {
-
-    }
-
     var card = new Adaptive.AdaptiveCard();
     card.designMode = true;
     card.parse(JSON.parse(Constants.defaultPayload));
@@ -236,4 +237,8 @@ window.onload = () => {
     designerApp.commandListHostElement = document.getElementById("commandsHost");
     designerApp.paletteHostElement = document.getElementById("toolPalette");
     designerApp.card = card;
+
+    window.addEventListener("pointermove", (e: PointerEvent) => { designerApp.handlePointerMove(e); });
+    window.addEventListener("resize", () => { designerApp.designer.updateLayout(); });
+    window.addEventListener("pointerup", (e: PointerEvent) => { designerApp.handlePointerUp(e); });
 };
