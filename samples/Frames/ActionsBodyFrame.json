@@ -5,11 +5,11 @@
     "body": [
         {
             "type": "ActionSet",
-            "actions": "${actions}"
+            "actions": "{{actions}"
         },
         {
             "type": "Container",
-            "items": "${body}"
+            "items": "{{body}"
         }
     ]
 }

@@ -75,9 +75,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromStringWithFrame(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 {
-    Json::Value jsonFramedCard;
-    ApplyFrame(ParseUtil::GetJsonValueFromString(jsonString), ParseUtil::GetJsonValueFromString(jsonFrame), jsonFramedCard);
-
+    Json::Value jsonFramedCard = ApplyFrame(ParseUtil::GetJsonValueFromString(jsonString), ParseUtil::GetJsonValueFromString(jsonFrame));
     auto parseResult = Deserialize(jsonFramedCard, rendererVersion, elementParserRegistration, actionParserRegistration);
 
     return parseResult;

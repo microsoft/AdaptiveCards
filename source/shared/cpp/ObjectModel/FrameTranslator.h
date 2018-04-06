@@ -4,6 +4,6 @@
 
 class AdaptiveCards::AdaptiveCard;
 
-void ApplyFrame(const Json::Value& templatedCard, const Json::Value& frame, Json::Value& result);
+Json::Value ApplyFrame(const Json::Value& templatedCard, const Json::Value& frame);
 
 void PruneCard(std::shared_ptr<AdaptiveCards::AdaptiveCard>);

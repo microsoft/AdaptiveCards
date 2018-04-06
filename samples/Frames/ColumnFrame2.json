@@ -5,13 +5,13 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "${title}",
+            "text": "{{title}}",
             "size": "large",
             "horizontalAlignment": "center"
         },
         {
             "type": "TextBlock",
-            "text": "${subtitle}",
+            "text": "{{subtitle}}",
             "size": "medium",
             "horizontalAlignment": "center"
         },
@@ -23,7 +23,7 @@
                     "items": [
                         {
                             "type": "Image",
-                            "url": "${heroImage}",
+                            "url": "{{heroImage}}",
                             "style": "person"
                         }
                     ]
@@ -33,7 +33,7 @@
                     "items": [
                         {
                             "type": "Container",
-                            "items": "${body}"
+                            "items": "{{body}}"
                         }
                     ]
                 },
@@ -42,7 +42,7 @@
                     "items": [
                         {
                             "type": "ActionSet",
-                            "actions": "${actions}",
+                            "actions": "{{actions}}",
                             "orientation": "vertical"
                         }
                     ]

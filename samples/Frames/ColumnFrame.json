@@ -4,14 +4,18 @@
     "version": "1.0",
     "body": [
         {
+            "type": "Image",
+            "url": "{{socialImages.heroImage}}"
+        },
+        {
             "type": "TextBlock",
-            "text": "${title}",
+            "text": "{{title}}",
             "size": "large",
             "horizontalAlignment": "center"
         },
         {
             "type": "TextBlock",
-            "text": "${subtitle}",
+            "text": "{{subtitle}}",
             "size": "medium",
             "horizontalAlignment": "center"
         },
@@ -23,13 +27,18 @@
                     "items": [
                         {
                             "type": "Image",
-                            "url": "${heroImage}",
+                            "url": "{{socialImages.profileImage}}",
                             "style": "person",
-                            "size" : "medium"
-                        },
+                            "size": "medium"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "items": [
                         {
                             "type": "Container",
-                            "items": "${body}"
+                            "items": "{{body}}"
                         }
                     ]
                 },
@@ -38,7 +47,7 @@
                     "items": [
                         {
                             "type": "ActionSet",
-                            "actions": "${actions}",
+                            "actions": "{{actions}}",
                             "orientation": "vertical"
                         }
                     ]

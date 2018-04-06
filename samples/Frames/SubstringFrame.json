@@ -4,18 +4,9 @@
 	"version": "1.0",
     "body": [
         {
-            "type": "Image",
-            "url": "{{heroImage}}"
-        },
-        {
             "type": "TextBlock",
-            "text": "{{title}}",
-            "size": "extraLarge"
-        },
-        {
-            "type": "TextBlock",
-            "text": "{{subtitle}}",
-            "size": "large"
+            "text": "**Title:**: {{title}}, **Subtitle:** {{subtitle}}.",
+            "wrap": true
         },
         {
             "type": "Container",

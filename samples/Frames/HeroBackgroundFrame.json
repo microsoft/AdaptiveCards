@@ -2,25 +2,25 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveView",
     "version": "1.0",
-    "backgroundImage" :  "${heroImage}",
+    "backgroundImage" :  "{{heroImage}}",
     "body": [
         {
             "type": "TextBlock",
-            "text": "${title}",
+            "text": "{{title}}",
             "size": "extraLarge"
         },
         {
             "type": "TextBlock",
-            "text": "${subtitle}",
+            "text": "{{subtitle}}",
             "size": "large"
         },
         {
             "type": "Container",
-            "items": "${body}"
+            "items": "{{body}}"
         },
         {
             "type": "ActionSet",
-            "actions": "${actions}"
+            "actions": "{{actions}}"
         }
     ]
 }
