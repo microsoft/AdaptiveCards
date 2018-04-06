@@ -16,87 +16,124 @@
 using namespace AdaptiveCards;
 
 bool ShouldJsonObjectBePruned(Json::Value value);
+Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame);
+
+std::string GetKey(
+    std::string string,
+    size_t startPosition,
+    const char * openBraces,
+    const char * closeBraces, 
+    size_t * keyStartPosition,
+    size_t * keyEndPosition)
+{
+    std::string bracesStart(openBraces);
+    std::string bracesEnd(closeBraces);
+
+    size_t bracesStartPosition = string.find(bracesStart, startPosition);
+    size_t bracesEndPosition = string.find(bracesEnd, startPosition);
+
+    std::string key;
+    if (bracesStartPosition != std::string::npos &&
+        bracesEndPosition != std::string::npos)
+    {
+        key = string.substr(bracesStartPosition + bracesStart.length(), bracesEndPosition - bracesStartPosition - bracesStart.length());
+        *keyStartPosition = bracesStartPosition;
+        *keyEndPosition = bracesEndPosition + bracesEnd.length() - 1;
+    }
+
+    return key;
+}
 
 Json::Value GetValue(
     std::string key,
     const Json::Value& sourceValue)
 {
+    Json::FastWriter fastWriter;
+    std::string sourceString = fastWriter.write(sourceValue);
+
     std::string dot(".");
     size_t dotPosition = key.find(dot, 0);
 
     std::string openBrace("[");
     size_t openBracePosition = key.find(openBrace, 0);
 
-    if (dotPosition == std::string::npos &&
-        openBracePosition == std::string::npos)
+    Json::Value currentSourceScope = sourceValue;
+    std::string currentKey = key;
+    while ((dotPosition != std::string::npos) && (dotPosition < openBracePosition))
     {
-        return sourceValue[key];
+        std::string beforeDotKey = key.substr(0, dotPosition);
+        std::string afterDotKey = key.substr(dotPosition + 1, key.length() - dotPosition);
+        
+        currentSourceScope = sourceValue[beforeDotKey];
+        currentKey = afterDotKey;
+        dotPosition = afterDotKey.find(dot, 0);
     }
-    else if (dotPosition < openBracePosition)
+
+    if (openBracePosition == std::string::npos)
     {
-        std::string subKey = key.substr(0, dotPosition);
-        return GetValue(key.substr(dotPosition + 1, key.length()), sourceValue[subKey]);
+        // If there are no indices, use the key as is
+        return currentSourceScope[key];
     }
     else
     {
-        std::string subKey = key.substr(0, openBracePosition);
-        Json::Value arrayValue = sourceValue[key];
+        size_t closeBracePosition;
+        std::string indexString = GetKey(currentKey, 0, "[", "]", &openBracePosition, &closeBracePosition);
+
+        Json::Value result;
+        std::string arrayKey = currentKey.substr(0, openBracePosition);
+        Json::Value arrayValue = currentSourceScope[arrayKey];
         if (arrayValue.isArray())
         {
-            std::string closeBrace("]");
-            size_t closeBracePosition = key.find(closeBrace, 0);
-            std::string index = key.substr(openBracePosition + 1, closeBracePosition - openBracePosition - 1);
-
             try
             {
-                auto indexAsUnsignedLong = std::stoul(index);
-//                return arrayValue[indexAsUnsignedLong];
-
+                // See if the array index is a number
+                result = arrayValue[Json::ArrayIndex(std::stoul(indexString))];
             }
             catch (...)
             {
-                return Json::Value();
+                // Check if it's part of the data
+                Json::Value indexValue = GetValue(indexString, sourceValue);
+                if (!indexValue.empty() && indexValue.isIntegral())
+                {
+                    result = arrayValue[Json::ArrayIndex(indexValue.asUInt())];
+                }
             }
 
+            return result;
         }
     }
     return Json::Value();
 }
 
-Json::Value DataBindFrameStringFromSource(
+Json::Value DataBindString(
     const Json::Value& sourceCard,
     const Json::Value& frame)
 {
-    std::string bracesStart("{{");
-    std::string bracesEnd("}}");
-
     std::string frameString = frame.asString();
 
-    size_t bracesStartPosition = frameString.find(bracesStart, 0);
-    size_t bracesEndPosition = frameString.find(bracesEnd, 0);
+    size_t bracesStartPosition;
+    size_t bracesEndPosition;
+    std::string key = GetKey(frameString, 0, "{{", "}}", &bracesStartPosition, &bracesEndPosition);
 
-    if (bracesStartPosition == 0 &&
-        bracesEndPosition == frameString.length() - bracesEnd.length())
+    if (!key.empty() && 
+        bracesStartPosition == 0 &&
+        bracesEndPosition == frameString.length() - 1)
     {
         // If the entire string is a data binding element, return the result of GetValue, which may be of any type
-        std::string key = frameString.substr(bracesStartPosition + bracesStart.length(), bracesEndPosition - bracesStartPosition - bracesStart.length());
         return GetValue(key, sourceCard);
     }
-    else if (bracesStartPosition != std::string::npos &&
-             bracesEndPosition != std::string::npos)
+    else if (!key.empty())
     {
         // If we have a data binding element, but it's not the entire string, do substring binding
         std::string resultString;
         size_t currentFrameStartPosition = 0;
 
-        while (bracesStartPosition != std::string::npos && 
-               bracesEndPosition != std::string::npos)
+        while (!key.empty())
         {
             // Append the portion before the data binding element
             resultString += frameString.substr(currentFrameStartPosition, bracesStartPosition - currentFrameStartPosition);
 
             // Get the value of the data binding element
-            std::string key = frameString.substr(bracesStartPosition + bracesStart.length(), bracesEndPosition - bracesStartPosition - bracesStart.length());
             Json::Value result = GetValue(key, sourceCard);
 
             // This only works if everything binds to a string. If we find one that doesn't, 
@@ -104,14 +141,14 @@ Json::Value DataBindFrameStringFromSource(
             // string.
             if (!result.isString())
             {
+                // BECKYTODO - just put curly braces back in
                 return frame;
             }
             resultString += result.asString();
 
             // Advance the start position on the frame string, and find the next data binding element
-            currentFrameStartPosition = bracesEndPosition + bracesEnd.length();
-            bracesStartPosition = frameString.find(bracesStart, currentFrameStartPosition);
-            bracesEndPosition = frameString.find(bracesEnd, currentFrameStartPosition);
+            currentFrameStartPosition = bracesEndPosition + 1;
+            key = GetKey(frameString, currentFrameStartPosition, "{{", "}}", &bracesStartPosition, &bracesEndPosition);
         }
 
         // Append the portion of the frame string that is after the last data binding element and 
@@ -126,6 +163,57 @@ Json::Value DataBindFrameStringFromSource(
     }
 }
 
+Json::Value DataBindArray(
+    const Json::Value& sourceCard,
+    const Json::Value& frame
+)
+{
+    Json::Value result;
+    for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
+    {
+        Json::Value elementResult = DataBindJson(sourceCard, *it);
+        if (elementResult.empty())
+        {
+            // If the result is empty, don't add it to the json
+            continue;
+        }
+        result.append(elementResult);
+    }
+
+    return result;
+}
+
+Json::Value DataBindObject(
+    const Json::Value& sourceCard,
+    const Json::Value& frame)
+{
+    // If it's an object or array, walk the sub elements
+    Json::Value result;
+    for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
+    {
+        Json::Value elementResult = DataBindJson(sourceCard, *it);
+
+        if (elementResult.empty())
+        {
+            // If the result is empty, don't add it to the json
+            continue;
+        }
+        std::string key = it.key().asCString();
+        result[key] = elementResult;
+    }
+
+    // Check if the object should be pruned. If so, return an empty result
+    if (ShouldJsonObjectBePruned(result))
+    {
+        result = Json::Value();
+    }
+
+    Json::FastWriter fastWriter;
+    std::string resultString = fastWriter.write(result);
+
+    return result;
+}
+
 Json::Value DataBindJson(
     const Json::Value& sourceCard,
     const Json::Value& frame)
@@ -134,49 +222,23 @@ Json::Value DataBindJson(
     std::string sourceString = fastWriter.write(sourceCard);
     std::string frameString = fastWriter.write(frame);
 
-    Json::Value result;
     if (frame.isString())
     {
-        // If it's a string, see if it needs to be data bound
-        result = DataBindFrameStringFromSource(sourceCard, frame);
+        return DataBindString(sourceCard, frame);
     }
-    else if (frame.isArray() || frame.isObject())
+    else if (frame.isObject())
     {
-        // If it's an object or array, walk the sub elements
-        for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
-        {
-            Json::Value elementResult = DataBindJson(sourceCard, *it);
-
-            if (elementResult.empty())
-            {
-                // If the result is empty, don't add it to the json
-                continue;
-            }
-            else if (frame.isArray())
-            {
-                result.append(elementResult);
-            }
-            else if (frame.isObject())
-            {
-                std::string key = it.key().asCString();
-                result[key] = elementResult;
-            }
-        }
-
-        // Check if the object should be pruned. If so, return an empty result
-        if (frame.isObject() && ShouldJsonObjectBePruned(result))
-        {
-            result = Json::Value();
-        }
+        return DataBindObject(sourceCard, frame);
+    }
+    else if (frame.isArray())
+    {
+        return DataBindArray(sourceCard, frame);
     }
     else
     {
         // All other types return as is
-        result = frame;
+        return frame;
     }
-
-    std::string resultString = fastWriter.write(result);
-    return result;
 }
 
 Json::Value ApplyFrame(
