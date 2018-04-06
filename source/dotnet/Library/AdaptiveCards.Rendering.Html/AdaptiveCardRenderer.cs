@@ -434,6 +434,8 @@ namespace AdaptiveCards.Rendering.Html
                     Color = context.Config.FactSet.Title.Color,
                     Weight = context.Config.FactSet.Title.Weight,
                     IsSubtle = context.Config.FactSet.Title.IsSubtle,
+                    Wrap = context.Config.FactSet.Title.Wrap,
+                    MaxWidth = context.Config.FactSet.Title.MaxWidth
                 };
                 var uiTitle = context.Render(factTitle)
                     .AddClass("ac-facttitle")
@@ -446,6 +448,8 @@ namespace AdaptiveCards.Rendering.Html
                     Color = context.Config.FactSet.Value.Color,
                     Weight = context.Config.FactSet.Value.Weight,
                     IsSubtle = context.Config.FactSet.Value.IsSubtle,
+                    Wrap = context.Config.FactSet.Value.Wrap,
+                    // MaxWidth is not supported on the Value of FactSet. Do not set it.
                 };
                 var uiValue = context.Render(factValue)
                     .AddClass("ac-factvalue");
@@ -507,6 +511,11 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
 
+            if (textBlock.MaxWidth > 0)
+            {
+                uiTextBlock = uiTextBlock
+                    .Style("width:", $"{textBlock.MaxWidth}px");
+            }
 
             if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock
