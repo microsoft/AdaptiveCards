@@ -2597,6 +2597,10 @@ class ActionCollection {
         return result;
     }
 
+    get renderedActionCount(): number {
+        return this._renderedActionCount;
+    }
+
     get expandedAction(): ShowCardAction {
         return this._expandedAction;
     }
@@ -3911,8 +3915,8 @@ export abstract class ContainerWithActions extends Container {
     }
 
     protected isLastElementBleeding(): boolean {
-        if (super.isLastElementBleeding()) {
-            return !this.isDesignMode();
+        if (this._actionCollection.renderedActionCount == 0) {
+            return super.isLastElementBleeding() ? !this.isDesignMode() : false;
         }
         else {
             return this._actionCollection.expandedAction != null;
