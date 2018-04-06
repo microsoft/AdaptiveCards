@@ -31,4 +31,6 @@
 - (ACOAdaptiveCard *)card;
 
 - (UIView *)render;
+
++ (void) setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config;
 @end

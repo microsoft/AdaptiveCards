@@ -15,5 +15,5 @@
      baseActionElement:(ACOBaseActionElement *)acoAction
                  title:(NSString *)title
                iconUrl:(NSString *)iconUrl
-         andHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
+         andHostConfig:(ACOHostConfig *)config;
 @end

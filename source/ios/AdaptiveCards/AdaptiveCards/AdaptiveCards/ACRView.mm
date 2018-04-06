@@ -403,9 +403,12 @@ using namespace AdaptiveCards;
                         // syncronize access to image map
                         dispatch_sync(_serial_queue,
                             ^{
-                                if(!_actionsMap[key]) {// UIButton is not ready, cache UIImageView
+                                if(!_actionsMap[key]) // UIButton is not ready, cache UIImageView
+                                {
                                     _actionsMap[key] = imageView;
-                                } else {// UIButton ready, get view
+                                }
+                                else // UIButton ready, get view
+                                {
                                     button = _actionsMap[key];
                                 }
                             });
@@ -413,25 +416,7 @@ using namespace AdaptiveCards;
                         // if view is available, set image to it, and continue image processing
                         if(button)
                         {
-                            // Format the image so it fits in the button and is placed where it must be placed
-                            CGSize contentSize = [button.titleLabel intrinsicContentSize];
-                            double imageHeight = contentSize.height;
-                            CGSize originalImageSize = [img size];
-                            double scaleRatio = imageHeight / originalImageSize.height;
-                            double imageWidth = scaleRatio * originalImageSize.width;
-                           
-                            IconPlacement iconPlacement = [_hostConfig getHostConfig]->actions.iconPlacement;
-                            if( iconPlacement == AdaptiveCards::IconPlacement::AboveTitle ){
-                                [imageView setFrame:CGRectMake( (button.frame.size.width - imageWidth) / 2, 5, imageWidth, imageHeight)];
-                                [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, 5, -imageHeight, 5)];
-                                [button setContentEdgeInsets:UIEdgeInsetsMake(5, 5, 5 + imageHeight, 5)];
-                            } else {
-                                int iconPadding = [_hostConfig getHostConfig]->spacing.defaultSpacing;
-                                [button setTitleEdgeInsets:UIEdgeInsetsMake(5, (iconPadding + imageWidth), 5, 0)];
-                                double titleOriginX = button.titleLabel.frame.origin.x;
-                                [imageView setFrame:CGRectMake( titleOriginX - (iconPadding + imageWidth) / 2, 5, imageWidth, imageHeight)];
-                            }
-                            [button addSubview:imageView];
+                            [ACRView setImageView:imageView inButton:button withConfig:_hostConfig];
                             
                             // remove tag
                             std::string id = act->GetId();
@@ -491,5 +476,31 @@ using namespace AdaptiveCards;
 - (ACOAdaptiveCard *)card
 {
     return _adaptiveCard;
+}
+
++ (void)setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config
+{
+    // Format the image so it fits in the button and is placed where it must be placed
+    CGSize contentSize = [button.titleLabel intrinsicContentSize];
+    double imageHeight = contentSize.height;
+    CGSize originalImageSize = [imageView intrinsicContentSize];
+    double scaleRatio = imageHeight / originalImageSize.height;
+    double imageWidth = scaleRatio * originalImageSize.width;
+    
+    IconPlacement iconPlacement = [config getHostConfig]->actions.iconPlacement;
+    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle)
+    {
+        [imageView setFrame:CGRectMake( (button.frame.size.width - imageWidth) / 2, 5, imageWidth, imageHeight)];
+        [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, 5, -imageHeight, 5)];
+        [button setContentEdgeInsets:UIEdgeInsetsMake(5, 5, 5 + imageHeight, 5)];
+    }
+    else
+    {
+        int iconPadding = [config getHostConfig]->spacing.defaultSpacing;
+        [button setTitleEdgeInsets:UIEdgeInsetsMake(5, (iconPadding + imageWidth), 5, 0)];
+        double titleOriginX = button.titleLabel.frame.origin.x;
+        [imageView setFrame:CGRectMake( titleOriginX - (iconPadding + imageWidth) / 2, 5, imageWidth, imageHeight)];
+    }
+    [button addSubview:imageView];
 }
 @end
