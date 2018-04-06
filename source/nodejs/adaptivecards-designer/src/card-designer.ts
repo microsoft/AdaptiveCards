@@ -1329,22 +1329,32 @@ export class CardDesigner {
     }
 
     private inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
-        this.updateLayout();
-
         var peer = this.findCardElementPeer(action.card);
 
-        if (isExpanded && !peer) {
-            peer = new AdaptiveCardPeer(action.card);
-            
-            var parentPeer = this.findActionPeer(action);
+        if (isExpanded) {
+            if (!peer) {
+                peer = new AdaptiveCardPeer(action.card);
+                
+                var parentPeer = this.findActionPeer(action);
 
-            if (parentPeer) {
-                parentPeer.addChild(peer);
+                if (parentPeer) {
+                    parentPeer.addChild(peer);
+                }
+                else {
+                    this._rootPeer.addChild(peer);
+                }
             }
             else {
-                this._rootPeer.addChild(peer);
+                peer.addElementsToDesignerSurface(this._designerSurface, true);
             }
         }
+        else {
+            if (peer) {
+                peer.removeElementsFromDesignerSurface(true);
+            }
+        }
+
+        this.updateLayout();
     }
 
     readonly parentElement: HTMLElement;
