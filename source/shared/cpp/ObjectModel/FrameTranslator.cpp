@@ -18,6 +18,11 @@ using namespace AdaptiveCards;
 bool ShouldJsonObjectBePruned(Json::Value value);
 Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame);
 
+// Find a key between start and end markers. For example pull out the foo in:
+// "This is some text with a {{foo}} in it." 
+// Takes strings for the type of braces ({{}} or []) and returns the positions 
+// of the beginning and end of the braces surrounding the key.
+// This function will return the first instance after the passed in startPosition.
 std::string GetKey(
     std::string string,
     size_t startPosition,
@@ -44,6 +49,8 @@ std::string GetKey(
     return key;
 }
 
+// Given a key, return the value from the source json. Handles dot notation "foo.bar", indices 
+// "foo[bar]" and combinations thereof "foo.bar[stuff.blah]"
 Json::Value GetValue(
     std::string key,
     const Json::Value& sourceValue)
@@ -57,6 +64,8 @@ Json::Value GetValue(
     std::string openBrace("[");
     size_t openBracePosition = key.find(openBrace, 0);
 
+    // Handle dot notation {{foo.bar.stuff}} by looping through the dots to get the last subkey 
+    // and it's corresponding scope
     Json::Value currentSourceScope = sourceValue;
     std::string currentKey = key;
     while ((dotPosition != std::string::npos) && (dotPosition < openBracePosition))
@@ -71,27 +80,31 @@ Json::Value GetValue(
 
     if (openBracePosition == std::string::npos)
     {
-        // If there are no indices, use the key as is
-        return currentSourceScope[key];
+        // If there are no indices[], use the current key as is
+        return currentSourceScope[currentKey];
     }
     else
     {
+        // Handle indices such as {{foo[5]}} or {{foo[bar]}}
+        Json::Value result;
+
+        // Get the index
         size_t closeBracePosition;
         std::string indexString = GetKey(currentKey, 0, "[", "]", &openBracePosition, &closeBracePosition);
 
-        Json::Value result;
+        // Get the key for the array name and look it up in the current scope
         std::string arrayKey = currentKey.substr(0, openBracePosition);
         Json::Value arrayValue = currentSourceScope[arrayKey];
         if (arrayValue.isArray())
         {
             try
             {
-                // See if the array index is a number
+                // See if the array index is a number {{foo[5]}}
                 result = arrayValue[Json::ArrayIndex(std::stoul(indexString))];
             }
             catch (...)
             {
-                // Check if it's part of the data
+                // Check if it's part of the data {{foo[bar]}}
                 Json::Value indexValue = GetValue(indexString, sourceValue);
                 if (!indexValue.empty() && indexValue.isIntegral())
                 {
@@ -111,20 +124,23 @@ Json::Value DataBindString(
 {
     std::string frameString = frame.asString();
 
-    size_t bracesStartPosition;
-    size_t bracesEndPosition;
+    // Look for any data binding keys surrounded in double curly braces
+    size_t bracesStartPosition, bracesEndPosition;
     std::string key = GetKey(frameString, 0, "{{", "}}", &bracesStartPosition, &bracesEndPosition);
 
     if (!key.empty() && 
         bracesStartPosition == 0 &&
         bracesEndPosition == frameString.length() - 1)
     {
-        // If the entire string is a data binding element, return the result of GetValue, which may be of any type
-        return GetValue(key, sourceCard);
+        // If the entire string is a data binding element, return the result of GetValue, which may be of any type.
+        // If the result is empty, just return the frame as is.
+        Json::Value result = GetValue(key, sourceCard);
+        return result.empty() ? frame : result;
     }
     else if (!key.empty())
     {
         // If we have a data binding element, but it's not the entire string, do substring binding
+        // For example: "This is a string with some {{stuff}} in it"
         std::string resultString;
         size_t currentFrameStartPosition = 0;
 
@@ -136,13 +152,10 @@ Json::Value DataBindString(
             // Get the value of the data binding element
             Json::Value result = GetValue(key, sourceCard);
 
-            // This only works if everything binds to a string. If we find one that doesn't, 
-            // give up and return the frame as is. Otherwise, append the value to the result
-            // string.
-            if (!result.isString())
+            if (result.empty() || !result.isString())
             {
-                // BECKYTODO - just put curly braces back in
-                return frame;
+                // If the result wasn't found or wasn't a string, leave the data binding element in place
+                resultString += frameString.substr(bracesStartPosition, bracesEndPosition - bracesStartPosition + 1);
             }
             resultString += result.asString();
 
@@ -168,6 +181,7 @@ Json::Value DataBindArray(
     const Json::Value& frame
 )
 {
+    // Loop through the sub elements of the array and bind each one
     Json::Value result;
     for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
     {
@@ -187,7 +201,7 @@ Json::Value DataBindObject(
     const Json::Value& sourceCard,
     const Json::Value& frame)
 {
-    // If it's an object or array, walk the sub elements
+    // Loop through the sub elements of the object and bind each one
     Json::Value result;
     for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
     {
@@ -222,6 +236,7 @@ Json::Value DataBindJson(
     std::string sourceString = fastWriter.write(sourceCard);
     std::string frameString = fastWriter.write(frame);
 
+    // Handle data binding depending on the type of the json value
     if (frame.isString())
     {
         return DataBindString(sourceCard, frame);
