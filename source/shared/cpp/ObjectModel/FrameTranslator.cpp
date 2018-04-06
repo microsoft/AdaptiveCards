@@ -20,9 +20,9 @@ Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame
 
 // Find a key between start and end markers. For example pull out the foo in:
 // "This is some text with a {{foo}} in it." 
-// Takes strings for the type of braces ({{}} or []) and returns the positions 
-// of the beginning and end of the braces surrounding the key.
-// This function will return the first instance after the passed in startPosition.
+// Takes strings for the type of braces ({{}}, [], etc.) and returns the positions of the beginning 
+// and end of the braces surrounding the key. This function will return the first instance after 
+// the passed in startPosition.
 std::string GetKey(
     std::string string,
     size_t startPosition,
@@ -65,7 +65,7 @@ Json::Value GetValue(
     size_t openBracePosition = key.find(openBrace, 0);
 
     // Handle dot notation {{foo.bar.stuff}} by looping through the dots to get the last subkey 
-    // and it's corresponding scope
+    // and it's corresponding Json::Value scope
     Json::Value currentSourceScope = sourceValue;
     std::string currentKey = key;
     while ((dotPosition != std::string::npos) && (dotPosition < openBracePosition))
@@ -138,7 +138,7 @@ Json::Value DataBindString(
     else if (!key.empty())
     {
         // If we have a data binding element, but it's not the entire string, do substring binding
-        // For example: "This is a string with some {{stuff}} in it"
+        // For example: "This is a string with some {{stuff}} and {{things}} in it."
         std::string resultString;
         size_t currentFrameStartPosition = 0;
 
@@ -150,12 +150,16 @@ Json::Value DataBindString(
             // Get the value of the data binding element
             Json::Value result = GetValue(key, sourceCard);
 
+            // If the result wasn't found or wasn't a string, leave the data binding element in 
+            // place. Otherwise append the result.
             if (result.empty() || !result.isString())
             {
-                // If the result wasn't found or wasn't a string, leave the data binding element in place
                 resultString += frameString.substr(bracesStartPosition, bracesEndPosition - bracesStartPosition + 1);
             }
-            resultString += result.asString();
+            else
+            {
+                resultString += result.asString();
+            }
 
             // Advance the start position on the frame string, and find the next data binding element
             currentFrameStartPosition = bracesEndPosition + 1;
@@ -188,7 +192,19 @@ Json::Value DataBindArray(
             // If the result is empty, don't add it to the json
             continue;
         }
-        result.append(elementResult);
+        else if (elementResult.isArray())
+        {
+            // If we get an array back (from an {{#each}} element, for example), append the 
+            // elements of that array to this one.
+            for (Json::Value::const_iterator itElement = elementResult.begin(); itElement != elementResult.end(); itElement++)
+            {
+                result.append(*itElement);
+            }
+        }
+        else
+        {
+            result.append(elementResult);
+        }
     }
 
     return result;
@@ -205,40 +221,45 @@ Json::Value DataBindObject(
         std::string key = it.key().asCString();
 
         size_t startPosition, endPosition;
-        std::string specialKey = GetKey(key, 0, "{{", "}}", &startPosition, &endPosition);
-        if ((!specialKey.empty()) && (specialKey[0] == '#'))
+        std::string specialKey = GetKey(key, 0, "{{#", "}}", &startPosition, &endPosition);
+        if (!specialKey.empty())
         {
-            if (!specialKey.compare(0, 5, "#each"))
+            std::string each("each");
+            if (!specialKey.compare(0, each.length(), each))
             {
-                size_t arrayStart = specialKey.find_first_not_of(" ", 5);
+                // Handles each arrays with the following syntax: 
+                // {{#each myArray}} : {"type" : "TextBlock, "text" : "{{foo}}"}
+                // where "myArray" is an array of objects each with a "foo" property
+
+                // Get the name of the array
+                size_t arrayStart = specialKey.find_first_not_of(" ", each.length());
                 std::string arrayName = specialKey.substr(arrayStart, specialKey.length() - arrayStart);
 
                 Json::Value eachArray = sourceCard[arrayName];
                 if (eachArray.isArray())
                 {
+                    // Iterate throught the array and data bind, using each element of the array 
+                    // as the source and the value of this key (*it) as the frame
                     for (Json::Value::const_iterator itArray = eachArray.begin(); itArray != eachArray.end(); itArray++)
                     {
-                        result.append(DataBindObject(*itArray, *it));
+                        result.append(DataBindJson(*itArray, *it));
                     }
 
                     return result;
                 }
             }
-
-            else if (!specialKey.compare(0, 5, "#if"))
-            {
-            }
         }
-
-
-        Json::Value elementResult = DataBindJson(sourceCard, *it);
-
-        if (elementResult.empty())
+        else
         {
-            // If the result is empty, don't add it to the json
-            continue;
+            // Standard case. Data bind the value in "key" : "value" and add it to the result;
+            Json::Value elementResult = DataBindJson(sourceCard, *it);
+            if (elementResult.empty())
+            {
+                // If the result is empty, don't add it to the json
+                continue;
+            }
+            result[key] = elementResult;
         }
-        result[key] = elementResult;
     }
 
     // Check if the object should be pruned. If so, return an empty result

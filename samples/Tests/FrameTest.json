@@ -12,9 +12,9 @@
     "data": {
         "data1": "abcdefg",
         "data2": "hijklmnop",
-        "data3": [ "Element One", "Element Two", "Element Three" ],
+        "data3": [ "Element Zero", "Element One", "Element Two" ],
         "data4": {
-            "insideArray": [ "Inside One", "Inside Two", "Inside Three" ]
+            "insideArray": [ "Inside Zero", "Inside One", "Inside Two" ]
         },
         "dataIndex": 2,
         "data5": {
@@ -64,12 +64,9 @@
             "wrap": true
         },
         {
-            "type": "Container",
-            "items": {
-                "{{#each disney}}": {
-                    "type": "TextBlock",
-                    "text": "{{name}} is a {{animal}}"
-                }
+            "{{#each disney}}": {
+                "type": "TextBlock",
+                "text": "{{name}} is a {{animal}}"
             }
         }
     ],
