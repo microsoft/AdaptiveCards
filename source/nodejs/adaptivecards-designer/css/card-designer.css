@@ -12,18 +12,16 @@
 }
 
 .acd-peer:hover {
-    border: 3px solid rgba(0, 0, 255, 0.1);
+    border: 2px solid rgba(0, 0, 255, 0.1);
 }
 
 .acd-peer.selected {
     background-color: rgba(255, 0, 0, 0.05);
-    border: 3px solid rgba(255, 0, 0, 0.2);
-    margin: -3px;
-    box-sizing: content-box;
+    border: 2px solid rgba(255, 0, 0, 1);
 }
 
 .acd-peer.dragover {
-    border: 3px solid rgba(255, 0, 255, 0.1);
+    border: 2px solid rgba(0, 255, 128, 0.2);
 }
 
 .acd-peer.dragging {

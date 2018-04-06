@@ -243,7 +243,7 @@ export abstract class DesignerPeer extends DraggableElement {
         commands.push(
             {
                 name: "Remove",
-                execute: () => { this.remove() }
+                execute: () => { this.remove(false, true) }
             }
         );
     }
@@ -351,9 +351,11 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
-    remove(onlyFromCard: boolean = false): boolean {
-        while (this._children.length > 0) {
-            this._children[0].remove(onlyFromCard);
+    remove(onlyFromCard: boolean, removeChildren: boolean): boolean {
+        if (removeChildren) {
+            while (this._children.length > 0) {
+                this._children[0].remove(onlyFromCard, removeChildren);
+            }        
         }
 
         var result = this.internalRemove();
@@ -650,7 +652,7 @@ export class CardElementPeer extends DesignerPeer {
 
             if (targetChild != peer) {
                 if (peer.cardElement.parent) {
-                    if (!peer.remove(true)) {
+                    if (!peer.remove(true, false)) {
                         return false;
                     }
 
@@ -1334,9 +1336,15 @@ export class CardDesigner {
         }
 
         var result: DesignerPeer = null;
-        var boundingRect = currentPeer.getBoundingRect();
+        var lookDeeper = currentPeer instanceof ActionPeer;
 
-        if (boundingRect.isInside(this._currentPointerPosition)) {
+        if (!lookDeeper) {
+            var boundingRect = currentPeer.getBoundingRect();
+
+            lookDeeper = boundingRect.isInside(this._currentPointerPosition);
+        }
+
+        if (lookDeeper) {
             if (currentPeer.canDrop(forPeer)) {
                 result = currentPeer;
             }
@@ -1489,7 +1497,7 @@ export class CardDesigner {
 
     removeSelected() {
         if (this.selectedPeer) {
-            this.selectedPeer.remove();
+            this.selectedPeer.remove(false, true);
         }
     }
 
