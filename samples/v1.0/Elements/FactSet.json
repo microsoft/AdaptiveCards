@@ -7,8 +7,8 @@
             "type": "FactSet",
             "facts": [
                 {
-                    "title": "Fact 1",
-                    "value": "Value 1"
+                    "title": "This is a very long factset that should be wrapping on the Fact column",
+                    "value": "This is a long value can introduce wrapping that should be handled based on the wrapping host config settings"
                 },
                 {
                     "title": "Fact 2",
