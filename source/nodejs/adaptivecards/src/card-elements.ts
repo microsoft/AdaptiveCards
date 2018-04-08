@@ -981,16 +981,8 @@ export class Image extends CardElement {
 
         if (!Utils.isNullOrEmpty(this.url)) {
             element = document.createElement("div");
-            element.classList.add("ac-image");
             element.style.display = "flex";
             element.style.alignItems = "flex-start";
-
-            if (this.selectAction != null && this.hostConfig.supportsInteractivity) {
-                element.tabIndex = 0
-                element.setAttribute("role", "button");
-                element.setAttribute("aria-label", this.selectAction.title);
-                element.classList.add("ac-selectable");
-            }
 
             element.onkeypress = (e) => {
                 if (this.selectAction) {
@@ -1022,6 +1014,14 @@ export class Image extends CardElement {
             var imageElement = document.createElement("img");
             imageElement.style.maxHeight = "100%";
             imageElement.style.minWidth = "0";
+            imageElement.classList.add("ac-image");
+
+            if (this.selectAction != null && this.hostConfig.supportsInteractivity) {
+                imageElement.tabIndex = 0
+                imageElement.setAttribute("role", "button");
+                imageElement.setAttribute("aria-label", this.selectAction.title);
+                imageElement.classList.add("ac-selectable");
+            }
 
             if (this.pixelWidth || this.pixelHeight) {
                 if (this.pixelWidth) {
