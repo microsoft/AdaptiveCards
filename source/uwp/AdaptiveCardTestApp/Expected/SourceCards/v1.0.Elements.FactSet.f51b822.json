@@ -7,8 +7,8 @@
             "type": "FactSet",
             "facts": [
                 {
-                    "title": "Fact 1",
-                    "value": "Value 1"
+                    "title": "This is a long FactSet that should wrap the title",
+                    "value": "This is a long FactSet that can introduce wrapping for the value"
                 },
                 {
                     "title": "Fact 2",
