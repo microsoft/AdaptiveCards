@@ -62,13 +62,11 @@ using namespace AdaptiveCards;
                          hostconfig:(ACOHostConfig *)config
 {
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
-
     ACRColumnView *verticalView = containingView;
-
+    
     if(!body.empty())
     {
         [rootView addTasksToConcurrentQueue:body];
-
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
         [verticalView setStyle:style];
@@ -78,11 +76,13 @@ using namespace AdaptiveCards;
         [[rootView card] setInputs:inputs];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+        [rootView addActionsToConcurrentQueue:actions];
 
         [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
         // renders buttons and their associated actions
         [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
     }
+    
     return verticalView;
 }
 

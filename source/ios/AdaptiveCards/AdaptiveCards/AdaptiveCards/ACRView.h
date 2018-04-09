@@ -24,9 +24,13 @@
 
 - (NSMutableDictionary *)getTextMap;
 
+- (NSMutableDictionary *)getActionsMap;
+
 - (dispatch_queue_t)getSerialTextQueue;
 
 - (ACOAdaptiveCard *)card;
 
 - (UIView *)render;
+
++ (void) setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config;
 @end
