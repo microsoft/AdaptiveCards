@@ -102,7 +102,6 @@ export abstract class HostContainer {
         AdaptiveCard.elementTypeRegistry.reset();
         AdaptiveCard.actionTypeRegistry.reset();
         AdaptiveCard.useAutomaticContainerBleeding = false;
-        AdaptiveCard.preExpandSingleShowCardAction = false;
         AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
     }
 
@@ -117,6 +116,7 @@ export abstract class HostContainer {
 
     public getHostConfig(): HostConfig {
         return new HostConfig({
+            preExpandSingleShowCardAction: false,
             spacing: {
                 small: 3,
                 default: 8,

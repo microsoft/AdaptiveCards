@@ -118,7 +118,12 @@ export abstract class CardElement {
         }
 
         if (this._separatorElement) {
-            this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
+            if (this.parent && this.parent.isFirstElement(this)) {
+                this._separatorElement.style.display = "none";                
+            }
+            else {
+                this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
+            }
         }
     }
 
@@ -377,14 +382,13 @@ export abstract class CardElement {
 
             this.adjustRenderedElementSize(this._renderedElement);
             this.updateLayout(false);
-            this.updateRenderedElementVisibility();
         }
 
         return this._renderedElement;
     }
 
     updateLayout(processChildren: boolean = true) {
-        // Does nothing in base implementation
+        this.updateRenderedElementVisibility();
     }
 
     isRendered(): boolean {
@@ -780,6 +784,8 @@ export class TextBlock extends CardElement {
     }
 
     updateLayout(processChildren: boolean = false) {
+        super.updateLayout(processChildren);
+
         if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines && this.isRendered()) {
             // Reset the element's innerHTML in case the available room for
             // content has increased
@@ -2879,7 +2885,7 @@ export class Container extends CardElement {
         for (let item of this._items) {
             handleElement(item);
         }
-
+        
         return true;
     }
 
@@ -3139,6 +3145,8 @@ export class Container extends CardElement {
     }
 
     updateLayout(processChildren: boolean = true) {
+        super.updateLayout(processChildren);
+
         this.applyPadding();
 
         if (processChildren) {
@@ -3354,12 +3362,14 @@ export class ColumnSet extends CardElement {
         }
     }
 
-    get padding(): PaddingDefinition {
-        return this.getPadding();
-    }
+    isFirstElement(element: CardElement): boolean {
+        for (var i = 0; i < this._columns.length; i++) {
+            if (this._columns[i].isVisible) {
+                return this._columns[i] == element;
+            }
+        }
 
-    set padding(value: PaddingDefinition) {
-        this.setPadding(value);
+        return false;
     }
 
     getJsonTypeName(): string {
@@ -3416,6 +3426,8 @@ export class ColumnSet extends CardElement {
     }
 
     updateLayout(processChildren: boolean = true) {
+        super.updateLayout(processChildren);
+
         this.applyPadding();
         
         if (processChildren) {
@@ -3499,6 +3511,14 @@ export class ColumnSet extends CardElement {
         }
 
         return speak;
+    }
+
+    get padding(): PaddingDefinition {
+        return this.getPadding();
+    }
+
+    set padding(value: PaddingDefinition) {
+        this.setPadding(value);
     }
 
     get selectAction(): Action {
@@ -3994,6 +4014,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         if (target) {
             target.appendChild(renderedCard);
+
             this.updateLayout();
         }
 
