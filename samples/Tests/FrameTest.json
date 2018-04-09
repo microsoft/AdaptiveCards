@@ -50,6 +50,11 @@
         },
         {
             "type": "TextBlock",
+            "text": "Here is data3[2]: **{{data3[2]}}**.",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
             "text": "Here is data4.insideArray[1]: **{{data4.insideArray[1]}}**.",
             "wrap": true
         },

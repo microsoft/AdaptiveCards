@@ -220,6 +220,7 @@ Json::Value DataBindObject(
     {
         std::string key = it.key().asCString();
 
+        // Check if this is a "special" key
         size_t startPosition, endPosition;
         std::string specialKey = GetKey(key, 0, "{{#", "}}", &startPosition, &endPosition);
         if (!specialKey.empty())
@@ -227,7 +228,7 @@ Json::Value DataBindObject(
             std::string each("each");
             if (!specialKey.compare(0, each.length(), each))
             {
-                // Handles each arrays with the following syntax: 
+                // Handles #each arrays with syntax such as the following:
                 // {{#each myArray}} : {"type" : "TextBlock, "text" : "{{foo}}"}
                 // where "myArray" is an array of objects each with a "foo" property
 
