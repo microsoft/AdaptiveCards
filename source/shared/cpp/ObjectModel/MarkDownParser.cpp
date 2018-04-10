@@ -15,7 +15,7 @@ std::string MarkDownParser::TransformToHtml()
 {
     if (m_text.empty())
     {
-        return "<p></p>";
+        return "<body></body>";
     }
     // begin parsing html blocks
     ParseBlock();

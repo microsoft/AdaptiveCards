@@ -68,6 +68,9 @@ using namespace AdaptiveCards;
     if(!body.empty())
     {
         [rootView addTasksToConcurrentQueue:body];
+        // addTasksToConcurrentQueue spawns concurrent tasks, this flag indicates that
+        // all tasks hav been added to work queues, and is needed for complete notification to work properly
+        rootView.seenAllElements = YES;
 
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
