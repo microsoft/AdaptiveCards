@@ -7,12 +7,12 @@ std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 {
     if (m_isHead)
     {
-        m_token = "<body>" + m_token;
+        m_token = "<p>" + m_token;
     }
 
     if (m_isTail)
     {
-        return m_token + "</body>";
+        return m_token + "</p>";
     }
 
     return m_token;
@@ -105,12 +105,12 @@ std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
 
     if (m_isHead)
     {
-        return "<body>" + html.str();
+        return "<p>" + html.str();
     }
 
     if (m_isTail)
     {
-        return html.str() + "</body>";
+        return html.str() + "</p>";
     }
 
     return html.str();
@@ -143,12 +143,12 @@ std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
 
     if (m_isHead)
     {
-        return "<body>" + html.str();
+        return "<p>" + html.str();
     }
 
     if (m_isTail)
     {
-        return html.str() + "</body>";
+        return html.str() + "</p>";
     }
 
     return html.str();

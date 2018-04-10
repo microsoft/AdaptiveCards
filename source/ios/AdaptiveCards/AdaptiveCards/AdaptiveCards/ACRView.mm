@@ -303,6 +303,7 @@ using namespace AdaptiveCards;
                  ^{
                       // Initializing NSMutableAttributedString for HTML rendering is very slow
                       NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+                     [content deleteCharactersInRange:NSMakeRange(content.length - 1, 1)];
 
                       __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
                       // syncronize access to text map
@@ -329,9 +330,7 @@ using namespace AdaptiveCards;
                           ColorsConfig &colorConfig = (style == ACREmphasis)? [_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
                                                                                                  [_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
                           // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-                          [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfigForBlock.color
-                                                                                                                                                    colorsConfig:colorConfig
-                                                                                                                                                    subtleOption:textConfigForBlock.isSubtle],}
+                          [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfigForBlock.color colorsConfig:colorConfig subtleOption:textConfigForBlock.isSubtle],}
                                            range:NSMakeRange(0, content.length)];
                           lab.attributedText = content;
 

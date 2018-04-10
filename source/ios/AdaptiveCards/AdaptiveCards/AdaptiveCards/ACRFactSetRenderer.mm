@@ -108,9 +108,6 @@
     [titleStack setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
     [factSetWrapperView addArrangedSubview:valueStack];
-    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
-
-    [factSetWrapperView adjustHuggingForLastElement];
 
     for(auto fact :fctSet->GetFacts())
     {
@@ -132,6 +129,8 @@
                                                  elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                                   rootView:rootView
                                                    element:elem];
+        [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->factSet.title.maxWidth].active = YES;
+
         [titleStack addArrangedSubview:titleLab];
         [valueStack addArrangedSubview:valueLab];
         [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
