@@ -36,6 +36,7 @@
                 element:(std::shared_ptr<BaseCardElement> const &)element
 {
     ACRUILabel *lab = [[ACRUILabel alloc] init];
+    lab.isFactSetLabel = YES;
     lab.translatesAutoresizingMaskIntoConstraints = NO;
     lab.style = style;
     __block NSMutableAttributedString *content = nil;

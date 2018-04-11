@@ -11,5 +11,6 @@
 @interface ACRUILabel:UILabel
 
 @property ACRContainerStyle style;
+@property BOOL isFactSetLabel;
 
 @end
