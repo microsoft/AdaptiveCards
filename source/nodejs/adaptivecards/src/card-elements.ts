@@ -2881,16 +2881,19 @@ export class Container extends CardElementContainer {
                     }
 
                     if (effectivePadding.bottom == Enums.Spacing.None) {
-                        effectivePadding = Object.assign({}, effectivePadding, {
-                            bottom: Enums.Spacing.Default
-                        })
+                        effectivePadding = Object.assign(
+                            { },
+                            effectivePadding,
+                            { bottom: Enums.Spacing.Default }
+                        );
                     }
 
                     if (effectivePadding.left == Enums.Spacing.None) {
-                        effectivePadding = Object.assign({}, effectivePadding, {
-                            left: Enums.Spacing.Default
-                        })
-
+                        effectivePadding = Object.assign(
+                            { },
+                            effectivePadding,
+                            { left: Enums.Spacing.Default }
+                        );
                     }
                 }
 
