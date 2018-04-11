@@ -27,72 +27,49 @@ using namespace Windows::Data::Json;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-MainPage::MainPage()
+task<void> MainPage::DoStuff()
 {
-	m_renderer = ref new AdaptiveCardRenderer();
-	totalParseTicks = totalRenderTicks = count = 0;
-	InitializeCriticalSection(&ticksCriticalSection);
+	AdaptiveCardRenderer^ renderer = ref new AdaptiveCardRenderer();
+	ULONGLONG totalParseTicks = 0, totalRenderTicks = 0, count = 0;
 
 
 	FolderPicker^ folderPicker = ref new FolderPicker();
 	folderPicker->FileTypeFilter->Append(".json");
+	auto pickedFolder = co_await folderPicker->PickSingleFolderAsync();
 
-	auto pickFolderTask = create_task(folderPicker->PickSingleFolderAsync());
-	pickFolderTask.then([&](StorageFolder^ pickedFolder) -> IAsyncOperation<IVectorView<StorageFile^>^>^
+	auto files = co_await pickedFolder->GetFilesAsync();
+
+	for each(auto file in files)
 	{
-		return pickedFolder->GetFilesAsync();
-	}).then([&](IVectorView<StorageFile^>^ files)
-	{
-		for each(auto file in files)
-		{
-			create_task(FileIO::ReadTextAsync(file)).then([&](String^ payload)
-			{
-				ULONGLONG startTicks = GetTickCount64();
-				AdaptiveCardParseResult^ parseResult = AdaptiveCard::FromJsonString(payload);
-				ULONGLONG parseEndTicks = GetTickCount64();
+		String^ payload = co_await FileIO::ReadTextAsync(file);
 
-				RenderedAdaptiveCard^ renderedCard = m_renderer->RenderAdaptiveCard(parseResult->AdaptiveCard);
-				ULONGLONG endTicks = GetTickCount64();
+		ULONGLONG startTicks = GetTickCount64();
+		AdaptiveCardParseResult^ parseResult = AdaptiveCard::FromJsonString(payload);
+		ULONGLONG parseEndTicks = GetTickCount64();
 
-				ULONGLONG parseTicks = parseEndTicks - startTicks;
-				ULONGLONG renderTicks = endTicks - parseEndTicks;
-				ULONGLONG totalTicks = endTicks - startTicks;
+		RenderedAdaptiveCard^ renderedCard = renderer->RenderAdaptiveCard(parseResult->AdaptiveCard);
+		ULONGLONG endTicks = GetTickCount64();
 
-				{
-					EnterCriticalSection(&ticksCriticalSection);
-					totalParseTicks += parseTicks;
-					totalRenderTicks += renderTicks;
-					count++;
-					LeaveCriticalSection(&ticksCriticalSection);
-				}
+		ULONGLONG parseTicks = parseEndTicks - startTicks;
+		ULONGLONG renderTicks = endTicks - parseEndTicks;
+		ULONGLONG totalTicks = endTicks - startTicks;
 
-				ULONGLONG averageParseTicks = totalParseTicks / count;
-				ULONGLONG averageRenderTicks = totalRenderTicks / count;
-			});
-		}
-	});
+		totalParseTicks += parseTicks;
+		totalRenderTicks += renderTicks;
+		count++;
+	}
 
-	//FileOpenPicker^ picker = ref new FileOpenPicker();
-	//picker->FileTypeFilter->Append(".json");
+	ULONGLONG averageParseTicks = totalParseTicks / count;
+	ULONGLONG averageRenderTicks = totalRenderTicks / count;
 
-	//auto pickFolderTask = create_task(picker->PickSingleFileAsync());
-	//pickFolderTask.then([&](StorageFile^ pickedFile) -> IAsyncOperation<String^>^
-	//{
-	//	return FileIO::ReadTextAsync(pickedFile);
-	//}).then([&](String^ payload) {
+	double parsePercent = (double)totalParseTicks / ((double)totalParseTicks + (double)totalRenderTicks);
+	double renderPercent = (double)totalRenderTicks / ((double)totalParseTicks + (double)totalRenderTicks);
+	ULONG foo = 0;
+}
 
-	//	AdaptiveCardRenderer^ renderer = ref new AdaptiveCardRenderer();
-	//	RenderedAdaptiveCard^ renderedCard = renderer->RenderAdaptiveCardFromJsonString(payload);
-	//});
-
-    //AdaptiveTextBlock^ textBlock = ref new AdaptiveTextBlock();
-    //textBlock->Text = "This is some text";
-
-    //AdaptiveCard^ card = ref new AdaptiveCard();
-    //card->Body->Append(textBlock);
-
-    //AdaptiveCardRenderer^ renderer = ref new AdaptiveCardRenderer();
-    //RenderedAdaptiveCard^ renderedCard = renderer->RenderAdaptiveCard(card);
-
+MainPage::MainPage()
+{
 	InitializeComponent();
+
+	DoStuff();
 }
