@@ -64,6 +64,8 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ImageSet, "imageSet" },
         { AdaptiveCardSchemaKey::ImageSize, "imageSize" },
         { AdaptiveCardSchemaKey::ImageSizes, "imageSizes" },
+        { AdaptiveCardSchemaKey::PixelWidth, "pixelWidth" },
+        { AdaptiveCardSchemaKey::PixelHeight, "pixelHeight" },
         { AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin" },
         { AdaptiveCardSchemaKey::IsMultiline, "isMultiline" },
         { AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect" },
