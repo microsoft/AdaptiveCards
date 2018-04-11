@@ -2,7 +2,7 @@
 #include "ParseUtil.h"
 #include "TextInput.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 TextInput::TextInput() :
     BaseInputElement(CardElementType::TextInput),
@@ -65,12 +65,12 @@ void TextInput::SetMaxLength(const unsigned int value)
     m_maxLength = value;
 }
 
-TextInputStyle AdaptiveCards::TextInput::GetTextInputStyle() const
+TextInputStyle TextInput::GetTextInputStyle() const
 {
     return m_style;
 }
 
-void AdaptiveCards::TextInput::SetTextInputStyle(const TextInputStyle value)
+void TextInput::SetTextInputStyle(const TextInputStyle value)
 {
     m_style = value;
 }

@@ -21,8 +21,6 @@
 @property (strong, nonatomic) NSString *hostconfig;
 @property UIView *curView;
 @property UIScrollView *scrView;
-@property UIStackView *mainContentView;
-@property NSString *userJson;
 
 @end
 

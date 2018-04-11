@@ -5,8 +5,7 @@
 #include "json/json.h"
 #include "ParseUtil.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class BaseActionElement
 {
 public:
@@ -22,6 +21,9 @@ public:
 
     virtual std::string GetId() const;
     virtual void SetId(const std::string value);
+
+    virtual std::string GetIconUrl() const;
+    virtual void SetIconUrl(const std::string& value);
 
     virtual const ActionType GetElementType() const;
 
@@ -41,6 +43,7 @@ private:
     std::string m_typeString;
     std::string m_title;
     std::string m_id;
+    std::string m_iconUrl;
     Json::Value m_additionalProperties;
 
 protected:
@@ -57,6 +60,7 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
 
     baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     baseActionElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
+    baseActionElement->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
 
     // Walk all properties and put any unknown ones in the additional properties json
     for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)
@@ -69,4 +73,5 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
     }
     return cardElement;
 }
-}
+AdaptiveSharedNamespaceEnd
+

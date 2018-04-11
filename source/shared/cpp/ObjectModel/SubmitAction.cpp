@@ -2,7 +2,7 @@
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit)
 {

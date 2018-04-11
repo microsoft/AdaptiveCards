@@ -6,14 +6,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Globalization::DateTimeFormatting;
 using namespace ABI::Windows::UI::Xaml; 
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-using namespace AdaptiveCards::Rendering::Uwp;
+using namespace AdaptiveNamespace;
 
 std::string InputValue::SerializeTextInput() const
 {
@@ -128,13 +128,13 @@ std::string InputValue::SerializeChoiceSetInput() const
     ComPtr<IAdaptiveChoiceSetInput> choiceInput;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&choiceInput));
 
-    ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
+    ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
     THROW_IF_FAILED(choiceInput->get_ChoiceSetStyle(&choiceSetStyle));
 
     boolean isMultiSelect;
     THROW_IF_FAILED(choiceInput->get_IsMultiSelect(&isMultiSelect));
 
-    if (choiceSetStyle == ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle_Compact && !isMultiSelect)
+    if (choiceSetStyle == ABI::AdaptiveNamespace::ChoiceSetStyle_Compact && !isMultiSelect)
     {
         // Handle compact style
         ComPtr<ISelector> selector;
@@ -211,7 +211,7 @@ HRESULT InputValue::get_CurrentValue(HSTRING * result)
     ComPtr<IAdaptiveCardElement> cardElement;
     RETURN_IF_FAILED(m_adaptiveInputElement.As(&cardElement));
 
-    ABI::AdaptiveCards::Rendering::Uwp::ElementType elementType;
+    ABI::AdaptiveNamespace::ElementType elementType;
     RETURN_IF_FAILED(cardElement->get_ElementType(&elementType));
 
     std::string serializedInput;

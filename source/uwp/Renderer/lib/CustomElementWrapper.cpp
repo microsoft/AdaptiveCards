@@ -2,10 +2,9 @@
 #include "CustomElementWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
 
     bool CustomElementWrapper::GetSeparator() const
     {
@@ -21,7 +20,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     Spacing CustomElementWrapper::GetSpacing() const
     {
-        ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing;
+        ABI::AdaptiveNamespace::Spacing spacing;
         THROW_IF_FAILED(m_cardElement->get_Spacing(&spacing));
 
         return static_cast<Spacing> (spacing);
@@ -29,7 +28,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     void CustomElementWrapper::SetSpacing(const Spacing value)
     {
-        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(value)));
+        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveNamespace::Spacing>(value)));
     }
 
     std::string CustomElementWrapper::GetId() const
@@ -57,8 +56,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return jsonCppValue;
     }
 
-    HRESULT CustomElementWrapper::GetWrappedElement(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** cardElement)
+    HRESULT CustomElementWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement)
     {
         return m_cardElement.CopyTo(cardElement);
     }
-}}}
+AdaptiveNamespaceEnd

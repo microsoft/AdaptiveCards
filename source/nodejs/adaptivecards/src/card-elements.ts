@@ -117,7 +117,12 @@ export abstract class CardElement {
         }
 
         if (this._separatorElement) {
-            this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
+            if (this.parent && this.parent.isFirstElement(this)) {
+                this._separatorElement.style.display = "none";                
+            }
+            else {
+                this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
+            }
         }
     }
 
@@ -411,7 +416,6 @@ export abstract class CardElement {
 
             this.adjustRenderedElementSize(this._renderedElement);
             this.updateLayout(false);
-            this.updateRenderedElementVisibility();
         }
         else if (this.isDesignMode()) {
             this._renderedElement = this.createPlaceholderElement();
@@ -421,7 +425,7 @@ export abstract class CardElement {
     }
 
     updateLayout(processChildren: boolean = true) {
-        // Does nothing in base implementation
+        this.updateRenderedElementVisibility();
     }
 
     isRendered(): boolean {
@@ -832,6 +836,8 @@ export class TextBlock extends CardElement {
     }
 
     updateLayout(processChildren: boolean = false) {
+        super.updateLayout(processChildren);
+
         if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines && this.isRendered()) {
             // Reset the element's innerHTML in case the available room for
             // content has increased
@@ -1038,16 +1044,8 @@ export class Image extends CardElement {
 
         if (!Utils.isNullOrEmpty(this.url)) {
             element = document.createElement("div");
-            element.classList.add("ac-image");
             element.style.display = "flex";
             element.style.alignItems = "flex-start";
-
-            if (this.selectAction != null && this.hostConfig.supportsInteractivity) {
-                element.tabIndex = 0
-                element.setAttribute("role", "button");
-                element.setAttribute("aria-label", this.selectAction.title);
-                element.classList.add("ac-selectable");
-            }
 
             element.onkeypress = (e) => {
                 if (this.selectAction) {
@@ -1079,6 +1077,14 @@ export class Image extends CardElement {
             var imageElement = document.createElement("img");
             imageElement.style.maxHeight = "100%";
             imageElement.style.minWidth = "0";
+            imageElement.classList.add("ac-image");
+
+            if (this.selectAction != null && this.hostConfig.supportsInteractivity) {
+                imageElement.tabIndex = 0
+                imageElement.setAttribute("role", "button");
+                imageElement.setAttribute("aria-label", this.selectAction.title);
+                imageElement.classList.add("ac-selectable");
+            }
 
             if (this.pixelWidth || this.pixelHeight) {
                 if (this.pixelWidth) {
@@ -2421,7 +2427,7 @@ class ActionCollection {
 
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
-        if (AdaptiveCard.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
+        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
@@ -3069,7 +3075,7 @@ export class Container extends CardElementContainer {
         for (let item of this._items) {
             handleElement(item);
         }
-
+        
         return true;
     }
 
@@ -3332,6 +3338,8 @@ export class Container extends CardElementContainer {
     }
 
     updateLayout(processChildren: boolean = true) {
+        super.updateLayout(processChildren);
+
         this.applyPadding();
 
         if (processChildren) {
@@ -3583,12 +3591,14 @@ export class ColumnSet extends CardElementContainer {
         }
     }
 
-    get padding(): PaddingDefinition {
-        return this.getPadding();
-    }
+    isFirstElement(element: CardElement): boolean {
+        for (var i = 0; i < this._columns.length; i++) {
+            if (this._columns[i].isVisible) {
+                return this._columns[i] == element;
+            }
+        }
 
-    set padding(value: PaddingDefinition) {
-        this.setPadding(value);
+        return false;
     }
 
     getCount(): number {
@@ -3661,6 +3671,8 @@ export class ColumnSet extends CardElementContainer {
     }
 
     updateLayout(processChildren: boolean = true) {
+        super.updateLayout(processChildren);
+
         this.applyPadding();
         
         if (processChildren) {
@@ -3762,6 +3774,14 @@ export class ColumnSet extends CardElementContainer {
         }
 
         return speak;
+    }
+
+    get padding(): PaddingDefinition {
+        return this.getPadding();
+    }
+
+    set padding(value: PaddingDefinition) {
+        this.setPadding(value);
     }
 
     get selectAction(): Action {
@@ -4093,7 +4113,6 @@ export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: Version = new Version(1, 0);
 
     static useAutomaticContainerBleeding: boolean = false;
-    static preExpandSingleShowCardAction: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
@@ -4272,6 +4291,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         if (target) {
             target.appendChild(renderedCard);
+
             this.updateLayout();
         }
 

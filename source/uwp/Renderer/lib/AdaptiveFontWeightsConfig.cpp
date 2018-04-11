@@ -2,10 +2,9 @@
 #include "AdaptiveFontWeightsConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveFontWeightsConfig::RuntimeClassInitialize() noexcept try
     {
         FontWeightsConfig fontWeightsConfig;
@@ -62,4 +61,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_bolder = bolder;
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

@@ -4,8 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 struct FontSizesConfig
 {
@@ -166,6 +165,7 @@ struct ActionsConfig
     unsigned int buttonSpacing = 10;
     unsigned int maxActions = 5;
     Spacing spacing = Spacing::Default;
+    IconPlacement iconPlacement = IconPlacement::AboveTitle;
 
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
 };
@@ -189,4 +189,4 @@ struct HostConfig
     static HostConfig Deserialize(const Json::Value& json);
     static HostConfig DeserializeFromString(const std::string jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

@@ -213,6 +213,7 @@ namespace AdaptiveCardTestApp.ViewModels
 
                             CurrentCardVisual = xaml;
 
+                            ExpandShowCards(xaml);
                             NormalizeTimePickers(xaml);
                             await WaitOnAllImagesAsync(xaml);
 
@@ -247,6 +248,21 @@ namespace AdaptiveCardTestApp.ViewModels
             }
 
             return new Tuple<string, StorageFile>(error, file);
+        }
+
+        /// <summary>
+        /// This method expands all inline show cards so that changes in how show cards are rendered can be covered by this test suite
+        /// </summary>
+        /// <param name="el"></param>
+        private static void ExpandShowCards(UIElement el)
+        {
+            foreach (var card in GetAllDescendants(el).OfType<Grid>())
+            {
+                if (card.Visibility == Visibility.Collapsed)
+                {
+                    card.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         /// <summary>

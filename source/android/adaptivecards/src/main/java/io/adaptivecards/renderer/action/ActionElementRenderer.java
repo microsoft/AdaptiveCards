@@ -1,6 +1,11 @@
 package io.adaptivecards.renderer.action;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +18,15 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
+import io.adaptivecards.renderer.ImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.http.HttpRequestResult;
 
 public class ActionElementRenderer implements IBaseActionElementRenderer
 {
@@ -57,6 +65,40 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         private ICardActionHandler m_cardActionHandler;
     }
 
+    public static class ButtonOnLayoutChangedListener implements View.OnLayoutChangeListener
+    {
+        @Override
+        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
+        {
+            Button button = (Button)v;
+
+            double textHeight = button.getTextSize();
+
+            Rect bounds = new Rect();
+            String text = button.getText().toString().toUpperCase();
+
+            Paint paint = button.getPaint();
+            paint.setTextSize((float) textHeight);
+            paint.getTextBounds(text, 0, text.length(), bounds);
+
+            Drawable[] icons = button.getCompoundDrawables();
+            if(icons[0] != null) {
+                double iconWidth = icons[0].getIntrinsicWidth();
+                double buttonWidth = button.getWidth();
+                double boundsWidth = bounds.width();
+                double iconStartPosition = (buttonWidth - (iconWidth + mPadding + boundsWidth)) / 2;
+
+                button.setCompoundDrawablePadding((int) (-iconStartPosition + mPadding));
+                button.setPadding((int) iconStartPosition, 0, 0, 0);
+            }
+        }
+
+        void setPadding(int padding){
+            mPadding = padding;
+        }
+
+        private int mPadding;
+    }
 
     protected class ShowCardInlineClickListener implements View.OnClickListener
     {
@@ -98,13 +140,50 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         private ViewGroup m_hiddenCardsLayout;
     }
 
+    private class ActionElementRendererImageLoaderAsync extends ImageLoaderAsync
+    {
 
+        protected ActionElementRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, IconPlacement iconPlacement)
+        {
+            super(renderedCard, containerView);
+            m_iconPlacement = iconPlacement;
+        }
+
+        @Override
+        protected Bitmap styleBitmap(Bitmap bitmap)
+        {
+            Button button = (Button) super.m_view;
+
+            Drawable originalDrawableIcon = new BitmapDrawable(null, bitmap);
+            double imageHeight = button.getTextSize();
+            double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
+            double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
+
+            return Bitmap.createScaledBitmap(bitmap, (int)(imageWidth * 2), (int)(imageHeight * 2), false);
+        }
+
+        @Override
+        protected void renderBitmap(Bitmap bitmap) {
+            Button button = (Button) super.m_view;
+            Drawable drawableIcon = new BitmapDrawable(null, bitmap);
+
+            if( m_iconPlacement == IconPlacement.AboveTitle ) {
+                button.setCompoundDrawablesWithIntrinsicBounds(null, drawableIcon, null, null);
+            } else {
+                button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
+                button.requestLayout();
+            }
+        }
+
+        private IconPlacement m_iconPlacement;
+    }
 
     public Button renderButton(
             Context context,
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            RenderedAdaptiveCard renderedCard)
     {
         Button button = new Button(context);
         button.setText(baseActionElement.GetTitle());
@@ -126,7 +205,23 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
 
         button.setLayoutParams(layoutParams);
+
+        String iconUrl = baseActionElement.GetIconUrl();
+        if( !iconUrl.isEmpty() ) {
+            ActionElementRendererImageLoaderAsync imageLoader = new ActionElementRendererImageLoaderAsync(renderedCard, button, hostConfig.getActions().getIconPlacement());
+            imageLoader.execute(baseActionElement.GetIconUrl());
+
+            // Only when the icon must be placed to the left of the title, we have to do this
+            if (hostConfig.getActions().getIconPlacement() == IconPlacement.LeftOfTitle) {
+                int padding = (int) hostConfig.getSpacing().getDefaultSpacing();
+                ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
+                layoutChangedListener.setPadding(padding);
+                button.addOnLayoutChangeListener(layoutChangedListener);
+            }
+        }
+
         viewGroup.addView(button);
+
         return button;
     }
 
@@ -144,7 +239,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             throw new IllegalArgumentException("Action Handler is null.");
         }
 
-        Button button = renderButton(context, viewGroup, baseActionElement, hostConfig);
+        Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard);
 
         if (baseActionElement.GetElementType() == ActionType.ShowCard
                 && hostConfig.getActions().getShowCard().getActionMode() == ActionMode.Inline)

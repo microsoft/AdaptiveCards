@@ -30,10 +30,11 @@ using namespace AdaptiveCards;
     ACOHostConfig *_hostConfig;
     NSMutableDictionary *_imageViewMap;
     NSMutableDictionary *_textMap;
+    NSMutableDictionary *_actionsMap;
     dispatch_queue_t _serial_queue;
     dispatch_queue_t _serial_text_queue;
     int _serialNumber;
-    std::list<const BaseCardElement*> _asyncRenderedElements;
+    std::list<const void*> _asyncRenderedElements;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -44,6 +45,7 @@ using namespace AdaptiveCards;
         _hostConfig = [[ACOHostConfig alloc] initWithConfig:cHostConfig];
         _imageViewMap = [[NSMutableDictionary alloc] init];
         _textMap = [[NSMutableDictionary alloc] init];
+        _actionsMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", DISPATCH_QUEUE_SERIAL);
         _serial_text_queue = dispatch_queue_create("io.adaptiveCards.serial_text_queue", DISPATCH_QUEUE_SERIAL);
         _serialNumber = 0;
@@ -54,44 +56,27 @@ using namespace AdaptiveCards;
 // Initializes ACRView instance with HostConfig and AdaptiveCard
 - (instancetype)init:(ACOAdaptiveCard *)card
           hostconfig:(ACOHostConfig *)config
-               frame:(CGRect)frame
+     widthConstraint:(float)width
 {
-    self = [self initWithFrame:frame];
-    if(self)
-    {
+    self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
+    if(self){
         _adaptiveCard = card;
-        if(config)
-        {
+        if(config){
             _hostConfig = config;
         }
         [self render];
-
-        [self callDidLoadElementsIfNeeded];
     }
     return self;
 }
 
-- (void)render
+- (UIView *)render
 {
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
-    std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
-    NSString* imgUrl = nil;
-    if(!backgroundImage.empty())
-        imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
-    if (imgUrl)
-    {
-        NSURL *url = [NSURL URLWithString:imgUrl];
-        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-        UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
-        [self addSubview:imgView];
-        [self sendSubviewToBack:imgView];
-        [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]|", nil];
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(imgView);
-        for(NSString *constraint in visualFormats){
-            [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
-        }
+
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
+
+    if(self.frame.size.width){
+        [NSLayoutConstraint constraintWithItem:newView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
     if(style != ContainerStyle::None)
@@ -105,74 +90,41 @@ using namespace AdaptiveCards;
         {
             num = std::stoul([_hostConfig getHostConfig]->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
         }
-        self.backgroundColor =
+        newView.backgroundColor =
         [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
                         green:((num & 0x0000FF00) >>  8) / 255.0
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
-    std::vector<std::shared_ptr<BaseCardElement>> body = [_adaptiveCard card]->GetBody();
-
-
-    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card]
-                                                             inputs:inputs
-                                                           rootView:self
-                                                         guideFrame:self.frame
-                                                         hostconfig:_hostConfig];
-    // new rendered adaptiveCard view is added as a sub view
-    [self addSubview:newView];
-    // affix the left margin of the rendered adaptiveCard to current view
-    NSLayoutConstraint *constraint =
-    [NSLayoutConstraint constraintWithItem:self
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:newView
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1.0
-                                  constant:0];
-    [self addConstraint:constraint];
-    // affix the right margin of the rendered adaptiveCard to current view
-    constraint =
-    [NSLayoutConstraint constraintWithItem:self
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:newView
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1.0
-                                  constant:0];
-    [self addConstraint:constraint];
-
-    constraint =
-    [NSLayoutConstraint constraintWithItem:self
-                                 attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:newView
-                                 attribute:NSLayoutAttributeTop
-                                multiplier:1.0
-                                  constant:0];
-    [self addConstraint:constraint];
-
-    constraint =
-    [NSLayoutConstraint constraintWithItem:self
-                                 attribute:NSLayoutAttributeBottom
-                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                    toItem:newView
-                                 attribute:NSLayoutAttributeBottom
-                                multiplier:1.0
-                                  constant:0];
-    [self addConstraint:constraint];
-
-    [NSLayoutConstraint activateConstraints:
-     @[[newView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-       [newView.topAnchor constraintEqualToAnchor:self.topAnchor]]];
+    std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
+    NSString* imgUrl = nil;
+    if(!backgroundImage.empty())
+        imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
+    if (imgUrl)
+    {
+        NSURL *url = [NSURL URLWithString:imgUrl];
+        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
+        [newView addSubview:imgView];
+        [newView sendSubviewToBack:imgView];
+        [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]|", nil];
+        NSDictionary *viewMap = NSDictionaryOfVariableBindings(imgView);
+        for(NSString *constraint in visualFormats){
+            [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+        }
+    }
+    [self callDidLoadElementsIfNeeded];
+    return newView;
 }
 
-- (void)addToAsyncRenderingList:(std::shared_ptr<BaseCardElement> const &)elem
+- (void)addToAsyncRenderingList:(std::shared_ptr<void> const &)elem
 {
     _asyncRenderedElements.push_back(elem.get());
 }
 
-- (void)removeFromAsyncRenderingListAndNotifyIfNeeded:(std::shared_ptr<BaseCardElement> const &)elem
+- (void)removeFromAsyncRenderingListAndNotifyIfNeeded:(std::shared_ptr<void> const &)elem
 {
     _asyncRenderedElements.remove(elem.get());
 
@@ -192,7 +144,7 @@ using namespace AdaptiveCards;
 }
 
 // Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
-- (void) addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body
+- (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
 {
     for(auto &elem : body)
     {
@@ -337,7 +289,22 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void) processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
+// Walk through the actions found and process them concurrently
+- (void)addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions
+{
+    // Move this to a different function
+    for(auto &action : actions)
+    {
+        std::string iconUrl = action->GetIconUrl();
+        if(!iconUrl.empty())
+        {
+            [self tagBaseActionElement:action];
+            [self processActionWithIconConcurrently:action];
+        }
+    }
+}
+
+- (void)processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
 {
     [self addToAsyncRenderingList:imageElem];
 
@@ -407,12 +374,78 @@ using namespace AdaptiveCards;
              }
     );
 }
+
+- (void)processActionWithIconConcurrently:(std::shared_ptr<BaseActionElement> const &)action
+{
+    [self addToAsyncRenderingList:action];
+    
+    std::shared_ptr<BaseActionElement> act = action;
+    
+    /// generate a string key to uniquely identify Image
+    if(!(act->GetIconUrl().empty()))
+    {
+        // run image downloading and processing on global queue which is concurrent and different from main queue
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+            ^{
+                NSString *urlStr = [NSString stringWithCString:act->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+                // generate key for imageMap from image element's id
+                NSString *key = [NSString stringWithCString:act->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+                NSURL *url = [NSURL URLWithString:urlStr];
+                
+                // download image
+                UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+                
+                // UITask can't be run on global queue, add task to main queue
+                dispatch_async(dispatch_get_main_queue(),
+                    ^{
+                        __block UIButton *button = nil;
+                        // syncronize access to image map
+                        dispatch_sync(_serial_queue,
+                            ^{
+                                if(!_actionsMap[key]) // UIButton is not ready, cache UIImageView
+                                {
+                                    _actionsMap[key] = imageView;
+                                }
+                                else // UIButton ready, get view
+                                {
+                                    button = _actionsMap[key];
+                                }
+                            });
+                        
+                        // if view is available, set image to it, and continue image processing
+                        if(button)
+                        {
+                            [ACRView setImageView:imageView inButton:button withConfig:_hostConfig];
+                            
+                            // remove tag
+                            std::string id = act->GetId();
+                            std::size_t idx = id.find_last_of('_');
+                            act->SetId(id.substr(0, idx));
+                        }
+                                          
+                        [self removeFromAsyncRenderingListAndNotifyIfNeeded:act];
+                    });
+                }
+            );
+    }
+}
+
 // add postfix to existing BaseCardElement ID to be used as key
--(void) tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &) elem
+-(void)tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
     std::string serial_number_as_string = std::to_string(_serialNumber);
     // concat a newly generated key to a existing id, the key will be removed after use
     elem->SetId(elem->GetId() + "_" + serial_number_as_string);
+    ++_serialNumber;
+}
+
+// add postfix to existing BaseCardElement ID to be used as key
+-(void)tagBaseActionElement:(std::shared_ptr<BaseActionElement> const &)action
+{
+    std::string serial_number_as_string = std::to_string(_serialNumber);
+    // concat a newly generated key to a existing id, the key will be removed after use
+    action->SetId(action->GetId() + "_" + serial_number_as_string);
     ++_serialNumber;
 }
 
@@ -435,8 +468,39 @@ using namespace AdaptiveCards;
     return _textMap;
 }
 
+- (NSMutableDictionary *)getActionsMap
+{
+    return _actionsMap;
+}
+
 - (ACOAdaptiveCard *)card
 {
     return _adaptiveCard;
+}
+
++ (void)setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config
+{
+    // Format the image so it fits in the button and is placed where it must be placed
+    CGSize contentSize = [button.titleLabel intrinsicContentSize];
+    double imageHeight = contentSize.height;
+    CGSize originalImageSize = [imageView intrinsicContentSize];
+    double scaleRatio = imageHeight / originalImageSize.height;
+    double imageWidth = scaleRatio * originalImageSize.width;
+    
+    IconPlacement iconPlacement = [config getHostConfig]->actions.iconPlacement;
+    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle)
+    {
+        [imageView setFrame:CGRectMake( (button.frame.size.width - imageWidth) / 2, 5, imageWidth, imageHeight)];
+        [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, 5, -imageHeight, 5)];
+        [button setContentEdgeInsets:UIEdgeInsetsMake(5, 5, 5 + imageHeight, 5)];
+    }
+    else
+    {
+        int iconPadding = [config getHostConfig]->spacing.defaultSpacing;
+        [button setTitleEdgeInsets:UIEdgeInsetsMake(5, (iconPadding + imageWidth), 5, 0)];
+        double titleOriginX = button.titleLabel.frame.origin.x;
+        [imageView setFrame:CGRectMake( titleOriginX - (iconPadding + imageWidth) / 2, 5, imageWidth, imageHeight)];
+    }
+    [button addSubview:imageView];
 }
 @end

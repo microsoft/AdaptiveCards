@@ -3,7 +3,7 @@
 #include "ParseUtil.h"
 #include "ShowCardAction.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 ShowCardAction::ShowCardAction() : BaseActionElement(ActionType::ShowCard)
 {
@@ -19,12 +19,12 @@ Json::Value ShowCardAction::SerializeToJsonValue()
     return root;
 }
 
-std::shared_ptr<AdaptiveCard> AdaptiveCards::ShowCardAction::GetCard() const
+std::shared_ptr<AdaptiveCard> ShowCardAction::GetCard() const
 {
     return m_card;
 }
 
-void AdaptiveCards::ShowCardAction::SetCard(const std::shared_ptr<AdaptiveCard> card)
+void ShowCardAction::SetCard(const std::shared_ptr<AdaptiveCard> card)
 {
     m_card = card;
 }

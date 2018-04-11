@@ -5,8 +5,7 @@
 #include "Image.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class BaseCardElement;
 class ImageSet : public BaseCardElement
 {
@@ -44,4 +43,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

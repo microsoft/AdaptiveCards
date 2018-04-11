@@ -4,8 +4,7 @@
 #include "MarkDownHtmlGenerator.h"
 #include <list>
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     // Holds Parsing Result of MarkDown String
     class MarkDownParsedResult
     {
@@ -40,4 +39,4 @@ namespace AdaptiveCards
         // take m_emphasisLookUpTable and matches left and right emphasises
         void MatchLeftAndRightEmphasises();
     };
-}
+AdaptiveSharedNamespaceEnd

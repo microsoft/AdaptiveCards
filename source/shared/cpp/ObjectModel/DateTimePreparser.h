@@ -4,8 +4,7 @@
 #include "Enums.h"
 #include "DateTimePreparsedToken.h"
 
-namespace AdaptiveCards
-{   
+AdaptiveSharedNamespaceStart   
     // Still have to rename this thing
     class DateTimePreparser
     {
@@ -23,4 +22,4 @@ namespace AdaptiveCards
 
         std::vector<std::shared_ptr<DateTimePreparsedToken>> m_textTokenCollection;
     };
-}
+AdaptiveSharedNamespaceEnd

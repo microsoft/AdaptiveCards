@@ -18,7 +18,7 @@
 #include <iostream>
 #include <codecvt>
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 DateTimePreparser::DateTimePreparser()
 {

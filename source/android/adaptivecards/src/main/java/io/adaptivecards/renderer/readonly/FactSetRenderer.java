@@ -46,7 +46,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle(), containerStyle);
         TextBlockRenderer.setTextSize(context, textView, textConfig.getSize(), hostConfig);
-        TextBlockRenderer.getInstance().setTextWeight(textView, textConfig.getWeight());
+        TextBlockRenderer.getInstance().setTextFormat(textView, hostConfig.getFontFamily(), textConfig.getWeight());
         textView.setSingleLine(!textConfig.getWrap());
         textView.setEllipsize(TextUtils.TruncateAt.END);
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
