@@ -266,12 +266,13 @@ using namespace AdaptiveCards;
     std::shared_ptr<BaseCardElement> textElementForBlock = textElement;
     struct TextConfig textConfigForBlock = textConfig;
     std::string textForBlock = text;
+    CardElementType elementTypeForBlock = elementType;
 
     /// dispatch to concurrent queue
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
         ^{
             NSString* parsedString = nil;
-            if(CardElementType::TextBlock == elementType){
+            if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
                 // MarkDownParser transforms text with MarkDown to a html string
                 std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement].c_str());
@@ -322,7 +323,7 @@ using namespace AdaptiveCards;
                       if(lab) {
                           // Set paragraph style such as line break mode and alignment
                           NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-                          paragraphStyle.lineBreakMode = textConfigForBlock.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+                          paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
                           paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:horizontalAlignment];
 
                           // Obtain text color to apply to the attributed string
