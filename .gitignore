@@ -48,6 +48,7 @@ artifacts/
 *_i.c
 *_p.c
 *_i.h
+*_p.h
 *.ilk
 *.meta
 *.obj
@@ -182,6 +183,9 @@ _pkginfo.txt
 *.[Cc]ache
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
+
+# Visual Studio 2017 auto generated files
+Generated\ Files/
 
 # Others
 ClientBin/

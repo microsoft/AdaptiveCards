@@ -22,6 +22,12 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) override;
 
+        IFACEMETHODIMP RenderBasic(
+            ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+            ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+            IInspectable** result);
+
         IFACEMETHODIMP FromJson(
             ABI::Windows::Data::Json::IJsonObject *,
             ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParsers,
