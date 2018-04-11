@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="b3a12887-287f-4abf-b24d-5e16b81925c7"
+    Name="d2583be7-81b8-4807-a431-2cf4065b2db2"
     Publisher="CN=rebecch"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="b3a12887-287f-4abf-b24d-5e16b81925c7" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="d2583be7-81b8-4807-a431-2cf4065b2db2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>PerfApp</DisplayName>
