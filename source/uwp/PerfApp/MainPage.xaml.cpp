@@ -31,6 +31,8 @@ MainPage::MainPage()
 {
 	m_renderer = ref new AdaptiveCardRenderer();
 	totalParseTicks = totalRenderTicks = count = 0;
+	InitializeCriticalSection(&ticksCriticalSection);
+
 
 	FolderPicker^ folderPicker = ref new FolderPicker();
 	folderPicker->FileTypeFilter->Append(".json");
@@ -56,9 +58,13 @@ MainPage::MainPage()
 				ULONGLONG renderTicks = endTicks - parseEndTicks;
 				ULONGLONG totalTicks = endTicks - startTicks;
 
-				totalParseTicks += parseTicks;
-				totalRenderTicks += renderTicks;
-				count++;
+				{
+					EnterCriticalSection(&ticksCriticalSection);
+					totalParseTicks += parseTicks;
+					totalRenderTicks += renderTicks;
+					count++;
+					LeaveCriticalSection(&ticksCriticalSection);
+				}
 
 				ULONGLONG averageParseTicks = totalParseTicks / count;
 				ULONGLONG averageRenderTicks = totalRenderTicks / count;
