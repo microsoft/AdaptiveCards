@@ -18,12 +18,8 @@ namespace PerfApp
 		MainPage();
 
 	private:
+		concurrency::task<void> MainPage::DoStuff();
+
 		AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer ^ m_renderer;
-
-		CRITICAL_SECTION ticksCriticalSection;
-
-		LONG64 totalParseTicks;
-		LONG64 totalRenderTicks;
-		LONG count;
 	};
 }
