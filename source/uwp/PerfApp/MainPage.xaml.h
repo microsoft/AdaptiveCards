@@ -17,5 +17,10 @@ namespace PerfApp
 	public:
 		MainPage();
 
+	private:
+		AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer ^ m_renderer;
+		ULONGLONG totalParseTicks;
+		ULONGLONG totalRenderTicks;
+		ULONGLONG count;
 	};
 }
