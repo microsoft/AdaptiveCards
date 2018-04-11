@@ -8,6 +8,8 @@ Image::Image() :
     BaseCardElement(CardElementType::Image),
     m_imageStyle(ImageStyle::Default),
     m_imageSize(ImageSize::None),
+    m_pixelWidth(0.0),
+    m_pixelHeight(0.0),
     m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
@@ -32,6 +34,9 @@ Image::Image(
     m_altText(altText),
     m_hAlignment(hAlignment)
 {
+    if(m_pixelWidth || m_pixelHeight){
+        m_imageSize = ImageSize::Explicit;
+    }
     PopulateKnownPropertiesSet();
 }
 
@@ -171,6 +176,9 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
     image->SetPixelWidth(ParseUtil::GetFloat(json, AdaptiveCardSchemaKey::PixelWidth, 0.0f, false));
     image->SetPixelHeight(ParseUtil::GetFloat(json, AdaptiveCardSchemaKey::PixelHeight, 0.0f, false));
+    if(image->GetPixelWidth() || image->GetPixelHeight()) {
+        image->SetImageSize(ImageSize::Explicit);
+    }
     image->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction));
 
     return image;
