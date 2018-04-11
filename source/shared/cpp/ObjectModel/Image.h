@@ -17,6 +17,8 @@ public:
         std::string uri,
         ImageStyle imageStyle,
         ImageSize imageSize,
+        float pixelWidth,
+        float pixelHeight,
         std::string altText,
         HorizontalAlignment hAlignment);
 
@@ -40,12 +42,20 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
+    float GetPixelWidth() const; 
+    void SetPixelWidth(float pixelWidth);
+
+    float GetPixelHeight() const; 
+    void SetPixelHeight(float pixelHeight);
+
 private:
     void PopulateKnownPropertiesSet();
 
     std::string m_url;
     ImageStyle m_imageStyle;
     ImageSize m_imageSize;
+    float m_pixelWidth;
+    float m_pixelHeight;
     std::string m_altText;
     HorizontalAlignment m_hAlignment;
     std::shared_ptr<BaseActionElement> m_selectAction;

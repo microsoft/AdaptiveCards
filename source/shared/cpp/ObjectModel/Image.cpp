@@ -19,12 +19,16 @@ Image::Image(
     std::string url,
     ImageStyle imageStyle,
     ImageSize imageSize,
+    float pixelWidth,
+    float pixelHeight,
     std::string altText,
     HorizontalAlignment hAlignment) :
     BaseCardElement(CardElementType::Image, spacing, separator),
     m_url(url),
     m_imageStyle(imageStyle),
     m_imageSize(imageSize),
+    m_pixelWidth(pixelWidth),
+    m_pixelHeight(pixelHeight),
     m_altText(altText),
     m_hAlignment(hAlignment)
 {
@@ -116,6 +120,26 @@ void Image::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
+float Image::GetPixelWidth() const 
+{
+    return m_pixelWidth;
+}
+
+void Image::SetPixelWidth(float pixelWidth)
+{
+    m_pixelWidth = pixelWidth;
+}
+
+float Image::GetPixelHeight() const
+{
+    return m_pixelHeight;
+}
+
+void Image::SetPixelHeight(float pixelHeight)
+{
+    m_pixelHeight = pixelHeight;
+}
+
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
@@ -145,6 +169,8 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+    image->SetPixelWidth(ParseUtil::GetFloat(json, AdaptiveCardSchemaKey::PixelWidth, 0.0f, false));
+    image->SetPixelHeight(ParseUtil::GetFloat(json, AdaptiveCardSchemaKey::PixelHeight, 0.0f, false));
     image->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction));
 
     return image;
@@ -157,5 +183,7 @@ void Image::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::PixelWidth));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::PixelHeight));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }
