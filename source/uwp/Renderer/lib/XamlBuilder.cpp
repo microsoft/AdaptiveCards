@@ -1586,6 +1586,20 @@ AdaptiveNamespaceStart
                 THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
                 break;
             }
+
+            case ABI::AdaptiveNamespace::ImageSize::Explicit:
+            {
+                FLOAT width = 0.0, height = 0.0;
+                THROW_IF_FAILED(adaptiveImage->get_PixelWidth(&width));
+                THROW_IF_FAILED(adaptiveImage->get_PixelHeight(&height));
+                if (width){ 
+                    THROW_IF_FAILED(frameworkElement->put_Width((UINT32)width));
+                }
+                if (height) {
+                    THROW_IF_FAILED(frameworkElement->put_Height((UINT32)height));
+                }
+                break;
+            }
         }
 
         ABI::AdaptiveNamespace::HAlignment adaptiveHorizontalAlignment;
