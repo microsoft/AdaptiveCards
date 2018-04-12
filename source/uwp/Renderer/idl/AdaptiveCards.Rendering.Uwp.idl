@@ -274,7 +274,8 @@ AdaptiveNamespaceStart
         Stretch,
         Small,
         Medium,
-        Large
+        Large,
+        Explicit
     } ImageSize;
 
     [version(NTDDI_WIN10_RS1)]
@@ -685,6 +686,12 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Size([out, retval] ImageSize* value);
         [propput] HRESULT Size([in] ImageSize value);
+
+        [propget] HRESULT PixelWidth([out, retval] FLOAT* value);
+        [propput] HRESULT PixelWidth([in] FLOAT value);
+
+        [propget] HRESULT PixelHeight([out, retval] FLOAT* value);
+        [propput] HRESULT PixelHeight([in] FLOAT value);
 
         [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
         [propput] HRESULT HorizontalAlignment([in] HAlignment value);
