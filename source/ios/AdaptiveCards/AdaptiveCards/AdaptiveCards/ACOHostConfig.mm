@@ -209,6 +209,11 @@ using namespace AdaptiveCards;
             sz = _config->imageSizes.smallSize;
             break;
         }
+            
+        case ImageSize::Explicit:{
+            sz = 1.0;
+            break;
+        }
 
         default:{
             sz = _config->imageSizes.largeSize;

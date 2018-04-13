@@ -40,7 +40,8 @@
     UIImageView *view;
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
     view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-    if(imgElem->GetImageSize() != ImageSize::Auto && imgElem->GetImageSize() != ImageSize::Stretch && imgElem->GetImageSize() != ImageSize::None){
+
+    if(imgElem->GetImageSize() != ImageSize::Auto && imgElem->GetImageSize() != ImageSize::Stretch && imgElem->GetImageSize() != ImageSize::None && imgElem->GetImageSize() != ImageSize::Explicit){
         [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
                                                                 attribute:NSLayoutAttributeWidth
                                                                 relatedBy:NSLayoutRelationEqual
@@ -113,7 +114,7 @@
                                            withSuperview:wrappingview
                                                   toView:view]];
     // ImageSize::Auto should maintain its intrinsic size
-    if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None){
+    if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None || imgElem->GetImageSize() == ImageSize::Explicit){
         NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:[view(<=wrappingview)]", @"V:|-[view(<=wrappingview)]-|", nil];
         NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, wrappingview);
         for(NSString *constraint in visualFormats){
@@ -123,7 +124,7 @@
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
-    if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::None){
+    if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::None || imgElem->GetImageSize() == ImageSize::Explicit){
         [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }

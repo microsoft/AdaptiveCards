@@ -164,18 +164,18 @@ using namespace AdaptiveCards;
                         NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
                         // if correctly initialized, fonFamilyNames array is bigger than zero
                         NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-                        for(NSUInteger index = 0; index < [_hostConfig.fontFamilyNames count] - 1; ++index){
-                            [fontFamilyName appendString:_hostConfig.fontFamilyNames[index]];
+                        for(NSUInteger index = 0; index < [self->_hostConfig.fontFamilyNames count] - 1; ++index){
+                            [fontFamilyName appendString:self->_hostConfig.fontFamilyNames[index]];
                             [fontFamilyName appendString:@"', '"];
                         }
-                        [fontFamilyName appendString:_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
+                        [fontFamilyName appendString:self->_hostConfig.fontFamilyNames[[self->_hostConfig.fontFamilyNames count] - 1]];
                         [fontFamilyName appendString:@"'"];
 
                         // Font and text size are applied as CSS style by appending it to the html string
-                        const int fontWeight = [_hostConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
+                        const int fontWeight = [self->_hostConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
                         parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
                                                                               fontFamilyName,
-                                                                              [_hostConfig getTextBlockTextSize:txtElem->GetTextSize()],
+                                                                              [self->_hostConfig getTextBlockTextSize:txtElem->GetTextSize()],
                                                                               fontWeight]];
                         // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
                         NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
@@ -189,14 +189,14 @@ using namespace AdaptiveCards;
                                   __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
                                   NSString *key = [NSString stringWithCString:txtElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                                   // syncronize access to text map
-                                  dispatch_sync(_serial_text_queue,
+                                 dispatch_sync(self->_serial_text_queue,
                                       ^{
                                            // UILabel is not ready, cashe UILabel
-                                           if(!_textMap[key]) {
-                                               _textMap[key] = content;
+                                          if(!self->_textMap[key]) {
+                                              self->_textMap[key] = content;
                                            } // UILable is ready, get label
                                            else {
-                                               lab = _textMap[key];
+                                               lab = self->_textMap[key];
                                            }
                                       });
 
@@ -209,8 +209,8 @@ using namespace AdaptiveCards;
 
                                       // Obtain text color to apply to the attributed string
                                       ACRContainerStyle style = lab.style;
-                                      ColorsConfig &colorConfig = (style == ACREmphasis)? [_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
-                                                                                                             [_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
+                                      ColorsConfig &colorConfig = (style == ACREmphasis)? [self->_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
+                                      [self->_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
                                       // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
                                       [content addAttributes:@{
                                                                NSParagraphStyleAttributeName:paragraphStyle,
@@ -303,24 +303,39 @@ using namespace AdaptiveCards;
              NSURL *url = [NSURL URLWithString:urlStr];
              // download image
              UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-             CGSize cgsize = [_hostConfig getImageSize:imgElem->GetImageSize()];
+            CGSize cgsize = [self->_hostConfig getImageSize:imgElem->GetImageSize()];
 
              // UITask can't be run on global queue, add task to main queue
              dispatch_async(dispatch_get_main_queue(),
                  ^{
                       __block UIImageView *view = nil;
                       // syncronize access to image map
-                      dispatch_sync(_serial_queue,
+                     dispatch_sync(self->_serial_queue,
                           ^{
-                               if(!_imageViewMap[key]) {// UIImageView is not ready, cashe UIImage
-                                   _imageViewMap[key] = img;
+                              if(!self->_imageViewMap[key]) {// UIImageView is not ready, cashe UIImage
+                                  self->_imageViewMap[key] = img;
                                } else {// UIImageView ready, get view
-                                   view = _imageViewMap[key];
+                                   view = self->_imageViewMap[key];
                                }
                           });
                       // if view is available, set image to it, and continue image processing
                       if(view) {
                           view.image = img;
+                          if(imgElem->GetImageSize() == ImageSize::Explicit) {
+                              float width = imgElem->GetPixelWidth();
+                              float height = imgElem->GetPixelHeight();
+                              CGFloat heightToWidthRatio = img.size.height / img.size.width;
+                              if(!(width * height)){
+                                  if(width){
+                                      height = heightToWidthRatio * width;
+                                  } else{
+                                      width = height / heightToWidthRatio;
+                                  }
+                              }
+                              
+                               [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width].active = YES;
+                              [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:height].active = YES;
+                          }
                           if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None){
                               CGFloat heightToWidthRatio = img.size.height / img.size.width;
                               [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
@@ -339,7 +354,11 @@ using namespace AdaptiveCards;
                                                                                      multiplier:widthToHeightRatio
                                                                                        constant:0]]];
                           }
-                          view.contentMode = UIViewContentModeScaleAspectFit;
+                          if(imgElem->GetImageSize() == ImageSize::Explicit){
+                              view.contentMode = UIViewContentModeScaleToFill;
+                          } else {
+                              view.contentMode = UIViewContentModeScaleAspectFit;
+                          }
                           view.clipsToBounds = NO;
                           if(imgElem->GetImageStyle() == ImageStyle::Person) {
                               CALayer *imgLayer = view.layer;
