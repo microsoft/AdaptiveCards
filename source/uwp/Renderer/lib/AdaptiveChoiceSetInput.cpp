@@ -98,20 +98,6 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_Height(IAdaptiveHeight** height)
-    {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedChoiceSetInput;
-        RETURN_IF_FAILED(GetSharedModel(sharedChoiceSetInput));
-        return MakeAndInitialize<AdaptiveHeight>(height, sharedChoiceSetInput->GetHeight());
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_Height(IAdaptiveHeight* height)
-    {
-        return E_NOTIMPL;
-    }
-
     HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();

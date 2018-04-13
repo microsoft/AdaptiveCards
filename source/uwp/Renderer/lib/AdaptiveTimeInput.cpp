@@ -93,20 +93,6 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_Height(IAdaptiveHeight** height)
-    {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedTimeInput;
-        RETURN_IF_FAILED(GetSharedModel(sharedTimeInput));
-        return MakeAndInitialize<AdaptiveHeight>(height, sharedTimeInput->GetHeight());
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_Height(IAdaptiveHeight* height)
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();

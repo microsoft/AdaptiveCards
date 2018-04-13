@@ -83,19 +83,6 @@ AdaptiveNamespaceStart
         return m_items.CopyTo(items);
     }
 
-    HRESULT AdaptiveColumn::get_Height(IAdaptiveHeight** height)
-    {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedColumn;
-        RETURN_IF_FAILED(GetSharedModel(sharedColumn));
-        return MakeAndInitialize<AdaptiveHeight>(height, sharedColumn->GetHeight());
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Height(IAdaptiveHeight* height)
-    {
-        return E_NOTIMPL;
-    }
-
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_SelectAction(IAdaptiveActionElement** action)
     {

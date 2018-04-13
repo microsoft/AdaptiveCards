@@ -60,19 +60,6 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::get_Height(IAdaptiveHeight** height)
-    {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedContainer;
-        RETURN_IF_FAILED(GetSharedModel(sharedContainer));
-        return MakeAndInitialize<AdaptiveHeight>(height, sharedContainer->GetHeight());
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Height(IAdaptiveHeight* height)
-    {
-        return E_NOTIMPL;
-    }
-
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::get_ElementType(ElementType* elementType)
     {

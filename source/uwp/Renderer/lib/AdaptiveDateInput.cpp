@@ -90,20 +90,6 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::get_Height(IAdaptiveHeight** height)
-    {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedDateInput;
-        RETURN_IF_FAILED(GetSharedModel(sharedDateInput));
-        return MakeAndInitialize<AdaptiveHeight>(height, sharedDateInput->GetHeight());
-    }
-
-    _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::put_Height(IAdaptiveHeight* height)
-    {
-        return E_NOTIMPL;
-    }
-
     HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();

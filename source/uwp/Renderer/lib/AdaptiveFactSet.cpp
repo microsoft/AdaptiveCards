@@ -52,20 +52,6 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-        HRESULT AdaptiveFactSet::get_Height(IAdaptiveHeight** height)
-    {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedFactSet;
-        RETURN_IF_FAILED(GetSharedModel(sharedFactSet));
-        return MakeAndInitialize<AdaptiveHeight>(height, sharedFactSet->GetHeight());
-    }
-
-    _Use_decl_annotations_
-        HRESULT AdaptiveFactSet::put_Height(IAdaptiveHeight* height)
-    {
-        return E_NOTIMPL;
-    }
-
     HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
