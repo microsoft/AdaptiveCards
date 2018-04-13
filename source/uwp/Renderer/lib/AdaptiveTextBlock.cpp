@@ -166,20 +166,6 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Height(IAdaptiveHeight** height)
-    {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedTextBlock;
-        RETURN_IF_FAILED(GetSharedModel(sharedTextBlock));
-        return MakeAndInitialize<AdaptiveHeight>(height, sharedTextBlock->GetHeight());
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Height(IAdaptiveHeight* height)
-    {
-        return E_NOTIMPL;
-    }  
-
-    _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::TextBlock;
@@ -205,6 +191,7 @@ AdaptiveNamespaceStart
         textBlock->SetText(text);
 
         std::string language;
+        //  If the language was not specified the conversion fails, just keep the language as an empty string
         if (!(WindowsIsStringEmpty(m_language.Get())))
         {
             RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
