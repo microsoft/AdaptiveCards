@@ -2,17 +2,46 @@
 #include "Height.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
-Height Height::Deserialize(const Json::Value& json, const Height& defaultValue)
+Height::Height() : m_heightType(HeightType::Auto) { }
+
+Height::Height(HeightType heightType) : m_heightType(heightType) { }
+
+HeightType Height::GetHeightType()
 {
-    Height result;
-    ParseUtil::ThrowIfNotJsonObject(json);
-    result.heightType = HeightTypeFromString(json.asString());
-    return result;
+    return m_heightType;
 }
 
-std::string Height::SerializeToString(const Height& defaultValue)
+void Height::SetHeightType(HeightType value)
 {
-    return HeightTypeToString(defaultValue.heightType);
+    m_heightType = value;
+}
+
+Height Height::Deserialize(
+    const Json::Value& json)
+{
+    HeightType heightType = ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString, false /* isRequired */);
+    Height height(heightType);
+    return height;
+}
+
+std::shared_ptr<Height> Height::DeserializeFromString(
+    const std::string& jsonString)
+{
+    return std::make_shared<Height>(Height::Deserialize(ParseUtil::GetJsonValueFromString(jsonString)));
+}
+
+std::string Height::Serialize()
+{
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value Height::SerializeToJsonValue()
+{
+    Json::Value root;
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeightType());
+
+    return root;
 }

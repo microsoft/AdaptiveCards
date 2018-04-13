@@ -207,23 +207,23 @@ void GetHeightTypeEnumMappings(
     std::unordered_map<HeightType, std::string, EnumHash> * heightTypeEnumToNameOut,
     std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo> * heightTypeNameToEnumOut)
 {
-    static std::unordered_map<HeightType, std::string, EnumHash> HeightTypeEnumToName =
+    static std::unordered_map<HeightType, std::string, EnumHash> heightTypeEnumToName =
     {
         { HeightType::Auto, "Auto" },
         { HeightType::Stretch, "Stretch" }
     };
 
     static std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-        HeightTypeNameToEnum = GenerateStringToEnumMap<HeightType>(HeightTypeEnumToName);
+        heightTypeNameToEnum = GenerateStringToEnumMap<HeightType>(heightTypeEnumToName);
 
     if (heightTypeEnumToNameOut != nullptr)
     {
-        *heightTypeEnumToNameOut = HeightTypeEnumToName;
+        *heightTypeEnumToNameOut = heightTypeEnumToName;
     }
 
     if (heightTypeNameToEnumOut != nullptr)
     {
-        *heightTypeNameToEnumOut = HeightTypeNameToEnum;
+        *heightTypeNameToEnumOut = heightTypeNameToEnum;
     }
 }
 
