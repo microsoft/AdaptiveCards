@@ -18,11 +18,11 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact);
 
         // IAdaptiveFact
-        IFACEMETHODIMP get_Title(_In_ HSTRING* title);
-        IFACEMETHODIMP put_Title(_Out_ HSTRING title);
+        IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
+        IFACEMETHODIMP put_Title(_In_ HSTRING title);
 
-        IFACEMETHODIMP get_Value(_In_ HSTRING* value);
-        IFACEMETHODIMP put_Value(_Out_ HSTRING value);
+        IFACEMETHODIMP get_Value(_Out_ HSTRING* value);
+        IFACEMETHODIMP put_Value(_In_ HSTRING value);
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
