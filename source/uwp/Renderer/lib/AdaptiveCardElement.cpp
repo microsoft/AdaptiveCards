@@ -16,6 +16,8 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHeight>(&m_height, sharedModel->GetHeight()));
+
         return S_OK;
     }
 
@@ -69,6 +71,17 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Height(ABI::AdaptiveNamespace::IAdaptiveHeight** height)
+    {
+        return m_height.CopyTo(height);
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::put_Height(ABI::AdaptiveNamespace::IAdaptiveHeight* height)
+    {
+        m_height = height;
+        return S_OK;
+    }
+
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
@@ -89,6 +102,13 @@ AdaptiveNamespaceStart
             Json::Value jsonCpp;
             RETURN_IF_FAILED(JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonCpp));
             sharedCardElement->SetAdditionalProperties(jsonCpp);
+        }
+
+        if (m_height != nullptr)
+        {
+            ABI::AdaptiveNamespace::HeightType heightType;
+            m_height->get_HeightType(&heightType);
+            sharedCardElement->SetHeight(Height(static_cast<AdaptiveSharedNamespace::HeightType>(heightType)));
         }
 
         return S_OK;
