@@ -34,10 +34,10 @@ AdaptiveNamespaceStart
     // IFrameworkElementOverrides
     HRESULT WholeItemsPanel::MeasureOverride(Size availableSize, __RPC__out Size *returnValue)
     {
-        unsigned int count = 0;
-        float currentHeight = 0;
-        float maxDesiredWidth = 0;
-        bool visible = true;
+        unsigned int count{};
+        float currentHeight{};
+        float maxDesiredWidth{};
+        bool visible{true};
 
         ComPtr<IVector<UIElement*>> spChildren;
         ComPtr<IPanel> spThisAsPanel;
@@ -47,12 +47,18 @@ AdaptiveNamespaceStart
 
         const Size noVerticalLimit{ availableSize.Width, numeric_limits<float>::infinity() };
 
+        unsigned int stretchableCount{};
         m_visibleCount = count;
-        for (unsigned int i = 0; i < count; i++)
+        for (unsigned int i{}; i < count; ++i)
         {
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
             RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
+
+            if (IsUIElementInStretchableList(spChild.Get()))
+            {
+                ++stretchableCount;
+            }
 
             if (visible)
             {
@@ -211,6 +217,80 @@ AdaptiveNamespaceStart
             }
         }
 
+        // If the available size was giving infinite when building the card, then once all the elements are placed the available size is the size of all the elements placed
+        if (availableSize.Height == numeric_limits<float>::infinity())
+        {
+            availableSize.Height = currentHeight;
+        }
+
+        // Second pass: Checki if any of the elements is a Grid, we cant modify the Measure method for those as I dont know how the Grids work internally
+        for (unsigned int i{}; i < count; ++i)
+        {
+            ComPtr<IUIElement> spChild;
+            RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
+        
+            // check if the child is a Grid
+            ComPtr<IGrid> childAsGrid;
+            if (SUCCEEDED(spChild.As(&childAsGrid)))
+            {
+                ComPtr<IPanel> childAsPanel;
+                RETURN_IF_FAILED(childAsGrid.As(&childAsPanel));
+                ComPtr<IVector<UIElement*>> columns;
+                RETURN_IF_FAILED(childAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
+                double maxHeight{};
+            
+                unsigned int columnCount{};
+                RETURN_IF_FAILED(columns->get_Size(&columnCount));
+                for (unsigned int j{}; j < columnCount; ++j)
+                {
+                    ComPtr<IUIElement> column;
+                    RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
+                    Size columnSize;
+                    RETURN_IF_FAILED(column->get_DesiredSize(&columnSize));
+                    maxHeight = max(maxHeight, columnSize.Height);
+                }
+
+                for (unsigned int j{}; j < columnCount; ++j)
+                {
+                    ComPtr<IUIElement> column;
+                    RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
+
+                    Size columnDesiredSize;
+                    RETURN_IF_FAILED(column->get_DesiredSize(&columnDesiredSize));
+                    columnDesiredSize.Height = static_cast<FLOAT>(maxHeight);
+
+                    RETURN_IF_FAILED(column->Measure(columnDesiredSize));
+                }
+            }
+        }
+
+        // Third pass: let the stretchable elements get the space it needs
+        // If all the elements were rendered, at least one item may be stretched and the height is defined
+        if ((count == m_visibleCount) && (stretchableCount != 0))
+        {
+            // availableSpace.height must be changed when a specific height can be defined for a card
+            double emptyTrailingSpace = availableSize.Height - currentHeight;
+            double extraPaddingPerItem = emptyTrailingSpace / stretchableCount;
+
+            for (unsigned int i{}; i < count; ++i)
+            {
+                ComPtr<IUIElement> spChild;
+                RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
+                if (visible && IsUIElementInStretchableList(spChild.Get()))
+                {
+                    Size childSize;
+                    RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
+                    childSize.Height = childSize.Height + extraPaddingPerItem;
+
+                    ComPtr<IFrameworkElement> frameworkElement;
+                    RETURN_IF_FAILED(spChild.As(&frameworkElement));
+                    frameworkElement->put_Height(childSize.Height);
+                    RETURN_IF_FAILED(spChild->Measure(childSize));
+                }
+            }
+
+        }
+
         // If inside an infinity/auto width container
         if (availableSize.Width == numeric_limits<float>::infinity())
         {
@@ -227,7 +307,7 @@ AdaptiveNamespaceStart
 
     HRESULT WholeItemsPanel::ArrangeOverride(Size finalSize, __RPC__out Size *returnValue)
     {
-        float currentHeight = 0;
+        float currentHeight{};
         ComPtr<IVector<UIElement*>> spChildren;
 
         ComPtr<IPanel> spThisAsPanel;
@@ -235,7 +315,8 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
         RETURN_IF_FAILED(spChildren->get_Size(&m_measuredCount));
 
-        for (unsigned int i = 0; i < m_measuredCount; i++) {
+        for (unsigned int i{}; i < m_measuredCount; ++i)
+        {
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
 
@@ -353,6 +434,41 @@ AdaptiveNamespaceStart
     void WholeItemsPanel::SetMainPanel(_In_ bool value)
     {
         m_isMainPanel = value;
+    }
+
+    void WholeItemsPanel::AddElementToStretchablesList(_In_ IUIElement* element)
+    {
+        ComPtr<IUIElement> localElement(element);
+        ComPtr<IUIElement4> elementWithAccessKey;
+        if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
+        {
+            std::string elementAccessKey = std::to_string(m_accessKeyCount);
+            ++m_accessKeyCount;
+
+            HSTRING accessKey;
+            if (SUCCEEDED(UTF8ToHString(elementAccessKey, &accessKey)))
+            {
+                elementWithAccessKey->put_AccessKey(accessKey);
+                m_stretchableItems.insert(elementAccessKey);
+            }
+        }
+    }
+
+    bool WholeItemsPanel::IsUIElementInStretchableList(_In_ IUIElement* element)
+    {
+        ComPtr<IUIElement> localElement(element);
+        ComPtr<IUIElement4> elementWithAccessKey;
+        if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
+        {
+            HSTRING elementAccessKey;
+            if (SUCCEEDED(elementWithAccessKey->get_AccessKey(&elementAccessKey)))
+            {
+                std::string accessKey = HStringToUTF8(elementAccessKey);
+                return (m_stretchableItems.find(accessKey) != m_stretchableItems.end());
+            }
+        }
+
+        return false; // Couldn't get access key, weird, so it wasnt found
     }
 
     _Check_return_ HRESULT
