@@ -679,24 +679,16 @@ AdaptiveNamespaceStart
                         XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
                     }
                 }
+
                 ComPtr<IUIElement> newControl;
                 elementRenderer->Render(element, renderContext, renderArgs, &newControl);
-                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel);
 
-                /*
-                IAdaptiveHeight* elementHeight;
-                THROW_IF_FAILED(element->get_Height(&elementHeight));
-                ABI::AdaptiveCards::XamlCardRenderer::HeightType heightType;
+                ComPtr<IAdaptiveHeight> elementHeight;
+                THROW_IF_FAILED(element->get_Height(elementHeight.GetAddressOf()));
+                ABI::AdaptiveNamespace::HeightType heightType;
                 THROW_IF_FAILED(elementHeight->get_HeightType(&heightType));
-                if (heightType == ABI::AdaptiveCards::XamlCardRenderer::HeightType::Stretch)
-                {
-                    XamlHelpers::AddRow(newControl.Get(), parentGrid, {1, GridUnitType::GridUnitType_Star});
-                }
-                else
-                {
-                    XamlHelpers::AddRow(newControl.Get(), parentGrid, {1, GridUnitType::GridUnitType_Auto});
-                }
-                */
+                
+                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
 
                 childCreatedCallback(newControl.Get());
             }
@@ -1851,6 +1843,9 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveColumnSet> adaptiveColumnSet;
         THROW_IF_FAILED(cardElement.As(&adaptiveColumnSet));
 
+        ComPtr<WholeItemsPanel> gridContainer;
+        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&gridContainer));
+
         ComPtr<IGrid> xamlGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IGridStatics> gridStatics;
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
@@ -1875,7 +1870,8 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column)
+        double maxColumnHeight{};
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig, &maxColumnHeight](IAdaptiveColumn* column)
         {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
@@ -1971,7 +1967,30 @@ AdaptiveNamespaceStart
 
             // Finally add the column container to the grid
             XamlHelpers::AppendXamlElementToPanel(xamlColumn.Get(), gridAsPanel.Get());
+
+            Size columnSize;
+            THROW_IF_FAILED(xamlColumn->get_DesiredSize(&columnSize));
+            maxColumnHeight = max(maxColumnHeight, columnSize.Height);
         });
+
+        // Iterate over all the columns and asign the height for each column
+        ComPtr<IPanel> gridAsPanel;
+        THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+        ComPtr<IVector<UIElement*>> panelChildren;
+        THROW_IF_FAILED(gridAsPanel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
+        unsigned int childrenLength{};
+        THROW_IF_FAILED(panelChildren->get_Size(&childrenLength));
+
+        for (unsigned int i{}; i < childrenLength; ++i)
+        {
+            ComPtr<IUIElement> column;
+            THROW_IF_FAILED(panelChildren->GetAt(i, column.GetAddressOf()));
+
+            Size columnSize;
+            THROW_IF_FAILED(column->get_DesiredSize(&columnSize));
+            columnSize.Height = static_cast<float>(maxColumnHeight);
+            THROW_IF_FAILED(column->Measure(columnSize));
+        }
 
         ComPtr<IFrameworkElement> columnSetAsFrameworkElement;
         THROW_IF_FAILED(xamlGrid.As(&columnSetAsFrameworkElement));
@@ -1980,10 +1999,16 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
 
+        ComPtr<IPanel> gridContainerAsPanel;
+        THROW_IF_FAILED(gridContainer.As(&gridContainerAsPanel));
+        ComPtr<IUIElement> gridContainerAsUIElement;
+        THROW_IF_FAILED(gridContainer.As(&gridContainerAsUIElement));
+
         ComPtr<IUIElement> gridAsUIElement;
         THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
 
-        HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, gridAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, columnSetControl);
+        XamlHelpers::AppendXamlElementToPanel(xamlGrid.Get(), gridContainerAsPanel.Get());
+        HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, gridContainerAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, columnSetControl);
     }
 
     _Use_decl_annotations_
@@ -2013,6 +2038,16 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
         THROW_IF_FAILED(columnDefinitions->Append(titleColumn.Get()));
         THROW_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
+
+        GridLength factSetGridHeight = factSetGridLength;
+        ComPtr<IAdaptiveHeight> height;
+        THROW_IF_FAILED(cardElement->get_Height(height.GetAddressOf()));
+        ABI::AdaptiveNamespace::HeightType heightType;
+        THROW_IF_FAILED(height->get_HeightType(&heightType));
+        if (heightType == ABI::AdaptiveNamespace::HeightType::Stretch)
+        {
+            factSetGridHeight = {1, GridUnitType::GridUnitType_Star};
+        }
 
         ComPtr<IVector<IAdaptiveFact*>> facts;
         THROW_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
@@ -2152,6 +2187,8 @@ AdaptiveNamespaceStart
                 UINT32 maxImageHeight;
                 THROW_IF_FAILED(imageSetConfig->get_MaxImageHeight(&maxImageHeight));
                 THROW_IF_FAILED(imageAsFrameworkElement->put_MaxHeight(maxImageHeight));
+
+                
 
                 ComPtr<IPanel> gridAsPanel;
                 THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
