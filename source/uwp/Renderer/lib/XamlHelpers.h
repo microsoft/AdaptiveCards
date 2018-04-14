@@ -51,7 +51,9 @@ AdaptiveNamespaceStart
         template<typename T>
         static void AppendXamlElementToPanel(
             T* xamlElement,
-            ABI::Windows::UI::Xaml::Controls::IPanel* panel)
+            ABI::Windows::UI::Xaml::Controls::IPanel* panel,
+            ABI::AdaptiveNamespace::HeightType heightType = ABI::AdaptiveNamespace::HeightType::Auto
+            )
         {
             if (!xamlElement)
             {
@@ -67,6 +69,17 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
 
             THROW_IF_FAILED(panelChildren->Append(elementToAppend.Get()));
+
+            if (heightType == ABI::AdaptiveNamespace::HeightType::Stretch)
+            {
+                ComPtr<IPanel> spPanel(panel);
+                ComPtr<IWholeItemsPanel> wholeItemsPanel;
+                if (SUCCEEDED(spPanel.As(&wholeItemsPanel)))
+                {
+                    ComPtr<WholeItemsPanel> panel = PeekInnards<WholeItemsPanel>(wholeItemsPanel);
+                    panel->AddElementToStretchablesList(elementToAppend.Get());
+                }
+            }
         }
 
         template<typename T>
