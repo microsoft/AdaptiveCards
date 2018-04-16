@@ -438,7 +438,7 @@ using namespace AdaptiveCards;
 
 - (void)processActionWithIconConcurrently:(std::shared_ptr<BaseActionElement> const &)action
 {
-    [self addToAsyncRenderingList:action];
+    [self addToAsyncRenderingList];
     
     std::shared_ptr<BaseActionElement> act = action;
     
@@ -485,7 +485,7 @@ using namespace AdaptiveCards;
                             act->SetId(id.substr(0, idx));
                         }
                                           
-                        [self removeFromAsyncRenderingListAndNotifyIfNeeded:act];
+                        [self removeFromAsyncRenderingListAndNotifyIfNeeded];
                     });
                 }
             );
