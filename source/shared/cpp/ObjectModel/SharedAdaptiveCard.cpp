@@ -139,7 +139,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, body, actions);
     result->SetLanguage(language);
 
-    // Parse selectAction
+    // Parse selectAction if present (selectAction is optional so isRequired defaults to false)
     auto selectAction = ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false);
     if (selectAction != nullptr) {
         result->SetSelectAction(selectAction);
