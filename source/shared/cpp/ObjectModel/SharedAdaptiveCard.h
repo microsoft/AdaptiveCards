@@ -27,7 +27,6 @@ public:
         ContainerStyle style,
         std::string speak,
         std::string language,
-        std::shared_ptr<BaseActionElement> selectAction,
         std::vector<std::shared_ptr<BaseCardElement>>& body,
         std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
@@ -45,6 +44,8 @@ public:
     void SetLanguage(const std::string& value);
 
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
+    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
 

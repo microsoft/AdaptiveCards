@@ -33,7 +33,6 @@ AdaptiveCard::AdaptiveCard(std::string version,
     ContainerStyle style,
     std::string speak,
     std::string language,
-    std::shared_ptr<BaseActionElement> selectAction,
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_fallbackText(fallbackText),
@@ -41,7 +40,6 @@ AdaptiveCard::AdaptiveCard(std::string version,
     m_style(style),
     m_speak(speak),
     m_language(language),
-    m_selectAction(selectAction),
     m_body(body),
     m_actions(actions)
 {
@@ -312,7 +310,12 @@ std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions()
     return m_actions;
 }
 
-std::shared_ptr<BaseActionElement> AdaptiveCards::AdaptiveCard::GetSelectAction() const
+std::shared_ptr<BaseActionElement> AdaptiveCard::GetSelectAction() const
 {
     return m_selectAction;
+}
+
+void AdaptiveCard::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
 }
