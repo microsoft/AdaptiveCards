@@ -131,15 +131,19 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
         actionParserRegistration.reset(new ActionParserRegistration());
     }
 
-    // Parse selectAction
-    auto selectAction = ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false);
     // Parse body
     auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false);
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false);
 
-    auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, selectAction, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, body, actions);
     result->SetLanguage(language);
+
+    // Parse selectAction
+    auto selectAction = ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false);
+    if (selectAction != nullptr) {
+        result->SetSelectAction(selectAction);
+    }
 
     return std::make_shared<ParseResult>(result, warnings);
 }
