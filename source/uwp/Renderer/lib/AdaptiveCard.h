@@ -26,6 +26,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_BackgroundImage(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
+        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
+
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style);
         IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveNamespace::ContainerStyle style);
 
@@ -58,6 +61,8 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_speak;
 
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_backgroundImage;
+
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
     };
 

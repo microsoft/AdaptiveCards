@@ -576,6 +576,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
 
+		[propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+		[propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
     };
 
