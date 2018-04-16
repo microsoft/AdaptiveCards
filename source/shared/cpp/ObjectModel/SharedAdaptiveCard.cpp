@@ -33,6 +33,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
     ContainerStyle style,
     std::string speak,
     std::string language,
+    std::shared_ptr<BaseActionElement> selectAction,
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_fallbackText(fallbackText),
@@ -40,6 +41,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
     m_style(style),
     m_speak(speak),
     m_language(language),
+    m_selectAction(selectAction),
     m_body(body),
     m_actions(actions)
 {
@@ -131,12 +133,14 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
         actionParserRegistration.reset(new ActionParserRegistration());
     }
 
+    // Parse selectAction
+    auto selectAction = ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false);
     // Parse body
     auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false);
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false);
 
-    auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, selectAction, body, actions);
     result->SetLanguage(language);
 
     return std::make_shared<ParseResult>(result, warnings);
@@ -306,4 +310,9 @@ std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody()
 std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions()
 {
     return m_actions;
+}
+
+std::shared_ptr<BaseActionElement> AdaptiveCards::AdaptiveCard::GetSelectAction() const
+{
+    return m_selectAction;
 }
