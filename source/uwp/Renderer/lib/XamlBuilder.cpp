@@ -1707,7 +1707,7 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::ContainerStyle parentContainerStyle;
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
 
-        bool hasExplicitContainerStyle = true;
+        bool hasExplicitContainerStyle{true};
         if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
@@ -1819,7 +1819,7 @@ AdaptiveNamespaceStart
         // still renders at the top even if the content is shorter than the full card
         ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
         THROW_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
-        THROW_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
+        THROW_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
 
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanelAsFrameworkElement.Get()));
 
