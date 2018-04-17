@@ -39,6 +39,78 @@ template<typename T>
     return ref new ::Platform::Box<T>((T)userType->CreateEnumUIntFromString(input));
 }
 
+template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_CurrentRenderIteration(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->CurrentRenderIteration);
+}
+
+template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_CurrentParseIteration(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->CurrentParseIteration);
+}
+
+template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_MaxParseTicks(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->MaxParseTicks);
+}
+
+template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_MaxRenderTicks(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->MaxRenderTicks);
+}
+
+template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_ParsePercentage(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->ParsePercentage);
+}
+
+template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_RenderPercentage(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->RenderPercentage);
+}
+
+template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_AverageParseTicks(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->AverageParseTicks);
+}
+
+template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_AverageRenderTicks(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->AverageRenderTicks);
+}
+
+template<typename TDeclaringType>
+::Platform::Object^ GetReferenceTypeMember_CurrentFile(::Platform::Object^ instance)
+{
+    return safe_cast<TDeclaringType^>(instance)->CurrentFile;
+}
+
+template<typename TDeclaringType>
+::Platform::Object^ GetReferenceTypeMember_MaxRenderFile(::Platform::Object^ instance)
+{
+    return safe_cast<TDeclaringType^>(instance)->MaxRenderFile;
+}
+
+template<typename TDeclaringType>
+::Platform::Object^ GetReferenceTypeMember_MaxParseFile(::Platform::Object^ instance)
+{
+    return safe_cast<TDeclaringType^>(instance)->MaxParseFile;
+}
+
+template<typename TDeclaringType, typename TValue>
+void SetReferenceTypeMember_CurrentFile(::Platform::Object^ instance, ::Platform::Object^ value)
+{
+    safe_cast<TDeclaringType^>(instance)->CurrentFile = safe_cast<TValue^>(value);
+}
+
 enum TypeInfo_Flags
 {
     TypeInfo_Flags_None                 = 0x00,
@@ -68,28 +140,58 @@ struct TypeInfo
 const TypeInfo TypeInfos[] = 
 {
     //   0
-    L"PerfApp.MainPage", L"",
-    &ActivateType<::PerfApp::MainPage>, nullptr, nullptr, nullptr,
-    1, // Windows.UI.Xaml.Controls.Page
-    0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Custom,
-    TypeInfo_Flags_IsLocalType | TypeInfo_Flags_None,
+    L"String", L"",
+    nullptr, nullptr, nullptr, nullptr,
+    -1,
+    0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
+    TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
     //   1
-    L"Windows.UI.Xaml.Controls.Page", L"",
+    L"Object", L"",
     nullptr, nullptr, nullptr, nullptr,
     -1,
     0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
     TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
     //   2
-    L"Windows.UI.Xaml.Controls.UserControl", L"",
+    L"UInt32", L"",
     nullptr, nullptr, nullptr, nullptr,
     -1,
     0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
+    TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
+    //   3
+    L"UInt64", L"",
+    nullptr, nullptr, nullptr, nullptr,
+    -1,
+    0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
+    TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
+    //   4
+    L"PerfApp.MainPage", L"",
+    &ActivateType<::PerfApp::MainPage>, nullptr, nullptr, nullptr,
+    6, // Windows.UI.Xaml.Controls.Page
+    0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Custom,
+    TypeInfo_Flags_IsLocalType | TypeInfo_Flags_None,
+    //   5
+    L"PerfApp.MainPageViewModel", L"",
+    &ActivateType<::PerfApp::MainPageViewModel>, nullptr, nullptr, nullptr,
+    1, // Object
+    1, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Custom,
+    TypeInfo_Flags_IsLocalType | TypeInfo_Flags_IsBindable | TypeInfo_Flags_None,
+    //   6
+    L"Windows.UI.Xaml.Controls.Page", L"",
+    nullptr, nullptr, nullptr, nullptr,
+    -1,
+    12, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
+    TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
+    //   7
+    L"Windows.UI.Xaml.Controls.UserControl", L"",
+    nullptr, nullptr, nullptr, nullptr,
+    -1,
+    12, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
     TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
     //  Last type here is for padding
     L"", L"",
     nullptr, nullptr, nullptr, nullptr,
     -1, 
-    0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Custom,
+    12, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Custom,
     TypeInfo_Flags_None,
 };
 
@@ -101,38 +203,144 @@ const UINT TypeInfoLookup[] = {
       0,   //   4
       0,   //   5
       0,   //   6
-      0,   //   7
-      0,   //   8
-      0,   //   9
-      0,   //  10
-      0,   //  11
-      0,   //  12
-      0,   //  13
-      0,   //  14
-      0,   //  15
-      0,   //  16
-      1,   //  17
-      1,   //  18
-      1,   //  19
-      1,   //  20
-      1,   //  21
-      1,   //  22
-      1,   //  23
-      1,   //  24
-      1,   //  25
-      1,   //  26
-      1,   //  27
-      1,   //  28
-      1,   //  29
-      2,   //  30
-      2,   //  31
-      2,   //  32
-      2,   //  33
-      2,   //  34
-      2,   //  35
-      2,   //  36
-      3,   //  37
+      4,   //   7
+      4,   //   8
+      4,   //   9
+      4,   //  10
+      4,   //  11
+      4,   //  12
+      4,   //  13
+      4,   //  14
+      4,   //  15
+      4,   //  16
+      5,   //  17
+      5,   //  18
+      5,   //  19
+      5,   //  20
+      5,   //  21
+      5,   //  22
+      5,   //  23
+      5,   //  24
+      5,   //  25
+      6,   //  26
+      6,   //  27
+      6,   //  28
+      6,   //  29
+      7,   //  30
+      7,   //  31
+      7,   //  32
+      7,   //  33
+      7,   //  34
+      7,   //  35
+      7,   //  36
+      8,   //  37
 };
+
+struct MemberInfo 
+{
+    PCWSTR shortName;
+    ::Platform::Object^ (*getter)(::Platform::Object^);
+    void (*setter)(::Platform::Object^, ::Platform::Object^);
+    int typeIndex;
+    int targetTypeIndex;
+    bool isReadOnly;
+    bool isDependencyProperty;
+    bool isAttachable;
+};
+
+const MemberInfo MemberInfos[] = 
+{
+    //   0 - PerfApp.MainPage.CurrentFile
+    L"CurrentFile",
+    &GetReferenceTypeMember_CurrentFile<::PerfApp::MainPage>,
+    &SetReferenceTypeMember_CurrentFile<::PerfApp::MainPage, ::Platform::String>,
+    0, // String
+    -1,
+    false, false, false,
+    //   1 - PerfApp.MainPageViewModel.CurrentRenderIteration
+    L"CurrentRenderIteration",
+    &GetValueTypeMember_CurrentRenderIteration<::PerfApp::MainPageViewModel, ::default::uint32>,
+    nullptr,
+    2, // UInt32
+    -1,
+    true,  false, false,
+    //   2 - PerfApp.MainPageViewModel.CurrentParseIteration
+    L"CurrentParseIteration",
+    &GetValueTypeMember_CurrentParseIteration<::PerfApp::MainPageViewModel, ::default::uint32>,
+    nullptr,
+    2, // UInt32
+    -1,
+    true,  false, false,
+    //   3 - PerfApp.MainPageViewModel.MaxParseTicks
+    L"MaxParseTicks",
+    &GetValueTypeMember_MaxParseTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
+    nullptr,
+    3, // UInt64
+    -1,
+    true,  false, false,
+    //   4 - PerfApp.MainPageViewModel.MaxRenderTicks
+    L"MaxRenderTicks",
+    &GetValueTypeMember_MaxRenderTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
+    nullptr,
+    3, // UInt64
+    -1,
+    true,  false, false,
+    //   5 - PerfApp.MainPageViewModel.ParsePercentage
+    L"ParsePercentage",
+    &GetValueTypeMember_ParsePercentage<::PerfApp::MainPageViewModel, ::default::uint32>,
+    nullptr,
+    2, // UInt32
+    -1,
+    true,  false, false,
+    //   6 - PerfApp.MainPageViewModel.RenderPercentage
+    L"RenderPercentage",
+    &GetValueTypeMember_RenderPercentage<::PerfApp::MainPageViewModel, ::default::uint32>,
+    nullptr,
+    2, // UInt32
+    -1,
+    true,  false, false,
+    //   7 - PerfApp.MainPageViewModel.AverageParseTicks
+    L"AverageParseTicks",
+    &GetValueTypeMember_AverageParseTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
+    nullptr,
+    3, // UInt64
+    -1,
+    true,  false, false,
+    //   8 - PerfApp.MainPageViewModel.AverageRenderTicks
+    L"AverageRenderTicks",
+    &GetValueTypeMember_AverageRenderTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
+    nullptr,
+    3, // UInt64
+    -1,
+    true,  false, false,
+    //   9 - PerfApp.MainPageViewModel.MaxRenderFile
+    L"MaxRenderFile",
+    &GetReferenceTypeMember_MaxRenderFile<::PerfApp::MainPageViewModel>,
+    nullptr,
+    0, // String
+    -1,
+    true,  false, false,
+    //  10 - PerfApp.MainPageViewModel.MaxParseFile
+    L"MaxParseFile",
+    &GetReferenceTypeMember_MaxParseFile<::PerfApp::MainPageViewModel>,
+    nullptr,
+    0, // String
+    -1,
+    true,  false, false,
+    //  11 - PerfApp.MainPageViewModel.CurrentFile
+    L"CurrentFile",
+    &GetReferenceTypeMember_CurrentFile<::PerfApp::MainPageViewModel>,
+    nullptr,
+    0, // String
+    -1,
+    true,  false, false,
+};
+
+PCWSTR GetShortName(PCWSTR longName)
+{
+    PCWSTR separator = wcsrchr(longName, '.');
+    return separator != nullptr ? separator + 1: longName;
+}
 
 const TypeInfo* GetTypeInfo(::Platform::String^ typeName)
 {
@@ -146,6 +354,37 @@ const TypeInfo* GetTypeInfo(::Platform::String^ typeName)
                 return &TypeInfos[i];
             }
         }
+    }
+    return nullptr;
+}
+
+const MemberInfo* GetMemberInfo(::Platform::String^ longMemberName)
+{
+    auto lastDotIndex = longMemberName->Length();
+    while (true)
+    {
+        if (longMemberName->Data()[lastDotIndex] == '.')
+        {
+            const TypeInfo* pTypeInfo = GetTypeInfo(ref new ::Platform::String(longMemberName->Data(), lastDotIndex));
+            const TypeInfo* pNextTypeInfo = pTypeInfo + 1;
+            if (pTypeInfo)
+            {
+                PCWSTR shortMemberName = GetShortName(longMemberName->Data());
+                for (int i = pTypeInfo->firstMemberIndex; i < pNextTypeInfo->firstMemberIndex; i++)
+                {
+                    if (wcscmp(shortMemberName, MemberInfos[i].shortName) == 0)
+                    {
+                        return &MemberInfos[i];
+                    }
+                }
+            }
+            break;
+        }
+        if (lastDotIndex == 0)
+        {
+            break;
+        }
+        lastDotIndex--;
     }
     return nullptr;
 }
@@ -189,6 +428,12 @@ const TypeInfo* GetTypeInfo(::Platform::String^ typeName)
         userType->IsBindable = pTypeInfo->flags & TypeInfo_Flags_IsBindable;
         userType->IsMarkupExtension = pTypeInfo->flags & TypeInfo_Flags_IsMarkupExtension;
         userType->CreateFromStringMethod = nullptr;
+        int nextMemberIndex = pTypeInfo->firstMemberIndex;
+        for (int i=pTypeInfo->firstMemberIndex; i < pNextTypeInfo->firstMemberIndex; i++)
+        {
+            userType->AddMemberName(::Platform::StringReference(MemberInfos[i].shortName));
+            nextMemberIndex++;
+        }
         return userType;
     }
 }
@@ -196,8 +441,20 @@ const TypeInfo* GetTypeInfo(::Platform::String^ typeName)
 ::Windows::UI::Xaml::Markup::IXamlMember^ ::XamlTypeInfo::InfoProvider::XamlTypeInfoProvider::CreateXamlMember(::Platform::String^ longMemberName)
 {
     ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = nullptr;
-    // No Local Properties
-    (void)longMemberName; // Unused parameter
+    const MemberInfo* pMemberInfo = GetMemberInfo(longMemberName);
+    if (pMemberInfo != nullptr)
+    {
+        xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(
+            this,
+            ::Platform::StringReference(pMemberInfo->shortName),
+            ::Platform::StringReference(TypeInfos[pMemberInfo->typeIndex].typeName));
+        xamlMember->Getter = pMemberInfo->getter;
+        xamlMember->Setter = pMemberInfo->setter;
+        xamlMember->TargetTypeName = pMemberInfo->targetTypeIndex >= 0 ? ::Platform::StringReference(TypeInfos[pMemberInfo->targetTypeIndex].typeName) : L"";
+        xamlMember->IsReadOnly = pMemberInfo->isReadOnly;
+        xamlMember->IsDependencyProperty = pMemberInfo->isDependencyProperty;
+        xamlMember->IsAttachable = pMemberInfo->isAttachable;
+    }
     return xamlMember;
 }
 
