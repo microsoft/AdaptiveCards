@@ -243,6 +243,13 @@ AdaptiveNamespaceStart
 
         static HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
 
+        static HRESULT SetExplicitImageSize(
+            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
+            _In_ IInspectable* parentElement,
+            _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource,
+            _In_ FLOAT wdith,
+            _In_ FLOAT height);
+
         static HRESULT SetAutoImageSize(
             _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
             _In_ IInspectable* parentElement,
