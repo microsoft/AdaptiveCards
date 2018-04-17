@@ -53,12 +53,43 @@ AdaptiveNamespaceStart
         {
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
-            RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
+            
+            // If the child is a column it may have stretchable items, so return the column height to auto resize itself
+            ComPtr<IGrid> spChildAsGrid;
+            if (SUCCEEDED(spChild.As(&spChildAsGrid)))
+            {
+                ComPtr<IPanel> spChildAsPanel;
+                RETURN_IF_FAILED(spChildAsGrid.As(&spChildAsPanel));
 
+                ComPtr<IVector<UIElement*>> columns;
+                RETURN_IF_FAILED(spChildAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
+                double maxHeight{};
+
+                unsigned int columnCount{};
+                RETURN_IF_FAILED(columns->get_Size(&columnCount));
+                for (unsigned int j{}; j < columnCount; ++j)
+                {
+                    ComPtr<IUIElement> column;
+                    RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
+
+                    ComPtr<IFrameworkElement> columnAsFrameworkElement;
+                    RETURN_IF_FAILED(column.As(&columnAsFrameworkElement));
+
+                    RETURN_IF_FAILED(columnAsFrameworkElement->put_Height(NAN));
+                }
+            }
+            
             if (IsUIElementInStretchableList(spChild.Get()))
             {
                 ++stretchableCount;
+                ComPtr<IFrameworkElement> spChildAsFrameworkElement;
+                if (SUCCEEDED(spChild.As(&spChildAsFrameworkElement)))
+                {
+                    RETURN_IF_FAILED(spChildAsFrameworkElement->put_Height(NAN));
+                }
             }
+
+            RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
 
             if (visible)
             {
@@ -223,7 +254,7 @@ AdaptiveNamespaceStart
             availableSize.Height = currentHeight;
         }
 
-        // Second pass: Checki if any of the elements is a Grid, we cant modify the Measure method for those as I dont know how the Grids work internally
+        // Second pass: Check if any of the elements is a Grid, we cant modify the Measure method for those as I dont know how the Grids work internally
         for (unsigned int i{}; i < count; ++i)
         {
             ComPtr<IUIElement> spChild;
@@ -259,18 +290,25 @@ AdaptiveNamespaceStart
                     RETURN_IF_FAILED(column->get_DesiredSize(&columnDesiredSize));
                     columnDesiredSize.Height = static_cast<FLOAT>(maxHeight);
 
+                    ComPtr<IFrameworkElement> columnAsFrameworkElement;
+                    RETURN_IF_FAILED(column.As(&columnAsFrameworkElement));
+
+                    RETURN_IF_FAILED(columnAsFrameworkElement->put_Height(columnDesiredSize.Height));
                     RETURN_IF_FAILED(column->Measure(columnDesiredSize));
+                    RETURN_IF_FAILED(column->get_DesiredSize(&columnDesiredSize));
                 }
             }
         }
 
-        // Third pass: let the stretchable elements get the space it needs
+        // Third pass: let the stretchable elements get the space they need
         // If all the elements were rendered, at least one item may be stretched and the height is defined
-        if ((count == m_visibleCount) && (stretchableCount != 0))
+        if ((count == m_visibleCount) && (stretchableCount != 0) && (maxDesiredWidth != 0))
         {
             // availableSpace.height must be changed when a specific height can be defined for a card
             double emptyTrailingSpace = availableSize.Height - currentHeight;
-            double extraPaddingPerItem = emptyTrailingSpace / stretchableCount;
+            double extraPaddingPerItem = floor(emptyTrailingSpace / stretchableCount);
+            // Stretching so increase the height to stretch the container
+            currentHeight = availableSize.Height;
 
             for (unsigned int i{}; i < count; ++i)
             {
@@ -278,14 +316,18 @@ AdaptiveNamespaceStart
                 RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
                 if (visible && IsUIElementInStretchableList(spChild.Get()))
                 {
-                    Size childSize;
+                    Size childSize{ maxDesiredWidth, numeric_limits<float>::infinity() };
+                    RETURN_IF_FAILED(spChild->Measure(childSize));
+
                     RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
+                    
                     childSize.Height = childSize.Height + extraPaddingPerItem;
 
                     ComPtr<IFrameworkElement> frameworkElement;
                     RETURN_IF_FAILED(spChild.As(&frameworkElement));
-                    frameworkElement->put_Height(childSize.Height);
+                    RETURN_IF_FAILED(frameworkElement->put_Height(childSize.Height));
                     RETURN_IF_FAILED(spChild->Measure(childSize));
+                    RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
                 }
             }
 
