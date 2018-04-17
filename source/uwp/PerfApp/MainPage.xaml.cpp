@@ -5,6 +5,11 @@
 
 #include "pch.h"
 #include "MainPage.xaml.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
+#include <iostream> 
+#include <sstream> 
 
 using namespace PerfApp;
 
@@ -21,55 +26,81 @@ using namespace Windows::UI::Xaml::Navigation;
 using namespace AdaptiveCards::Rendering::Uwp;
 using namespace Windows::Storage;
 using namespace Windows::Storage::Pickers;
+using namespace Windows::Storage::Search;
 using namespace Platform;
 using namespace concurrency;
 using namespace Windows::Data::Json;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-task<void> MainPage::DoStuff()
+task<void> MainPage::RenderCards()
 {
+	runButton->IsEnabled = false;
+
 	AdaptiveCardRenderer^ renderer = ref new AdaptiveCardRenderer();
 	ULONGLONG totalParseTicks = 0, totalRenderTicks = 0, count = 0;
 
+	UINT parseIterations;
+	std::wstringstream parseIterationsStringStream(ParseIterations->Text->Data());
+	parseIterationsStringStream >> parseIterations;
+
+	UINT renderIterations;
+	std::wstringstream renderIterationsStringStream(RenderIterations->Text->Data());
+	renderIterationsStringStream >> renderIterations;
 
 	FolderPicker^ folderPicker = ref new FolderPicker();
 	folderPicker->FileTypeFilter->Append(".json");
 	auto pickedFolder = co_await folderPicker->PickSingleFolderAsync();
+	if (pickedFolder == nullptr)
+	{
+		runButton->IsEnabled = true;
+		return;
+	}
 
-	auto files = co_await pickedFolder->GetFilesAsync();
+	auto files = co_await pickedFolder->GetFilesAsync(CommonFileQuery::OrderByName);
 
 	for each(auto file in files)
 	{
 		String^ payload = co_await FileIO::ReadTextAsync(file);
 
-		ULONGLONG startTicks = GetTickCount64();
-		AdaptiveCardParseResult^ parseResult = AdaptiveCard::FromJsonString(payload);
-		ULONGLONG parseEndTicks = GetTickCount64();
+		for (UINT iParse = 0; iParse < parseIterations; iParse++)
+		{
+			ULONGLONG startParseTicks = GetTickCount64();
+			AdaptiveCardParseResult^ parseResult = AdaptiveCard::FromJsonString(payload);
+			ULONGLONG endParseTicks = GetTickCount64();
 
-		RenderedAdaptiveCard^ renderedCard = renderer->RenderAdaptiveCard(parseResult->AdaptiveCard);
-		ULONGLONG endTicks = GetTickCount64();
+			m_viewModel->AddParseDataPoint(file->Name, iParse, endParseTicks - startParseTicks);
 
-		ULONGLONG parseTicks = parseEndTicks - startTicks;
-		ULONGLONG renderTicks = endTicks - parseEndTicks;
-		ULONGLONG totalTicks = endTicks - startTicks;
+			for (UINT iRender = 0; iRender < renderIterations; iRender++)
+			{
+				ULONGLONG startRenderTicks = GetTickCount64();
+				RenderedAdaptiveCard^ renderedCard = renderer->RenderAdaptiveCard(parseResult->AdaptiveCard);
+				ULONGLONG endRenderTicks = GetTickCount64();
 
-		totalParseTicks += parseTicks;
-		totalRenderTicks += renderTicks;
-		count++;
+				m_viewModel->AddRenderDataPoint(file->Name, iRender, endRenderTicks - startRenderTicks);
+			}
+		}
 	}
 
-	ULONGLONG averageParseTicks = totalParseTicks / count;
-	ULONGLONG averageRenderTicks = totalRenderTicks / count;
-
-	double parsePercent = (double)totalParseTicks / ((double)totalParseTicks + (double)totalRenderTicks);
-	double renderPercent = (double)totalRenderTicks / ((double)totalParseTicks + (double)totalRenderTicks);
-	ULONG foo = 0;
+	m_viewModel->DoneRunning();
+	runButton->IsEnabled = true;
 }
 
 MainPage::MainPage()
 {
 	InitializeComponent();
 
-	DoStuff();
+	m_viewModel = ref new MainPageViewModel();
+	DataContext = m_viewModel;
+}
+
+void PerfApp::MainPage::runButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	RenderCards();
+}
+
+
+void PerfApp::MainPage::resetButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	m_viewModel->Reset();
 }

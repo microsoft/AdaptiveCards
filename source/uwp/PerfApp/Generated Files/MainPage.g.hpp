@@ -28,8 +28,33 @@ void ::PerfApp::MainPage::InitializeComponent()
 
 void ::PerfApp::MainPage::Connect(int __connectionId, ::Platform::Object^ __target)
 {
-    __connectionId;         // unreferenced 
-    __target;               // unreferenced
+    switch (__connectionId)
+    {
+    case 2:
+        {
+            this->ParseIterations = safe_cast<::Windows::UI::Xaml::Controls::TextBox^>(__target);
+        }
+        break;
+    case 3:
+        {
+            this->RenderIterations = safe_cast<::Windows::UI::Xaml::Controls::TextBox^>(__target);
+        }
+        break;
+    case 4:
+        {
+            this->runButton = safe_cast<::Windows::UI::Xaml::Controls::Button^>(__target);
+            (safe_cast<::Windows::UI::Xaml::Controls::Button^>(this->runButton))->Click += ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::PerfApp::MainPage::*)
+                (::Platform::Object^, ::Windows::UI::Xaml::RoutedEventArgs^))&MainPage::runButton_Click);
+        }
+        break;
+    case 5:
+        {
+            this->resetButton = safe_cast<::Windows::UI::Xaml::Controls::Button^>(__target);
+            (safe_cast<::Windows::UI::Xaml::Controls::Button^>(this->resetButton))->Click += ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::PerfApp::MainPage::*)
+                (::Platform::Object^, ::Windows::UI::Xaml::RoutedEventArgs^))&MainPage::resetButton_Click);
+        }
+        break;
+    }
     _contentLoaded = true;
 }
 

@@ -8,7 +8,51 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <StackPanel>
+            <TextBlock Margin="20,20,0,0" Text="Parse iterations:"></TextBlock>
+            <TextBox x:ConnectionId='2'  Name="ParseIterations" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0" Text="1"></TextBox>
+            <TextBlock Margin="20,20,0,0" Text="Render iterations per parse:"></TextBlock>
+            <TextBox x:ConnectionId='3'  Name="RenderIterations" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"  Text="1"/>            
+            <Button x:ConnectionId='4' Name="runButton"                         Margin="20,20,0,0">Run</Button>
+            <TextBlock Margin="20,20,0,0">
+                <Run>Current File:</Run>
+                <Run Text="{Binding CurrentFile}"></Run>
+                <!--<Run>Parse Iteration:</Run>
+                <Run Text="{Binding CurrentParseIteration}"></Run>
+                <Run>Render Iteration:</Run>
+                <Run Text="{Binding CurrentRenderIteration}"></Run> -->
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Average Parse Ticks:</Run>
+                <Run Text="{Binding AverageParseTicks}"></Run>
+                <Run>(</Run>
+                <Run Text="{Binding ParsePercentage}"></Run>
+                <Run>% )</Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Average Render Ticks:</Run>
+                <Run Text="{Binding AverageRenderTicks}"></Run>
+                <Run>(</Run>
+                <Run Text="{Binding RenderPercentage}"></Run>
+                <Run>% )</Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Longest Parse Time:</Run>
+                <Run Text="{Binding MaxParseTicks}"></Run>
+                <Run>(</Run>
+                <Run Text="{Binding MaxParseFile}"></Run>
+                <Run>)</Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Longest Render Time:</Run>
+                <Run Text="{Binding MaxRenderTicks}"></Run>
+                <Run>(</Run>
+                <Run Text="{Binding MaxRenderFile}"></Run>
+                <Run>)</Run>
+            </TextBlock>
+            <Button x:ConnectionId='5' Name="resetButton"                           Margin="20,20,0,0">Reset</Button>
+        </StackPanel>
     </Grid>
+
 </Page>
 

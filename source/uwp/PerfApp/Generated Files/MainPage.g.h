@@ -7,6 +7,16 @@
 //------------------------------------------------------------------------------
 
 
+namespace Windows {
+    namespace UI {
+        namespace Xaml {
+            namespace Controls {
+                ref class TextBox;
+                ref class Button;
+            }
+        }
+    }
+}
 
 namespace PerfApp
 {
@@ -28,6 +38,10 @@ namespace PerfApp
         bool _contentLoaded;
     
     
+        private: ::Windows::UI::Xaml::Controls::TextBox^ ParseIterations;
+        private: ::Windows::UI::Xaml::Controls::TextBox^ RenderIterations;
+        private: ::Windows::UI::Xaml::Controls::Button^ runButton;
+        private: ::Windows::UI::Xaml::Controls::Button^ resetButton;
     };
 }
 

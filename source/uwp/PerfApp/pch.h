@@ -10,3 +10,4 @@
 #include <pplawait.h>
 
 #include "App.xaml.h"
+#include "MainPageViewModel.h"
