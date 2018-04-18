@@ -12,5 +12,6 @@
 
 @property ACRContainerStyle style;
 @property BOOL isFactSetLabel;
+@property BOOL isTitle;
 
 @end

@@ -27,7 +27,7 @@
     return ACRFactSet;
 }
 
-+ (UILabel *)buildLabel:(NSString *)text
++ (ACRUILabel *)buildLabel:(NSString *)text
              hostConfig:(ACOHostConfig *)acoConfig
              textConfig:(TextConfig const &)textConfig
          containerStyle:(ACRContainerStyle)style
@@ -105,10 +105,9 @@
     valueStack.axis = UILayoutConstraintAxisVertical;
 
     ACRColumnSetView *factSetWrapperView = [[ACRColumnSetView alloc] init];
-    [factSetWrapperView addArrangedSubview:titleStack];
-    [titleStack setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [factSetWrapperView addArrangedSubview:titleStack];  
     [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
-    [factSetWrapperView addArrangedSubview:valueStack];
+    [factSetWrapperView addArrangedSubview:valueStack];    
     [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
 
     [factSetWrapperView adjustHuggingForLastElement];
@@ -116,16 +115,14 @@
     for(auto fact :fctSet->GetFacts())
     {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-        UILabel *titleLab = [ACRFactSetRenderer buildLabel:title
+        ACRUILabel *titleLab = [ACRFactSetRenderer buildLabel:title
                                                 hostConfig:acoConfig
                                                 textConfig:config->factSet.title
                                             containerStyle:style
                                                  elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                                   rootView:rootView
                                                    element:elem];
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->factSet.title.maxWidth];
-        constraint.active = YES;
-        constraint.priority = UILayoutPriorityDefaultHigh;
+        titleLab.isTitle = YES;
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
         UILabel *valueLab = [ACRFactSetRenderer buildLabel:value
                                                 hostConfig:acoConfig

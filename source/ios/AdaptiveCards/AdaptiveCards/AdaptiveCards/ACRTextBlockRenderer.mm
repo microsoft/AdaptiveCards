@@ -60,7 +60,7 @@
     {
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
         paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment()];
 
         // Obtain text color to apply to the attributed string
@@ -79,6 +79,10 @@
     }
 
     lab.numberOfLines = int(txtBlck->GetMaxLines());
+    if(!lab.numberOfLines and !txtBlck->GetWrap()){
+        lab.numberOfLines = 1;
+    }
+
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] init];
 
     [wrappingview addSubview:lab];
