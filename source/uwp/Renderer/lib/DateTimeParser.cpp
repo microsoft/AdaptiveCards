@@ -8,19 +8,13 @@ AdaptiveNamespaceStart
 
 DateTimeParser::DateTimeParser(const std::string& language)
 {
-    try
-    {
-        m_language = std::locale(language.c_str());
-    }
-    catch (...)
-    {
-        m_language = std::locale("");
-    }
+    m_languageString = language;
 }
 
 std::string DateTimeParser::GenerateString(DateTimePreparser text)
 {
     std::wostringstream parsedostr;
+    bool haveSetLanguage = false;
 
     for (const auto& textSection : text.GetTextTokens())
     {
@@ -29,9 +23,24 @@ std::string DateTimeParser::GenerateString(DateTimePreparser text)
         result.tm_mon = textSection->GetMonth();
         result.tm_year = textSection->GetYear() >= 1900 ? textSection->GetYear() - 1900 : 0;
 
+        DateTimePreparsedTokenFormat format = textSection->GetFormat();
+        if (format != DateTimePreparsedTokenFormat::RegularString && !haveSetLanguage)
+        {
+            std::locale language;
+            try
+            {
+                language = std::locale(m_languageString.c_str());
+            }
+            catch (...)
+            {
+                language = std::locale("");
+            }
+            parsedostr.imbue(language);
+            haveSetLanguage = true;
+        }
+
         // using the put_time function the 3 formats are locale dependent
-        parsedostr.imbue(m_language);
-        switch (textSection->GetFormat())
+        switch (format)
         {
             case DateTimePreparsedTokenFormat::DateCompact:
                 parsedostr << std::put_time(&result, L"%Ex");
