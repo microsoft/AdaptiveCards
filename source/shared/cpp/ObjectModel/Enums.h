@@ -89,8 +89,6 @@ enum class AdaptiveCardSchemaKey
     ImageSet,
     ImageSize,
     ImageSizes,
-    PixelWidth,
-    PixelHeight,
     InlineTopMargin,
     IsMultiline,
     IsMultiSelect,
