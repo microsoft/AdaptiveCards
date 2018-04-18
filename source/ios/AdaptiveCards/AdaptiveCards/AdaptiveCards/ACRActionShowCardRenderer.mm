@@ -30,9 +30,10 @@
     std::shared_ptr<BaseActionElement> elem = [acoElem element];
     std::shared_ptr<ShowCardAction> action = std::dynamic_pointer_cast<ShowCardAction>(elem);
 
-    NSString *title  = [NSString stringWithCString:action->GetTitle().c_str()
-                                          encoding:NSUTF8StringEncoding];
-    UIButton *button = [UIButton acr_renderButton:rootView title:title andHostConfig:[acoConfig getHostConfig]];
+    NSString *title  = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+    NSString *iconUrl = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:NSUTF8StringEncoding];
+    
+    UIButton *button = [UIButton rootView:rootView baseActionElement:acoElem title:title iconUrl:iconUrl andHostConfig:acoConfig];
 
     ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:action->GetCard()
                                                                          config:acoConfig

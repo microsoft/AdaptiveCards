@@ -41,14 +41,14 @@ uploadArchives {
         repositories {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                pom.artifactId ="adaptivecards-android-arm"
+                pom.artifactId ="adaptivecards-android"
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
                     authentication(userName: NexusUserName, password: NexusPassword)
                 }
                 pom {
                     setGroupId "io.adaptivecards"
-                    setVersion '0.5.0'
+                    setVersion '1.0.1'
                 }
 
                 pom.project {
