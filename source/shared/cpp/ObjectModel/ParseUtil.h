@@ -37,8 +37,6 @@ public:
 
     static int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
 
-    static float GetFloat(const Json::Value& json, AdaptiveCardSchemaKey key, float defaultValue, bool isRequired = false);
-
     static CardElementType GetCardElementType(const Json::Value& json);
 
     static CardElementType TryGetCardElementType(const Json::Value& json);
