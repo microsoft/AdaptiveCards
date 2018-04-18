@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "Enums.h"
-#include "Height.h"
 #include "json/json.h"
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
@@ -24,8 +23,8 @@ public:
     virtual bool GetSeparator() const;
     virtual void SetSeparator(const bool value);
 
-    Height GetHeight() const;
-    void SetHeight(const Height value);
+    HeightType GetHeight() const;
+    void SetHeight(const HeightType value);
 
     virtual Spacing GetSpacing() const;
     virtual void SetSpacing(const Spacing value);
@@ -60,7 +59,7 @@ private:
     std::string m_typeString;
     bool m_separator;
     Json::Value m_additionalProperties;
-    Height m_height;
+    HeightType m_height;
 };
 
 template <typename T>
@@ -76,7 +75,7 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
     baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
     baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
     baseCardElement->SetHeight(
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<Height>(json, AdaptiveCardSchemaKey::Height, Height(), Height::Deserialize));
+        ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
 
     // Walk all properties and put any unknown ones in the additional properties json
     for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)

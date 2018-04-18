@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "AdaptiveHeight.h"
 #include "AdaptiveImage.h"
 
 #include "Util.h"

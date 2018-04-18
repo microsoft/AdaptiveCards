@@ -173,7 +173,6 @@
     <ClInclude Include="lib\AdaptiveFact.h" />
     <ClInclude Include="lib\AdaptiveFactSet.h" />
     <ClInclude Include="lib\AdaptiveFactSetConfig.h" />
-    <ClInclude Include="lib\AdaptiveHeight.h" />
     <ClInclude Include="lib\AdaptiveHostConfig.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveImageSet.h" />
@@ -262,7 +261,6 @@
     <ClCompile Include="lib\AdaptiveFact.cpp" />
     <ClCompile Include="lib\AdaptiveFactSet.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveHeight.cpp" />
     <ClCompile Include="lib\AdaptiveHostConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImage.cpp" />
     <ClCompile Include="lib\AdaptiveImageSet.cpp" />

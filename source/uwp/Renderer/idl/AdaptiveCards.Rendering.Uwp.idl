@@ -83,7 +83,6 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveDateInputRenderer;
     runtimeclass AdaptiveElementRendererRegistration;
     runtimeclass AdaptiveFactSetRenderer;
-    runtimeclass AdaptiveHeight;
     runtimeclass AdaptiveImageRenderer;
     runtimeclass AdaptiveImageSetRenderer;
     runtimeclass AdaptiveNumberInputRenderer;
@@ -143,7 +142,6 @@ AdaptiveNamespaceStart
     interface IRenderedAdaptiveCard;
     interface IAdaptiveInputs;
     interface IAdaptiveActionEventArgs;
-    interface IAdaptiveHeight;
 
     interface IAdaptiveElementParserRegistration;
     interface IAdaptiveElementParserRegistrationStatics;
@@ -450,8 +448,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT ElementType([out, retval] ElementType* value);
         [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
 
-        [propget] HRESULT Height([out, retval] AdaptiveHeight** value);
-        [propput] HRESULT Height([in] AdaptiveHeight* value);
+        [propget] HRESULT Height([out, retval] HeightType* value);
+        [propput] HRESULT Height([in] HeightType value);
 
         [propget] HRESULT Spacing([out, retval] Spacing* value);
         [propput] HRESULT Spacing([in] Spacing value);
@@ -2567,37 +2565,6 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveRenderContext
     {
         [default] interface IAdaptiveRenderContext;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveHeight),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(d37a48d6-6cd8-11e7-907b-a6006ad3dba0),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(2b6520f1-c000-4b6c-925f-8b2cbeba0156)
-#endif        
-    ]
-    interface IAdaptiveHeight : IInspectable
-    {
-        [propget] HRESULT HeightType([out, retval] HeightType* value);
-        [propput] HRESULT HeightType([in] HeightType value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif        
-    ]
-    runtimeclass AdaptiveHeight
-    {
-        [default] interface IAdaptiveHeight;
     };
 
     [

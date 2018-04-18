@@ -66,12 +66,12 @@ void BaseCardElement::SetSpacing(const Spacing value)
     m_spacing = value;
 }
 
-Height BaseCardElement::GetHeight() const
+HeightType BaseCardElement::GetHeight() const
 {
     return m_height;
 }
 
-void BaseCardElement::SetHeight(const Height value)
+void BaseCardElement::SetHeight(const HeightType value)
 {
     m_height = value;
 }
@@ -104,7 +104,7 @@ Json::Value BaseCardElement::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)] = SpacingToString(GetSpacing());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = GetSeparator();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = Height::SerializeToString(GetHeight());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());
     return root;
 }
 

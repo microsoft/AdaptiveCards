@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "AdaptiveHeight.h"
 #include "AdaptiveTextBlock.h"
 #include "Util.h"
 #include "DateTimeParser.h"

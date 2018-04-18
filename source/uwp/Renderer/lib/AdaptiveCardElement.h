@@ -2,7 +2,6 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
-#include "AdaptiveHeight.h"
 
 AdaptiveNamespaceStart
     class DECLSPEC_UUID("49496982-18E7-48A8-9D16-99E389BE9133") AdaptiveCardElementBase : public IUnknown
@@ -25,8 +24,8 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject);
 
-        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::IAdaptiveHeight** height);
-        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::IAdaptiveHeight* height);
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height);
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height);
 
         IFACEMETHODIMP ToJson(ABI::Windows::Data::Json::IJsonObject** result);
 
@@ -40,6 +39,6 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::Spacing m_spacing;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHeight> m_height;
+        ABI::AdaptiveNamespace::HeightType m_height;
     };
 AdaptiveNamespaceEnd

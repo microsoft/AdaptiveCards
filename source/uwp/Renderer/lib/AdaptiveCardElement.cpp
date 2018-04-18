@@ -16,7 +16,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHeight>(&m_height, sharedModel->GetHeight()));
+        m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedModel->GetHeight());
 
         return S_OK;
     }
@@ -71,12 +71,13 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_Height(ABI::AdaptiveNamespace::IAdaptiveHeight** height)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Height(ABI::AdaptiveNamespace::HeightType* height)
     {
-        return m_height.CopyTo(height);
+        *height = m_height;
+        return S_OK;;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_Height(ABI::AdaptiveNamespace::IAdaptiveHeight* height)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_Height(ABI::AdaptiveNamespace::HeightType height)
     {
         m_height = height;
         return S_OK;
@@ -96,19 +97,13 @@ AdaptiveNamespaceStart
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetSeparator(m_separator);
         sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
+        sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
 
         if (m_additionalProperties != nullptr)
         {
             Json::Value jsonCpp;
             RETURN_IF_FAILED(JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonCpp));
             sharedCardElement->SetAdditionalProperties(jsonCpp);
-        }
-
-        if (m_height != nullptr)
-        {
-            ABI::AdaptiveNamespace::HeightType heightType;
-            m_height->get_HeightType(&heightType);
-            sharedCardElement->SetHeight(Height(static_cast<AdaptiveSharedNamespace::HeightType>(heightType)));
         }
 
         return S_OK;

@@ -43,8 +43,8 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value) { return AdaptiveCardElementBase::get_ElementTypeString(value); }
 
-        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::IAdaptiveHeight** height) { return AdaptiveCardElementBase::get_Height(height); }
-        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::IAdaptiveHeight* height) { return AdaptiveCardElementBase::put_Height(height); }
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height) { return AdaptiveCardElementBase::get_Height(height); }
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height) { return AdaptiveCardElementBase::put_Height(height); }
 
         IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::get_AdditionalProperties(result); }
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value) { return AdaptiveCardElementBase::put_AdditionalProperties(value); }

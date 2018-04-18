@@ -683,10 +683,8 @@ AdaptiveNamespaceStart
                 ComPtr<IUIElement> newControl;
                 elementRenderer->Render(element, renderContext, renderArgs, &newControl);
 
-                ComPtr<IAdaptiveHeight> elementHeight;
-                THROW_IF_FAILED(element->get_Height(elementHeight.GetAddressOf()));
                 ABI::AdaptiveNamespace::HeightType heightType;
-                THROW_IF_FAILED(elementHeight->get_HeightType(&heightType));
+                THROW_IF_FAILED(element->get_Height(&heightType));
                 
                 XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
 
@@ -2038,10 +2036,9 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
 
         GridLength factSetGridHeight = factSetGridLength;
-        ComPtr<IAdaptiveHeight> height;
-        THROW_IF_FAILED(cardElement->get_Height(height.GetAddressOf()));
+
         ABI::AdaptiveNamespace::HeightType heightType;
-        THROW_IF_FAILED(height->get_HeightType(&heightType));
+        THROW_IF_FAILED(cardElement->get_Height(&heightType));
         if (heightType == ABI::AdaptiveNamespace::HeightType::Stretch)
         {
             factSetGridHeight = {1, GridUnitType::GridUnitType_Star};

@@ -43,7 +43,6 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Fact.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FactSet.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\Height.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateInput.cpp" />
@@ -85,7 +84,6 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\Height.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />

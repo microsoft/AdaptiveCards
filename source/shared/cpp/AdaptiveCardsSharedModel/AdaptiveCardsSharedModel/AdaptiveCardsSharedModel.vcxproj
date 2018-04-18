@@ -140,7 +140,6 @@
     <ClCompile Include="..\..\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\ObjectModel\Fact.cpp" />
     <ClCompile Include="..\..\ObjectModel\FactSet.cpp" />
-	<ClCompile Include="..\..\ObjectModel\Height.cpp" />
     <ClCompile Include="..\..\ObjectModel\HostConfig.cpp" />
     <ClCompile Include="..\..\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\ObjectModel\ImageSet.cpp" />
@@ -183,7 +182,6 @@
     <ClInclude Include="..\..\ObjectModel\Enums.h" />
     <ClInclude Include="..\..\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\ObjectModel\FactSet.h" />
-	<ClInclude Include="..\..\ObjectModel\Height.h" />
     <ClInclude Include="..\..\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\ObjectModel\Image.h" />
     <ClInclude Include="..\..\ObjectModel\ImageSet.h" />

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "AdaptiveHeight.h"
 #include "AdaptiveDateInput.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
