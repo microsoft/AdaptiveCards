@@ -77,7 +77,8 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
     auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
     container->m_columns = std::move(cardElements);
 
-    container->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction));
+    // Parse optional selectAction
+    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }
