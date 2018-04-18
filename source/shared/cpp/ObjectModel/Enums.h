@@ -71,7 +71,6 @@ enum class AdaptiveCardSchemaKey
     DateInput,
     Default,
     Emphasis,
-    Explicit,
     ExtraLarge,
     Facts,
     FactSet,
@@ -197,7 +196,6 @@ enum class ImageSize {
     Small,
     Medium,
     Large,
-    Explicit,
 };
 
 enum class TextInputStyle {

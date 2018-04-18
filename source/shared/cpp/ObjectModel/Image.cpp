@@ -34,9 +34,6 @@ Image::Image(
     m_altText(altText),
     m_hAlignment(hAlignment)
 {
-    if(m_width || m_height){
-        m_imageSize = ImageSize::Explicit;
-    }
     PopulateKnownPropertiesSet();
 }
 
@@ -218,12 +215,6 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
 
     image->SetWidth(parsedDimensions[0]);
     image->SetHeight(parsedDimensions[1]);
-
-    if(image->GetWidth() || image->GetHeight()) 
-    {
-        image->SetImageSize(ImageSize::Explicit);
-    }
-
     image->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction));
 
     return image;
