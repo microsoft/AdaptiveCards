@@ -153,14 +153,6 @@ AdaptiveNamespaceStart
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
-        // Keeping it alive cause I dont know what this is
-        /*
-        void BuildPanelChildren(
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* children,
-            _In_ ABI::Windows::UI::Xaml::Controls::IGrid* parentGrid,
-            std::shared_ptr<std::vector<InputItem>> inputElements,
-            _In_ std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
-        */
         void BuildShowCard(
             AdaptiveNamespace::AdaptiveCardRenderer* renderer,
             ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig* showCardActionConfig,
@@ -183,14 +175,7 @@ AdaptiveNamespaceStart
             _In_ bool insertSeparator,
             _Inout_ AdaptiveNamespace::AdaptiveRenderContext* renderContext,
             ABI::AdaptiveNamespace::ContainerStyle containerStyle);
-        
-        // I think this class is not used anymore, I think they changed the name for separator
-        /*
-        void GetSeparationConfigForElement(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,
-            _COM_Outptr_result_maybenull_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationConfig** separationConfig);
-            */
+
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
             _Inout_  ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             UINT spacing, UINT separatorThickness, ABI::Windows::UI::Color separatorColor, bool isHorizontal = true);

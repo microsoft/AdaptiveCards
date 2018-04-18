@@ -52,7 +52,6 @@ private:
     std::string m_width;
     unsigned int m_pixelWidth;
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers; // I dont know what this is used for
     std::shared_ptr<BaseActionElement> m_selectAction;
     ContainerStyle m_style;
 };
