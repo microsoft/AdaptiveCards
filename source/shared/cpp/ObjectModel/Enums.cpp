@@ -46,7 +46,6 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::DateInput, "dateInput" },
         { AdaptiveCardSchemaKey::Default, "default" },
         { AdaptiveCardSchemaKey::Emphasis, "emphasis" },
-        { AdaptiveCardSchemaKey::Explicit, "explicit" },
         { AdaptiveCardSchemaKey::ExtraLarge, "extraLarge" },
         { AdaptiveCardSchemaKey::Facts, "facts" },
         { AdaptiveCardSchemaKey::FactSet, "factSet" },

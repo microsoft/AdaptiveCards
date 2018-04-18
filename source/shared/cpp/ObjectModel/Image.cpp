@@ -34,9 +34,6 @@ Image::Image(
     m_altText(altText),
     m_hAlignment(hAlignment)
 {
-    if(m_width || m_height){
-        m_imageSize = ImageSize::Explicit;
-    }
     PopulateKnownPropertiesSet();
 }
 
