@@ -180,7 +180,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height));
 
     // validate user inputs
-    const std::string unit = "pix";
+    const std::string unit = "px";
     std::vector<int> parsedDimensions;
     for(auto eachDimension : requestedDimensions)
     { 

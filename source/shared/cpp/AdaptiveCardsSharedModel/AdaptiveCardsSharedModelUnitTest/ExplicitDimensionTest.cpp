@@ -27,8 +27,8 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {\
                         \"type\": \"Image\",\
                         \"url\": \"Image\",\
-                        \"width\": \"10pix\",\
-                        \"height\": \"50pix\"\
+                        \"width\": \"10px\",\
+                        \"height\": \"50px\"\
                     }\
                 ]\
             }";
@@ -51,7 +51,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {\
                         \"type\": \"Image\",\
                         \"url\": \"Image\",\
-                        \"height\": \"10pix\"\
+                        \"height\": \"10px\"\
                     }\
                 ]\
             }";
@@ -102,7 +102,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {\
                         \"type\": \"Image\",\
                         \"url\": \"Image\",\
-                        \"height\": \"10pix  \"\
+                        \"height\": \"10px  \"\
                     }\
                 ]\
             }";
@@ -129,7 +129,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {\
                         \"type\": \"Image\",\
                         \"url\": \"Image\",\
-                        \"height\": \"10.0pix\"\
+                        \"height\": \"10.0px\"\
                     }\
                 ]\
             }";
@@ -156,7 +156,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {\
                         \"type\": \"Image\",\
                         \"url\": \"Image\",\
-                        \"height\": \"-10pix\"\
+                        \"height\": \"-10px\"\
                     }\
                 ]\
             }";
