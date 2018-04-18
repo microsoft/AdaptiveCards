@@ -14,7 +14,20 @@ DateTimeParser::DateTimeParser(const std::string& language)
 std::string DateTimeParser::GenerateString(DateTimePreparser text)
 {
     std::wostringstream parsedostr;
-    bool haveSetLanguage = false;
+
+    if (text.HasDateTokens())
+    {
+        std::locale language;
+        try
+        {
+            language = std::locale(m_languageString.c_str());
+        }
+        catch (...)
+        {
+            language = std::locale("");
+        }
+        parsedostr.imbue(language);
+    }
 
     for (const auto& textSection : text.GetTextTokens())
     {
@@ -24,21 +37,6 @@ std::string DateTimeParser::GenerateString(DateTimePreparser text)
         result.tm_year = textSection->GetYear() >= 1900 ? textSection->GetYear() - 1900 : 0;
 
         DateTimePreparsedTokenFormat format = textSection->GetFormat();
-        if (format != DateTimePreparsedTokenFormat::RegularString && !haveSetLanguage)
-        {
-            std::locale language;
-            try
-            {
-                language = std::locale(m_languageString.c_str());
-            }
-            catch (...)
-            {
-                language = std::locale("");
-            }
-            parsedostr.imbue(language);
-            haveSetLanguage = true;
-        }
-
         // using the put_time function the 3 formats are locale dependent
         switch (format)
         {
