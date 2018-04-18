@@ -111,6 +111,7 @@
         ..\..\shared\cpp\ObjectModel\json;
         %(AdditionalIncludeDirectories)
       </AdditionalIncludeDirectories>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ProgramDatabase</DebugInformationFormat>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -37,19 +37,23 @@
                 <Run>% )</Run>
             </TextBlock>
             <TextBlock Margin="20,0,0,0">
-                <Run>Longest Parse Time:</Run>
+                <Run>Longest Parse Ticks:</Run>
                 <Run Text="{Binding MaxParseTicks}"></Run>
                 <Run>(</Run>
                 <Run Text="{Binding MaxParseFile}"></Run>
                 <Run>)</Run>
             </TextBlock>
             <TextBlock Margin="20,0,0,0">
-                <Run>Longest Render Time:</Run>
+                <Run>Longest Render Ticks:</Run>
                 <Run Text="{Binding MaxRenderTicks}"></Run>
                 <Run>(</Run>
                 <Run Text="{Binding MaxRenderFile}"></Run>
                 <Run>)</Run>
             </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Total Render Ticks:</Run>
+                <Run Text="{Binding TotalRenderTicks}" FontFamily="Segoe UI"></Run>
+            </TextBlock>            
             <Button Name="resetButton" Click="resetButton_Click" Margin="20,20,0,0">Reset</Button>
         </StackPanel>
     </Grid>

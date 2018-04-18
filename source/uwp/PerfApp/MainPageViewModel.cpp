@@ -140,4 +140,9 @@ namespace PerfApp
 	{
 		return m_currentRenderIteration;
 	}
+
+	ULONGLONG MainPageViewModel::TotalRenderTicks::get()
+	{
+		return m_totalRenderTicks;
+	}
 }
