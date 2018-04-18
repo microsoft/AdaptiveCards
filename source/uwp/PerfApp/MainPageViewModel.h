@@ -65,6 +65,11 @@ namespace PerfApp
 			UINT get();
 		}
 
+		property ULONGLONG TotalRenderTicks
+		{
+			ULONGLONG get();
+		}
+
 		void AddParseDataPoint(Platform::String^ filename, UINT currentIteration, ULONGLONG parseTicks);
 		void AddRenderDataPoint(Platform::String^ filename, UINT currentIteration, ULONGLONG renderTicks);
 		void Reset();

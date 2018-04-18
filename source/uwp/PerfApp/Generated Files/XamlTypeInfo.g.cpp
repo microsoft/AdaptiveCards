@@ -40,6 +40,12 @@ template<typename T>
 }
 
 template<typename TDeclaringType, typename TValue>
+::Platform::Object^ GetValueTypeMember_TotalRenderTicks(::Platform::Object^ instance)
+{
+    return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->TotalRenderTicks);
+}
+
+template<typename TDeclaringType, typename TValue>
 ::Platform::Object^ GetValueTypeMember_CurrentRenderIteration(::Platform::Object^ instance)
 {
     return ref new ::Platform::Box<TValue>(safe_cast<TDeclaringType^>(instance)->CurrentRenderIteration);
@@ -152,13 +158,13 @@ const TypeInfo TypeInfos[] =
     0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
     TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
     //   2
-    L"UInt32", L"",
+    L"UInt64", L"",
     nullptr, nullptr, nullptr, nullptr,
     -1,
     0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
     TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
     //   3
-    L"UInt64", L"",
+    L"UInt32", L"",
     nullptr, nullptr, nullptr, nullptr,
     -1,
     0, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
@@ -179,19 +185,19 @@ const TypeInfo TypeInfos[] =
     L"Windows.UI.Xaml.Controls.Page", L"",
     nullptr, nullptr, nullptr, nullptr,
     -1,
-    12, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
+    13, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
     TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
     //   7
     L"Windows.UI.Xaml.Controls.UserControl", L"",
     nullptr, nullptr, nullptr, nullptr,
     -1,
-    12, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
+    13, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Metadata,
     TypeInfo_Flags_IsSystemType | TypeInfo_Flags_None,
     //  Last type here is for padding
     L"", L"",
     nullptr, nullptr, nullptr, nullptr,
     -1, 
-    12, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Custom,
+    13, 0, -1, ::Windows::UI::Xaml::Interop::TypeKind::Custom,
     TypeInfo_Flags_None,
 };
 
@@ -257,77 +263,84 @@ const MemberInfo MemberInfos[] =
     0, // String
     -1,
     false, false, false,
-    //   1 - PerfApp.MainPageViewModel.CurrentRenderIteration
+    //   1 - PerfApp.MainPageViewModel.TotalRenderTicks
+    L"TotalRenderTicks",
+    &GetValueTypeMember_TotalRenderTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
+    nullptr,
+    2, // UInt64
+    -1,
+    true,  false, false,
+    //   2 - PerfApp.MainPageViewModel.CurrentRenderIteration
     L"CurrentRenderIteration",
     &GetValueTypeMember_CurrentRenderIteration<::PerfApp::MainPageViewModel, ::default::uint32>,
     nullptr,
-    2, // UInt32
+    3, // UInt32
     -1,
     true,  false, false,
-    //   2 - PerfApp.MainPageViewModel.CurrentParseIteration
+    //   3 - PerfApp.MainPageViewModel.CurrentParseIteration
     L"CurrentParseIteration",
     &GetValueTypeMember_CurrentParseIteration<::PerfApp::MainPageViewModel, ::default::uint32>,
     nullptr,
-    2, // UInt32
+    3, // UInt32
     -1,
     true,  false, false,
-    //   3 - PerfApp.MainPageViewModel.MaxParseTicks
+    //   4 - PerfApp.MainPageViewModel.MaxParseTicks
     L"MaxParseTicks",
     &GetValueTypeMember_MaxParseTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
     nullptr,
-    3, // UInt64
+    2, // UInt64
     -1,
     true,  false, false,
-    //   4 - PerfApp.MainPageViewModel.MaxRenderTicks
+    //   5 - PerfApp.MainPageViewModel.MaxRenderTicks
     L"MaxRenderTicks",
     &GetValueTypeMember_MaxRenderTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
     nullptr,
-    3, // UInt64
+    2, // UInt64
     -1,
     true,  false, false,
-    //   5 - PerfApp.MainPageViewModel.ParsePercentage
+    //   6 - PerfApp.MainPageViewModel.ParsePercentage
     L"ParsePercentage",
     &GetValueTypeMember_ParsePercentage<::PerfApp::MainPageViewModel, ::default::uint32>,
     nullptr,
-    2, // UInt32
+    3, // UInt32
     -1,
     true,  false, false,
-    //   6 - PerfApp.MainPageViewModel.RenderPercentage
+    //   7 - PerfApp.MainPageViewModel.RenderPercentage
     L"RenderPercentage",
     &GetValueTypeMember_RenderPercentage<::PerfApp::MainPageViewModel, ::default::uint32>,
     nullptr,
-    2, // UInt32
+    3, // UInt32
     -1,
     true,  false, false,
-    //   7 - PerfApp.MainPageViewModel.AverageParseTicks
+    //   8 - PerfApp.MainPageViewModel.AverageParseTicks
     L"AverageParseTicks",
     &GetValueTypeMember_AverageParseTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
     nullptr,
-    3, // UInt64
+    2, // UInt64
     -1,
     true,  false, false,
-    //   8 - PerfApp.MainPageViewModel.AverageRenderTicks
+    //   9 - PerfApp.MainPageViewModel.AverageRenderTicks
     L"AverageRenderTicks",
     &GetValueTypeMember_AverageRenderTicks<::PerfApp::MainPageViewModel, ::default::uint64>,
     nullptr,
-    3, // UInt64
+    2, // UInt64
     -1,
     true,  false, false,
-    //   9 - PerfApp.MainPageViewModel.MaxRenderFile
+    //  10 - PerfApp.MainPageViewModel.MaxRenderFile
     L"MaxRenderFile",
     &GetReferenceTypeMember_MaxRenderFile<::PerfApp::MainPageViewModel>,
     nullptr,
     0, // String
     -1,
     true,  false, false,
-    //  10 - PerfApp.MainPageViewModel.MaxParseFile
+    //  11 - PerfApp.MainPageViewModel.MaxParseFile
     L"MaxParseFile",
     &GetReferenceTypeMember_MaxParseFile<::PerfApp::MainPageViewModel>,
     nullptr,
     0, // String
     -1,
     true,  false, false,
-    //  11 - PerfApp.MainPageViewModel.CurrentFile
+    //  12 - PerfApp.MainPageViewModel.CurrentFile
     L"CurrentFile",
     &GetReferenceTypeMember_CurrentFile<::PerfApp::MainPageViewModel>,
     nullptr,
