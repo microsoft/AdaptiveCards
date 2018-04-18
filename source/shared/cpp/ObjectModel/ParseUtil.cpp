@@ -183,30 +183,6 @@ int ParseUtil::GetInt(const Json::Value & json, AdaptiveCardSchemaKey key, int d
     return propertyValue.asInt();
 }
 
-float ParseUtil::GetFloat(const Json::Value& json, AdaptiveCardSchemaKey key, float defaultValue, bool isRequired)
-{
-    std::string propertyName = AdaptiveCardSchemaKeyToString(key);
-    auto propertyValue = json.get(propertyName, Json::Value());
-    if (propertyValue.empty())
-    {
-        if (isRequired)
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, "Property is required but was found empty: " + propertyName);
-        }
-        else
-        {
-            return defaultValue;
-        }
-    }
-
-    if (!propertyValue.isDouble())
-    {
-        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Value for property " + propertyName + " was invalid. Expected type int.");
-    }
-
-    return propertyValue.asFloat();
-}
-
 void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyType)
 {
     std::string actualType = GetTypeAsString(json);

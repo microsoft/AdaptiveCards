@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="CustomParsingForIOSTest.cpp" />
+    <ClCompile Include="ExplicitDimensionTest.cpp" />
     <ClCompile Include="MarkDownUnitTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
