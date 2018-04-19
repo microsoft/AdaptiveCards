@@ -84,6 +84,7 @@ enum class AdaptiveCardSchemaKey
     IconUrl,
     Id,
     Image,
+    ImageBaseUrl,
     Images,
     ImageSet,
     ImageSize,
