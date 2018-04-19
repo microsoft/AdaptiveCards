@@ -1383,32 +1383,6 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT XamlBuilder::SetExplicitImageSize(IFrameworkElement* imageControl, IInspectable* parentElement, IBitmapSource* imageSource, FLOAT width, FLOAT height)
-    {
-        INT32 pixelHeight;
-        RETURN_IF_FAILED(imageSource->get_PixelHeight(&pixelHeight));
-        INT32 pixelWidth;
-        RETURN_IF_FAILED(imageSource->get_PixelWidth(&pixelWidth));
-        FLOAT heightToWidthRatio = pixelHeight / pixelWidth;
-        ComPtr<IFrameworkElement> localElement(imageControl);
-        if(width) 
-        {
-            RETURN_IF_FAILED(localElement->put_Width(width));
-            RETURN_IF_FAILED(localElement->put_Height((INT32)(pixelHeight * heightToWidthRatio)));
-        }
-        else 
-        {
-            RETURN_IF_FAILED(localElement->put_Width(height));
-            RETURN_IF_FAILED(localElement->put_Height((INT32)(pixelWidth* (1 / heightToWidthRatio))));
-        }
-
-        ComPtr<IUIElement> frameworkElementAsUIElement;
-        RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
-        RETURN_IF_FAILED(frameworkElementAsUIElement->put_Visibility(Visibility::Visibility_Visible));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT XamlBuilder::SetAutoImageSize(IFrameworkElement* imageControl, IInspectable* parentElement, IBitmapSource* imageSource)
     {
         INT32 pixelHeight;
@@ -1497,13 +1471,10 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
 
-        bool isAspectRaitioNeeded = false; 
-        FLOAT explicitWidth = 0, explicitHeight = 0;
-        if (size == ABI::AdaptiveNamespace::ImageSize::Explicit) {
-            THROW_IF_FAILED(adaptiveImage->get_PixelWidth(&explicitWidth));
-            THROW_IF_FAILED(adaptiveImage->get_PixelHeight(&explicitHeight));
-            isAspectRaitioNeeded = !(explicitWidth * explicitHeight);
-        }
+        UINT32 explicitWidth = 0, explicitHeight = 0;
+        THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
+        THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
+        bool isAspectRaitioNeeded = (explicitWidth  && explicitHeight);
 
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
@@ -1514,9 +1485,15 @@ AdaptiveNamespaceStart
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
             // Set Auto, None, and Stretch to Stretch_UniformToFill. An ellipse set to Stretch_Uniform ends up with size 0.
-            if (size == ABI::AdaptiveNamespace::ImageSize::None ||
+            if (isAspectRaitioNeeded)
+            {
+                THROW_IF_FAILED(ellipseAsShape->put_Stretch(Stretch::Stretch_Fill));
+            } 
+            else if (size == ABI::AdaptiveNamespace::ImageSize::None ||
                 size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
-                size == ABI::AdaptiveNamespace::ImageSize::Auto)
+                size == ABI::AdaptiveNamespace::ImageSize::Auto ||
+                explicitHeight ||
+                explicitWidth)
             {
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(Stretch::Stretch_UniformToFill));
             }
@@ -1526,7 +1503,7 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(ellipse.As(&frameworkElement));
 
             // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
-            if ((size == ABI::AdaptiveNamespace::ImageSize::Auto  || isAspectRaitioNeeded) &&
+            if ((size == ABI::AdaptiveNamespace::ImageSize::Auto) &&
                 parentElement != nullptr &&
                 m_enableXamlImageHandling)
             {
@@ -1559,10 +1536,15 @@ AdaptiveNamespaceStart
             SetImageOnUIElement(imageUri.Get(), xamlImage.Get(), resourceResolvers.Get());
             THROW_IF_FAILED(xamlImage.As(&frameworkElement));
 
+            if(isAspectRaitioNeeded)
+            {
+                xamlImage->put_Stretch(Stretch::Stretch_Fill);               
+            }
+
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
             if (parentElement != nullptr &&
-                (size == ABI::AdaptiveNamespace::ImageSize::Auto || isAspectRaitioNeeded) &&
+                (size == ABI::AdaptiveNamespace::ImageSize::Auto) &&
                 m_enableXamlImageHandling)
             {
                 ComPtr<IImageSource> imageSource;
@@ -1576,16 +1558,6 @@ AdaptiveNamespaceStart
                 //Collapse the Image control while the image loads, so that resizing is not noticeable
                 THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
-                if(isAspectRaitioNeeded)
-                {
-                    EventRegistrationToken eventToken;
-                    THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-                        [frameworkElement, parentElement, imageSourceAsBitmap, explicitWidth, explicitHeight](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-                    {
-                        return SetExplicitImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get(), explicitWidth, explicitHeight);
-                    }).Get(), &eventToken));
-                }
-                else
                 {
                     // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                     EventRegistrationToken eventToken;
@@ -1601,52 +1573,51 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
         THROW_IF_FAILED(hostConfig->get_ImageSizes(sizeOptions.GetAddressOf()));
 
-        switch (size)
+        if(explicitWidth || explicitHeight)
         {
-            case ABI::AdaptiveNamespace::ImageSize::Small:
+            if(explicitWidth) 
             {
-                UINT32 imageSize;
-                THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
-
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
-                break;
+                THROW_IF_FAILED(frameworkElement->put_Width(explicitWidth));
             }
 
-            case ABI::AdaptiveNamespace::ImageSize::Medium:
-            {
-                UINT32 imageSize;
-                THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
-
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
-                break;
+            if(explicitHeight)
+            { 
+                THROW_IF_FAILED(frameworkElement->put_Height(explicitHeight));
             }
-
-            case ABI::AdaptiveNamespace::ImageSize::Large:
+        }
+        else
+        {
+            switch (size)
             {
-                UINT32 imageSize;
-                THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
-
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
-                break;
-            }
-
-            case ABI::AdaptiveNamespace::ImageSize::Explicit:
-            {
-                // one of the dimension is zero, and the zero dimension and the rest of
-                // the bounding frame will be set asyncronously.
-                if (isAspectRaitioNeeded)
+                case ABI::AdaptiveNamespace::ImageSize::Small:
                 {
+                    UINT32 imageSize;
+                    THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
+
+                    THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                    THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
                     break;
                 }
-                FLOAT width = 0.0, height = 0.0;
-                THROW_IF_FAILED(adaptiveImage->get_PixelWidth(&width));
-                THROW_IF_FAILED(adaptiveImage->get_PixelHeight(&height));
-                THROW_IF_FAILED(frameworkElement->put_Width((UINT32)width));
-                THROW_IF_FAILED(frameworkElement->put_Height((UINT32)height));
-                break;
+
+                case ABI::AdaptiveNamespace::ImageSize::Medium:
+                {
+                    UINT32 imageSize;
+                    THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
+
+                    THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                    THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                    break;
+                }
+
+                case ABI::AdaptiveNamespace::ImageSize::Large:
+                {
+                    UINT32 imageSize;
+                    THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
+
+                    THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                    THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                    break;
+                }
             }
         }
 

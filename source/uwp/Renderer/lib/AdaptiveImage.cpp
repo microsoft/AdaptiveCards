@@ -42,8 +42,8 @@ AdaptiveNamespaceStart
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
-        m_pixelWidth = sharedImage->GetPixelWidth();
-        m_pixelHeight = sharedImage->GetPixelHeight();
+        m_width = sharedImage->GetWidth();
+        m_height = sharedImage->GetHeight();
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
@@ -94,30 +94,30 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_PixelWidth(FLOAT* pixelWidth)
+    HRESULT AdaptiveImage::get_Width(UINT32* width)
     {
-        *pixelWidth = m_pixelWidth;
+        *width = m_width;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_PixelWidth(FLOAT pixelWidth)
+    HRESULT AdaptiveImage::put_Width(UINT32 width)
     {
-        m_pixelWidth = pixelWidth;
+        m_width = width;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_PixelHeight(FLOAT* pixelHeight)
+    HRESULT AdaptiveImage::get_Height(UINT32* height)
     {
-        *pixelHeight = m_pixelHeight;
+        *height = m_height;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_PixelHeight(FLOAT pixelHeight)
+    HRESULT AdaptiveImage::put_Height(UINT32 height)
     {
-        m_pixelHeight = pixelHeight;
+        m_height = height;
         return S_OK;
     }
 
@@ -199,8 +199,8 @@ AdaptiveNamespaceStart
             
         image->SetImageStyle(static_cast<AdaptiveSharedNamespace::ImageStyle>(m_imageStyle));
         image->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
-        image->SetPixelHeight(m_pixelHeight);
-        image->SetPixelWidth(m_pixelWidth);
+        image->SetHeight(m_height);
+        image->SetWidth(m_width);
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         sharedImage = image;

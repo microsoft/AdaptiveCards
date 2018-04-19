@@ -247,8 +247,8 @@ AdaptiveNamespaceStart
             _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
             _In_ IInspectable* parentElement,
             _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource,
-            _In_ FLOAT wdith,
-            _In_ FLOAT height);
+            _In_ UINT32 width,
+            _In_ UINT32 height);
 
         static HRESULT SetAutoImageSize(
             _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
