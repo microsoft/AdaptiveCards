@@ -58,24 +58,27 @@ AdaptiveNamespaceStart
             ComPtr<IGrid> spChildAsGrid;
             if (SUCCEEDED(spChild.As(&spChildAsGrid)))
             {
-                ComPtr<IPanel> spChildAsPanel;
-                RETURN_IF_FAILED(spChildAsGrid.As(&spChildAsPanel));
-
-                ComPtr<IVector<UIElement*>> columns;
-                RETURN_IF_FAILED(spChildAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
-                double maxHeight{};
-
-                unsigned int columnCount{};
-                RETURN_IF_FAILED(columns->get_Size(&columnCount));
-                for (unsigned int j{}; j < columnCount; ++j)
+                if (GridIsAColumnSet(spChildAsGrid.Get()))
                 {
-                    ComPtr<IUIElement> column;
-                    RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
+                    ComPtr<IPanel> spChildAsPanel;
+                    RETURN_IF_FAILED(spChildAsGrid.As(&spChildAsPanel));
 
-                    ComPtr<IFrameworkElement> columnAsFrameworkElement;
-                    RETURN_IF_FAILED(column.As(&columnAsFrameworkElement));
+                    ComPtr<IVector<UIElement*>> columns;
+                    RETURN_IF_FAILED(spChildAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
+                    double maxHeight{};
 
-                    RETURN_IF_FAILED(columnAsFrameworkElement->put_Height(NAN));
+                    unsigned int columnCount{};
+                    RETURN_IF_FAILED(columns->get_Size(&columnCount));
+                    for (unsigned int j{}; j < columnCount; ++j)
+                    {
+                        ComPtr<IUIElement> column;
+                        RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
+
+                        ComPtr<IFrameworkElement> columnAsFrameworkElement;
+                        RETURN_IF_FAILED(column.As(&columnAsFrameworkElement));
+
+                        RETURN_IF_FAILED(columnAsFrameworkElement->put_Height(NAN));
+                    }
                 }
             }
             
@@ -264,38 +267,41 @@ AdaptiveNamespaceStart
             ComPtr<IGrid> childAsGrid;
             if (SUCCEEDED(spChild.As(&childAsGrid)))
             {
-                ComPtr<IPanel> childAsPanel;
-                RETURN_IF_FAILED(childAsGrid.As(&childAsPanel));
-                ComPtr<IVector<UIElement*>> columns;
-                RETURN_IF_FAILED(childAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
-                double maxHeight{};
-            
-                unsigned int columnCount{};
-                RETURN_IF_FAILED(columns->get_Size(&columnCount));
-                for (unsigned int j{}; j < columnCount; ++j)
+                if (GridIsAColumnSet(childAsGrid.Get()))
                 {
-                    ComPtr<IUIElement> column;
-                    RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
-                    Size columnSize;
-                    RETURN_IF_FAILED(column->get_DesiredSize(&columnSize));
-                    maxHeight = max(maxHeight, columnSize.Height);
-                }
+                    ComPtr<IPanel> childAsPanel;
+                    RETURN_IF_FAILED(childAsGrid.As(&childAsPanel));
+                    ComPtr<IVector<UIElement*>> columns;
+                    RETURN_IF_FAILED(childAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
+                    double maxHeight{};
 
-                for (unsigned int j{}; j < columnCount; ++j)
-                {
-                    ComPtr<IUIElement> column;
-                    RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
+                    unsigned int columnCount{};
+                    RETURN_IF_FAILED(columns->get_Size(&columnCount));
+                    for (unsigned int j{}; j < columnCount; ++j)
+                    {
+                        ComPtr<IUIElement> column;
+                        RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
+                        Size columnSize;
+                        RETURN_IF_FAILED(column->get_DesiredSize(&columnSize));
+                        maxHeight = max(maxHeight, columnSize.Height);
+                    }
 
-                    Size columnDesiredSize;
-                    RETURN_IF_FAILED(column->get_DesiredSize(&columnDesiredSize));
-                    columnDesiredSize.Height = static_cast<FLOAT>(maxHeight);
+                    for (unsigned int j{}; j < columnCount; ++j)
+                    {
+                        ComPtr<IUIElement> column;
+                        RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
 
-                    ComPtr<IFrameworkElement> columnAsFrameworkElement;
-                    RETURN_IF_FAILED(column.As(&columnAsFrameworkElement));
+                        Size columnDesiredSize;
+                        RETURN_IF_FAILED(column->get_DesiredSize(&columnDesiredSize));
+                        columnDesiredSize.Height = static_cast<FLOAT>(maxHeight);
 
-                    RETURN_IF_FAILED(columnAsFrameworkElement->put_Height(columnDesiredSize.Height));
-                    RETURN_IF_FAILED(column->Measure(columnDesiredSize));
-                    RETURN_IF_FAILED(column->get_DesiredSize(&columnDesiredSize));
+                        ComPtr<IFrameworkElement> columnAsFrameworkElement;
+                        RETURN_IF_FAILED(column.As(&columnAsFrameworkElement));
+
+                        RETURN_IF_FAILED(columnAsFrameworkElement->put_Height(columnDesiredSize.Height));
+                        RETURN_IF_FAILED(column->Measure(columnDesiredSize));
+                        RETURN_IF_FAILED(column->get_DesiredSize(&columnDesiredSize));
+                    }
                 }
             }
         }
@@ -677,4 +683,64 @@ AdaptiveNamespaceStart
 
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
+
+    bool WholeItemsPanel::GridIsAColumnSet(_In_ IGrid* grid)
+    {
+        bool gridIsColumnSet{true};
+
+        ComPtr<IGrid> localGrid(grid);
+        ComPtr<IVector<RowDefinition*>> rowDefinitions;
+        THROW_IF_FAILED(localGrid->get_RowDefinitions(&rowDefinitions));
+        unsigned int rowCount{};
+        THROW_IF_FAILED(rowDefinitions->get_Size(&rowCount));
+
+        if (rowCount <= 1)
+        {
+            ComPtr<IPanel> gridAsPanel;
+            THROW_IF_FAILED(localGrid.As(&gridAsPanel));
+            ComPtr<IVector<UIElement*>> columns;
+            THROW_IF_FAILED(gridAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
+            unsigned int columnCount{};
+            THROW_IF_FAILED(columns->get_Size(&columnCount));
+
+            for (unsigned int i{}; i < columnCount && gridIsColumnSet; ++i)
+            {
+                ComPtr<IUIElement> column;
+                THROW_IF_FAILED(columns->GetAt(i, column.GetAddressOf()));
+
+                // If the child is a WholeItemsPanel it's ok
+                ComPtr<IWholeItemsPanel> columnAsWholeItemsPanel;
+                if (FAILED(column.As(&columnAsWholeItemsPanel)))
+                {
+                    // If the child is not a WholeItemsPanel, it may be a separator
+                    ComPtr<IGrid> columnAsGrid;
+                    if (SUCCEEDED(column.As(&columnAsGrid)))
+                    {
+                        ComPtr<IPanel> separatorAsPanel;
+                        THROW_IF_FAILED(columnAsGrid.As(&separatorAsPanel));
+                        ComPtr<IVector<UIElement*>> separatorContents;
+                        THROW_IF_FAILED(separatorAsPanel->get_Children(separatorContents.ReleaseAndGetAddressOf()));
+                        unsigned int separatorContentsCount{};
+                        THROW_IF_FAILED(separatorContents->get_Size(&separatorContentsCount));
+
+                        if (separatorContentsCount != 0)
+                        {
+                            gridIsColumnSet = false;
+                        }
+                    }
+                    else
+                    {
+                        gridIsColumnSet = false;
+                    }
+                }
+            }
+        }
+        else
+        {
+            gridIsColumnSet = false;
+        }
+
+        return gridIsColumnSet;
+    }
+
 AdaptiveNamespaceEnd

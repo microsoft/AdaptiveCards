@@ -65,6 +65,8 @@ AdaptiveNamespaceStart
         // If true, avoid vertical whitespace before and after the render.
         bool m_adaptiveHeight = false;
 
+        bool GridIsAColumnSet(_In_ ABI::Windows::UI::Xaml::Controls::IGrid* grid);
+
         _Check_return_ HRESULT IsAnySubgroupTruncated(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* pPanel, _Out_ bool* childTruncated);
 
         static _Check_return_ HRESULT LayoutCroppedImage(_In_ ABI::Windows::UI::Xaml::Shapes::IShape *pShape, _In_ double availableWidth, _In_ double availableHeight);
