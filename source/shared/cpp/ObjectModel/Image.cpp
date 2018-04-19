@@ -8,6 +8,8 @@ Image::Image() :
     BaseCardElement(CardElementType::Image),
     m_imageStyle(ImageStyle::Default),
     m_imageSize(ImageSize::None),
+    m_width(0),
+    m_height(0),
     m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
@@ -19,12 +21,16 @@ Image::Image(
     std::string url,
     ImageStyle imageStyle,
     ImageSize imageSize,
+    unsigned int width,
+    unsigned int height,
     std::string altText,
     HorizontalAlignment hAlignment) :
     BaseCardElement(CardElementType::Image, spacing, separator),
     m_url(url),
     m_imageStyle(imageStyle),
     m_imageSize(imageSize),
+    m_width(width),
+    m_height(height),
     m_altText(altText),
     m_hAlignment(hAlignment)
 {
@@ -116,6 +122,26 @@ void Image::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
+unsigned int Image::GetWidth() const 
+{
+    return m_width;
+}
+
+void Image::SetWidth(unsigned int value)
+{
+    m_width = value;
+}
+
+unsigned int Image::GetHeight() const
+{
+    return m_height;
+}
+
+void Image::SetHeight(unsigned int value)
+{
+    m_height = value;
+}
+
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
@@ -145,6 +171,50 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+
+    std::vector<std::string> requestedDimensions;
+    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width));
+    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height));
+
+    // validate user inputs
+    const std::string unit = "px";
+    std::vector<int> parsedDimensions;
+    for(auto eachDimension : requestedDimensions)
+    { 
+        if (eachDimension.empty())
+        {
+            parsedDimensions.push_back(0);
+        }
+        else
+        {
+            std::size_t foundIndex = eachDimension.find(unit);
+            if (eachDimension.size() != foundIndex + unit.size())
+            {
+                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is either missing or inproper form: " + eachDimension);
+            }
+            try
+            {
+                parsedDimensions.push_back(stoi(eachDimension.substr(0, foundIndex)));
+                if (parsedDimensions.back() < 0)
+                {
+                    throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + eachDimension);
+                }
+            }
+            catch (const std::invalid_argument &e)
+            {
+                (void)e;
+                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + eachDimension);
+            }
+            catch (const std::out_of_range &e)
+            {
+                (void)e;
+                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "out of range: " + eachDimension);
+            }
+        }
+    }
+
+    image->SetWidth(parsedDimensions[0]);
+    image->SetHeight(parsedDimensions[1]);
     image->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction));
 
     return image;
@@ -157,5 +227,7 @@ void Image::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }
