@@ -43,6 +43,9 @@ public:
     std::string GetLanguage() const;
     void SetLanguage(const std::string& value);
 
+    std::shared_ptr<BaseActionElement> GetSelectAction() const;
+    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
 
@@ -101,5 +104,6 @@ private:
     std::vector<std::shared_ptr<BaseCardElement>> m_body;
     std::vector<std::shared_ptr<BaseActionElement>> m_actions;
 
+    std::shared_ptr<BaseActionElement> m_selectAction;
 };
 AdaptiveSharedNamespaceEnd

@@ -38,6 +38,9 @@
     <ClCompile Include="CustomParsingForIOSTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectModelTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ExplicitDimensionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

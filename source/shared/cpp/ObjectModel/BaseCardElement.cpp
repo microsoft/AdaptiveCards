@@ -98,20 +98,6 @@ Json::Value BaseCardElement::SerializeToJsonValue()
     return root;
 }
 
-std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const Json::Value& json,
-    AdaptiveCardSchemaKey key)
-{
-    Json::Value selectActionValue = ParseUtil::ExtractJsonValue(json, key, false);
-    if (!selectActionValue.empty())
-    {
-        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, selectActionValue);
-    }
-    return nullptr;
-}
-
 Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
 {
     if (selectAction != nullptr)

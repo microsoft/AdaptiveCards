@@ -37,11 +37,6 @@ public:
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
-    static std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> DeserializeSelectAction(
-        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-        const Json::Value& json, AdaptiveCardSchemaKey key);
-
     Json::Value GetAdditionalProperties();
     void SetAdditionalProperties(Json::Value additionalProperties);
 

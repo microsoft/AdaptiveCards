@@ -139,6 +139,9 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, body, actions);
     result->SetLanguage(language);
 
+    // Parse optional selectAction
+    result->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false));
+
     return std::make_shared<ParseResult>(result, warnings);
 }
 
@@ -306,6 +309,16 @@ std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody()
 std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions()
 {
     return m_actions;
+}
+
+std::shared_ptr<BaseActionElement> AdaptiveCard::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void AdaptiveCard::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
 }
 
 std::vector<std::string> AdaptiveCards::AdaptiveCard::GetResourceUris()
