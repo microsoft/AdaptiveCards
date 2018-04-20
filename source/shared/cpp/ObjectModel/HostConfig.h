@@ -54,7 +54,7 @@ struct TextConfig
     ForegroundColor color = ForegroundColor::Default;
     bool isSubtle = false;
     bool wrap = true;
-    unsigned int maxWidth = ((unsigned int)((unsigned int)~0));
+    unsigned int maxWidth = (unsigned int) ~0;
 
     static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
 };
