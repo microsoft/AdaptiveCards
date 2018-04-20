@@ -134,7 +134,7 @@ std::shared_ptr<Column> Column::Deserialize(
         {
             std::vector<std::string> requestedDimensions = { columnWidth };
             std::vector<int> parsedDimensions;
-            validateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
+            ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
             column->SetExplicitWidth(parsedDimensions[0]);
         }
         else if(foundIndex != std::string::npos)

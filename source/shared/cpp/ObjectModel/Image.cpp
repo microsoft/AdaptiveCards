@@ -180,7 +180,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     // validate user inputs
     const std::string unit = "px";
     std::vector<int> parsedDimensions;
-    validateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
+    ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
 
     image->SetWidth(parsedDimensions[0]);
     image->SetHeight(parsedDimensions[1]);

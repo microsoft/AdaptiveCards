@@ -39,7 +39,7 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
 
 }
 
-void validateUserInputForDimensionWithUnit(const std::string &unit, const std::vector<std::string> &requestedDimensions, std::vector<int> &parsedDimensions)
+void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::vector<std::string> &requestedDimensions, std::vector<int> &parsedDimensions)
 {
     for(auto eachDimension : requestedDimensions)
     { 
