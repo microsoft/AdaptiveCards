@@ -12,14 +12,16 @@ AdaptiveSharedNamespaceStart
         DateTimePreparser();
         DateTimePreparser(std::string in);
         std::vector<std::shared_ptr<DateTimePreparsedToken>> GetTextTokens() const;
+        bool HasDateTokens();
+
+    private:
         void AddTextToken(std::string text, DateTimePreparsedTokenFormat format);
         void AddDateToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format);
         std::string Concatenate();
-
-    private:
         static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
         void ParseDateTime(std::string in);        
 
         std::vector<std::shared_ptr<DateTimePreparsedToken>> m_textTokenCollection;
+        bool m_hasDateTokens;
     };
 AdaptiveSharedNamespaceEnd

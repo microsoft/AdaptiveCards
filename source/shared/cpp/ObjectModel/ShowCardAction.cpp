@@ -63,3 +63,11 @@ void ShowCardAction::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card));
 }
+
+void ShowCardAction::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto card = GetCard();
+    auto showCardImages = card->GetResourceUris();
+    resourceUris.insert(resourceUris.end(), showCardImages.begin(), showCardImages.end());
+    return;
+}

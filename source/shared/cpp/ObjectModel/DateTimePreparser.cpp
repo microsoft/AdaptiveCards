@@ -20,7 +20,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-DateTimePreparser::DateTimePreparser()
+DateTimePreparser::DateTimePreparser() :
+    m_hasDateTokens(false)
 {
 }
 
@@ -34,6 +35,11 @@ std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparser::GetTextT
     return m_textTokenCollection;
 }
 
+bool DateTimePreparser::HasDateTokens()
+{
+    return m_hasDateTokens;
+}
+
 void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFormat format)
 {
     if (!text.empty())
@@ -45,6 +51,7 @@ void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFor
 void DateTimePreparser::AddDateToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format)
 {
     m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, date, format));
+    m_hasDateTokens = true;
 }
 
 std::string DateTimePreparser::Concatenate()
