@@ -1251,34 +1251,42 @@ AdaptiveNamespaceStart
         HSTRING language,
         ITextBlock * textBlock)
     {
+        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
+        RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
+
         DateTimeParser parser(HStringToUTF8(language));
         auto textWithParsedDates = parser.GenerateString(HStringToUTF8(textIn));
 
         MarkDownParser markdownParser(textWithParsedDates);
         auto htmlString = markdownParser.TransformToHtml();
 
-        HString htmlHString;
-        UTF8ToHString(htmlString, htmlHString.GetAddressOf());
-        
-        ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocument> xmlDocument = XamlHelpers::CreateXamlClass<ABI::Windows::Data::Xml::Dom::IXmlDocument>(HStringReference(RuntimeClass_Windows_Data_Xml_Dom_XmlDocument));
-
-        ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocumentIO> xmlDocumentIO;
-        RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentIO));
-        
-        HRESULT hr = xmlDocumentIO->LoadXml(htmlHString.Get());
-        if (FAILED(hr))
+        bool handledAsHtml = false;
+        if (markdownParser.HasHtmlTags())
         {
-            RETURN_IF_FAILED(textBlock->put_Text(textIn));
+            HString htmlHString;
+            UTF8ToHString(htmlString, htmlHString.GetAddressOf());
+
+            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocument> xmlDocument = XamlHelpers::CreateXamlClass<ABI::Windows::Data::Xml::Dom::IXmlDocument>(HStringReference(RuntimeClass_Windows_Data_Xml_Dom_XmlDocument));
+
+            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocumentIO> xmlDocumentIO;
+            RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentIO));
+
+            HRESULT hr = xmlDocumentIO->LoadXml(htmlHString.Get());
+            if (SUCCEEDED(hr))
+            {
+                ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
+                RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));
+
+                RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get()));
+                handledAsHtml = true;
+            }
         }
-        else
+        
+        if (!handledAsHtml)
         {
-            ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
-            RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
-
-            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
-            RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));
-
-            RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get()));
+            HString hString;
+            UTF8ToHString(textWithParsedDates, hString.GetAddressOf());
+            AddSingleTextInline(renderContext, hString.Get(), false, false, inlines.Get());
         }
 
         return S_OK;
