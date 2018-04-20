@@ -307,3 +307,26 @@ std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions()
 {
     return m_actions;
 }
+
+std::vector<std::string> AdaptiveCards::AdaptiveCard::GetResourceUris()
+{
+    auto uriVector = std::vector<std::string>();
+
+    auto backgroundImage = GetBackgroundImage();
+    if (!backgroundImage.empty())
+    {
+        uriVector.push_back(backgroundImage);
+    }
+
+    for (auto item : m_body)
+    {
+        item->GetResourceUris(uriVector);
+    }
+
+    for (auto item : m_actions)
+    {
+        item->GetResourceUris(uriVector);
+    }
+
+    return uriVector;
+}

@@ -48,6 +48,8 @@ public:
     unsigned int GetHeight() const; 
     void SetHeight(unsigned int value);
 
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+
 private:
     void PopulateKnownPropertiesSet();
 

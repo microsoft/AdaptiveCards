@@ -95,3 +95,13 @@ void ColumnSet::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }
+
+void ColumnSet::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto columns = GetColumns();
+    for (auto column : columns)
+    {
+        column->GetResourceUris(resourceUris);
+    }
+    return;
+}
