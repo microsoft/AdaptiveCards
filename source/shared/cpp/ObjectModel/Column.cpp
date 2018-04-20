@@ -152,3 +152,13 @@ void Column::SetLanguage(const std::string& language)
 {
     PropagateLanguage(language, m_items);
 }
+
+void Column::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto columnItems = GetItems();
+    for (auto item : columnItems)
+    {
+        item->GetResourceUris(resourceUris);
+    }
+    return;
+}
