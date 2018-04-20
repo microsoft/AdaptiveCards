@@ -1503,7 +1503,7 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(ellipse.As(&frameworkElement));
 
             // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
-            if ((size == ABI::AdaptiveNamespace::ImageSize::Auto) &&
+            if (size == ABI::AdaptiveNamespace::ImageSize::Auto &&
                 parentElement != nullptr &&
                 m_enableXamlImageHandling)
             {
@@ -1544,7 +1544,7 @@ AdaptiveNamespaceStart
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
             if (parentElement != nullptr &&
-                (size == ABI::AdaptiveNamespace::ImageSize::Auto) &&
+                size == ABI::AdaptiveNamespace::ImageSize::Auto &&
                 m_enableXamlImageHandling)
             {
                 ComPtr<IImageSource> imageSource;
@@ -1558,15 +1558,13 @@ AdaptiveNamespaceStart
                 //Collapse the Image control while the image loads, so that resizing is not noticeable
                 THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
+                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                EventRegistrationToken eventToken;
+                THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+                    [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
-                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                    EventRegistrationToken eventToken;
-                    THROW_IF_FAILED(xamlImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-                        [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-                    {
-                        return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
-                    }).Get(), &eventToken));
-                }
+                    return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                }).Get(), &eventToken));
             }
         }
 

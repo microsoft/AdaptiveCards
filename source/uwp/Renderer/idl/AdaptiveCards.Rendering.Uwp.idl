@@ -274,8 +274,7 @@ AdaptiveNamespaceStart
         Stretch,
         Small,
         Medium,
-        Large,
-        Explicit
+        Large
     } ImageSize;
 
     [version(NTDDI_WIN10_RS1)]
