@@ -12,6 +12,6 @@ AdaptiveNamespaceStart
         std::string GenerateString(DateTimePreparser text);
 
     private:
-        std::locale m_language;
+        std::string m_languageString;
     };
 AdaptiveNamespaceEnd

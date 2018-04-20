@@ -77,7 +77,8 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
     auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
     container->m_columns = std::move(cardElements);
 
-    container->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction));
+    // Parse optional selectAction
+    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }
@@ -94,4 +95,14 @@ void ColumnSet::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
+}
+
+void ColumnSet::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto columns = GetColumns();
+    for (auto column : columns)
+    {
+        column->GetResourceUris(resourceUris);
+    }
+    return;
 }

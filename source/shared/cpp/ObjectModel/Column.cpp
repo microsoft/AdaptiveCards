@@ -116,7 +116,8 @@ std::shared_ptr<Column> Column::Deserialize(
     auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Items, false);
     column->m_items = std::move(cardElements);
 
-    column->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction));
+    // Parse optional selectAction
+    column->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return column;
 }
@@ -150,4 +151,14 @@ void Column::PopulateKnownPropertiesSet()
 void Column::SetLanguage(const std::string& language)
 {
     PropagateLanguage(language, m_items);
+}
+
+void Column::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto columnItems = GetItems();
+    for (auto item : columnItems)
+    {
+        item->GetResourceUris(resourceUris);
+    }
+    return;
 }
