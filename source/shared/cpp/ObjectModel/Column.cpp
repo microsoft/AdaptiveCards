@@ -14,9 +14,10 @@ Column::Column(
     Spacing spacing,
     bool separation,
     std::string size,
+    unsigned int explicitWidth,
     ContainerStyle style,
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Column, spacing, separation), m_width(size), m_style(style), m_items(items)
+    BaseCardElement(CardElementType::Column, spacing, separation), m_width(size), m_explicitWidth(explicitWidth), m_style(style), m_items(items)
 {
     PopulateKnownPropertiesSet();
 }
@@ -25,9 +26,11 @@ Column::Column(
     Spacing spacing,
     bool separation,
     std::string width,
+    unsigned int explicitWidth,
     ContainerStyle style) :
-    BaseCardElement(CardElementType::Column, spacing, separation), m_width(width), m_style(style)
+    BaseCardElement(CardElementType::Column, spacing, separation), m_width(width), m_explicitWidth(explicitWidth), m_style(style)
 {
+    PopulateKnownPropertiesSet();
 }
 
 std::string Column::GetWidth() const
@@ -38,6 +41,17 @@ std::string Column::GetWidth() const
 void Column::SetWidth(const std::string value)
 {
     m_width = ParseUtil::ToLowercase(value);
+}
+
+// explicit width takes precedence over relative width 
+int Column::GetExplicitWidth() const
+{
+    return m_explicitWidth;
+}
+
+void Column::SetExplicitWidth(const int value)
+{
+    m_explicitWidth = value;
 }
 
 ContainerStyle Column::GetStyle() const
@@ -107,6 +121,28 @@ std::shared_ptr<Column> Column::Deserialize(
         // Look in "size" for back-compat with pre V1.0 cards
         columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
     }
+
+    // validate user input; validation only applies to user input for explicit column width 
+    // the other input checks are remained unchanged
+    column->SetExplicitWidth(0);
+    if (!columnWidth.empty() && (isdigit(columnWidth.at(0)) || ('-' == columnWidth.at(0))))
+    {
+        /// check if width is determined relatively
+        const std::string unit = "px";
+        std::size_t foundIndex = columnWidth.find(unit);
+        if (columnWidth.size() == foundIndex + unit.size())
+        {
+            std::vector<std::string> requestedDimensions = { columnWidth };
+            std::vector<int> parsedDimensions;
+            ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
+            column->SetExplicitWidth(parsedDimensions[0]);
+        }
+        else if(foundIndex != std::string::npos)
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is in inproper form: " + columnWidth);
+        }
+    }
+
     column->SetWidth(columnWidth);
 
     column->SetStyle(
