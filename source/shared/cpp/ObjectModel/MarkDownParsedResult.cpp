@@ -229,7 +229,7 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
                 }
             }
             // check which one has leftover delims
-            m_isHTMLTagsAdded = m_isHTMLTagsAdded || (*currentLeftEmphasis)->GenerateTags(*currentEmphasis);
+            m_isHTMLTagsAdded = (*currentLeftEmphasis)->GenerateTags(*currentEmphasis) || m_isHTMLTagsAdded;
 
             // all right delims used, move to next
             if ((*currentEmphasis)->IsDone())
