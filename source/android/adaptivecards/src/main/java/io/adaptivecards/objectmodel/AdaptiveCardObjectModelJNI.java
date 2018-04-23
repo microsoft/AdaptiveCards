@@ -748,9 +748,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_DateTimePreparser__SWIG_0();
   public final static native long new_DateTimePreparser__SWIG_1(String jarg1);
   public final static native long DateTimePreparser_GetTextTokens(long jarg1, DateTimePreparser jarg1_);
-  public final static native void DateTimePreparser_AddTextToken(long jarg1, DateTimePreparser jarg1_, String jarg2, int jarg3);
-  public final static native void DateTimePreparser_AddDateToken(long jarg1, DateTimePreparser jarg1_, String jarg2, long jarg3, CTime jarg3_, int jarg4);
-  public final static native String DateTimePreparser_Concatenate(long jarg1, DateTimePreparser jarg1_);
+  public final static native boolean DateTimePreparser_HasDateTokens(long jarg1, DateTimePreparser jarg1_);
   public final static native void delete_DateTimePreparser(long jarg1);
   public final static native long new_TextBlock__SWIG_0();
   public final static native long new_TextBlock__SWIG_1(int jarg1, boolean jarg2, String jarg3, int jarg4, int jarg5, int jarg6, boolean jarg7, boolean jarg8, int jarg9, int jarg10, String jarg11);

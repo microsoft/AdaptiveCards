@@ -55,9 +55,13 @@ export class FactTextDefinition {
             this.size = Utils.parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default);
             this.color = Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
             this.isSubtle = obj["isSubtle"] || this.isSubtle;
-            this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Default);
+            this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
             this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
         }
+    }
+	
+    getDefaultWeight() {
+		return Enums.TextWeight.Default;
     }
 
     toJSON(): any {
@@ -66,7 +70,7 @@ export class FactTextDefinition {
             color: Enums.TextColor[this.color],
             isSubtle: this.isSubtle,
             weight: Enums.TextWeight[this.weight],
-            warp: this.wrap
+            wrap: this.wrap
         }
     }
 }
@@ -74,13 +78,18 @@ export class FactTextDefinition {
 export class FactTitleDefinition extends FactTextDefinition {
     maxWidth?: number = 150;
     weight: Enums.TextWeight = Enums.TextWeight.Bolder;
-
+	
     constructor(obj?: any) {
         super(obj);
 
         if (obj) {
             this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
+			this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
         }
+    }
+	
+    getDefaultWeight() {
+        return Enums.TextWeight.Bolder;
     }
 }
 

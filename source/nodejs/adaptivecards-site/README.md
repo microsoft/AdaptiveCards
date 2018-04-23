@@ -34,6 +34,14 @@ npm install hexo-cli -g
 npm install
 ```
 
+## Link the local adaptivecards-visualizer package
+
+Remove the `adaptivecards-visualizer` dependency from `package.json` (this dependency is only used for Microsoft's internal Continuous Integration process), then
+
+```console
+npm link adaptivecards-visualizer
+```
+
 ## Generate
 
 ```console

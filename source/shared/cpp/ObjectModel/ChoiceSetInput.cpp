@@ -3,7 +3,7 @@
 #include "ChoiceSetInput.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetInput)
 {
@@ -55,32 +55,32 @@ Json::Value ChoiceSetInput::SerializeToJsonValue()
     return root;
 }
 
-bool AdaptiveCards::ChoiceSetInput::GetIsMultiSelect() const
+bool ChoiceSetInput::GetIsMultiSelect() const
 {
     return m_isMultiSelect;
 }
 
-void AdaptiveCards::ChoiceSetInput::SetIsMultiSelect(const bool isMultiSelect)
+void ChoiceSetInput::SetIsMultiSelect(const bool isMultiSelect)
 {
     m_isMultiSelect = isMultiSelect;
 }
 
-ChoiceSetStyle AdaptiveCards::ChoiceSetInput::GetChoiceSetStyle() const
+ChoiceSetStyle ChoiceSetInput::GetChoiceSetStyle() const
 {
     return m_choiceSetStyle;
 }
 
-void AdaptiveCards::ChoiceSetInput::SetChoiceSetStyle(const ChoiceSetStyle choiceSetStyle)
+void ChoiceSetInput::SetChoiceSetStyle(const ChoiceSetStyle choiceSetStyle)
 {
     m_choiceSetStyle = choiceSetStyle;
 }
 
-std::string AdaptiveCards::ChoiceSetInput::GetValue() const
+std::string ChoiceSetInput::GetValue() const
 {
     return m_value;
 }
 
-void AdaptiveCards::ChoiceSetInput::SetValue(std::string value)
+void ChoiceSetInput::SetValue(std::string value)
 {
     m_value = value;
 }

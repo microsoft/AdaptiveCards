@@ -25,6 +25,10 @@ namespace AdaptiveCards.Test
                 if (file.Contains("Container.Style") || file.Contains("ShowCard.Style"))
                     continue;
 
+                // TODO: bring this test back when issue #389 is implemented
+                if (file.Contains("NotificationCard"))
+                    continue;
+
                 try
                 {
                     var json = File.ReadAllText(file, Encoding.UTF8);

@@ -8,8 +8,7 @@
 #include <strings.h>
 #endif // _WIN32
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 struct EnumHash
 {
@@ -81,6 +80,7 @@ enum class AdaptiveCardSchemaKey
     FontSizes,
     FontWeights,
     Good,
+    Height,
     HorizontalAlignment,
     IconPlacement,
     IconUrl,
@@ -197,7 +197,7 @@ enum class ImageSize {
     Stretch,
     Small,
     Medium,
-    Large
+    Large,
 };
 
 enum class TextInputStyle {
@@ -384,4 +384,4 @@ GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyT
     }
     return result;
 }
-}
+AdaptiveSharedNamespaceEnd

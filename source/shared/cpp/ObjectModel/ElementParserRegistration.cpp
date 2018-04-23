@@ -15,8 +15,7 @@
 #include "ToggleInput.h"
 #include "UnknownElement.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     ElementParserRegistration::ElementParserRegistration()
     {
         m_knownElements.insert({ 
@@ -90,4 +89,4 @@ namespace AdaptiveCards
             return std::shared_ptr<BaseCardElementParser>(nullptr);
         }
     }
-}
+AdaptiveSharedNamespaceEnd

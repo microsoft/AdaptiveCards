@@ -3,7 +3,7 @@
 #include "ParseUtil.h"
 #include "Image.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 ImageSet::ImageSet() : 
     BaseCardElement(CardElementType::ImageSet),
@@ -107,4 +107,14 @@ void ImageSet::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize));
+}
+
+void ImageSet::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto images = GetImages();
+    for (auto image : images)
+    {
+        image->GetResourceUris(resourceUris);
+    }
+    return;
 }

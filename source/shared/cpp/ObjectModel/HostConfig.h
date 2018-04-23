@@ -4,8 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 struct FontSizesConfig
 {
@@ -190,4 +189,4 @@ struct HostConfig
     static HostConfig Deserialize(const Json::Value& json);
     static HostConfig DeserializeFromString(const std::string jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

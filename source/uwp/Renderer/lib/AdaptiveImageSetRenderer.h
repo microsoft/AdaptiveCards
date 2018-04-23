@@ -4,31 +4,30 @@
 #include "Enums.h"
 #include "ImageSet.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class AdaptiveImageSetRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser>
+        ABI::AdaptiveNamespace::IAdaptiveElementRenderer,
+        ABI::AdaptiveNamespace::IAdaptiveElementParser>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveImageSetRenderer, BaseTrust)
+        AdaptiveRuntime(AdaptiveImageSetRenderer)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(
-            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement,
-            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
 
         IFACEMETHODIMP FromJson(
             ABI::Windows::Data::Json::IJsonObject *,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParsers,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParsers,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element);
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParsers,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
+            ABI::AdaptiveNamespace::IAdaptiveCardElement** element);
     };
 
     ActivatableClass(AdaptiveImageSetRenderer);
-}}}
+AdaptiveNamespaceEnd

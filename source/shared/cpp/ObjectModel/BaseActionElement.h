@@ -5,8 +5,7 @@
 #include "json/json.h"
 #include "ParseUtil.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class BaseActionElement
 {
 public:
@@ -36,6 +35,8 @@ public:
 
     Json::Value GetAdditionalProperties();
     void SetAdditionalProperties(Json::Value additionalProperties);
+
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris);
 
 private:
     void PopulateKnownPropertiesSet();
@@ -74,4 +75,5 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
     }
     return cardElement;
 }
-}
+AdaptiveSharedNamespaceEnd
+

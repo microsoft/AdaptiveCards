@@ -15,7 +15,7 @@ class RenderAsyncBase :
     public Microsoft::WRL::RuntimeClass<
     Microsoft::WRL::AsyncBase<ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*>>,
     ABI::Windows::Foundation::IAsyncOperation<T*>,
-    AdaptiveCards::Rendering::Uwp::IXamlBuilderListener>
+    AdaptiveNamespace::IXamlBuilderListener>
 {
     InspectableClass(L"Windows.Foundation.IAsyncInfo", BaseTrust)
 
@@ -23,7 +23,7 @@ public:
     typedef ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*> HandlerType;
 
     RenderAsyncBase(
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card, AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer)
+        ABI::AdaptiveNamespace::IAdaptiveCard* card, AdaptiveNamespace::AdaptiveCardRenderer* renderer)
         : m_card(card), 
           m_renderer(renderer)
     {
@@ -71,11 +71,11 @@ public:
     }
 
 protected:
-    Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> m_renderResult;
+    Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_rootXamlElement;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Core::ICoreDispatcher> m_dispatcher;
-    Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard> m_card;
-    Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer> m_renderer;
+    Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_card;
+    Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveCardRenderer> m_renderer;
 
     HRESULT OnStart(void) override
     {
@@ -86,15 +86,15 @@ protected:
             m_renderer->GetXamlBuilder()->AddListener(this);
             try
             {
-                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&m_renderResult));
-                ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration> elementRenderers;
+                THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::RenderedAdaptiveCard>(&m_renderResult));
+                ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> elementRenderers;
                 THROW_IF_FAILED(m_renderer->get_ElementRenderers(&elementRenderers));
-                ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers> resourceResolvers;
+                ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> resourceResolvers;
                 THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resourceResolvers));
                 ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> overrideDictionary = m_renderer->GetMergedDictionary();
 
-                ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> renderContext;
-                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(
+                ComPtr<AdaptiveNamespace::AdaptiveRenderContext> renderContext;
+                THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveRenderContext>(
                     &renderContext,
                     m_renderer->GetHostConfig(),
                     elementRenderers.Get(),
@@ -142,27 +142,27 @@ protected:
 
 private:
 
-    std::function<ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard*(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard*)> m_dispatchFunction;
+    std::function<ABI::AdaptiveNamespace::IRenderedAdaptiveCard*(ABI::AdaptiveNamespace::IAdaptiveCard*)> m_dispatchFunction;
 };
 
 
 
 class RenderCardAsXamlAsyncOperation : 
-    public RenderAsyncBase<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>
+    public RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>
 {
 public:
     RenderCardAsXamlAsyncOperation(
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card,
-        AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer* renderer)
-        : RenderAsyncBase<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(card, renderer)
+        ABI::AdaptiveNamespace::IAdaptiveCard* card,
+        AdaptiveNamespace::AdaptiveCardRenderer* renderer)
+        : RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>(card, renderer)
     {
         AsyncBase::Start();
     }
 
 
-    STDMETHODIMP ABI::Windows::Foundation::IAsyncOperation_impl<TResult_complex>::GetResults(ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result)
+    STDMETHODIMP ABI::Windows::Foundation::IAsyncOperation_impl<TResult_complex>::GetResults(ABI::AdaptiveNamespace::IRenderedAdaptiveCard** result)
     {
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard> renderResultAsInterface;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IRenderedAdaptiveCard> renderResultAsInterface;
         m_renderResult->SetFrameworkElement(m_rootXamlElement.Get());
         m_renderResult.As(&renderResultAsInterface);
         return renderResultAsInterface.CopyTo(result);

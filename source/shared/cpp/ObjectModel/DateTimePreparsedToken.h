@@ -3,8 +3,7 @@
 #include <vector>
 #include "Enums.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     class DateTimePreparsedToken
     {
     public:
@@ -26,4 +25,4 @@ namespace AdaptiveCards
         struct tm m_date;
         DateTimePreparsedTokenFormat m_format;
     };
-}
+AdaptiveSharedNamespaceEnd

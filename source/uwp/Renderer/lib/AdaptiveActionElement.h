@@ -4,13 +4,12 @@
 #include <windows.foundation.h>
 #include "Enums.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("CDCCC115-7C53-4A04-9F5B-754BBC00C80E") AdaptiveActionElementBase : public IUnknown
     {
     protected:
 
-        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel);
+        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel);
 
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
 
@@ -28,7 +27,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         IFACEMETHODIMP ToJson(ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveCards::BaseActionElement> sharedCardElement);
+        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedCardElement);
 
         virtual HRESULT GetSharedModel(std::shared_ptr<BaseActionElement>& sharedModel) = 0;
 
@@ -39,4 +38,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
     };
-}}}
+AdaptiveNamespaceEnd

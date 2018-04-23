@@ -24,6 +24,14 @@ $font-family: 'Segoe UI', sans-serif;
     cursor: pointer;
 }
 
+.ac-image.ac-selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ac-image.ac-selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 @mixin base-anchor(
     $color: #005A9E,
     $color-visited: #005A9E,

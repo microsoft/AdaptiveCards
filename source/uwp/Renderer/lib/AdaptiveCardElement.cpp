@@ -3,16 +3,15 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
-    HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
+AdaptiveNamespaceStart
+    HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
     {
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedModel->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedModel->GetSpacing());
         m_separator = sharedModel->GetSeparator();
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
@@ -20,13 +19,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -72,18 +71,18 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedModel;
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
     HRESULT AdaptiveCardElementBase::SetSharedElementProperties(
-        std::shared_ptr<AdaptiveCards::BaseCardElement> sharedCardElement)
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedCardElement)
     {
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetSeparator(m_separator);
-        sharedCardElement->SetSpacing(static_cast<AdaptiveCards::Spacing>(m_spacing));
+        sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
 
         if (m_additionalProperties != nullptr)
         {
@@ -94,4 +93,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

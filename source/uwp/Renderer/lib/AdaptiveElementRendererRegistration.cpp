@@ -3,10 +3,10 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp {
+AdaptiveNamespaceStart
     AdaptiveElementRendererRegistration::AdaptiveElementRendererRegistration()
     {
     }
@@ -44,4 +44,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp {
         m_registration->erase(HStringToUTF8(type));
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd
