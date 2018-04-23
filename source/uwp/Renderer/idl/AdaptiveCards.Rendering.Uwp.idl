@@ -1229,7 +1229,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionSet)
+        exclusiveto(AdaptiveActionSet),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(EC0102C3-A40D-449D-939B-3AD770CE6DAD),
         contract(InternalContract, 1),
@@ -1262,7 +1262,6 @@ AdaptiveNamespaceStart
     };
 
     [
-        uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveCardRenderer),
 #ifdef ADAPTIVE_CARDS_WINDOWS

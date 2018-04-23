@@ -31,7 +31,7 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             std::shared_ptr<XamlBuilder> xamlBuilder,
             boolean isOuterCard = true,
-            ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle = ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::Default);
+            ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle = ABI::AdaptiveNamespace::ContainerStyle::Default);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT RemoveListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT SetFixedDimensions(_In_ UINT width, _In_ UINT height) noexcept;
@@ -172,11 +172,11 @@ AdaptiveNamespaceStart
             _Inout_ ABI::Windows::UI::Xaml::Controls::IButton* button);
 
         static void BuildActions(
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* children,
+            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
             _In_ bool insertSeparator,
             _Inout_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle);
+            ABI::AdaptiveNamespace::ContainerStyle containerStyle);
 
         static void BuildActionSetHelper(
             ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,

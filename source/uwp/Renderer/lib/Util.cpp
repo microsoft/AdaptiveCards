@@ -333,7 +333,7 @@ HRESULT GenerateContainedElementsProjection(
                 std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleInput>(containedElement)));
             break;
         case CardElementType::ActionSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveActionSet>(&projectedContainedElement,
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveActionSet>(&projectedContainedElement,
                 std::dynamic_pointer_cast<AdaptiveCards::ActionSet>(containedElement)));
             break;
         case CardElementType::Custom:

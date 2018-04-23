@@ -852,7 +852,7 @@ AdaptiveNamespaceStart
         if (!SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"ActionSet was stripped from card because interactivity is not supported").Get());
             return;
         }
@@ -864,10 +864,10 @@ AdaptiveNamespaceStart
         ComPtr<IVector<IAdaptiveActionElement*>> actions;
         THROW_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation orientation;
+        ABI::AdaptiveNamespace::ActionsOrientation orientation;
         THROW_IF_FAILED(adaptiveActionSet->get_Orientation(&orientation));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         renderArgs->get_ContainerStyle(&containerStyle);
 
         BuildActionSetHelper(actions.Get(), orientation, renderContext, false, actionSetControl, containerStyle);
@@ -901,7 +901,7 @@ AdaptiveNamespaceStart
         }
 
         ComPtr<IUIElement> actionSetControl;
-        BuildActionSetHelper(children, ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::None, renderContext, true, &actionSetControl, containerStyle);
+        BuildActionSetHelper(children, ABI::AdaptiveNamespace::ActionsOrientation::None, renderContext, true, &actionSetControl, containerStyle);
 
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
     }
@@ -923,7 +923,7 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::ActionAlignment actionAlignment;
         THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation;
+        if (actionsOrientation == ABI::AdaptiveNamespace::ActionsOrientation::None)
         {
             THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
         }
