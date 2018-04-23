@@ -2614,7 +2614,8 @@ AdaptiveNamespaceStart
         // For now, we'll simply assume the bottom spacing is the same as the top.
         // NOTE: Only apply spacings (padding, margin) for adaptive card elements to avoid adding
         // spacings to card-level selectAction.
-        if (adaptiveCardElement != nullptr) {
+        if (adaptiveCardElement != nullptr)
+        {
             ABI::AdaptiveNamespace::Spacing elementSpacing;
             THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));
             UINT spacingSize;
