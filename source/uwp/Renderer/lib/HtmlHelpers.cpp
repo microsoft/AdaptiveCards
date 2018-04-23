@@ -8,6 +8,34 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace AdaptiveNamespace;
+using namespace ABI::Windows::UI::Xaml;
+using namespace ABI::Windows::UI::Xaml::Documents;
+using namespace ABI::Windows::UI::Xaml::Controls;
+
+HRESULT GetXamlBasicStatics(
+    ABI::Windows::UI::Xaml::IXamlBasicStatics ** xamlBasicStatics)
+{
+    static ComPtr<IXamlBasicStatics> s_xamlBasicStatics;
+
+    if (s_xamlBasicStatics == nullptr)
+    {
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_XamlBasic).Get(), &s_xamlBasicStatics));
+    }
+
+    return s_xamlBasicStatics.CopyTo(xamlBasicStatics);
+}
+
+HRESULT AddInlineToXamlBasicObject(
+    IXamlBasicObject * basicInlines,
+    IXamlBasicObject * basicInline)
+{
+    ComPtr<IXamlBasicStatics> xamlBasicStatics;
+    GetXamlBasicStatics(&xamlBasicStatics);
+
+    THROW_IF_FAILED(xamlBasicStatics->CollectionAdd_IXamlBasicObject(basicInlines, basicInline));
+
+    return S_OK;
+}
 
 HRESULT GetTextFromXmlNode(
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
@@ -25,7 +53,7 @@ HRESULT AddListInlines(
     IAdaptiveRenderContext* renderContext,
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
     bool isListOrdered,
-    ABI::Windows::UI::Xaml::IXamlBasicObject * basicTextBlock)
+    IXamlBasicObject * basicInlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNamedNodeMap> attributeMap;
     RETURN_IF_FAILED(node->get_Attributes(&attributeMap));
@@ -63,15 +91,17 @@ HRESULT AddListInlines(
         HString listElementHString;
         RETURN_IF_FAILED(listElementHString.Set(listElementString.c_str()));
 
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-        RETURN_IF_FAILED(run->put_Text(listElementHString.Get()));
+        ComPtr<IXamlBasicStatics> xamlBasicStatics;
+        GetXamlBasicStatics(&xamlBasicStatics);
 
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
-        RETURN_IF_FAILED(run.As(&runAsInline));
+        ComPtr<IXamlBasicObject> basicRun;
+        THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_Run, &basicRun));
 
-//        RETURN_IF_FAILED(inlines->Append(runAsInline.Get())); //beckytodo
+        xamlBasicStatics->SetValue_String_ByIndex(basicRun.Get(), XamlPropertyIndex_Run_Text, listElementHString.Get());
 
-        RETURN_IF_FAILED(AddTextInlines(renderContext, listChild.Get(), false, false, basicTextBlock));
+        AddInlineToXamlBasicObject(basicInlines, basicRun.Get());
+
+        RETURN_IF_FAILED(AddTextInlines(renderContext, listChild.Get(), false, false, basicInlines)); 
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextListChild;
         RETURN_IF_FAILED(listChild->get_NextSibling(&nextListChild));
@@ -87,7 +117,7 @@ HRESULT AddLinkInline(
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
     BOOL isBold,
     BOOL isItalic,
-    ABI::Windows::UI::Xaml::IXamlBasicObject * basicTextBlock)
+    IXamlBasicObject * basicInlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNamedNodeMap> attributeMap;
     RETURN_IF_FAILED(node->get_Attributes(&attributeMap));
@@ -111,20 +141,20 @@ HRESULT AddLinkInline(
     ComPtr<IUriRuntimeClass> uri;
     RETURN_IF_FAILED(uriActivationFactory->CreateUri(href.Get(), uri.GetAddressOf()));
 
-    ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
-    RETURN_IF_FAILED(hyperlink->put_NavigateUri(uri.Get()));
+    ComPtr<IXamlBasicStatics> xamlBasicStatics;
+    GetXamlBasicStatics(&xamlBasicStatics);
 
-    ComPtr<ABI::Windows::UI::Xaml::Documents::ISpan> hyperlinkAsSpan;
-    RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsSpan));
+    ComPtr<IXamlBasicObject> basicHyperlink;
+    THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_Hyperlink, &basicHyperlink));
 
-    ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
-    RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
+    xamlBasicStatics->SetValue_Object_ByIndex(basicHyperlink.Get(), XamlPropertyIndex_Hyperlink_NavigateUri, uri.Get());
 
-    // RETURN_IF_FAILED(AddTextInlines(renderContext, node, isBold, isItalic, hyperlinkInlines.Get())); //beckytodo
+    ComPtr<IXamlBasicObject> basicHyperlinkInlines;
+    THROW_IF_FAILED(xamlBasicStatics->GetXamlBasicObjectValue_ByIndex(basicHyperlink.Get(), XamlPropertyIndex_Span_Inlines, &basicHyperlinkInlines));
 
-    ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperLinkAsInline;
-    RETURN_IF_FAILED(hyperlink.As(&hyperLinkAsInline));
-    //RETURN_IF_FAILED(inlines->Append(hyperLinkAsInline.Get())); //beckytodo
+    RETURN_IF_FAILED(AddTextInlines(renderContext, node, isBold, isItalic, basicHyperlinkInlines.Get())); 
+
+    AddInlineToXamlBasicObject(basicInlines, basicHyperlink.Get());
 
     return S_OK;
 }
@@ -134,14 +164,16 @@ HRESULT AddSingleTextInline(
     HSTRING string,
     bool isBold,
     bool isItalic,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    IXamlBasicObject * basicInlines)
 {
-    ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-    RETURN_IF_FAILED(run->put_Text(string));
-    
-    ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
-    RETURN_IF_FAILED(run.As(&runAsTextElement));
+    ComPtr<IXamlBasicStatics> xamlBasicStatics;
+    GetXamlBasicStatics(&xamlBasicStatics);
 
+    ComPtr<IXamlBasicObject> basicRun;
+    THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_Run, &basicRun));
+
+    xamlBasicStatics->SetValue_String_ByIndex(basicRun.Get(), XamlPropertyIndex_Run_Text, string);
+    
     if (isBold)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -153,18 +185,16 @@ HRESULT AddSingleTextInline(
         ABI::Windows::UI::Text::FontWeight boldFontWeight;
         RETURN_IF_FAILED(fontWeightsConfig->get_Bolder(&boldFontWeight.Weight));
 
-        RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight));
+        //RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight)); //BECKYTODO 
     }
 
     if (isItalic)
     {
-        RETURN_IF_FAILED(runAsTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
+        //RETURN_IF_FAILED(runAsTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic)); //BECKYTODO
     }
 
-    ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
-    RETURN_IF_FAILED(run.As(&runAsInline));
+    AddInlineToXamlBasicObject(basicInlines, basicRun.Get()); 
 
-    RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
     return S_OK;
 }
 
@@ -173,7 +203,7 @@ HRESULT AddTextInlines(
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
     BOOL isBold,
     BOOL isItalic,
-    ABI::Windows::UI::Xaml::IXamlBasicObject * basicTextBlock)
+    IXamlBasicObject * basicInlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;
     RETURN_IF_FAILED(node->get_FirstChild(&childNode));
@@ -197,17 +227,17 @@ HRESULT AddTextInlines(
 
         if (isLinkResult == 0)
         {
-            RETURN_IF_FAILED(AddLinkInline(renderContext, childNode.Get(), isBold, isItalic, basicTextBlock));
+            RETURN_IF_FAILED(AddLinkInline(renderContext, childNode.Get(), isBold, isItalic, basicInlines)); 
         }
         else if (isTextResult == 0)
         {
             HString text;
             RETURN_IF_FAILED(GetTextFromXmlNode(childNode.Get(), text.GetAddressOf()));
-            RETURN_IF_FAILED(AddSingleTextInline(renderContext, text.Get(), isBold, isItalic, inlines));
+            RETURN_IF_FAILED(AddSingleTextInline(renderContext, text.Get(), isBold, isItalic, basicInlines)); 
         }
         else
         {
-            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), isBold || (isBoldResult == 0), isItalic || (isItalicResult == 0), basicTextBlock));
+            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), isBold || (isBoldResult == 0), isItalic || (isItalicResult == 0), basicInlines)); 
         }
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextChildNode;
@@ -221,7 +251,7 @@ HRESULT AddTextInlines(
 HRESULT AddHtmlInlines(
     IAdaptiveRenderContext* renderContext,
     ABI::Windows::Data::Xml::Dom::IXmlNode * node,
-    ABI::Windows::UI::Xaml::IXamlBasicObject * basicTextBlock)
+    IXamlBasicObject * basicInlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;
     RETURN_IF_FAILED(node->get_FirstChild(&childNode));
@@ -242,15 +272,15 @@ HRESULT AddHtmlInlines(
 
         if ((isOrderedListResult == 0) || (isUnorderedListResult == 0))
         {
-            RETURN_IF_FAILED(AddListInlines(renderContext, childNode.Get(), (isOrderedListResult == 0), basicTextBlock));
+            RETURN_IF_FAILED(AddListInlines(renderContext, childNode.Get(), (isOrderedListResult == 0), basicInlines)); 
         }
         else if (isParagraphResult == 0)
         {
-            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), false, false, basicTextBlock));
+            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), false, false, basicInlines)); 
         }
         else
         {
-            RETURN_IF_FAILED(AddHtmlInlines(renderContext, childNode.Get(), basicTextBlock));
+            RETURN_IF_FAILED(AddHtmlInlines(renderContext, childNode.Get(), basicInlines)); 
         }
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextChildNode;

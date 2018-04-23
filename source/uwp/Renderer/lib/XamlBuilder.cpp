@@ -1294,14 +1294,17 @@ AdaptiveNamespaceStart
         HSTRING language,
         IXamlBasicObject * basicTextBlock)
     {
-        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
-        RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
-
         DateTimeParser parser(HStringToUTF8(language));
         auto textWithParsedDates = parser.GenerateString(HStringToUTF8(textIn));
 
         MarkDownParser markdownParser(textWithParsedDates);
         auto htmlString = markdownParser.TransformToHtml();
+
+        ComPtr<ABI::Windows::UI::Xaml::IXamlBasicStatics> xamlBasicStatics;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_XamlBasic).Get(), &xamlBasicStatics));
+
+        ComPtr<IXamlBasicObject> basicInlines;
+        THROW_IF_FAILED(xamlBasicStatics->GetXamlBasicObjectValue_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_Inlines, &basicInlines));
 
         bool handledAsHtml = false;
         if (markdownParser.HasHtmlTags())
@@ -1320,7 +1323,7 @@ AdaptiveNamespaceStart
                 ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
                 RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));
 
-                RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get()));
+                RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), basicInlines.Get())); 
                 handledAsHtml = true;
             }
         }
@@ -1329,7 +1332,7 @@ AdaptiveNamespaceStart
         {
             HString hString;
             UTF8ToHString(textWithParsedDates, hString.GetAddressOf());
-            AddSingleTextInline(renderContext, hString.Get(), false, false, inlines.Get());
+            AddSingleTextInline(renderContext, hString.Get(), false, false, basicInlines.Get());
         }
 
         return S_OK;
