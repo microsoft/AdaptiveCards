@@ -25,7 +25,7 @@ HRESULT AddListInlines(
     IAdaptiveRenderContext* renderContext,
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
     bool isListOrdered,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    ABI::Windows::UI::Xaml::IXamlBasicObject * basicTextBlock)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNamedNodeMap> attributeMap;
     RETURN_IF_FAILED(node->get_Attributes(&attributeMap));
@@ -69,9 +69,9 @@ HRESULT AddListInlines(
         ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
         RETURN_IF_FAILED(run.As(&runAsInline));
 
-        RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
+//        RETURN_IF_FAILED(inlines->Append(runAsInline.Get())); //beckytodo
 
-        RETURN_IF_FAILED(AddTextInlines(renderContext, listChild.Get(), false, false, inlines));
+        RETURN_IF_FAILED(AddTextInlines(renderContext, listChild.Get(), false, false, basicTextBlock));
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextListChild;
         RETURN_IF_FAILED(listChild->get_NextSibling(&nextListChild));
@@ -87,7 +87,7 @@ HRESULT AddLinkInline(
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
     BOOL isBold,
     BOOL isItalic,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    ABI::Windows::UI::Xaml::IXamlBasicObject * basicTextBlock)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNamedNodeMap> attributeMap;
     RETURN_IF_FAILED(node->get_Attributes(&attributeMap));
@@ -120,11 +120,11 @@ HRESULT AddLinkInline(
     ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
     RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
 
-    RETURN_IF_FAILED(AddTextInlines(renderContext, node, isBold, isItalic, hyperlinkInlines.Get()));
+    // RETURN_IF_FAILED(AddTextInlines(renderContext, node, isBold, isItalic, hyperlinkInlines.Get())); //beckytodo
 
     ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperLinkAsInline;
     RETURN_IF_FAILED(hyperlink.As(&hyperLinkAsInline));
-    RETURN_IF_FAILED(inlines->Append(hyperLinkAsInline.Get()));
+    //RETURN_IF_FAILED(inlines->Append(hyperLinkAsInline.Get())); //beckytodo
 
     return S_OK;
 }
@@ -173,7 +173,7 @@ HRESULT AddTextInlines(
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
     BOOL isBold,
     BOOL isItalic,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    ABI::Windows::UI::Xaml::IXamlBasicObject * basicTextBlock)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;
     RETURN_IF_FAILED(node->get_FirstChild(&childNode));
@@ -197,7 +197,7 @@ HRESULT AddTextInlines(
 
         if (isLinkResult == 0)
         {
-            RETURN_IF_FAILED(AddLinkInline(renderContext, childNode.Get(), isBold, isItalic, inlines));
+            RETURN_IF_FAILED(AddLinkInline(renderContext, childNode.Get(), isBold, isItalic, basicTextBlock));
         }
         else if (isTextResult == 0)
         {
@@ -207,7 +207,7 @@ HRESULT AddTextInlines(
         }
         else
         {
-            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), isBold || (isBoldResult == 0), isItalic || (isItalicResult == 0), inlines));
+            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), isBold || (isBoldResult == 0), isItalic || (isItalicResult == 0), basicTextBlock));
         }
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextChildNode;
@@ -221,7 +221,7 @@ HRESULT AddTextInlines(
 HRESULT AddHtmlInlines(
     IAdaptiveRenderContext* renderContext,
     ABI::Windows::Data::Xml::Dom::IXmlNode * node,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    ABI::Windows::UI::Xaml::IXamlBasicObject * basicTextBlock)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;
     RETURN_IF_FAILED(node->get_FirstChild(&childNode));
@@ -242,15 +242,15 @@ HRESULT AddHtmlInlines(
 
         if ((isOrderedListResult == 0) || (isUnorderedListResult == 0))
         {
-            RETURN_IF_FAILED(AddListInlines(renderContext, childNode.Get(), (isOrderedListResult == 0), inlines));
+            RETURN_IF_FAILED(AddListInlines(renderContext, childNode.Get(), (isOrderedListResult == 0), basicTextBlock));
         }
         else if (isParagraphResult == 0)
         {
-            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), false, false, inlines));
+            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), false, false, basicTextBlock));
         }
         else
         {
-            RETURN_IF_FAILED(AddHtmlInlines(renderContext, childNode.Get(), inlines));
+            RETURN_IF_FAILED(AddHtmlInlines(renderContext, childNode.Get(), basicTextBlock));
         }
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextChildNode;

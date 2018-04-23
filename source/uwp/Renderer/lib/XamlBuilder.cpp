@@ -1292,7 +1292,7 @@ AdaptiveNamespaceStart
         IAdaptiveRenderContext* renderContext,
         HSTRING textIn,
         HSTRING language,
-        IXamlBasicObject * textBlock)
+        IXamlBasicObject * basicTextBlock)
     {
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
@@ -1348,19 +1348,19 @@ AdaptiveNamespaceStart
         ComPtr<IXamlBasicObject> basicTextBlock;
         THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_TextBlock, &basicTextBlock));
 
-        //ComPtr<IDependencyObject> textBlockDependencyObject;
-        //THROW_IF_FAILED(xamlBasicStatics->GetDependencyObject(basicTextBlock.Get(), &textBlockDependencyObject));
-
-        //ComPtr<ITextBlock> xamlTextBlock;
-        //THROW_IF_FAILED(textBlockDependencyObject.As(&xamlTextBlock));
-
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveTextBlock> adaptiveTextBlock;
         THROW_IF_FAILED(cardElement.As(&adaptiveTextBlock));
 
+        ComPtr<IDependencyObject> textBlockDependencyObject;
+        THROW_IF_FAILED(xamlBasicStatics->GetDependencyObject(basicTextBlock.Get(), &textBlockDependencyObject));
+
+        ComPtr<ITextBlock> xamlTextBlock;
+        THROW_IF_FAILED(textBlockDependencyObject.As(&xamlTextBlock));
+
         // ITextBlock2 will be used later on
-        //ComPtr<ITextBlock2> xamlTextBlock2;
-        //THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
+        ComPtr<ITextBlock2> xamlTextBlock2;
+        THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
 
         HString text;
         THROW_IF_FAILED(adaptiveTextBlock->get_Text(text.GetAddressOf()));
