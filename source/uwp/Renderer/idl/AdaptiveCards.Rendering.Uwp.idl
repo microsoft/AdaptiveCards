@@ -593,6 +593,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
 
+        [propget] HRESULT Height([out, retval] HeightType* value);
+        [propput] HRESULT Height([in] HeightType value);
+
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
     };
 
