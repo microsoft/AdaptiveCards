@@ -36,6 +36,8 @@ public:
     Json::Value GetAdditionalProperties();
     void SetAdditionalProperties(Json::Value additionalProperties);
 
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris);
+
 private:
     void PopulateKnownPropertiesSet();
 

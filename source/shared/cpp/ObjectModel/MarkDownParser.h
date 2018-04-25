@@ -17,10 +17,13 @@ public:
 
     std::string TransformToHtml();
 
+    bool HasHtmlTags();
+
 private:
     void ParseBlock();
     std::string EscapeText();
     std::string m_text;
     MarkDownParsedResult m_parsedResult;
+    bool m_hasHTMLTag;
 };
 AdaptiveSharedNamespaceEnd

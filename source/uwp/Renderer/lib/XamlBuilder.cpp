@@ -153,6 +153,14 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
             BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
 
+            ComPtr<IAdaptiveActionElement> selectAction;
+            THROW_IF_FAILED(adaptiveCard->get_SelectAction(&selectAction));
+
+            // Create a new IUIElement pointer to house the root element decorated with select action
+            ComPtr<IUIElement> rootSelectActionElement;
+            HandleSelectAction(nullptr, selectAction.Get(), renderContext, rootElement.Get(), SupportsInteractivity(hostConfig.Get()), true, &rootSelectActionElement);
+            THROW_IF_FAILED(rootSelectActionElement.As(&childElementContainerAsFE));
+
             ComPtr<IVector<IAdaptiveActionElement*>> actions;
             THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
             UINT32 actionsSize;
@@ -312,7 +320,7 @@ AdaptiveNamespaceStart
         IPanel** bodyElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
-        // properties.  From back to fron these are:
+        // properties.  From back to front these are:
         // Grid - Root element, used to enable children to stack above each other and size to fit
         // Image (optional) - Holds the background image if one is set
         // Shape (optional) - Provides the background image overlay, if one is set
@@ -1251,34 +1259,42 @@ AdaptiveNamespaceStart
         HSTRING language,
         ITextBlock * textBlock)
     {
+        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
+        RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
+
         DateTimeParser parser(HStringToUTF8(language));
         auto textWithParsedDates = parser.GenerateString(HStringToUTF8(textIn));
 
         MarkDownParser markdownParser(textWithParsedDates);
         auto htmlString = markdownParser.TransformToHtml();
 
-        HString htmlHString;
-        UTF8ToHString(htmlString, htmlHString.GetAddressOf());
-        
-        ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocument> xmlDocument = XamlHelpers::CreateXamlClass<ABI::Windows::Data::Xml::Dom::IXmlDocument>(HStringReference(RuntimeClass_Windows_Data_Xml_Dom_XmlDocument));
-
-        ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocumentIO> xmlDocumentIO;
-        RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentIO));
-        
-        HRESULT hr = xmlDocumentIO->LoadXml(htmlHString.Get());
-        if (FAILED(hr))
+        bool handledAsHtml = false;
+        if (markdownParser.HasHtmlTags())
         {
-            RETURN_IF_FAILED(textBlock->put_Text(textIn));
+            HString htmlHString;
+            UTF8ToHString(htmlString, htmlHString.GetAddressOf());
+
+            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocument> xmlDocument = XamlHelpers::CreateXamlClass<ABI::Windows::Data::Xml::Dom::IXmlDocument>(HStringReference(RuntimeClass_Windows_Data_Xml_Dom_XmlDocument));
+
+            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocumentIO> xmlDocumentIO;
+            RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentIO));
+
+            HRESULT hr = xmlDocumentIO->LoadXml(htmlHString.Get());
+            if (SUCCEEDED(hr))
+            {
+                ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
+                RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));
+
+                RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get()));
+                handledAsHtml = true;
+            }
         }
-        else
+        
+        if (!handledAsHtml)
         {
-            ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
-            RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
-
-            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
-            RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));
-
-            RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get()));
+            HString hString;
+            UTF8ToHString(textWithParsedDates, hString.GetAddressOf());
+            AddSingleTextInline(renderContext, hString.Get(), false, false, inlines.Get());
         }
 
         return S_OK;
@@ -2597,27 +2613,33 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));
         }
 
+        ComPtr<IFrameworkElement> buttonAsFrameworkElement;
+        THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
+
         // We want the hit target to equally split the vertical space above and below the current item.
         // However, all we know is the spacing of the current item, which only applies to the spacing above.
         // We don't know what the spacing of the NEXT element will be, so we can't calculate the correct spacing below.
         // For now, we'll simply assume the bottom spacing is the same as the top.
-        ABI::AdaptiveNamespace::Spacing elementSpacing;
-        THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));
-        UINT spacingSize;
-        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), elementSpacing, &spacingSize));
-        double topBottomPadding = spacingSize / 2.0;
+        // NOTE: Only apply spacings (padding, margin) for adaptive card elements to avoid adding
+        // spacings to card-level selectAction.
+        if (adaptiveCardElement != nullptr)
+        {
+            ABI::AdaptiveNamespace::Spacing elementSpacing;
+            THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));
+            UINT spacingSize;
+            THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), elementSpacing, &spacingSize));
+            double topBottomPadding = spacingSize / 2.0;
 
-        // For button padding, we apply the cardPadding and topBottomPadding (and then we negate these in the margin)
-        ComPtr<IControl> buttonAsControl;
-        THROW_IF_FAILED(button.As(&buttonAsControl));
-        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding, topBottomPadding, (double)cardPadding, topBottomPadding }));
+            // For button padding, we apply the cardPadding and topBottomPadding (and then we negate these in the margin)
+            ComPtr<IControl> buttonAsControl;
+            THROW_IF_FAILED(button.As(&buttonAsControl));
+            THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding, topBottomPadding, (double)cardPadding, topBottomPadding }));
 
-        double negativeCardMargin = cardPadding * -1.0;
-        double negativeTopBottomMargin = topBottomPadding * -1.0;
+            double negativeCardMargin = cardPadding * -1.0;
+            double negativeTopBottomMargin = topBottomPadding * -1.0;
 
-        ComPtr<IFrameworkElement> buttonAsFrameworkElement;
-        THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
-        THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, negativeTopBottomMargin, negativeCardMargin, negativeTopBottomMargin }));
+            THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, negativeTopBottomMargin, negativeCardMargin, negativeTopBottomMargin }));
+        }
 
         // Style the hit target button
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.SelectAction", buttonAsFrameworkElement.Get()));

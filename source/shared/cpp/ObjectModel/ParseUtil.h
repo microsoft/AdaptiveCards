@@ -82,6 +82,13 @@ public:
         AdaptiveCardSchemaKey key,
         bool isRequired = false);
 
+    static std::shared_ptr<BaseActionElement> GetSelectAction(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& json,
+        AdaptiveCardSchemaKey key,
+        bool isRequired = false);
+
     template <typename T>
     static T ExtractJsonValueAndMergeWithDefault(
         const Json::Value& rootJson,

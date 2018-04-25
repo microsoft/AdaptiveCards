@@ -95,29 +95,7 @@ Json::Value BaseCardElement::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = GetSeparator();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
 
-    /* Issue #629 to make separator an object
-    Json::Value jsonSeparator;
-    jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(GetSeparator()->GetColor());
-    jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Thickness)] = SeparatorThicknessToString(GetSeparator()->GetThickness());
-
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = jsonSeparator;
-    */
-
     return root;
-}
-
-std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const Json::Value& json,
-    AdaptiveCardSchemaKey key)
-{
-    Json::Value selectActionValue = ParseUtil::ExtractJsonValue(json, key, false);
-    if (!selectActionValue.empty())
-    {
-        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, selectActionValue);
-    }
-    return nullptr;
 }
 
 Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
@@ -137,4 +115,9 @@ Json::Value BaseCardElement::GetAdditionalProperties()
 void BaseCardElement::SetAdditionalProperties(Json::Value value)
 {
     m_additionalProperties = value;
+}
+
+void BaseCardElement::GetResourceUris(std::vector<std::string>&)
+{
+    return;
 }

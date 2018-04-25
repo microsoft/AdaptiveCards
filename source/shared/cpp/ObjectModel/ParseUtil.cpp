@@ -403,6 +403,23 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
     return elements;
 }
 
+std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key,
+    bool isRequired)
+{
+    auto selectAction = ParseUtil::ExtractJsonValue(json, key, isRequired);
+
+    if (!selectAction.empty())
+    {
+        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, selectAction);
+    }
+
+    return nullptr;
+}
+
 ParseUtil::ParseUtil()
 {
 }

@@ -6,7 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt)
+MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_hasHTMLTag(false)
 {
 }
 
@@ -27,9 +27,14 @@ std::string MarkDownParser::TransformToHtml()
     //add block tags such as <p> <ul>
     m_parsedResult.AddBlockTags();
 
+    m_hasHTMLTag = m_parsedResult.HasHtmlTags();
     return m_parsedResult.GenerateHtmlString();
 }
 
+bool MarkDownParser::HasHtmlTags()
+{
+    return m_hasHTMLTag;
+}
 // MarkDown is consisted of Blocks, this methods parses blocks
 void MarkDownParser::ParseBlock()
 {
