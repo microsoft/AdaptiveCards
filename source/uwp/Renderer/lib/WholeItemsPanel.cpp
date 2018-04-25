@@ -50,7 +50,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(QueryInterface(__uuidof(IFrameworkElement), reinterpret_cast<void**>(spThisAsFrameworkElement.GetAddressOf())));
         Thickness marginThickness;
         RETURN_IF_FAILED(spThisAsFrameworkElement->get_Margin(&marginThickness));
-        availableSize.Height = availableSize.Height - (marginThickness.Top + marginThickness.Bottom);
+        availableSize.Height = availableSize.Height - static_cast<FLOAT>(marginThickness.Top + marginThickness.Bottom);
 
         const Size noVerticalLimit{ availableSize.Width, numeric_limits<float>::infinity() };
 
@@ -317,7 +317,7 @@ AdaptiveNamespaceStart
                     RETURN_IF_FAILED(spChild->Measure(childSize));
                     RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
                     
-                    childSize.Height = childSize.Height + extraPaddingPerItem;
+                    childSize.Height = childSize.Height + static_cast<float>(extraPaddingPerItem);
 
                     ComPtr<IFrameworkElement> frameworkElement;
                     RETURN_IF_FAILED(spChild.As(&frameworkElement));
