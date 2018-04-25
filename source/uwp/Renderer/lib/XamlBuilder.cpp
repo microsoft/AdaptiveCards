@@ -302,6 +302,26 @@ AdaptiveNamespaceStart
     HRESULT XamlBuilder::SetStyleFromResourceDictionary(
         IAdaptiveRenderContext* renderContext,
         std::wstring resourceName,
+        IXamlBasicObject* xamlBasicObject)
+    {
+        ComPtr<IResourceDictionary> resourceDictionary;
+        RETURN_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
+
+        ComPtr<IStyle> style;
+        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(), resourceName, &style)))
+        {
+            ComPtr<IXamlBasicStatics> xamlBasicStatics;
+            GetXamlBasicStatics(&xamlBasicStatics);
+
+            xamlBasicStatics->SetValue_Object_ByIndex(xamlBasicObject, XamlPropertyIndex_FrameworkElement_Style, style.Get());
+        }
+
+        return S_OK;
+    }
+
+    HRESULT XamlBuilder::SetStyleFromResourceDictionary(
+        IAdaptiveRenderContext* renderContext,
+        std::wstring resourceName,
         IFrameworkElement* frameworkElement)
     {
         ComPtr<IResourceDictionary> resourceDictionary;
@@ -698,14 +718,40 @@ AdaptiveNamespaceStart
                     }
                 }
 
-                ComPtr<IUIElement> newControl;
-                elementRenderer->Render(element, renderContext, renderArgs, &newControl);
+                ElementType elementType;
+                element->get_ElementType(&elementType);
 
-                ABI::AdaptiveNamespace::HeightType heightType{};
-                THROW_IF_FAILED(element->get_Height(&heightType));
-                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
+                if (elementType == ElementType_TextBlock)
+                {
+                    ComPtr<IXamlBasicObject> xamlBasicTextBlock;
+                    BuildTextBlock(element, renderContext, renderArgs, &xamlBasicTextBlock);
 
-                childCreatedCallback(newControl.Get());
+                    ComPtr<IXamlBasicStatics> xamlBasicStatics;
+                    GetXamlBasicStatics(&xamlBasicStatics);
+
+                    ComPtr<IPanel> localParentPanel {parentPanel};
+                    ComPtr<IDependencyObject> parentPanelAsDependencyObject;
+                    localParentPanel.As(&parentPanelAsDependencyObject);
+
+                    ComPtr<IXamlBasicObject> parentPanelXamlBasic;
+                    xamlBasicStatics->GetXamlBasicObject(parentPanelAsDependencyObject.Get(), &parentPanelXamlBasic);
+
+                    ComPtr<IXamlBasicObject> basicPanelChildren;
+                    THROW_IF_FAILED(xamlBasicStatics->GetXamlBasicObjectValue_ByIndex(parentPanelXamlBasic.Get(), XamlPropertyIndex_Panel_Children, &basicPanelChildren));
+
+                    THROW_IF_FAILED(xamlBasicStatics->CollectionAdd_IXamlBasicObject(basicPanelChildren.Get(), xamlBasicTextBlock.Get()));
+                }
+                else
+                {
+                    ComPtr<IUIElement> newControl;
+                    elementRenderer->Render(element, renderContext, renderArgs, &newControl);
+
+	                ABI::AdaptiveNamespace::HeightType heightType{};
+	                THROW_IF_FAILED(element->get_Height(&heightType));
+	                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
+
+                    childCreatedCallback(newControl.Get());
+                }
             }
             else
             {
@@ -1182,6 +1228,19 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
+    ComPtr<IXamlBasicObject> XamlBuilder::GetBasicSolidColorBrush(_In_ ABI::Windows::UI::Color color)
+    {
+        ComPtr<IXamlBasicStatics> xamlBasicStatics;
+        GetXamlBasicStatics(&xamlBasicStatics);
+
+        ComPtr<IXamlBasicObject> basicBrush;
+        THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_SolidColorBrush, &basicBrush));
+
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Color_ByIndex(basicBrush.Get(), XamlPropertyIndex_SolidColorBrush_Color, color));
+        return basicBrush;
+    }
+
+    _Use_decl_annotations_
     void XamlBuilder::StyleXamlTextBlock(
         ABI::AdaptiveNamespace::TextSize size,
         ABI::AdaptiveNamespace::ForegroundColor color,
@@ -1193,13 +1252,38 @@ AdaptiveNamespaceStart
         ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
         IAdaptiveHostConfig* hostConfig)
     {
+        ComPtr<ABI::Windows::UI::Xaml::IXamlBasicStatics> xamlBasicStatics;
+        THROW_IF_FAILED(GetXamlBasicStatics(&xamlBasicStatics));
+
         ComPtr<ITextBlock> localTextBlock(xamlTextBlock);
+        ComPtr<IDependencyObject> textBlockAsDependencyObject;
+        localTextBlock.As(&textBlockAsDependencyObject);
+
+        ComPtr<IXamlBasicObject> xamlBasicTextBlock;
+        xamlBasicStatics->GetXamlBasicObject(textBlockAsDependencyObject.Get(), &xamlBasicTextBlock);
+
+        StyleXamlTextBlock(size, color, containerStyle, isSubtle, wrap, maxWidth, weight, xamlBasicTextBlock.Get(), hostConfig);
+    }
+
+    void XamlBuilder::StyleXamlTextBlock(
+        ABI::AdaptiveNamespace::TextSize size,
+        ABI::AdaptiveNamespace::ForegroundColor color,
+        ABI::AdaptiveNamespace::ContainerStyle containerStyle,
+        bool isSubtle,
+        bool wrap,
+        UINT32 maxWidth,
+        ABI::AdaptiveNamespace::TextWeight weight,
+        ABI::Windows::UI::Xaml::IXamlBasicObject* basicTextBlock,
+        IAdaptiveHostConfig* hostConfig) 
+    {
+        ComPtr<IXamlBasicStatics> xamlBasicStatics;
+        GetXamlBasicStatics(&xamlBasicStatics);
 
         ABI::Windows::UI::Color fontColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, color, containerStyle, isSubtle, &fontColor));
 
-        ComPtr<IBrush> fontColorBrush = GetSolidColorBrush(fontColor);
-        THROW_IF_FAILED(localTextBlock->put_Foreground(fontColorBrush.Get()));
+        ComPtr<IXamlBasicObject> fontColorBrush = GetBasicSolidColorBrush(fontColor);
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_IXamlBasicObject_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_Foreground, fontColorBrush.Get()));
 
         // Retrieve the Font Size from Host Options
         ComPtr<IAdaptiveFontSizesConfig> fontSizesConfig;
@@ -1224,7 +1308,7 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(fontSizesConfig->get_Default(&fontSize));
             break;
         }
-        THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Double_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_FontSize, (double)fontSize));
 
         ComPtr<IAdaptiveFontWeightsConfig> fontWeightsConfig;
         THROW_IF_FAILED(hostConfig->get_FontWeights(&fontWeightsConfig));
@@ -1244,26 +1328,31 @@ AdaptiveNamespaceStart
             break;
         }
 
-        THROW_IF_FAILED(localTextBlock->put_FontWeight(xamlFontWeight));
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_FontWeight, xamlFontWeight.Weight));
 
         // Apply the wrap value to the xaml element
-        THROW_IF_FAILED(localTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
-        THROW_IF_FAILED(localTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(
+            basicTextBlock, 
+            XamlPropertyIndex_TextBlock_TextWrapping,
+            wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_TextTrimming, TextTrimming::TextTrimming_CharacterEllipsis));
 
         //Apply font family
         HString fontFamilyName;
         THROW_IF_FAILED(hostConfig->get_FontFamily(fontFamilyName.GetAddressOf()));
+
+        //ComPtr<IXamlBasicObject> basicFontFamily; //BECKYTODO - how do i create by name?
+        //THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_FontFamily, &basicFontFamily));
 
         ComPtr<IInspectable> inspectable;
         ComPtr<IFontFamily> fontFamily;
         ComPtr<IFontFamilyFactory> fontFamilyFactory;
         THROW_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(L"Windows.UI.Xaml.Media.FontFamily").Get(), &fontFamilyFactory));
         THROW_IF_FAILED(fontFamilyFactory->CreateInstanceWithName(fontFamilyName.Get(), nullptr, inspectable.ReleaseAndGetAddressOf(), &fontFamily));
-        THROW_IF_FAILED(xamlTextBlock->put_FontFamily(fontFamily.Get()));
 
-        ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
-        THROW_IF_FAILED(localTextBlock.As(&textBlockAsFrameworkElement));
-        THROW_IF_FAILED(textBlockAsFrameworkElement->put_MaxWidth(maxWidth));
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Object_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_FontFamily, fontFamily.Get()));
+
+        //THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock, XamlPropertyIndex_FrameworkElement_MaxWidth, maxWidth)); //BECKYTODO
     }
 
     _Use_decl_annotations_
@@ -1301,7 +1390,7 @@ AdaptiveNamespaceStart
         auto htmlString = markdownParser.TransformToHtml();
 
         ComPtr<ABI::Windows::UI::Xaml::IXamlBasicStatics> xamlBasicStatics;
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_XamlBasic).Get(), &xamlBasicStatics));
+        GetXamlBasicStatics(&xamlBasicStatics);
 
         ComPtr<IXamlBasicObject> basicInlines;
         THROW_IF_FAILED(xamlBasicStatics->GetXamlBasicObjectValue_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_Inlines, &basicInlines));
@@ -1343,10 +1432,10 @@ AdaptiveNamespaceStart
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs,
-        IUIElement** textBlockControl)
+        IXamlBasicObject** textBlockControl)
     {
         ComPtr<ABI::Windows::UI::Xaml::IXamlBasicStatics> xamlBasicStatics;
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_XamlBasic).Get(), &xamlBasicStatics));
+        GetXamlBasicStatics(&xamlBasicStatics);
 
         ComPtr<IXamlBasicObject> basicTextBlock;
         THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_TextBlock, &basicTextBlock));
@@ -1354,16 +1443,6 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveTextBlock> adaptiveTextBlock;
         THROW_IF_FAILED(cardElement.As(&adaptiveTextBlock));
-
-        ComPtr<IDependencyObject> textBlockDependencyObject;
-        THROW_IF_FAILED(xamlBasicStatics->GetDependencyObject(basicTextBlock.Get(), &textBlockDependencyObject));
-
-        ComPtr<ITextBlock> xamlTextBlock;
-        THROW_IF_FAILED(textBlockDependencyObject.As(&xamlTextBlock));
-
-        // ITextBlock2 will be used later on
-        ComPtr<ITextBlock2> xamlTextBlock2;
-        THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
 
         HString text;
         THROW_IF_FAILED(adaptiveTextBlock->get_Text(text.GetAddressOf()));
@@ -1389,11 +1468,8 @@ AdaptiveNamespaceStart
                 if (SUCCEEDED(subtleOpacityInspectable.As(&subtleOpacityReference)))
                 {
                     double subtleOpacity;
-                    subtleOpacityReference.Get()->get_Value(&subtleOpacity);
-
-                    ComPtr<IUIElement> textBlockAsUIElement;
-                    THROW_IF_FAILED(xamlTextBlock.As(&textBlockAsUIElement));
-                    textBlockAsUIElement->put_Opacity(subtleOpacity);
+                    THROW_IF_FAILED(subtleOpacityReference.Get()->get_Value(&subtleOpacity));
+                    THROW_IF_FAILED(xamlBasicStatics->SetValue_Double_ByIndex(basicTextBlock.Get(), XamlPropertyIndex_UIElement_Opacity, subtleOpacity));
                 }
             }
         }
@@ -1401,7 +1477,7 @@ AdaptiveNamespaceStart
         // Set the maximum number of lines the text block should show
         UINT maxLines;
         THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
-        THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock.Get(), XamlPropertyIndex_TextBlock_MaxLines, maxLines));
 
         ABI::AdaptiveNamespace::HAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
@@ -1409,15 +1485,15 @@ AdaptiveNamespaceStart
         // Set the horizontal alignment of the text
         switch (adaptiveHorizontalAlignment)
         {
-            case ABI::AdaptiveNamespace::HAlignment::Left:
-                THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Left));
-                break;
-            case ABI::AdaptiveNamespace::HAlignment::Right:
-                THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Right));
-                break;
-            case ABI::AdaptiveNamespace::HAlignment::Center:
-                THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center));
-                break;
+        case ABI::AdaptiveNamespace::HAlignment::Left:
+            THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock.Get(), XamlPropertyIndex_TextBlock_TextAlignment, TextAlignment::TextAlignment_Left));
+            break;
+        case ABI::AdaptiveNamespace::HAlignment::Right:
+            THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock.Get(), XamlPropertyIndex_TextBlock_TextAlignment, TextAlignment::TextAlignment_Right));
+            break;
+        case ABI::AdaptiveNamespace::HAlignment::Center:
+            THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock.Get(), XamlPropertyIndex_TextBlock_TextAlignment, TextAlignment::TextAlignment_Center));
+            break;
         }
         ABI::AdaptiveNamespace::TextSize textblockSize;
         THROW_IF_FAILED(adaptiveTextBlock->get_Size(&textblockSize));
@@ -1430,18 +1506,37 @@ AdaptiveNamespaceStart
 
         // Ensure left edge of text is consistent regardless of font size, so both small and large fonts
         // are flush on the left edge of the card by enabling TrimSideBearings
-        THROW_IF_FAILED(xamlTextBlock2->put_OpticalMarginAlignment(OpticalMarginAlignment_TrimSideBearings));
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock.Get(), XamlPropertyIndex_TextBlock_OpticalMarginAlignment, OpticalMarginAlignment_TrimSideBearings));
 
         //Style the TextBlock using Host config
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
-        StyleXamlTextBlock(textblockSize, textColor, containerStyle, isSubtle, shouldWrap, MAXUINT32, textWeight, xamlTextBlock.Get(), hostConfig.Get());
+        StyleXamlTextBlock(textblockSize, textColor, containerStyle, isSubtle, shouldWrap, MAXUINT32, textWeight, basicTextBlock.Get(), hostConfig.Get());
 
-        ComPtr<IFrameworkElement> frameworkElement;
-        THROW_IF_FAILED(xamlTextBlock.As(&frameworkElement));
-        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", frameworkElement.Get()));
+        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", basicTextBlock.Get()));
+        THROW_IF_FAILED(basicTextBlock.CopyTo(textBlockControl));
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::BuildTextBlock(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
+        IUIElement** textBlockControl)
+    {
+        ComPtr<ABI::Windows::UI::Xaml::IXamlBasicStatics> xamlBasicStatics;
+        GetXamlBasicStatics(&xamlBasicStatics);
+
+        ComPtr<IXamlBasicObject> basicTextBlock;
+        BuildTextBlock(adaptiveCardElement, renderContext, renderArgs, &basicTextBlock);
+
+        ComPtr<IDependencyObject> textBlockDependencyObject;
+        THROW_IF_FAILED(xamlBasicStatics->GetDependencyObject(basicTextBlock.Get(), &textBlockDependencyObject));
+
+        ComPtr<ITextBlock> xamlTextBlock;
+        THROW_IF_FAILED(textBlockDependencyObject.As(&xamlTextBlock));
 
         THROW_IF_FAILED(xamlTextBlock.CopyTo(textBlockControl));
     }

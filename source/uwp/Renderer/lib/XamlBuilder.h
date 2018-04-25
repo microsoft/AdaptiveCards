@@ -48,6 +48,13 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
             _Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBlockControl);
+
+        static void BuildTextBlock(
+            _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+            _Outptr_ ABI::Windows::UI::Xaml::IXamlBasicObject** textBlockControl);
+
         static void BuildContainer(
             _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
@@ -120,6 +127,12 @@ AdaptiveNamespaceStart
             ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement);
 
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
+        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IXamlBasicObject> GetBasicSolidColorBrush(_In_ ABI::Windows::UI::Color color);		
+
+        static HRESULT SetStyleFromResourceDictionary(
+            ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            std::wstring resourceName,
+            ABI::Windows::UI::Xaml::IXamlBasicObject* frameworkElement);
 
     private:
         ImageLoadTracker m_imageLoadTracker;
@@ -198,6 +211,16 @@ AdaptiveNamespaceStart
             UINT32 maxWidth,
             _In_ ABI::AdaptiveNamespace::TextWeight weight,
             _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
+        static void StyleXamlTextBlock(
+            _In_ ABI::AdaptiveNamespace::TextSize size,
+            _In_ ABI::AdaptiveNamespace::ForegroundColor color,
+            ABI::AdaptiveNamespace::ContainerStyle containerStyle,
+            _In_ bool isSubtle,
+            bool wrap,
+            UINT32 maxWidth,
+            _In_ ABI::AdaptiveNamespace::TextWeight weight,
+            _In_ ABI::Windows::UI::Xaml::IXamlBasicObject* xamlBasicTextBlock,
             _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
         static void StyleXamlTextBlock(
             _In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* textConfig,

@@ -12,19 +12,6 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Documents;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-HRESULT GetXamlBasicStatics(
-    ABI::Windows::UI::Xaml::IXamlBasicStatics ** xamlBasicStatics)
-{
-    static ComPtr<IXamlBasicStatics> s_xamlBasicStatics;
-
-    if (s_xamlBasicStatics == nullptr)
-    {
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_XamlBasic).Get(), &s_xamlBasicStatics));
-    }
-
-    return s_xamlBasicStatics.CopyTo(xamlBasicStatics);
-}
-
 HRESULT AddInlineToXamlBasicObject(
     IXamlBasicObject * basicInlines,
     IXamlBasicObject * basicInline)
@@ -185,12 +172,12 @@ HRESULT AddSingleTextInline(
         ABI::Windows::UI::Text::FontWeight boldFontWeight;
         RETURN_IF_FAILED(fontWeightsConfig->get_Bolder(&boldFontWeight.Weight));
 
-        //RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight)); //BECKYTODO 
+        xamlBasicStatics->SetValue_Integer_ByIndex(basicRun.Get(), XamlPropertyIndex_TextElement_FontWeight, boldFontWeight.Weight);
     }
 
     if (isItalic)
     {
-        //RETURN_IF_FAILED(runAsTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic)); //BECKYTODO
+        xamlBasicStatics->SetValue_Integer_ByIndex(basicRun.Get(), XamlPropertyIndex_TextElement_FontStyle, ABI::Windows::UI::Text::FontStyle::FontStyle_Italic);
     }
 
     AddInlineToXamlBasicObject(basicInlines, basicRun.Get()); 

@@ -920,5 +920,17 @@ HRESULT AdaptiveWarningsToSharedWarnings(
         hr = vectorIterator->MoveNext(&hasCurrent);
     }
 
-    return S_OK;
+}
+
+HRESULT GetXamlBasicStatics(
+    ABI::Windows::UI::Xaml::IXamlBasicStatics ** xamlBasicStatics)
+{
+    static ComPtr<ABI::Windows::UI::Xaml::IXamlBasicStatics> s_xamlBasicStatics;
+
+    if (s_xamlBasicStatics == nullptr)
+    {
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_XamlBasic).Get(), &s_xamlBasicStatics));
+    }
+
+    return s_xamlBasicStatics.CopyTo(xamlBasicStatics);
 }
