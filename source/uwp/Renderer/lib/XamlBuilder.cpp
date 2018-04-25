@@ -1474,7 +1474,7 @@ AdaptiveNamespaceStart
         UINT32 explicitWidth = 0, explicitHeight = 0;
         THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
         THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
-        bool isAspectRaitioNeeded = (explicitWidth  && explicitHeight);
+        bool isAspectRatioNeeded = (explicitWidth  && explicitHeight);
 
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
@@ -1485,7 +1485,7 @@ AdaptiveNamespaceStart
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
             // Set Auto, None, and Stretch to Stretch_UniformToFill. An ellipse set to Stretch_Uniform ends up with size 0.
-            if (isAspectRaitioNeeded)
+            if (isAspectRatioNeeded)
             {
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(Stretch::Stretch_Fill));
             } 
@@ -1536,9 +1536,9 @@ AdaptiveNamespaceStart
             SetImageOnUIElement(imageUri.Get(), xamlImage.Get(), resourceResolvers.Get());
             THROW_IF_FAILED(xamlImage.As(&frameworkElement));
 
-            if(isAspectRaitioNeeded)
+            if(isAspectRatioNeeded)
             {
-                xamlImage->put_Stretch(Stretch::Stretch_Fill);               
+                xamlImage->put_Stretch(Stretch::Stretch_Fill);
             }
 
             ComPtr<IInspectable> parentElement;
