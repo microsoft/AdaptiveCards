@@ -721,36 +721,63 @@ AdaptiveNamespaceStart
                 ElementType elementType;
                 element->get_ElementType(&elementType);
 
-                if (elementType == ElementType_TextBlock)
+                //if (elementType == ElementType_TextBlock)
+                //{
+                //    ComPtr<IXamlBasicObject> xamlBasicTextBlock;
+                //    BuildTextBlock(element, renderContext, renderArgs, &xamlBasicTextBlock);
+
+                //    ComPtr<IXamlBasicStatics> xamlBasicStatics;
+                //    GetXamlBasicStatics(&xamlBasicStatics);
+
+                //    ComPtr<IPanel> localParentPanel {parentPanel};
+                //    ComPtr<IDependencyObject> parentPanelAsDependencyObject;
+                //    localParentPanel.As(&parentPanelAsDependencyObject);
+
+                //    ComPtr<IXamlBasicObject> parentPanelXamlBasic;
+                //    xamlBasicStatics->GetXamlBasicObject(parentPanelAsDependencyObject.Get(), &parentPanelXamlBasic);
+
+                //    ComPtr<IXamlBasicObject> basicPanelChildren;
+                //    THROW_IF_FAILED(xamlBasicStatics->GetXamlBasicObjectValue_ByIndex(parentPanelXamlBasic.Get(), XamlPropertyIndex_Panel_Children, &basicPanelChildren));
+
+                //    THROW_IF_FAILED(xamlBasicStatics->CollectionAdd_IXamlBasicObject(basicPanelChildren.Get(), xamlBasicTextBlock.Get()));
+                //}
+                //else
                 {
-                    ComPtr<IXamlBasicObject> xamlBasicTextBlock;
-                    BuildTextBlock(element, renderContext, renderArgs, &xamlBasicTextBlock);
+                    ComPtr<IAdaptiveElementRendererBasic> rendererBasic;
+                    if (SUCCEEDED(elementRenderer.As(&rendererBasic)))
+                    {
+                        ComPtr<IXamlBasicObject> xamlBasicTextBlock;
+                        rendererBasic->RenderBasic(element, renderContext, renderArgs, &xamlBasicTextBlock);
 
-                    ComPtr<IXamlBasicStatics> xamlBasicStatics;
-                    GetXamlBasicStatics(&xamlBasicStatics);
+                        if (xamlBasicTextBlock != nullptr)
+                        {
+                            ComPtr<IXamlBasicStatics> xamlBasicStatics;
+                            GetXamlBasicStatics(&xamlBasicStatics);
 
-                    ComPtr<IPanel> localParentPanel {parentPanel};
-                    ComPtr<IDependencyObject> parentPanelAsDependencyObject;
-                    localParentPanel.As(&parentPanelAsDependencyObject);
+                            ComPtr<IPanel> localParentPanel{ parentPanel };
+                            ComPtr<IDependencyObject> parentPanelAsDependencyObject;
+                            localParentPanel.As(&parentPanelAsDependencyObject);
 
-                    ComPtr<IXamlBasicObject> parentPanelXamlBasic;
-                    xamlBasicStatics->GetXamlBasicObject(parentPanelAsDependencyObject.Get(), &parentPanelXamlBasic);
+                            ComPtr<IXamlBasicObject> parentPanelXamlBasic;
+                            xamlBasicStatics->GetXamlBasicObject(parentPanelAsDependencyObject.Get(), &parentPanelXamlBasic);
 
-                    ComPtr<IXamlBasicObject> basicPanelChildren;
-                    THROW_IF_FAILED(xamlBasicStatics->GetXamlBasicObjectValue_ByIndex(parentPanelXamlBasic.Get(), XamlPropertyIndex_Panel_Children, &basicPanelChildren));
+                            ComPtr<IXamlBasicObject> basicPanelChildren;
+                            THROW_IF_FAILED(xamlBasicStatics->GetXamlBasicObjectValue_ByIndex(parentPanelXamlBasic.Get(), XamlPropertyIndex_Panel_Children, &basicPanelChildren));
 
-                    THROW_IF_FAILED(xamlBasicStatics->CollectionAdd_IXamlBasicObject(basicPanelChildren.Get(), xamlBasicTextBlock.Get()));
-                }
-                else
-                {
-                    ComPtr<IUIElement> newControl;
-                    elementRenderer->Render(element, renderContext, renderArgs, &newControl);
+                            THROW_IF_FAILED(xamlBasicStatics->CollectionAdd_IXamlBasicObject(basicPanelChildren.Get(), xamlBasicTextBlock.Get()));
+                        }
+                    }
+                    else
+                    {
+                        ComPtr<IUIElement> newControl;
+                        elementRenderer->Render(element, renderContext, renderArgs, &newControl);
 
-	                ABI::AdaptiveNamespace::HeightType heightType{};
-	                THROW_IF_FAILED(element->get_Height(&heightType));
-	                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
+		                ABI::AdaptiveNamespace::HeightType heightType{};
+		                THROW_IF_FAILED(element->get_Height(&heightType));
+		                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
 
-                    childCreatedCallback(newControl.Get());
+                        childCreatedCallback(newControl.Get());
+                    }
                 }
             }
             else

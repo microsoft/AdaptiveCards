@@ -53,6 +53,14 @@
             <TextBlock Margin="20,0,0,0">
                 <Run>Total Render Ticks:</Run>
                 <Run Text="{Binding TotalRenderTicks}" FontFamily="Segoe UI"></Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Total Text Block Ticks:</Run>
+                <Run Text="{Binding TotalTextBlockTicks}" FontFamily="Segoe UI"></Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Average Text Block Ticks:</Run>
+                <Run Text="{Binding AverageTextBlockTicks}" FontFamily="Segoe UI"></Run>
             </TextBlock>            
             <Button Name="resetButton" Click="resetButton_Click" Margin="20,20,0,0">Reset</Button>
         </StackPanel>

@@ -33,11 +33,45 @@ using namespace Windows::Data::Json;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
+ref class MyTextBlockRenderer sealed : public IAdaptiveElementRenderer, public IAdaptiveElementRendererBasic
+{
+public:
+    MyTextBlockRenderer(MainPageViewModel^ viewModel)
+    {
+        m_viewModel = viewModel;
+    }
+
+    virtual Windows::UI::Xaml::UIElement^ Render(IAdaptiveCardElement^ element, AdaptiveRenderContext^ context, AdaptiveRenderArgs^ renderArgs)
+    {
+        return nullptr;
+    }
+
+    virtual Object^ RenderBasic(IAdaptiveCardElement^ element, AdaptiveRenderContext^ context, AdaptiveRenderArgs^ renderArgs)
+    {
+        AdaptiveTextBlockRenderer^ textBlockRenderer = ref new AdaptiveTextBlockRenderer();
+
+        ULONGLONG startTextBlockTicks = GetTickCount64();
+        Object^ object = textBlockRenderer->RenderBasic(element, context, renderArgs);
+        ULONGLONG endTextBlockTicks = GetTickCount64();
+
+        m_viewModel->AddTextBlockDataPoint(endTextBlockTicks - startTextBlockTicks);
+
+        return object;
+    }
+private:
+    MainPageViewModel ^ m_viewModel;
+};
+
+
 task<void> MainPage::RenderCards()
 {
 	runButton->IsEnabled = false;
 
+    MyTextBlockRenderer^ myTextBlockRenderer = ref new MyTextBlockRenderer(m_viewModel);
+
 	AdaptiveCardRenderer^ renderer = ref new AdaptiveCardRenderer();
+    renderer->ElementRenderers->Set("TextBlock", myTextBlockRenderer);
+
 	ULONGLONG totalParseTicks = 0, totalRenderTicks = 0, count = 0;
 
 	UINT parseIterations;

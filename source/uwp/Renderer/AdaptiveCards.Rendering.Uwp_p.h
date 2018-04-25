@@ -6,7 +6,7 @@
  /* File created by MIDL compiler version 8.01.0622 */
 /* at Mon Jan 18 19:14:07 2038
  */
-/* Compiler settings for C:\Users\rebecch\AppData\Local\Temp\AdaptiveCards.Rendering.Uwp.idl-5d4bcd4c:
+/* Compiler settings for C:\Users\rebecch\AppData\Local\Temp\AdaptiveCards.Rendering.Uwp.idl-77debc61:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.01.0622 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -753,6 +753,13 @@ typedef interface __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRender
 #endif 	/* ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRenderer_FWD_DEFINED__ */
 
 
+#ifndef ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_FWD_DEFINED__
+#define ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_FWD_DEFINED__
+typedef interface __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic;
+
+#endif 	/* ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_FWD_DEFINED__ */
+
+
 #ifndef ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderArgs_FWD_DEFINED__
 #define ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderArgs_FWD_DEFINED__
 typedef interface __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderArgs __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderArgs;
@@ -793,6 +800,7 @@ extern "C"{
 
 /* interface __MIDL_itf_AdaptiveCards2ERendering2EUwp_0000_0000 */
 /* [local] */ 
+
 
 
 
@@ -7728,6 +7736,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard;
         virtual /* [propput] */ HRESULT STDMETHODCALLTYPE put_Style( 
             /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CContainerStyle value) = 0;
         
+        virtual /* [propget] */ HRESULT STDMETHODCALLTYPE get_SelectAction( 
+            /* [out][retval] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveActionElement **value) = 0;
+        
+        virtual /* [propput] */ HRESULT STDMETHODCALLTYPE put_SelectAction( 
+            /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveActionElement *value) = 0;
+        
         virtual HRESULT STDMETHODCALLTYPE ToJson( 
             /* [out][retval] */ __x_ABI_CWindows_CData_CJson_CIJsonObject **value) = 0;
         
@@ -7817,6 +7831,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard;
             __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard * This,
             /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CContainerStyle value);
         
+        /* [propget] */ HRESULT ( STDMETHODCALLTYPE *get_SelectAction )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard * This,
+            /* [out][retval] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveActionElement **value);
+        
+        /* [propput] */ HRESULT ( STDMETHODCALLTYPE *put_SelectAction )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard * This,
+            /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveActionElement *value);
+        
         HRESULT ( STDMETHODCALLTYPE *ToJson )( 
             __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard * This,
             /* [out][retval] */ __x_ABI_CWindows_CData_CJson_CIJsonObject **value);
@@ -7892,6 +7914,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard;
 
 #define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard_put_Style(This,value)	\
     ( (This)->lpVtbl -> put_Style(This,value) ) 
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard_get_SelectAction(This,value)	\
+    ( (This)->lpVtbl -> get_SelectAction(This,value) ) 
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard_put_SelectAction(This,value)	\
+    ( (This)->lpVtbl -> put_SelectAction(This,value) ) 
 
 #define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCard_ToJson(This,value)	\
     ( (This)->lpVtbl -> ToJson(This,value) ) 
@@ -17202,6 +17230,115 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementR
 
 
 #endif 	/* ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRenderer_INTERFACE_DEFINED__ */
+
+
+#ifndef ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_INTERFACE_DEFINED__
+#define ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_INTERFACE_DEFINED__
+
+/* interface __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic */
+/* [uuid][object] */ 
+
+
+EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic;
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+    
+    MIDL_INTERFACE("599EC0AD-9EF2-477D-9C04-C0D87CC9548B")
+    __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic : public IInspectable
+    {
+    public:
+        virtual HRESULT STDMETHODCALLTYPE RenderBasic( 
+            /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCardElement *element,
+            /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderContext *context,
+            /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderArgs *renderArgs,
+            /* [out][retval] */ IInspectable **result) = 0;
+        
+    };
+    
+    
+#else 	/* C style interface */
+
+    typedef struct __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasicVtbl
+    {
+        BEGIN_INTERFACE
+        
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic * This,
+            /* [in] */ REFIID riid,
+            /* [annotation][iid_is][out] */ 
+            _COM_Outptr_  void **ppvObject);
+        
+        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic * This);
+        
+        ULONG ( STDMETHODCALLTYPE *Release )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic * This);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetIids )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic * This,
+            /* [out] */ ULONG *iidCount,
+            /* [size_is][size_is][out] */ IID **iids);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetRuntimeClassName )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic * This,
+            /* [out] */ HSTRING *className);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetTrustLevel )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic * This,
+            /* [out] */ TrustLevel *trustLevel);
+        
+        HRESULT ( STDMETHODCALLTYPE *RenderBasic )( 
+            __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic * This,
+            /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveCardElement *element,
+            /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderContext *context,
+            /* [in] */ __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderArgs *renderArgs,
+            /* [out][retval] */ IInspectable **result);
+        
+        END_INTERFACE
+    } __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasicVtbl;
+
+    interface __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic
+    {
+        CONST_VTBL struct __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasicVtbl *lpVtbl;
+    };
+
+    
+
+#ifdef COBJMACROS
+
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_GetIids(This,iidCount,iids)	\
+    ( (This)->lpVtbl -> GetIids(This,iidCount,iids) ) 
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_GetRuntimeClassName(This,className)	\
+    ( (This)->lpVtbl -> GetRuntimeClassName(This,className) ) 
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_GetTrustLevel(This,trustLevel)	\
+    ( (This)->lpVtbl -> GetTrustLevel(This,trustLevel) ) 
+
+
+#define __x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_RenderBasic(This,element,context,renderArgs,result)	\
+    ( (This)->lpVtbl -> RenderBasic(This,element,context,renderArgs,result) ) 
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
+
+
+
+
+#endif 	/* ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveElementRendererBasic_INTERFACE_DEFINED__ */
 
 
 #ifndef ____x_ABI_CAdaptiveCards_CRendering_CUwp_CIAdaptiveRenderArgs_INTERFACE_DEFINED__
