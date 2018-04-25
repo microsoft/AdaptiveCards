@@ -12,6 +12,7 @@
     "lineColor": "#66000000"
   },
   "supportsInteractivity": true,
+  "imageBaseUrl": "ms-appx:///",
   "fontFamily": "Segoe UI",
   "fontSizes": {
     "small": 12,

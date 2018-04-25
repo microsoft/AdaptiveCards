@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveImage.h"
+#include <codecvt>
 
 #include "Util.h"
 
@@ -37,7 +38,10 @@ AdaptiveNamespaceStart
         std::wstring imageUri = StringToWstring(sharedImage->GetUrl());
         if (!imageUri.empty())
         {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_url.GetAddressOf()));
+            RETURN_IF_FAILED(UTF8ToHString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(imageUri), m_uri.GetAddressOf()));
+
+            // TODO: Find a better/safer way to determine if URI is relative
+            m_isUriRelative = (int32_t)imageUri.find(L"://") == -1;
         }
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
@@ -61,6 +65,32 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveImage::put_Url(IUriRuntimeClass* url)
     {
         m_url = url;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_Uri(HSTRING* uri)
+    {
+        return m_uri.CopyTo(uri);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_Uri(HSTRING uri)
+    {
+        return m_uri.Set(uri);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_IsUriRelative(boolean* isUriRelative)
+    {
+        *isUriRelative = m_isUriRelative;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveImage::put_IsUriRelative(boolean isUriRelative)
+    {
+        m_isUriRelative = isUriRelative;
         return S_OK;
     }
 

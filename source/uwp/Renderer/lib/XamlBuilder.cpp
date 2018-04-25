@@ -1465,16 +1465,46 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(cardElement.As(&adaptiveImage));
+        
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
+        // Handle relative and absolute image URI differently
+        boolean isUriRelative;
+        THROW_IF_FAILED(adaptiveImage->get_IsUriRelative(&isUriRelative));
+
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        THROW_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        HSTRING uri;
+        THROW_IF_FAILED(adaptiveImage->get_Uri(&uri));
+        
         ComPtr<IUriRuntimeClass> imageUri;
-        THROW_IF_FAILED(adaptiveImage->get_Url(imageUri.GetAddressOf()));
+        
+        if (isUriRelative)
+        {
+            HSTRING imageBaseUrl;
+            THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(&imageBaseUrl));
+            
+            THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(
+                imageBaseUrl,
+                uri,
+                imageUri.GetAddressOf())
+            );
+        }
+        else
+        {
+            THROW_IF_FAILED(uriActivationFactory->CreateUri(uri, imageUri.GetAddressOf()));
+        }
 
         // Get the image's size and style
         ABI::AdaptiveNamespace::ImageSize size;
         THROW_IF_FAILED(adaptiveImage->get_Size(&size));
 
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        /*ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
         if (size == ABI::AdaptiveNamespace::ImageSize::None)
         {
             ComPtr<IAdaptiveImageConfig> imageConfig;

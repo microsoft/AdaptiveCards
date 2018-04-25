@@ -18,7 +18,7 @@
           "items": [
             {
               "type": "Image",
-              "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+              "url": "ms-appx:///Assets/pc-info.JPG",
               "size": "small",
               "style": "person"
             }
@@ -31,7 +31,7 @@
             {
               "type": "TextBlock",
               "text": "Matt Hidinger",
-             "weight": "bolder",
+              "weight": "bolder",
               "wrap": true
             },
             {
@@ -49,6 +49,11 @@
       "type": "TextBlock",
       "text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
       "wrap": true
+    },
+    {
+      "type": "Image",
+      "url": "Assets/pc-info.JPG",
+      "size": "stretch"
     },
     {
       "type": "FactSet",

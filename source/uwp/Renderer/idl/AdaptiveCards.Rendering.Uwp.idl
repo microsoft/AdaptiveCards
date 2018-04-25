@@ -683,6 +683,12 @@ AdaptiveNamespaceStart
         [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
         [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
 
+        [propget] HRESULT Uri([out, retval] HSTRING* value);
+        [propput] HRESULT Uri([in] HSTRING value);
+
+        [propget] HRESULT IsUriRelative([out, retval] boolean* value);
+        [propput] HRESULT IsUriRelative([in] boolean value);
+
         [propget] HRESULT Style([out, retval] ImageStyle* value);
         [propput] HRESULT Style([in] ImageStyle value);
 
@@ -1938,6 +1944,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT SupportsInteractivity([out, retval] boolean* value);
         [propput] HRESULT SupportsInteractivity([in] boolean value);
+
+        [propget] HRESULT ImageBaseUrl([out, retval] HSTRING* value);
+        [propput] HRESULT ImageBaseUrl([in] HSTRING value);
 
         [propget] HRESULT ContainerStyles([out, retval] AdaptiveContainerStylesDefinition** value);
         [propput] HRESULT ContainerStyles([in] AdaptiveContainerStylesDefinition* value);
