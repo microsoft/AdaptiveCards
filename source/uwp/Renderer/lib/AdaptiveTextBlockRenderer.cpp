@@ -29,6 +29,20 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlockRenderer::RenderBasic(
+        IAdaptiveCardElement* cardElement,
+        IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
+        IInspectable** result)
+    {
+        ComPtr<ABI::Windows::UI::Xaml::IXamlBasicObject> xamlBasicTextBlock;
+        XamlBuilder::BuildTextBlock(cardElement, renderContext, renderArgs, &xamlBasicTextBlock);
+
+        xamlBasicTextBlock.CopyTo(result);
+        return S_OK;
+    }
+
     HRESULT AdaptiveTextBlockRenderer::FromJson(
         ABI::Windows::Data::Json::IJsonObject* jsonObject,
         ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,

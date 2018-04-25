@@ -70,8 +70,19 @@ namespace PerfApp
 			ULONGLONG get();
 		}
 
+        property ULONGLONG TotalTextBlockTicks
+        {
+            ULONGLONG get();
+        }
+
+        property ULONGLONG AverageTextBlockTicks
+        {
+            ULONGLONG get();
+        }
+
 		void AddParseDataPoint(Platform::String^ filename, UINT currentIteration, ULONGLONG parseTicks);
 		void AddRenderDataPoint(Platform::String^ filename, UINT currentIteration, ULONGLONG renderTicks);
+        void AddTextBlockDataPoint(ULONGLONG renderTicks);
 		void Reset();
 		void DoneRunning();
 
@@ -88,12 +99,15 @@ namespace PerfApp
 
 		ULONG m_renderCount;
 		ULONG m_parseCount;
+        ULONG m_textBlockCount;
 
 		ULONGLONG m_totalRenderTicks;
 		ULONGLONG m_totalParseTicks;
 
 		ULONGLONG m_maxRenderTicks;
 		ULONGLONG m_maxParseTicks;
+
+        ULONGLONG m_totalTextBlockTicks;
 
 		void NotifyPropertyChanged(Platform::String^ prop);
 	};

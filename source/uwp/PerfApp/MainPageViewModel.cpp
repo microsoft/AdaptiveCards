@@ -20,6 +20,7 @@ namespace PerfApp
 		m_maxParseTicks = 0;
 		m_currentParseIteration = 0;
 		m_currentRenderIteration = 0;
+        m_totalTextBlockTicks = 0;
 
 		NotifyPropertyChanged(nullptr);
 	}
@@ -67,6 +68,16 @@ namespace PerfApp
 		NotifyPropertyChanged(nullptr);
 	}
 
+
+    void MainPageViewModel::AddTextBlockDataPoint(ULONGLONG renderTicks)
+    {
+        m_totalTextBlockTicks += renderTicks;
+        m_textBlockCount++;
+
+        ULONGLONG averageTextBlockTicks = m_totalTextBlockTicks / m_textBlockCount;
+        averageTextBlockTicks++;
+        NotifyPropertyChanged(nullptr);
+    }
 
 	void MainPageViewModel::NotifyPropertyChanged(String^ prop)
 	{
@@ -145,4 +156,19 @@ namespace PerfApp
 	{
 		return m_totalRenderTicks;
 	}
+
+    ULONGLONG MainPageViewModel::TotalTextBlockTicks::get()
+    {
+        return m_totalTextBlockTicks;
+    }
+
+    ULONGLONG MainPageViewModel::AverageTextBlockTicks::get()
+    {
+        if (m_textBlockCount > 0)
+            return m_totalTextBlockTicks / m_textBlockCount;
+        else
+            return 0;
+    }
+
+
 }

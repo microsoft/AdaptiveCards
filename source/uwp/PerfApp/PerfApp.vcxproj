@@ -175,6 +175,7 @@
     </ClCompile>
     <ClCompile Include="MainPage.xaml.cpp">
       <DependentUpon>MainPage.xaml</DependentUpon>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessToFile>
     </ClCompile>
     <ClCompile Include="MainPageViewModel.cpp" />
     <ClCompile Include="pch.cpp">
