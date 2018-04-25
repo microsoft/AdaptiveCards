@@ -10,6 +10,7 @@ namespace AdaptiveCards
     class MarkDownParsedResult
     {
         public:
+        MarkDownParsedResult() : m_isHTMLTagsAdded(false) {};
         // Translate Intermediate Parsing Result to a form that can be
         // written to html string
         void Translate();
@@ -33,10 +34,13 @@ namespace AdaptiveCards
         void PopFront();
         void PopBack();
         void Clear();
+        bool HasHtmlTags();
+        void FoundHtmlTags();
         private:
         void MarkTags(const std::shared_ptr<MarkDownHtmlGenerator> &);
         std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_codeGenTokens;
         std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> m_emphasisLookUpTable;
+        bool m_isHTMLTagsAdded;
         // take m_emphasisLookUpTable and matches left and right emphasises
         void MatchLeftAndRightEmphasises();
     };

@@ -58,11 +58,12 @@ int MarkDownEmphasisHtmlGenerator::AdjustEmphasisCounts(int leftOver, std::share
 }
 
 // generate bold and emphasis html tags
-void MarkDownEmphasisHtmlGenerator::GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token)
+bool MarkDownEmphasisHtmlGenerator::GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token)
 {
     int delimiterCount = 0, leftOver = 0;
     leftOver = this->m_numberOfUnusedDelimiters - token->m_numberOfUnusedDelimiters;
     delimiterCount = this->AdjustEmphasisCounts(leftOver, token);
+    bool hasHtmlTags = (delimiterCount > 0);
 
     // emphasis found
     if (delimiterCount % 2)
@@ -77,6 +78,7 @@ void MarkDownEmphasisHtmlGenerator::GenerateTags(std::shared_ptr<MarkDownEmphasi
         this->PushBoldTag();
         token->PushBoldTag();
     }
+    return hasHtmlTags;
 }
 
 void MarkDownEmphasisHtmlGenerator::PushItalicTag()

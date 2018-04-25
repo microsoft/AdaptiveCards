@@ -21,20 +21,6 @@ HRESULT GetTextFromXmlNode(
     return S_OK;
 }
 
-HRESULT XamlRunFromXmlNode(
-    ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-    ABI::Windows::UI::Xaml::Documents::IRun** run)
-{
-    HString text;
-    RETURN_IF_FAILED(GetTextFromXmlNode(node, text.GetAddressOf()));
-
-    ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> localRun = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-    RETURN_IF_FAILED(localRun->put_Text(text.Get()));
-
-    *run = localRun.Detach();
-    return S_OK;
-}
-
 HRESULT AddListInlines(
     IAdaptiveRenderContext* renderContext,
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
@@ -143,6 +129,45 @@ HRESULT AddLinkInline(
     return S_OK;
 }
 
+HRESULT AddSingleTextInline(
+    IAdaptiveRenderContext* renderContext,
+    HSTRING string,
+    bool isBold,
+    bool isItalic,
+    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+{
+    ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+    RETURN_IF_FAILED(run->put_Text(string));
+    
+    ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
+    RETURN_IF_FAILED(run.As(&runAsTextElement));
+
+    if (isBold)
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IAdaptiveFontWeightsConfig> fontWeightsConfig;
+        RETURN_IF_FAILED(hostConfig->get_FontWeights(&fontWeightsConfig));
+
+        ABI::Windows::UI::Text::FontWeight boldFontWeight;
+        RETURN_IF_FAILED(fontWeightsConfig->get_Bolder(&boldFontWeight.Weight));
+
+        RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight));
+    }
+
+    if (isItalic)
+    {
+        RETURN_IF_FAILED(runAsTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
+    }
+
+    ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
+    RETURN_IF_FAILED(run.As(&runAsInline));
+
+    RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
+    return S_OK;
+}
+
 HRESULT AddTextInlines(
     IAdaptiveRenderContext* renderContext,
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
@@ -176,35 +201,9 @@ HRESULT AddTextInlines(
         }
         else if (isTextResult == 0)
         {
-            ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run;
-            RETURN_IF_FAILED(XamlRunFromXmlNode(childNode.Get(), &run));
-
-            ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
-            RETURN_IF_FAILED(run.As(&runAsTextElement));
-
-            if (isBold)
-            {
-                ComPtr<IAdaptiveHostConfig> hostConfig;
-                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-                ComPtr<IAdaptiveFontWeightsConfig> fontWeightsConfig;
-                RETURN_IF_FAILED(hostConfig->get_FontWeights(&fontWeightsConfig));
-
-                ABI::Windows::UI::Text::FontWeight boldFontWeight;
-                RETURN_IF_FAILED(fontWeightsConfig->get_Bolder(&boldFontWeight.Weight));
-
-                RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight));
-            }
-
-            if (isItalic)
-            {
-                RETURN_IF_FAILED(runAsTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
-            }
-
-            ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
-            RETURN_IF_FAILED(run.As(&runAsInline));
-
-            RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
+            HString text;
+            RETURN_IF_FAILED(GetTextFromXmlNode(childNode.Get(), text.GetAddressOf()));
+            RETURN_IF_FAILED(AddSingleTextInline(renderContext, text.Get(), isBold, isItalic, inlines));
         }
         else
         {
