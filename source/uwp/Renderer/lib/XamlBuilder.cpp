@@ -1292,7 +1292,7 @@ AdaptiveNamespaceStart
         IAdaptiveRenderContext* renderContext,
         HSTRING textIn,
         HSTRING language,
-        IXamlBasicObject * textBlock)
+        ITextBlock * textBlock)
     {
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
@@ -1342,31 +1342,21 @@ AdaptiveNamespaceStart
         IAdaptiveRenderArgs* renderArgs,
         IUIElement** textBlockControl)
     {
-        ComPtr<ABI::Windows::UI::Xaml::IXamlBasicStatics> xamlBasicStatics;
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_XamlBasic).Get(), &xamlBasicStatics));
-
-        ComPtr<IXamlBasicObject> basicTextBlock;
-        THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_TextBlock, &basicTextBlock));
-
-        //ComPtr<IDependencyObject> textBlockDependencyObject;
-        //THROW_IF_FAILED(xamlBasicStatics->GetDependencyObject(basicTextBlock.Get(), &textBlockDependencyObject));
-
-        //ComPtr<ITextBlock> xamlTextBlock;
-        //THROW_IF_FAILED(textBlockDependencyObject.As(&xamlTextBlock));
-
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveTextBlock> adaptiveTextBlock;
         THROW_IF_FAILED(cardElement.As(&adaptiveTextBlock));
 
+        ComPtr<ITextBlock> xamlTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+
         // ITextBlock2 will be used later on
-        //ComPtr<ITextBlock2> xamlTextBlock2;
-        //THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
+        ComPtr<ITextBlock2> xamlTextBlock2;
+        THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
 
         HString text;
         THROW_IF_FAILED(adaptiveTextBlock->get_Text(text.GetAddressOf()));
         HString language;
         THROW_IF_FAILED(adaptiveTextBlock->get_Language(language.GetAddressOf()));
-        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), language.Get(), basicTextBlock.Get()));
+        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), language.Get(), xamlTextBlock.Get()));
 
         ABI::AdaptiveNamespace::ForegroundColor textColor;
         THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));

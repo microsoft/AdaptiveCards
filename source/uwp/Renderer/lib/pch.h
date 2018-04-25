@@ -3,8 +3,6 @@
 //
 #pragma once
 
-#define ENABLE_WINRT_EXPERIMENTAL_TYPES
-
 #ifdef ADAPTIVE_CARDS_WINDOWS
 #include "winPch.h"
 #else
