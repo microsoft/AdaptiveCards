@@ -66,7 +66,7 @@ AdaptiveNamespaceStart
         *elementType = ElementType::ImageSet;
         return S_OK;
     }
-   
+
     HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();

@@ -58,7 +58,7 @@ AdaptiveNamespaceStart
         m_visibleCount = count;
         for (unsigned int i{}; i < count; ++i)
         {
-             ComPtr<IUIElement> spChild;
+            ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
             
             // If the child is a column it may have stretchable items, so return the column height to auto resize itself
@@ -72,7 +72,6 @@ AdaptiveNamespaceStart
 
                     ComPtr<IVector<UIElement*>> columns;
                     RETURN_IF_FAILED(spChildAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
-                    double maxHeight{};
 
                     unsigned int columnCount{};
                     RETURN_IF_FAILED(columns->get_Size(&columnCount));
@@ -316,28 +315,51 @@ AdaptiveNamespaceStart
                 {
                     Size childSize{ maxDesiredWidth, numeric_limits<float>::infinity() };
                     RETURN_IF_FAILED(spChild->Measure(childSize));
-
                     RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
                     
                     childSize.Height = childSize.Height + extraPaddingPerItem;
 
                     ComPtr<IFrameworkElement> frameworkElement;
                     RETURN_IF_FAILED(spChild.As(&frameworkElement));
-                    RETURN_IF_FAILED(frameworkElement->put_Height(childSize.Height));
-                    RETURN_IF_FAILED(spChild->Measure(childSize));
 
-                    // check if the child is a Grid
-                    ComPtr<IGrid> childAsGrid;
-                    if (SUCCEEDED(spChild.As(&childAsGrid)))
+                    // Do a check before, if it's a ONE line textblock then apply margin, else, change height
+                    ComPtr<ITextBox> childAsTextBox;
+                    if (SUCCEEDED(spChild.As(&childAsTextBox)))
                     {
-                        if (GridChildrenShouldMatchHeights(childAsGrid.Get()))
+                        boolean isMultiline{};
+                        RETURN_IF_FAILED(childAsTextBox->get_AcceptsReturn(&isMultiline));
+                        if (!isMultiline)
                         {
-                            ComPtr<IPanel> childAsPanel;
-                            RETURN_IF_FAILED(childAsGrid.As(&childAsPanel));
-                            ComPtr<IVector<UIElement*>> columns;
-                            RETURN_IF_FAILED(childAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
+                            Thickness textBlockMargin{0, 0, 0, 0};
+                            // In a previous run we may have added the bottom margin so let's add the remainder
+                            RETURN_IF_FAILED(frameworkElement->get_Margin(&textBlockMargin));
+                            textBlockMargin.Bottom += extraPaddingPerItem;
+                            RETURN_IF_FAILED(frameworkElement->put_Margin(textBlockMargin));
+                        }
+                        else
+                        {
+                            RETURN_IF_FAILED(frameworkElement->put_Height(childSize.Height));
+                        }
+                        RETURN_IF_FAILED(spChild->Measure(childSize));
+                    }
+                    else
+                    {
+                        RETURN_IF_FAILED(frameworkElement->put_Height(childSize.Height));
+                        RETURN_IF_FAILED(spChild->Measure(childSize));
 
-                            ResizeUIElementCollectionToSameHeight(columns.Get(), childSize.Height);
+                        // check if the child is a Grid
+                        ComPtr<IGrid> childAsGrid;
+                        if (SUCCEEDED(spChild.As(&childAsGrid)))
+                        {
+                            if (GridChildrenShouldMatchHeights(childAsGrid.Get()))
+                            {
+                                ComPtr<IPanel> childAsPanel;
+                                RETURN_IF_FAILED(childAsGrid.As(&childAsPanel));
+                                ComPtr<IVector<UIElement*>> columns;
+                                RETURN_IF_FAILED(childAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
+
+                                ResizeUIElementCollectionToSameHeight(columns.Get(), childSize.Height);
+                            }
                         }
                     }
 

@@ -140,6 +140,23 @@ AdaptiveNamespaceStart
         return S_OK;
     }
    
+<<<<<<< HEAD
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedImage;
+        RETURN_IF_FAILED(GetSharedModel(sharedImage));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedImage->GetHeight());
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveImage::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
+    }
+    
+=======
+>>>>>>> a6e17af9... Fixes height getters and setters for all adaptive items
     _Use_decl_annotations_
     HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
