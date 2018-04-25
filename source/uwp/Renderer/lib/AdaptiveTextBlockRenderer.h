@@ -9,7 +9,6 @@ AdaptiveNamespaceStart
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
         ABI::AdaptiveNamespace::IAdaptiveElementRenderer,
-        ABI::AdaptiveNamespace::IAdaptiveElementRendererBasic,
         ABI::AdaptiveNamespace::IAdaptiveElementParser>
     {
         AdaptiveRuntime(AdaptiveTextBlockRenderer)

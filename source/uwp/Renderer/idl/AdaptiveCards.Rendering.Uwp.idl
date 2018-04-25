@@ -2755,15 +2755,6 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
-        uuid(599EC0AD-9EF2-477D-9C04-C0D87CC9548B)
-    ]
-    interface IAdaptiveElementRendererBasic : IInspectable
-    {
-        HRESULT RenderBasic([in] IAdaptiveCardElement* element, [in] AdaptiveRenderContext* context, [in] AdaptiveRenderArgs* renderArgs, [out, retval] IInspectable** result);
-    }
-
-    [
-        version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
@@ -2774,7 +2765,6 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveTextBlockRenderer
     {
         [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementRendererBasic;
         interface IAdaptiveElementParser;
     };
 
