@@ -290,6 +290,7 @@ namespace Json {
 %template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >; 
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >; 
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
+%template(StringVector) std::vector<std::string>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
