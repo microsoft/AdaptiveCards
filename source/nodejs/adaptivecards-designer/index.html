@@ -8,18 +8,19 @@
         <link rel="stylesheet" href="css/app.css" type="text/css" />
         <link rel="stylesheet" href="css/card-designer.css" type="text/css" />
         <link rel="stylesheet" href="css/outlook.css" type="text/css" />
+        <link rel="stylesheet" href="css/adaptivecards-controls.css" type="text/css"/>
     </head>
     <body>
         <div style="display: flex; height: 100%;">
-            <div style="flex: 1 0 150px;">
+            <div style="flex: 1 0 150px; padding: 10px; border-right: 1px solid #EEEEEE; overflow-y: auto;">
                 <div id="toolPalette"></div>
             </div>
-            <div style="flex: 1 0 450px; padding: 10px; overflow: auto;">
-                <div id="designerHost"></div>
-                <div id="windowMouseMoveStatus"></div>
-                <div id="isOverDesignerStatus"></div>
+            <div style="flex: 1 1 100%; padding: 10px; overflow: auto; background-color: #F6F6F6;">
+                <div style="width: 450px; box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.4);">
+                    <div id="designerHost"></div>
+                </div>
             </div>
-            <div style="flex: 1 1 100%; height: 100%; overflow: auto; padding: 10px;">
+            <div style="flex: 0 0 450px; height: 100%; overflow: auto; padding: 10px; border-left: 1px solid #EEEEEE;">
                 <div id="propertySheetHost" style="width: 100%;"></div>
             </div>
         </div>

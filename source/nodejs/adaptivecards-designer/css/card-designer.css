@@ -9,6 +9,7 @@
 .acd-palette-item {
     border: 1px solid #CCCCCC;
     padding: 8px;
+    margin-bottom: 4px;
     background-color: white;
     cursor: default;
 }
@@ -54,9 +55,8 @@
 }
 
 .acd-peer-command {
-    width: 18px;
-    height: 18px;
-    padding: 0;
+    height: 19px;
+    padding: 4px;
     margin: 0;
     border: none;
     background-color: rgba(255, 0, 0, 0.05);
@@ -69,4 +69,10 @@
 
 .acd-peer-command:active {
     background-color: rgba(255, 0, 0, 0.2);
+}
+
+.acd-peer-command-label {
+    margin-left: 4px;
+    font-size: 10px;
+    cursor: default;
 }

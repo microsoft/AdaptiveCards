@@ -1,7 +1,7 @@
 var webpack = require("webpack");
 var path = require("path");
 
-var visualizer = {
+var designer = {
     devtool: "source-map",
     entry: {
         "adaptivecards-designer": ["./src/app.ts"],
@@ -34,9 +34,9 @@ var visualizer = {
         ]
     },
     externals: {
-        "adaptivecards": { var: "AdaptiveCards" },
-        "markdown-it": { var: "markdownit"}
+        "adaptivecards": "AdaptiveCards",
+        "markdown-it": "markdownit"
     }
 };
 
-module.exports = visualizer;
+module.exports = designer;

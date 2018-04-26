@@ -1,6 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Constants from "./constants";
 import * as Designer from "./card-designer";
+import { TextBlock } from "adaptivecards";
 
 export class ToggleVisibilityAction extends Adaptive.Action {
     targetElementIds: Array<string> = [];
@@ -70,11 +71,36 @@ class DesignerApp {
         if (this.propertySheetHostElement) {
             this.propertySheetHostElement.innerHTML = "";
 
+            let card: Adaptive.AdaptiveCard;
+
             if (peer) {
-                var card = peer.buildPropertySheetCard();
-        
-                this.propertySheetHostElement.appendChild(card.render());
+                card = peer.buildPropertySheetCard();
             }
+            else {
+
+                card = new Adaptive.AdaptiveCard();
+                card.parse(
+                    {
+                        type: "AdaptiveCard",
+                        version: "1.0",
+                        body: [
+                            {
+                                type: "TextBlock",
+                                wrap: true,
+                                size: "medium",
+                                text: "**Nothing is selected**"
+                            },
+                            {
+                                type: "TextBlock",
+                                wrap: true,
+                                text: "Select an element in the card to modify its properties."
+                            }
+                        ]
+                    }
+                );
+            }
+        
+            this.propertySheetHostElement.appendChild(card.render());
         }
     }
     
@@ -138,7 +164,7 @@ class DesignerApp {
         this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
             this.buildPropertySheet(peer);
         };
-    
+
         /*
         this._designer.onPointerMoved = (designer: Designer.CardDesigner) => {
             if (this._draggedPaletteItem) {
@@ -152,17 +178,12 @@ class DesignerApp {
             }
         }
         */
-
     }
 
     handlePointerMove(e: PointerEvent) {
         this._currentMousePosition = { x: e.x, y: e.y };
 
-        document.getElementById("windowMouseMoveStatus").innerText = "x: " + this._currentMousePosition.x + ", y: " + this._currentMousePosition.y;
-
         var isPointerOverDesigner = this.designer.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
-
-        document.getElementById("isOverDesignerStatus").innerText = "Over designer: " + isPointerOverDesigner;
 
         if (this._draggedElement) {
             this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
@@ -201,7 +222,7 @@ class DesignerApp {
     }
 
     set card(value: Adaptive.AdaptiveCard) {
-        if (this._card = value) {
+        if (this._card != value) {
             if (this._card) {
                 this._card.designMode = false;
             }
@@ -213,6 +234,8 @@ class DesignerApp {
             }
 
             this.designer.card = this._card;
+    
+            this.buildPropertySheet(null);
         }
     }
 
