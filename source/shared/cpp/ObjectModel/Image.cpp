@@ -9,8 +9,8 @@ Image::Image() :
     BaseCardElement(CardElementType::Image),
     m_imageStyle(ImageStyle::Default),
     m_imageSize(ImageSize::None),
-    m_width(0),
-    m_height(0),
+    m_pixelWidth(0),
+    m_pixelHeight(0),
     m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
@@ -22,16 +22,16 @@ Image::Image(
     std::string url,
     ImageStyle imageStyle,
     ImageSize imageSize,
-    unsigned int width,
-    unsigned int height,
+    unsigned int pixelWidth,
+    unsigned int pixelHeight,
     std::string altText,
     HorizontalAlignment hAlignment) :
     BaseCardElement(CardElementType::Image, spacing, separator),
     m_url(url),
     m_imageStyle(imageStyle),
     m_imageSize(imageSize),
-    m_width(width),
-    m_height(height),
+    m_pixelWidth(pixelWidth),
+    m_pixelHeight(pixelHeight),
     m_altText(altText),
     m_hAlignment(hAlignment)
 {
@@ -123,24 +123,24 @@ void Image::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-unsigned int Image::GetWidth() const 
+unsigned int Image::GetPixelWidth() const 
 {
-    return m_width;
+    return m_pixelWidth;
 }
 
-void Image::SetWidth(unsigned int value)
+void Image::SetPixelWidth(unsigned int value)
 {
-    m_width = value;
+    m_pixelWidth = value;
 }
 
-unsigned int Image::GetHeight() const
+unsigned int Image::GetPixelHeight() const
 {
-    return m_height;
+    return m_pixelHeight;
 }
 
-void Image::SetHeight(unsigned int value)
+void Image::SetPixelHeight(unsigned int value)
 {
-    m_height = value;
+    m_pixelHeight = value;
 }
 
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
@@ -182,8 +182,8 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::vector<int> parsedDimensions;
     ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
 
-    image->SetWidth(parsedDimensions[0]);
-    image->SetHeight(parsedDimensions[1]);
+    image->SetPixelWidth(parsedDimensions[0]);
+    image->SetPixelHeight(parsedDimensions[1]);
 
     // Parse optional selectAction
     image->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false));
