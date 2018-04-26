@@ -34,7 +34,6 @@ var designer = {
         ]
     },
     externals: {
-        "adaptivecards": "AdaptiveCards",
         "markdown-it": "markdownit"
     }
 };
