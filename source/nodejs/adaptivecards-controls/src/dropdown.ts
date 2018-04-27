@@ -183,12 +183,16 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
         return "ms-ctrl ms-ctrl-dropdown";
     }
 
-    attach(rootElement: HTMLElement) {
-        super.attach(rootElement);
-
+    constructor() {
+        super();
+        
         this._items = new Collection<DropDownItem>();
         this._items.onItemAdded = (item) => { item.onClick = (clickedItem) => { this.itemClicked(clickedItem); }; }
         this._items.onItemRemoved = (item) => { item.onClick = null; }
+    }
+
+    attach(rootElement: HTMLElement) {
+        super.attach(rootElement);
 
         for (var i = 0; i < this.rootElement.children.length; i++) {
             var childElement = this.rootElement.children[i];

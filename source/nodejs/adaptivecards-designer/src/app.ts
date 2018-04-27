@@ -1,33 +1,10 @@
 import * as Adaptive from "adaptivecards";
+import * as Controls from "adaptivecards-controls";
 import * as Constants from "./constants";
 import * as Designer from "./card-designer";
-import { TextBlock } from "adaptivecards";
-
-export class ToggleVisibilityAction extends Adaptive.Action {
-    targetElementIds: Array<string> = [];
-
-    getJsonTypeName(): string {
-        return "Action.ToggleVisibility";
-    }
-
-    execute() {
-        if (this.targetElementIds) {
-            for (var i = 0; i < this.targetElementIds.length; i++) {
-                var targetElement = this.parent.getRootElement().getElementById(this.targetElementIds[i]);
-
-                if (targetElement) {
-                    targetElement.isVisible = !targetElement.isVisible;
-                }
-            }
-        }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.targetElementIds = json["targetElements"] as Array<string>;
-    }
-}
+import { HostContainer } from "./containers/host-container";
+import { OutlookContainer } from "./containers/outlook-container";
+import { CortanaContainer } from "./containers/cortana-container";
 
 class PaletteItem extends Designer.DraggableElement {
     protected internalRender(): HTMLElement {
@@ -66,6 +43,8 @@ class DesignerApp {
     private _draggedElement: HTMLElement;
     private _currentMousePosition: Designer.IPoint;
     private _card: Adaptive.AdaptiveCard;
+    private _hostContainerPicker: Controls.DropDown;
+    private _selectedHostContainer: HostContainer;
 
     private buildPropertySheet(peer: Designer.DesignerPeer) {
         if (this.propertySheetHostElement) {
@@ -153,33 +132,85 @@ class DesignerApp {
             this._draggedPaletteItem = null;
         }
     }
+
+    private addContainers() {
+        this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana.css"));
+        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook.css"));
+    }
+
+    private recreateDesigner() {
+        var styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
+    
+        if (styleSheetLinkElement == null) {
+            styleSheetLinkElement = document.createElement("link");
+            styleSheetLinkElement.id = "adaptiveCardStylesheet";
+    
+            document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
+        }
+    
+        styleSheetLinkElement.rel = "stylesheet";
+        styleSheetLinkElement.type = "text/css";
+    
+        this._selectedHostContainer.initialize();
+    
+        styleSheetLinkElement.href = this._selectedHostContainer.styleSheet;
+    
+        this._designer = new Designer.CardDesigner(this._selectedHostContainer.cardHost);
+
+        this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
+            this.buildPropertySheet(peer);
+        };
+
+        this._designerHostElement.innerHTML = "";
+        this._designerHostElement.appendChild(this._selectedHostContainer.render());
+
+        this.buildPalette();
+
+        if (this._card) {
+            this._card.hostConfig = this._selectedHostContainer.getHostConfig();
+        }
+
+        this._designer.card = this._card;
+
+        this.buildPropertySheet(null);
+    }
+
+    private selectedHostContainerChanged() {
+        this.recreateDesigner();
+    }
+
+    readonly hostContainers: Array<HostContainer> = [];
     
     propertySheetHostElement: HTMLElement;
     commandListHostElement: HTMLElement;
 
     constructor(designerHostElement: HTMLElement) {
         this._designerHostElement = designerHostElement;
-        this._designer = new Designer.CardDesigner(this._designerHostElement);
+        this._selectedHostContainer = this.hostContainers[0];
 
-        this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
-            this.buildPropertySheet(peer);
-        };
-
-        /*
-        this._designer.onPointerMoved = (designer: Designer.CardDesigner) => {
-            if (this._draggedPaletteItem) {
-                let peer = this._draggedPaletteItem.createPeer();
-
-                if (this._designer.tryDrop(peer)) {
-                    this._designer.startDrag(peer);
-
-                    this.endDrag();
-                }
-            }
-        }
-        */
+        this.addContainers();
+        this.recreateDesigner();
     }
 
+    createContainerPicker(): Controls.DropDown {
+        this._hostContainerPicker = new Controls.DropDown();
+        
+        for (var i = 0; i < this.hostContainers.length; i++) {
+            let item = new Controls.DropDownItem(i.toString(), this.hostContainers[i].name);
+
+            this._hostContainerPicker.items.add(item);
+        }
+
+        this._hostContainerPicker.selectedIndex = 0;
+        this._hostContainerPicker.onValueChanged = (sender: Controls.InputControl) => {
+            this._selectedHostContainer = this.hostContainers[Number.parseInt(this._hostContainerPicker.value.key)];
+
+            this.selectedHostContainerChanged();
+        }
+
+        return this._hostContainerPicker;
+    }
+    
     handlePointerMove(e: PointerEvent) {
         this._currentMousePosition = { x: e.x, y: e.y };
 
@@ -212,8 +243,6 @@ class DesignerApp {
     set paletteHostElement(value: HTMLElement) {
         if (this._paletteHostElement != value) {
             this._paletteHostElement = value;
-
-            this.buildPalette();
         }
     }
 
@@ -231,11 +260,15 @@ class DesignerApp {
 
             if (this._card) {
                 this._card.designMode = true;
+                this._card.hostConfig = this._selectedHostContainer.getHostConfig();
             }
 
+            this.recreateDesigner();
+            /*
             this.designer.card = this._card;
     
             this.buildPropertySheet(null);
+            */
         }
     }
 
@@ -247,10 +280,6 @@ class DesignerApp {
 var designerApp: DesignerApp;
 
 window.onload = () => {
-    Adaptive.AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new Adaptive.ActionSet(); });
-    Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
-    Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
-
     var card = new Adaptive.AdaptiveCard();
     card.designMode = true;
     card.parse(JSON.parse(Constants.defaultPayload));
@@ -259,6 +288,9 @@ window.onload = () => {
     designerApp.propertySheetHostElement = document.getElementById("propertySheetHost");
     designerApp.commandListHostElement = document.getElementById("commandsHost");
     designerApp.paletteHostElement = document.getElementById("toolPalette");
+
+    designerApp.createContainerPicker().attach(document.getElementById("containerPickerHost"));
+
     designerApp.card = card;
 
     window.addEventListener("pointermove", (e: PointerEvent) => { designerApp.handlePointerMove(e); });

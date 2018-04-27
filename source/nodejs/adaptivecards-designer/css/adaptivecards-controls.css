@@ -91,6 +91,7 @@
 
 .ms-ctrl-dropdown {
   border: 1px solid #EEEEEE;
+  background-color: white;
   height: 32px;
   display: flex;
   padding-left: 12px;

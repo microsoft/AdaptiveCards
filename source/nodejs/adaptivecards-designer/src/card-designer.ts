@@ -590,6 +590,15 @@ export class ActionPeer extends DesignerPeer {
 
             this.changed(false);
         }
+
+        var title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
+        title.input.defaultValue = this.action.title;
+        title.input.placeholder = "(not set)";
+        title.input.onValueChanged = () => {
+            this.action.title = title.input.value;
+
+            this.changed(false);
+        }
     }
 
     get action(): Adaptive.Action {
@@ -1738,7 +1747,6 @@ export class CardDesigner {
         rootElement.style.height = "auto";
 
         this._cardHost = document.createElement("div");
-        this._cardHost.style.border = "1px solid #EEEEEE";
 
         rootElement.appendChild(this._cardHost);
 

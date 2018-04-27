@@ -92,6 +92,14 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         return this._value.toString();
     }
 
+    protected valueChanged() {
+        if (this.onValueChanged) {
+            this.onValueChanged(this);
+        }
+    }
+
+    onValueChanged: (sender: InputControl) => void;
+
     attach(rootElement: HTMLElement) {
         super.attach(rootElement);
 
@@ -109,7 +117,11 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
             }
         };
 
-        this._placeholderText = this.rootElement.attributes.getNamedItem("placeholder").value;
+        let placeHolderDomItem = this.rootElement.attributes.getNamedItem("placeholder");
+
+        if (placeHolderDomItem) {
+            this._placeholderText = placeHolderDomItem.value;
+        }
 
         this._labelElement = document.createElement("span");
         this._labelElement.className = "ms-ctrl ms-dropdown-label";
@@ -252,8 +264,11 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
     }
 
     set value(newValue: TValue) {
-        this._value = newValue;
+        if (this._value != newValue) {
+            this._value = newValue;
 
-        this.updateLabel();
+            this.updateLabel();
+            this.valueChanged();
+        }
     }
 }
