@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
+#include "WholeItemsPanel.h"
 
 AdaptiveNamespaceStart
     class XamlHelpers
