@@ -186,9 +186,11 @@ class DesignerApp {
 
     constructor(designerHostElement: HTMLElement) {
         this._designerHostElement = designerHostElement;
-        this._selectedHostContainer = this.hostContainers[0];
 
         this.addContainers();
+
+        this._selectedHostContainer = this.hostContainers[0];
+        
         this.recreateDesigner();
     }
 

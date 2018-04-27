@@ -57,16 +57,16 @@
     padding: 4px;
     margin: 0;
     border: none;
-    background-color: rgba(255, 0, 0, 0.05);
-    border: 1px solid rgba(255, 0, 0, 0.1);
+    background-color: #FFE5E5;
+    border: 1px solid red;
 }
 
 .acd-peer-command:hover {
-    background-color: rgba(255, 0, 0, 0.1);
+    background-color: #FFBCBC;
 }
 
 .acd-peer-command:active {
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: #FF8E8E;
 }
 
 .acd-peer-command-label {

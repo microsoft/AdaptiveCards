@@ -339,7 +339,7 @@ export abstract class DesignerPeer extends DraggableElement {
         this._commandHostElement = document.createElement("div");
         this._commandHostElement.style.position = "relative";
         this._commandHostElement.style.display = "flex";
-        this._commandHostElement.style.transform = "translate(0, 100%)";
+        this._commandHostElement.style.transform = "translate(1px, 100%)";
 
         var commands = this.getCommands();
 
