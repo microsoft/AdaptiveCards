@@ -1371,15 +1371,15 @@ AdaptiveNamespaceStart
         //ComPtr<IXamlBasicObject> basicFontFamily; //BECKYTODO - how do i create by name?
         //THROW_IF_FAILED(xamlBasicStatics->CreateInstance_ByIndex(XamlTypeIndex_FontFamily, &basicFontFamily));
 
-        ComPtr<IInspectable> inspectable;
-        ComPtr<IFontFamily> fontFamily;
-        ComPtr<IFontFamilyFactory> fontFamilyFactory;
-        THROW_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(L"Windows.UI.Xaml.Media.FontFamily").Get(), &fontFamilyFactory));
-        THROW_IF_FAILED(fontFamilyFactory->CreateInstanceWithName(fontFamilyName.Get(), nullptr, inspectable.ReleaseAndGetAddressOf(), &fontFamily));
+        //ComPtr<IInspectable> inspectable;
+        //ComPtr<IFontFamily> fontFamily;
+        //ComPtr<IFontFamilyFactory> fontFamilyFactory;
+        //THROW_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(L"Windows.UI.Xaml.Media.FontFamily").Get(), &fontFamilyFactory));
+        //THROW_IF_FAILED(fontFamilyFactory->CreateInstanceWithName(fontFamilyName.Get(), nullptr, inspectable.ReleaseAndGetAddressOf(), &fontFamily));
 
-        THROW_IF_FAILED(xamlBasicStatics->SetValue_Object_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_FontFamily, fontFamily.Get()));
+        //THROW_IF_FAILED(xamlBasicStatics->SetValue_Object_ByIndex(basicTextBlock, XamlPropertyIndex_TextBlock_FontFamily, fontFamily.Get()));
 
-        //THROW_IF_FAILED(xamlBasicStatics->SetValue_Integer_ByIndex(basicTextBlock, XamlPropertyIndex_FrameworkElement_MaxWidth, maxWidth)); //BECKYTODO
+        THROW_IF_FAILED(xamlBasicStatics->SetValue_Double_ByIndex(basicTextBlock, XamlPropertyIndex_FrameworkElement_MaxWidth, maxWidth));
     }
 
     _Use_decl_annotations_
