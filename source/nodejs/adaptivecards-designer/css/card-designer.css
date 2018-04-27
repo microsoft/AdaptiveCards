@@ -55,7 +55,7 @@
 }
 
 .acd-peer-command {
-    height: 19px;
+    height: auto;
     padding: 4px;
     margin: 0;
     border: none;

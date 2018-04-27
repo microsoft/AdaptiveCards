@@ -260,7 +260,8 @@ class PeerCommand {
 
         var imageElement = document.createElement("img");
         imageElement.src = this.iconUrl ? this.iconUrl : "./assets/default-peer-command-icon.png";
-        imageElement.style.height = "100%";
+        imageElement.style.height = "10px";
+        imageElement.style.width = "10px";
 
         buttonElement.appendChild(imageElement);
 
