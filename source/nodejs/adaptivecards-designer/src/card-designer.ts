@@ -144,24 +144,32 @@ export abstract class DraggableElement {
     }
 
     protected pointerDown(e: PointerEvent) {
-        this._isPointerDown = true;
-        this._lastClickedPoint = { x: e.offsetX, y: e.offsetY };
+        if (!this._isPointerDown) {
+            this._isPointerDown = true;
+            this._lastClickedPoint = { x: e.offsetX, y: e.offsetY };
 
-        this.renderedElement.setPointerCapture(e.pointerId);
+            this.renderedElement.setPointerCapture(e.pointerId);
 
-        this._capturedPointerId = e.pointerId;
+            this._capturedPointerId = e.pointerId;
+        }
     }
 
     protected pointerUp(e: PointerEvent) {
-        this._isPointerDown = false;
+        if (this._isPointerDown) {
+            this._isPointerDown = false;
 
-        this.releasePointerCapture();
-        this.endDrag();
+            this.endDrag();
+        }
     }
 
     protected pointerMove(e: PointerEvent) {
+    // protected pointerMove(e: MouseEvent) {
         if (this._isPointerDown) {
             if (Math.abs(e.offsetX - this._lastClickedPoint.x) >= DRAG_THRESHOLD || Math.abs(e.offsetY - this._lastClickedPoint.y) >= DRAG_THRESHOLD) {
+                this.renderedElement.releasePointerCapture(e.pointerId);
+
+                this._isPointerDown = false;
+
                 this.startDrag();
             }
         }
@@ -187,16 +195,6 @@ export abstract class DraggableElement {
     onEndDrag: (sender: DraggableElement) => void;
     onDoubleClick: (sender: DraggableElement) => void;
 
-    releasePointerCapture() {
-        if (this._capturedPointerId) {
-            this._renderedElement.releasePointerCapture(this._capturedPointerId);
-
-            this._capturedPointerId = null;
-            this._isPointerDown = false;
-            this._isPointerOver = false;
-        }
-    }
-    
     endDrag() {
         if (this.dragging) {
             this.dragging = false;
@@ -216,13 +214,14 @@ export abstract class DraggableElement {
         this._renderedElement = this.internalRender();
 
         this._renderedElement.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
+        this._renderedElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
+
         this._renderedElement.onpointerenter = () => { this.isPointerOver = true; };
         this._renderedElement.onpointerleave = () => { this.isPointerOver = false; };
         this._renderedElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
         this._renderedElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
         this._renderedElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
-        this._renderedElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
-
+        
         this.updateLayout();
     }
 
@@ -1649,22 +1648,6 @@ export class CardDesigner {
         return result;
     }
 
-    private pointerMoved() {
-        if (this.onPointerMoved) {
-            this.onPointerMoved(this);
-        }
-    }
-
-    private pointerUp() {
-        if (this.draggedPeer) {
-            this.endDrag(this.draggedPeer);
-        }
-        
-        if (this.onPointerUp) {
-            this.onPointerUp(this);
-        }
-    }
-
     private findCardElementPeer(cardElement: Adaptive.CardElement): CardElementPeer {
         for (var i = 0; i < this._allPeers.length; i++) {
             var peer = this._allPeers[i];
@@ -1763,14 +1746,14 @@ export class CardDesigner {
                 x: e.x - rootElement.offsetLeft,
                 y: e.y - rootElement.offsetTop
             };
-    
-            this.tryDrop(this._currentPointerPosition, this.draggedPeer);
 
-            this.pointerMoved();
+            this.tryDrop(this._currentPointerPosition, this.draggedPeer);
         }
 
         this._designerSurface.onpointerup = (e: PointerEvent) => {
-            this.pointerUp();
+            if (this.draggedPeer) {
+                this.endDrag(this.draggedPeer);
+            }
         }
 
         rootElement.appendChild(this._designerSurface);
@@ -1780,8 +1763,6 @@ export class CardDesigner {
     }
 
     onSelectedPeerChanged: (peer: DesignerPeer) => void;
-    onPointerMoved: (designer: CardDesigner) => void;
-    onPointerUp: (designer: CardDesigner) => void;
 
     findDropTarget(pointerPosition: IPoint, peer: DesignerPeer): DesignerPeer {
         return this.internalFindDropTarget(pointerPosition, this._rootPeer, peer);
@@ -1851,10 +1832,9 @@ export class CardDesigner {
 
             if (newDropTarget) {
                 this._dropTarget = newDropTarget;
+                this._dropTarget.renderedElement.classList.add("dragover");
 
                 result = this._dropTarget.tryDrop(peer, pointerPosition);
-
-                this._dropTarget.renderedElement.classList.add("dragover");
             }
         }
 

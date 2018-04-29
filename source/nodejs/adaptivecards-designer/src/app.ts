@@ -116,9 +116,6 @@ class DesignerApp {
                     this._draggedElement.style.top = this._currentMousePosition.y + "px";
         
                     document.body.appendChild(this._draggedElement);
-        
-                    sender.releasePointerCapture();
-                    sender.endDrag();
                 }
         
                 this.paletteHostElement.appendChild(paletteItem.renderedElement);
@@ -128,8 +125,11 @@ class DesignerApp {
 
     private endDrag() {
         if (this._draggedPaletteItem) {
+            this._draggedPaletteItem.endDrag();
             this._draggedElement.remove();
+
             this._draggedPaletteItem = null;
+            this._draggedElement = null;
         }
     }
 
@@ -212,25 +212,28 @@ class DesignerApp {
 
         return this._hostContainerPicker;
     }
-    
+
     handlePointerMove(e: PointerEvent) {
         this._currentMousePosition = { x: e.x, y: e.y };
 
-        var isPointerOverDesigner = this.designer.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
-
-        if (this._draggedElement) {
-            this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
-            this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
-        }
+        let isPointerOverDesigner = this.designer.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
+        let peerDropped = false;
 
         if (this._draggedPaletteItem && isPointerOverDesigner) {
             let peer = this._draggedPaletteItem.createPeer();
 
             if (this.designer.tryDrop(this._currentMousePosition, peer)) {
+                this.endDrag();
+
                 this.designer.startDrag(peer);
 
-                this.endDrag();
+                peerDropped = true;
             }
+        }
+
+        if (!peerDropped && this._draggedElement) {
+            this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
+            this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
         }
     }
 
