@@ -113,9 +113,14 @@ export abstract class DraggableElement {
     private _renderedElement: HTMLElement;
     private _isPointerOver: boolean;
     private _isPointerDown: boolean;
-    private _capturedPointerId?: number;
     private _lastClickedPoint: IPoint;
     private _dragging: boolean;
+
+    private releasePointerCapture(pointerId: number) {
+        this.renderedElement.releasePointerCapture(pointerId);
+
+        this._isPointerDown = false;
+    }
 
     protected get isPointerOver(): boolean {
         return this._isPointerOver;
@@ -149,14 +154,12 @@ export abstract class DraggableElement {
             this._lastClickedPoint = { x: e.offsetX, y: e.offsetY };
 
             this.renderedElement.setPointerCapture(e.pointerId);
-
-            this._capturedPointerId = e.pointerId;
         }
     }
 
     protected pointerUp(e: PointerEvent) {
         if (this._isPointerDown) {
-            this._isPointerDown = false;
+            this.releasePointerCapture(e.pointerId);
 
             this.endDrag();
         }
@@ -165,9 +168,7 @@ export abstract class DraggableElement {
     protected pointerMove(e: PointerEvent) {
         if (this._isPointerDown) {
             if (Math.abs(e.offsetX - this._lastClickedPoint.x) >= DRAG_THRESHOLD || Math.abs(e.offsetY - this._lastClickedPoint.y) >= DRAG_THRESHOLD) {
-                this.renderedElement.releasePointerCapture(e.pointerId);
-
-                this._isPointerDown = false;
+                this.releasePointerCapture(e.pointerId);
 
                 this.startDrag();
             }
@@ -220,7 +221,7 @@ export abstract class DraggableElement {
         this._renderedElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
         this._renderedElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
         this._renderedElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
-        
+
         this.updateLayout();
     }
 

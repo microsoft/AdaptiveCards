@@ -30,7 +30,7 @@ export class DropDownItem {
             this._element = document.createElement("span");
             this._element.className = "ms-ctrl ms-ctrl-dropdown-item";
             this._element.innerText = this.value;
-            this._element.onclick = (e) => { this.click(); }
+            this._element.onmouseup = (e) => { this.click(); };
         }
 
         return this._element;
