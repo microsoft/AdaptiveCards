@@ -13,7 +13,7 @@ import {
 } from "adaptivecards";
 
 export class CortanaContainer extends HostContainer {
-    public render(): HTMLElement {
+    public renderTo(hostElement: HTMLElement) {
         let leftSide = document.createElement("div");
         leftSide.classList.add("cortana-leftside");
 
@@ -66,7 +66,8 @@ export class CortanaContainer extends HostContainer {
         frame.appendChild(leftSide);
         frame.appendChild(rightSide);
 
-        return frame;
+        hostElement.classList.add("cortana-outer-frame");
+        hostElement.appendChild(frame);
     }
 
     public getHostConfig(): HostConfig {

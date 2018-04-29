@@ -13,7 +13,7 @@ export abstract class HostContainer {
         this._cardHost = document.createElement("div");
     }
 
-    abstract render(): HTMLElement;
+    abstract renderTo(hostElement: HTMLElement);
 
     public initialize() {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();

@@ -163,7 +163,6 @@ export abstract class DraggableElement {
     }
 
     protected pointerMove(e: PointerEvent) {
-    // protected pointerMove(e: MouseEvent) {
         if (this._isPointerDown) {
             if (Math.abs(e.offsetX - this._lastClickedPoint.x) >= DRAG_THRESHOLD || Math.abs(e.offsetY - this._lastClickedPoint.y) >= DRAG_THRESHOLD) {
                 this.renderedElement.releasePointerCapture(e.pointerId);
@@ -1225,36 +1224,6 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
             this.changed(true);
         }
 
-        /*
-        var selectAction = addLabelAndInput(card, "Select action:", Adaptive.ChoiceSetInput, true);
-        selectAction.input.isCompact = true;
-        selectAction.input.choices.push(new Adaptive.Choice("(not set)", "none"));
-
-        for (var i = 0; i < Adaptive.AdaptiveCard.actionTypeRegistry.getItemCount(); i++) {
-            let choice = new Adaptive.Choice(Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName, Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName);
-
-            selectAction.input.choices.push(choice);
-        }
-
-        if (this.cardElement.selectAction) {
-            selectAction.input.defaultValue = this.cardElement.selectAction.getJsonTypeName();
-        }
-        else {
-            selectAction.input.defaultValue = "none";
-        }
-
-        selectAction.input.onValueChanged = () => {
-            if (selectAction.input.value == "none") {
-                this.cardElement.selectAction = null;
-            }
-            else {
-                this.cardElement.selectAction = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(selectAction.input.value);
-            }
-
-            this.changed(true);
-        }
-        */
-
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesigner.actionPeerRegistry.createPeerInstance(null, this.cardElement.selectAction);
             selectActionPeer.addPropertySheetEntries(card, false);
@@ -1269,6 +1238,24 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
             new Adaptive.Fact("Fact 1", "Value 1"),
             new Adaptive.Fact("Fact 2", "Value 2")
         );
+    }
+}
+
+export class TextInputPeer extends TypedCardElementPeer<Adaptive.TextInput> {
+    addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.addPropertySheetEntries(card, includeHeader);
+
+        var isMultiline = new Adaptive.ToggleInput();
+        isMultiline.title = "Multi-line:";
+        isMultiline.spacing = Adaptive.Spacing.Small;
+        isMultiline.defaultValue = String(this.cardElement.isMultiline);
+        isMultiline.onValueChanged = () => {
+            this.cardElement.isMultiline = isMultiline.value == "true";
+
+            this.changed(false);
+        }
+
+        card.addItem(isMultiline);
     }
 }
 
@@ -1482,6 +1469,7 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.ActionSet, ActionSetPeer);
         this.registerPeer(Adaptive.ColumnSet, ColumnSetPeer);
         this.registerPeer(Adaptive.Column, ColumnPeer);
+        this.registerPeer(Adaptive.TextInput, TextInputPeer);
         this.registerPeer(Adaptive.ChoiceSetInput, ChoiceSetInputPeer);
     }
 
@@ -1607,7 +1595,7 @@ export class CardDesigner {
             peer.onPeerRemoved = (sender: DesignerPeer) => { this.peerRemoved(sender); };
             peer.onPeerAdded = (sender: DesignerPeer, newPeer: DesignerPeer) => { this.addPeer(newPeer); };
             peer.onStartDrag = (sender: DesignerPeer) => { this.startDrag(sender); }
-            peer.onEndDrag = (sender: DesignerPeer) => { this.endDrag(sender); }
+            peer.onEndDrag = (sender: DesignerPeer) => { this.endDrag(); }
 
             peer.addElementsToDesignerSurface(this._designerSurface);
 
@@ -1752,7 +1740,7 @@ export class CardDesigner {
 
         this._designerSurface.onpointerup = (e: PointerEvent) => {
             if (this.draggedPeer) {
-                this.endDrag(this.draggedPeer);
+                this.endDrag();
             }
         }
 
@@ -1806,7 +1794,7 @@ export class CardDesigner {
         }
     }
 
-    endDrag(peer: DesignerPeer) {
+    endDrag() {
         if (this.draggedPeer) {
             // Ensure that the dragged peer's elements are at the top in Z order
             this.draggedPeer.removeElementsFromDesignerSurface(true);

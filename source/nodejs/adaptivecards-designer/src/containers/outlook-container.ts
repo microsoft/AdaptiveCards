@@ -28,13 +28,9 @@ export class ToggleVisibilityAction extends Adaptive.Action {
 }
 
 export class OutlookContainer extends HostContainer {
-    render(): HTMLElement {
-        var element = document.createElement("div");
-        element.classList.add("outlook-frame");
-
-        element.appendChild(this.cardHost);
-
-        return element;
+    public renderTo(hostElement: HTMLElement) {
+        hostElement.classList.add("outlook-frame");
+        hostElement.appendChild(this.cardHost);
     }
 
     public initialize() {

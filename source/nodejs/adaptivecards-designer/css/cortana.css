@@ -1,7 +1,11 @@
+.cortana-outer-frame {
+  display: flex;
+  width: 392px;
+}
+
 .cortana-frame {
   display: flex;
   background-color: black;
-  width: 392px;
   box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.4);
 }
 

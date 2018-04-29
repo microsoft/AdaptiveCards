@@ -162,7 +162,8 @@ class DesignerApp {
         };
 
         this._designerHostElement.innerHTML = "";
-        this._designerHostElement.appendChild(this._selectedHostContainer.render());
+
+        this._selectedHostContainer.renderTo(this._designerHostElement);
 
         this.buildPalette();
 
@@ -239,6 +240,11 @@ class DesignerApp {
 
     handlePointerUp(e: PointerEvent) {
         this.endDrag();
+        this.designer.endDrag();
+    }
+
+    updateLayout() {
+        this._designer.updateLayout();
     }
 
     get paletteHostElement(): HTMLElement {
@@ -282,23 +288,29 @@ class DesignerApp {
     }
 }
 
-var designerApp: DesignerApp;
+var app: DesignerApp;
 
 window.onload = () => {
     var card = new Adaptive.AdaptiveCard();
     card.designMode = true;
     card.parse(JSON.parse(Constants.defaultPayload));
 
-    designerApp = new DesignerApp(document.getElementById("designerHost"));
-    designerApp.propertySheetHostElement = document.getElementById("propertySheetHost");
-    designerApp.commandListHostElement = document.getElementById("commandsHost");
-    designerApp.paletteHostElement = document.getElementById("toolPalette");
+    app = new DesignerApp(document.getElementById("designerHost"));
+    app.propertySheetHostElement = document.getElementById("propertySheetHost");
+    app.commandListHostElement = document.getElementById("commandsHost");
+    app.paletteHostElement = document.getElementById("toolPalette");
 
-    designerApp.createContainerPicker().attach(document.getElementById("containerPickerHost"));
+    app.createContainerPicker().attach(document.getElementById("containerPickerHost"));
 
-    designerApp.card = card;
+    window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
+    window.addEventListener("resize", () => { app.designer.updateLayout(); });
+    window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
 
-    window.addEventListener("pointermove", (e: PointerEvent) => { designerApp.handlePointerMove(e); });
-    window.addEventListener("resize", () => { designerApp.designer.updateLayout(); });
-    window.addEventListener("pointerup", (e: PointerEvent) => { designerApp.handlePointerUp(e); });
+    app.card = card;
+
+    // Forces a relayout after layout has completed. Needed because the Cortana host
+    // (and other) use Flex and there is a condition by which the Flex layout happens
+    // asynchronously and prevents the designer from properly sizing its peer elements.
+    // Not super clean, but the best solution I've found for now.
+    window.setTimeout(() => { app.updateLayout(); }, 1);
 };
