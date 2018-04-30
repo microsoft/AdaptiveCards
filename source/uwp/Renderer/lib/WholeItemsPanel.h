@@ -51,6 +51,8 @@ AdaptiveNamespaceStart
         unsigned int m_measuredCount{};
 
         unsigned int m_accessKeyCount{};
+		float m_calculatedSize{};
+		bool m_allElementsRendered{};
         std::set<std::string> m_stretchableItems;
 
         // true if this represents the mainPanel.
@@ -64,10 +66,6 @@ AdaptiveNamespaceStart
 
         // If true, avoid vertical whitespace before and after the render.
         bool m_adaptiveHeight = false;
-
-        bool GridChildrenShouldMatchHeights(_In_ ABI::Windows::UI::Xaml::Controls::IGrid* grid);
-
-        void ResizeUIElementCollectionToSameHeight(_In_  ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::UIElement*>* children, double height);
 
         _Check_return_ HRESULT IsAnySubgroupTruncated(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* pPanel, _Out_ bool* childTruncated);
 

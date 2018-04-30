@@ -45,13 +45,6 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
         RETURN_IF_FAILED(spChildren->get_Size(&count));
 
-        // This is for the case where the card must stretch itself to the size of the container, we have to manually remove the top and bottom margins from the available height
-        ComPtr<IFrameworkElement> spThisAsFrameworkElement;
-        RETURN_IF_FAILED(QueryInterface(__uuidof(IFrameworkElement), reinterpret_cast<void**>(spThisAsFrameworkElement.GetAddressOf())));
-        Thickness marginThickness;
-        RETURN_IF_FAILED(spThisAsFrameworkElement->get_Margin(&marginThickness));
-        availableSize.Height = availableSize.Height - static_cast<FLOAT>(marginThickness.Top + marginThickness.Bottom);
-
         const Size noVerticalLimit{ availableSize.Width, numeric_limits<float>::infinity() };
 
         unsigned int stretchableCount{};
@@ -61,43 +54,6 @@ AdaptiveNamespaceStart
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
             
-            // If the child is a column it may have stretchable items, so return the column height to auto resize itself
-            ComPtr<IGrid> spChildAsGrid;
-            if (SUCCEEDED(spChild.As(&spChildAsGrid)))
-            {
-                if (GridChildrenShouldMatchHeights(spChildAsGrid.Get()))
-                {
-                    ComPtr<IPanel> spChildAsPanel;
-                    RETURN_IF_FAILED(spChildAsGrid.As(&spChildAsPanel));
-
-                    ComPtr<IVector<UIElement*>> columns;
-                    RETURN_IF_FAILED(spChildAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
-
-                    unsigned int columnCount{};
-                    RETURN_IF_FAILED(columns->get_Size(&columnCount));
-                    for (unsigned int j{}; j < columnCount; ++j)
-                    {
-                        ComPtr<IUIElement> column;
-                        RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
-
-                        ComPtr<IFrameworkElement> columnAsFrameworkElement;
-                        RETURN_IF_FAILED(column.As(&columnAsFrameworkElement));
-
-                        RETURN_IF_FAILED(columnAsFrameworkElement->put_Height(NAN));
-                    }
-                }
-            }
-            
-            if (IsUIElementInStretchableList(spChild.Get()))
-            {
-                ++stretchableCount;
-                ComPtr<IFrameworkElement> spChildAsFrameworkElement;
-                if (SUCCEEDED(spChild.As(&spChildAsFrameworkElement)))
-                {
-                    RETURN_IF_FAILED(spChildAsFrameworkElement->put_Height(NAN));
-                }
-            }
-
             RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
 
             if (visible)
@@ -132,7 +88,7 @@ AdaptiveNamespaceStart
                             bool isChildTruncated = false;
                             RETURN_IF_FAILED(IsAnySubgroupTruncated(spChildAsPanel.Get(), &isChildTruncated));
                             keepItem = !isChildTruncated;
-                            m_isTruncated = keepItem;
+                            m_isTruncated = !keepItem;
                         }
                     }
                     ComPtr<ITextBlock> spTextBlock;
@@ -256,117 +212,17 @@ AdaptiveNamespaceStart
                 maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
             }
         }
-
-        // If the available size was giving infinite when building the card, then once all the elements are placed the available size is the size of all the elements placed
-        if (availableSize.Height == numeric_limits<float>::infinity())
-        {
-            availableSize.Height = currentHeight;
-        }
-
-        // Second pass: Check if any of the elements is a Grid, we cant modify the Measure method for those as I dont know how the Grids work internally
-        for (unsigned int i{}; i < count; ++i)
-        {
-            ComPtr<IUIElement> spChild;
-            RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
-        
-            // check if the child is a Grid
-            ComPtr<IGrid> childAsGrid;
-            if (SUCCEEDED(spChild.As(&childAsGrid)))
-            {
-                if (GridChildrenShouldMatchHeights(childAsGrid.Get()))
-                {
-                    ComPtr<IPanel> childAsPanel;
-                    RETURN_IF_FAILED(childAsGrid.As(&childAsPanel));
-                    ComPtr<IVector<UIElement*>> columns;
-                    RETURN_IF_FAILED(childAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
-                    double maxHeight{};
-
-                    unsigned int columnCount{};
-                    RETURN_IF_FAILED(columns->get_Size(&columnCount));
-                    for (unsigned int j{}; j < columnCount; ++j)
-                    {
-                        ComPtr<IUIElement> column;
-                        RETURN_IF_FAILED(columns->GetAt(j, column.GetAddressOf()));
-                        Size columnSize;
-                        RETURN_IF_FAILED(column->get_DesiredSize(&columnSize));
-                        maxHeight = max(maxHeight, columnSize.Height);
-                    }
-
-                    ResizeUIElementCollectionToSameHeight(columns.Get(), maxHeight);
-                }
-            }
-        }
-
-        // Third pass: let the stretchable elements get the space they need
-        // If all the elements were rendered, at least one item may be stretched and the height is defined
-        if ((count == m_visibleCount) && (stretchableCount != 0) && (maxDesiredWidth != 0))
-        {
-            // availableSpace.height must be changed when a specific height can be defined for a card
-            double emptyTrailingSpace = availableSize.Height - currentHeight;
-            double extraPaddingPerItem = floor(emptyTrailingSpace / stretchableCount);
-            // Stretching so increase the height to stretch the container
-            currentHeight = availableSize.Height;
-
-            for (unsigned int i{}; i < count; ++i)
-            {
-                ComPtr<IUIElement> spChild;
-                RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
-                if (visible && IsUIElementInStretchableList(spChild.Get()))
-                {
-                    Size childSize{ maxDesiredWidth, numeric_limits<float>::infinity() };
-                    RETURN_IF_FAILED(spChild->Measure(childSize));
-                    RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
-                    
-                    childSize.Height = childSize.Height + static_cast<float>(extraPaddingPerItem);
-
-                    ComPtr<IFrameworkElement> frameworkElement;
-                    RETURN_IF_FAILED(spChild.As(&frameworkElement));
-
-                    // Do a check before, if it's a ONE line textblock then apply margin, else, change height
-                    ComPtr<ITextBox> childAsTextBox;
-                    if (SUCCEEDED(spChild.As(&childAsTextBox)))
-                    {
-                        boolean isMultiline{};
-                        RETURN_IF_FAILED(childAsTextBox->get_AcceptsReturn(&isMultiline));
-                        if (!isMultiline)
-                        {
-                            Thickness textBlockMargin{0, 0, 0, 0};
-                            // In a previous run we may have added the bottom margin so let's add the remainder
-                            RETURN_IF_FAILED(frameworkElement->get_Margin(&textBlockMargin));
-                            textBlockMargin.Bottom += extraPaddingPerItem;
-                            RETURN_IF_FAILED(frameworkElement->put_Margin(textBlockMargin));
-                        }
-                        else
-                        {
-                            RETURN_IF_FAILED(frameworkElement->put_Height(childSize.Height));
-                        }
-                        RETURN_IF_FAILED(spChild->Measure(childSize));
-                    }
-                    else
-                    {
-                        RETURN_IF_FAILED(frameworkElement->put_Height(childSize.Height));
-                        RETURN_IF_FAILED(spChild->Measure(childSize));
-
-                        // check if the child is a Grid
-                        ComPtr<IGrid> childAsGrid;
-                        if (SUCCEEDED(spChild.As(&childAsGrid)))
-                        {
-                            if (GridChildrenShouldMatchHeights(childAsGrid.Get()))
-                            {
-                                ComPtr<IPanel> childAsPanel;
-                                RETURN_IF_FAILED(childAsGrid.As(&childAsPanel));
-                                ComPtr<IVector<UIElement*>> columns;
-                                RETURN_IF_FAILED(childAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
-
-                                ResizeUIElementCollectionToSameHeight(columns.Get(), childSize.Height);
-                            }
-                        }
-                    }
-
-                }
-            }
-
-        }
+       
+		if (m_visibleCount == count)
+		{
+			m_allElementsRendered = true;
+			m_calculatedSize = currentHeight;
+		}
+		else // In the first pass, all the contents will always fit
+		{
+			m_allElementsRendered = false;
+			m_calculatedSize = currentHeight;
+		}
 
         // If inside an infinity/auto width container
         if (availableSize.Width == numeric_limits<float>::infinity())
@@ -392,6 +248,12 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
         RETURN_IF_FAILED(spChildren->get_Size(&m_measuredCount));
 
+		float extraPaddingPerItem{};
+		if (!m_stretchableItems.empty())
+		{
+			extraPaddingPerItem = floor((finalSize.Height - m_calculatedSize) / m_stretchableItems.size());
+		}
+
         for (unsigned int i{}; i < m_measuredCount; ++i)
         {
             ComPtr<IUIElement> spChild;
@@ -406,8 +268,11 @@ AdaptiveNamespaceStart
                 float childHeight = childSize.Height;
                 float newHeight = currentHeight + childSize.Height;
 
-                // If we have truncated the first item newHeight may be greater than finalSize
-                if (newHeight > finalSize.Height)
+				if (m_allElementsRendered && IsUIElementInStretchableList(spChild.Get()))
+				{
+					childHeight += extraPaddingPerItem;
+					newHeight += extraPaddingPerItem;
+				} else if (newHeight > finalSize.Height) // If we have truncated the first item newHeight may be greater than finalSize
                 {
                     childHeight = finalSize.Height - currentHeight;
                     newHeight = finalSize.Height;
@@ -711,89 +576,6 @@ AdaptiveNamespaceStart
         element->get_Height(&definedImageWidth);
 
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
-    }
-
-    bool WholeItemsPanel::GridChildrenShouldMatchHeights(_In_ IGrid* grid)
-    {
-        bool gridIsColumnSet{true};
-
-        ComPtr<IGrid> localGrid(grid);
-        ComPtr<IVector<RowDefinition*>> rowDefinitions;
-        THROW_IF_FAILED(localGrid->get_RowDefinitions(&rowDefinitions));
-        unsigned int rowCount{};
-        THROW_IF_FAILED(rowDefinitions->get_Size(&rowCount));
-
-        if (rowCount <= 1)
-        {
-            ComPtr<IPanel> gridAsPanel;
-            THROW_IF_FAILED(localGrid.As(&gridAsPanel));
-            ComPtr<IVector<UIElement*>> columns;
-            THROW_IF_FAILED(gridAsPanel->get_Children(columns.ReleaseAndGetAddressOf()));
-            unsigned int columnCount{};
-            THROW_IF_FAILED(columns->get_Size(&columnCount));
-
-            for (unsigned int i{}; i < columnCount && gridIsColumnSet; ++i)
-            {
-                ComPtr<IUIElement> column;
-                THROW_IF_FAILED(columns->GetAt(i, column.GetAddressOf()));
-
-                // If the child is a WholeItemsPanel it's ok
-                ComPtr<IWholeItemsPanel> columnAsWholeItemsPanel;
-                if (FAILED(column.As(&columnAsWholeItemsPanel)))
-                {
-                    // If the child is not a WholeItemsPanel, it may be a separator
-                    ComPtr<IGrid> columnAsGrid;
-                    if (SUCCEEDED(column.As(&columnAsGrid)))
-                    {
-                        ComPtr<IPanel> separatorAsPanel;
-                        THROW_IF_FAILED(columnAsGrid.As(&separatorAsPanel));
-                        ComPtr<IVector<UIElement*>> separatorContents;
-                        THROW_IF_FAILED(separatorAsPanel->get_Children(separatorContents.ReleaseAndGetAddressOf()));
-                        unsigned int separatorContentsCount{};
-                        THROW_IF_FAILED(separatorContents->get_Size(&separatorContentsCount));
-
-                        if (separatorContentsCount != 0)
-                        {
-                            gridIsColumnSet = false;
-                        }
-                    }
-                    else
-                    {
-                        gridIsColumnSet = false;
-                    }
-                }
-            }
-        }
-        else
-        {
-            gridIsColumnSet = false;
-        }
-
-        return gridIsColumnSet;
-    }
-
-    void WholeItemsPanel::ResizeUIElementCollectionToSameHeight(IVector<UIElement*>* elementCollection, double height)
-    {
-        ComPtr<IVector<UIElement*>> localElementCollection(elementCollection);
-
-        unsigned int elementCount{};
-        THROW_IF_FAILED(localElementCollection->get_Size(&elementCount));
-
-        for (unsigned int i{}; i < elementCount; ++i)
-        {
-            ComPtr<IUIElement> element;
-            THROW_IF_FAILED(localElementCollection->GetAt(i, element.GetAddressOf()));
-
-            Size elementDesiredSize;
-            THROW_IF_FAILED(element->get_DesiredSize(&elementDesiredSize));
-            elementDesiredSize.Height = static_cast<FLOAT>(height);
-
-            ComPtr<IFrameworkElement> elementAsFrameworkElement;
-            THROW_IF_FAILED(element.As(&elementAsFrameworkElement));
-
-            THROW_IF_FAILED(elementAsFrameworkElement->put_Height(elementDesiredSize.Height));
-            THROW_IF_FAILED(element->Measure(elementDesiredSize));
-        }
     }
 
 AdaptiveNamespaceEnd

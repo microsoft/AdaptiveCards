@@ -42,8 +42,8 @@ AdaptiveNamespaceStart
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
-        m_width = sharedImage->GetWidth();
-        m_height = sharedImage->GetHeight();
+        m_width = sharedImage->GetPixelWidth();
+        m_height = sharedImage->GetPixelHeight();
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
@@ -199,8 +199,8 @@ AdaptiveNamespaceStart
             
         image->SetImageStyle(static_cast<AdaptiveSharedNamespace::ImageStyle>(m_imageStyle));
         image->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
-        image->SetHeight(m_height);
-        image->SetWidth(m_width);
+        image->SetPixelHeight(m_height);
+        image->SetPixelWidth(m_width);
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         sharedImage = image;

@@ -325,6 +325,7 @@ namespace AdaptiveCardTestApp.ViewModels
             {
                 await Task.Delay(10);
             }
+            
         }
 
         private static IEnumerable<UIElement> GetAllDescendants(UIElement element)
