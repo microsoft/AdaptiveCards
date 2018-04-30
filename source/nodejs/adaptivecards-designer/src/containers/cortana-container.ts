@@ -14,6 +14,8 @@ import {
 
 export class CortanaContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
+        this.cardHost.classList.add("cortana-card");
+
         let leftSide = document.createElement("div");
         leftSide.classList.add("cortana-leftside");
 
@@ -36,10 +38,6 @@ export class CortanaContainer extends HostContainer {
         let header = document.createElement("div");
         header.classList.add("cortana-header");
 
-        let content = document.createElement("div");
-        content.classList.add("cortana-content");
-        content.appendChild(this.cardHost);
-
         let searchBox = document.createElement("div");
         searchBox.classList.add("cortana-searchbox");
 
@@ -57,7 +55,7 @@ export class CortanaContainer extends HostContainer {
         searchBox.appendChild(microphone);
 
         rightSide.appendChild(header);
-        rightSide.appendChild(content);
+        rightSide.appendChild(this.cardHost);
         rightSide.appendChild(searchBox);
 
         let frame = document.createElement("div");

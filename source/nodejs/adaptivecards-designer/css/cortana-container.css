@@ -1,6 +1,5 @@
 .cortana-outer-frame {
   display: flex;
-  width: 392px;
 }
 
 .cortana-frame {
@@ -51,6 +50,10 @@
   width: 100%;
 }
 
+.cortana-card {
+  width: 344px;
+}
+
 .cortana-searchbox {
   flex: 0 0 40px;
   background-color: white;
@@ -75,7 +78,6 @@
   height: 40px;
   flex: 0 0 40px;
 }
-
 
 .cortanaFrame {
   background: url('../assets/cortana-frame.png');
