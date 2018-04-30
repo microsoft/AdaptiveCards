@@ -1512,8 +1512,7 @@ AdaptiveNamespaceStart
                 size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
                 size == ABI::AdaptiveNamespace::ImageSize::Auto ||
                 explicitWidth ||
-                explicitHeight ||
-                isAspectRatioNeeded)
+                explicitHeight)
             {
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
             }
