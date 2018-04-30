@@ -5,6 +5,7 @@ import * as Designer from "./card-designer";
 import { HostContainer } from "./containers/host-container";
 import { OutlookContainer } from "./containers/outlook-container";
 import { CortanaContainer } from "./containers/cortana-container";
+import { SkypeContainer } from "./containers/skype-container";
 
 class PaletteItem extends Designer.DraggableElement {
     protected internalRender(): HTMLElement {
@@ -134,8 +135,9 @@ class DesignerApp {
     }
 
     private addContainers() {
-        this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana.css"));
-        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook.css"));
+        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+        this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
+        this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
     }
 
     private recreateDesigner() {
@@ -150,30 +152,35 @@ class DesignerApp {
     
         styleSheetLinkElement.rel = "stylesheet";
         styleSheetLinkElement.type = "text/css";
+        styleSheetLinkElement.href = this._selectedHostContainer.styleSheet;
     
         this._selectedHostContainer.initialize();
     
-        styleSheetLinkElement.href = this._selectedHostContainer.styleSheet;
-    
-        this._designer = new Designer.CardDesigner(this._selectedHostContainer.cardHost);
+        this._designerHostElement.innerHTML = "";
+        this._selectedHostContainer.renderTo(this._designerHostElement);
 
+        this._designer = new Designer.CardDesigner(this._selectedHostContainer.cardHost);
         this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
             this.buildPropertySheet(peer);
         };
 
-        this._designerHostElement.innerHTML = "";
-
-        this._selectedHostContainer.renderTo(this._designerHostElement);
-
         this.buildPalette();
+        this.buildPropertySheet(null);
 
         if (this._card) {
             this._card.hostConfig = this._selectedHostContainer.getHostConfig();
         }
 
-        this._designer.card = this._card;
-
-        this.buildPropertySheet(null);
+        // Forces a relayout after layout has completed. Needed because the Cortana host
+        // (and other) use Flex and there is a condition by which the Flex layout happens
+        // asynchronously and prevents the designer from properly sizing its peer elements.
+        // Not super clean, but the best solution I've found for now.
+        window.setTimeout(
+            () => {
+                this._designer.card = this._card;
+            },
+            100
+        );
     }
 
     private selectedHostContainerChanged() {
@@ -275,11 +282,6 @@ class DesignerApp {
             }
 
             this.recreateDesigner();
-            /*
-            this.designer.card = this._card;
-    
-            this.buildPropertySheet(null);
-            */
         }
     }
 
@@ -307,10 +309,4 @@ window.onload = () => {
     window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
 
     app.card = card;
-
-    // Forces a relayout after layout has completed. Needed because the Cortana host
-    // (and other) use Flex and there is a condition by which the Flex layout happens
-    // asynchronously and prevents the designer from properly sizing its peer elements.
-    // Not super clean, but the best solution I've found for now.
-    window.setTimeout(() => { app.updateLayout(); }, 1);
 };
