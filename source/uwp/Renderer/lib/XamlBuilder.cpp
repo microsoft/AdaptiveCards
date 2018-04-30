@@ -2698,7 +2698,7 @@ AdaptiveNamespaceStart
         }
         else
         {
-            if (!supportsInteractivity)
+            if (selectAction != nullptr)
             {
                 renderContext->AddWarning(
                     ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
