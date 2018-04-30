@@ -1274,18 +1274,6 @@ export class ChoiceSetInputPeer extends TypedCardElementPeer<Adaptive.ChoiceSetI
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
 
-        var isCompact = new Adaptive.ToggleInput();
-        isCompact.title = "Compact style";
-        isCompact.spacing = Adaptive.Spacing.Small;
-        isCompact.defaultValue = String(this.cardElement.isCompact);
-        isCompact.onValueChanged = () => {
-            this.cardElement.isCompact = isCompact.value == "true";
-
-            this.changed(false);
-        }
-
-        card.addItem(isCompact);
-
         var isMultiSelect = new Adaptive.ToggleInput();
         isMultiSelect.title = "Allow multi selection";
         isMultiSelect.spacing = Adaptive.Spacing.Small;
@@ -1293,10 +1281,24 @@ export class ChoiceSetInputPeer extends TypedCardElementPeer<Adaptive.ChoiceSetI
         isMultiSelect.onValueChanged = () => {
             this.cardElement.isMultiSelect = isMultiSelect.value == "true";
 
-            this.changed(false);
+            this.changed(true);
         }
 
         card.addItem(isMultiSelect);
+
+        if (!this.cardElement.isMultiSelect) {
+            var isCompact = new Adaptive.ToggleInput();
+            isCompact.title = "Compact style";
+            isCompact.spacing = Adaptive.Spacing.Small;
+            isCompact.defaultValue = String(this.cardElement.isCompact);
+            isCompact.onValueChanged = () => {
+                this.cardElement.isCompact = isCompact.value == "true";
+
+                this.changed(false);
+            }
+
+            card.addItem(isCompact);
+        }
     }
 
     initializeCardElement() {
