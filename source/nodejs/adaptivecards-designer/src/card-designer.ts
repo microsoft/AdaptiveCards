@@ -575,10 +575,20 @@ export class ActionPeer extends DesignerPeer {
 
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         if (includeHeader) {
-            var elementType = new Adaptive.TextBlock();
-            elementType.text = "Action type: **" + this.action.getJsonTypeName() + "**";
+            let container = new Adaptive.Container();
+            container.style = "emphasis";
+            container.padding = new Adaptive.PaddingDefinition(
+                Adaptive.Spacing.Small,
+                Adaptive.Spacing.Small,
+                Adaptive.Spacing.Small,
+                Adaptive.Spacing.Small);
 
-            card.addItem(elementType);
+            var actionType = new Adaptive.TextBlock();
+            actionType.text = "Action type: **" + this.action.getJsonTypeName() + "**";
+
+            container.addItem(actionType);
+
+            card.addItem(container);
         }
 
         var id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
