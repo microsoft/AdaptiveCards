@@ -78,6 +78,10 @@ public class Container extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Container_SetLanguage(swigCPtr, this, value);
   }
 
+  public void GetResourceUris(StringVector resourceUris) {
+    AdaptiveCardObjectModelJNI.Container_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  }
+
   public static Container dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.Container_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new Container(cPtr, true);

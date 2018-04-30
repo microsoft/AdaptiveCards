@@ -176,6 +176,7 @@ struct HostConfig
     FontSizesConfig fontSizes;
     FontWeightsConfig fontWeights;
     bool supportsInteractivity = true;
+    std::string imageBaseUrl;
     ImageSizesConfig imageSizes;
     ImageConfig image;
     SeparatorConfig separator;

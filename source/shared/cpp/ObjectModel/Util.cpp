@@ -38,3 +38,41 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
     }
 
 }
+
+void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::vector<std::string> &requestedDimensions, std::vector<int> &parsedDimensions)
+{
+    for(auto eachDimension : requestedDimensions)
+    { 
+        if (eachDimension.empty())
+        {
+            parsedDimensions.push_back(0);
+        }
+        else
+        {
+            std::size_t foundIndex = eachDimension.find(unit);
+            if (eachDimension.size() != foundIndex + unit.size())
+            {
+                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is either missing or inproper form: " + eachDimension);
+            }
+            try
+            {
+                float parsedVal = stof(eachDimension.substr(0, foundIndex));
+                if(parsedVal != (int) parsedVal || parsedVal < 0)
+                {
+                    throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + eachDimension);
+                }
+                parsedDimensions.push_back((int)parsedVal);
+            }
+            catch (const std::invalid_argument &e)
+            {
+                (void)e;
+                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + eachDimension);
+            }
+            catch (const std::out_of_range &e)
+            {
+                (void)e;
+                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "out of range: " + eachDimension);
+            }
+        }
+    }
+}

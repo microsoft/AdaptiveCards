@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Image.h"
 #include "ParseUtil.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -179,43 +180,13 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     // validate user inputs
     const std::string unit = "px";
     std::vector<int> parsedDimensions;
-    for(auto eachDimension : requestedDimensions)
-    { 
-        if (eachDimension.empty())
-        {
-            parsedDimensions.push_back(0);
-        }
-        else
-        {
-            std::size_t foundIndex = eachDimension.find(unit);
-            if (eachDimension.size() != foundIndex + unit.size())
-            {
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is either missing or inproper form: " + eachDimension);
-            }
-            try
-            {
-                parsedDimensions.push_back(stoi(eachDimension.substr(0, foundIndex)));
-                if (parsedDimensions.back() < 0)
-                {
-                    throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + eachDimension);
-                }
-            }
-            catch (const std::invalid_argument &e)
-            {
-                (void)e;
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + eachDimension);
-            }
-            catch (const std::out_of_range &e)
-            {
-                (void)e;
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "out of range: " + eachDimension);
-            }
-        }
-    }
+    ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
 
     image->SetWidth(parsedDimensions[0]);
     image->SetHeight(parsedDimensions[1]);
-    image->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction));
+
+    // Parse optional selectAction
+    image->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false));
 
     return image;
 }
@@ -230,4 +201,11 @@ void Image::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
+}
+
+void Image::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto url = GetUrl();
+    resourceUris.push_back(url);
+    return;
 }

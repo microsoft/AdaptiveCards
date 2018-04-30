@@ -18,6 +18,8 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result.supportsInteractivity = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::SupportsInteractivity, result.supportsInteractivity);
 
+    result.imageBaseUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
+
     result.factSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetConfig>(
         json, AdaptiveCardSchemaKey::FactSet, result.factSet, FactSetConfig::Deserialize);
 

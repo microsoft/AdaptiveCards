@@ -155,6 +155,7 @@ AdaptiveNamespaceStart
 
         RETURN_IF_FAILED(GenerateContainedElementsProjection(sharedAdaptiveCard->GetBody(), m_body.Get()));
         RETURN_IF_FAILED(GenerateActionsProjection(sharedAdaptiveCard->GetActions(), m_actions.Get()));
+        RETURN_IF_FAILED(GenerateActionProjection(sharedAdaptiveCard->GetSelectAction(), &m_selectAction));
 
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetVersion(), m_version.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
@@ -233,6 +234,19 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveCard::get_SelectAction(IAdaptiveActionElement** action)
+    {
+        return m_selectAction.CopyTo(action);
+    }
+
+    _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveCard::put_SelectAction(IAdaptiveActionElement* action)
+    {
+        m_selectAction = action;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
@@ -286,6 +300,7 @@ AdaptiveNamespaceStart
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 
+        GenerateSharedAction(m_selectAction.Get(), adaptiveCard->GetSelectAction());
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
 

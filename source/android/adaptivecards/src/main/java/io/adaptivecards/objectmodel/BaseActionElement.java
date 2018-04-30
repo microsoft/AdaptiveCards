@@ -113,6 +113,10 @@ public class BaseActionElement {
     AdaptiveCardObjectModelJNI.BaseActionElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
+  public void GetResourceUris(StringVector resourceUris) {
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceUrisSwigExplicitBaseActionElement(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  }
+
   public Object swigOriginalObject() {
     return AdaptiveCardObjectModelJNI.BaseActionElement_swigOriginalObject(swigCPtr, this);
   }
