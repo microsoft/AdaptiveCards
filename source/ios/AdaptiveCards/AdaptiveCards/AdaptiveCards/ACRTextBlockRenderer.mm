@@ -60,7 +60,7 @@
     {
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment()];
 
         // Obtain text color to apply to the attributed string
@@ -71,17 +71,15 @@
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle,
                                 NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],
-                                    NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:txtBlck->GetTextWeight()]} range:NSMakeRange(0, content.length - 1)];
+                                    NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:txtBlck->GetTextWeight()]} range:NSMakeRange(0, content.length)];
         lab.attributedText = content;
-
         std::string id = txtBlck->GetId();
         std::size_t idx = id.find_last_of('_');
         txtBlck->SetId(id.substr(0, idx));
     }
 
     lab.numberOfLines = int(txtBlck->GetMaxLines());
-    if(!lab.numberOfLines and !txtBlck->GetWrap())
-    {
+    if(!lab.numberOfLines and !txtBlck->GetWrap()){
         lab.numberOfLines = 1;
     }
 

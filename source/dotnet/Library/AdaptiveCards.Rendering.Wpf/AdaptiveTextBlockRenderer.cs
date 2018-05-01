@@ -69,6 +69,10 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
             }
 
+            if (textBlock.MaxWidth > 0)
+            {
+                uiTextBlock.MaxWidth = textBlock.MaxWidth;
+            }
 
             if (textBlock.MaxLines > 0)
             {
