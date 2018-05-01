@@ -11,13 +11,13 @@ namespace AdaptiveCards.Rendering
         /// TextBlock to use for Titles in factsets
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextBlockConfig Title { get; set; } = new TextBlockConfig() { Size = AdaptiveTextSize.Default, Color = AdaptiveTextColor.Default, IsSubtle = false, Weight = AdaptiveTextWeight.Bolder };
+        public TextBlockConfig Title { get; set; } = new TextBlockConfig() { Size = AdaptiveTextSize.Default, Color = AdaptiveTextColor.Default, IsSubtle = false, Weight = AdaptiveTextWeight.Bolder, Wrap = true, MaxWidth = 150 };
 
         /// <summary>
         /// TextBlock to use for Values in fact sets
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextBlockConfig Value { get; set; } = new TextBlockConfig();
+        public TextBlockConfig Value { get; set; } = new TextBlockConfig() { Size = AdaptiveTextSize.Default, Color = AdaptiveTextColor.Default, IsSubtle = false, Weight = AdaptiveTextWeight.Default, Wrap = true };
 
         /// <summary>
         /// Spacing between facts and values

@@ -172,6 +172,9 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
     result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextConfig>(
         json, AdaptiveCardSchemaKey::Value, defaultValue.value, TextConfig::Deserialize);
 
+    // Value doesn't support maxWidth, so reset to the default value.
+    result.value.maxWidth = defaultValue.value.maxWidth;
+
     return result;
 }
 

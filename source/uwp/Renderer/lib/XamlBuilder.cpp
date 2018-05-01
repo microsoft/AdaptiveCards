@@ -1972,10 +1972,11 @@ AdaptiveNamespaceStart
 
         ComPtr<IColumnDefinition> titleColumn = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
         ComPtr<IColumnDefinition> valueColumn = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-        GridLength factSetGridLength = { 0, GridUnitType::GridUnitType_Auto };
+        GridLength factSetGridTitleLength = { 0, GridUnitType::GridUnitType_Auto };
+        GridLength factSetGridValueLength = { 1, GridUnitType::GridUnitType_Star };
 
-        THROW_IF_FAILED(titleColumn->put_Width(factSetGridLength));
-        THROW_IF_FAILED(valueColumn->put_Width(factSetGridLength));
+        THROW_IF_FAILED(titleColumn->put_Width(factSetGridTitleLength));
+        THROW_IF_FAILED(valueColumn->put_Width(factSetGridValueLength));
         ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
         THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
         THROW_IF_FAILED(columnDefinitions->Append(titleColumn.Get()));
@@ -1984,10 +1985,10 @@ AdaptiveNamespaceStart
         ComPtr<IVector<IAdaptiveFact*>> facts;
         THROW_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
         int currentFact = 0;
-        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [xamlGrid, gridStatics, factSetGridLength, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
+        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [xamlGrid, gridStatics, factSetGridTitleLength, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
         {
             ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
-            THROW_IF_FAILED(factRow->put_Height(factSetGridLength));
+            THROW_IF_FAILED(factRow->put_Height(factSetGridTitleLength));
 
             ComPtr<IVector<RowDefinition*>> rowDefinitions;
             THROW_IF_FAILED(xamlGrid->get_RowDefinitions(&rowDefinitions));
