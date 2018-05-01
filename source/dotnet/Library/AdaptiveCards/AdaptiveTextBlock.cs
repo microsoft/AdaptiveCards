@@ -117,6 +117,6 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(0)]
-        public uint MaxWidth { get; set; }
+        public int MaxWidth { get; set; }
     }
 }
