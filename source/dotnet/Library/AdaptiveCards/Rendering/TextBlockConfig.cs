@@ -40,6 +40,6 @@ namespace AdaptiveCards.Rendering
         /// The maximum width for text
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public uint MaxWidth { get; set; }
+        public int MaxWidth { get; set; }
     }
 }
