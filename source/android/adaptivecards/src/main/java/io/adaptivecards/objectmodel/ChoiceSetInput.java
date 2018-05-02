@@ -38,15 +38,7 @@ public class ChoiceSetInput extends BaseInputElement {
   }
 
   public ChoiceSetInput() {
-    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_0(), true);
-  }
-
-  public ChoiceSetInput(Spacing spacing, boolean separation) {
-    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_1(spacing.swigValue(), separation), true);
-  }
-
-  public ChoiceSetInput(Spacing spacing, boolean separation, ChoiceInputVector choices) {
-    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_2(spacing.swigValue(), separation, ChoiceInputVector.getCPtr(choices), choices), true);
+    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput(), true);
   }
 
   public JsonValue SerializeToJsonValue() {

@@ -12,8 +12,6 @@ class ImageSet : public BaseCardElement
 friend class ImageSetParser;
 public:
     ImageSet();
-    ImageSet(Spacing spacing, bool separation);
-    ImageSet(Spacing spacing, bool separation, std::vector<std::shared_ptr<Image>>& images);
 
     virtual Json::Value SerializeToJsonValue() override;
 

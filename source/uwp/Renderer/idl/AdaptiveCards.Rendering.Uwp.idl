@@ -567,6 +567,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 
+        [propget] HRESULT Language([out, retval] HSTRING* value);
+        [propput] HRESULT Language([in] HSTRING value);
+
         [propget] HRESULT BackgroundImage([out, retval] Windows.Foundation.Uri** value);
         [propput] HRESULT BackgroundImage([in] Windows.Foundation.Uri* value);
 

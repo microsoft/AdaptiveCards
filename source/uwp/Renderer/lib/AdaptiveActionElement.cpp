@@ -92,6 +92,16 @@ AdaptiveNamespaceStart
     {
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
+        
+        if (m_iconUrl != nullptr)
+        {
+            HString urlTemp;
+            m_iconUrl->get_AbsoluteUri(urlTemp.GetAddressOf());
+
+            std::string urlString;
+            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
+            sharedCardElement->SetIconUrl(urlString);
+        }
 
         if (m_additionalProperties != nullptr)
         {

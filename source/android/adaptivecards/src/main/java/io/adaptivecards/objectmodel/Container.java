@@ -38,15 +38,7 @@ public class Container extends BaseCardElement {
   }
 
   public Container() {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_0(), true);
-  }
-
-  public Container(Spacing spacing, boolean separator, ContainerStyle style) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(spacing.swigValue(), separator, style.swigValue()), true);
-  }
-
-  public Container(Spacing spacing, boolean separator, ContainerStyle style, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(spacing.swigValue(), separator, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
+    this(AdaptiveCardObjectModelJNI.new_Container(), true);
   }
 
   public JsonValue SerializeToJsonValue() {

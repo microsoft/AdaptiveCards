@@ -23,44 +23,46 @@ TextBlock::TextBlock() :
     PopulateKnownPropertiesSet();
 }
 
-TextBlock::TextBlock(
-    Spacing spacing,
-    bool separator,
-    std::string text,
-    TextSize textSize,
-    TextWeight textWeight,
-    ForegroundColor textColor,
-    bool isSubtle,
-    bool wrap,
-    int maxLines,
-    HorizontalAlignment hAlignment,
-    std::string language) :
-    BaseCardElement(CardElementType::TextBlock, spacing, separator),
-    m_text(text),
-    m_textSize(textSize),
-    m_textWeight(textWeight),
-    m_textColor(textColor),
-    m_isSubtle(isSubtle),
-    m_wrap(wrap),
-    m_maxLines(maxLines),
-    m_hAlignment(hAlignment),
-    m_language(language)
-{
-    PopulateKnownPropertiesSet();
-}
-
 Json::Value TextBlock::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(GetTextSize());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(GetTextColor());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(GetTextWeight());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
-        HorizontalAlignmentToString(GetHorizontalAlignment());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines)] = GetMaxLines();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = GetIsSubtle();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = GetWrap();
+    if (m_textSize != TextSize::Default)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(m_textSize);
+    }
+
+    if (m_textColor != ForegroundColor::Default)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(m_textColor);
+    }
+
+    if (m_textWeight != TextWeight::Default)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(m_textWeight);
+    }
+
+    if (m_hAlignment != HorizontalAlignment::Left)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
+            HorizontalAlignmentToString(m_hAlignment);
+    }
+
+    if (m_maxLines != 0)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines)] = m_maxLines;
+    }
+
+    if (m_isSubtle)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = true;
+    }
+
+    if (m_wrap)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = true;
+    }
+
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText();
 
     return root;

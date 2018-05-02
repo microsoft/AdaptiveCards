@@ -12,8 +12,6 @@ class Container : public BaseCardElement
 friend class ContainerParser;
 public:
     Container();
-    Container(Spacing spacing, bool separator, ContainerStyle style);
-    Container(Spacing spacing, bool separator, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual Json::Value SerializeToJsonValue() override;
 
