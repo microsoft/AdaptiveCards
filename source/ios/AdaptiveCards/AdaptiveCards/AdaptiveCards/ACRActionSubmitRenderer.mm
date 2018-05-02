@@ -21,27 +21,24 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIViewController *)vc
+- (UIButton* )renderButton:(ACRView *)view
                     inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseActionElement> elem = [acoElem element];
     std::shared_ptr<SubmitAction> action = std::dynamic_pointer_cast<SubmitAction>(elem);
 
-    NSString *title = [NSString stringWithCString:action->GetTitle().c_str()
-                                        encoding:NSUTF8StringEncoding];
-    UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
+    NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+    NSString *iconUrl = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:NSUTF8StringEncoding];
+    UIButton *button = [UIButton rootView:view baseActionElement:acoElem title:title iconUrl:iconUrl andHostConfig:acoConfig];
 
-    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootViewController:(ACRViewController *)vc];
+    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView*)view];
 
     [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
-
-    [superview addArrangedSubview:button];
 
     return button;
 }

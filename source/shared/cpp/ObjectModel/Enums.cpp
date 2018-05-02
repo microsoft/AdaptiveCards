@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Enums.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> * adaptiveCardSchemaKeyEnumToNameOut,
@@ -55,9 +54,13 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::FontSizes, "fontSizes" },
         { AdaptiveCardSchemaKey::FontWeights, "fontWeights" },
         { AdaptiveCardSchemaKey::Good, "good" },
+        { AdaptiveCardSchemaKey::Height, "height" },
         { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
+        { AdaptiveCardSchemaKey::IconPlacement, "iconPlacement" },
+        { AdaptiveCardSchemaKey::IconUrl, "iconUrl" },
         { AdaptiveCardSchemaKey::Id, "id" },
         { AdaptiveCardSchemaKey::Image, "image" },
+        { AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl" },
         { AdaptiveCardSchemaKey::Images, "images" },
         { AdaptiveCardSchemaKey::ImageSet, "imageSet" },
         { AdaptiveCardSchemaKey::ImageSize, "imageSize" },
@@ -552,6 +555,28 @@ void GetActionAlignmentEnumMappings(
     }
 }
 
+void GetIconPlacementEnumMappings(
+    std::unordered_map<IconPlacement, std::string, EnumHash> * iconPlacementEnumToNameOut,
+    std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> * iconPlacementNameToEnumOut)
+{
+    static std::unordered_map<IconPlacement, std::string, EnumHash> iconPlacementnumToName =
+    {
+        {IconPlacement::AboveTitle , "AboveTitle"},
+        {IconPlacement::LeftOfTitle, "LeftOfTitle"}
+    };
+    static std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> iconPlacementNameToEnum = GenerateStringToEnumMap<IconPlacement>(iconPlacementnumToName);
+
+    if (iconPlacementEnumToNameOut != nullptr)
+    {
+        *iconPlacementEnumToNameOut = iconPlacementnumToName;
+    }
+
+    if (iconPlacementNameToEnumOut != nullptr)
+    {
+        *iconPlacementNameToEnumOut = iconPlacementNameToEnum;
+    }
+}
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
 {
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> adaptiveCardSchemaKeyEnumToName;
@@ -972,4 +997,29 @@ ActionAlignment ActionAlignmentFromString(const std::string & alignment)
     }
     return actionAlignmentNameToEnum[alignment];
 }
+
+const std::string IconPlacementToString(IconPlacement placement)
+{
+    std::unordered_map<IconPlacement, std::string, EnumHash> iconPlacementEnumToName;
+    GetIconPlacementEnumMappings(&iconPlacementEnumToName, nullptr);
+
+    if (iconPlacementEnumToName.find(placement) == iconPlacementEnumToName.end())
+    {
+        throw std::out_of_range("Invalid IconPlacement");
+    }
+    return iconPlacementEnumToName[placement];
 }
+
+IconPlacement IconPlacementFromString(const std::string& placement)
+{
+    std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> iconPlacementNameToEnum;
+    GetIconPlacementEnumMappings(nullptr, &iconPlacementNameToEnum);
+
+    if (iconPlacementNameToEnum.find(placement) == iconPlacementNameToEnum.end())
+    {
+        return IconPlacement::AboveTitle;
+    }
+    return iconPlacementNameToEnum[placement];
+}
+
+AdaptiveSharedNamespaceEnd

@@ -5,8 +5,7 @@
 #include "json/json.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class ChoiceInput
 {
 public:
@@ -35,4 +34,4 @@ private:
     std::string m_title;
     std::string m_value;
 };
-}
+AdaptiveSharedNamespaceEnd

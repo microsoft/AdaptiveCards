@@ -7,8 +7,7 @@
 #include "ElementParserRegistration.h"
 #include "ActionParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class BaseCardElement;
 class BaseActionElement;
 
@@ -77,6 +76,13 @@ public:
         bool isRequired = false);
 
     static std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& json,
+        AdaptiveCardSchemaKey key,
+        bool isRequired = false);
+
+    static std::shared_ptr<BaseActionElement> GetSelectAction(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const Json::Value& json,
@@ -188,4 +194,4 @@ T ParseUtil::ExtractJsonValueAndMergeWithDefault(
     T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
     return result;
 }
-}
+AdaptiveSharedNamespaceEnd

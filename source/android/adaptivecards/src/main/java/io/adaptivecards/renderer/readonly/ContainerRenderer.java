@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -59,7 +60,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
         ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
-        View containerView = CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, viewGroup, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);
+        LinearLayout containerView = new LinearLayout(context);
+        if (!container.GetItems().isEmpty())
+        {
+            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, containerView, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);
+        }
         if (styleForThis != containerStyle)
         {
             int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
@@ -76,6 +81,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             containerView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, container.GetSelectAction(), cardActionHandler));
         }
 
+        viewGroup.addView(containerView);
         return containerView;
     }
 

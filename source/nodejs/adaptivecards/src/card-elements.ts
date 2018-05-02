@@ -118,7 +118,12 @@ export abstract class CardElement {
         }
 
         if (this._separatorElement) {
-            this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
+            if (this.parent && this.parent.isFirstElement(this)) {
+                this._separatorElement.style.display = "none";                
+            }
+            else {
+                this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
+            }
         }
     }
 
@@ -377,14 +382,13 @@ export abstract class CardElement {
 
             this.adjustRenderedElementSize(this._renderedElement);
             this.updateLayout(false);
-            this.updateRenderedElementVisibility();
         }
 
         return this._renderedElement;
     }
 
     updateLayout(processChildren: boolean = true) {
-        // Does nothing in base implementation
+        this.updateRenderedElementVisibility();
     }
 
     isRendered(): boolean {
@@ -780,6 +784,8 @@ export class TextBlock extends CardElement {
     }
 
     updateLayout(processChildren: boolean = false) {
+        super.updateLayout(processChildren);
+
         if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines && this.isRendered()) {
             // Reset the element's innerHTML in case the available room for
             // content has increased
@@ -972,6 +978,33 @@ export class FactSet extends CardElement {
 export class Image extends CardElement {
     private _selectAction: Action;
 
+    private parseDimension(name: string, value: any): number {
+        if (value) {
+            if (typeof value === "string") {
+                let size: ISize;
+                
+                try {
+                    size = parseSize(value);
+
+                    if (size.unit == SizeUnit.Pixel) {
+                        return size.physicalSize;
+                    }
+                }
+                catch {
+                    // Ignore error
+                }
+            }
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "Invalid image " + name + ": " + value
+                });    
+        }
+
+        return 0;
+    }
+
     protected get useDefaultSizing() {
         return false;
     }
@@ -1116,18 +1149,44 @@ export class Image extends CardElement {
         this.size = Utils.getEnumValueOrDefault(Enums.Size, json["size"], this.size);
         this.altText = json["altText"];
 
-        var selectActionJson = json["selectAction"];
-
-        if (selectActionJson != undefined) {
-            this.selectAction = createActionInstance(selectActionJson);
-        }
-
+        // pixelWidth and pixelHeight are only parsed for backwards compatibility.
+        // Payloads should use the width and height proerties instead.
         if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
             this.pixelWidth = json["pixelWidth"];
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The pixelWidth property is deprecated and will be removed. Use the width property instead."
+                });
         }
 
         if (json["pixelHeight"] && typeof json["pixelHeight"] === "number") {
             this.pixelHeight = json["pixelHeight"];
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The pixelHeight property is deprecated and will be removed. Use the height property instead."
+                });
+        }
+
+        let size = this.parseDimension("width", json["width"]);
+
+        if (size > 0) {
+            this.pixelWidth = size;
+        }
+
+        size = this.parseDimension("height", json["height"]);
+
+        if (size > 0) {
+            this.pixelHeight = size;
+        }
+
+        var selectActionJson = json["selectAction"];
+
+        if (selectActionJson != undefined) {
+            this.selectAction = createActionInstance(selectActionJson);
         }
     }
 
@@ -2309,7 +2368,7 @@ class ActionCollection {
 
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
-        if (AdaptiveCard.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
+        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
@@ -2879,7 +2938,7 @@ export class Container extends CardElement {
         for (let item of this._items) {
             handleElement(item);
         }
-
+        
         return true;
     }
 
@@ -3139,6 +3198,8 @@ export class Container extends CardElement {
     }
 
     updateLayout(processChildren: boolean = true) {
+        super.updateLayout(processChildren);
+
         this.applyPadding();
 
         if (processChildren) {
@@ -3159,6 +3220,36 @@ export class Container extends CardElement {
             this._selectAction.setParent(this);
         }
     }
+}
+
+enum SizeUnit {
+    Weight,
+    Pixel
+}
+
+interface ISize {
+    physicalSize: number;
+    unit: SizeUnit;
+}
+
+function parseSize(size: any): ISize {
+    let result = { physicalSize: 0, unit: SizeUnit.Weight };
+    let regExp = /^([0-9]+)(px|\*)?$/g;
+    let matches = regExp.exec(size);
+
+    if (matches && matches.length >= 2) {
+        result.physicalSize = parseInt(matches[1]);
+
+        if (matches.length == 3) {
+            if (matches[2] == "px") {
+                result.unit = SizeUnit.Pixel;
+            }
+        }
+
+        return result;
+    }
+
+    throw new Error("Invalid size: " + size);
 }
 
 export class Column extends Container {
@@ -3214,20 +3305,33 @@ export class Column extends Container {
         var invalidWidth = false;
 
         if (typeof jsonWidth === "number") {
-            if (jsonWidth <= 0) {
+            if (jsonWidth > 0) {
+                this.width = jsonWidth;
+            }
+            else {
                 invalidWidth = true;
             }
         }
         else if (typeof jsonWidth === "string") {
             if (jsonWidth != "auto" && jsonWidth != "stretch") {
-                var sizeAsNumber = parseInt(jsonWidth);
+                let size: ISize;
 
-                if (!isNaN(sizeAsNumber)) {
-                    jsonWidth = sizeAsNumber;
+                try {
+                    let size = parseSize(jsonWidth);
+
+                    if (size.unit == SizeUnit.Pixel) {
+                        this.pixelWidth = size.physicalSize;
+                    }
+                    else {
+                        this.width = size.physicalSize;
+                    }    
                 }
-                else {
+                catch (e) {
                     invalidWidth = true;
                 }
+            }
+            else {
+                this.width = jsonWidth;
             }
         }
         else if (jsonWidth) {
@@ -3240,9 +3344,6 @@ export class Column extends Container {
                     error: Enums.ValidationError.InvalidPropertyValue,
                     message: "Invalid column width: " + jsonWidth
                 });
-        }
-        else {
-            this.width = jsonWidth;
         }
     }
 
@@ -3354,12 +3455,14 @@ export class ColumnSet extends CardElement {
         }
     }
 
-    get padding(): PaddingDefinition {
-        return this.getPadding();
-    }
+    isFirstElement(element: CardElement): boolean {
+        for (var i = 0; i < this._columns.length; i++) {
+            if (this._columns[i].isVisible) {
+                return this._columns[i] == element;
+            }
+        }
 
-    set padding(value: PaddingDefinition) {
-        this.setPadding(value);
+        return false;
     }
 
     getJsonTypeName(): string {
@@ -3416,6 +3519,8 @@ export class ColumnSet extends CardElement {
     }
 
     updateLayout(processChildren: boolean = true) {
+        super.updateLayout(processChildren);
+
         this.applyPadding();
         
         if (processChildren) {
@@ -3499,6 +3604,14 @@ export class ColumnSet extends CardElement {
         }
 
         return speak;
+    }
+
+    get padding(): PaddingDefinition {
+        return this.getPadding();
+    }
+
+    set padding(value: PaddingDefinition) {
+        this.setPadding(value);
     }
 
     get selectAction(): Action {
@@ -3803,7 +3916,6 @@ export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: Version = new Version(1, 0);
 
     static useAutomaticContainerBleeding: boolean = false;
-    static preExpandSingleShowCardAction: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
@@ -3995,6 +4107,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         if (target) {
             target.appendChild(renderedCard);
+
             this.updateLayout();
         }
 

@@ -11,7 +11,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             Microsoft::WRL::FtmBase,
             ABI::AdaptiveCards::XamlCardRenderer::IImageRenderResult>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_ImageRenderResult, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_ImageRenderResult)
 
     public:
         HRESULT RuntimeClassInitialize(_In_ HSTRING altText, _In_ ABI::Windows::Storage::Streams::IBuffer* pixelBuffer, _In_ int width, _In_ int height);

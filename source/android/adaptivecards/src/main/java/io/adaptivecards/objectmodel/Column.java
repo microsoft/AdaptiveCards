@@ -41,12 +41,12 @@ public class Column extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Column__SWIG_0(), true);
   }
 
-  public Column(Spacing spacing, boolean separation, String size, ContainerStyle style) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_1(spacing.swigValue(), separation, size, style.swigValue()), true);
+  public Column(Spacing spacing, boolean separation, String size, long explicitWidth, ContainerStyle style) {
+    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_1(spacing.swigValue(), separation, size, explicitWidth, style.swigValue()), true);
   }
 
-  public Column(Spacing spacing, boolean separation, String size, ContainerStyle style, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_2(spacing.swigValue(), separation, size, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
+  public Column(Spacing spacing, boolean separation, String size, long explicitWidth, ContainerStyle style, BaseCardElementVector items) {
+    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_2(spacing.swigValue(), separation, size, explicitWidth, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
   }
 
   public String Serialize() {
@@ -75,6 +75,14 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetWidth(swigCPtr, this, value);
   }
 
+  public int GetExplicitWidth() {
+    return AdaptiveCardObjectModelJNI.Column_GetExplicitWidth(swigCPtr, this);
+  }
+
+  public void SetExplicitWidth(int value) {
+    AdaptiveCardObjectModelJNI.Column_SetExplicitWidth(swigCPtr, this, value);
+  }
+
   public ContainerStyle GetStyle() {
     return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetStyle(swigCPtr, this));
   }
@@ -98,6 +106,10 @@ public class Column extends BaseCardElement {
 
   public void SetLanguage(String language) {
     AdaptiveCardObjectModelJNI.Column_SetLanguage(swigCPtr, this, language);
+  }
+
+  public void GetResourceUris(StringVector resourceUris) {
+    AdaptiveCardObjectModelJNI.Column_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
   }
 
   public static Column dynamic_cast(BaseCardElement baseCardElement) {

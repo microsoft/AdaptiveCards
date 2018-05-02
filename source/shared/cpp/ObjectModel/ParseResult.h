@@ -3,8 +3,7 @@
 #include "pch.h"
 #include "AdaptiveCardParseWarning.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     class AdaptiveCard;
 
     class ParseResult
@@ -21,4 +20,4 @@ namespace AdaptiveCards
         std::shared_ptr<AdaptiveCard> m_adaptiveCard;
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> m_warnings;
     };
-};
+AdaptiveSharedNamespaceEnd

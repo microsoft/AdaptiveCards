@@ -263,6 +263,10 @@ static inline void fixNumericLocaleInput(char* begin, char* end) {
 #pragma warning(disable : 4996)
 #endif
 
+// Disable warnings for banned API usage: sscanf, sprintf and strcat
+#pragma warning(disable : 28726)
+#pragma warning(disable : 28719)
+
 // Define JSONCPP_DEPRECATED_STACK_LIMIT as an appropriate integer at compile time to change the stack limit
 #if !defined(JSONCPP_DEPRECATED_STACK_LIMIT)
 #define JSONCPP_DEPRECATED_STACK_LIMIT 1000

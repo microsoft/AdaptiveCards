@@ -47,16 +47,8 @@ public class DateTimePreparser {
     return new DateTimePreparsedTokenVector(AdaptiveCardObjectModelJNI.DateTimePreparser_GetTextTokens(swigCPtr, this), true);
   }
 
-  public void AddTextToken(String text, DateTimePreparsedTokenFormat format) {
-    AdaptiveCardObjectModelJNI.DateTimePreparser_AddTextToken(swigCPtr, this, text, format.swigValue());
-  }
-
-  public void AddDateToken(String text, CTime date, DateTimePreparsedTokenFormat format) {
-    AdaptiveCardObjectModelJNI.DateTimePreparser_AddDateToken(swigCPtr, this, text, CTime.getCPtr(date), date, format.swigValue());
-  }
-
-  public String Concatenate() {
-    return AdaptiveCardObjectModelJNI.DateTimePreparser_Concatenate(swigCPtr, this);
+  public boolean HasDateTokens() {
+    return AdaptiveCardObjectModelJNI.DateTimePreparser_HasDateTokens(swigCPtr, this);
   }
 
 }

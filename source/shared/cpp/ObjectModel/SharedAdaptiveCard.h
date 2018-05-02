@@ -6,8 +6,7 @@
 #include "pch.h"
 #include "ParseResult.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class Container;
 
 class AdaptiveCard
@@ -44,26 +43,31 @@ public:
     std::string GetLanguage() const;
     void SetLanguage(const std::string& value);
 
+    std::shared_ptr<BaseActionElement> GetSelectAction() const;
+    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
+
+    std::vector<std::string> GetResourceUris();
 
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__
     static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
         double rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveCards::AdaptiveCardParseException);
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
         const std::string& fallbackText,
-        const std::string& language) throw(AdaptiveCards::AdaptiveCardParseException);
+        const std::string& language) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 #else
     static std::shared_ptr<ParseResult> DeserializeFromFile(
         const std::string& jsonFile,
@@ -100,5 +104,6 @@ private:
     std::vector<std::shared_ptr<BaseCardElement>> m_body;
     std::vector<std::shared_ptr<BaseActionElement>> m_actions;
 
+    std::shared_ptr<BaseActionElement> m_selectAction;
 };
-}
+AdaptiveSharedNamespaceEnd

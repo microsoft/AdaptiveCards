@@ -2,7 +2,7 @@
 #include "ParseUtil.h"
 #include "TimeInput.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 TimeInput::TimeInput() :
     BaseInputElement(CardElementType::TimeInput)

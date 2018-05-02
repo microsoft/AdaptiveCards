@@ -110,17 +110,16 @@ public class BaseCardElement {
     return new JsonValue((getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_SerializeToJsonValue(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_SerializeToJsonValueSwigExplicitBaseCardElement(swigCPtr, this), true);
   }
 
-  public static BaseActionElement DeserializeSelectAction(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue json, AdaptiveCardSchemaKey key) {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_DeserializeSelectAction(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(json), json, key.swigValue());
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
-  }
-
   public JsonValue GetAdditionalProperties() {
     return new JsonValue(AdaptiveCardObjectModelJNI.BaseCardElement_GetAdditionalProperties(swigCPtr, this), true);
   }
 
   public void SetAdditionalProperties(JsonValue additionalProperties) {
     AdaptiveCardObjectModelJNI.BaseCardElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
+  }
+
+  public void GetResourceUris(StringVector resourceUris) {
+    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceUrisSwigExplicitBaseCardElement(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
   }
 
   public Object swigOriginalObject() {

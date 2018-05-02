@@ -27,7 +27,7 @@
 }
 
 - (UIView *)render:(UIView *)viewGroup
-rootViewController:(UIViewController *)vc
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -41,7 +41,7 @@ rootViewController:(UIViewController *)vc
 
     if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact)
     {
-        dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet viewController:vc];
+        dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
     }
     else
     {

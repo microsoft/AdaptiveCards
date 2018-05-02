@@ -14,7 +14,7 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -22,8 +22,7 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     RenderedAdaptiveCard::RenderedAdaptiveCard()
     {
     }
@@ -32,18 +31,18 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         m_errors = Make<Vector<IAdaptiveError*>>();
         m_warnings = Make<Vector<IAdaptiveWarning*>>();
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveInputs>(&m_inputs));
         m_events = std::make_shared<ActionEventSource>();
         return S_OK;
     }
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize(
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>* errors,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>* warnings)
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>* errors,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* warnings)
     {
         m_errors = errors;
         m_warnings = warnings;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveInputs>(&m_inputs));
         m_events = std::make_shared<ActionEventSource>();
         return S_OK;
     }
@@ -61,14 +60,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
     
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value)
+    HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveNamespace::IAdaptiveInputs** value)
     {
         return m_inputs.CopyTo(value);
     }
 
     _Use_decl_annotations_
     HRESULT RenderedAdaptiveCard::add_Action(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveActionEventArgs*>* handler,
+        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
         EventRegistrationToken* token)
     {
         return m_events->Add(handler, token);
@@ -81,13 +80,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>** value)
+    HRESULT RenderedAdaptiveCard::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>** value)
+    HRESULT RenderedAdaptiveCard::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
@@ -108,7 +107,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* value)
+    void RenderedAdaptiveCard::SetOriginatingCard(ABI::AdaptiveNamespace::IAdaptiveCard* value)
     {
         m_originatingCard = value;
     }
@@ -117,4 +116,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         return m_inputs->AddInputValue(inputItem);
     }
-}}}
+AdaptiveNamespaceEnd

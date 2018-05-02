@@ -8,9 +8,12 @@
 #import <UIKit/UIKit.h>
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
+#import "ACRView.h"
 
 @interface UIButton(ACRButton)
-+ (UIButton *)acr_renderButton:(UIViewController *)vc
-                         title:(NSString *)title
-                 andHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
++ (UIButton *)rootView:(ACRView *)rootView
+     baseActionElement:(ACOBaseActionElement *)acoAction
+                 title:(NSString *)title
+               iconUrl:(NSString *)iconUrl
+         andHostConfig:(ACOHostConfig *)config;
 @end
