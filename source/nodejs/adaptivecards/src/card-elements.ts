@@ -978,6 +978,33 @@ export class FactSet extends CardElement {
 export class Image extends CardElement {
     private _selectAction: Action;
 
+    private parseDimension(name: string, value: any): number {
+        if (value) {
+            if (typeof value === "string") {
+                let size: ISize;
+                
+                try {
+                    size = parseSize(value);
+
+                    if (size.unit == SizeUnit.Pixel) {
+                        return size.physicalSize;
+                    }
+                }
+                catch {
+                    // Ignore error
+                }
+            }
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "Invalid image " + name + ": " + value
+                });    
+        }
+
+        return 0;
+    }
+
     protected get useDefaultSizing() {
         return false;
     }
@@ -1122,18 +1149,44 @@ export class Image extends CardElement {
         this.size = Utils.getEnumValueOrDefault(Enums.Size, json["size"], this.size);
         this.altText = json["altText"];
 
-        var selectActionJson = json["selectAction"];
-
-        if (selectActionJson != undefined) {
-            this.selectAction = createActionInstance(selectActionJson);
-        }
-
+        // pixelWidth and pixelHeight are only parsed for backwards compatibility.
+        // Payloads should use the width and height proerties instead.
         if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
             this.pixelWidth = json["pixelWidth"];
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The pixelWidth property is deprecated and will be removed. Use the width property instead."
+                });
         }
 
         if (json["pixelHeight"] && typeof json["pixelHeight"] === "number") {
             this.pixelHeight = json["pixelHeight"];
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The pixelHeight property is deprecated and will be removed. Use the height property instead."
+                });
+        }
+
+        let size = this.parseDimension("width", json["width"]);
+
+        if (size > 0) {
+            this.pixelWidth = size;
+        }
+
+        size = this.parseDimension("height", json["height"]);
+
+        if (size > 0) {
+            this.pixelHeight = size;
+        }
+
+        var selectActionJson = json["selectAction"];
+
+        if (selectActionJson != undefined) {
+            this.selectAction = createActionInstance(selectActionJson);
         }
     }
 
@@ -3169,6 +3222,36 @@ export class Container extends CardElement {
     }
 }
 
+enum SizeUnit {
+    Weight,
+    Pixel
+}
+
+interface ISize {
+    physicalSize: number;
+    unit: SizeUnit;
+}
+
+function parseSize(size: any): ISize {
+    let result = { physicalSize: 0, unit: SizeUnit.Weight };
+    let regExp = /^([0-9]+)(px|\*)?$/g;
+    let matches = regExp.exec(size);
+
+    if (matches && matches.length >= 2) {
+        result.physicalSize = parseInt(matches[1]);
+
+        if (matches.length == 3) {
+            if (matches[2] == "px") {
+                result.unit = SizeUnit.Pixel;
+            }
+        }
+
+        return result;
+    }
+
+    throw new Error("Invalid size: " + size);
+}
+
 export class Column extends Container {
     private _computedWeight: number = 0;
 
@@ -3222,20 +3305,33 @@ export class Column extends Container {
         var invalidWidth = false;
 
         if (typeof jsonWidth === "number") {
-            if (jsonWidth <= 0) {
+            if (jsonWidth > 0) {
+                this.width = jsonWidth;
+            }
+            else {
                 invalidWidth = true;
             }
         }
         else if (typeof jsonWidth === "string") {
             if (jsonWidth != "auto" && jsonWidth != "stretch") {
-                var sizeAsNumber = parseInt(jsonWidth);
+                let size: ISize;
 
-                if (!isNaN(sizeAsNumber)) {
-                    jsonWidth = sizeAsNumber;
+                try {
+                    let size = parseSize(jsonWidth);
+
+                    if (size.unit == SizeUnit.Pixel) {
+                        this.pixelWidth = size.physicalSize;
+                    }
+                    else {
+                        this.width = size.physicalSize;
+                    }    
                 }
-                else {
+                catch (e) {
                     invalidWidth = true;
                 }
+            }
+            else {
+                this.width = jsonWidth;
             }
         }
         else if (jsonWidth) {
@@ -3248,9 +3344,6 @@ export class Column extends Container {
                     error: Enums.ValidationError.InvalidPropertyValue,
                     message: "Invalid column width: " + jsonWidth
                 });
-        }
-        else {
-            this.width = jsonWidth;
         }
     }
 
