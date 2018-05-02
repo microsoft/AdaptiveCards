@@ -79,11 +79,13 @@ enum class AdaptiveCardSchemaKey
     FontSizes,
     FontWeights,
     Good,
+    Height,
     HorizontalAlignment,
     IconPlacement,
     IconUrl,
     Id,
     Image,
+    ImageBaseUrl,
     Images,
     ImageSet,
     ImageSize,
@@ -194,7 +196,7 @@ enum class ImageSize {
     Stretch,
     Small,
     Medium,
-    Large
+    Large,
 };
 
 enum class TextInputStyle {

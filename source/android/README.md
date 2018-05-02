@@ -36,8 +36,8 @@ If you get a build failure similar to "UnsupportedClassVersionError 52.0" then f
 
 # To add adaptivecards library to new project:
 1. add the following to the build.gradle of a project that will use the library
-    compile 'io.adaptivecards:adaptivecards-android-arm:1.0.0'
-For more information, please go to http://search.maven.org/ and search adaptivecards-android-arm
+    compile 'io.adaptivecards:adaptivecards-android:1.0.1'
+For more information, please go to http://search.maven.org/ and search adaptivecards-android
 TODO:
 1. AdaptiveCard
     a. version

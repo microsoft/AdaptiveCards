@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AdaptiveCardsSample</string>
+    <string name="app_name">AdaptiveCards Visualizer</string>
     <string name="action_settings">Settings</string>
     <string name="load_card">Adaptive Card</string>
     <string name="load_config">Host Config</string>

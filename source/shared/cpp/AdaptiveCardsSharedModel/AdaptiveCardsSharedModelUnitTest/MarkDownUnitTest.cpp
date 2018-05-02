@@ -14,6 +14,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("");
             Assert::AreEqual<string>("<p></p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(false, parser.HasHtmlTags());
         }
     };
 
@@ -33,11 +34,13 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("* foo bar*");
             Assert::AreEqual<string>("<p>* foo bar*</p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(false, parser.HasHtmlTags());
         }
         TEST_METHOD(UnderscoreLeftDelimiterFalseCaseWithSpaceTest)
         {
             MarkDownParser parser("_ foo bar_");
             Assert::AreEqual<string>("<p>_ foo bar_</p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(false, parser.HasHtmlTags());
         }
         TEST_METHOD(LeftDelimiterFalseCaseWithAlphaNumericInfrontAndPuntuationBehind)
         {
@@ -354,42 +357,49 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("[hello(www.naver.com)"); 
             Assert::AreEqual<string>("<p>[hello(www.naver.com)</p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(parser.HasHtmlTags(), false);
         }
 
         TEST_METHOD(InvalidLinkTestWithInvalidEmphasis)
         {
             MarkDownParser parser("*[*hello(www.naver.com)"); 
             Assert::AreEqual<string>("<p>*[*hello(www.naver.com)</p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(parser.HasHtmlTags(), false);
         }
 
         TEST_METHOD(InvalidLinkTestWithValidEmphasis)
         {
             MarkDownParser parser("*[*hello(www.naver.com)*"); 
             Assert::AreEqual<string>("<p>*[<em>hello(www.naver.com)</em></p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(parser.HasHtmlTags(), true);
         }
 
         TEST_METHOD(ValidLinkTestWithUnMatchingBracketsWithChars)
         {
             MarkDownParser parser("[a[b[hello](www.naver.com)"); 
             Assert::AreEqual<string>("<p>[a[b<a href=\"www.naver.com\">hello</a></p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(ValidLinkTestWithUnMatchingBracketsWithCharsAndParenthesis)
         {
             MarkDownParser parser("[[a[b[h(ello](www.naver.com)"); 
             Assert::AreEqual<string>("<p>[[a[b<a href=\"www.naver.com\">h(ello</a></p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(InvalidCharsBetweenLinkTextAndDestination)
         {
             MarkDownParser parser("[hello]a(www.naver.com)");
             Assert::AreEqual<string>("<p>[hello]a(www.naver.com)</p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(false, parser.HasHtmlTags());
         }
 
         TEST_METHOD(OutSideEmphasisAndLinkTest)
         {
             MarkDownParser parser("*[hello](www.naver.com)*"); 
             Assert::AreEqual<string>("<p><em><a href=\"www.naver.com\">hello</a></em></p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(EmphasisAndLinkTextTest)
@@ -456,6 +466,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("Hello\r- my list");
             Assert::AreEqual<string>("<p>Hello</p><ul><li>my list</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
         TEST_METHOD(ListFollowedByPtagedBlockElementTest)
         {
@@ -471,6 +482,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("023-34-567");
             Assert::AreEqual<string>("<p>023-34-567</p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(false, parser.HasHtmlTags());
         }
     };
     TEST_CLASS(OrderedListTest)
@@ -489,6 +501,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("1. hello world - hello hello");
             Assert::AreEqual<string>("<ol start=\"1\"><li>hello world - hello hello</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
         TEST_METHOD(MultipleListWithHyphenTests)
         {
@@ -509,6 +522,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("Hello\r1. my list");
             Assert::AreEqual<string>("<p>Hello</p><ol start=\"1\"><li>my list</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
         TEST_METHOD(ListFollowedByPtagedBlockElementTest)
         {

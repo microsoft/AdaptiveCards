@@ -23,6 +23,8 @@ public:
     std::vector<std::shared_ptr<Image>>& GetImages();
     const std::vector<std::shared_ptr<Image>>& GetImages() const;
 
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+
 private:
     void PopulateKnownPropertiesSet();
 
