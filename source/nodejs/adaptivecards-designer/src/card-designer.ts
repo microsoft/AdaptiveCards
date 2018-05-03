@@ -1764,6 +1764,7 @@ export class CardDesigner {
     }
 
     onSelectedPeerChanged: (peer: DesignerPeer) => void;
+    onLayoutUpdated: () => void;
 
     findDropTarget(pointerPosition: IPoint, peer: DesignerPeer): DesignerPeer {
         return this.internalFindDropTarget(pointerPosition, this._rootPeer, peer);
@@ -1787,6 +1788,10 @@ export class CardDesigner {
     updateLayout() {
         for (var i = 0; i < this._allPeers.length; i++) {
             this._allPeers[i].updateLayout();
+        }
+
+        if (this.onLayoutUpdated) {
+            this.onLayoutUpdated();
         }
     }
 

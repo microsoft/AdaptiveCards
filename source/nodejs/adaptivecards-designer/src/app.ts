@@ -10,13 +10,68 @@ import { adaptiveCardSchema } from "./adaptive-card-schema";
 
 declare var monacoEditor: any;
 
+function monacoEditorLoaded() {
+    monacoEditor.onDidChangeModelContent(
+        function (e) {
+            scheduleCardRefresh();
+        });
+
+    updateJsonFromCard();
+}
+
+var jsonUpdateTimer: NodeJS.Timer;
+var cardUpdateTimer: NodeJS.Timer;
+
+var preventCardUpdate: boolean = false;
+
+function updateJsonFromCard() {
+    try {    
+        preventCardUpdate = true;
+
+        if (!preventJsonUpdate) {
+            monacoEditor.setValue(JSON.stringify(app.card.toJSON(), null, 4));
+        }
+    }
+    finally {
+        preventCardUpdate = false;
+    }
+}
+
+function scheduleJsonUpdate() {
+    clearTimeout(jsonUpdateTimer);
+
+    if (!preventJsonUpdate) {
+        jsonUpdateTimer = setTimeout(updateJsonFromCard, 100);
+    }
+}
+
+var preventJsonUpdate: boolean = false;
+
+function updateCardFromJson() {
+    try {
+        preventJsonUpdate = true;
+
+        if (!preventCardUpdate) {
+            app.card.parse(JSON.parse(monacoEditor.getValue()));
+            app.designer.render();
+        }
+    }
+    finally {
+        preventJsonUpdate = false;
+    }
+}
+
+function scheduleCardRefresh() {
+    clearTimeout(cardUpdateTimer);
+
+    if (!preventCardUpdate) {
+        cardUpdateTimer = setTimeout(updateCardFromJson, 200);
+    }
+}
+
 // Monaco loads asynchronously via a call to require() from index.html
 // App initialization needs to happen after.
 declare function loadMonacoEditor(schema: any, callback: () => void);
-
-function monacoEditorLoaded() {
-    monacoEditor.setValue(JSON.stringify(app.card.toJSON(), null, 4));
-}
 
 class PaletteItem extends Designer.DraggableElement {
     protected internalRender(): HTMLElement {
@@ -174,6 +229,7 @@ class DesignerApp {
         this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
             this.buildPropertySheet(peer);
         };
+        this._designer.onLayoutUpdated = () => { scheduleJsonUpdate(); };
 
         this.buildPalette();
         this.buildPropertySheet(null);
@@ -261,10 +317,6 @@ class DesignerApp {
         this.designer.endDrag();
     }
 
-    updateLayout() {
-        this._designer.updateLayout();
-    }
-
     get paletteHostElement(): HTMLElement {
         return this._paletteHostElement;
     }
@@ -301,11 +353,61 @@ class DesignerApp {
     }
 }
 
+class Splitter {
+    private _splitterElement: HTMLElement;
+    private _sizedELement: HTMLElement;
+    private _isPointerDown: boolean;
+    private _lastClickedOffsetY: number;
+
+    private pointerDown(e: PointerEvent) {
+        e.preventDefault();
+    
+        this._splitterElement.setPointerCapture(e.pointerId);
+
+        this._lastClickedOffsetY = e.y;
+
+        this._isPointerDown = true;
+    }
+    
+    private pointerMove(e: PointerEvent) {
+        if (this._isPointerDown) {
+            e.preventDefault();
+            document.getElementById("message").innerText = "offsetY: " + e.y;
+            
+            this._sizedELement.style.height = (this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffsetY)) + "px";
+
+            monacoEditor.layout();
+
+            this._lastClickedOffsetY = e.y;
+        }
+    }
+    
+    private pointerUp(e: PointerEvent) {
+        e.preventDefault();
+    
+        this._splitterElement.releasePointerCapture(e.pointerId);
+
+        this._isPointerDown = false;
+    }
+
+    constructor(splitterElement: HTMLElement, sizedElement: HTMLElement) {
+        this._splitterElement = splitterElement;
+        this._sizedELement = sizedElement;
+
+        this._splitterElement.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
+        this._splitterElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
+        this._splitterElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
+        this._splitterElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
+    }    
+}
+
 var app: DesignerApp;
+var horizontalSplitter: Splitter;
 
 window.onload = () => {
-    var card = new Adaptive.AdaptiveCard();
-    card.designMode = true;
+    horizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
+
+    let card = new Adaptive.AdaptiveCard();
     card.parse(JSON.parse(Constants.defaultPayload));
 
     app = new DesignerApp(document.getElementById("designerHost"));
