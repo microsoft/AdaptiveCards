@@ -4,6 +4,9 @@
         <script src="dist/adaptivecards-designer.js"></script>
         <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
     
+        <script src="src/monaco-editor/min/vs/loader.js"></script>
+        <script src="src/monaco-loader.js"></script>
+    
         <link rel="stylesheet" href="css/app.css" type="text/css" />
         <link rel="stylesheet" href="css/card-designer.css" type="text/css" />
         <link rel="stylesheet" href="css/adaptivecards-controls.css" type="text/css"/>
@@ -26,6 +29,7 @@
                     <div id="propertySheetHost" style="width: 100%;"></div>
                 </div>
             </div>
+            <div id="jsonEditorHost" style="flex: 0 0 300px; border-top: 1px solid #EEEEEE; overflow: hidden;"></div>
         </div>
     </body>
 </html>

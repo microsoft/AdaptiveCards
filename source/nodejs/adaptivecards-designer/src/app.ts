@@ -6,6 +6,17 @@ import { HostContainer } from "./containers/host-container";
 import { OutlookContainer } from "./containers/outlook-container";
 import { CortanaContainer } from "./containers/cortana-container";
 import { SkypeContainer } from "./containers/skype-container";
+import { adaptiveCardSchema } from "./adaptive-card-schema";
+
+declare var monacoEditor: any;
+
+// Monaco loads asynchronously via a call to require() from index.html
+// App initialization needs to happen after.
+declare function loadMonacoEditor(schema: any, callback: () => void);
+
+function monacoEditorLoaded() {
+    monacoEditor.setValue(JSON.stringify(app.card.toJSON(), null, 4));
+}
 
 class PaletteItem extends Designer.DraggableElement {
     protected internalRender(): HTMLElement {
@@ -309,4 +320,6 @@ window.onload = () => {
     window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
 
     app.card = card;
+
+    loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 };
