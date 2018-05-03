@@ -38,7 +38,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace AdaptiveNamespace;
-using namespace Windows::Foundation;
+using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
 HRESULT WStringToHString(const std::wstring& in, HSTRING* out)
@@ -745,14 +745,19 @@ std::string WstringToString(const std::wstring& input)
 
 HRESULT AssignImageFromUrl(const std::string& url, HSTRING* uri, boolean* isUriRelative)
 {
-    std::wstring imageUri = StringToWstring(url);
-    if (!imageUri.empty())
+    if (!url.empty())
     {
-        //RETURN_IF_FAILED(UTF8ToHString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(imageUri), uri.GetAddressOf()));
-        RETURN_IF_FAILED(WStringToHString(imageUri, uri));
+        RETURN_IF_FAILED(WStringToHString(StringToWstring(url), uri));
 
-        // TODO: Find a better/safer way to determine if URI is relative
-        *isUriRelative = (int32_t)imageUri.find(L"://") == -1;
+        // Try treating uri as absolute and activating it
+        // If it fails, consider it relative
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        THROW_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        ComPtr<IUriRuntimeClass> testImageUriRuntime;
+        *isUriRelative = FAILED(uriActivationFactory->CreateUri(*uri, testImageUriRuntime.GetAddressOf()));
     }
 
     return S_OK;
