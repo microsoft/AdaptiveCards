@@ -33,9 +33,10 @@ AdaptiveNamespaceStart
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
+        m_width = sharedImage->GetWidth();
+        m_height = sharedImage->GetHeight();
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
-
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImage));
@@ -93,6 +94,34 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveImage::put_Size(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_Width(UINT32* width)
+    {
+        *width = m_width;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_Width(UINT32 width)
+    {
+        m_width = width;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_Height(UINT32* height)
+    {
+        *height = m_height;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_Height(UINT32 height)
+    {
+        m_height = height;
         return S_OK;
     }
 
@@ -168,6 +197,8 @@ AdaptiveNamespaceStart
             
         image->SetImageStyle(static_cast<AdaptiveSharedNamespace::ImageStyle>(m_imageStyle));
         image->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
+        image->SetHeight(m_height);
+        image->SetWidth(m_width);
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         sharedImage = image;

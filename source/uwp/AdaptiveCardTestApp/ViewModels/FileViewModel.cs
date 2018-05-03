@@ -41,6 +41,7 @@ namespace AdaptiveCardTestApp.ViewModels
             }
 
             answer.Contents = await FileIO.ReadTextAsync(file);
+            answer.Contents = answer.Contents.Replace("\r\n", "\n");
             answer.Hash = ToSha1(answer.Contents).Substring(0, 7);
 
             return answer;

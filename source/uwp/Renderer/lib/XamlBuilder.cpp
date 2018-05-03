@@ -439,7 +439,8 @@ AdaptiveNamespaceStart
     template<typename T>
     void XamlBuilder::SetImageSource(
         T* destination,
-        IImageSource* imageSource)
+        IImageSource* imageSource,
+        ABI::Windows::UI::Xaml::Media::Stretch stretch)
     {
         THROW_IF_FAILED(destination->put_Source(imageSource));
     };
@@ -448,14 +449,15 @@ AdaptiveNamespaceStart
     template<>
     void XamlBuilder::SetImageSource<IEllipse>(
         IEllipse* destination,
-        IImageSource* imageSource)
+        IImageSource* imageSource,
+        ABI::Windows::UI::Xaml::Media::Stretch stretch)
     {
         ComPtr<IImageBrush> imageBrush = XamlHelpers::CreateXamlClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
         THROW_IF_FAILED(imageBrush->put_ImageSource(imageSource));
 
         ComPtr<ITileBrush> tileBrush;
         THROW_IF_FAILED(imageBrush.As(&tileBrush));
-        THROW_IF_FAILED(tileBrush->put_Stretch(Stretch_UniformToFill));
+        THROW_IF_FAILED(tileBrush->put_Stretch(stretch));
 
         ComPtr<IBrush> brush;
         THROW_IF_FAILED(imageBrush.As(&brush));
@@ -471,7 +473,9 @@ AdaptiveNamespaceStart
     void XamlBuilder::SetImageOnUIElement(
         _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri,
         T* uiElement,
-        IAdaptiveCardResourceResolvers* resolvers)
+        IAdaptiveCardResourceResolvers* resolvers,
+        _In_ ABI::Windows::UI::Xaml::Media::Stretch stretch
+        )
     {
         // Get the image url scheme
         HString schemeName;
@@ -509,7 +513,7 @@ AdaptiveNamespaceStart
                 ComPtr<T> strongImageControl(uiElement);
                 ComPtr<XamlBuilder> strongThis(this);
                 THROW_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
-                    ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
+                    ([strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
                 {
                     if (status == AsyncStatus::Completed)
                     {
@@ -528,7 +532,7 @@ AdaptiveNamespaceStart
                         ComPtr<IImageSource> imageSource;
                         RETURN_IF_FAILED(bitmapSource.As(&imageSource));
 
-                        SetImageSource(strongImageControl.Get(), imageSource.Get());
+                        SetImageSource(strongImageControl.Get(), imageSource.Get(), stretch);
                         return S_OK;
                     }
                     else
@@ -552,7 +556,7 @@ AdaptiveNamespaceStart
 
             ComPtr<IImageSource> bitmapImageSource;
             THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
-            SetImageSource(uiElement, bitmapImageSource.Get());
+            SetImageSource(uiElement, bitmapImageSource.Get(), stretch);
         }
         else
         {
@@ -1526,20 +1530,30 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
 
+        UINT32 explicitWidth = 0, explicitHeight = 0;
+        THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
+        THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
+        bool isAspectRatioNeeded = (explicitWidth  && explicitHeight);
+
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
         {
             ComPtr<IEllipse> ellipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
-            SetImageOnUIElement(imageUri.Get(), ellipse.Get(), resourceResolvers.Get());
+
+            Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
+            SetImageOnUIElement(imageUri.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
 
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
+
             // Set Auto, None, and Stretch to Stretch_UniformToFill. An ellipse set to Stretch_Uniform ends up with size 0.
             if (size == ABI::AdaptiveNamespace::ImageSize::None ||
                 size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
-                size == ABI::AdaptiveNamespace::ImageSize::Auto)
+                size == ABI::AdaptiveNamespace::ImageSize::Auto ||
+                explicitWidth ||
+                explicitHeight)
             {
-                THROW_IF_FAILED(ellipseAsShape->put_Stretch(Stretch::Stretch_UniformToFill));
+                THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
             }
 
             ComPtr<IInspectable> parentElement;
@@ -1580,6 +1594,11 @@ AdaptiveNamespaceStart
             SetImageOnUIElement(imageUri.Get(), xamlImage.Get(), resourceResolvers.Get());
             THROW_IF_FAILED(xamlImage.As(&frameworkElement));
 
+            if(isAspectRatioNeeded)
+            {
+                xamlImage->put_Stretch(Stretch::Stretch_Fill);
+            }
+
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
             if (parentElement != nullptr &&
@@ -1610,36 +1629,51 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
         THROW_IF_FAILED(hostConfig->get_ImageSizes(sizeOptions.GetAddressOf()));
 
-        switch (size)
+        if(explicitWidth || explicitHeight)
         {
-            case ABI::AdaptiveNamespace::ImageSize::Small:
+            if(explicitWidth) 
             {
-                UINT32 imageSize;
-                THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
-
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
-                break;
+                THROW_IF_FAILED(frameworkElement->put_Width(explicitWidth));
             }
 
-            case ABI::AdaptiveNamespace::ImageSize::Medium:
-            {
-                UINT32 imageSize;
-                THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
-
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
-                break;
+            if(explicitHeight)
+            { 
+                THROW_IF_FAILED(frameworkElement->put_Height(explicitHeight));
             }
-
-            case ABI::AdaptiveNamespace::ImageSize::Large:
+        }
+        else
+        {
+            switch (size)
             {
-                UINT32 imageSize;
-                THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
+                case ABI::AdaptiveNamespace::ImageSize::Small:
+                {
+                    UINT32 imageSize;
+                    THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
 
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
-                break;
+                    THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                    THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                    break;
+                }
+
+                case ABI::AdaptiveNamespace::ImageSize::Medium:
+                {
+                    UINT32 imageSize;
+                    THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
+
+                    THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                    THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                    break;
+                }
+
+                case ABI::AdaptiveNamespace::ImageSize::Large:
+                {
+                    UINT32 imageSize;
+                    THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
+
+                    THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                    THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                    break;
+                }
             }
         }
 
@@ -1977,10 +2011,11 @@ AdaptiveNamespaceStart
 
         ComPtr<IColumnDefinition> titleColumn = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
         ComPtr<IColumnDefinition> valueColumn = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-        GridLength factSetGridLength = { 0, GridUnitType::GridUnitType_Auto };
+        GridLength factSetGridTitleLength = { 0, GridUnitType::GridUnitType_Auto };
+        GridLength factSetGridValueLength = { 1, GridUnitType::GridUnitType_Star };
 
-        THROW_IF_FAILED(titleColumn->put_Width(factSetGridLength));
-        THROW_IF_FAILED(valueColumn->put_Width(factSetGridLength));
+        THROW_IF_FAILED(titleColumn->put_Width(factSetGridTitleLength));
+        THROW_IF_FAILED(valueColumn->put_Width(factSetGridValueLength));
         ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
         THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
         THROW_IF_FAILED(columnDefinitions->Append(titleColumn.Get()));
@@ -1989,10 +2024,10 @@ AdaptiveNamespaceStart
         ComPtr<IVector<IAdaptiveFact*>> facts;
         THROW_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
         int currentFact = 0;
-        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [xamlGrid, gridStatics, factSetGridLength, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
+        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [xamlGrid, gridStatics, factSetGridTitleLength, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
         {
             ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
-            THROW_IF_FAILED(factRow->put_Height(factSetGridLength));
+            THROW_IF_FAILED(factRow->put_Height(factSetGridTitleLength));
 
             ComPtr<IVector<RowDefinition*>> rowDefinitions;
             THROW_IF_FAILED(xamlGrid->get_RowDefinitions(&rowDefinitions));
@@ -2703,7 +2738,7 @@ AdaptiveNamespaceStart
         }
         else
         {
-            if (!supportsInteractivity)
+            if (selectAction != nullptr)
             {
                 renderContext->AddWarning(
                     ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,

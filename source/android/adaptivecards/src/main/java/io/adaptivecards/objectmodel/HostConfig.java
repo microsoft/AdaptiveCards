@@ -69,6 +69,14 @@ public class HostConfig {
     return AdaptiveCardObjectModelJNI.HostConfig_supportsInteractivity_get(swigCPtr, this);
   }
 
+  public void setImageBaseUrl(String value) {
+    AdaptiveCardObjectModelJNI.HostConfig_imageBaseUrl_set(swigCPtr, this, value);
+  }
+
+  public String getImageBaseUrl() {
+    return AdaptiveCardObjectModelJNI.HostConfig_imageBaseUrl_get(swigCPtr, this);
+  }
+
   public void setImageSizes(ImageSizesConfig value) {
     AdaptiveCardObjectModelJNI.HostConfig_imageSizes_set(swigCPtr, this, ImageSizesConfig.getCPtr(value), value);
   }

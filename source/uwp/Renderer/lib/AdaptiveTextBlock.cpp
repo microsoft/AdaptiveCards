@@ -190,8 +190,11 @@ AdaptiveNamespaceStart
         textBlock->SetText(text);
 
         std::string language;
-        RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
-        textBlock->SetLanguage(language);
+        if (!(WindowsIsStringEmpty(m_language.Get())))
+        {
+            RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
+            textBlock->SetLanguage(language);
+        }
 
         sharedTextBlock = textBlock;
         return S_OK;

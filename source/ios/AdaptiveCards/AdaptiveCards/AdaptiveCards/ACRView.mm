@@ -21,6 +21,7 @@
 #import "MarkDownParser.h"
 #import "ImageSet.h"
 #import "ACRUILabel.h"
+#import "FactSet.h"
 
 using namespace AdaptiveCards;
 
@@ -34,7 +35,7 @@ using namespace AdaptiveCards;
     dispatch_queue_t _serial_queue;
     dispatch_queue_t _serial_text_queue;
     int _serialNumber;
-    std::list<const void*> _asyncRenderedElements;
+    int _numberOfRunningTasks;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -49,6 +50,7 @@ using namespace AdaptiveCards;
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", DISPATCH_QUEUE_SERIAL);
         _serial_text_queue = dispatch_queue_create("io.adaptiveCards.serial_text_queue", DISPATCH_QUEUE_SERIAL);
         _serialNumber = 0;
+        _seenAllElements = NO;
     }
     return self;
 }
@@ -119,22 +121,20 @@ using namespace AdaptiveCards;
     return newView;
 }
 
-- (void)addToAsyncRenderingList:(std::shared_ptr<void> const &)elem
+- (void)addToAsyncRenderingList
 {
-    _asyncRenderedElements.push_back(elem.get());
+    ++_numberOfRunningTasks;
 }
 
-- (void)removeFromAsyncRenderingListAndNotifyIfNeeded:(std::shared_ptr<void> const &)elem
+- (void)removeFromAsyncRenderingListAndNotifyIfNeeded
 {
-    _asyncRenderedElements.remove(elem.get());
-
+    --_numberOfRunningTasks;
     [self callDidLoadElementsIfNeeded];
 }
 
 - (void)callDidLoadElementsIfNeeded
 {
-    if (_asyncRenderedElements.size() == 0)
-    {
+    if (!_numberOfRunningTasks && _seenAllElements == YES){
         // Call back app with didLoadElements
         if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)])
         {
@@ -152,84 +152,52 @@ using namespace AdaptiveCards;
         {
             case CardElementType::TextBlock:
             {
-                [self addToAsyncRenderingList:elem];
+                std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
+                TextConfig textConfig =
+                {
+                    .weight = textBlockElement->GetTextWeight(),
+                    .size = textBlockElement->GetTextSize(),
+                    .color = textBlockElement->GetTextColor(),
+                    .isSubtle = textBlockElement->GetIsSubtle(),
+                    .wrap = textBlockElement->GetWrap()
+                };
 
                 /// tag a base card element with unique key
                 [self tagBaseCardElement:elem];
-                /// dispatch to concurrent queue
-                std::shared_ptr<TextBlock> txtElem = std::dynamic_pointer_cast<TextBlock>(elem);
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                    ^{
-                        std::string dateParsedString = [ACOHostConfig getLocalizedDate:txtElem];
-                        // MarkDownParser transforms text with MarkDown to a html string
-                        std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(dateParsedString.c_str());
-                        NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
-                        // if correctly initialized, fonFamilyNames array is bigger than zero
-                        NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-                        for(NSUInteger index = 0; index < [_hostConfig.fontFamilyNames count] - 1; ++index){
-                            [fontFamilyName appendString:_hostConfig.fontFamilyNames[index]];
-                            [fontFamilyName appendString:@"', '"];
-                        }
-                        [fontFamilyName appendString:_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
-                        [fontFamilyName appendString:@"'"];
+                NSString *key = [NSString stringWithCString:textBlockElement->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+                std::string text;
+                [self processTextConcurrently:textBlockElement
+                                  elementType:CardElementType::TextBlock
+                                   textConfig:textConfig
+                          horizontalAlignment:textBlockElement->GetHorizontalAlignment()
+                                    elementId:key
+                                         text:text];
+                break;
+            }
+            case CardElementType::FactSet:
+            {
+                [self tagBaseCardElement:elem];
+                std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
+                NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+                key = [key stringByAppendingString:@"*"];
+                int rowFactId = 0;
+                for(auto fact : factSet->GetFacts()) {
+                    std::string title = fact->GetTitle();
+                    [self processTextConcurrently:elem
+                                      elementType:CardElementType::FactSet
+                                       textConfig:[_hostConfig getHostConfig]->factSet.title
+                              horizontalAlignment:HorizontalAlignment::Left
+                                        elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
+                                             text:title];
 
-                        // Font and text size are applied as CSS style by appending it to the html string
-                        const int fontWeight = [_hostConfig getTextBlockFontWeight:txtElem->GetTextWeight()];
-                        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
-                                                                              fontFamilyName,
-                                                                              [_hostConfig getTextBlockTextSize:txtElem->GetTextSize()],
-                                                                              fontWeight]];
-                        // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
-                        NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-                        NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-
-                        dispatch_async(dispatch_get_main_queue(),
-                             ^{
-                                  // Initializing NSMutableAttributedString for HTML rendering is very slow
-                                  NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
-
-                                  __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
-                                  NSString *key = [NSString stringWithCString:txtElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-                                  // syncronize access to text map
-                                  dispatch_sync(_serial_text_queue,
-                                      ^{
-                                           // UILabel is not ready, cashe UILabel
-                                           if(!_textMap[key]) {
-                                               _textMap[key] = content;
-                                           } // UILable is ready, get label
-                                           else {
-                                               lab = _textMap[key];
-                                           }
-                                      });
-
-                                   // if a label is available, set NSAttributedString to it
-                                  if(lab) {
-                                      // Set paragraph style such as line break mode and alignment
-                                      NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-                                      paragraphStyle.lineBreakMode = txtElem->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
-                                      paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtElem->GetHorizontalAlignment()];
-
-                                      // Obtain text color to apply to the attributed string
-                                      ACRContainerStyle style = lab.style;
-                                      ColorsConfig &colorConfig = (style == ACREmphasis)? [_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
-                                                                                                             [_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
-                                      // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-                                      [content addAttributes:@{
-                                                               NSParagraphStyleAttributeName:paragraphStyle,
-                                                               NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtElem->GetTextColor() colorsConfig:colorConfig subtleOption:txtElem->GetIsSubtle()],
-                                                               }
-                                                       range:NSMakeRange(0, content.length - 1)];
-                                      lab.attributedText = content;
-                                      // remove tag
-                                      std::string id = txtElem->GetId();
-                                      std::size_t idx = id.find_last_of('_');
-                                      txtElem->SetId(id.substr(0, idx));
-                                  }
-
-                                  [self removeFromAsyncRenderingListAndNotifyIfNeeded:txtElem];
-                              });
-                         }
-                );
+                    std::string value = fact->GetValue();
+                    [self processTextConcurrently:elem
+                                      elementType:CardElementType::FactSet
+                                       textConfig:[_hostConfig getHostConfig]->factSet.value
+                              horizontalAlignment:HorizontalAlignment::Left
+                                        elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
+                                             text:fact->GetValue()];
+                }
                 break;
             }
             case CardElementType::Image:
@@ -304,9 +272,107 @@ using namespace AdaptiveCards;
     }
 }
 
+- (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
+                    elementType:(CardElementType)elementType
+                     textConfig:(TextConfig const &)textConfig
+            horizontalAlignment:(HorizontalAlignment)horizontalAlignment
+                      elementId:(NSString *)elementId
+                           text:(std::string  const &)text
+{
+    [self addToAsyncRenderingList];
+    std::shared_ptr<BaseCardElement> textElementForBlock = textElement;
+    struct TextConfig textConfigForBlock = textConfig;
+    std::string textForBlock = text;
+    CardElementType elementTypeForBlock = elementType;
+
+    /// dispatch to concurrent queue
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+        ^{
+            NSString* parsedString = nil;
+            if(CardElementType::TextBlock == elementTypeForBlock){
+                std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
+                // MarkDownParser transforms text with MarkDown to a html string
+                std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement].c_str());
+                parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+            } else {
+                std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(textForBlock.c_str());
+                parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+            }
+
+            // if correctly initialized, fonFamilyNames array is bigger than zero
+            NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
+            for(NSUInteger index = 0; index < [_hostConfig.fontFamilyNames count] - 1; ++index){
+                [fontFamilyName appendString:_hostConfig.fontFamilyNames[index]];
+                [fontFamilyName appendString:@"', '"];
+            }
+            [fontFamilyName appendString:_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
+            [fontFamilyName appendString:@"'"];
+
+            // Font and text size are applied as CSS style by appending it to the html string
+            parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
+                                                                  fontFamilyName,
+                                                                  [_hostConfig getTextBlockTextSize:textConfigForBlock.size],
+                                                                  [_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
+            // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
+            NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+            NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
+
+            dispatch_async(dispatch_get_main_queue(),
+                 ^{
+                      // Initializing NSMutableAttributedString for HTML rendering is very slow
+                      NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+
+                      __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
+                      // synchronize access to text map
+                      dispatch_sync(_serial_text_queue,
+                          ^{
+                               // UILabel is not ready, cache UILabel
+                               if(!_textMap[elementId]) {
+                                   _textMap[elementId] = content;
+                               } // UILable is ready, get labeltextBlockElement
+                               else {
+                                   lab = _textMap[elementId];
+                               }
+                          });
+
+                       // if a label is available, set NSAttributedString to it
+                      if(lab) {
+                          // Set paragraph style such as line break mode and alignment
+                          NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                          paragraphStyle.lineBreakMode = textConfigForBlock.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+                          paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:horizontalAlignment];
+
+                          // Obtain text color to apply to the attributed string
+                          ACRContainerStyle style = lab.style;
+                          ColorsConfig &colorConfig = (style == ACREmphasis)? [_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
+                                                                                                 [_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
+                          // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
+                          [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfigForBlock.color colorsConfig:colorConfig subtleOption:textConfigForBlock.isSubtle],} range:NSMakeRange(0, content.length)];
+                          lab.attributedText = content;
+                          if(CardElementType::FactSet == elementTypeForBlock) {
+                              CGSize size = lab.intrinsicContentSize;
+                              if(lab.isTitle && (size.width > [_hostConfig getHostConfig]->factSet.title.maxWidth)) {
+                                  NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:[_hostConfig getHostConfig]->factSet.title.maxWidth];
+                                  constraint.active = YES;
+                              }
+                          }
+
+                          // remove tag
+                          std::string id = textElementForBlock->GetId();
+                          std::size_t idx = id.find_last_of('_');
+                          if(std::string::npos != idx){
+                              textElementForBlock->SetId(id.substr(0, idx));
+                          }
+                      }
+                      [self removeFromAsyncRenderingListAndNotifyIfNeeded];
+                  });
+             }
+    );
+}
+
 - (void)processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
 {
-    [self addToAsyncRenderingList:imageElem];
+    [self addToAsyncRenderingList];
 
     /// generate a string key to uniquely identify Image
     std::shared_ptr<Image> imgElem = imageElem;
@@ -326,10 +392,10 @@ using namespace AdaptiveCards;
              dispatch_async(dispatch_get_main_queue(),
                  ^{
                       __block UIImageView *view = nil;
-                      // syncronize access to image map
+                      // synchronize access to image map
                       dispatch_sync(_serial_queue,
                           ^{
-                               if(!_imageViewMap[key]) {// UIImageView is not ready, cashe UIImage
+                               if(!_imageViewMap[key]) {// UIImageView is not ready, cache UIImage
                                    _imageViewMap[key] = img;
                                } else {// UIImageView ready, get view
                                    view = _imageViewMap[key];
@@ -369,7 +435,7 @@ using namespace AdaptiveCards;
                           imgElem->SetId(id.substr(0, idx));
                       }
 
-                      [self removeFromAsyncRenderingListAndNotifyIfNeeded:imgElem];
+                      [self removeFromAsyncRenderingListAndNotifyIfNeeded];
                   });
              }
     );
@@ -377,10 +443,10 @@ using namespace AdaptiveCards;
 
 - (void)processActionWithIconConcurrently:(std::shared_ptr<BaseActionElement> const &)action
 {
-    [self addToAsyncRenderingList:action];
-    
+    [self addToAsyncRenderingList];
+
     std::shared_ptr<BaseActionElement> act = action;
-    
+
     /// generate a string key to uniquely identify Image
     if(!(act->GetIconUrl().empty()))
     {
@@ -391,16 +457,16 @@ using namespace AdaptiveCards;
                 // generate key for imageMap from image element's id
                 NSString *key = [NSString stringWithCString:act->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                 NSURL *url = [NSURL URLWithString:urlStr];
-                
+
                 // download image
                 UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
                 UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
-                
+
                 // UITask can't be run on global queue, add task to main queue
                 dispatch_async(dispatch_get_main_queue(),
                     ^{
                         __block UIButton *button = nil;
-                        // syncronize access to image map
+                        // synchronize access to image map
                         dispatch_sync(_serial_queue,
                             ^{
                                 if(!_actionsMap[key]) // UIButton is not ready, cache UIImageView
@@ -412,19 +478,19 @@ using namespace AdaptiveCards;
                                     button = _actionsMap[key];
                                 }
                             });
-                        
+
                         // if view is available, set image to it, and continue image processing
                         if(button)
                         {
                             [ACRView setImageView:imageView inButton:button withConfig:_hostConfig];
-                            
+
                             // remove tag
                             std::string id = act->GetId();
                             std::size_t idx = id.find_last_of('_');
                             act->SetId(id.substr(0, idx));
                         }
-                                          
-                        [self removeFromAsyncRenderingListAndNotifyIfNeeded:act];
+
+                        [self removeFromAsyncRenderingListAndNotifyIfNeeded];
                     });
                 }
             );
@@ -486,7 +552,7 @@ using namespace AdaptiveCards;
     CGSize originalImageSize = [imageView intrinsicContentSize];
     double scaleRatio = imageHeight / originalImageSize.height;
     double imageWidth = scaleRatio * originalImageSize.width;
-    
+
     IconPlacement iconPlacement = [config getHostConfig]->actions.iconPlacement;
     if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle)
     {
