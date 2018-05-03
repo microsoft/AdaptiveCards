@@ -372,7 +372,6 @@ class Splitter {
     private pointerMove(e: PointerEvent) {
         if (this._isPointerDown) {
             e.preventDefault();
-            document.getElementById("message").innerText = "offsetY: " + e.y;
             
             this._sizedELement.style.height = (this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffsetY)) + "px";
 
