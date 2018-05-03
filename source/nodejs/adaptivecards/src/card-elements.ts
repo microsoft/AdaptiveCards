@@ -89,6 +89,37 @@ export interface IValidationError {
     message: string;
 }
 
+export class SizeAndUnit {
+    physicalSize: number;
+    unit: Enums.SizeUnit;
+
+    static parse(input: any): SizeAndUnit {
+        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
+
+        let regExp = /^([0-9]+)(px|\*)?$/g;
+        let matches = regExp.exec(input);
+    
+        if (matches && matches.length >= 2) {
+            result.physicalSize = parseInt(matches[1]);
+    
+            if (matches.length == 3) {
+                if (matches[2] == "px") {
+                    result.unit = Enums.SizeUnit.Pixel;
+                }
+            }
+    
+            return result;
+        }
+    
+        throw new Error("Invalid size: " + input);
+    }
+
+    constructor(physicalSize: number, unit: Enums.SizeUnit) {
+        this.physicalSize = physicalSize;
+        this.unit = unit;
+    }
+}
+
 export abstract class CardElement {
     private _lang: string = undefined;
     private _hostConfig?: HostConfig.HostConfig = null;
@@ -981,12 +1012,10 @@ export class Image extends CardElement {
     private parseDimension(name: string, value: any): number {
         if (value) {
             if (typeof value === "string") {
-                let size: ISize;
-                
                 try {
-                    size = parseSize(value);
+                    let size = SizeAndUnit.parse(value);
 
-                    if (size.unit == SizeUnit.Pixel) {
+                    if (size.unit == Enums.SizeUnit.Pixel) {
                         return size.physicalSize;
                     }
                 }
@@ -1108,6 +1137,7 @@ export class Image extends CardElement {
     backgroundColor: string;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
+    width: SizeAndUnit;
     pixelWidth?: number = null;
     pixelHeight?: number = null;
     altText: string = "";
@@ -3222,55 +3252,26 @@ export class Container extends CardElement {
     }
 }
 
-enum SizeUnit {
-    Weight,
-    Pixel
-}
-
-interface ISize {
-    physicalSize: number;
-    unit: SizeUnit;
-}
-
-function parseSize(size: any): ISize {
-    let result = { physicalSize: 0, unit: SizeUnit.Weight };
-    let regExp = /^([0-9]+)(px|\*)?$/g;
-    let matches = regExp.exec(size);
-
-    if (matches && matches.length >= 2) {
-        result.physicalSize = parseInt(matches[1]);
-
-        if (matches.length == 3) {
-            if (matches[2] == "px") {
-                result.unit = SizeUnit.Pixel;
-            }
-        }
-
-        return result;
-    }
-
-    throw new Error("Invalid size: " + size);
-}
-
 export class Column extends Container {
     private _computedWeight: number = 0;
 
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         renderedElement.style.minWidth = "0";
 
-        if (this.pixelWidth > 0) {
-            renderedElement.style.flex = "0 0 " + this.pixelWidth + "px";
-        }
-        else {
-            if (typeof this.width === "number") {
-                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
-            }
-            else if (this.width === "auto") {
-                renderedElement.style.flex = "0 1 auto";
+        if (this.width instanceof SizeAndUnit) {
+            if (this.width.unit == Enums.SizeUnit.Pixel) {
+                renderedElement.style.flex = "0 0 " + this.width.physicalSize + "px";
             }
             else {
-                renderedElement.style.flex = "1 1 50px";
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width.physicalSize) + "%";
             }
+        }
+        else if (this.width === "auto") {
+            renderedElement.style.flex = "0 1 auto";
+        }
+        else {
+            // Stretch
+            renderedElement.style.flex = "1 1 50px";
         }
     }
 
@@ -3278,8 +3279,7 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    width: number | "auto" | "stretch" = "auto";
-    pixelWidth: number = 0;
+    width: SizeAndUnit | "auto" | "stretch" = "auto";
 
     getJsonTypeName(): string {
         return "Column";
@@ -3306,7 +3306,7 @@ export class Column extends Container {
 
         if (typeof jsonWidth === "number") {
             if (jsonWidth > 0) {
-                this.width = jsonWidth;
+                this.width = new SizeAndUnit(jsonWidth, Enums.SizeUnit.Weight);
             }
             else {
                 invalidWidth = true;
@@ -3314,17 +3314,8 @@ export class Column extends Container {
         }
         else if (typeof jsonWidth === "string") {
             if (jsonWidth != "auto" && jsonWidth != "stretch") {
-                let size: ISize;
-
                 try {
-                    let size = parseSize(jsonWidth);
-
-                    if (size.unit == SizeUnit.Pixel) {
-                        this.pixelWidth = size.physicalSize;
-                    }
-                    else {
-                        this.width = size.physicalSize;
-                    }    
+                    this.width = SizeAndUnit.parse(jsonWidth);
                 }
                 catch (e) {
                     invalidWidth = true;
@@ -3403,29 +3394,29 @@ export class ColumnSet extends CardElement {
 
             var totalWeight: number = 0;
 
-            for (let i = 0; i < this._columns.length; i++) {
-                if (typeof this._columns[i].width === "number") {
-                    totalWeight += <number>this._columns[i].width;
+            for (let column of this._columns) {
+                if (column.width instanceof SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
+                    totalWeight += column.width.physicalSize;
                 }
             }
 
             var renderedColumnCount: number = 0;
 
-            for (let i = 0; i < this._columns.length; i++) {
-                if (typeof this._columns[i].width === "number" && totalWeight > 0) {
-                    var computedWeight = 100 / totalWeight * <number>this._columns[i].width;
+            for (let column of this._columns) {
+                if (column.width instanceof SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
+                    var computedWeight = 100 / totalWeight * column.width.physicalSize;
 
                     // Best way to emulate "internal" access I know of
-                    this._columns[i]["_computedWeight"] = computedWeight;
+                    column["_computedWeight"] = computedWeight;
                 }
 
-                var renderedColumn = this._columns[i].render();
+                var renderedColumn = column.render();
 
                 if (renderedColumn) {
-                    if (renderedColumnCount > 0 && this._columns[i].separatorElement) {
-                        this._columns[i].separatorElement.style.flex = "0 0 auto";
+                    if (renderedColumnCount > 0 && column.separatorElement) {
+                        column.separatorElement.style.flex = "0 0 auto";
 
-                        Utils.appendChild(element, this._columns[i].separatorElement);
+                        Utils.appendChild(element, column.separatorElement);
                     }
 
                     Utils.appendChild(element, renderedColumn);

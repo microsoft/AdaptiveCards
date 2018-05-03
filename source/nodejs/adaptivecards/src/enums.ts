@@ -6,6 +6,11 @@ export enum Size {
     Large
 }
 
+export enum SizeUnit {
+    Weight,
+    Pixel
+}
+
 export enum TextSize {
     Small,
     Default,
