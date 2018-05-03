@@ -23,9 +23,6 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage);
 
         // IAdaptiveImage
-        IFACEMETHODIMP get_Url(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
-        IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
-        
         IFACEMETHODIMP get_Uri(_Out_ HSTRING *uri);
         IFACEMETHODIMP put_Uri(_In_ HSTRING uri);
 
@@ -75,7 +72,6 @@ AdaptiveNamespaceStart
         }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_url;
         Microsoft::WRL::Wrappers::HString m_uri;
         boolean m_isUriRelative;
         ABI::AdaptiveNamespace::ImageStyle m_imageStyle;

@@ -163,16 +163,7 @@ AdaptiveNamespaceStart
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-
-        std::wstring imageUri = StringToWstring(sharedAdaptiveCard->GetBackgroundImage());
-        if (!imageUri.empty())
-        {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_backgroundImage.GetAddressOf()));
-        }
+        AssignImageFromUrl(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImageUri.GetAddressOf(), &m_isBackgroundImageUriRelative);
 
         return S_OK;
     }
@@ -221,17 +212,30 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_BackgroundImage(IUriRuntimeClass** url)
+    HRESULT AdaptiveCard::get_BackgroundImageUri(HSTRING* backgroundImageUri)
     {
-        return m_backgroundImage.CopyTo(url);
+        return m_backgroundImageUri.CopyTo(backgroundImageUri);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_BackgroundImage(IUriRuntimeClass* url) try
+    HRESULT AdaptiveCard::put_BackgroundImageUri(HSTRING backgroundImageUri)
     {
-        m_backgroundImage = url;
+        return m_backgroundImageUri.Set(backgroundImageUri);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_IsBackgroundImageUriRelative(boolean* isBackgroundImageUriRelative)
+    {
+        *isBackgroundImageUriRelative = m_isBackgroundImageUriRelative;
         return S_OK;
-    } CATCH_RETURN;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_IsBackgroundImageUriRelative(boolean isBackgroundImageUriRelative)
+    {
+        m_isBackgroundImageUriRelative = isBackgroundImageUriRelative;
+        return S_OK;
+    }
 
     _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveCard::get_SelectAction(IAdaptiveActionElement** action)
@@ -289,14 +293,9 @@ AdaptiveNamespaceStart
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
 
-        if (m_backgroundImage != nullptr)
-        {
-            HString urlTemp;
-            m_backgroundImage->get_AbsoluteUri(urlTemp.GetAddressOf());
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-            adaptiveCard->SetBackgroundImage(urlString);
-        }
+        std::string urlString;
+        RETURN_IF_FAILED(HStringToUTF8(m_backgroundImageUri.Get(), urlString));
+        adaptiveCard->SetBackgroundImage(urlString);
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 

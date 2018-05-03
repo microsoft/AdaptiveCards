@@ -23,8 +23,11 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_FallbackText(_Out_ HSTRING* fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
-        IFACEMETHODIMP get_BackgroundImage(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
-        IFACEMETHODIMP put_BackgroundImage(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
+        IFACEMETHODIMP get_BackgroundImageUri(_Out_ HSTRING *backgroundImageUri);
+        IFACEMETHODIMP put_BackgroundImageUri(_In_ HSTRING backgroundImageUri);
+
+        IFACEMETHODIMP get_IsBackgroundImageUriRelative(_Out_ boolean* isBackgroundImageUriRelative);
+        IFACEMETHODIMP put_IsBackgroundImageUriRelative(_In_ boolean isBackgroundImageUriRelative);
 
         IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
@@ -60,7 +63,8 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_fallbackText;
         Microsoft::WRL::Wrappers::HString m_speak;
 
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_backgroundImage;
+        Microsoft::WRL::Wrappers::HString m_backgroundImageUri;
+        boolean m_isBackgroundImageUriRelative;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;

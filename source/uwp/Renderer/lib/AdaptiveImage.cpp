@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveImage.h"
-#include <codecvt>
 
 #include "Util.h"
 
@@ -30,19 +29,7 @@ AdaptiveNamespaceStart
             return E_INVALIDARG;
         }
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-        
-        std::wstring imageUri = StringToWstring(sharedImage->GetUrl());
-        if (!imageUri.empty())
-        {
-            RETURN_IF_FAILED(UTF8ToHString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(imageUri), m_uri.GetAddressOf()));
-
-            // TODO: Find a better/safer way to determine if URI is relative
-            m_isUriRelative = (int32_t)imageUri.find(L"://") == -1;
-        }
+        AssignImageFromUrl(sharedImage->GetUrl(), m_uri.GetAddressOf(), &m_isUriRelative);
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
@@ -54,19 +41,6 @@ AdaptiveNamespaceStart
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImage));
         return S_OK;
     } CATCH_RETURN;
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Url(IUriRuntimeClass** url)
-    {
-        return m_url.CopyTo(url);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Url(IUriRuntimeClass* url)
-    {
-        m_url = url;
-        return S_OK;
-    }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImage::get_Uri(HSTRING* uri)
@@ -181,15 +155,9 @@ AdaptiveNamespaceStart
             image->SetSelectAction(sharedAction);
         }
 
-        if (m_url != nullptr)
-        {
-            HString urlTemp;
-            m_url->get_AbsoluteUri(urlTemp.GetAddressOf());
-
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-            image->SetUrl(urlString);
-        }
+        std::string urlString;
+        RETURN_IF_FAILED(HStringToUTF8(m_uri.Get(), urlString));
+        image->SetUrl(urlString);
 
         if (m_altText != nullptr)
         {

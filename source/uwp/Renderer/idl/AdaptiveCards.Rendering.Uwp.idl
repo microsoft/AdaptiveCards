@@ -567,8 +567,11 @@ AdaptiveNamespaceStart
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 
-        [propget] HRESULT BackgroundImage([out, retval] Windows.Foundation.Uri** value);
-        [propput] HRESULT BackgroundImage([in] Windows.Foundation.Uri* value);
+        [propget] HRESULT BackgroundImageUri([out, retval] HSTRING* value);
+        [propput] HRESULT BackgroundImageUri([in] HSTRING value);
+
+        [propget] HRESULT IsBackgroundImageUriRelative([out, retval] boolean* value);
+        [propput] HRESULT IsBackgroundImageUriRelative([in] boolean value);
 
         [propget] HRESULT Speak([out, retval] HSTRING* value);
         [propput] HRESULT Speak([in] HSTRING value);
@@ -680,9 +683,6 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveImage : IInspectable
     {
-        [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
-        [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
-
         [propget] HRESULT Uri([out, retval] HSTRING* value);
         [propput] HRESULT Uri([in] HSTRING value);
 
@@ -2061,8 +2061,11 @@ AdaptiveNamespaceStart
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
-        [propget] HRESULT IconUrl([out, retval] Windows.Foundation.Uri** value);
-        [propput] HRESULT IconUrl([in] Windows.Foundation.Uri* value);
+        [propget] HRESULT IconUri([out, retval] HSTRING* value);
+        [propput] HRESULT IconUri([in] HSTRING value);
+
+        [propget] HRESULT IsIconUriRelative([out, retval] boolean* value);
+        [propput] HRESULT IsIconUriRelative([in] boolean value);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);

@@ -343,11 +343,13 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(rootAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
-        ComPtr<IUriRuntimeClass> backgroundImageUrl;
-        THROW_IF_FAILED(adaptiveCard->get_BackgroundImage(&backgroundImageUrl));
-        if (backgroundImageUrl != nullptr)
+        HSTRING backgroundImageUri;
+        THROW_IF_FAILED(adaptiveCard->get_BackgroundImageUri(&backgroundImageUri));
+        if (backgroundImageUri != nullptr)
         {
-            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get(), renderContext, renderArgs);
+            boolean isBackgroundImageUriRelative;
+            THROW_IF_FAILED(adaptiveCard->get_IsBackgroundImageUriRelative(&isBackgroundImageUriRelative));
+            ApplyBackgroundToRoot(rootAsPanel.Get(), &backgroundImageUri, &isBackgroundImageUriRelative, renderContext, renderArgs);
         }
 
         // Outer panel that contains the main body and any inline show cards
@@ -356,7 +358,7 @@ AdaptiveNamespaceStart
         ComPtr<IPanel> outerPanelAsPanel;
         THROW_IF_FAILED(outerPanel.As(&outerPanelAsPanel));
 
-        // Now create the inner stack panel to serve as the root host for all the 
+        // Now create the inner stack panel to serve as the root host for all the
         // body elements and apply padding from host configuration
         ComPtr<WholeItemsPanel> bodyElementHost;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
@@ -373,7 +375,7 @@ AdaptiveNamespaceStart
 
         XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), outerPanelAsPanel.Get());
         THROW_IF_FAILED(bodyElementHost.CopyTo(bodyElementContainer));
-        
+
         XamlHelpers::AppendXamlElementToPanel(outerPanelAsPanel.Get(), rootAsPanel.Get());
         THROW_IF_FAILED(outerPanelAsPanel.CopyTo(outerElementContainer));
 
@@ -385,7 +387,7 @@ AdaptiveNamespaceStart
             rootAsFrameworkElement->put_Height(m_fixedHeight);
             rootAsFrameworkElement->put_MaxHeight(m_fixedHeight);
         }
-        
+
         ComPtr<IUIElement> rootAsUIElement;
         THROW_IF_FAILED(rootElement.As(&rootAsUIElement));
         return rootAsUIElement;
@@ -394,7 +396,8 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     void XamlBuilder::ApplyBackgroundToRoot(
         ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-        ABI::Windows::Foundation::IUriRuntimeClass* url,
+        HSTRING* uri,
+        boolean* isUriRelative,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs)
     {
@@ -402,7 +405,8 @@ AdaptiveNamespaceStart
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-        adaptiveImage->put_Url(url);
+        adaptiveImage->put_Uri(*uri);
+        adaptiveImage->put_IsUriRelative(*isUriRelative);
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -756,12 +760,14 @@ AdaptiveNamespaceStart
     {
         HString title;
         THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
-        ComPtr<IUriRuntimeClass> iconUrl;
-        THROW_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
+
+        HSTRING iconUri;
+        THROW_IF_FAILED(action->get_IconUri(&iconUri));
+
         ComPtr<IButton> localButton(button);
 
-        // Check if the button has an iconUrl
-        if (iconUrl.Get())
+        // Check if the button has an iconUri
+        if (iconUri != nullptr)
         {
             ABI::AdaptiveNamespace::IconPlacement iconPlacement;
             THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
@@ -782,7 +788,12 @@ AdaptiveNamespaceStart
             // Create image and add it to the button
             ComPtr<IAdaptiveImage> adaptiveImage;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-            adaptiveImage->put_Url(iconUrl.Get());
+
+            boolean isIconUriRelative;
+            THROW_IF_FAILED(action->get_IsIconUriRelative(&isIconUriRelative));
+
+            adaptiveImage->put_Uri(iconUri);
+            adaptiveImage->put_IsUriRelative(isIconUriRelative);
             adaptiveImage->put_HorizontalAlignment(HAlignment_Center);
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
@@ -1465,7 +1476,7 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(cardElement.As(&adaptiveImage));
-        
+
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
@@ -1480,14 +1491,14 @@ AdaptiveNamespaceStart
 
         HSTRING uri;
         THROW_IF_FAILED(adaptiveImage->get_Uri(&uri));
-        
+
         ComPtr<IUriRuntimeClass> imageUri;
-        
+
         if (isUriRelative)
         {
             HSTRING imageBaseUrl;
             THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(&imageBaseUrl));
-            
+
             THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(
                 imageBaseUrl,
                 uri,
@@ -1503,8 +1514,6 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::ImageSize size;
         THROW_IF_FAILED(adaptiveImage->get_Size(&size));
 
-        /*ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
         if (size == ABI::AdaptiveNamespace::ImageSize::None)
         {
             ComPtr<IAdaptiveImageConfig> imageConfig;

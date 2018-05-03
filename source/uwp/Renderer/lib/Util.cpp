@@ -756,3 +756,18 @@ std::string WstringToString(const std::wstring& input)
         return utfConverter.to_bytes(input);
     }
 }
+
+HRESULT AssignImageFromUrl(const std::string& url, HSTRING* uri, boolean* isUriRelative)
+{
+    std::wstring imageUri = StringToWstring(url);
+    if (!imageUri.empty())
+    {
+        //RETURN_IF_FAILED(UTF8ToHString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(imageUri), uri.GetAddressOf()));
+        RETURN_IF_FAILED(WStringToHString(imageUri, uri));
+
+        // TODO: Find a better/safer way to determine if URI is relative
+        *isUriRelative = (int32_t)imageUri.find(L"://") == -1;
+    }
+
+    return S_OK;
+}

@@ -34,8 +34,11 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id) { return AdaptiveActionElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveActionElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_IconUrl(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** iconUrl) { return AdaptiveActionElementBase::get_IconUrl(iconUrl); }
-        IFACEMETHODIMP put_IconUrl(_In_ ABI::Windows::Foundation::IUriRuntimeClass* iconUrl) { return AdaptiveActionElementBase::put_IconUrl(iconUrl); }
+        IFACEMETHODIMP get_IconUri(_Out_ HSTRING *iconUri) { return AdaptiveActionElementBase::get_IconUri(iconUri); }
+        IFACEMETHODIMP put_IconUri(_In_ HSTRING iconUri) { return AdaptiveActionElementBase::put_IconUri(iconUri); }
+
+        IFACEMETHODIMP get_IsIconUriRelative(_Out_ boolean* isIconUriRelative) { return AdaptiveActionElementBase::get_IsIconUriRelative(isIconUriRelative); }
+        IFACEMETHODIMP put_IsIconUriRelative(_In_ boolean isIconUriRelative) { return AdaptiveActionElementBase::put_IsIconUriRelative(isIconUriRelative); }
 
         IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveActionElementBase::get_AdditionalProperties(result); }
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value) { return AdaptiveActionElementBase::put_AdditionalProperties(value); }
