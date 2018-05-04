@@ -33,6 +33,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Grid>
@@ -81,6 +83,21 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Foreground="Red"
                     MaxHeight="150"/>
+            </Grid>
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Text="Live Card"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Margin="0,6,0,6"/>
+                <Viewbox
+                    Grid.Row="1"
+                    Stretch="Uniform"
+                    Child="{Binding XamlCard}"
+                    />
             </Grid>
         </Grid>
 
