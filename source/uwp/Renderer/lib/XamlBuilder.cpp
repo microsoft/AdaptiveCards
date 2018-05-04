@@ -1491,10 +1491,10 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
 
-        UINT32 explicitWidth = 0, explicitHeight = 0;
-        THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
+        UINT32 pixelWidth = 0, explicitHeight = 0;
+        THROW_IF_FAILED(adaptiveImage->get_Width(&pixelWidth));
         THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
-        bool isAspectRatioNeeded = (explicitWidth  && explicitHeight);
+        bool isAspectRatioNeeded = (pixelWidth  && explicitHeight);
 
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
@@ -1511,7 +1511,7 @@ AdaptiveNamespaceStart
             if (size == ABI::AdaptiveNamespace::ImageSize::None ||
                 size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
                 size == ABI::AdaptiveNamespace::ImageSize::Auto ||
-                explicitWidth ||
+                pixelWidth ||
                 explicitHeight)
             {
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
@@ -1590,11 +1590,11 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
         THROW_IF_FAILED(hostConfig->get_ImageSizes(sizeOptions.GetAddressOf()));
 
-        if(explicitWidth || explicitHeight)
+        if(pixelWidth || explicitHeight)
         {
-            if(explicitWidth) 
+            if(pixelWidth) 
             {
-                THROW_IF_FAILED(frameworkElement->put_Width(explicitWidth));
+                THROW_IF_FAILED(frameworkElement->put_Width(pixelWidth));
             }
 
             if(explicitHeight)
@@ -1899,9 +1899,17 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
 
             double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
+            UINT32 pixelWidth = 0; 
+            THROW_IF_FAILED(localColumn->get_PixelWidth(&pixelWidth));
 
             GridLength columnWidth;
-            if (isAutoResult == 0)
+            if (pixelWidth)
+            { 
+                // If pixel width specified, use pixel width
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
+                columnWidth.Value = pixelWidth;
+            }
+            else if (isAutoResult == 0)
             {
                 // If auto specified, use auto width
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
