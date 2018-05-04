@@ -101,7 +101,7 @@
     <Content Include="..\..\..\schemas\host-config.json">
       <Link>Schemas\renderer-options.json</Link>
     </Content>
-    <Content Include="Assets\pc-info.JPG" />
+    <Content Include="Assets\Adaptive10.png" />
     <Content Include="HostConfigs\DefaultHostConfig.json" />
     <None Include="AdaptiveCardVisualizer_TemporaryKey.pfx" />
   </ItemGroup>

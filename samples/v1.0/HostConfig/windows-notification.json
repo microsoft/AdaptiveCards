@@ -8,6 +8,7 @@
     "extraLarge": 34,
     "padding": 12
   },
+  "imageBaseUrl": "ms-appx:///",
   "separator": {
     "lineThickness": 1,
     "lineColor": "#66FFFFFF"

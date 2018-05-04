@@ -1503,6 +1503,13 @@ AdaptiveNamespaceStart
             HSTRING imageBaseUrl;
             THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(&imageBaseUrl));
 
+            if (imageBaseUrl == NULL) {
+                renderContext->AddWarning(
+                    ABI::AdaptiveNamespace::WarningStatusCode::AssetLoadFailed,
+                    HStringReference(L"imageBaseUrl missing for relative image").Get());
+                return;
+            }
+
             THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(
                 imageBaseUrl,
                 uri,
