@@ -1108,6 +1108,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT Width([out, retval] HSTRING* value);
         [propput] HRESULT Width([in] HSTRING value);
 
+        [propget] HRESULT PixelWidth([out, retval] UINT32* value);
+        [propput] HRESULT PixelWidth([in] UINT32 value);
+
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
 

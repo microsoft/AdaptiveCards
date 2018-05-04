@@ -1903,9 +1903,17 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
 
             double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
+            UINT32 pixelWidth = 0; 
+            THROW_IF_FAILED(localColumn->get_PixelWidth(&pixelWidth));
 
             GridLength columnWidth;
-            if (isAutoResult == 0)
+            if (pixelWidth)
+            { 
+                // If pixel width specified, use pixel width
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
+                columnWidth.Value = pixelWidth;
+            }
+            else if (isAutoResult == 0)
             {
                 // If auto specified, use auto width
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;

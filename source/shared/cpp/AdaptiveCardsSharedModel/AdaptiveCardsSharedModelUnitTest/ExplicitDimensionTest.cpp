@@ -232,7 +232,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
             Assert::AreEqual<std::string>(column->GetWidth(), "20");
-            Assert::AreEqual<bool>(column->GetExplicitWidth() != 20, true);
+            Assert::AreEqual<bool>(column->GetPixelWidth() != 20, true);
         }
 
         TEST_METHOD(PositiveExplicitWidthTest)
@@ -261,7 +261,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
             Assert::AreEqual<std::string>("20px",  column->GetWidth());
-            Assert::AreEqual<bool>(column->GetExplicitWidth() == 20, true);
+            Assert::AreEqual<bool>(column->GetPixelWidth() == 20, true);
         }
 
         TEST_METHOD(ExplicitWidthMalformedUnitTest)
