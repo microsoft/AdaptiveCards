@@ -303,6 +303,10 @@ export abstract class DesignerPeer extends DraggableElement {
 
     protected abstract getCardObjectTypeName(): string;
 
+    protected isContainer(): boolean {
+        return false;
+    }
+
     protected pointerDown(e: PointerEvent) {
         super.pointerDown(e);
 
@@ -329,6 +333,11 @@ export abstract class DesignerPeer extends DraggableElement {
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
         element.classList.add("acd-peer");
+
+        if (this.isContainer()) {
+            element.classList.add("container");
+        }
+
         element.style.position = "absolute";
         element.style.display = "flex";
         element.style.flexDirection = "column";
@@ -1003,6 +1012,10 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         return false;
     }
 
+    protected isContainer(): boolean {
+        return true;
+    }
+
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
         
@@ -1041,6 +1054,10 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 }
 
 export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
+    protected isContainer(): boolean {
+        return true;
+    }
+
     protected internalAddCommands(commands: Array<PeerCommand>) {
         super.internalAddCommands(commands);
 
@@ -1088,6 +1105,10 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 }
 
 export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
+    protected isContainer(): boolean {
+        return true;
+    }
+
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
 
@@ -1552,6 +1573,8 @@ export class CardDesigner {
 
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
+
+                this._designerSurface.focus();
             }
 
             if (this.onSelectedPeerChanged) {
@@ -1736,11 +1759,26 @@ export class CardDesigner {
 
         this._designerSurface = document.createElement("div");
         this._designerSurface.classList.add("acd-designersurface");
+        this._designerSurface.tabIndex = 0;
         this._designerSurface.style.position = "absolute";
         this._designerSurface.style.left = "0";
         this._designerSurface.style.top = "0";
         this._designerSurface.style.width = "100%";
         this._designerSurface.style.height = "100%";
+
+        this._designerSurface.onkeydown = (e: KeyboardEvent) => {
+            switch (e.keyCode) {
+                // Escape
+                case 27:
+                    if (this._selectedPeer) {
+                        this.setSelectedPeer(this._selectedPeer.parent);
+                    }
+
+                    break;
+            }   
+
+            return !e.cancelBubble;
+        }
 
         this._designerSurface.onpointermove = (e: PointerEvent) => {
             this._currentPointerPosition = {
@@ -1764,7 +1802,7 @@ export class CardDesigner {
     }
 
     onSelectedPeerChanged: (peer: DesignerPeer) => void;
-    onLayoutUpdated: () => void;
+    onLayoutUpdated: (isFullRefresh: boolean) => void;
 
     findDropTarget(pointerPosition: IPoint, peer: DesignerPeer): DesignerPeer {
         return this.internalFindDropTarget(pointerPosition, this._rootPeer, peer);
@@ -1785,13 +1823,13 @@ export class CardDesigner {
         }
     }
 
-    updateLayout() {
+    updateLayout(isFullRefresh: boolean = true) {
         for (var i = 0; i < this._allPeers.length; i++) {
             this._allPeers[i].updateLayout();
         }
 
         if (this.onLayoutUpdated) {
-            this.onLayoutUpdated();
+            this.onLayoutUpdated(isFullRefresh);
         }
     }
 

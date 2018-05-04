@@ -30,9 +30,10 @@ function loadMonacoEditor(jsonSchema, callback) {
             }
         );
         
-        window.addEventListener('resize', function () {
-            monacoEditor.layout();
-        });
+        window.addEventListener(
+            "resize", function () {
+                monacoEditor.layout();
+            });
 
         callback();
     });

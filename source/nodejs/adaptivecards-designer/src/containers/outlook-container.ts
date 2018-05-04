@@ -99,9 +99,13 @@ export class OutlookContainer extends HostContainer {
             (<Adaptive.Image>element).backgroundColor = json["backgroundColor"];
         }
 
+        /*
         if (element instanceof Adaptive.Column) {
-            (<Adaptive.Column>element).pixelWidth = json["pixelWidth"];
+            if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
+                element.width = json["pixelWidth"] + "px";
+            }
         }
+        */
 
         if (element instanceof Adaptive.Container) {
             var padding = this.parsePadding(json["padding"]);

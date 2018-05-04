@@ -1,3 +1,7 @@
+.acd-designersurface {
+    outline: none;
+}
+
 .acd-designersurface.dragging {
     cursor: move;
 }
@@ -19,6 +23,10 @@
 }
 
 .acd-peer {
+}
+
+.acd-peer.container:before {
+    content: A;
 }
 
 .acd-peer:hover {

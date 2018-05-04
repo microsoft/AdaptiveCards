@@ -14,6 +14,8 @@ declare function loadMonacoEditor(schema, callback);
 var isMonacoEditorLoaded: boolean = false;
 
 function monacoEditorLoaded() {
+    document.getElementById("loadingEditor").remove();
+
     monacoEditor.onDidChangeModelContent(
         function (e) {
             scheduleCardRefresh();
@@ -234,7 +236,11 @@ class DesignerApp {
         this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
             this.buildPropertySheet(peer);
         };
-        this._designer.onLayoutUpdated = () => { scheduleJsonUpdate(); };
+        this._designer.onLayoutUpdated = (isFullRefresh: boolean) => {
+            if (isFullRefresh) {
+                scheduleJsonUpdate();
+            }
+        };
 
         this.buildPalette();
         this.buildPropertySheet(null);
@@ -424,7 +430,7 @@ window.onload = () => {
     app.createContainerPicker().attach(document.getElementById("containerPickerHost"));
 
     window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
-    window.addEventListener("resize", () => { app.designer.updateLayout(); });
+    window.addEventListener("resize", () => { app.designer.updateLayout(false); });
     window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
 
     app.card = card;
