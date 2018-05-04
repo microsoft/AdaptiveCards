@@ -9,12 +9,17 @@ import { SkypeContainer } from "./containers/skype-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 
 declare var monacoEditor: any;
+declare function loadMonacoEditor(schema, callback);
+
+var isMonacoEditorLoaded: boolean = false;
 
 function monacoEditorLoaded() {
     monacoEditor.onDidChangeModelContent(
         function (e) {
             scheduleCardRefresh();
         });
+    
+    isMonacoEditorLoaded = true;
 
     updateJsonFromCard();
 }
@@ -28,7 +33,7 @@ function updateJsonFromCard() {
     try {    
         preventCardUpdate = true;
 
-        if (!preventJsonUpdate) {
+        if (!preventJsonUpdate && isMonacoEditorLoaded) {
             monacoEditor.setValue(JSON.stringify(app.card.toJSON(), null, 4));
         }
     }
@@ -51,7 +56,7 @@ function updateCardFromJson() {
     try {
         preventJsonUpdate = true;
 
-        if (!preventCardUpdate) {
+        if (!preventCardUpdate && isMonacoEditorLoaded) {
             app.card.parse(JSON.parse(monacoEditor.getValue()));
             app.designer.render();
         }
@@ -375,7 +380,9 @@ class Splitter {
             
             this._sizedELement.style.height = (this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffsetY)) + "px";
 
-            monacoEditor.layout();
+            if (isMonacoEditorLoaded) {
+                monacoEditor.layout();
+            }
 
             this._lastClickedOffsetY = e.y;
         }
