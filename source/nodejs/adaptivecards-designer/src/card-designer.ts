@@ -1,6 +1,5 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
-import { Spacing, PaddingDefinition } from "adaptivecards";
 
 const DRAG_THRESHOLD = 10;
 
@@ -16,7 +15,7 @@ function addLabelAndInput<TInput extends Adaptive.Input>(
     separator: boolean = false): ILabelAndInput<TInput> {
 
     var leftColumn = new Adaptive.Column();
-    leftColumn.pixelWidth = 100;
+    leftColumn.width = new Adaptive.SizeAndUnit(100, Adaptive.SizeUnit.Pixel);
     leftColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
 
     var rightColumn = new Adaptive.Column();
@@ -472,25 +471,30 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     remove(onlyFromCard: boolean, removeChildren: boolean): boolean {
-        if (removeChildren) {
-            while (this._children.length > 0) {
-                this._children[0].remove(onlyFromCard, removeChildren);
-            }        
-        }
-
-        var result = this.internalRemove();
-
-        if (result && !onlyFromCard) {
-            if (this.parent) {
-                this.parent.removeChild(this);
+        if (this.canBeRemoved()) {
+            if (removeChildren) {
+                while (this._children.length > 0) {
+                    this._children[0].remove(onlyFromCard, removeChildren);
+                }        
             }
 
-            this.removeElementsFromDesignerSurface();
+            var result = this.internalRemove();
 
-            this.peerRemoved(this);
+            if (result && !onlyFromCard) {
+                if (this.parent) {
+                    this.parent.removeChild(this);
+                }
+
+                this.removeElementsFromDesignerSurface();
+
+                this.peerRemoved(this);
+            }
+
+            return result;
         }
-
-        return result;
+        else {
+            return false;
+        }
     }
 
     addElementsToDesignerSurface(designerSurface: HTMLElement, processChildren: boolean = false) {
@@ -515,7 +519,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
     buildPropertySheetCard(): Adaptive.AdaptiveCard {
         var result = new Adaptive.AdaptiveCard();
-        result.padding = new PaddingDefinition(
+        result.padding = new Adaptive.PaddingDefinition(
             Adaptive.Spacing.None,
             Adaptive.Spacing.None,
             Adaptive.Spacing.None,
@@ -1767,15 +1771,22 @@ export class CardDesigner {
         this._designerSurface.style.height = "100%";
 
         this._designerSurface.onkeydown = (e: KeyboardEvent) => {
-            switch (e.keyCode) {
-                // Escape
-                case 27:
-                    if (this._selectedPeer) {
+            if (this._selectedPeer) {
+                switch (e.keyCode) {
+                    case Controls.KEY_ESCAPE:
                         this.setSelectedPeer(this._selectedPeer.parent);
-                    }
 
-                    break;
-            }   
+                        break;
+                    case Controls.KEY_DELETE:
+                        let parent = this._selectedPeer.parent;
+
+                        if (this._selectedPeer.remove(false, true)) {
+                            this.setSelectedPeer(parent);
+                        }
+
+                        break;
+                }
+            }
 
             return !e.cancelBubble;
         }

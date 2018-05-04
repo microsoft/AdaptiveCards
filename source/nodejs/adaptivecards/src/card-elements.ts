@@ -3766,13 +3766,15 @@ export class Column extends Container {
     toJSON() {
         let result = super.toJSON();
 
-        if (this.pixelWidth > 0) {
-            Utils.setProperty(result, "width", this.pixelWidth + "px");
+        if (this.width instanceof SizeAndUnit) {
+            if (this.width.unit == Enums.SizeUnit.Pixel) {
+                Utils.setProperty(result, "width", this.width.physicalSize + "px");
+            }
+            else {
+                Utils.setProperty(result, "width", this.width.physicalSize);
+            }
         }
-        else if (typeof this.width === "number") {
-            Utils.setProperty(result, "width", this.width + "*");
-        }
-        else if (typeof this.width === "string") {
+        else {
             Utils.setProperty(result, "width", this.width);
         }
 
