@@ -1491,10 +1491,10 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
 
-        UINT32 pixelWidth = 0, explicitHeight = 0;
-        THROW_IF_FAILED(adaptiveImage->get_Width(&pixelWidth));
+        UINT32 explicitWidth = 0, explicitHeight = 0;
+        THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
         THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
-        bool isAspectRatioNeeded = (pixelWidth  && explicitHeight);
+        bool isAspectRatioNeeded = (explicitWidth  && explicitHeight);
 
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
@@ -1511,7 +1511,7 @@ AdaptiveNamespaceStart
             if (size == ABI::AdaptiveNamespace::ImageSize::None ||
                 size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
                 size == ABI::AdaptiveNamespace::ImageSize::Auto ||
-                pixelWidth ||
+                explicitWidth ||
                 explicitHeight)
             {
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
@@ -1590,11 +1590,11 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
         THROW_IF_FAILED(hostConfig->get_ImageSizes(sizeOptions.GetAddressOf()));
 
-        if(pixelWidth || explicitHeight)
+        if(explicitWidth || explicitHeight)
         {
-            if(pixelWidth) 
+            if(explicitWidth) 
             {
-                THROW_IF_FAILED(frameworkElement->put_Width(pixelWidth));
+                THROW_IF_FAILED(frameworkElement->put_Width(explicitWidth));
             }
 
             if(explicitHeight)
