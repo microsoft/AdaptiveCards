@@ -10,6 +10,12 @@
     background-color: transparent;
 }
 
+.acd-removeButton {
+    width: 20px;
+    height: 20px;
+    background-color: lime;
+}
+
 .acd-palette-item {
     border: 1px solid #CCCCCC;
     padding: 8px;
@@ -23,10 +29,7 @@
 }
 
 .acd-peer {
-}
-
-.acd-peer.container:before {
-    content: A;
+    border: 1px solid transparent;
 }
 
 .acd-peer:hover {

@@ -330,7 +330,7 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     protected internalRender(): HTMLElement {
-        var element = document.createElement("div");
+        let element = document.createElement("div");
         element.classList.add("acd-peer");
 
         if (this.isContainer()) {
@@ -338,21 +338,36 @@ export abstract class DesignerPeer extends DraggableElement {
         }
 
         element.style.position = "absolute";
+
+        /*
         element.style.display = "flex";
         element.style.flexDirection = "column";
         element.style.alignItems = "flex-end";
         element.style.justifyContent = "flex-end";
+        */
+
+        /*
+        this._dragHandleElement = document.createElement("div");
+        this._dragHandleElement.style.backgroundColor = "red";
+        this._dragHandleElement.style.width = "20px";
+        this._dragHandleElement.style.height = "20px";
+        this._dragHandleElement.style.margin = "-20px 0 0 -20px";
+
+        element.appendChild(this._dragHandleElement);
+        */
 
         this._commandHostElement = document.createElement("div");
         this._commandHostElement.style.position = "relative";
         this._commandHostElement.style.display = "flex";
         this._commandHostElement.style.transform = "translate(1px, 100%)";
 
+        /*
         var commands = this.getCommands();
 
         for (var i = commands.length - 1; i >= 0; i--) {
             this._commandHostElement.appendChild(commands[i].render());
         }
+        */
 
         element.appendChild(this._commandHostElement);
 
@@ -1566,6 +1581,20 @@ export class CardDesigner {
     private _dropTarget: DesignerPeer;
     private _currentPointerPosition: IPoint;
     private _initialDragPointerOffset: IPoint;
+    private _removeCommandElement: HTMLElement;
+
+    private updatePeerCommands() {
+        if (this._selectedPeer) {
+            let rect = this._selectedPeer.getBoundingRect();
+
+            this._removeCommandElement.style.left = rect.right + "px";
+            this._removeCommandElement.style.top = (rect.top - 20) + "px";
+            this._removeCommandElement.style.visibility = "visible";
+        }
+        else {
+            this._removeCommandElement.style.visibility = "hidden";
+        }
+    }
 
     private setSelectedPeer(value: DesignerPeer) {
         if (this._selectedPeer != value) {
@@ -1580,6 +1609,8 @@ export class CardDesigner {
 
                 this._designerSurface.focus();
             }
+
+            this.updatePeerCommands();
 
             if (this.onSelectedPeerChanged) {
                 this.onSelectedPeerChanged(this._selectedPeer);
@@ -1832,12 +1863,21 @@ export class CardDesigner {
 
             this.addPeer(this._rootPeer);
         }
+
+        this._removeCommandElement = document.createElement("div");
+        this._removeCommandElement.classList.add("acd-removeButton");
+        this._removeCommandElement.style.visibility = "hidden";
+        this._removeCommandElement.style.position = "absolute";
+
+        this._designerSurface.appendChild(this._removeCommandElement);
     }
 
     updateLayout(isFullRefresh: boolean = true) {
         for (var i = 0; i < this._allPeers.length; i++) {
             this._allPeers[i].updateLayout();
         }
+
+        this.updatePeerCommands();
 
         if (this.onLayoutUpdated) {
             this.onLayoutUpdated(isFullRefresh);
