@@ -133,10 +133,6 @@ export abstract class DraggableElement {
         }
     }
 
-    protected isDraggable(): boolean {
-        return true;
-    }
-
     protected startDrag() {
         if (this.isDraggable() && !this.dragging) {
             this.dragging = true;
@@ -194,6 +190,10 @@ export abstract class DraggableElement {
     onEndDrag: (sender: DraggableElement) => void;
     onDoubleClick: (sender: DraggableElement) => void;
 
+    isDraggable(): boolean {
+        return true;
+    }
+
     endDrag() {
         if (this.dragging) {
             this.dragging = false;
@@ -246,7 +246,8 @@ class PeerCommand {
         var buttonElement = document.createElement("button");
         buttonElement.type = "button";
         buttonElement.title = this.name;
-        buttonElement.classList.add("acd-peer-command");
+        buttonElement.classList.add("acd-peerButton");
+        buttonElement.classList.add(this.iconClass);
         buttonElement.style.display = "flex";
         buttonElement.style.flex = "0 0 auto";
         buttonElement.style.alignItems = "center";
@@ -256,11 +257,6 @@ class PeerCommand {
             }
         }
         buttonElement.onpointerdown = (e: PointerEvent) => { e.cancelBubble = true; };
-
-        let buttonContentElement = document.createElement("div");
-        buttonContentElement.classList.add(this.iconClass);
-
-        buttonElement.appendChild(buttonContentElement);
 
         return buttonElement;
     }
@@ -518,14 +514,14 @@ export class ActionPeer extends DesignerPeer {
         return this.action.remove();
     }
 
-    protected isDraggable(): boolean {
-        return false;
-    }
-
     constructor(action: Adaptive.Action) {
         super();
 
         this._action = action;
+    }
+
+    isDraggable(): boolean {
+        return false;
     }
 
     getBoundingRect(): Rect {
@@ -897,10 +893,6 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this, action));
     }
 
-    protected isDraggable(): boolean {
-        return false;
-    }
-
     protected internalRemove(): boolean {
         return true;
     }
@@ -937,6 +929,10 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         );
     }
 
+    isDraggable(): boolean {
+        return false;
+    }
+
     canBeRemoved(): boolean {
         return false;
     }
@@ -966,12 +962,12 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 }
 
 export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
-    protected isDraggable(): boolean {
-        return false;
-    }
-
     protected isContainer(): boolean {
         return true;
+    }
+
+    isDraggable(): boolean {
+        return false;
     }
 
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
@@ -1508,6 +1504,18 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
     }
 }
 
+class DragHandle extends DraggableElement {
+    protected internalRender(): HTMLElement {
+        let element = document.createElement("div");
+        element.classList.add("acd-peerButton", "acd-icon-drag");
+        element.style.visibility = "hidden";
+        element.style.position = "absolute";   
+        element.title = "Drag to move this element";
+
+        return element;
+    }
+}
+
 export class CardDesigner {
     static readonly cardElementPeerRegistry: CardElementPeerRegistry = new CardElementPeerRegistry();
     static readonly actionPeerRegistry: ActionPeerRegistry = new ActionPeerRegistry();
@@ -1522,21 +1530,27 @@ export class CardDesigner {
     private _dropTarget: DesignerPeer;
     private _currentPointerPosition: IPoint;
     private _initialDragPointerOffset: IPoint;
+    private _dragHandle: DragHandle;
     private _removeCommandElement: HTMLElement;
     private _peerCommandsHostElement: HTMLElement;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
             let peerRect = this._selectedPeer.getBoundingRect();
+            let dragHandleRect = this._dragHandle.renderedElement.getBoundingClientRect();
             let removeButtonRect = this._removeCommandElement.getBoundingClientRect();
             let commandsHostRect = this._peerCommandsHostElement.getBoundingClientRect();
 
+            this._dragHandle.renderedElement.style.left = (peerRect.left - dragHandleRect.width) + "px";
+            this._dragHandle.renderedElement.style.top = (peerRect.top - dragHandleRect.height) + "px";
+
             this._removeCommandElement.style.left = peerRect.right + "px";
-            this._removeCommandElement.style.top = (peerRect.top - removeButtonRect.height - 2) + "px";
+            this._removeCommandElement.style.top = (peerRect.top - removeButtonRect.height) + "px";
 
             this._peerCommandsHostElement.style.left = (peerRect.right - commandsHostRect.width) + "px";
             this._peerCommandsHostElement.style.top = (peerRect.bottom + 2) + "px";
 
+            this._dragHandle.renderedElement.style.visibility = this._selectedPeer.isDraggable() ? "visible": "hidden";
             this._removeCommandElement.style.visibility = this._selectedPeer.canBeRemoved() ? "visible" : "hidden";
             this._peerCommandsHostElement.style.visibility = this._peerCommandsHostElement.childElementCount > 0 ? "visible" : "hidden";
         }
@@ -1823,7 +1837,7 @@ export class CardDesigner {
         }
 
         this._removeCommandElement = document.createElement("div");
-        this._removeCommandElement.classList.add("acd-removeButton");
+        this._removeCommandElement.classList.add("acd-peerButton", "acd-circularButton", "acd-icon-remove");
         this._removeCommandElement.style.visibility = "hidden";
         this._removeCommandElement.style.position = "absolute";   
         this._removeCommandElement.title = "Remove";
@@ -1831,11 +1845,19 @@ export class CardDesigner {
             this._selectedPeer.remove(false, true);
         }
 
+        this._dragHandle = new DragHandle();
+        this._dragHandle.onStartDrag = (sender) => {
+            this._dragHandle.endDrag();
+            this.startDrag(this._selectedPeer);
+        }
+        this._dragHandle.render();
+
         this._peerCommandsHostElement = document.createElement("div");
         this._peerCommandsHostElement.style.visibility = "hidden";
         this._peerCommandsHostElement.style.position = "absolute";   
         this._peerCommandsHostElement.style.display = "flex";   
 
+        this._designerSurface.appendChild(this._dragHandle.renderedElement);
         this._designerSurface.appendChild(this._removeCommandElement);
         this._designerSurface.appendChild(this._peerCommandsHostElement);
     }
