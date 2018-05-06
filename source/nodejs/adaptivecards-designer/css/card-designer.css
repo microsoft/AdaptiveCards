@@ -11,9 +11,45 @@
 }
 
 .acd-removeButton {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
     background-color: lime;
+    font-family: 'FabricMDL2Icons';
+    font-size: 8px;
+    font-weight: bold;
+    font-style: normal;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid red;
+    color: red;
+    background-color: white;
+    cursor: default;
+}
+
+.acd-icon-bolt::before {
+    content: "\E945";
+}
+
+.acd-icon-addColumn::before {
+    content: "\F1D6";
+}
+
+.acd-removeButton:hover {
+    background-color: red;
+    color: white;
+}
+
+.acd-removeButton:active {
+    background-color: firebrick;
+    border: 1px solid firebrick;
+    color: white;
+}
+
+.acd-removeButton::before {
+    content: "\E8BB";
 }
 
 .acd-palette-item {
@@ -64,24 +100,32 @@
 }
 
 .acd-peer-command {
-    height: auto;
-    padding: 4px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
     margin: 0;
     border: none;
-    background-color: #FFE5E5;
+    font-family: 'FabricMDL2Icons';
+    font-size: 10px;
+    font-weight: bold;
+    font-style: normal;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
     border: 1px solid red;
+    color: red;
+    cursor: default;
 }
 
 .acd-peer-command:hover {
-    background-color: #FFBCBC;
+    background-color: red;
+    color: white;
 }
 
 .acd-peer-command:active {
-    background-color: #FF8E8E;
-}
-
-.acd-peer-command-label {
-    margin-left: 4px;
-    font-size: 10px;
-    cursor: default;
+    border: 1px solid firebrick;
+    background-color: firebrick;
+    color: white;
 }

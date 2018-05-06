@@ -248,6 +248,7 @@ class PeerCommand {
         buttonElement.title = this.name;
         buttonElement.classList.add("acd-peer-command");
         buttonElement.style.display = "flex";
+        buttonElement.style.flex = "0 0 auto";
         buttonElement.style.alignItems = "center";
         buttonElement.onclick = (e: MouseEvent) => {
             if (this.execute) {
@@ -256,28 +257,16 @@ class PeerCommand {
         }
         buttonElement.onpointerdown = (e: PointerEvent) => { e.cancelBubble = true; };
 
-        var imageElement = document.createElement("img");
-        imageElement.src = this.iconUrl ? this.iconUrl : "./assets/default-peer-command-icon.png";
-        imageElement.style.height = "10px";
-        imageElement.style.width = "10px";
+        let buttonContentElement = document.createElement("div");
+        buttonContentElement.classList.add(this.iconClass);
 
-        buttonElement.appendChild(imageElement);
-
-        if (this.showName) {
-            var spanElement = document.createElement("span");
-            spanElement.classList.add("acd-peer-command-label");
-            spanElement.innerText = this.name;
-            spanElement.style.flex = "1 1 auto";
-
-            buttonElement.appendChild(spanElement);
-        }
+        buttonElement.appendChild(buttonContentElement);
 
         return buttonElement;
     }
 
     name: string;
-    showName: boolean;
-    iconUrl?: string;
+    iconClass: string;
     execute: (command: PeerCommand) => void;
 
     constructor(init?: Partial<PeerCommand>) {
@@ -298,7 +287,6 @@ class PeerCommand {
 export abstract class DesignerPeer extends DraggableElement {
     private _children: Array<DesignerPeer> = [];
     private _isSelected: boolean;
-    private _commandHostElement: HTMLElement;
 
     protected abstract getCardObjectTypeName(): string;
 
@@ -312,21 +300,8 @@ export abstract class DesignerPeer extends DraggableElement {
         this.isSelected = true;
     }
 
-    protected canBeRemoved(): boolean {
-        return true;
-    }
-
     protected internalAddCommands(commands: Array<PeerCommand>) {
-        if (this.canBeRemoved()) {
-            commands.push(
-                new PeerCommand(
-                    {
-                        name: "Remove this " + this.getCardObjectTypeName(),
-                        iconUrl: "./assets/remove.png",
-                        execute: () => { this.remove(false, true) }
-                    })
-            );
-        }
+        // Do nothing in base implementation
     }
 
     protected internalRender(): HTMLElement {
@@ -338,38 +313,6 @@ export abstract class DesignerPeer extends DraggableElement {
         }
 
         element.style.position = "absolute";
-
-        /*
-        element.style.display = "flex";
-        element.style.flexDirection = "column";
-        element.style.alignItems = "flex-end";
-        element.style.justifyContent = "flex-end";
-        */
-
-        /*
-        this._dragHandleElement = document.createElement("div");
-        this._dragHandleElement.style.backgroundColor = "red";
-        this._dragHandleElement.style.width = "20px";
-        this._dragHandleElement.style.height = "20px";
-        this._dragHandleElement.style.margin = "-20px 0 0 -20px";
-
-        element.appendChild(this._dragHandleElement);
-        */
-
-        this._commandHostElement = document.createElement("div");
-        this._commandHostElement.style.position = "relative";
-        this._commandHostElement.style.display = "flex";
-        this._commandHostElement.style.transform = "translate(1px, 100%)";
-
-        /*
-        var commands = this.getCommands();
-
-        for (var i = commands.length - 1; i >= 0; i--) {
-            this._commandHostElement.appendChild(commands[i].render());
-        }
-        */
-
-        element.appendChild(this._commandHostElement);
 
         return element;
     }
@@ -418,14 +361,6 @@ export abstract class DesignerPeer extends DraggableElement {
             this.renderedElement.style.height = clientRect.height + "px";
             this.renderedElement.style.left = clientRect.left + "px";
             this.renderedElement.style.top = clientRect.top + "px";
-
-            if (this.isSelected && this._commandHostElement.children.length > 0) {
-                this._commandHostElement.style.visibility = "visible";
-                this._commandHostElement.style.zIndex = "1";
-            }
-            else {
-                this._commandHostElement.style.visibility = "hidden";
-            }
         }
     }
 
@@ -445,8 +380,12 @@ export abstract class DesignerPeer extends DraggableElement {
     abstract getBoundingRect(): Rect;
     abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean);
 
-    canDrop(peer: DesignerPeer) {
+    canDrop(peer: DesignerPeer): boolean {
         return false;
+    }
+
+    canBeRemoved(): boolean {
+        return true;
     }
 
     tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
@@ -966,18 +905,14 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         return true;
     }
 
-    protected canBeRemoved(): boolean {
-        return false;
-    }
-
     protected internalAddCommands(commands: Array<PeerCommand>) {
         super.internalAddCommands(commands);
 
         commands.push(
             new PeerCommand(
                 {
-                    name: "Add action",
-                    showName: true,
+                    name: "Add an action",
+                    iconClass: "acd-icon-bolt",
                     execute: (command: PeerCommand) => {
                         let popupMenu = new Controls.PopupMenu();
 
@@ -1000,6 +935,10 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                     }
                 })
         );
+    }
+
+    canBeRemoved(): boolean {
+        return false;
     }
 
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, updatePropertySheet: boolean) {
@@ -1083,9 +1022,11 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         commands.push(
             new PeerCommand(
                 {
-                    name: "Add Column",
+                    name: "Add a column",
+                    iconClass: "acd-icon-addColumn",
                     execute: (command: PeerCommand) => {
                         var column = new Adaptive.Column();
+                        column.width = "stretch";
 
                         this.cardElement.addColumn(column);
 
@@ -1165,8 +1106,8 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
         commands.push(
             new PeerCommand(
                 {
-                    name: "Add action",
-                    showName: true,
+                    name: "Add an action",
+                    iconClass: "acd-icon-bolt",
                     execute: (command: PeerCommand) => {
                         let popupMenu = new Controls.PopupMenu();
 
@@ -1582,17 +1523,26 @@ export class CardDesigner {
     private _currentPointerPosition: IPoint;
     private _initialDragPointerOffset: IPoint;
     private _removeCommandElement: HTMLElement;
+    private _peerCommandsHostElement: HTMLElement;
 
-    private updatePeerCommands() {
+    private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
-            let rect = this._selectedPeer.getBoundingRect();
+            let peerRect = this._selectedPeer.getBoundingRect();
+            let removeButtonRect = this._removeCommandElement.getBoundingClientRect();
+            let commandsHostRect = this._peerCommandsHostElement.getBoundingClientRect();
 
-            this._removeCommandElement.style.left = rect.right + "px";
-            this._removeCommandElement.style.top = (rect.top - 20) + "px";
-            this._removeCommandElement.style.visibility = "visible";
+            this._removeCommandElement.style.left = peerRect.right + "px";
+            this._removeCommandElement.style.top = (peerRect.top - removeButtonRect.height - 2) + "px";
+
+            this._peerCommandsHostElement.style.left = (peerRect.right - commandsHostRect.width) + "px";
+            this._peerCommandsHostElement.style.top = (peerRect.bottom + 2) + "px";
+
+            this._removeCommandElement.style.visibility = this._selectedPeer.canBeRemoved() ? "visible" : "hidden";
+            this._peerCommandsHostElement.style.visibility = this._peerCommandsHostElement.childElementCount > 0 ? "visible" : "hidden";
         }
         else {
             this._removeCommandElement.style.visibility = "hidden";
+            this._peerCommandsHostElement.style.visibility = "hidden";
         }
     }
 
@@ -1604,13 +1554,21 @@ export class CardDesigner {
 
             this._selectedPeer = value;
 
+            this._peerCommandsHostElement.innerHTML = "";
+
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
+
+                let commands = this._selectedPeer.getCommands();
+
+                for (let command of commands) {
+                    this._peerCommandsHostElement.appendChild(command.render());
+                }
 
                 this._designerSurface.focus();
             }
 
-            this.updatePeerCommands();
+            this.updatePeerCommandsLayout();
 
             if (this.onSelectedPeerChanged) {
                 this.onSelectedPeerChanged(this._selectedPeer);
@@ -1867,9 +1825,19 @@ export class CardDesigner {
         this._removeCommandElement = document.createElement("div");
         this._removeCommandElement.classList.add("acd-removeButton");
         this._removeCommandElement.style.visibility = "hidden";
-        this._removeCommandElement.style.position = "absolute";
+        this._removeCommandElement.style.position = "absolute";   
+        this._removeCommandElement.title = "Remove";
+        this._removeCommandElement.onclick = (e) => {
+            this._selectedPeer.remove(false, true);
+        }
+
+        this._peerCommandsHostElement = document.createElement("div");
+        this._peerCommandsHostElement.style.visibility = "hidden";
+        this._peerCommandsHostElement.style.position = "absolute";   
+        this._peerCommandsHostElement.style.display = "flex";   
 
         this._designerSurface.appendChild(this._removeCommandElement);
+        this._designerSurface.appendChild(this._peerCommandsHostElement);
     }
 
     updateLayout(isFullRefresh: boolean = true) {
@@ -1877,7 +1845,7 @@ export class CardDesigner {
             this._allPeers[i].updateLayout();
         }
 
-        this.updatePeerCommands();
+        this.updatePeerCommandsLayout();
 
         if (this.onLayoutUpdated) {
             this.onLayoutUpdated(isFullRefresh);
