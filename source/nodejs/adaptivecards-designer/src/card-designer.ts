@@ -1978,7 +1978,7 @@ export class CardDesigner {
                     case Controls.KEY_DELETE:
                         let parent = this._selectedPeer.parent;
 
-                        if (this._selectedPeer.remove(false, true)) {
+                        if (this._selectedPeer.canBeRemoved() && this._selectedPeer.remove(false, true)) {
                             this.setSelectedPeer(parent);
                         }
 
@@ -2124,9 +2124,18 @@ export class CardDesigner {
     }
 
     isPointerOver(x: number, y: number) {
-        var clientRect = this._designerSurface.getBoundingClientRect();
+        let clientRect = this._designerSurface.getBoundingClientRect();
 
         return (x >= clientRect.left) && (x <= clientRect.right) && (y >= clientRect.top) && (y <= clientRect.bottom);
+    }
+
+    pageToClientCoordinates(x: number, y: number): IPoint {
+        let clientRect = this._designerSurface.getBoundingClientRect();
+
+        return {
+            x: x - clientRect.left,
+            y: y - clientRect.top
+        }
     }
 
     get selectedPeer(): DesignerPeer {

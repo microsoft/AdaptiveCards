@@ -319,7 +319,9 @@ class DesignerApp {
         if (this._draggedPaletteItem && isPointerOverDesigner) {
             let peer = this._draggedPaletteItem.createPeer();
 
-            if (this.designer.tryDrop(this._currentMousePosition, peer)) {
+            let clientCoordinates = this.designer.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
+
+            if (this.designer.tryDrop(clientCoordinates, peer)) {
                 this.endDrag();
 
                 this.designer.startDrag(peer);
