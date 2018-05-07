@@ -422,30 +422,25 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     remove(onlyFromCard: boolean, removeChildren: boolean): boolean {
-        if (this.canBeRemoved()) {
-            if (removeChildren) {
-                while (this._children.length > 0) {
-                    this._children[0].remove(onlyFromCard, removeChildren);
-                }        
+        if (removeChildren) {
+            while (this._children.length > 0) {
+                this._children[0].remove(onlyFromCard, removeChildren);
+            }        
+        }
+
+        var result = this.internalRemove();
+
+        if (result && !onlyFromCard) {
+            if (this.parent) {
+                this.parent.removeChild(this);
             }
 
-            var result = this.internalRemove();
+            this.removeElementsFromDesignerSurface();
 
-            if (result && !onlyFromCard) {
-                if (this.parent) {
-                    this.parent.removeChild(this);
-                }
-
-                this.removeElementsFromDesignerSurface();
-
-                this.peerRemoved(this);
-            }
-
-            return result;
+            this.peerRemoved(this);
         }
-        else {
-            return false;
-        }
+
+        return result;
     }
 
     addElementsToDesignerSurface(designerSurface: HTMLElement, processChildren: boolean = false) {
