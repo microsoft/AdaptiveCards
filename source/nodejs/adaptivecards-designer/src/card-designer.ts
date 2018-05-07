@@ -1701,9 +1701,10 @@ class DragHandle extends DraggableElement {
     protected internalRender(): HTMLElement {
         let element = document.createElement("div");
         element.classList.add("acd-peerButton", "acd-icon-drag");
+        element.title = "Drag to move this element";
         element.style.visibility = "hidden";
         element.style.position = "absolute";   
-        element.title = "Drag to move this element";
+        element.style.zIndex = "1000";
 
         return element;
     }
@@ -2032,9 +2033,10 @@ export class CardDesigner {
 
         this._removeCommandElement = document.createElement("div");
         this._removeCommandElement.classList.add("acd-peerButton", "acd-circularButton", "acd-icon-remove");
+        this._removeCommandElement.title = "Remove";
         this._removeCommandElement.style.visibility = "hidden";
         this._removeCommandElement.style.position = "absolute";   
-        this._removeCommandElement.title = "Remove";
+        this._removeCommandElement.style.zIndex = "1000";   
         this._removeCommandElement.onclick = (e) => {
             this._selectedPeer.remove(false, true);
         }
@@ -2050,6 +2052,7 @@ export class CardDesigner {
         this._peerCommandsHostElement.style.visibility = "hidden";
         this._peerCommandsHostElement.style.position = "absolute";   
         this._peerCommandsHostElement.style.display = "flex";   
+        this._peerCommandsHostElement.style.zIndex = "1000";   
 
         this._designerSurface.appendChild(this._dragHandle.renderedElement);
         this._designerSurface.appendChild(this._removeCommandElement);
