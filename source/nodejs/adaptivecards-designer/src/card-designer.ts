@@ -1184,6 +1184,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         }
 
         var altText = addLabelAndInput(card, "Alternate text:", Adaptive.TextInput);
+        altText.input.placeholder = "(not set)";
         altText.input.defaultValue = this.cardElement.altText;
         altText.input.onValueChanged = () => {
             this.cardElement.altText = altText.input.value;
@@ -1202,6 +1203,50 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         size.input.onValueChanged = () => {
             this.cardElement.size = <Adaptive.Size>parseInt(size.input.value);
 
+            this.changed(false);
+        }
+
+        var width = addLabelAndInput(card, "Width (preview):", Adaptive.TextInput);
+        width.input.placeholder = "(not set) Format: <N>px, e.g. 50px";
+
+        if (this.cardElement.pixelWidth) {
+            width.input.defaultValue = this.cardElement.pixelWidth.toString();
+        }
+
+        width.input.onValueChanged = () => {
+            try {
+                let size = Adaptive.SizeAndUnit.parse(width.input.value);
+
+                if (size.unit == Adaptive.SizeUnit.Pixel) {
+                    this.cardElement.pixelWidth = size.physicalSize;
+                }
+            }
+            catch (e) {
+                this.cardElement.pixelWidth = null;
+            }
+            
+            this.changed(false);
+        }
+
+        var height = addLabelAndInput(card, "Height  (preview):", Adaptive.TextInput);
+        height.input.placeholder = "(not set) Format: <N>px, e.g. 50px";
+
+        if (this.cardElement.pixelHeight) {
+            height.input.defaultValue = this.cardElement.pixelHeight.toString();
+        }
+
+        height.input.onValueChanged = () => {
+            try {
+                let size = Adaptive.SizeAndUnit.parse(height.input.value);
+
+                if (size.unit == Adaptive.SizeUnit.Pixel) {
+                    this.cardElement.pixelHeight = size.physicalSize;
+                }
+            }
+            catch (e) {
+                this.cardElement.pixelHeight = null;
+            }
+            
             this.changed(false);
         }
 

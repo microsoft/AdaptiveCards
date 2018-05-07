@@ -1227,7 +1227,6 @@ export class Image extends CardElement {
     backgroundColor: string;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
-    width: SizeAndUnit;
     pixelWidth?: number = null;
     pixelHeight?: number = null;
     altText: string = "";
