@@ -1,5 +1,6 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
+import { SizeAndUnit } from "adaptivecards";
 
 const DRAG_THRESHOLD = 10;
 
@@ -973,6 +974,31 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
         
+        var width = addLabelAndInput(card, "Width:", Adaptive.TextInput);
+
+        if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
+            width.input.defaultValue = this.cardElement.width.physicalSize + (this.cardElement.width.unit == Adaptive.SizeUnit.Pixel ? "px" : "*");
+        }
+        else {
+            width.input.defaultValue = this.cardElement.width;
+        }
+
+        width.input.onValueChanged = () => {
+            try {
+                this.cardElement.width = SizeAndUnit.parse(width.input.value);
+            }
+            catch (e) {
+                if (width.input.value == "stretch") {
+                    this.cardElement.width = "stretch";
+                }
+                else {
+                    this.cardElement.width = "auto";
+                }
+            }
+            
+            this.changed(false);
+        }
+
         var verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
         verticalContentAlignment.input.isCompact = true;
         verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
