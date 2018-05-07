@@ -1055,6 +1055,8 @@ export class FactSet extends CardElement {
     parse(json: any) {
         super.parse(json);
 
+        this.facts = [];
+
         if (json["facts"] != null) {
             var jsonFacts = json["facts"] as Array<any>;
             this.facts = [];
@@ -1889,9 +1891,10 @@ export class ChoiceSetInput extends Input {
         this.isMultiSelect = json["isMultiSelect"];
         this.placeholder = json["placeholder"];
 
+        this.choices = [];
+
         if (json["choices"] != undefined) {
             var choiceArray = json["choices"] as Array<any>;
-            this.choices = [];
 
             for (var i = 0; i < choiceArray.length; i++) {
                 var choice = new Choice();
@@ -2397,9 +2400,11 @@ export class HttpAction extends Action {
         this.method = json["method"];
         this.body = json["body"];
 
+        this._headers = [];
+
         if (json["headers"] != null) {
             var jsonHeaders = json["headers"] as Array<any>;
-            this._headers = [];
+
             for (var i = 0; i < jsonHeaders.length; i++) {
                 let httpHeader = new HttpHeader();
 
@@ -2880,6 +2885,10 @@ class ActionCollection {
 
     clear() {
         this.items = [];
+        this.buttons = [];
+
+        this._expandedAction = null;
+        this._renderedActionCount = 0;
     }
 
     getAllInputs(): Array<Input> {
@@ -3511,8 +3520,11 @@ export class Container extends CardElementContainer {
         return result;
     }
 
-    parse(json: any) { //, itemsCollectionPropertyName: string = "items") {
+    parse(json: any) {
         super.parse(json);
+
+        this._items = [];
+        this._renderedItems = [];
 
         var jsonBackgroundImage = json["backgroundImage"];
 
@@ -3533,10 +3545,6 @@ export class Container extends CardElementContainer {
 
         this._style = json["style"];
 
-        /*
-        if (json[itemsCollectionPropertyName] != null) {
-            var items = json[itemsCollectionPropertyName] as Array<any>;
-        */
         if (json[this.getItemsCollectionPropertyName()] != null) {
             var items = json[this.getItemsCollectionPropertyName()] as Array<any>;
 
@@ -4355,8 +4363,10 @@ export abstract class ContainerWithActions extends Container {
         return result ? result : super.getActionById(id);
     }
 
-    parse(json) { //: any, itemsCollectionPropertyName: string = "items") {
-        super.parse(json); // , itemsCollectionPropertyName);
+    parse(json) {
+        super.parse(json);
+
+        this._actionCollection.clear();
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
