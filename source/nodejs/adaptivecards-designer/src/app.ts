@@ -299,6 +299,17 @@ class DesignerApp {
         return this._hostContainerPicker;
     }
 
+    newCard() {
+        let card = {
+            type: "AdaptiveCard",
+            version: "1.0",
+            body: [                
+            ]
+        }
+        
+        monacoEditor.setValue(JSON.stringify(card, null, 4));
+    }
+
     handlePointerMove(e: PointerEvent) {
         this._currentMousePosition = { x: e.x, y: e.y };
 
@@ -417,6 +428,10 @@ var app: DesignerApp;
 var horizontalSplitter: Splitter;
 
 window.onload = () => {
+    document.getElementById("btnNewCard").onclick = (e) => {
+        app.newCard();
+    }
+
     horizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
 
     let card = new Adaptive.AdaptiveCard();
