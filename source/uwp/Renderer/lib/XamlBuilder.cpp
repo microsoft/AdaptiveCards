@@ -412,6 +412,10 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
         ComPtr<IUIElement> backgroundImage;
         BuildImage(adaptiveCardElement.Get(), renderContext, renderArgs, &backgroundImage);
+        if (backgroundImage == nullptr) {
+            return;
+        }
+
         XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
 
         // All background images should be stretched to fill the whole card.
@@ -807,6 +811,11 @@ AdaptiveNamespaceStart
 
             ComPtr<IUIElement> buttonIcon;
             BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+            if (buttonIcon == nullptr)
+            {
+                XamlHelpers::SetContent(localButton.Get(), title.Get());
+                return;
+            }
             XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
             ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
             THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
@@ -817,7 +826,7 @@ AdaptiveNamespaceStart
                 UINT spacingSize;
                 THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
 
-                ABI::Windows::UI::Color color = {0};
+                ABI::Windows::UI::Color color = { 0 };
                 auto separator = CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
                 XamlHelpers::AppendXamlElementToPanel(separator.Get(), buttonContentsPanel.Get());
             }
@@ -834,7 +843,7 @@ AdaptiveNamespaceStart
 
             EventRegistrationToken eventToken;
             THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-                [ buttonIconAsFrameworkElement, buttonText ](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                [buttonIconAsFrameworkElement, buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
             {
                 return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
             }).Get(), &eventToken));
@@ -1506,7 +1515,8 @@ AdaptiveNamespaceStart
             if (imageBaseUrl == NULL) {
                 renderContext->AddWarning(
                     ABI::AdaptiveNamespace::WarningStatusCode::AssetLoadFailed,
-                    HStringReference(L"imageBaseUrl missing for relative image").Get());
+                    HStringReference(L"Image not found").Get());
+                *imageControl = nullptr;
                 return;
             }
 

@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Adaptive10.png" />
+    <Content Include="Assets\background.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
