@@ -1429,30 +1429,32 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(imageSource->get_PixelHeight(&pixelHeight));
         INT32 pixelWidth;
         RETURN_IF_FAILED(imageSource->get_PixelWidth(&pixelWidth));
-        DOUBLE parentHeight;
-        DOUBLE parentWidth;
+        DOUBLE maxHeight;
+        DOUBLE maxWidth;
         ComPtr<IInspectable> localParentElement(parentElement);
         ComPtr<IFrameworkElement> localElement(imageControl);
         ComPtr<IColumnDefinition> parentAsColumnDefinition;
-        ComPtr<IFrameworkElement> parentAsFrameworkElement;
+
+        RETURN_IF_FAILED(localElement->get_MaxHeight(&maxHeight));
+        RETURN_IF_FAILED(localElement->get_MaxWidth(&maxWidth));
+
         if (SUCCEEDED(localParentElement.As(&parentAsColumnDefinition)))
         {
+            DOUBLE parentWidth;
             RETURN_IF_FAILED(parentAsColumnDefinition->get_ActualWidth(&parentWidth));
-            if (pixelWidth <= parentWidth)
+            if (parentWidth >= pixelWidth)
             {
-                RETURN_IF_FAILED(localElement->put_Width(pixelWidth));
+                // Make sure to keep the aspect ratio of the image
+                maxWidth = min(maxWidth, parentWidth);
+                double aspectRatio = (double)pixelHeight / pixelWidth;
+                maxHeight = maxWidth * aspectRatio;
             }
         }
-        else if (SUCCEEDED(localParentElement.As(&parentAsFrameworkElement)))
-        {
-            RETURN_IF_FAILED(parentAsFrameworkElement->get_ActualWidth(&parentWidth));
-            RETURN_IF_FAILED(parentAsFrameworkElement->get_ActualHeight(&parentHeight));
-            if (pixelHeight <= parentHeight && pixelWidth <= parentWidth)
-            {
-                RETURN_IF_FAILED(localElement->put_Height(pixelHeight));
-                RETURN_IF_FAILED(localElement->put_Width(pixelWidth));
-            }
-        }
+
+        // Prevent an image from being stretched out if it is smaller than the
+        // space allocated for it (when in auto mode).
+        RETURN_IF_FAILED(localElement->put_MaxHeight(min(maxHeight, pixelHeight)));
+        RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
 
         ComPtr<IUIElement> frameworkElementAsUIElement;
         RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
@@ -1550,7 +1552,7 @@ AdaptiveNamespaceStart
         UINT32 explicitWidth = 0, explicitHeight = 0;
         THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
         THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
-        bool isAspectRatioNeeded = (explicitWidth  && explicitHeight);
+        bool isAspectRatioNeeded = (explicitWidth && explicitHeight);
 
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
@@ -1599,9 +1601,11 @@ AdaptiveNamespaceStart
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>(
-                    [frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                    [ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
-                    return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                    // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
+                    // what it would be otherwise, just set the visibility when we get the image
+                    return ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible);
                 }).Get(), &eventToken));
             }
         }
@@ -1955,9 +1959,17 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
 
             double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
+            UINT32 pixelWidth = 0; 
+            THROW_IF_FAILED(localColumn->get_PixelWidth(&pixelWidth));
 
             GridLength columnWidth;
-            if (isAutoResult == 0)
+            if (pixelWidth)
+            { 
+                // If pixel width specified, use pixel width
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
+                columnWidth.Value = pixelWidth;
+            }
+            else if (isAutoResult == 0)
             {
                 // If auto specified, use auto width
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;

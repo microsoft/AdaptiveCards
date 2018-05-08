@@ -88,6 +88,8 @@ namespace AdaptiveCardTestApp.ViewModels
                 _sourceCardsFolder = await _expectedFolder.CreateFolderAsync("SourceCards", CreationCollisionOption.OpenIfExists);
             }
 
+            CurrentCardVisual = null;
+
             // If no cards left
             if (RemainingCards.Count == 0)
             {
@@ -109,7 +111,6 @@ namespace AdaptiveCardTestApp.ViewModels
 
             CurrentCard = RemainingCards.First().Name;
             CurrentHostConfig = RemainingHostConfigs.First().Name;
-            CurrentCardVisual = null;
 
             // Delay a bit to allow UI thread to update, otherwise user would never see an update
             await Task.Delay(10);
@@ -132,6 +133,7 @@ namespace AdaptiveCardTestApp.ViewModels
                 hostConfigFile: hostConfigFile,
                 actualError: renderResult.Item1,
                 actualImageFile: renderResult.Item2,
+                xamlCard: renderResult.Item3,
                 expectedFolder: _expectedFolder,
                 sourceHostConfigsFolder: _sourceHostConfigsFolder,
                 sourceCardsFolder: _sourceCardsFolder);
@@ -140,7 +142,7 @@ namespace AdaptiveCardTestApp.ViewModels
             return result;
         }
 
-        private async Task<Tuple<string, StorageFile>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
+        private async Task<Tuple<string, StorageFile, UIElement>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
             string error = null;
             RenderTargetBitmap rtb = null;
@@ -243,11 +245,18 @@ namespace AdaptiveCardTestApp.ViewModels
 
                     encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight, (uint)rtb.PixelWidth, (uint)rtb.PixelHeight, 96, 96, buffer.ToArray());
 
+                    // Set the size of the card so that it can be rendered just like the bitmap
+                    if (CurrentCardVisual is FrameworkElement fe)
+                    {
+                        fe.Width = rtb.PixelWidth;
+                        fe.Height = rtb.PixelHeight;
+                    }
+
                     await encoder.FlushAsync();
                 }
             }
 
-            return new Tuple<string, StorageFile>(error, file);
+            return new Tuple<string, StorageFile, UIElement>(error, file, CurrentCardVisual);
         }
 
         /// <summary>

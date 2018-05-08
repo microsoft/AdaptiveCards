@@ -32,6 +32,7 @@ AdaptiveNamespaceStart
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumn->GetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
+        m_pixelWidth = sharedColumn->GetPixelWidth();
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
         return S_OK;
@@ -47,6 +48,18 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveColumn::put_Width(HSTRING width)
     {
         return m_width.Set(width);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_PixelWidth(UINT32* pixelWidth)
+    {
+        return *pixelWidth = m_pixelWidth;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth)
+    {
+        return m_pixelWidth = pixelWidth;
     }
 
     _Use_decl_annotations_
@@ -96,6 +109,7 @@ AdaptiveNamespaceStart
 
         column->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         column->SetWidth(HStringToUTF8(m_width.Get()));
+        column->SetPixelWidth(m_pixelWidth);
 
         if (m_selectAction != nullptr)
         {

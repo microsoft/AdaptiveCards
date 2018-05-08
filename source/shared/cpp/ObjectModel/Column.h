@@ -10,8 +10,8 @@ class Column : public BaseCardElement
 {
 public:
     Column();
-    Column(Spacing spacing, bool separation, std::string size, unsigned int explicitWidth, ContainerStyle style);
-    Column(Spacing spacing, bool separation, std::string size, unsigned int explicitWidth, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
+    Column(Spacing spacing, bool separation, std::string size, unsigned int pixelWidth, ContainerStyle style);
+    Column(Spacing spacing, bool separation, std::string size, unsigned int pixelWidth, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
@@ -30,8 +30,8 @@ public:
     void SetWidth(const std::string value);
 
     // explicit width takes precedence over relative width 
-    int GetExplicitWidth() const;
-    void SetExplicitWidth(const int value);
+    int GetPixelWidth() const;
+    void SetPixelWidth(const int value);
 
     ContainerStyle GetStyle() const;
     void SetStyle(const ContainerStyle value);
@@ -50,7 +50,7 @@ private:
     void PopulateKnownPropertiesSet();
 
     std::string m_width;
-    unsigned int m_explicitWidth;
+    unsigned int m_pixelWidth;
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;
     ContainerStyle m_style;

@@ -9,6 +9,7 @@ using Windows.ApplicationModel;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 
 namespace AdaptiveCardTestApp.ViewModels
 {
@@ -35,6 +36,8 @@ namespace AdaptiveCardTestApp.ViewModels
 
         public StorageFile ActualImageFile { get; set; }
 
+        public UIElement XamlCard { get; set; }
+
         public bool DidHostConfigChange => _oldHostConfigHash != null && _oldHostConfigHash != HostConfigFile.Hash;
         public bool DidCardPayloadChange => _oldCardHash != null && _oldCardHash != CardFile.Hash;
 
@@ -52,12 +55,14 @@ namespace AdaptiveCardTestApp.ViewModels
             StorageFile actualImageFile,
             StorageFolder expectedFolder,
             StorageFolder sourceHostConfigsFolder,
-            StorageFolder sourceCardsFolder)
+            StorageFolder sourceCardsFolder,
+            UIElement xamlCard)
         {
             var answer = new TestResultViewModel()
             {
                 CardName = cardFile.Name,
                 CardFile = cardFile,
+                XamlCard = xamlCard,
                 HostConfigName = hostConfigFile.Name,
                 HostConfigFile = hostConfigFile,
                 ActualError = actualError,
