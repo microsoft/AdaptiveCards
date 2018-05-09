@@ -23,6 +23,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_FallbackText(_Out_ HSTRING* fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
+        IFACEMETHODIMP get_Language(_Out_ HSTRING* language);
+        IFACEMETHODIMP put_Language(_In_ HSTRING language);
+
         IFACEMETHODIMP get_BackgroundImage(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
@@ -46,6 +49,8 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
+        IFACEMETHODIMP GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris);
+
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel);
 
         // ITypePeek method
@@ -63,6 +68,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_fallbackText;
         Microsoft::WRL::Wrappers::HString m_speak;
         ABI::AdaptiveNamespace::HeightType m_height;
+        Microsoft::WRL::Wrappers::HString m_language;
 
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_backgroundImage;
 

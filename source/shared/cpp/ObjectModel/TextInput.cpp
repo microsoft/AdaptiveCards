@@ -16,11 +16,30 @@ Json::Value TextInput::SerializeToJsonValue()
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline)] = GetIsMultiline();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength)] = GetMaxLength();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = GetPlaceholder();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextInputStyleToString(GetTextInputStyle());
+    if (m_isMultiline)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline)] = m_isMultiline;
+    }
+
+    if (m_maxLength != 0)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength)] = m_maxLength;
+    }
+
+    if (!m_placeholder.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = m_placeholder;
+    }
+
+    if (!m_value.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
+    }
+
+    if (m_style != TextInputStyle::Text)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextInputStyleToString(m_style);
+    }
 
     return root;
 }

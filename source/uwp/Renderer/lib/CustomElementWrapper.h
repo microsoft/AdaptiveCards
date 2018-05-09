@@ -23,6 +23,8 @@ AdaptiveNamespaceStart
 
         virtual Json::Value SerializeToJsonValue() override;
 
+        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+
         HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement);
 
     private:

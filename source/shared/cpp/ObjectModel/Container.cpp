@@ -11,27 +11,6 @@ Container::Container() : BaseCardElement(CardElementType::Container), m_style(Co
     PopulateKnownPropertiesSet();
 }
 
-Container::Container(
-    Spacing spacing,
-    bool separator,
-    ContainerStyle style,
-    std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Container, spacing, separator),
-    m_style(style),
-    m_items(items)
-{
-    PopulateKnownPropertiesSet();
-}
-
-Container::Container(
-    Spacing spacing,
-    bool separator,
-    ContainerStyle style) :
-    BaseCardElement(CardElementType::Container, spacing, separator),
-    m_style(style)
-{
-}
-
 const std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems() const
 {
     return m_items;
@@ -71,23 +50,21 @@ Json::Value Container::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    ContainerStyle style = GetStyle();
-    if (style != ContainerStyle::None)
+    if (m_style != ContainerStyle::None)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
     }
 
     std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
-    for (const auto& cardElement : GetItems())
+    for (const auto& cardElement : m_items)
     {
         root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
     }
 
-    std::shared_ptr<BaseActionElement> selectAction = GetSelectAction();
-    if (selectAction != nullptr)
+    if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;

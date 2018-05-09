@@ -1495,13 +1495,22 @@ AdaptiveNamespaceStart
         ComPtr<IUriRuntimeClass> imageUri;
         THROW_IF_FAILED(adaptiveImage->get_Url(imageUri.GetAddressOf()));
 
+        UINT32 explicitWidth = 0, explicitHeight = 0;
+        THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
+        THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
+        bool hasExplicitMeasurements = (explicitWidth || explicitHeight);
+        bool isAspectRatioNeeded = (explicitWidth  && explicitHeight);
+
         // Get the image's size and style
-        ABI::AdaptiveNamespace::ImageSize size;
-        THROW_IF_FAILED(adaptiveImage->get_Size(&size));
+        ABI::AdaptiveNamespace::ImageSize size = ABI::AdaptiveNamespace::ImageSize::None;
+        if (!hasExplicitMeasurements)
+        {
+            THROW_IF_FAILED(adaptiveImage->get_Size(&size));
+        }
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (size == ABI::AdaptiveNamespace::ImageSize::None)
+        if (size == ABI::AdaptiveNamespace::ImageSize::None && !hasExplicitMeasurements)
         {
             ComPtr<IAdaptiveImageConfig> imageConfig;
             THROW_IF_FAILED(hostConfig->get_Image(&imageConfig));
@@ -1512,11 +1521,6 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(adaptiveImage->get_Style(&imageStyle));
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
-
-        UINT32 explicitWidth = 0, explicitHeight = 0;
-        THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
-        THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
-        bool isAspectRatioNeeded = (explicitWidth && explicitHeight);
 
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
@@ -1533,8 +1537,7 @@ AdaptiveNamespaceStart
             if (size == ABI::AdaptiveNamespace::ImageSize::None ||
                 size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
                 size == ABI::AdaptiveNamespace::ImageSize::Auto ||
-                explicitWidth ||
-                explicitHeight)
+                hasExplicitMeasurements)
             {
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
             }
@@ -1615,7 +1618,7 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
         THROW_IF_FAILED(hostConfig->get_ImageSizes(sizeOptions.GetAddressOf()));
 
-        if(explicitWidth || explicitHeight)
+        if(hasExplicitMeasurements)
         {
             if(explicitWidth) 
             {

@@ -10,23 +10,6 @@ ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetIn
     PopulateKnownPropertiesSet();
 }
 
-ChoiceSetInput::ChoiceSetInput(
-    Spacing spacing,
-    bool separation,
-    std::vector<std::shared_ptr<ChoiceInput>>& choices) :
-    BaseInputElement(CardElementType::ChoiceSetInput, spacing, separation),
-    m_choices(choices)
-{
-    PopulateKnownPropertiesSet();
-}
-
-ChoiceSetInput::ChoiceSetInput(
-    Spacing spacing,
-    bool separation) :
-    BaseInputElement(CardElementType::ChoiceSetInput, spacing, separation)
-{
-}
-
 const std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices() const
 {
     return m_choices;
@@ -41,13 +24,21 @@ Json::Value ChoiceSetInput::SerializeToJsonValue()
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ChoiceSetStyleToString(GetChoiceSetStyle());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect)] = GetIsMultiSelect();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ChoiceSetStyleToString(m_choiceSetStyle);
+
+    if (m_isMultiSelect)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect)] = m_isMultiSelect;
+    }
+
+    if (!m_value.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
+    }
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
     root[propertyName] = Json::Value(Json::arrayValue);
-    for (const auto& choice : GetChoices())
+    for (const auto& choice : m_choices)
     {
         root[propertyName].append(choice->SerializeToJsonValue());
     }

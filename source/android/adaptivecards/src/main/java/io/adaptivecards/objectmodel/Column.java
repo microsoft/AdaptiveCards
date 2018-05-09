@@ -38,15 +38,7 @@ public class Column extends BaseCardElement {
   }
 
   public Column() {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_0(), true);
-  }
-
-  public Column(Spacing spacing, boolean separation, String size, long explicitWidth, ContainerStyle style) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_1(spacing.swigValue(), separation, size, explicitWidth, style.swigValue()), true);
-  }
-
-  public Column(Spacing spacing, boolean separation, String size, long explicitWidth, ContainerStyle style, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_2(spacing.swigValue(), separation, size, explicitWidth, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
+    this(AdaptiveCardObjectModelJNI.new_Column(), true);
   }
 
   public String Serialize() {
@@ -75,12 +67,12 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetWidth(swigCPtr, this, value);
   }
 
-  public int GetExplicitWidth() {
-    return AdaptiveCardObjectModelJNI.Column_GetExplicitWidth(swigCPtr, this);
+  public int GetPixelWidth() {
+    return AdaptiveCardObjectModelJNI.Column_GetPixelWidth(swigCPtr, this);
   }
 
-  public void SetExplicitWidth(int value) {
-    AdaptiveCardObjectModelJNI.Column_SetExplicitWidth(swigCPtr, this, value);
+  public void SetPixelWidth(int value) {
+    AdaptiveCardObjectModelJNI.Column_SetPixelWidth(swigCPtr, this, value);
   }
 
   public ContainerStyle GetStyle() {

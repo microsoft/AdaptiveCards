@@ -20,7 +20,7 @@ BaseCardElement::BaseCardElement(
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
-    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type))
+    m_separator(false), m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type))
 {
     PopulateKnownPropertiesSet();
 }
@@ -99,12 +99,25 @@ std::string BaseCardElement::Serialize()
 
 Json::Value BaseCardElement::SerializeToJsonValue()
  {
-    Json::Value root;
+    Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)] = SpacingToString(GetSpacing());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = GetSeparator();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());
+
+    if (m_spacing != Spacing::Default)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)] = SpacingToString(m_spacing);
+    }
+
+    if (m_separator)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = true;
+    }
+
+    if (!m_id.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
+    }
+
     return root;
 }
 
