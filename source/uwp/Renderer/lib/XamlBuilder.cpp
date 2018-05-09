@@ -48,6 +48,7 @@ const PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlay
 AdaptiveNamespaceStart
     XamlBuilder::XamlBuilder()
     {
+
         m_imageLoadTracker.AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
 
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_RandomAccessStream).Get(), &m_randomAccessStreamStatics));
@@ -352,7 +353,7 @@ AdaptiveNamespaceStart
         // Outer panel that contains the main body and any inline show cards
         ComPtr<WholeItemsPanel> outerPanel;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&outerPanel));
-		outerPanel->SetMainPanel(TRUE);
+        outerPanel->SetMainPanel(TRUE);
         ComPtr<IPanel> outerPanelAsPanel;
         THROW_IF_FAILED(outerPanel.As(&outerPanelAsPanel));
 
@@ -380,11 +381,13 @@ AdaptiveNamespaceStart
         XamlHelpers::AppendXamlElementToPanel(outerPanelAsPanel.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
         THROW_IF_FAILED(outerPanelAsPanel.CopyTo(outerElementContainer));
 
-        if (adaptiveCardHeightType == ABI::AdaptiveNamespace::HeightType::Stretch)
+        if (m_fixedDimensions)
         {
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             THROW_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
-            rootAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Stretch);
+            rootAsFrameworkElement->put_Width(m_fixedWidth);
+            rootAsFrameworkElement->put_Height(m_fixedHeight);
+            rootAsFrameworkElement->put_MaxHeight(m_fixedHeight);
         }
 
         if (adaptiveCardHeightType == ABI::AdaptiveNamespace::HeightType::Stretch)
@@ -1453,12 +1456,6 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
         RETURN_IF_FAILED(frameworkElementAsUIElement->put_Visibility(Visibility::Visibility_Visible));
 
-        ComPtr<IUIElement> localElementAsUIElement;
-        if (SUCCEEDED(localElement.As(&localElementAsUIElement)))
-        {
-            RETURN_IF_FAILED(localElementAsUIElement->InvalidateMeasure());
-        }
-
         return S_OK;
     }
 
@@ -1565,7 +1562,6 @@ AdaptiveNamespaceStart
                 THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-                
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(Callback<IRoutedEventHandler>(
@@ -1711,12 +1707,12 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
-		ABI::AdaptiveNamespace::HeightType containerHeightType{};
-		THROW_IF_FAILED(cardElement->get_Height(&containerHeightType));
-		if (containerHeightType == ABI::AdaptiveNamespace::HeightType::Auto)
-		{
-			THROW_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(VerticalAlignment_Top));
-		}
+        ABI::AdaptiveNamespace::HeightType containerHeightType{};
+        THROW_IF_FAILED(cardElement->get_Height(&containerHeightType));
+        if (containerHeightType == ABI::AdaptiveNamespace::HeightType::Auto)
+        {
+            THROW_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(VerticalAlignment_Top));
+        }
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
@@ -1836,7 +1832,7 @@ AdaptiveNamespaceStart
         // still renders at the top even if the content is shorter than the full card
         ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
         THROW_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
-        THROW_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
+        THROW_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanelAsFrameworkElement.Get()));
 
@@ -2009,7 +2005,6 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
 
         XamlHelpers::AppendXamlElementToPanel(xamlGrid.Get(), gridContainerAsPanel.Get(), columnSetHeightType);
-
         HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, gridContainerAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, columnSetControl);
     }
 
@@ -2533,7 +2528,7 @@ AdaptiveNamespaceStart
         boolean isMultiLine;
         THROW_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiLine));
         THROW_IF_FAILED(textBox->put_AcceptsReturn(isMultiLine));
-		
+
         HString textValue;
         THROW_IF_FAILED(adaptiveTextInput->get_Value(textValue.GetAddressOf()));
         THROW_IF_FAILED(textBox->put_Text(textValue.Get()));
@@ -2579,10 +2574,10 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(textBox.As(&frameworkElement));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", frameworkElement.Get()));
 
-		if (!isMultiLine)
-		{
-			THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
-		}
+        if (!isMultiLine)
+        {
+            THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+        }
 
         THROW_IF_FAILED(textBox.CopyTo(textInputControl));
         AddInputValueToContext(renderContext, adaptiveCardElement, *textInputControl);

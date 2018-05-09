@@ -2568,7 +2568,7 @@ AdaptiveNamespaceStart
         HRESULT AddError([in] ErrorStatusCode statusCode, [in] HSTRING message);
         HRESULT AddWarning([in] WarningStatusCode statusCode, [in] HSTRING message);
     };
-    
+
     [
         version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
