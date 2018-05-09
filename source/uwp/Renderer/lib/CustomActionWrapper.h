@@ -22,6 +22,8 @@ AdaptiveNamespaceStart
 
         HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
 
+        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_actionElement;
     };
