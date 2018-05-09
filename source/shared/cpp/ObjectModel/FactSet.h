@@ -13,8 +13,6 @@ class FactSet : public BaseCardElement
 friend class FactSetParser;
 public:
     FactSet();
-    FactSet(Spacing spacing, bool separation);
-    FactSet(Spacing spacing, bool separation, std::vector<std::shared_ptr<Fact>>& facts);
 
     virtual Json::Value SerializeToJsonValue() override;
 

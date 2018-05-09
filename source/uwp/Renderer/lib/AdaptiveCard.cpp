@@ -160,6 +160,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetVersion(), m_version.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetLanguage(), m_language.GetAddressOf()));
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
 
@@ -199,6 +200,18 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveCard::put_FallbackText(HSTRING fallbackText)
     {
         return m_fallbackText.Set(fallbackText);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Language(HSTRING* language)
+    {
+        return m_language.CopyTo(language);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Language(HSTRING language)
+    {
+        return m_language.Set(language);
     }
 
     _Use_decl_annotations_
@@ -288,6 +301,7 @@ AdaptiveNamespaceStart
         adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
+        adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
 
         if (m_backgroundImage != nullptr)
         {
@@ -300,7 +314,13 @@ AdaptiveNamespaceStart
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 
-        GenerateSharedAction(m_selectAction.Get(), adaptiveCard->GetSelectAction());
+        if (m_selectAction != nullptr)
+        {
+            std::shared_ptr<BaseActionElement> sharedAction;
+            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
+            adaptiveCard->SetSelectAction(sharedAction);
+        }
+
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
 

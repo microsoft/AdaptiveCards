@@ -23,6 +23,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_FallbackText(_Out_ HSTRING* fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
+        IFACEMETHODIMP get_Language(_Out_ HSTRING* language);
+        IFACEMETHODIMP put_Language(_In_ HSTRING language);
+
         IFACEMETHODIMP get_BackgroundImage(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
@@ -59,6 +62,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_minVersion;
         Microsoft::WRL::Wrappers::HString m_fallbackText;
         Microsoft::WRL::Wrappers::HString m_speak;
+        Microsoft::WRL::Wrappers::HString m_language;
 
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_backgroundImage;
 

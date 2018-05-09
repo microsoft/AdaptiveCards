@@ -12,7 +12,6 @@
         {
             "type": "Image",
             "url": "http://adaptivecards.io/content/cats/1.png",
-            "size": "small",
             "width": "50px",
             "height": "50px"
         },
@@ -25,7 +24,6 @@
         {
             "type": "Image",
             "url": "http://adaptivecards.io/content/cats/1.png",
-            "size": "medium",
             "width": "25px",
             "height": "50px"
         },
@@ -38,7 +36,6 @@
         {
             "type": "Image",
             "url": "http://adaptivecards.io/content/cats/1.png",
-            "size": "large",
             "width": "80px"
         },
         {
@@ -50,7 +47,6 @@
         {
             "type": "Image",
             "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-            "size": "large",
             "style": "person",
             "width": "80px"
         },
@@ -64,7 +60,6 @@
 
             "type": "Image",
             "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-            "size": "large",
             "style": "person",
             "width": "40px",
             "height": "80px"

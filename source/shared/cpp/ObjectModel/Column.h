@@ -10,8 +10,6 @@ class Column : public BaseCardElement
 {
 public:
     Column();
-    Column(Spacing spacing, bool separation, std::string size, unsigned int pixelWidth, ContainerStyle style);
-    Column(Spacing spacing, bool separation, std::string size, unsigned int pixelWidth, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();

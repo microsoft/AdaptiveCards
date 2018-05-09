@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"columns":[{"items":[{"text":"Column 1","type":"TextBlock"}],"type":"Column"},{"items":[{"text":"Column 2","type":"TextBlock"}],"type":"Column"},{"items":[{"text":"Column 3","type":"TextBlock"}],"type":"Column"}],"type":"ColumnSet"}],"type":"AdaptiveCard","version":"1.0"}

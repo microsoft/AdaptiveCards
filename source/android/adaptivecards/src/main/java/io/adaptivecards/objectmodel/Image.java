@@ -38,11 +38,7 @@ public class Image extends BaseCardElement {
   }
 
   public Image() {
-    this(AdaptiveCardObjectModelJNI.new_Image__SWIG_0(), true);
-  }
-
-  public Image(Spacing spacing, boolean separator, String uri, ImageStyle imageStyle, ImageSize imageSize, long width, long height, String altText, HorizontalAlignment hAlignment) {
-    this(AdaptiveCardObjectModelJNI.new_Image__SWIG_1(spacing.swigValue(), separator, uri, imageStyle.swigValue(), imageSize.swigValue(), width, height, altText, hAlignment.swigValue()), true);
+    this(AdaptiveCardObjectModelJNI.new_Image(), true);
   }
 
   public JsonValue SerializeToJsonValue() {

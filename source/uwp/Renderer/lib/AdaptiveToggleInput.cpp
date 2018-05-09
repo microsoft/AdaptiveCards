@@ -96,21 +96,10 @@ AdaptiveNamespaceStart
 
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(toggleInput)));
 
-        std::string title;
-        RETURN_IF_FAILED(HStringToUTF8(m_title.Get(), title));
-        toggleInput->SetTitle(title);
-
-        std::string value;
-        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
-        toggleInput->SetValue(value);
-
-        std::string valueOn;
-        RETURN_IF_FAILED(HStringToUTF8(m_valueOn.Get(), valueOn));
-        toggleInput->SetValueOn(valueOn);
-
-        std::string valueOff;
-        RETURN_IF_FAILED(HStringToUTF8(m_valueOff.Get(), valueOff));
-        toggleInput->SetValueOff(valueOff);
+        toggleInput->SetTitle(HStringToUTF8(m_title.Get()));
+        toggleInput->SetValue(HStringToUTF8(m_value.Get()));
+        toggleInput->SetValueOn(HStringToUTF8(m_valueOn.Get()));
+        toggleInput->SetValueOff(HStringToUTF8(m_valueOff.Get()));
 
         sharedModel = toggleInput;
 

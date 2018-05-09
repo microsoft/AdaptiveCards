@@ -133,7 +133,8 @@ namespace AdaptiveCardTestApp.ViewModels
                 hostConfigFile: hostConfigFile,
                 actualError: renderResult.Item1,
                 actualImageFile: renderResult.Item2,
-                xamlCard: renderResult.Item3,
+                actualJsonFile: renderResult.Item3,
+                xamlCard: renderResult.Item4,
                 expectedFolder: _expectedFolder,
                 sourceHostConfigsFolder: _sourceHostConfigsFolder,
                 sourceCardsFolder: _sourceCardsFolder);
@@ -142,10 +143,11 @@ namespace AdaptiveCardTestApp.ViewModels
             return result;
         }
 
-        private async Task<Tuple<string, StorageFile, UIElement>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
+        private async Task<Tuple<string, StorageFile, StorageFile, UIElement>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
             string error = null;
             RenderTargetBitmap rtb = null;
+            string roundTrippedJsonString = null;
 
             try
             {
@@ -167,6 +169,9 @@ namespace AdaptiveCardTestApp.ViewModels
 
                     else
                     {
+                        roundTrippedJsonString = card.ToJson().ToString();
+                        card = AdaptiveCard.FromJsonString(roundTrippedJsonString).AdaptiveCard;
+
                         var renderer = new AdaptiveCardRenderer()
                         {
                             HostConfig = hostConfig
@@ -231,10 +236,12 @@ namespace AdaptiveCardTestApp.ViewModels
             }
 
             StorageFile file = null;
+            StorageFile file2 = null;
 
             if (error == null)
             {
                 file = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
+                file2 = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
 
                 // https://basquang.wordpress.com/2013/09/26/windows-store-8-1-save-visual-element-to-bitmap-image-file/
                 var buffer = await rtb.GetPixelsAsync();
@@ -254,9 +261,14 @@ namespace AdaptiveCardTestApp.ViewModels
 
                     await encoder.FlushAsync();
                 }
+
+                if (roundTrippedJsonString != null)
+                {
+                    await Windows.Storage.FileIO.WriteTextAsync(file2, roundTrippedJsonString);
+                }
             }
 
-            return new Tuple<string, StorageFile, UIElement>(error, file, CurrentCardVisual);
+            return new Tuple<string, StorageFile, StorageFile, UIElement>(error, file, file2, CurrentCardVisual);
         }
 
         /// <summary>

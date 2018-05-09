@@ -17,9 +17,21 @@ Json::Value ToggleInput::SerializeToJsonValue()
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff)] = GetValueOff();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn)] = GetValueOn();
+
+    if (!m_value.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
+    }
+
+    if (!m_valueOff.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff)] = m_valueOff;
+    }
+
+    if (!m_valueOn.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn)] = m_valueOn;
+    }
 
     return root;
 }

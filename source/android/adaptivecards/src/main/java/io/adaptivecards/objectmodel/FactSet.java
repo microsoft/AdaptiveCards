@@ -38,15 +38,7 @@ public class FactSet extends BaseCardElement {
   }
 
   public FactSet() {
-    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_0(), true);
-  }
-
-  public FactSet(Spacing spacing, boolean separation) {
-    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_1(spacing.swigValue(), separation), true);
-  }
-
-  public FactSet(Spacing spacing, boolean separation, FactVector facts) {
-    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_2(spacing.swigValue(), separation, FactVector.getCPtr(facts), facts), true);
+    this(AdaptiveCardObjectModelJNI.new_FactSet(), true);
   }
 
   public JsonValue SerializeToJsonValue() {

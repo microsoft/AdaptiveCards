@@ -113,6 +113,11 @@
                 Content="Compare host config"
                 Click="ButtonCompareHostConfig_Click"/>
             <Button
+                x:Name="ButtonRoundTrippedJson"
+                Margin="0,12,6,0"
+                Content="Compare round tripped json"
+                Click="ButtonRoundTrippedJson_Click"/>
+            <Button
                 x:Name="ButtonSaveAsExpected"
                 Margin="0,12,0,0"
                 Content="Set as expected"
