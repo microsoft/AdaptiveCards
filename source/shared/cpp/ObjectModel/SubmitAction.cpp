@@ -23,7 +23,10 @@ Json::Value SubmitAction::SerializeToJsonValue()
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data)] = GetDataJson();
+    if (!m_dataJson.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data)] = m_dataJson;
+    }
 
     return root;
 }

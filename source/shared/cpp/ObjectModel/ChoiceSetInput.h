@@ -13,8 +13,6 @@ class ChoiceSetInput : public BaseInputElement
 friend class ChoiceSetInputParser;
 public:
     ChoiceSetInput();
-    ChoiceSetInput(Spacing spacing, bool separation);
-    ChoiceSetInput(Spacing spacing, bool separation, std::vector<std::shared_ptr<ChoiceInput>>& choices);
 
     virtual Json::Value SerializeToJsonValue() override;
 

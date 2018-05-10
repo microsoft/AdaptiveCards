@@ -5,30 +5,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto")
-{
-    PopulateKnownPropertiesSet();
-}
-
-Column::Column(
-    Spacing spacing,
-    bool separation,
-    std::string size,
-    unsigned int pixelWidth,
-    ContainerStyle style,
-    std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Column, spacing, separation), m_width(size), m_pixelWidth(pixelWidth), m_style(style), m_items(items)
-{
-    PopulateKnownPropertiesSet();
-}
-
-Column::Column(
-    Spacing spacing,
-    bool separation,
-    std::string width,
-    unsigned int pixelWidth,
-    ContainerStyle style) :
-    BaseCardElement(CardElementType::Column, spacing, separation), m_width(width), m_pixelWidth(pixelWidth), m_style(style)
+Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0), m_style(ContainerStyle::None)
 {
     PopulateKnownPropertiesSet();
 }
@@ -84,25 +61,26 @@ Json::Value Column::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = GetWidth();
-
-    ContainerStyle style = GetStyle();
-    if (style != ContainerStyle::None)
+    if (!m_width.empty())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = m_width;
+    }
+
+    if (m_style != ContainerStyle::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
     }
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[propertyName] = Json::Value(Json::arrayValue);
-    for (const auto& cardElement : GetItems())
+    for (const auto& cardElement : m_items)
     {
         root[propertyName].append(cardElement->SerializeToJsonValue());
     }
 
-    std::shared_ptr<BaseActionElement> selectAction = GetSelectAction();
-    if (selectAction != nullptr)
+    if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;

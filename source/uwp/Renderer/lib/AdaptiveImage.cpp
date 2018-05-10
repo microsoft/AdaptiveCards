@@ -29,7 +29,7 @@ AdaptiveNamespaceStart
             return E_INVALIDARG;
         }
 
-        AssignImageFromUrl(sharedImage->GetUrl(), m_uri.GetAddressOf(), &m_isUriRelative);
+        RETURN_IF_FAILED(AssignImageFromUrl(sharedImage->GetUrl(), m_uri.GetAddressOf(), &m_isUriRelative));
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());

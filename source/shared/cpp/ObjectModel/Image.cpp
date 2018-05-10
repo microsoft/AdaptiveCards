@@ -16,48 +16,60 @@ Image::Image() :
     PopulateKnownPropertiesSet();
 }
 
-Image::Image(
-    Spacing spacing,
-    bool separator,
-    std::string url,
-    ImageStyle imageStyle,
-    ImageSize imageSize,
-    unsigned int width,
-    unsigned int height,
-    std::string altText,
-    HorizontalAlignment hAlignment) :
-    BaseCardElement(CardElementType::Image, spacing, separator),
-    m_url(url),
-    m_imageStyle(imageStyle),
-    m_imageSize(imageSize),
-    m_width(width),
-    m_height(height),
-    m_altText(altText),
-    m_hAlignment(hAlignment)
-{
-    PopulateKnownPropertiesSet();
-}
-
 Json::Value Image::SerializeToJsonValue()
 {
+    const char pixelstring[] = "px";
+
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    ImageSize imageSize = GetImageSize();
-    if (imageSize != ImageSize::None)
+    if (m_width || m_height)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = ImageSizeToString(GetImageSize());
+        if (m_width)
+        {
+            std::ostringstream stringStream;
+            stringStream << m_width;
+
+            std::string widthString = stringStream.str() + pixelstring;
+            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = widthString;
+        }
+        if (m_height)
+        {
+            std::ostringstream stringStream;
+            stringStream << m_height;
+
+            std::string heightString = stringStream.str() + pixelstring;
+            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = heightString;
+        }
+    }
+    else if (m_imageSize != ImageSize::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = ImageSizeToString(m_imageSize);
     }
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ImageStyleToString(GetImageStyle());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url)] = GetUrl();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
-        HorizontalAlignmentToString(GetHorizontalAlignment());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText)] = GetAltText();
-
-    std::shared_ptr<BaseActionElement> selectAction = GetSelectAction();
-    if (selectAction != nullptr)
+    if (m_imageStyle != ImageStyle::Default)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ImageStyleToString(m_imageStyle);
+    }
+
+    if (!m_url.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url)] = m_url;
+    }
+
+    if (m_hAlignment != HorizontalAlignment::Left)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
+            HorizontalAlignmentToString(m_hAlignment);
+    }
+
+    if (!m_altText.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText)] = m_altText;
+    }
+
+    if (m_selectAction != nullptr)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;
@@ -169,7 +181,6 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
-    image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
 
@@ -182,8 +193,15 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::vector<int> parsedDimensions;
     ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
 
-    image->SetWidth(parsedDimensions[0]);
-    image->SetHeight(parsedDimensions[1]);
+    if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
+    {
+        image->SetWidth(parsedDimensions[0]);
+        image->SetHeight(parsedDimensions[1]);
+    }
+    else
+    {
+        image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
+    }
 
     // Parse optional selectAction
     image->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false));

@@ -418,7 +418,6 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IVector<IAdaptiveWarning*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
-        interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
     }
 
@@ -450,6 +449,15 @@ AdaptiveNamespaceStart
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
+    };
+
+    [
+        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
+        version(NTDDI_WIN10_RS1),
+    ]
+    interface IAdaptiveElementWithRemoteResources : IInspectable
+    {
+        HRESULT GetResourceUris([out, retval] Windows.Foundation.Collections.IVectorView<Windows.Foundation.Uri*>** result);
     };
 
     [
@@ -573,6 +581,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT IsBackgroundImageUriRelative([out, retval] boolean* value);
         [propput] HRESULT IsBackgroundImageUriRelative([in] boolean value);
 
+        [propget] HRESULT Language([out, retval] HSTRING* value);
+        [propput] HRESULT Language([in] HSTRING value);
+
         [propget] HRESULT Speak([out, retval] HSTRING* value);
         [propput] HRESULT Speak([in] HSTRING value);
 
@@ -583,6 +594,8 @@ AdaptiveNamespaceStart
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
+
+        HRESULT GetResourceUris([out, retval] Windows.Foundation.Collections.IVectorView<Windows.Foundation.Uri*>** result);
     };
 
     [

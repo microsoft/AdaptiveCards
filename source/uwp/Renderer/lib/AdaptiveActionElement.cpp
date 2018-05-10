@@ -18,7 +18,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
 
-        AssignImageFromUrl(sharedModel->GetIconUrl(), m_iconUri.GetAddressOf(), &m_isIconUriRelative);
+        RETURN_IF_FAILED(AssignImageFromUrl(sharedModel->GetIconUrl(), m_iconUri.GetAddressOf(), &m_isIconUriRelative));
 
         return S_OK;
     }
@@ -98,6 +98,10 @@ AdaptiveNamespaceStart
     {
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
+
+        std::string urlString;
+        RETURN_IF_FAILED(HStringToUTF8(m_iconUri.Get(), urlString));
+        sharedCardElement->SetIconUrl(urlString);
 
         if (m_additionalProperties != nullptr)
         {

@@ -29,6 +29,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_IsBackgroundImageUriRelative(_Out_ boolean* isBackgroundImageUriRelative);
         IFACEMETHODIMP put_IsBackgroundImageUriRelative(_In_ boolean isBackgroundImageUriRelative);
 
+        IFACEMETHODIMP get_Language(_Out_ HSTRING* language);
+        IFACEMETHODIMP put_Language(_In_ HSTRING language);
+
         IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 
@@ -46,6 +49,8 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
+        IFACEMETHODIMP GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris);
+
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel);
 
         // ITypePeek method
@@ -62,6 +67,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_minVersion;
         Microsoft::WRL::Wrappers::HString m_fallbackText;
         Microsoft::WRL::Wrappers::HString m_speak;
+        Microsoft::WRL::Wrappers::HString m_language;
 
         Microsoft::WRL::Wrappers::HString m_backgroundImageUri;
         boolean m_isBackgroundImageUriRelative;
