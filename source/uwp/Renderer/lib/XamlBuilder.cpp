@@ -1883,8 +1883,7 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        double maxColumnHeight{};
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig, &maxColumnHeight](IAdaptiveColumn* column)
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column)
         {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
@@ -2182,8 +2181,6 @@ AdaptiveNamespaceStart
                 UINT32 maxImageHeight;
                 THROW_IF_FAILED(imageSetConfig->get_MaxImageHeight(&maxImageHeight));
                 THROW_IF_FAILED(imageAsFrameworkElement->put_MaxHeight(maxImageHeight));
-
-                
 
                 ComPtr<IPanel> gridAsPanel;
                 THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
