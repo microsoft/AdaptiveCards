@@ -578,9 +578,6 @@ AdaptiveNamespaceStart
         [propget] HRESULT BackgroundImageUri([out, retval] HSTRING* value);
         [propput] HRESULT BackgroundImageUri([in] HSTRING value);
 
-        [propget] HRESULT IsBackgroundImageUriRelative([out, retval] boolean* value);
-        [propput] HRESULT IsBackgroundImageUriRelative([in] boolean value);
-
         [propget] HRESULT Language([out, retval] HSTRING* value);
         [propput] HRESULT Language([in] HSTRING value);
 
@@ -698,9 +695,6 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT Uri([out, retval] HSTRING* value);
         [propput] HRESULT Uri([in] HSTRING value);
-
-        [propget] HRESULT IsUriRelative([out, retval] boolean* value);
-        [propput] HRESULT IsUriRelative([in] boolean value);
 
         [propget] HRESULT Style([out, retval] ImageStyle* value);
         [propput] HRESULT Style([in] ImageStyle value);
@@ -2085,9 +2079,6 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT IconUri([out, retval] HSTRING* value);
         [propput] HRESULT IconUri([in] HSTRING value);
-
-        [propget] HRESULT IsIconUriRelative([out, retval] boolean* value);
-        [propput] HRESULT IsIconUriRelative([in] boolean value);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);

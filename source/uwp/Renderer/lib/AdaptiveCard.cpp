@@ -164,7 +164,7 @@ AdaptiveNamespaceStart
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
 
-        RETURN_IF_FAILED(AssignImageFromUrl(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImageUri.GetAddressOf(), &m_isBackgroundImageUriRelative));
+        RETURN_IF_FAILED(WStringToHString(StringToWstring(sharedAdaptiveCard->GetBackgroundImage()), m_backgroundImageUri.GetAddressOf()));
 
         return S_OK;
     }
@@ -237,20 +237,6 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_IsBackgroundImageUriRelative(boolean* isBackgroundImageUriRelative)
-    {
-        *isBackgroundImageUriRelative = m_isBackgroundImageUriRelative;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_IsBackgroundImageUriRelative(boolean isBackgroundImageUriRelative)
-    {
-        m_isBackgroundImageUriRelative = isBackgroundImageUriRelative;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveCard::get_SelectAction(IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
@@ -307,9 +293,12 @@ AdaptiveNamespaceStart
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
         adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
 
-        std::string urlString;
-        RETURN_IF_FAILED(HStringToUTF8(m_backgroundImageUri.Get(), urlString));
-        adaptiveCard->SetBackgroundImage(urlString);
+        if (m_backgroundImageUri != NULL)
+        {
+            std::string urlString;
+            RETURN_IF_FAILED(HStringToUTF8(m_backgroundImageUri.Get(), urlString));
+            adaptiveCard->SetBackgroundImage(urlString);
+        }
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 

@@ -347,9 +347,7 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(adaptiveCard->get_BackgroundImageUri(&backgroundImageUri));
         if (backgroundImageUri != nullptr)
         {
-            boolean isBackgroundImageUriRelative;
-            THROW_IF_FAILED(adaptiveCard->get_IsBackgroundImageUriRelative(&isBackgroundImageUriRelative));
-            ApplyBackgroundToRoot(rootAsPanel.Get(), &backgroundImageUri, &isBackgroundImageUriRelative, renderContext, renderArgs);
+            ApplyBackgroundToRoot(rootAsPanel.Get(), &backgroundImageUri, renderContext, renderArgs);
         }
 
         // Outer panel that contains the main body and any inline show cards
@@ -397,7 +395,6 @@ AdaptiveNamespaceStart
     void XamlBuilder::ApplyBackgroundToRoot(
         ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
         HSTRING* uri,
-        boolean* isUriRelative,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs)
     {
@@ -406,7 +403,6 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
         adaptiveImage->put_Uri(*uri);
-        adaptiveImage->put_IsUriRelative(*isUriRelative);
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -797,11 +793,7 @@ AdaptiveNamespaceStart
             ComPtr<IAdaptiveImage> adaptiveImage;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
-            boolean isIconUriRelative;
-            THROW_IF_FAILED(action->get_IsIconUriRelative(&isIconUriRelative));
-
             adaptiveImage->put_Uri(iconUri);
-            adaptiveImage->put_IsUriRelative(isIconUriRelative);
             adaptiveImage->put_HorizontalAlignment(HAlignment_Center);
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
@@ -1495,10 +1487,6 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        // Handle relative and absolute image URI differently
-        boolean isUriRelative;
-        THROW_IF_FAILED(adaptiveImage->get_IsUriRelative(&isUriRelative));
-
         ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
         THROW_IF_FAILED(GetActivationFactory(
             HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
@@ -1509,6 +1497,10 @@ AdaptiveNamespaceStart
 
         ComPtr<IUriRuntimeClass> imageUri;
 
+        // Try to treat URI as absolute
+        boolean isUriRelative = FAILED(uriActivationFactory->CreateUri(uri, imageUri.GetAddressOf()));
+
+        // Otherwise, try to treat URI as relative
         if (isUriRelative)
         {
             HSTRING imageBaseUrl;
@@ -1527,10 +1519,6 @@ AdaptiveNamespaceStart
                 uri,
                 imageUri.GetAddressOf())
             );
-        }
-        else
-        {
-            THROW_IF_FAILED(uriActivationFactory->CreateUri(uri, imageUri.GetAddressOf()));
         }
 
         UINT32 explicitWidth = 0, explicitHeight = 0;

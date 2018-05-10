@@ -26,9 +26,6 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Uri(_Out_ HSTRING *uri);
         IFACEMETHODIMP put_Uri(_In_ HSTRING uri);
 
-        IFACEMETHODIMP get_IsUriRelative(_Out_ boolean* isUriRelative);
-        IFACEMETHODIMP put_IsUriRelative(_In_ boolean isUriRelative);
-
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ImageStyle* imageStyle);
         IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveNamespace::ImageStyle imageStyle);
 
@@ -79,7 +76,6 @@ AdaptiveNamespaceStart
 
     private:
         Microsoft::WRL::Wrappers::HString m_uri;
-        boolean m_isUriRelative;
         ABI::AdaptiveNamespace::ImageStyle m_imageStyle;
         ABI::AdaptiveNamespace::ImageSize m_imageSize;
         Microsoft::WRL::Wrappers::HString m_altText;

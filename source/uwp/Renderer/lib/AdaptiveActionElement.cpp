@@ -18,7 +18,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
 
-        RETURN_IF_FAILED(AssignImageFromUrl(sharedModel->GetIconUrl(), m_iconUri.GetAddressOf(), &m_isIconUriRelative));
+        RETURN_IF_FAILED(WStringToHString(StringToWstring(sharedModel->GetIconUrl()), m_iconUri.GetAddressOf()));
 
         return S_OK;
     }
@@ -55,20 +55,6 @@ AdaptiveNamespaceStart
         return m_iconUri.Set(iconUri);
     }
 
-    _Use_decl_annotations_
-        HRESULT AdaptiveActionElementBase::get_IsIconUriRelative(boolean* isIconUriRelative)
-    {
-        *isIconUriRelative = m_isIconUriRelative;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-        HRESULT AdaptiveActionElementBase::put_IsIconUriRelative(boolean isIconUriRelative)
-    {
-        m_isIconUriRelative = isIconUriRelative;
-        return S_OK;
-    }
-
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
     {
         return m_additionalProperties.CopyTo(result);
@@ -99,9 +85,12 @@ AdaptiveNamespaceStart
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
 
-        std::string urlString;
-        RETURN_IF_FAILED(HStringToUTF8(m_iconUri.Get(), urlString));
-        sharedCardElement->SetIconUrl(urlString);
+        if (m_iconUri != NULL)
+        {
+            std::string urlString;
+            RETURN_IF_FAILED(HStringToUTF8(m_iconUri.Get(), urlString));
+            sharedCardElement->SetIconUrl(urlString);
+        }
 
         if (m_additionalProperties != nullptr)
         {

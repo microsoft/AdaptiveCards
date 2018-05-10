@@ -29,7 +29,7 @@ AdaptiveNamespaceStart
             return E_INVALIDARG;
         }
 
-        RETURN_IF_FAILED(AssignImageFromUrl(sharedImage->GetUrl(), m_uri.GetAddressOf(), &m_isUriRelative));
+        RETURN_IF_FAILED(WStringToHString(StringToWstring(sharedImage->GetUrl()), m_uri.GetAddressOf()));
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
@@ -53,20 +53,6 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveImage::put_Uri(HSTRING uri)
     {
         return m_uri.Set(uri);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_IsUriRelative(boolean* isUriRelative)
-    {
-        *isUriRelative = m_isUriRelative;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-        HRESULT AdaptiveImage::put_IsUriRelative(boolean isUriRelative)
-    {
-        m_isUriRelative = isUriRelative;
-        return S_OK;
     }
 
     _Use_decl_annotations_
@@ -184,9 +170,12 @@ AdaptiveNamespaceStart
             image->SetSelectAction(sharedAction);
         }
 
-        std::string urlString;
-        RETURN_IF_FAILED(HStringToUTF8(m_uri.Get(), urlString));
-        image->SetUrl(urlString);
+        if (m_uri != NULL)
+        {
+            std::string urlString;
+            RETURN_IF_FAILED(HStringToUTF8(m_uri.Get(), urlString));
+            image->SetUrl(urlString);
+        }
 
         if (m_altText != nullptr)
         {

@@ -749,53 +749,34 @@ std::string WstringToString(const std::wstring &input)
 	return utfConverter.to_bytes(input);
 }
 
-HRESULT AssignImageFromUrl(const std::string &url, HSTRING *uri, boolean *isUriRelative)
+void RemoteResourceElementToUriStringVector(
+		ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources * remoteResourceElement,
+		std::vector<std::string> & resourceUris)
 {
-	if (!url.empty())
+	ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri *>> remoteResourceUris;
+	THROW_IF_FAILED(remoteResourceElement->GetResourceUris(remoteResourceUris.GetAddressOf()));
+
+	ComPtr<IIterable<ABI::Windows::Foundation::Uri *>> vectorIterable;
+	THROW_IF_FAILED(remoteResourceUris.As<IIterable<ABI::Windows::Foundation::Uri *>>(&vectorIterable));
+
+	Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Foundation::Uri *>> vectorIterator;
+	HRESULT hr = vectorIterable->First(&vectorIterator);
+
+	boolean hasCurrent;
+	THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
+
+	while (SUCCEEDED(hr) && hasCurrent)
 	{
-		RETURN_IF_FAILED(WStringToHString(StringToWstring(url), uri));
+		ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> uri;
+		THROW_IF_FAILED(vectorIterator->get_Current(&uri));
 
-		// Try treating uri as absolute and activating it
-		// If it fails, consider it relative
-		ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-		RETURN_IF_FAILED(GetActivationFactory(
-				HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-				&uriActivationFactory));
+		HString uriHString;
+		THROW_IF_FAILED(uri->get_AbsoluteUri(uriHString.GetAddressOf()));
+		std::string uriString;
+		THROW_IF_FAILED(HStringToUTF8(uriHString.Get(), uriString));
 
-		ComPtr<IUriRuntimeClass> testImageUriRuntime;
-		*isUriRelative = FAILED(uriActivationFactory->CreateUri(*uri, testImageUriRuntime.GetAddressOf()));
+		resourceUris.push_back(uriString);
+
+		hr = vectorIterator->MoveNext(&hasCurrent);
 	}
-
-	return S_OK;
-
-	void RemoteResourceElementToUriStringVector(
-			ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources * remoteResourceElement,
-			std::vector<std::string> & resourceUris)
-	{
-		ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri *>> remoteResourceUris;
-		THROW_IF_FAILED(remoteResourceElement->GetResourceUris(remoteResourceUris.GetAddressOf()));
-
-		ComPtr<IIterable<ABI::Windows::Foundation::Uri *>> vectorIterable;
-		THROW_IF_FAILED(remoteResourceUris.As<IIterable<ABI::Windows::Foundation::Uri *>>(&vectorIterable));
-
-		Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Foundation::Uri *>> vectorIterator;
-		HRESULT hr = vectorIterable->First(&vectorIterator);
-
-		boolean hasCurrent;
-		THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
-
-		while (SUCCEEDED(hr) && hasCurrent)
-		{
-			ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> uri;
-			THROW_IF_FAILED(vectorIterator->get_Current(&uri));
-
-			HString uriHString;
-			THROW_IF_FAILED(uri->get_AbsoluteUri(uriHString.GetAddressOf()));
-			std::string uriString;
-			THROW_IF_FAILED(HStringToUTF8(uriHString.Get(), uriString));
-
-			resourceUris.push_back(uriString);
-
-			hr = vectorIterator->MoveNext(&hasCurrent);
-		}
-	}
+}

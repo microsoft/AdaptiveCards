@@ -26,9 +26,6 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_BackgroundImageUri(_Out_ HSTRING *backgroundImageUri);
         IFACEMETHODIMP put_BackgroundImageUri(_In_ HSTRING backgroundImageUri);
 
-        IFACEMETHODIMP get_IsBackgroundImageUriRelative(_Out_ boolean* isBackgroundImageUriRelative);
-        IFACEMETHODIMP put_IsBackgroundImageUriRelative(_In_ boolean isBackgroundImageUriRelative);
-
         IFACEMETHODIMP get_Language(_Out_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
@@ -70,7 +67,6 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_language;
 
         Microsoft::WRL::Wrappers::HString m_backgroundImageUri;
-        boolean m_isBackgroundImageUriRelative;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;

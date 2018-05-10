@@ -22,9 +22,6 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_IconUri(_Out_ HSTRING *iconUri);
         IFACEMETHODIMP put_IconUri(_In_ HSTRING iconUri);
 
-        IFACEMETHODIMP get_IsIconUriRelative(_Out_ boolean* isIconUriRelative);
-        IFACEMETHODIMP put_IsIconUriRelative(_In_ boolean isIconUriRelative);
-
         IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
@@ -38,7 +35,6 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_id;
         Microsoft::WRL::Wrappers::HString m_title;
         Microsoft::WRL::Wrappers::HString m_iconUri;
-        boolean m_isIconUriRelative;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
     };
