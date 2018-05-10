@@ -46,6 +46,8 @@
     txtInput.isRequired  = inputBlck->GetIsRequired();
     txtInput.delegate = txtInput;
 
+    [txtInput setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+   
     switch(inputBlck->GetTextInputStyle())
     {
         case TextInputStyle::Text:

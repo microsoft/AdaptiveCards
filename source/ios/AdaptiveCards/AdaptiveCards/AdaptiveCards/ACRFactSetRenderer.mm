@@ -122,15 +122,17 @@
                                                  elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                                   rootView:rootView
                                                    element:elem];
+        [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         titleLab.isTitle = YES;
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
         UILabel *valueLab = [ACRFactSetRenderer buildLabel:value
                                                 hostConfig:acoConfig
                                                 textConfig:config->factSet.value
-                                            containerStyle:style
+                                            containerStyle:style        
                                                  elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                                   rootView:rootView
                                                    element:elem];
+        [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [titleStack addArrangedSubview:titleLab];
         [valueStack addArrangedSubview:valueLab];
         [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;

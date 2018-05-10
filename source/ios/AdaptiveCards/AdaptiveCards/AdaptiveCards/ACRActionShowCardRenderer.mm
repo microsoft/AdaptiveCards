@@ -42,8 +42,10 @@
     [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
-    
+
     [target createShowCard:inputs];
+
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     return button;
 }
