@@ -12,18 +12,6 @@ class TextBlock : public BaseCardElement
 {
 public:
     TextBlock();
-    TextBlock(
-        Spacing spacing,
-        bool separator,
-        std::string text,
-        TextSize textSize,
-        TextWeight textWeight,
-        ForegroundColor color,
-        bool isSubtle,
-        bool wrap,
-        int maxLines,
-        HorizontalAlignment hAlignment,
-        std::string language);
 
     virtual Json::Value SerializeToJsonValue() override;
 

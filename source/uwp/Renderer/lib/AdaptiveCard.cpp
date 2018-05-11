@@ -160,6 +160,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetVersion(), m_version.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetLanguage(), m_language.GetAddressOf()));
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
 
@@ -199,6 +200,18 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveCard::put_FallbackText(HSTRING fallbackText)
     {
         return m_fallbackText.Set(fallbackText);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Language(HSTRING* language)
+    {
+        return m_language.CopyTo(language);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Language(HSTRING language)
+    {
+        return m_language.Set(language);
     }
 
     _Use_decl_annotations_
@@ -288,6 +301,7 @@ AdaptiveNamespaceStart
         adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
+        adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
 
         if (m_backgroundImage != nullptr)
         {
@@ -300,11 +314,47 @@ AdaptiveNamespaceStart
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 
-        GenerateSharedAction(m_selectAction.Get(), adaptiveCard->GetSelectAction());
+        if (m_selectAction != nullptr)
+        {
+            std::shared_ptr<BaseActionElement> sharedAction;
+            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
+            adaptiveCard->SetSelectAction(sharedAction);
+        }
+
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
 
         sharedModel = adaptiveCard;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris)
+    {
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
+        GetSharedModel(sharedModel);
+
+        std::vector<std::string> resourceUriStrings = sharedModel->GetResourceUris();
+
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::Windows::Foundation::Uri*>> resourceUris = Make<Vector<Uri*>>();
+        for (auto resourceUriString : resourceUriStrings)
+        {
+            HString resourceUriHString;
+            RETURN_IF_FAILED(UTF8ToHString(resourceUriString, resourceUriHString.GetAddressOf()));
+         
+            ComPtr<IUriRuntimeClass> resourceUri;
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(resourceUriHString.Get(), resourceUri.GetAddressOf()));
+
+            RETURN_IF_FAILED(resourceUris->Append(resourceUri.Get()));
+        }
+
+        RETURN_IF_FAILED(resourceUris->GetView(uris));
+
         return S_OK;
     }
 AdaptiveNamespaceEnd

@@ -11,16 +11,6 @@ class Image : public BaseCardElement
 {
 public:
     Image();
-    Image(
-        Spacing spacing,
-        bool separator,
-        std::string uri,
-        ImageStyle imageStyle,
-        ImageSize imageSize,
-        unsigned int width,
-        unsigned int height,
-        std::string altText,
-        HorizontalAlignment hAlignment);
 
     virtual Json::Value SerializeToJsonValue() override;
 

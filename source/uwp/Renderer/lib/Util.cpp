@@ -742,3 +742,35 @@ std::string WstringToString(const std::wstring& input)
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
     return utfConverter.to_bytes(input);
 }
+
+void RemoteResourceElementToUriStringVector(
+    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResourceElement,
+    std::vector<std::string>& resourceUris)
+{
+    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>> remoteResourceUris;
+    THROW_IF_FAILED(remoteResourceElement->GetResourceUris(remoteResourceUris.GetAddressOf()));
+
+    ComPtr<IIterable<ABI::Windows::Foundation::Uri*>> vectorIterable;
+    THROW_IF_FAILED(remoteResourceUris.As<IIterable<ABI::Windows::Foundation::Uri*>>(&vectorIterable));
+
+    Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Foundation::Uri*>> vectorIterator;
+    HRESULT hr = vectorIterable->First(&vectorIterator);
+
+    boolean hasCurrent;
+    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
+
+    while (SUCCEEDED(hr) && hasCurrent)
+    {
+        ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> uri;
+        THROW_IF_FAILED(vectorIterator->get_Current(&uri));
+
+        HString uriHString;
+        THROW_IF_FAILED(uri->get_AbsoluteUri(uriHString.GetAddressOf()));
+        std::string uriString;
+        THROW_IF_FAILED(HStringToUTF8(uriHString.Get(), uriString));
+
+        resourceUris.push_back(uriString);
+
+        hr = vectorIterator->MoveNext(&hasCurrent);
+    }
+}

@@ -11,11 +11,6 @@ ColumnSet::ColumnSet() : BaseCardElement(CardElementType::ColumnSet)
     PopulateKnownPropertiesSet();
 }
 
-ColumnSet::ColumnSet(std::vector<std::shared_ptr<Column>>& columns) : BaseCardElement(CardElementType::ColumnSet), m_columns(columns)
-{
-    PopulateKnownPropertiesSet();
-}
-
 const std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns() const
 {
     return m_columns;
@@ -50,15 +45,14 @@ Json::Value ColumnSet::SerializeToJsonValue()
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
     root[propertyName] = Json::Value(Json::arrayValue);
-    for (const auto& column : GetColumns())
+    for (const auto& column : m_columns)
     {
         root[propertyName].append(column->SerializeToJsonValue());
     }
 
-    std::shared_ptr<BaseActionElement> selectAction = GetSelectAction();
-    if (selectAction != nullptr)
+    if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;

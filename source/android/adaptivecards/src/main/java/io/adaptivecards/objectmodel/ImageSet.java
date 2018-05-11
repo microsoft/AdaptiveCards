@@ -38,15 +38,7 @@ public class ImageSet extends BaseCardElement {
   }
 
   public ImageSet() {
-    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_0(), true);
-  }
-
-  public ImageSet(Spacing spacing, boolean separation) {
-    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_1(spacing.swigValue(), separation), true);
-  }
-
-  public ImageSet(Spacing spacing, boolean separation, ImageVector images) {
-    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_2(spacing.swigValue(), separation, ImageVector.getCPtr(images), images), true);
+    this(AdaptiveCardObjectModelJNI.new_ImageSet(), true);
   }
 
   public JsonValue SerializeToJsonValue() {

@@ -105,6 +105,7 @@ AdaptiveNamespaceStart
 
         choiceSet->SetChoiceSetStyle(static_cast<AdaptiveSharedNamespace::ChoiceSetStyle>(m_choiceSetStyle));
         choiceSet->SetIsMultiSelect(m_isMultiSelect);
+        choiceSet->SetValue(HStringToUTF8(m_value.Get()));
 
         RETURN_IF_FAILED(GenerateSharedChoices(m_choices.Get(), choiceSet->GetChoices()));
 

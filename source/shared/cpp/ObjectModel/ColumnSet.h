@@ -12,7 +12,6 @@ class ColumnSet : public BaseCardElement
 friend class ColumnSetParser;
 public:
     ColumnSet();
-    ColumnSet(std::vector<std::shared_ptr<Column>>& columns);
 
     virtual Json::Value SerializeToJsonValue() override;
 

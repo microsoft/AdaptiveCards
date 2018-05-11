@@ -50,7 +50,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::v
         else
         {
             std::size_t foundIndex = eachDimension.find(unit);
-            if (eachDimension.size() != foundIndex + unit.size())
+            if (std::string::npos == foundIndex || eachDimension.size() != foundIndex + unit.size())
             {
                 throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is either missing or inproper form: " + eachDimension);
             }
