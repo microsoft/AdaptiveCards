@@ -408,7 +408,8 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
         ComPtr<IUIElement> backgroundImage;
         BuildImage(adaptiveCardElement.Get(), renderContext, renderArgs, &backgroundImage);
-        if (backgroundImage == nullptr) {
+        if (backgroundImage == nullptr)
+        {
             return;
         }
 

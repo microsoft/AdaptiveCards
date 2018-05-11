@@ -29,7 +29,7 @@ AdaptiveNamespaceStart
             return E_INVALIDARG;
         }
 
-        RETURN_IF_FAILED(WStringToHString(StringToWstring(sharedImage->GetUrl()), m_uri.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_uri.GetAddressOf()));
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
@@ -170,12 +170,7 @@ AdaptiveNamespaceStart
             image->SetSelectAction(sharedAction);
         }
 
-        if (m_uri != NULL)
-        {
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(m_uri.Get(), urlString));
-            image->SetUrl(urlString);
-        }
+        image->SetUrl(HStringToUTF8(m_uri.Get()));
 
         if (m_altText != nullptr)
         {

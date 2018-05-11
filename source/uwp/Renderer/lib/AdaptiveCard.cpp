@@ -164,7 +164,7 @@ AdaptiveNamespaceStart
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
 
-        RETURN_IF_FAILED(WStringToHString(StringToWstring(sharedAdaptiveCard->GetBackgroundImage()), m_backgroundImageUri.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImageUri.GetAddressOf()));
 
         return S_OK;
     }
@@ -292,13 +292,7 @@ AdaptiveNamespaceStart
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
         adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
-
-        if (m_backgroundImageUri != NULL)
-        {
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(m_backgroundImageUri.Get(), urlString));
-            adaptiveCard->SetBackgroundImage(urlString);
-        }
+        adaptiveCard->SetBackgroundImage(HStringToUTF8(m_backgroundImageUri.Get()));
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 

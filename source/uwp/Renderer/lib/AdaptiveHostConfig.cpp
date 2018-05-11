@@ -135,13 +135,13 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveHostConfig::get_ImageBaseUrl(HSTRING* imageBaseUrl)
+    HRESULT AdaptiveHostConfig::get_ImageBaseUrl(HSTRING* imageBaseUrl)
     {
         return m_imageBaseUrl.CopyTo(imageBaseUrl);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveHostConfig::put_ImageBaseUrl(HSTRING imageBaseUrl)
+    HRESULT AdaptiveHostConfig::put_ImageBaseUrl(HSTRING imageBaseUrl)
     {
         return m_imageBaseUrl.Set(imageBaseUrl);
     }
