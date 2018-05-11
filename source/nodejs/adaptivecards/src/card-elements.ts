@@ -798,7 +798,7 @@ export class TextBlock extends CardElement {
 
             for (var i = 0; i < anchors.length; i++) {
                 var anchor = <HTMLAnchorElement>anchors[i];
-                anchor.classList.add("ac-anchor");
+                anchor.classList.add(this.hostConfig.makeCssClassName("ac-anchor"));
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
                     if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
@@ -1163,16 +1163,19 @@ export class Image extends CardElement {
                     break;
             }
 
+            // Cache hostConfig to avoid walking the parent hierarchy multiple times
+            let hostConfig = this.hostConfig;
+
             var imageElement = document.createElement("img");
             imageElement.style.maxHeight = "100%";
             imageElement.style.minWidth = "0";
-            imageElement.classList.add("ac-image");
+            imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
-            if (this.selectAction != null && this.hostConfig.supportsInteractivity) {
+            if (this.selectAction != null && hostConfig.supportsInteractivity) {
                 imageElement.tabIndex = 0
                 imageElement.setAttribute("role", "button");
                 imageElement.setAttribute("aria-label", this.selectAction.title);
-                imageElement.classList.add("ac-selectable");
+                imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
             if (this.pixelWidth || this.pixelHeight) {
@@ -1520,7 +1523,7 @@ export class TextInput extends Input {
     protected internalRender(): HTMLElement {
         if (this.isMultiline) {
             this._textareaElement = document.createElement("textarea");
-            this._textareaElement.className = "ac-input ac-textInput ac-multiline";
+            this._textareaElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
             this._textareaElement.style.width = "100%";
             this._textareaElement.tabIndex = 0;
 
@@ -1544,7 +1547,7 @@ export class TextInput extends Input {
         else {
             this._inputElement = document.createElement("input");
             this._inputElement.type = "text";
-            this._inputElement.className = "ac-input ac-textInput";
+            this._inputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
             this._inputElement.style.width = "100%";
             this._inputElement.tabIndex = 0;
 
@@ -1608,7 +1611,7 @@ export class ToggleInput extends Input {
 
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
-        element.className = "ac-input";
+        element.className = this.hostConfig.makeCssClassName("ac-input");
         element.style.width = "100%";
         element.style.display = "flex";
 
@@ -1703,7 +1706,7 @@ export class ChoiceSetInput extends Input {
             if (this.isCompact) {
                 // Render as a combo box
                 this._selectElement = document.createElement("select");
-                this._selectElement.className = "ac-input ac-multichoiceInput";
+                this._selectElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput");
                 this._selectElement.style.width = "100%";
 
                 var option = document.createElement("option");
@@ -1737,7 +1740,7 @@ export class ChoiceSetInput extends Input {
             else {
                 // Render as a series of radio buttons
                 var element = document.createElement("div");
-                element.className = "ac-input";
+                element.className = this.hostConfig.makeCssClassName("ac-input");
                 element.style.width = "100%";
 
                 this._toggleInputs = [];
@@ -1788,7 +1791,7 @@ export class ChoiceSetInput extends Input {
             var defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : null;
 
             var element = document.createElement("div");
-            element.className = "ac-input";
+            element.className = this.hostConfig.makeCssClassName("ac-input");
             element.style.width = "100%";
 
             this._toggleInputs = [];
@@ -1953,7 +1956,7 @@ export class NumberInput extends Input {
     protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.setAttribute("type", "number");
-        this._numberInputElement.className = "ac-input ac-numberInput";
+        this._numberInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-numberInput");
         this._numberInputElement.setAttribute("min", this.min);
         this._numberInputElement.setAttribute("max", this.max);
         this._numberInputElement.style.width = "100%";
@@ -2010,7 +2013,7 @@ export class DateInput extends Input {
     protected internalRender(): HTMLElement {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.setAttribute("type", "date");
-        this._dateInputElement.className = "ac-input ac-dateInput";
+        this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
         this._dateInputElement.style.width = "100%";
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
@@ -2035,7 +2038,7 @@ export class TimeInput extends Input {
     protected internalRender(): HTMLElement {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.setAttribute("type", "time");
-        this._timeInputElement.className = "ac-input ac-timeInput";
+        this._timeInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-timeInput");
         this._timeInputElement.style.width = "100%";
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
@@ -2065,18 +2068,20 @@ class ActionButton {
     private _text: string;
 
     private updateCssStyle() {
-        this.action.renderedElement.className = "ac-pushButton";
+        let hostConfig = this.action.parent.hostConfig;
+
+        this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
 
         if (this.action instanceof ShowCardAction) {
-            this.action.renderedElement.classList.add("expandable");
+            this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expandable"));
         }
 
         switch (this._state) {
             case ActionButtonState.Expanded:
-                this.action.renderedElement.classList.add("expanded");
+                this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expanded"));
                 break;
             case ActionButtonState.Subdued:
-                this.action.renderedElement.classList.add("subdued");
+                this.action.renderedElement.classList.add(hostConfig.makeCssClassName("subdued"));
                 break;
         }
     }
@@ -3263,8 +3268,11 @@ export class Container extends CardElementContainer {
     protected internalRender(): HTMLElement {
         this._renderedItems = [];
 
+        // Cache hostConfig to avoid walking the parent hierarchy several times
+        let hostConfig = this.hostConfig;
+
         var element = document.createElement("div");
-        element.className = "ac-container";
+        element.className = hostConfig.makeCssClassName("ac-container");
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
@@ -3307,8 +3315,8 @@ export class Container extends CardElementContainer {
             }
         }
 
-        if (this.selectAction && this.hostConfig.supportsInteractivity) {
-            element.classList.add("ac-selectable");
+        if (this.selectAction && hostConfig.supportsInteractivity) {
+            element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             element.tabIndex = 0;
             element.setAttribute("role", "button");
             element.setAttribute("aria-label", this.selectAction.title);
@@ -3874,8 +3882,11 @@ export class ColumnSet extends CardElementContainer {
 
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
+            // Cache hostConfig to avoid walking the parent hierarchy several times
+            let hostConfig = this.hostConfig;
+
             var element = document.createElement("div");
-            element.className = "ac-columnSet";
+            element.className = hostConfig.makeCssClassName("ac-columnSet");
             element.style.display = "flex";
 
             if (AdaptiveCard.useAdvancedCardBottomTruncation) {
@@ -3883,8 +3894,8 @@ export class ColumnSet extends CardElementContainer {
                 element.style.minHeight = '-webkit-min-content';
             }
 
-            if (this.selectAction && this.hostConfig.supportsInteractivity) {
-                element.classList.add("ac-selectable");
+            if (this.selectAction && hostConfig.supportsInteractivity) {
+                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
 
                 element.onclick = (e) => {
                     this.selectAction.execute();
