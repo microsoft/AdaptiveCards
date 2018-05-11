@@ -381,14 +381,14 @@ class Splitter {
     private _splitterElement: HTMLElement;
     private _sizedELement: HTMLElement;
     private _isPointerDown: boolean;
-    private _lastClickedOffsetY: number;
+    private _lastClickedOffset: Designer.IPoint;
 
     private pointerDown(e: PointerEvent) {
         e.preventDefault();
     
         this._splitterElement.setPointerCapture(e.pointerId);
 
-        this._lastClickedOffsetY = e.y;
+        this._lastClickedOffset = { x: e.x, y: e.y };
 
         this._isPointerDown = true;
     }
@@ -397,13 +397,18 @@ class Splitter {
         if (this._isPointerDown) {
             e.preventDefault();
             
-            this._sizedELement.style.height = (this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffsetY)) + "px";
-
-            if (isMonacoEditorLoaded) {
-                monacoEditor.layout();
+            if (this.isVertical) {
+                this._sizedELement.style.width = (this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x)) + "px";
+            }
+            else {
+                this._sizedELement.style.height = (this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y)) + "px";
             }
 
-            this._lastClickedOffsetY = e.y;
+            if (this.onRezized) {
+                this.onRezized(this);
+            }
+
+            this._lastClickedOffset = { x: e.x, y: e.y };
         }
     }
     
@@ -414,6 +419,10 @@ class Splitter {
 
         this._isPointerDown = false;
     }
+
+    onRezized: (sender: Splitter) => void;
+
+    isVertical: boolean = false;
 
     constructor(splitterElement: HTMLElement, sizedElement: HTMLElement) {
         this._splitterElement = splitterElement;
@@ -428,6 +437,7 @@ class Splitter {
 
 var app: DesignerApp;
 var horizontalSplitter: Splitter;
+var verticalSplitter: Splitter;
 
 window.onload = () => {
     document.getElementById("btnNewCard").onclick = (e) => {
@@ -435,6 +445,17 @@ window.onload = () => {
     }
 
     horizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
+    horizontalSplitter.onRezized = (splitter: Splitter) => {
+        if (isMonacoEditorLoaded) {
+            monacoEditor.layout();
+        }    
+    }
+
+    verticalSplitter = new Splitter(document.getElementById("verticalSplitter"), document.getElementById("propertySheetHost"));
+    verticalSplitter.isVertical = true;
+    verticalSplitter.onRezized = (splitter: Splitter) => {
+        app.designer.updateLayout(false);
+    }
 
     let card = new Adaptive.AdaptiveCard();
     card.parse(JSON.parse(Constants.defaultPayload));
