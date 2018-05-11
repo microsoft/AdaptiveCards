@@ -1722,8 +1722,6 @@ export class CardDesigner {
     private _selectedPeer: DesignerPeer;
     private _draggedPeer: DesignerPeer;
     private _dropTarget: DesignerPeer;
-    private _currentPointerPosition: IPoint;
-    private _initialDragPointerOffset: IPoint;
     private _dragHandle: DragHandle;
     private _removeCommandElement: HTMLElement;
     private _peerCommandsHostElement: HTMLElement;
@@ -1990,12 +1988,9 @@ export class CardDesigner {
         }
 
         this._designerSurface.onpointermove = (e: PointerEvent) => {
-            this._currentPointerPosition = {
-                x: e.x - rootElement.offsetLeft,
-                y: e.y - rootElement.offsetTop
-            };
+            let clientRect = this._designerSurface.getBoundingClientRect();
 
-            this.tryDrop(this._currentPointerPosition, this.draggedPeer);
+            this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
         }
 
         this._designerSurface.onpointerup = (e: PointerEvent) => {
@@ -2081,7 +2076,6 @@ export class CardDesigner {
         if (!this.draggedPeer) {
             this._designerSurface.classList.add("dragging");
 
-            this._initialDragPointerOffset = this._currentPointerPosition;
             this.draggedPeer = peer;
 
             this.setSelectedPeer(this.draggedPeer);
@@ -2160,9 +2154,5 @@ export class CardDesigner {
 
             this.render();
         }
-    }
-
-    get pointerPosition(): IPoint {
-        return this._currentPointerPosition;
     }
 }
