@@ -941,6 +941,7 @@ export class CardElementPeer extends DesignerPeer {
         var spacing = addLabelAndInput(card, "Spacing:", Adaptive.ChoiceSetInput);
         spacing.input.isCompact = true;
         spacing.input.choices.push(new Adaptive.Choice("None", Adaptive.Spacing.None.toString()));
+        spacing.input.choices.push(new Adaptive.Choice("Small", Adaptive.Spacing.Small.toString()));
         spacing.input.choices.push(new Adaptive.Choice("Default", Adaptive.Spacing.Default.toString()));
         spacing.input.choices.push(new Adaptive.Choice("Medium", Adaptive.Spacing.Medium.toString()));
         spacing.input.choices.push(new Adaptive.Choice("Large", Adaptive.Spacing.Large.toString()));
