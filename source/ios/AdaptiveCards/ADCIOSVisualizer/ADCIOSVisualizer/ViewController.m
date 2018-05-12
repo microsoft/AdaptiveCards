@@ -10,6 +10,7 @@
 #import "CustomActionOpenURLRenderer.h"
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
+#import "CustomTextBlockRenderer.h"
 
 @interface ViewController ()
 
@@ -173,6 +174,7 @@
         ACRRegistration *registration = [ACRRegistration getInstance];
         // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809 
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
+        [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
 
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
