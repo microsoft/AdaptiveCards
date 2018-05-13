@@ -20,7 +20,7 @@ std::string BaseActionElement::GetElementTypeString() const
     return m_typeString;
 }
 
-void BaseActionElement::SetElementTypeString(const std::string value)
+void BaseActionElement::SetElementTypeString(const std::string &value)
 {
     m_typeString = value;
 }
@@ -30,7 +30,7 @@ std::string BaseActionElement::GetTitle() const
     return m_title;
 }
 
-void BaseActionElement::SetTitle(const std::string value)
+void BaseActionElement::SetTitle(const std::string &value)
 {
     m_title = value;
 }
@@ -40,7 +40,7 @@ std::string BaseActionElement::GetId() const
     return m_id;
 }
 
-void BaseActionElement::SetId(const std::string value)
+void BaseActionElement::SetId(const std::string &value)
 {
     m_id = value;
 }
@@ -60,13 +60,13 @@ const ActionType BaseActionElement::GetElementType() const
     return m_type;
 }
 
-std::string BaseActionElement::Serialize()
+std::string BaseActionElement::Serialize() const
 {
     Json::FastWriter writer;
     return writer.write(SerializeToJsonValue());
 }
 
-Json::Value BaseActionElement::SerializeToJsonValue()
+Json::Value BaseActionElement::SerializeToJsonValue() const
 {
     Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(m_type);
@@ -81,12 +81,12 @@ Json::Value BaseActionElement::SerializeToJsonValue()
     return root;
 }
 
-Json::Value BaseActionElement::GetAdditionalProperties()
+Json::Value BaseActionElement::GetAdditionalProperties() const
 {
     return m_additionalProperties;
 }
 
-void BaseActionElement::SetAdditionalProperties(Json::Value value)
+void BaseActionElement::SetAdditionalProperties(Json::Value const &value)
 {
     m_additionalProperties = value;
 }

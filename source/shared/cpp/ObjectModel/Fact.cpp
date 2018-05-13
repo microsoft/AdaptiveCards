@@ -8,7 +8,7 @@ Fact::Fact()
 {
 }
 
-Fact::Fact(std::string title, std::string value) : 
+Fact::Fact(std::string const &title, std::string const &value) : 
     m_title(title), m_value(value)
 {
 }
@@ -53,7 +53,7 @@ std::string Fact::GetTitle() const
     return m_title;
 }
 
-void Fact::SetTitle(const std::string value)
+void Fact::SetTitle(const std::string &value)
 {
     m_title = value;
 }
@@ -63,7 +63,7 @@ std::string Fact::GetValue() const
     return m_value;
 }
 
-void Fact::SetValue(const std::string value)
+void Fact::SetValue(const std::string &value)
 {
     m_value = value;
 }

@@ -15,10 +15,10 @@ public:
     Json::Value SerializeToJsonValue();
 
     std::string GetTitle() const;
-    void SetTitle(const std::string value);
+    void SetTitle(const std::string &value);
 
     std::string GetValue() const;
-    void SetValue(const std::string value);
+    void SetValue(const std::string &value);
 
     static std::shared_ptr<ChoiceInput> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,

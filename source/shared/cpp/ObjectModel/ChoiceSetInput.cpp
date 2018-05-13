@@ -20,7 +20,7 @@ std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices()
     return m_choices;
 }
 
-Json::Value ChoiceSetInput::SerializeToJsonValue()
+Json::Value ChoiceSetInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
@@ -71,7 +71,7 @@ std::string ChoiceSetInput::GetValue() const
     return m_value;
 }
 
-void ChoiceSetInput::SetValue(std::string value)
+void ChoiceSetInput::SetValue(std::string const &value)
 {
     m_value = value;
 }
