@@ -14,30 +14,30 @@ class AdaptiveCard
 public:
     AdaptiveCard();
     AdaptiveCard(
-        std::string version,
-        std::string fallbackText,
-        std::string backgroundImage,
+        std::string const &version,
+        std::string const &fallbackText,
+        std::string const &backgroundImage,
         ContainerStyle style,
-        std::string speak,
-        std::string language);
+        std::string const &speak,
+        std::string const &language);
     AdaptiveCard(
-        std::string version,
-        std::string fallbackText,
-        std::string backgroundImage,
+        std::string const &version,
+        std::string const &fallbackText,
+        std::string const &backgroundImage,
         ContainerStyle style,
-        std::string speak,
-        std::string language,
+        std::string const &speak,
+        std::string const &language,
         std::vector<std::shared_ptr<BaseCardElement>>& body,
         std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
     std::string GetVersion() const;
-    void SetVersion(const std::string value);
+    void SetVersion(const std::string &value);
     std::string GetFallbackText() const;
-    void SetFallbackText(const std::string value);
+    void SetFallbackText(const std::string &value);
     std::string GetBackgroundImage() const;
-    void SetBackgroundImage(const std::string value);
+    void SetBackgroundImage(const std::string &value);
     std::string GetSpeak() const;
-    void SetSpeak(const std::string value);
+    void SetSpeak(const std::string &value);
     ContainerStyle GetStyle() const;
     void SetStyle(const ContainerStyle value);
     std::string GetLanguage() const;
