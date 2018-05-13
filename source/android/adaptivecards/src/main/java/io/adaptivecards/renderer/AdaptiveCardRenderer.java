@@ -235,7 +235,6 @@ public class AdaptiveCardRenderer
             actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         }
 
-
         if (hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Vertical.swigValue())
         {
             actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
