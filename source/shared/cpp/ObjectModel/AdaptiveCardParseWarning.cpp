@@ -11,7 +11,7 @@ AdaptiveCardParseWarning::~AdaptiveCardParseWarning()
 {
 }
 
-const WarningStatusCode AdaptiveCardParseWarning::GetStatusCode() const
+WarningStatusCode AdaptiveCardParseWarning::GetStatusCode() const
 {
     return m_statusCode;
 }
