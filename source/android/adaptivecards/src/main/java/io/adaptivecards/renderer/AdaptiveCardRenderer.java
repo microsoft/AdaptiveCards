@@ -260,7 +260,7 @@ public class AdaptiveCardRenderer
             ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
         }
 
-        if (viewGroup != null)
+        if (viewGroup != null && hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Horizontal.swigValue())
         {
             HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
             horizontalScrollView.setHorizontalScrollBarEnabled(false);
