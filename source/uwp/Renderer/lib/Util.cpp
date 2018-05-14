@@ -38,7 +38,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace AdaptiveNamespace;
-using namespace ABI::Windows::Foundation;
+using namespace Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
 HRESULT WStringToHString(const std::wstring& in, HSTRING* out)
@@ -72,12 +72,13 @@ HRESULT HStringToUTF8(const HSTRING& in, string& out)
     return S_OK;
 }
 
-std::string HStringToUTF8(const HSTRING& in)
+std::string HStringToUTF8(const HSTRING &in)
 {
     std::string typeAsKey;
     HRESULT hr = HStringToUTF8(in, typeAsKey);
     return FAILED(hr) ? "" : typeAsKey;
 }
+
 
 bool Boolify(const boolean value)
 {
@@ -85,7 +86,7 @@ bool Boolify(const boolean value)
 }
 
 template <typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>
-std::shared_ptr<TSharedBaseType> GetSharedModel(TAdaptiveBaseType* item)
+std::shared_ptr<TSharedBaseType> GetSharedModel(TAdaptiveBaseType * item)
 {
     ComPtr<TAdaptiveType> adaptiveElement = PeekInnards<TAdaptiveType>(item);
 
@@ -218,7 +219,7 @@ HRESULT GenerateSharedImages(
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> imageAsElement;
         localImage.As(&imageAsElement);
 
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedImage = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImage>(imageAsElement.Get());
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedImage = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement,ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImage>(imageAsElement.Get());
         containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Image>(sharedImage));
 
         return S_OK;
@@ -240,7 +241,7 @@ HRESULT GenerateSharedFacts(
         {
             return E_INVALIDARG;
         }
-
+        
         std::shared_ptr<AdaptiveSharedNamespace::Fact> sharedFact;
         RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedFact));
         containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Fact>(sharedFact));
@@ -280,7 +281,7 @@ HRESULT GenerateContainedElementsProjection(
     for (auto& containedElement : containedElements)
     {
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> projectedContainedElement;
-        switch (containedElement->GetElementType())
+        switch(containedElement->GetElementType())
         {
         case CardElementType::TextBlock:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextBlock>(&projectedContainedElement,
@@ -382,7 +383,7 @@ HRESULT GenerateActionProjection(
                 std::AdaptivePointerCast<AdaptiveSharedNamespace::SubmitAction>(action)));
             break;
         case ActionType::Custom:
-            RETURN_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(projectedAction));
+            RETURN_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper> (action)->GetWrappedElement(projectedAction));
             break;
         default:
             return E_UNEXPECTED;
@@ -482,7 +483,7 @@ HRESULT GenerateSharedSeparator(
     return S_OK;
 } CATCH_RETURN;
 
-HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color* color) noexcept try
+HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
     std::string alphaString = colorString.substr(1, 2);
     INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
@@ -509,7 +510,7 @@ HRESULT GetColorFromAdaptiveColor(
     ABI::AdaptiveNamespace::ForegroundColor adaptiveColor,
     ABI::AdaptiveNamespace::ContainerStyle containerStyle,
     bool isSubtle,
-    ABI::Windows::UI::Color* uiColor) noexcept try
+    ABI::Windows::UI::Color * uiColor) noexcept try
 {
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> styles;
     RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&styles));
@@ -525,7 +526,7 @@ HRESULT GetColorFromAdaptiveColor(
     }
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> colorsConfig;
-    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
+    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig)); 
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorConfig> colorConfig;
     switch (adaptiveColor)
@@ -657,7 +658,7 @@ HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
     ComPtr<IJsonObject> localInputJson(inputJson);
     ComPtr<IJsonValue> asJsonValue;
     RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
-    return (asJsonValue->Stringify(result));
+    return(asJsonValue->Stringify(result));
 }
 
 HRESULT StringToJsonValue(const string inputString, IJsonValue** result)
@@ -681,6 +682,7 @@ HRESULT HStringToJsonValue(const HSTRING& inputHString, IJsonValue** result)
     *result = jValue.Detach();
     return S_OK;
 }
+
 
 HRESULT JsonValueToString(IJsonValue* inputValue, string& result)
 {
@@ -706,7 +708,7 @@ HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, IJsonObject** result)
     return StringToJsonObject(jsonString, result);
 }
 
-HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject* jsonObject, Json::Value* jsonCppValue)
+HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject * jsonObject, Json::Value * jsonCppValue)
 {
     std::string jsonString;
     RETURN_IF_FAILED(JsonObjectToString(jsonObject, jsonString));
@@ -729,7 +731,7 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projec
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
-std::wstring StringToWstring(const std::string& in)
+std::wstring StringToWstring(const std::string& in) 
 {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
     return utfConverter.from_bytes(in);
