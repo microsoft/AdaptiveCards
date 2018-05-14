@@ -347,7 +347,7 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(adaptiveCard->get_BackgroundImageUri(&backgroundImageUri));
         if (backgroundImageUri != nullptr)
         {
-            ApplyBackgroundToRoot(rootAsPanel.Get(), &backgroundImageUri, renderContext, renderArgs);
+            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUri, renderContext, renderArgs);
         }
 
         // Outer panel that contains the main body and any inline show cards
@@ -394,7 +394,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     void XamlBuilder::ApplyBackgroundToRoot(
         ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-        HSTRING* uri,
+        HSTRING uri,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs)
     {
@@ -402,7 +402,7 @@ AdaptiveNamespaceStart
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-        adaptiveImage->put_Uri(*uri);
+        adaptiveImage->put_Uri(uri);
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
