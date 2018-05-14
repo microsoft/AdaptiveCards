@@ -19,7 +19,8 @@ public:
         std::string backgroundImage,
         ContainerStyle style,
         std::string speak,
-        std::string language);
+        std::string language,
+        VerticalContentAlignment verticalContentAlignment);
     AdaptiveCard(
         std::string version,
         std::string fallbackText,
@@ -27,6 +28,7 @@ public:
         ContainerStyle style,
         std::string speak,
         std::string language,
+        VerticalContentAlignment verticalContentAlignment,
         std::vector<std::shared_ptr<BaseCardElement>>& body,
         std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
@@ -42,6 +44,8 @@ public:
     void SetStyle(const ContainerStyle value);
     std::string GetLanguage() const;
     void SetLanguage(const std::string& value);
+    VerticalContentAlignment GetVerticalContentAlignment() const;
+    void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
@@ -100,6 +104,7 @@ private:
     std::string m_speak;
     ContainerStyle m_style;
     std::string m_language;
+    VerticalContentAlignment m_verticalContentAlignment;
 
     std::vector<std::shared_ptr<BaseCardElement>> m_body;
     std::vector<std::shared_ptr<BaseActionElement>> m_actions;
