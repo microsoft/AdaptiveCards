@@ -101,7 +101,11 @@ Json::Value BaseCardElement::SerializeToJsonValue()
  {
     Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());
+
+    if (m_height != HeightType::Auto)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());
+    }
 
     if (m_spacing != Spacing::Default)
     {
