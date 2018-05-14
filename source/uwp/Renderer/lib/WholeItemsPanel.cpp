@@ -53,7 +53,7 @@ AdaptiveNamespaceStart
         {
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
-            
+
             RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
 
             if (visible)
@@ -204,25 +204,20 @@ AdaptiveNamespaceStart
                     visible = false;
                     continue;
                 }
-                else
-                {
-                    currentHeight = newHeight;
-                }
                 currentHeight = newHeight;
                 maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
             }
         }
        
-		if (m_visibleCount == count)
-		{
-			m_allElementsRendered = true;
-			m_calculatedSize = currentHeight;
-		}
-		else // In the first pass, all the contents will always fit
-		{
-			m_allElementsRendered = false;
-			m_calculatedSize = currentHeight;
-		}
+        m_calculatedSize = currentHeight;
+        if (m_visibleCount == count)
+        {
+            m_allElementsRendered = true;
+        }
+        else // In the first pass, all the contents will always fit
+        {
+            m_allElementsRendered = false;
+        }
 
         // If inside an infinity/auto width container
         if (availableSize.Width == numeric_limits<float>::infinity())
@@ -264,15 +259,15 @@ AdaptiveNamespaceStart
 
             if (i < m_visibleCount)
             {
-
                 float childHeight = childSize.Height;
                 float newHeight = currentHeight + childSize.Height;
 
-				if (m_allElementsRendered && IsUIElementInStretchableList(spChild.Get()))
-				{
-					childHeight += extraPaddingPerItem;
-					newHeight += extraPaddingPerItem;
-				} else if (newHeight > finalSize.Height) // If we have truncated the first item newHeight may be greater than finalSize
+                if (m_allElementsRendered && IsUIElementInStretchableList(spChild.Get()))
+                {
+                    childHeight += extraPaddingPerItem;
+                    newHeight += extraPaddingPerItem;
+                } 
+                else if (newHeight > finalSize.Height) // If we have truncated the first item newHeight may be greater than finalSize
                 {
                     childHeight = finalSize.Height - currentHeight;
                     newHeight = finalSize.Height;

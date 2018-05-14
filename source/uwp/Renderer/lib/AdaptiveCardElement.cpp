@@ -74,7 +74,7 @@ AdaptiveNamespaceStart
     IFACEMETHODIMP AdaptiveCardElementBase::get_Height(ABI::AdaptiveNamespace::HeightType* height)
     {
         *height = m_height;
-        return S_OK;;
+        return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveCardElementBase::put_Height(ABI::AdaptiveNamespace::HeightType height)
