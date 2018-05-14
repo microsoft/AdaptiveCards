@@ -458,6 +458,9 @@ window.onload = () => {
     }
 
     let card = new Adaptive.AdaptiveCard();
+    card.onImageLoaded = (image: Adaptive.Image) => {
+        app.designer.updateLayout(false);
+    }
     card.parse(JSON.parse(Constants.defaultPayload));
 
     app = new DesignerApp(document.getElementById("designerHost"));

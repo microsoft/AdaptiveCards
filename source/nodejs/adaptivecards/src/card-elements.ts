@@ -1124,6 +1124,37 @@ export class Image extends CardElement {
         return 0;
     }
 
+    private applySize(element: HTMLElement) {
+        if (this.pixelWidth || this.pixelHeight) {
+            if (this.pixelWidth) {
+                element.style.width = this.pixelWidth + "px";
+            }
+
+            if (this.pixelHeight) {
+                element.style.height = this.pixelHeight + "px";
+            }
+        }
+        else {
+            switch (this.size) {
+                case Enums.Size.Stretch:
+                    element.style.width = "100%";
+                    break;
+                case Enums.Size.Auto:
+                    element.style.maxWidth = "100%";
+                    break;
+                case Enums.Size.Small:
+                    element.style.width = this.hostConfig.imageSizes.small + "px";
+                    break;
+                case Enums.Size.Large:
+                    element.style.width = this.hostConfig.imageSizes.large + "px";
+                    break;
+                case Enums.Size.Medium:
+                    element.style.width = this.hostConfig.imageSizes.medium + "px";
+                    break;
+            }
+        }    
+    }
+
     protected get useDefaultSizing() {
         return false;
     }
@@ -1166,7 +1197,32 @@ export class Image extends CardElement {
             // Cache hostConfig to avoid walking the parent hierarchy multiple times
             let hostConfig = this.hostConfig;
 
-            var imageElement = document.createElement("img");
+            let imageElement = document.createElement("img");
+            imageElement.onload = (e: Event) => {
+                raiseImageLoadedEvent(this);
+            }
+            imageElement.onerror = (e: Event) => {
+                let card = this.getRootElement() as AdaptiveCard;
+
+                this.renderedElement.innerHTML = "";
+
+                if (card && card.designMode) {
+                    let errorElement = document.createElement("div");
+                    errorElement.style.display = "flex";
+                    errorElement.style.alignItems = "center";
+                    errorElement.style.justifyContent = "center";
+                    errorElement.style.backgroundColor = "#EEEEEE";
+                    errorElement.style.color = "black";
+                    errorElement.innerText = ":-(";
+                    errorElement.style.padding = "10px";
+
+                    this.applySize(errorElement);
+
+                    this.renderedElement.appendChild(errorElement);
+                }
+
+                raiseImageLoadedEvent(this);
+            }
             imageElement.style.maxHeight = "100%";
             imageElement.style.minWidth = "0";
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
@@ -1178,34 +1234,7 @@ export class Image extends CardElement {
                 imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
-            if (this.pixelWidth || this.pixelHeight) {
-                if (this.pixelWidth) {
-                    imageElement.style.width = this.pixelWidth + "px";
-                }
-
-                if (this.pixelHeight) {
-                    imageElement.style.height = this.pixelHeight + "px";
-                }
-            }
-            else {
-                switch (this.size) {
-                    case Enums.Size.Stretch:
-                        imageElement.style.width = "100%";
-                        break;
-                    case Enums.Size.Auto:
-                        imageElement.style.maxWidth = "100%";
-                        break;
-                    case Enums.Size.Small:
-                        imageElement.style.width = this.hostConfig.imageSizes.small + "px";
-                        break;
-                    case Enums.Size.Large:
-                        imageElement.style.width = this.hostConfig.imageSizes.large + "px";
-                        break;
-                    case Enums.Size.Medium:
-                        imageElement.style.width = this.hostConfig.imageSizes.medium + "px";
-                        break;
-                }
-            }
+            this.applySize(imageElement);
 
             if (this.style === Enums.ImageStyle.Person) {
                 imageElement.style.borderRadius = "50%";
@@ -4245,6 +4274,15 @@ export class Version {
     }
 }
 
+function raiseImageLoadedEvent(image: Image) {
+    let card = image.getRootElement() as AdaptiveCard;
+    let onImageLoadedHandler = (card && card.onImageLoaded) ? card.onImageLoaded : AdaptiveCard.onImageLoaded;
+
+    if (onImageLoadedHandler) {
+        onImageLoadedHandler(image);
+    }
+}
+
 function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement): boolean {
     let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
@@ -4531,6 +4569,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static onAnchorClicked: (rootCard: AdaptiveCard, anchor: HTMLAnchorElement) => boolean = null;
     static onExecuteAction: (action: Action) => void = null;
     static onElementVisibilityChanged: (element: CardElement) => void = null;
+    static onImageLoaded: (image: Image) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
@@ -4617,6 +4656,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onAnchorClicked: (rootCard: AdaptiveCard, anchor: HTMLAnchorElement) => boolean = null;
     onExecuteAction: (action: Action) => void = null;
     onElementVisibilityChanged: (element: CardElement) => void = null;
+    onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     onParseElement: (element: CardElement, json: any) => void = null;
 
