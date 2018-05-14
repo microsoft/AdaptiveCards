@@ -646,6 +646,8 @@ export abstract class CardElement {
 export class TextBlock extends CardElement {
     private _computedLineHeight: number;
     private _originalInnerHtml: string;
+    private _text: string;
+    private _processedText: string = null;
 
     private restoreOriginalContent() {
         var maxHeight = this.maxLines
@@ -775,9 +777,13 @@ export class TextBlock extends CardElement {
 
             element.style.fontWeight = fontWeight.toString();
 
-            var formattedText = TextFormatters.formatText(this.lang, this.text);
+            if (!this._processedText) {
+                var formattedText = TextFormatters.formatText(this.lang, this.text);
 
-            element.innerHTML = this.useMarkdown ? AdaptiveCard.processMarkdown(formattedText) : formattedText;
+                this._processedText = this.useMarkdown ? AdaptiveCard.processMarkdown(formattedText) : formattedText;
+            }
+
+            element.innerHTML = this._processedText;
 
             if (element.firstElementChild instanceof HTMLElement) {
                 var firstElementChild = <HTMLElement>element.firstElementChild;
@@ -852,7 +858,6 @@ export class TextBlock extends CardElement {
     size: Enums.TextSize = Enums.TextSize.Default;
     weight: Enums.TextWeight = Enums.TextWeight.Default;
     color: Enums.TextColor = Enums.TextColor.Default;
-    text: string;
     isSubtle: boolean = false;
     wrap: boolean = false;
     maxLines: number;
@@ -936,6 +941,18 @@ export class TextBlock extends CardElement {
             this.restoreOriginalContent();
             var maxHeight = this._computedLineHeight * this.maxLines;
             this.truncateIfSupported(maxHeight);
+        }
+    }
+
+    get text(): string {
+        return this._text;
+    }
+
+    set text(value: string) {
+        if (this._text != value) {
+            this._text = value;
+
+            this._processedText = null;
         }
     }
 }

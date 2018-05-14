@@ -28,6 +28,7 @@ function monacoEditorLoaded() {
 
 var jsonUpdateTimer: NodeJS.Timer;
 var cardUpdateTimer: NodeJS.Timer;
+var updateLayoutTimer: NodeJS.Timer;
 
 var preventCardUpdate: boolean = false;
 
@@ -74,6 +75,16 @@ function scheduleCardRefresh() {
     if (!preventCardUpdate) {
         cardUpdateTimer = setTimeout(updateCardFromJson, 200);
     }
+}
+
+function updateDesignerLayout() {
+    app.designer.updateLayout(false);
+}
+
+function scheduleLayoutUpdate() {
+    clearTimeout(updateLayoutTimer);
+
+    updateLayoutTimer = setTimeout(updateDesignerLayout, 50);
 }
 
 // Monaco loads asynchronously via a call to require() from index.html
@@ -454,12 +465,12 @@ window.onload = () => {
     verticalSplitter = new Splitter(document.getElementById("verticalSplitter"), document.getElementById("propertySheetHost"));
     verticalSplitter.isVertical = true;
     verticalSplitter.onRezized = (splitter: Splitter) => {
-        app.designer.updateLayout(false);
+        scheduleLayoutUpdate();
     }
 
     let card = new Adaptive.AdaptiveCard();
     card.onImageLoaded = (image: Adaptive.Image) => {
-        app.designer.updateLayout(false);
+        scheduleLayoutUpdate();
     }
     card.parse(JSON.parse(Constants.defaultPayload));
 
@@ -471,7 +482,7 @@ window.onload = () => {
     app.createContainerPicker().attach(document.getElementById("containerPickerHost"));
 
     window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
-    window.addEventListener("resize", () => { app.designer.updateLayout(false); });
+    window.addEventListener("resize", () => { scheduleLayoutUpdate(); });
     window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
 
     app.card = card;

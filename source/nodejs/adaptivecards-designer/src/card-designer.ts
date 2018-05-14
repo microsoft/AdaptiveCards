@@ -1844,6 +1844,8 @@ export class CardDesigner {
     static readonly cardElementPeerRegistry: CardElementPeerRegistry = new CardElementPeerRegistry();
     static readonly actionPeerRegistry: ActionPeerRegistry = new ActionPeerRegistry();
 
+    private _updateCount: number = 0;
+
     private _card: Adaptive.AdaptiveCard;
     private _allPeers: Array<DesignerPeer> = [];
     private _rootPeer: DesignerPeer;
@@ -1929,8 +1931,10 @@ export class CardDesigner {
             this.setSelectedPeer(null);
         }
 
-        this.renderCard();
-        this.updateLayout();
+        if (this._updateCount == 0) {
+            this.renderCard();
+            this.updateLayout();
+        }
     }
 
     private renderCard() {
@@ -2104,11 +2108,7 @@ export class CardDesigner {
 
                         break;
                     case Controls.KEY_DELETE:
-                        let parent = this._selectedPeer.parent;
-
-                        if (this._selectedPeer.canBeRemoved() && this._selectedPeer.remove(false, true)) {
-                            this.setSelectedPeer(parent);
-                        }
+                        this.removeSelected();
 
                         break;
                 }
@@ -2142,6 +2142,24 @@ export class CardDesigner {
         return this.internalFindDropTarget(pointerPosition, this._rootPeer, peer);
     }
 
+    beginUpdate() {
+        this._updateCount++;
+    }
+
+    endUpdate(renderCard: boolean) {
+        if (this._updateCount > 0) {
+            this._updateCount--;
+
+            if (this._updateCount == 0) {
+                if (renderCard) {
+                    this.renderCard();
+                }
+
+                this.updateLayout();
+            }
+        }
+    }
+
     render() {
         this._designerSurface.innerHTML = "";
         this._allPeers = [];
@@ -2163,7 +2181,7 @@ export class CardDesigner {
         this._removeCommandElement.style.position = "absolute";   
         this._removeCommandElement.style.zIndex = "1000";   
         this._removeCommandElement.onclick = (e) => {
-            this._selectedPeer.remove(false, true);
+            this.removeSelected();
         }
 
         this._dragHandle = new DragHandle();
@@ -2198,7 +2216,18 @@ export class CardDesigner {
 
     removeSelected() {
         if (this.selectedPeer) {
-            this.selectedPeer.remove(false, true);
+            this.beginUpdate();
+
+            try {
+                let parent = this.selectedPeer.parent;
+
+                if (this.selectedPeer.remove(false, true)) {
+                    this.setSelectedPeer(parent);
+                }
+            }
+            finally {
+                this.endUpdate(true);
+            }
         }
     }
 
