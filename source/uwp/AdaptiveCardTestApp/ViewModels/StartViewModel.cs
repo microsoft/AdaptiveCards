@@ -33,7 +33,7 @@ namespace AdaptiveCardTestApp.ViewModels
             }
             catch { }
 
-            await LoadFilesAsync("LinkedCards", Cards);
+            await LoadFilesAsync(@"LinkedCards\v1.0\Elements", Cards);
             await LoadFilesAsync("LinkedHostConfigs", HostConfigs);
 
             // Remove the WeatherLarge card since it contains a background image and often fails image comparisons
