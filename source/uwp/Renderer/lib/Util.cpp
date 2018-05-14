@@ -350,7 +350,7 @@ HRESULT GenerateActionsProjection(
     for (auto& containedAction : containedActions)
     {
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> projectedContainedAction;
-        RETURN_IF_FAILED(GenerateActionProjection(containedAction,& projectedContainedAction));
+        RETURN_IF_FAILED(GenerateActionProjection(containedAction, &projectedContainedAction));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedAction.Detach()));
     }
@@ -363,7 +363,7 @@ HRESULT GenerateActionProjection(
 {
     if (action == nullptr)
     {
-       * projectedAction = nullptr;
+        *projectedAction = nullptr;
         return S_OK;
     }
 
@@ -456,7 +456,7 @@ HRESULT GenerateSeparatorProjection(
     std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,
     ABI::AdaptiveNamespace::IAdaptiveSeparator** projectedSeparator) noexcept try
 {
-   * projectedSeparator = nullptr;
+    *projectedSeparator = nullptr;
     if (sharedSeparator != nullptr)
     {
         return MakeAndInitialize<::AdaptiveNamespace::AdaptiveSeparator>(projectedSeparator, sharedSeparator);
@@ -478,7 +478,7 @@ HRESULT GenerateSharedSeparator(
     sharedSeparator->SetColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(color));
     sharedSeparator->SetThickness(static_cast<AdaptiveSharedNamespace::SeparatorThickness>(thickness));
 
-   * sharedSeparatorOut = sharedSeparator;
+    *sharedSeparatorOut = sharedSeparator;
     return S_OK;
 } CATCH_RETURN;
 
@@ -628,16 +628,16 @@ HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 HRESULT HStringToJsonObject(const HSTRING& inputHString, IJsonObject** result)
 {
     ComPtr<IJsonObjectStatics> jObjectStatics;
-    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(),& jObjectStatics));
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
     ComPtr<IJsonObject> jObject;
-    HRESULT hr = jObjectStatics->Parse(inputHString,& jObject);
+    HRESULT hr = jObjectStatics->Parse(inputHString, &jObject);
     if (FAILED(hr))
     {
         RETURN_IF_FAILED(ActivateInstance(
             HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(),
-            & jObject));
+            &jObject));
     }
-   * result = jObject.Detach();
+    *result = jObject.Detach();
     return S_OK;
 }
 
@@ -669,16 +669,16 @@ HRESULT StringToJsonValue(const string inputString, IJsonValue** result)
 HRESULT HStringToJsonValue(const HSTRING& inputHString, IJsonValue** result)
 {
     ComPtr<IJsonValueStatics> jValueStatics;
-    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonValue).Get(),& jValueStatics));
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonValue).Get(), &jValueStatics));
     ComPtr<IJsonValue> jValue;
-    HRESULT hr = jValueStatics->Parse(inputHString,& jValue);
+    HRESULT hr = jValueStatics->Parse(inputHString, &jValue);
     if (FAILED(hr))
     {
         RETURN_IF_FAILED(ActivateInstance(
             HStringReference(RuntimeClass_Windows_Data_Json_JsonValue).Get(),
-            & jValue));
+            &jValue));
     }
-   * result = jValue.Detach();
+    *result = jValue.Detach();
     return S_OK;
 }
 
@@ -712,7 +712,7 @@ HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject* jsonObject, J
     RETURN_IF_FAILED(JsonObjectToString(jsonObject, jsonString));
 
     Json::Value value = ParseUtil::GetJsonValueFromString(jsonString);
-   * jsonCppValue = value;
+    *jsonCppValue = value;
 
     return S_OK;
 }
@@ -742,8 +742,8 @@ std::string WstringToString(const std::wstring& input)
 }
 
 void RemoteResourceElementToUriStringVector(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources*  remoteResourceElement,
-    std::vector<std::string>&  resourceUris)
+    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResourceElement,
+    std::vector<std::string>& resourceUris)
 {
     ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>> remoteResourceUris;
     THROW_IF_FAILED(remoteResourceElement->GetResourceUris(remoteResourceUris.GetAddressOf()));
