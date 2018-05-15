@@ -254,5 +254,10 @@ AdaptiveNamespaceStart
             _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
             _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
 
+        template<typename T>
+        static void SetVerticalContentAlignmentToChildren(
+            _In_ T* container, 
+            _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
+
     };
 AdaptiveNamespaceEnd
