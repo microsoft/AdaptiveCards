@@ -404,7 +404,7 @@ using namespace AdaptiveCards;
                       // if view is available, set image to it, and continue image processing
                       if(view) {
                           view.image = img;
-                          if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None){
+                          if(img && (img.size.width > 0) && (imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None)){
                               CGFloat heightToWidthRatio = img.size.height / img.size.width;
                               [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
                                                                                       attribute:NSLayoutAttributeHeight
