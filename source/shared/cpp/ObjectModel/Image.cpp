@@ -185,17 +185,21 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
 
     std::vector<std::string> requestedDimensions;
-    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width));
-    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height));
+    std::string imageWidth = ParseUtil::GetValueAsString(json, AdaptiveCardSchemaKey::Width);
+    std::string imageHeight = ParseUtil::GetValueAsString(json, AdaptiveCardSchemaKey::Height);
+    requestedDimensions.push_back(imageWidth);
+    requestedDimensions.push_back(imageHeight);
 
     // validate user inputs
-    std::string imageHeight = ParseUtil::GetValueAsString(json, AdaptiveCardSchemaKey::Height);
-    if (!imageHeight.empty() && (isdigit(imageHeight.at(0)) || ('-' == imageHeight.at(0))))
+    
+    if ( (!imageHeight.empty() && (isdigit(imageHeight.at(0)) || ('-' == imageHeight.at(0)))) || 
+        (!imageWidth.empty() && (isdigit(imageWidth.at(0)) || ('-' == imageWidth.at(0)))))
     {
         const std::string unit = "px";
-        std::size_t foundIndex = imageHeight.find(unit);
+        std::size_t foundIndexHeight = imageHeight.find(unit);
+        std::size_t foundIndexWidth = imageWidth.find(unit);
         /// check if width is determined explicitly
-        if (std::string::npos != foundIndex)
+        if (std::string::npos != foundIndexHeight || std::string::npos != foundIndexWidth)
         {
             std::vector<int> parsedDimensions;
             ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
@@ -205,11 +209,12 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
                 image->SetPixelWidth(parsedDimensions[0]);
                 image->SetPixelHeight(parsedDimensions[1]);
             }
-            else
-            {
-                image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
-            }
+
         }
+    }
+    else
+    {
+        image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
     }
 
     // Parse optional selectAction
