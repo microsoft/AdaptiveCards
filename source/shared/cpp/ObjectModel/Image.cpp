@@ -189,18 +189,27 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height));
 
     // validate user inputs
-    const std::string unit = "px";
-    std::vector<int> parsedDimensions;
-    ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
+    std::string imageHeight = ParseUtil::GetValueAsString(json, AdaptiveCardSchemaKey::Height);
+    if (!imageHeight.empty() && (isdigit(imageHeight.at(0)) || ('-' == imageHeight.at(0))))
+    {
+        const std::string unit = "px";
+        std::size_t foundIndex = imageHeight.find(unit);
+        /// check if width is determined explicitly
+        if (std::string::npos != foundIndex)
+        {
+            std::vector<int> parsedDimensions;
+            ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
 
-    if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
-    {
-        image->SetPixelWidth(parsedDimensions[0]);
-        image->SetPixelHeight(parsedDimensions[1]);
-    }
-    else
-    {
-        image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
+            if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
+            {
+                image->SetPixelWidth(parsedDimensions[0]);
+                image->SetPixelHeight(parsedDimensions[1]);
+            }
+            else
+            {
+                image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
+            }
+        }
     }
 
     // Parse optional selectAction
