@@ -260,16 +260,7 @@ class DesignerApp {
             this._card.hostConfig = this._selectedHostContainer.getHostConfig();
         }
 
-        // Forces a relayout after layout has completed. Needed because the Cortana host
-        // (and other) use Flex and there is a condition by which the Flex layout happens
-        // asynchronously and prevents the designer from properly sizing its peer elements.
-        // Not super clean, but the best solution I've found for now.
-        window.setTimeout(
-            () => {
-                this._designer.card = this._card;
-            },
-            100
-        );
+        this._designer.card = this._card;
     }
 
     private selectedHostContainerChanged() {
