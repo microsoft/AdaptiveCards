@@ -363,6 +363,32 @@ AdaptiveNamespaceStart
         bodyElementHost->SetMainPanel(TRUE);
         bodyElementHost->SetAdaptiveHeight(TRUE);
 
+        ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
+        THROW_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
+
+        ComPtr<IControl> bodyElementHostAsControl;
+        THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsControl));
+
+        switch (verticalContentAlignment)
+        {
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Top:
+                bodyElementHostAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Top);
+                break;
+
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Center:
+                bodyElementHostAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Center);
+                break;
+
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Bottom:
+                bodyElementHostAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Bottom);
+                break;
+
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Stretch:
+            default:
+                bodyElementHostAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Stretch);
+                break;
+        }
+
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get());
@@ -1742,6 +1768,32 @@ AdaptiveNamespaceStart
             }
         }
 
+        ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
+        THROW_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignment));
+
+        ComPtr<IControl> containerPanelAsControl;
+        THROW_IF_FAILED(containerPanel.As(&containerPanelAsControl));
+
+        switch (verticalContentAlignment)
+        {
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Top:
+                containerPanelAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Top);
+            break;
+            
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Center:
+                containerPanelAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Center);
+                break;
+            
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Bottom:
+                containerPanelAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Bottom);
+                break;
+            
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Stretch:
+            default:
+                containerPanelAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Stretch);
+                break;
+        }
+
         ComPtr<IUIElement> containerPanelAsUIElement;
         THROW_IF_FAILED(containerPanel.As(&containerPanelAsUIElement));
         THROW_IF_FAILED(containerBorder->put_Child(containerPanelAsUIElement.Get()));
@@ -1805,6 +1857,32 @@ AdaptiveNamespaceStart
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
         BuildPanelChildren(childItems.Get(), columnPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
+
+        ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
+        THROW_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
+
+        ComPtr<IControl> columnPanelAsControl;
+        THROW_IF_FAILED(columnPanel.As(&columnPanelAsControl));
+
+        switch (verticalContentAlignment)
+        {
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Top:
+                columnPanelAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Top);
+                break;
+
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Center:
+                columnPanelAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Center);
+                break;
+
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Bottom:
+                columnPanelAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Bottom);
+                break;
+
+            case ABI::AdaptiveNamespace::VerticalContentAlignment::Stretch:
+            default:
+                columnPanelAsControl->put_VerticalContentAlignment(VerticalAlignment::VerticalAlignment_Stretch);
+                break;
+        }
 
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
