@@ -64,10 +64,14 @@ AdaptiveSharedNamespaceStart
 
     void ElementParserRegistration::RemoveParser(std::string const &elementType)
     {
-        if (m_knownElements.find(elementType) != m_knownElements.end())
+        if (m_knownElements.find(elementType) == m_knownElements.end())
         {
             ElementParserRegistration::m_cardElementParsers.erase(elementType);
         }
+	else
+	{
+		throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known element parsers is unsupported");
+	}
     }
 
     std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const &elementType)
