@@ -112,10 +112,10 @@ std::shared_ptr<Column> Column::Deserialize(
         {
             if (columnWidth.size() == foundIndex + unit.size())
             {
-                std::vector<std::string> requestedDimensions = { columnWidth };
-                std::vector<int> parsedDimensions;
-                ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
-                column->SetPixelWidth(parsedDimensions[0]);
+                std::string requestedDimensions = columnWidth;
+                int parsedDimension = 0;
+                ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimension);
+                column->SetPixelWidth(parsedDimension);
             }
             else 
             {
