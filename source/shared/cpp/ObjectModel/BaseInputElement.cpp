@@ -9,8 +9,8 @@ BaseInputElement::BaseInputElement(CardElementType elementType) :
 {
 }
 
-BaseInputElement::BaseInputElement(CardElementType elementType, Spacing spacing, bool separator) :
-    BaseCardElement(elementType, spacing, separator)
+BaseInputElement::BaseInputElement(CardElementType elementType, Spacing spacing, bool separator, HeightType height) :
+    BaseCardElement(elementType, spacing, separator, height)
 {
 }
 

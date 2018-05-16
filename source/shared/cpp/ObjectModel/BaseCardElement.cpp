@@ -10,11 +10,13 @@ using namespace AdaptiveSharedNamespace;
 BaseCardElement::BaseCardElement(
     CardElementType type,
     Spacing spacing,
-    bool separator) :
+    bool separator,
+    HeightType height) :
     m_type(type),
     m_spacing(spacing),
     m_typeString(CardElementTypeToString(type)),
-    m_separator(separator)
+    m_separator(separator),
+    m_height(height)
 {
     PopulateKnownPropertiesSet();
 }

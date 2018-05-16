@@ -11,7 +11,7 @@ class BaseInputElement : public BaseCardElement
 {
 public:
     BaseInputElement(CardElementType elementType);
-    BaseInputElement(CardElementType type, Spacing spacing, bool separator);
+    BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
 
     std::string GetId() const override;
     virtual void SetId(const std::string &value) override;
