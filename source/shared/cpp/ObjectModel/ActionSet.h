@@ -16,7 +16,7 @@ public:
     ActionSet(Spacing spacing, bool separator);
     ActionSet(Spacing spacing, bool separator, std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     ActionsOrientation GetOrientation() const;
     void SetOrientation(const ActionsOrientation value);

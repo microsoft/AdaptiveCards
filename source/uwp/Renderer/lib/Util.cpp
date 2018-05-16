@@ -112,6 +112,9 @@ HRESULT GenerateSharedElements(
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> baseCardElement;
         switch (elementType)
         {
+            case ABI::AdaptiveNamespace::ElementType::ActionSet:
+                baseCardElement = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveActionSet>(item);
+                break;
             case ABI::AdaptiveNamespace::ElementType::ChoiceSetInput:
                 baseCardElement = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveChoiceSetInput>(item);
                 break;

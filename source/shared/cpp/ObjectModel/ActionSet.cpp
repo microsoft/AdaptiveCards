@@ -45,7 +45,7 @@ std::vector<std::shared_ptr<BaseActionElement>>& ActionSet::GetActions()
     return m_actions;
 }
 
-Json::Value ActionSet::SerializeToJsonValue()
+Json::Value ActionSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -57,7 +57,7 @@ Json::Value ActionSet::SerializeToJsonValue()
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Orientation)] = ActionsOrientationToString(GetOrientation());
     }
 
-    for (const auto& actionElement : GetActions())
+    for (auto actionElement : m_actions)
     {
         root[actionsPropertyName].append(actionElement->SerializeToJsonValue());
     }
