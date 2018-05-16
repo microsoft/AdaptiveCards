@@ -10,7 +10,7 @@ ShowCardAction::ShowCardAction() : BaseActionElement(ActionType::ShowCard)
     PopulateKnownPropertiesSet();
 }
 
-Json::Value ShowCardAction::SerializeToJsonValue()
+Json::Value ShowCardAction::SerializeToJsonValue() const
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
 

@@ -8,11 +8,11 @@ AdaptiveSharedNamespaceStart
 class AdaptiveCardParseException : public std::exception
 {
 public:
-    AdaptiveCardParseException(const AdaptiveSharedNamespace::ErrorStatusCode statusCode, const std::string& message);
+    AdaptiveCardParseException(AdaptiveSharedNamespace::ErrorStatusCode statusCode, const std::string& message);
     ~AdaptiveCardParseException();
 
     virtual const char* what() const throw();
-    const AdaptiveSharedNamespace::ErrorStatusCode GetStatusCode() const;
+    AdaptiveSharedNamespace::ErrorStatusCode GetStatusCode() const;
     const std::string& GetReason() const;
 
 private:

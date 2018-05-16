@@ -16,14 +16,14 @@ TextBlock::TextBlock() :
     m_textColor(ForegroundColor::Default),
     m_isSubtle(false),
     m_wrap(false),
-    m_hAlignment(HorizontalAlignment::Left),
     m_maxLines(0),
+    m_hAlignment(HorizontalAlignment::Left),
     m_language()
 {
     PopulateKnownPropertiesSet();
 }
 
-Json::Value TextBlock::SerializeToJsonValue()
+Json::Value TextBlock::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -73,7 +73,7 @@ std::string TextBlock::GetText() const
     return m_text;
 }
 
-void TextBlock::SetText(const std::string value)
+void TextBlock::SetText(const std::string &value)
 {
     m_text = value;
 }
