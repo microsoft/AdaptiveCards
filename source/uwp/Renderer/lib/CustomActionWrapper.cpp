@@ -13,7 +13,7 @@ std::string CustomActionWrapper::GetId() const
     return HStringToUTF8(id.Get());
 }
 
-void CustomActionWrapper::SetId(const std::string value)
+void CustomActionWrapper::SetId(const std::string& value)
 {
     Wrappers::HString id;
     THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
@@ -27,14 +27,14 @@ std::string CustomActionWrapper::GetTitle() const
     return HStringToUTF8(title.Get());
 }
 
-void CustomActionWrapper::SetTitle(const std::string value)
+void CustomActionWrapper::SetTitle(const std::string& value)
 {
     Wrappers::HString title; 
     THROW_IF_FAILED(UTF8ToHString(value, title.GetAddressOf()));
     THROW_IF_FAILED(m_actionElement->put_Title(title.Get()));
 }
 
-Json::Value CustomActionWrapper::SerializeToJsonValue()
+Json::Value CustomActionWrapper::SerializeToJsonValue() const
 {
     ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
     THROW_IF_FAILED(m_actionElement->ToJson(&jsonObject));

@@ -9,7 +9,7 @@ OpenUrlAction::OpenUrlAction() : BaseActionElement(ActionType::OpenUrl)
     PopulateKnownPropertiesSet();
 }
 
-Json::Value OpenUrlAction::SerializeToJsonValue()
+Json::Value OpenUrlAction::SerializeToJsonValue() const
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
 
@@ -23,7 +23,7 @@ std::string OpenUrlAction::GetUrl() const
     return m_url;
 }
 
-void OpenUrlAction::SetUrl(const std::string value)
+void OpenUrlAction::SetUrl(const std::string &value)
 {
     m_url = value;
 }

@@ -27,7 +27,7 @@ struct CaseInsensitiveEqualTo {
 
 struct CaseInsensitiveHash {
     size_t operator() (const std::string& keyval) const {
-        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, char c) { return acc + static_cast<size_t>(std::tolower(c)); });
+        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, char c) { return acc + static_cast<size_t>(std::toupper(c)); });
     }
 };
 

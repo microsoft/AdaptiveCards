@@ -13,10 +13,10 @@ class TextBlock : public BaseCardElement
 public:
     TextBlock();
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::string GetText() const;
-    void SetText(const std::string value);
+    void SetText(const std::string &value);
     DateTimePreparser GetTextForDateParsing() const;
 
     TextSize GetTextSize() const;

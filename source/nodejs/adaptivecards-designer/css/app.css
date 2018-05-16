@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.toolbar-button {
+    padding: 11px;
+    border: 1px solid transparent;
+    font-style: normal;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    user-select: none;
+}
+
+.toolbar-icon-card:before {
+    font-family: 'FabricMDL2Icons';
+    font-size: 20px;
+    margin-right: 6px;
+    content: "\F321";
+}
+
+.toolbar-button:hover {
+    background-color: white;
+}
+
+.toolbar-button:active {
+    border: 1px solid black;
+}

@@ -20,7 +20,7 @@ AdaptiveSharedNamespaceStart
         });
     }
 
-    void ActionParserRegistration::AddParser(std::string elementType, std::shared_ptr<ActionElementParser> parser)
+    void ActionParserRegistration::AddParser(std::string const &elementType, std::shared_ptr<ActionElementParser> parser)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -32,19 +32,15 @@ AdaptiveSharedNamespaceStart
         }
     }
 
-    void ActionParserRegistration::RemoveParser(std::string elementType)
+    void ActionParserRegistration::RemoveParser(std::string const &elementType)
     {
-        if (m_knownElements.find(elementType) == m_knownElements.end())
+        if (m_knownElements.find(elementType) != m_knownElements.end())
         {
             ActionParserRegistration::m_cardElementParsers.erase(elementType);
         }
-        else
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known action parsers is unsupported");
-        }
     }
 
-    std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string elementType)
+    std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string const &elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ActionParserRegistration::m_cardElementParsers.end())
