@@ -137,7 +137,7 @@ a.ac-anchor:visited:active {
 .ac-input {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
-  color: black;
+  color: #EEEEEE;
 }
 
 .ac-input.ac-textInput {
@@ -153,8 +153,8 @@ a.ac-anchor:visited:active {
 }
 
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
-  background-color: #F3F2F1;
-  border: 1px solid #F3F2F1;
+  background-color: #201E1F;
+  border: 1px solid #201E1F;
   border-radius: 4px;
   padding: 4px 8px 4px 8px;
 }
