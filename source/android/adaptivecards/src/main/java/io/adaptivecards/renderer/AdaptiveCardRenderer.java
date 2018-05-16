@@ -244,8 +244,10 @@ public class AdaptiveCardRenderer
             actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
         }
 
+
         Spacing spacing = hostConfig.getActions().getSpacing();
-        BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true);
+        /* Passing false for seperator since we do not have any configuration for seperator in actionsConfig */
+        BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);
 
         if (viewGroup != null)
         {
