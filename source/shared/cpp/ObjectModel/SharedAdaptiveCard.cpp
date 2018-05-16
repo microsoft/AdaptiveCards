@@ -8,40 +8,40 @@
 
 using namespace AdaptiveSharedNamespace;
 
-AdaptiveCard::AdaptiveCard()
+AdaptiveCard::AdaptiveCard(): m_style(ContainerStyle::None)
 {
 }
 
-AdaptiveCard::AdaptiveCard(std::string version,
-    std::string fallbackText,
-    std::string backgroundImage,
+AdaptiveCard::AdaptiveCard(std::string const &version,
+    std::string const &fallbackText,
+    std::string const &backgroundImage,
     ContainerStyle style,
-    std::string speak,
-    std::string language,
+    std::string const &speak,
+    std::string const &language,
     HeightType height) :
     m_version(version),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
-    m_style(style),
     m_speak(speak),
+    m_style(style),
     m_language(language),
     m_height(height)
 {
 }
 
-AdaptiveCard::AdaptiveCard(std::string version,
-    std::string fallbackText,
-    std::string backgroundImage,
+AdaptiveCard::AdaptiveCard(std::string const &version,
+    std::string const &fallbackText,
+    std::string const &backgroundImage,
     ContainerStyle style,
-    std::string speak,
-    std::string language,
+    std::string const &speak,
+    std::string const &language,
     HeightType height,
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
-    m_style(style),
     m_speak(speak),
+    m_style(style),
     m_language(language),
     m_height(height),
     m_body(body),
@@ -167,7 +167,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(
     return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString), rendererVersion, elementParserRegistration, actionParserRegistration);
 }
 
-Json::Value AdaptiveCard::SerializeToJsonValue()
+Json::Value AdaptiveCard::SerializeToJsonValue() const
 {
     Json::Value root;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(CardElementType::AdaptiveCard);
@@ -238,7 +238,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
     return fallbackCard;
 }
 
-std::string AdaptiveCard::Serialize()
+std::string AdaptiveCard::Serialize() const
 {
     Json::FastWriter writer;
     return writer.write(SerializeToJsonValue());
@@ -249,7 +249,7 @@ std::string AdaptiveCard::GetVersion() const
     return m_version;
 }
 
-void AdaptiveCard::SetVersion(const std::string value)
+void AdaptiveCard::SetVersion(const std::string &value)
 {
     m_version = value;
 }
@@ -259,7 +259,7 @@ std::string AdaptiveCard::GetFallbackText() const
     return m_fallbackText;
 }
 
-void AdaptiveCard::SetFallbackText(const std::string value)
+void AdaptiveCard::SetFallbackText(const std::string &value)
 {
     m_fallbackText = value;
 }
@@ -269,7 +269,7 @@ std::string AdaptiveCard::GetBackgroundImage() const
     return m_backgroundImage;
 }
 
-void AdaptiveCard::SetBackgroundImage(const std::string value)
+void AdaptiveCard::SetBackgroundImage(const std::string &value)
 {
     m_backgroundImage = value;
 }
@@ -279,7 +279,7 @@ std::string AdaptiveCard::GetSpeak() const
     return m_speak;
 }
 
-void AdaptiveCard::SetSpeak(const std::string value)
+void AdaptiveCard::SetSpeak(const std::string &value)
 {
     m_speak = value;
 }
@@ -338,7 +338,17 @@ std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody()
     return m_body;
 }
 
+const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody() const
+{
+    return m_body;
+}
+
 std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions()
+{
+    return m_actions;
+}
+
+const std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions() const
 {
     return m_actions;
 }

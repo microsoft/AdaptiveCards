@@ -12,7 +12,7 @@ class ShowCardAction : public BaseActionElement
 public:
     ShowCardAction();
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> GetCard() const;
     void SetCard(const std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>);

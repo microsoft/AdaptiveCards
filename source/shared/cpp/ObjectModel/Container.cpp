@@ -46,7 +46,7 @@ void Container::SetLanguage(const std::string& value)
     PropagateLanguage(value, m_items);
 }
 
-Json::Value Container::SerializeToJsonValue()
+Json::Value Container::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -55,7 +55,7 @@ Json::Value Container::SerializeToJsonValue()
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
     }
 
-    std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    std::string const &itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
     {

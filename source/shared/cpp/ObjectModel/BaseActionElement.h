@@ -14,27 +14,27 @@ public:
     virtual ~BaseActionElement();
 
     virtual std::string GetElementTypeString() const;
-    virtual void SetElementTypeString(const std::string value);
+    virtual void SetElementTypeString(const std::string &value);
 
     virtual std::string GetTitle() const;
-    virtual void SetTitle(const std::string value);
+    virtual void SetTitle(const std::string &value);
 
     virtual std::string GetId() const;
-    virtual void SetId(const std::string value);
+    virtual void SetId(const std::string &value);
 
     virtual std::string GetIconUrl() const;
     virtual void SetIconUrl(const std::string& value);
 
     virtual const ActionType GetElementType() const;
 
-    std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    std::string Serialize() const;
+    virtual Json::Value SerializeToJsonValue() const;
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
-    Json::Value GetAdditionalProperties();
-    void SetAdditionalProperties(Json::Value additionalProperties);
+    Json::Value GetAdditionalProperties() const;
+    void SetAdditionalProperties(Json::Value const &additionalProperties);
 
     virtual void GetResourceUris(std::vector<std::string>& resourceUris);
 

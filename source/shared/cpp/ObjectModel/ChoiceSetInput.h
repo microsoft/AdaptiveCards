@@ -14,7 +14,7 @@ friend class ChoiceSetInputParser;
 public:
     ChoiceSetInput();
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     bool GetIsMultiSelect() const;
     void SetIsMultiSelect(const bool isMultiSelect);
@@ -26,7 +26,7 @@ public:
     const std::vector<std::shared_ptr<ChoiceInput>>& GetChoices() const;
 
     std::string GetValue() const;
-    void SetValue(std::string value);
+    void SetValue(const std::string &value);
 
 private:
     void PopulateKnownPropertiesSet();

@@ -16,7 +16,7 @@ Image::Image() :
     PopulateKnownPropertiesSet();
 }
 
-Json::Value Image::SerializeToJsonValue()
+Json::Value Image::SerializeToJsonValue() const
 {
     const char pixelstring[] = "px";
 
@@ -80,7 +80,7 @@ std::string Image::GetUrl() const
     return m_url;
 }
 
-void Image::SetUrl(const std::string value)
+void Image::SetUrl(const std::string &value)
 {
     m_url = value;
 }
@@ -110,7 +110,7 @@ std::string Image::GetAltText() const
     return m_altText;
 }
 
-void Image::SetAltText(const std::string value)
+void Image::SetAltText(const std::string &value)
 {
     m_altText = value;
 }
@@ -185,32 +185,33 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
 
     std::vector<std::string> requestedDimensions;
-    std::string imageWidth = ParseUtil::GetValueAsString(json, AdaptiveCardSchemaKey::Width);
-    std::string imageHeight = ParseUtil::GetValueAsString(json, AdaptiveCardSchemaKey::Height);
-    requestedDimensions.push_back(imageWidth);
-    requestedDimensions.push_back(imageHeight);
+    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width));
+    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height));
+    std::vector<int> parsedDimensions;
 
-    // validate user inputs
-    
-    if ( (!imageHeight.empty() && (isdigit(imageHeight.at(0)) || ('-' == imageHeight.at(0)))) || 
-        (!imageWidth.empty() && (isdigit(imageWidth.at(0)) || ('-' == imageWidth.at(0)))))
+    for (auto eachDimension : requestedDimensions)
     {
-        const std::string unit = "px";
-        std::size_t foundIndexHeight = imageHeight.find(unit);
-        std::size_t foundIndexWidth = imageWidth.find(unit);
-        /// check if width is determined explicitly
-        if (std::string::npos != foundIndexHeight || std::string::npos != foundIndexWidth)
+        int parsedDimension = 0;
+        if (!eachDimension.empty() && (isdigit(eachDimension.at(0)) || ('-' == eachDimension.at(0))))
         {
-            std::vector<int> parsedDimensions;
-            ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
-
-            if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
+            const std::string unit = "px";
+            std::size_t foundIndex = eachDimension.find(unit);
+            /// check if width is determined explicitly
+            if (std::string::npos != foundIndex) 
             {
-                image->SetPixelWidth(parsedDimensions[0]);
-                image->SetPixelHeight(parsedDimensions[1]);
+                if (eachDimension.size() == foundIndex + unit.size())
+                // validate user inputs
+                const std::string unit = "px";
+                ValidateUserInputForDimensionWithUnit(unit, eachDimension, parsedDimension);
             }
-
         }
+        parsedDimensions.push_back(parsedDimension);
+    }
+
+    if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
+    {
+        image->SetPixelWidth(parsedDimensions[0]);
+        image->SetPixelHeight(parsedDimensions[1]);
     }
     else
     {

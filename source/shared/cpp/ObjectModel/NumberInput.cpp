@@ -6,14 +6,14 @@ using namespace AdaptiveSharedNamespace;
 
 NumberInput::NumberInput() :
     BaseInputElement(CardElementType::NumberInput),
-    m_min(std::numeric_limits<int>::min()),
+    m_value(0),
     m_max(std::numeric_limits<int>::max()),
-    m_value(0)
+    m_min(std::numeric_limits<int>::min())
 {
     PopulateKnownPropertiesSet();
 }
 
-Json::Value NumberInput::SerializeToJsonValue()
+Json::Value NumberInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
@@ -45,7 +45,7 @@ std::string NumberInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void NumberInput::SetPlaceholder(const std::string value)
+void NumberInput::SetPlaceholder(const std::string &value)
 {
     m_placeholder = value;
 }

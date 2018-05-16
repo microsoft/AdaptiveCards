@@ -1,0 +1,108 @@
+.acd-icon-bolt::before {
+    content: "\E945";
+}
+
+.acd-icon-addColumn::before {
+    content: "\F1D6";
+}
+
+.acd-icon-remove::before {
+    content: "\E711";
+}
+
+.acd-icon-drag::before {
+    content: "\E7C2";
+}
+
+.acd-designersurface {
+    outline: none;
+}
+
+.acd-designersurface.dragging {
+    cursor: move;
+}
+
+.acd-designersurface.dragging > .acd-peer:hover {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.acd-peerButton {
+    width: 20px;
+    height: 20px;
+    font-family: 'FabricMDL2Icons';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid red;
+    color: red;
+    background-color: white;
+    cursor: default;
+    user-select: none;
+}
+
+.acd-circularButton {
+    border-radius: 50%;
+}
+
+.acd-peerButton:hover {
+    background-color: red;
+    color: white;
+}
+
+.acd-peerButton:active {
+    background-color: firebrick;
+    border: 1px solid firebrick;
+    color: white;
+}
+
+.acd-palette-item {
+    border: 1px solid #CCCCCC;
+    padding: 8px;
+    margin-bottom: 4px;
+    background-color: white;
+    cursor: default;
+}
+
+.acd-palette-item:hover {
+    background-color: #EEEEEE;
+}
+
+.acd-peer {
+    border: 1px solid transparent;
+}
+
+.acd-peer:hover {
+    border: 1px solid blue;
+}
+
+.acd-peer.selected {
+    border: 1px solid red !important;
+}
+
+.acd-peer.dragover {
+    border: 1px dashed green !important;
+}
+
+.acd-peer.dragover:hover {
+    background-color: none;
+}
+
+.acd-peer.dragging {
+}
+
+.acd-peer.dragging:hover {
+    border: 1px solid green;
+}
+
+.acd-separation {
+    background-color: rgba(0, 0, 255, 0.2);
+}
+
+.acd-separation.selected {
+    background-color: rgba(255, 0, 0, 0.2);
+}
