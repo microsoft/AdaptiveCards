@@ -32,11 +32,11 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-    unsigned int GetWidth() const; 
-    void SetWidth(unsigned int value);
+    unsigned int GetPixelWidth() const; 
+    void SetPixelWidth(unsigned int value);
 
-    unsigned int GetHeight() const; 
-    void SetHeight(unsigned int value);
+    unsigned int GetPixelHeight() const; 
+    void SetPixelHeight(unsigned int value);
 
     virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
@@ -46,8 +46,8 @@ private:
     std::string m_url;
     ImageStyle m_imageStyle;
     ImageSize m_imageSize;
-    unsigned int m_width;
-    unsigned int m_height;
+    unsigned int m_pixelWidth;
+    unsigned int m_pixelHeight;
     std::string m_altText;
     HorizontalAlignment m_hAlignment;
     std::shared_ptr<BaseActionElement> m_selectAction;

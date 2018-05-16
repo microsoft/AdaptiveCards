@@ -9,8 +9,8 @@ Image::Image() :
     BaseCardElement(CardElementType::Image),
     m_imageStyle(ImageStyle::Default),
     m_imageSize(ImageSize::None),
-    m_width(0),
-    m_height(0),
+    m_pixelWidth(0),
+    m_pixelHeight(0),
     m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
@@ -22,20 +22,20 @@ Json::Value Image::SerializeToJsonValue() const
 
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    if (m_width || m_height)
+    if (m_pixelWidth || m_pixelHeight)
     {
-        if (m_width)
+        if (m_pixelWidth)
         {
             std::ostringstream stringStream;
-            stringStream << m_width;
+            stringStream << m_pixelWidth;
 
             std::string widthString = stringStream.str() + pixelstring;
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = widthString;
         }
-        if (m_height)
+        if (m_pixelHeight)
         {
             std::ostringstream stringStream;
-            stringStream << m_height;
+            stringStream << m_pixelHeight;
 
             std::string heightString = stringStream.str() + pixelstring;
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = heightString;
@@ -135,24 +135,24 @@ void Image::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-unsigned int Image::GetWidth() const 
+unsigned int Image::GetPixelWidth() const 
 {
-    return m_width;
+    return m_pixelWidth;
 }
 
-void Image::SetWidth(unsigned int value)
+void Image::SetPixelWidth(unsigned int value)
 {
-    m_width = value;
+    m_pixelWidth = value;
 }
 
-unsigned int Image::GetHeight() const
+unsigned int Image::GetPixelHeight() const
 {
-    return m_height;
+    return m_pixelHeight;
 }
 
-void Image::SetHeight(unsigned int value)
+void Image::SetPixelHeight(unsigned int value)
 {
-    m_height = value;
+    m_pixelHeight = value;
 }
 
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
@@ -187,16 +187,31 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::vector<std::string> requestedDimensions;
     requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width));
     requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height));
-
-    // validate user inputs
-    const std::string unit = "px";
     std::vector<int> parsedDimensions;
-    ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
+
+    for (auto eachDimension : requestedDimensions)
+    {
+        int parsedDimension = 0;
+        if (!eachDimension.empty() && (isdigit(eachDimension.at(0)) || ('-' == eachDimension.at(0))))
+        {
+            const std::string unit = "px";
+            std::size_t foundIndex = eachDimension.find(unit);
+            /// check if width is determined explicitly
+            if (std::string::npos != foundIndex) 
+            {
+                if (eachDimension.size() == foundIndex + unit.size())
+                // validate user inputs
+                const std::string unit = "px";
+                ValidateUserInputForDimensionWithUnit(unit, eachDimension, parsedDimension);
+            }
+        }
+        parsedDimensions.push_back(parsedDimension);
+    }
 
     if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
     {
-        image->SetWidth(parsedDimensions[0]);
-        image->SetHeight(parsedDimensions[1]);
+        image->SetPixelWidth(parsedDimensions[0]);
+        image->SetPixelHeight(parsedDimensions[1]);
     }
     else
     {
