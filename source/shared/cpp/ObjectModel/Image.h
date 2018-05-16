@@ -12,10 +12,10 @@ class Image : public BaseCardElement
 public:
     Image();
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::string GetUrl() const;
-    void SetUrl(const std::string value);
+    void SetUrl(const std::string &value);
 
     ImageStyle GetImageStyle() const;
     void SetImageStyle(const ImageStyle value);
@@ -24,7 +24,7 @@ public:
     void SetImageSize(const ImageSize value);
 
     std::string GetAltText() const;
-    void SetAltText(const std::string value);
+    void SetAltText(const std::string &value);
 
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);

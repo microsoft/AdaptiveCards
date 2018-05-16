@@ -12,9 +12,9 @@ public:
     SubmitAction();
 
     std::string GetDataJson() const;
-    void SetDataJson(const std::string value);
+    void SetDataJson(const std::string &value);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
 private:
     void PopulateKnownPropertiesSet();

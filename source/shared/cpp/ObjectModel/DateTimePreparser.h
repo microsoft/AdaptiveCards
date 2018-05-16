@@ -10,16 +10,16 @@ AdaptiveSharedNamespaceStart
     {
     public:
         DateTimePreparser();
-        DateTimePreparser(std::string in);
+        DateTimePreparser(std::string const &in);
         std::vector<std::shared_ptr<DateTimePreparsedToken>> GetTextTokens() const;
-        bool HasDateTokens();
+        bool HasDateTokens() const;
 
     private:
-        void AddTextToken(std::string text, DateTimePreparsedTokenFormat format);
-        void AddDateToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format);
-        std::string Concatenate();
+        void AddTextToken(std::string const &text, DateTimePreparsedTokenFormat format);
+        void AddDateToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format);
+        std::string Concatenate() const;
         static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
-        void ParseDateTime(std::string in);        
+        void ParseDateTime(std::string const &in);        
 
         std::vector<std::shared_ptr<DateTimePreparsedToken>> m_textTokenCollection;
         bool m_hasDateTokens;

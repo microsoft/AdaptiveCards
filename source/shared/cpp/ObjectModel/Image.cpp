@@ -16,7 +16,7 @@ Image::Image() :
     PopulateKnownPropertiesSet();
 }
 
-Json::Value Image::SerializeToJsonValue()
+Json::Value Image::SerializeToJsonValue() const
 {
     const char pixelstring[] = "px";
 
@@ -80,7 +80,7 @@ std::string Image::GetUrl() const
     return m_url;
 }
 
-void Image::SetUrl(const std::string value)
+void Image::SetUrl(const std::string &value)
 {
     m_url = value;
 }
@@ -110,7 +110,7 @@ std::string Image::GetAltText() const
     return m_altText;
 }
 
-void Image::SetAltText(const std::string value)
+void Image::SetAltText(const std::string &value)
 {
     m_altText = value;
 }

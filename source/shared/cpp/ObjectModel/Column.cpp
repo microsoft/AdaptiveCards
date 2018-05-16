@@ -15,7 +15,7 @@ std::string Column::GetWidth() const
     return m_width;
 }
 
-void Column::SetWidth(const std::string value)
+void Column::SetWidth(const std::string &value)
 {
     m_width = ParseUtil::ToLowercase(value);
 }
@@ -51,13 +51,13 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
     return m_items;
 }
 
-std::string Column::Serialize()
+std::string Column::Serialize() const
 {
     Json::FastWriter writer;
     return writer.write(SerializeToJsonValue());
 }
 
-Json::Value Column::SerializeToJsonValue()
+Json::Value Column::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 

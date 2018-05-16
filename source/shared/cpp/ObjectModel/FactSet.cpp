@@ -20,7 +20,7 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
     return m_facts;
 }
 
-Json::Value FactSet::SerializeToJsonValue()
+Json::Value FactSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
