@@ -211,6 +211,13 @@ public class AdaptiveCardRenderer
             loaderAsync.execute(imageUrl);
         }
 
+        BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
+        if (selectAction != null)
+        {
+            rootLayout.setClickable(true);
+            rootLayout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, selectAction, cardActionHandler));
+        }
+
         return rootLayout;
     }
 
