@@ -56,7 +56,7 @@ void Container::SetVerticalContentAlignment(const VerticalContentAlignment value
     m_verticalContentAlignment = value;
 }
 
-Json::Value Container::SerializeToJsonValue()
+Json::Value Container::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -70,7 +70,7 @@ Json::Value Container::SerializeToJsonValue()
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
-    std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    std::string const &itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
     {

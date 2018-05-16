@@ -39,11 +39,11 @@ void ColumnSet::SetLanguage(const std::string& language)
     }
 }
 
-Json::Value ColumnSet::SerializeToJsonValue()
+Json::Value ColumnSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
+    std::string const &propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
     root[propertyName] = Json::Value(Json::arrayValue);
     for (const auto& column : m_columns)
     {

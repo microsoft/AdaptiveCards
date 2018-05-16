@@ -1480,11 +1480,11 @@ AdaptiveNamespaceStart
         ComPtr<IUriRuntimeClass> imageUri;
         THROW_IF_FAILED(adaptiveImage->get_Url(imageUri.GetAddressOf()));
 
-        UINT32 explicitWidth = 0, explicitHeight = 0;
-        THROW_IF_FAILED(adaptiveImage->get_Width(&explicitWidth));
-        THROW_IF_FAILED(adaptiveImage->get_Height(&explicitHeight));
-        bool hasExplicitMeasurements = (explicitWidth || explicitHeight);
-        bool isAspectRatioNeeded = (explicitWidth  && explicitHeight);
+        UINT32 pixelWidth = 0, pixelHeight = 0;
+        THROW_IF_FAILED(adaptiveImage->get_PixelWidth(&pixelWidth));
+        THROW_IF_FAILED(adaptiveImage->get_PixelHeight(&pixelHeight));
+        bool hasExplicitMeasurements = (pixelWidth || pixelHeight);
+        bool isAspectRatioNeeded = (pixelWidth  && pixelHeight);
 
         // Get the image's size and style
         ABI::AdaptiveNamespace::ImageSize size = ABI::AdaptiveNamespace::ImageSize::None;
@@ -1604,14 +1604,14 @@ AdaptiveNamespaceStart
 
         if(hasExplicitMeasurements)
         {
-            if(explicitWidth) 
+            if(pixelWidth) 
             {
-                THROW_IF_FAILED(frameworkElement->put_Width(explicitWidth));
+                THROW_IF_FAILED(frameworkElement->put_Width(pixelWidth));
             }
 
-            if(explicitHeight)
+            if(pixelHeight)
             { 
-                THROW_IF_FAILED(frameworkElement->put_Height(explicitHeight));
+                THROW_IF_FAILED(frameworkElement->put_Height(pixelHeight));
             }
         }
         else

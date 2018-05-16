@@ -38,14 +38,14 @@ AdaptiveNamespaceStart
         return HStringToUTF8(id.Get());
     }
 
-    void CustomElementWrapper::SetId(const std::string value)
+    void CustomElementWrapper::SetId(const std::string& value)
     {
         Wrappers::HString id; 
         THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
         THROW_IF_FAILED(m_cardElement->put_Id(id.Get()));
     }
 
-    Json::Value CustomElementWrapper::SerializeToJsonValue()
+    Json::Value CustomElementWrapper::SerializeToJsonValue() const
     {
         ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
         THROW_IF_FAILED(m_cardElement->ToJson(&jsonObject));

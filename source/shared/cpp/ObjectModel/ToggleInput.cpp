@@ -6,13 +6,13 @@ using namespace AdaptiveSharedNamespace;
 
 ToggleInput::ToggleInput() :
     BaseInputElement(CardElementType::ToggleInput),
-    m_valueOn("true"),
-    m_valueOff("false")
+    m_valueOff("false"),
+    m_valueOn("true")
 {
     PopulateKnownPropertiesSet();
 }
 
-Json::Value ToggleInput::SerializeToJsonValue()
+Json::Value ToggleInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
@@ -41,7 +41,7 @@ std::string ToggleInput::GetTitle() const
     return m_title;
 }
 
-void ToggleInput::SetTitle(const std::string value)
+void ToggleInput::SetTitle(const std::string &value)
 {
     m_title = value;
 }
@@ -51,11 +51,11 @@ std::string ToggleInput::GetValue() const
     return m_value;
 }
 
-void ToggleInput::SetValue(const std::string value)
+void ToggleInput::SetValue(const std::string &value)
 {
     m_value = value;
 }
-void ToggleInput::SetValueOff(const std::string valueOff)
+void ToggleInput::SetValueOff(const std::string &valueOff)
 {
     m_valueOff = valueOff;
 }
@@ -70,7 +70,7 @@ std::string ToggleInput::GetValueOn() const
     return m_valueOn;
 }
 
-void ToggleInput::SetValueOn(const std::string valueOn)
+void ToggleInput::SetValueOn(const std::string &valueOn)
 {
     m_valueOn = valueOn;
 }

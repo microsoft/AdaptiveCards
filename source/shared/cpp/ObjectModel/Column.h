@@ -11,8 +11,8 @@ class Column : public BaseCardElement
 public:
     Column();
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual std::string Serialize() const;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     static std::shared_ptr<Column> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
@@ -25,7 +25,7 @@ public:
         const std::string& jsonString);
 
     std::string GetWidth() const;
-    void SetWidth(const std::string value);
+    void SetWidth(const std::string &value);
 
     // explicit width takes precedence over relative width 
     int GetPixelWidth() const;

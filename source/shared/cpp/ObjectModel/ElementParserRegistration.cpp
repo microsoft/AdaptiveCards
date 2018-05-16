@@ -50,7 +50,7 @@ AdaptiveSharedNamespaceStart
         });
     }
 
-    void ElementParserRegistration::AddParser(std::string elementType, std::shared_ptr<BaseCardElementParser> parser)
+    void ElementParserRegistration::AddParser(std::string const &elementType, std::shared_ptr<BaseCardElementParser> parser)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -62,7 +62,7 @@ AdaptiveSharedNamespaceStart
         }
     }
 
-    void ElementParserRegistration::RemoveParser(std::string elementType)
+    void ElementParserRegistration::RemoveParser(std::string const &elementType)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -74,7 +74,7 @@ AdaptiveSharedNamespaceStart
         }
     }
 
-    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string elementType)
+    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const &elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())

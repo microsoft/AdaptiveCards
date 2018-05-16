@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.5)
-set(CMAKE_OSX_SYSROOT iphonesimulator11.2)
+set(CMAKE_OSX_SYSROOT iphonesimulator11.3)
 add_compile_options(-std=c++14 -Wall)
 project (AdaptiveCardsLib)
 include_directories(../../../../shared/cpp/ObjectModel)
