@@ -19,9 +19,9 @@ AdaptiveNamespaceStart
         void SetSpacing(const Spacing value) override;
 
         std::string GetId() const override;
-        void SetId(const std::string value) override;
+        void SetId(const std::string& value) override;
 
-        virtual Json::Value SerializeToJsonValue() override;
+        virtual Json::Value SerializeToJsonValue() const override;
 
         virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
