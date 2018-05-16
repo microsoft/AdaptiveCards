@@ -343,11 +343,11 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(rootAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
-        HSTRING backgroundImageUri;
-        THROW_IF_FAILED(adaptiveCard->get_BackgroundImageUri(&backgroundImageUri));
-        if (backgroundImageUri != nullptr)
+        HSTRING backgroundImage;
+        THROW_IF_FAILED(adaptiveCard->get_BackgroundImage(&backgroundImage));
+        if (backgroundImage != nullptr)
         {
-            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUri, renderContext, renderArgs);
+            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage, renderContext, renderArgs);
         }
 
         // Outer panel that contains the main body and any inline show cards
@@ -394,7 +394,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     void XamlBuilder::ApplyBackgroundToRoot(
         ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-        HSTRING uri,
+        HSTRING url,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs)
     {
@@ -402,7 +402,7 @@ AdaptiveNamespaceStart
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-        adaptiveImage->put_Uri(uri);
+        adaptiveImage->put_Url(url);
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -472,7 +472,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     template<typename T>
     void XamlBuilder::SetImageOnUIElement(
-        _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri,
+        _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
         T* uiElement,
         IAdaptiveCardResourceResolvers* resolvers,
         _In_ ABI::Windows::UI::Xaml::Media::Stretch stretch
@@ -480,7 +480,7 @@ AdaptiveNamespaceStart
     {
         // Get the image url scheme
         HString schemeName;
-        THROW_IF_FAILED(imageUri->get_SchemeName(schemeName.GetAddressOf()));
+        THROW_IF_FAILED(imageUrl->get_SchemeName(schemeName.GetAddressOf()));
 
         // Get the resolver for the image
         ComPtr<IAdaptiveCardResourceResolver> resolver;
@@ -505,7 +505,7 @@ AdaptiveNamespaceStart
 
                 // Create the arguments to pass to the resolver
                 ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCardGetResourceStreamArgs>(&args, imageUri));
+                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCardGetResourceStreamArgs>(&args, imageUrl));
 
                 // And call the resolver to get the image stream
                 ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
@@ -553,7 +553,7 @@ AdaptiveNamespaceStart
             // If we've been explicitly told to let Xaml handle the image loading, or there are
             // no listeners waiting on the image load callbacks, use Xaml to load the images
             ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-            THROW_IF_FAILED(bitmapImage->put_UriSource(imageUri));
+            THROW_IF_FAILED(bitmapImage->put_UriSource(imageUrl));
 
             ComPtr<IImageSource> bitmapImageSource;
             THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
@@ -561,13 +561,13 @@ AdaptiveNamespaceStart
         }
         else
         {
-            PopulateImageFromUrlAsync(imageUri, uiElement);
+            PopulateImageFromUrlAsync(imageUrl, uiElement);
         }
     }
 
     _Use_decl_annotations_
     template<typename T>
-    void XamlBuilder::PopulateImageFromUrlAsync(IUriRuntimeClass* imageUri, T* imageControl)
+    void XamlBuilder::PopulateImageFromUrlAsync(IUriRuntimeClass* imageUrl, T* imageControl)
     {
         // Create the HttpClient to load the image stream
         ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter =
@@ -588,7 +588,7 @@ AdaptiveNamespaceStart
         ComPtr<IBitmapSource> bitmapSource;
         bitmapImage.As(&bitmapSource);
         ComPtr<IAsyncOperationWithProgress<IInputStream*, HttpProgress>> getStreamOperation;
-        THROW_IF_FAILED(httpClient->GetInputStreamAsync(imageUri, &getStreamOperation));
+        THROW_IF_FAILED(httpClient->GetInputStreamAsync(imageUrl, &getStreamOperation));
 
         ComPtr<T> strongImageControl(imageControl);
         ComPtr<XamlBuilder> strongThis(this);
@@ -766,13 +766,13 @@ AdaptiveNamespaceStart
         HString title;
         THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
 
-        HSTRING iconUri;
-        THROW_IF_FAILED(action->get_IconUri(&iconUri));
+        HSTRING iconUrl;
+        THROW_IF_FAILED(action->get_IconUrl(&iconUrl));
 
         ComPtr<IButton> localButton(button);
 
-        // Check if the button has an iconUri
-        if (iconUri != nullptr)
+        // Check if the button has an iconUrl
+        if (iconUrl != nullptr)
         {
             ABI::AdaptiveNamespace::IconPlacement iconPlacement;
             THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
@@ -794,7 +794,7 @@ AdaptiveNamespaceStart
             ComPtr<IAdaptiveImage> adaptiveImage;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
-            adaptiveImage->put_Uri(iconUri);
+            adaptiveImage->put_Url(iconUrl);
             adaptiveImage->put_HorizontalAlignment(HAlignment_Center);
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
@@ -1493,16 +1493,16 @@ AdaptiveNamespaceStart
             HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
             &uriActivationFactory));
 
-        HSTRING uri;
-        THROW_IF_FAILED(adaptiveImage->get_Uri(&uri));
+        HSTRING url;
+        THROW_IF_FAILED(adaptiveImage->get_Url(&url));
 
-        ComPtr<IUriRuntimeClass> imageUri;
+        ComPtr<IUriRuntimeClass> imageUrl;
 
         // Try to treat URI as absolute
-        boolean isUriRelative = FAILED(uriActivationFactory->CreateUri(uri, imageUri.GetAddressOf()));
+        boolean isUrlRelative = FAILED(uriActivationFactory->CreateUri(url, imageUrl.GetAddressOf()));
 
         // Otherwise, try to treat URI as relative
-        if (isUriRelative)
+        if (isUrlRelative)
         {
             HSTRING imageBaseUrl;
             THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(&imageBaseUrl));
@@ -1517,8 +1517,8 @@ AdaptiveNamespaceStart
 
             THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(
                 imageBaseUrl,
-                uri,
-                imageUri.GetAddressOf())
+                url,
+                imageUrl.GetAddressOf())
             );
         }
 
@@ -1553,7 +1553,7 @@ AdaptiveNamespaceStart
             ComPtr<IEllipse> ellipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
-            SetImageOnUIElement(imageUri.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
+            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
 
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
@@ -1604,7 +1604,7 @@ AdaptiveNamespaceStart
         else
         {
             ComPtr<IImage> xamlImage = XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
-            SetImageOnUIElement(imageUri.Get(), xamlImage.Get(), resourceResolvers.Get());
+            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get());
             THROW_IF_FAILED(xamlImage.As(&frameworkElement));
 
             if(isAspectRatioNeeded)

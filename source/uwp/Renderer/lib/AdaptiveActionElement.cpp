@@ -18,7 +18,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
 
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUri.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
 
         return S_OK;
     }
@@ -44,15 +44,15 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionElementBase::get_IconUri(HSTRING* iconUri)
+        HRESULT AdaptiveActionElementBase::get_IconUrl(HSTRING* iconUrl)
     {
-        return m_iconUri.CopyTo(iconUri);
+        return m_iconUrl.CopyTo(iconUrl);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionElementBase::put_IconUri(HSTRING iconUri)
+        HRESULT AdaptiveActionElementBase::put_IconUrl(HSTRING iconUrl)
     {
-        return m_iconUri.Set(iconUri);
+        return m_iconUrl.Set(iconUrl);
     }
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
@@ -84,7 +84,7 @@ AdaptiveNamespaceStart
     {
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
-        sharedCardElement->SetIconUrl(HStringToUTF8(m_iconUri.Get()));
+        sharedCardElement->SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
 
         if (m_additionalProperties != nullptr)
         {

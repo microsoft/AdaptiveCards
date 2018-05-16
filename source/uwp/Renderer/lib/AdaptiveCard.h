@@ -23,8 +23,8 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_FallbackText(_Out_ HSTRING* fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
-        IFACEMETHODIMP get_BackgroundImageUri(_Out_ HSTRING *backgroundImageUri);
-        IFACEMETHODIMP put_BackgroundImageUri(_In_ HSTRING backgroundImageUri);
+        IFACEMETHODIMP get_BackgroundImage(_Out_ HSTRING *backgroundImageUrl);
+        IFACEMETHODIMP put_BackgroundImageUrl(_In_ HSTRING backgroundImageUrl);
 
         IFACEMETHODIMP get_Language(_Out_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
@@ -66,7 +66,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_speak;
         Microsoft::WRL::Wrappers::HString m_language;
 
-        Microsoft::WRL::Wrappers::HString m_backgroundImageUri;
+        Microsoft::WRL::Wrappers::HString m_backgroundImageUrl;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;

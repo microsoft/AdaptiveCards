@@ -29,7 +29,7 @@ AdaptiveNamespaceStart
             return E_INVALIDARG;
         }
 
-        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_uri.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
@@ -44,15 +44,15 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Uri(HSTRING* uri)
+    HRESULT AdaptiveImage::get_Url(HSTRING* url)
     {
-        return m_uri.CopyTo(uri);
+        return m_url.CopyTo(url);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Uri(HSTRING uri)
+    HRESULT AdaptiveImage::put_Url(HSTRING url)
     {
-        return m_uri.Set(uri);
+        return m_url.Set(url);
     }
 
     _Use_decl_annotations_
@@ -170,7 +170,7 @@ AdaptiveNamespaceStart
             image->SetSelectAction(sharedAction);
         }
 
-        image->SetUrl(HStringToUTF8(m_uri.Get()));
+        image->SetUrl(HStringToUTF8(m_url.Get()));
 
         if (m_altText != nullptr)
         {
