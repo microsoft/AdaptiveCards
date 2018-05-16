@@ -32,6 +32,12 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize);
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveNamespace::ImageSize imageSize);
 
+        IFACEMETHODIMP get_PixelWidth(UINT32* Width);
+        IFACEMETHODIMP put_PixelWidth(UINT32 Width);
+
+        IFACEMETHODIMP get_PixelHeight(UINT32* Height);
+        IFACEMETHODIMP put_PixelHeight(UINT32 Height);
+
         IFACEMETHODIMP get_AltText(_Out_ HSTRING *text);
         IFACEMETHODIMP put_AltText(_In_ HSTRING text);
 
@@ -75,6 +81,8 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_altText;
         ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
+        UINT32 m_pixelWidth;
+        UINT32 m_pixelHeight;
     };
 
     ActivatableClass(AdaptiveImage);

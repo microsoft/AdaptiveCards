@@ -26,6 +26,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Width(_Out_ HSTRING* width);
         IFACEMETHODIMP put_Width(_In_ HSTRING width);
 
+        IFACEMETHODIMP get_PixelWidth(_Out_ UINT32* pixelWidth);
+        IFACEMETHODIMP put_PixelWidth(_In_ UINT32 pixelWidth);
+
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style);
         IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveNamespace::ContainerStyle style);
 
@@ -67,6 +70,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
 
         Microsoft::WRL::Wrappers::HString m_width; 
+        UINT32 m_pixelWidth;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
     };
 

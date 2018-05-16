@@ -146,12 +146,14 @@ AdaptiveNamespaceStart
             _Inout_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
         template<typename T>
-        void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource);
+        void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource, ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
         template<typename T>
         void SetImageOnUIElement(
             _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
             T* uiElement,
-            ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers);
+            ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
+            ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill
+        );
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();

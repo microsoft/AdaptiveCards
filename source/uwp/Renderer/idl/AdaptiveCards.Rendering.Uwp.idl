@@ -422,7 +422,6 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IVector<IAdaptiveWarning*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
-        interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
     }
 
@@ -454,6 +453,15 @@ AdaptiveNamespaceStart
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
+    };
+
+    [
+        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
+        version(NTDDI_WIN10_RS1),
+    ]
+    interface IAdaptiveElementWithRemoteResources : IInspectable
+    {
+        HRESULT GetResourceUris([out, retval] Windows.Foundation.Collections.IVectorView<Windows.Foundation.Uri*>** result);
     };
 
     [
@@ -571,6 +579,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 
+        [propget] HRESULT Language([out, retval] HSTRING* value);
+        [propput] HRESULT Language([in] HSTRING value);
+
         [propget] HRESULT BackgroundImage([out, retval] Windows.Foundation.Uri** value);
         [propput] HRESULT BackgroundImage([in] Windows.Foundation.Uri* value);
 
@@ -580,7 +591,12 @@ AdaptiveNamespaceStart
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
 
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
+
+        HRESULT GetResourceUris([out, retval] Windows.Foundation.Collections.IVectorView<Windows.Foundation.Uri*>** result);
     };
 
     [
@@ -689,6 +705,12 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Size([out, retval] ImageSize* value);
         [propput] HRESULT Size([in] ImageSize value);
+
+        [propget] HRESULT PixelWidth([out, retval] UINT32* value);
+        [propput] HRESULT PixelWidth([in] UINT32 value);
+
+        [propget] HRESULT PixelHeight([out, retval] UINT32* value);
+        [propput] HRESULT PixelHeight([in] UINT32 value);
 
         [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
         [propput] HRESULT HorizontalAlignment([in] HAlignment value);
@@ -1102,6 +1124,9 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT Width([out, retval] HSTRING* value);
         [propput] HRESULT Width([in] HSTRING value);
+
+        [propget] HRESULT PixelWidth([out, retval] UINT32* value);
+        [propput] HRESULT PixelWidth([in] UINT32 value);
 
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);

@@ -12,8 +12,6 @@ class UnknownElement: public BaseCardElement
 {
 public:
     UnknownElement();
-        
-    virtual Json::Value SerializeToJsonValue() override;
 };
 
 class UnknownElementParser : public BaseCardElementParser

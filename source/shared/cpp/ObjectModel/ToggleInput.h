@@ -11,19 +11,19 @@ class ToggleInput : public BaseInputElement
 public:
     ToggleInput();
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::string GetTitle() const;
-    void SetTitle(const std::string value);
+    void SetTitle(const std::string &value);
 
     std::string GetValue() const;
-    void SetValue(const std::string value);
+    void SetValue(const std::string &value);
 
     std::string GetValueOff() const;
-    void SetValueOff(const std::string value);
+    void SetValueOff(const std::string &value);
 
     std::string GetValueOn() const;
-    void SetValueOn(const std::string value);
+    void SetValueOn(const std::string &value);
 
 private:
     void PopulateKnownPropertiesSet();

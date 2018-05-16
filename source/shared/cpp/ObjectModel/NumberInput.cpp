@@ -6,20 +6,36 @@ using namespace AdaptiveSharedNamespace;
 
 NumberInput::NumberInput() :
     BaseInputElement(CardElementType::NumberInput),
-    m_min(std::numeric_limits<int>::min()),
-    m_max(std::numeric_limits<int>::max())
+    m_value(0),
+    m_max(std::numeric_limits<int>::max()),
+    m_min(std::numeric_limits<int>::min())
 {
     PopulateKnownPropertiesSet();
 }
 
-Json::Value NumberInput::SerializeToJsonValue()
+Json::Value NumberInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = GetMax();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = GetMin();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = GetPlaceholder();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+    if (m_min != std::numeric_limits<int>::min())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = m_min;
+    }
+
+    if (m_max != std::numeric_limits<int>::max())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = m_max;
+    }
+
+    if (m_value != 0)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
+    }
+
+    if (!m_placeholder.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = m_placeholder;
+    }
 
     return root;
 }
@@ -29,7 +45,7 @@ std::string NumberInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void NumberInput::SetPlaceholder(const std::string value)
+void NumberInput::SetPlaceholder(const std::string &value)
 {
     m_placeholder = value;
 }

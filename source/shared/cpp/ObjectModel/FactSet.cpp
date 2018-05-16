@@ -10,24 +10,6 @@ FactSet::FactSet() : BaseCardElement(CardElementType::FactSet)
     PopulateKnownPropertiesSet();
 }
 
-FactSet::FactSet(
-    Spacing spacing,
-    bool separation,
-    std::vector<std::shared_ptr<Fact>>& facts) :
-    BaseCardElement(CardElementType::FactSet, spacing, separation),
-    m_facts(facts)
-{
-    PopulateKnownPropertiesSet();
-}
-
-FactSet::FactSet(
-    Spacing spacing,
-    bool separation) :
-    BaseCardElement(CardElementType::FactSet, spacing, separation)
-{
-    PopulateKnownPropertiesSet();
-}
-
 const std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts() const
 {
     return m_facts;
@@ -38,7 +20,7 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
     return m_facts;
 }
 
-Json::Value FactSet::SerializeToJsonValue()
+Json::Value FactSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 

@@ -42,9 +42,10 @@ AdaptiveNamespaceStart
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
+        m_pixelWidth = sharedImage->GetPixelWidth();
+        m_pixelHeight = sharedImage->GetPixelHeight();
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
-
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImage));
@@ -89,6 +90,34 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveImage::put_Size(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_PixelWidth(UINT32* pixelWidth)
+    {
+        *pixelWidth = m_pixelWidth;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_PixelWidth(UINT32 pixelWidth)
+    {
+        m_pixelWidth = pixelWidth;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_PixelHeight(UINT32* pixelHeight)
+    {
+        *pixelHeight = m_pixelHeight;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_PixelHeight(UINT32 pixelHeight)
+    {
+        m_pixelHeight = pixelHeight;
         return S_OK;
     }
 
@@ -170,6 +199,8 @@ AdaptiveNamespaceStart
             
         image->SetImageStyle(static_cast<AdaptiveSharedNamespace::ImageStyle>(m_imageStyle));
         image->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
+        image->SetPixelHeight(m_pixelHeight);
+        image->SetPixelWidth(m_pixelWidth);
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         sharedImage = image;

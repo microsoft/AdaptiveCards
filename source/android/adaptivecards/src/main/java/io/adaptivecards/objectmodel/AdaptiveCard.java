@@ -95,12 +95,25 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetLanguage(swigCPtr, this, value);
   }
 
+  public BaseActionElement GetSelectAction() {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetSelectAction(swigCPtr, this);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public void SetSelectAction(BaseActionElement action) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
+  }
+
   public BaseCardElementVector GetBody() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetBody(swigCPtr, this), false);
   }
 
   public BaseActionElementVector GetActions() {
     return new BaseActionElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions(swigCPtr, this), false);
+  }
+
+  public StringVector GetResourceUris() {
+    return new StringVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetResourceUris(swigCPtr, this), true);
   }
 
   public CardElementType GetElementType() {

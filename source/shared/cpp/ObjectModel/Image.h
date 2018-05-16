@@ -11,21 +11,11 @@ class Image : public BaseCardElement
 {
 public:
     Image();
-    Image(
-        Spacing spacing,
-        bool separator,
-        std::string uri,
-        ImageStyle imageStyle,
-        ImageSize imageSize,
-        unsigned int width,
-        unsigned int height,
-        std::string altText,
-        HorizontalAlignment hAlignment);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::string GetUrl() const;
-    void SetUrl(const std::string value);
+    void SetUrl(const std::string &value);
 
     ImageStyle GetImageStyle() const;
     void SetImageStyle(const ImageStyle value);
@@ -34,7 +24,7 @@ public:
     void SetImageSize(const ImageSize value);
 
     std::string GetAltText() const;
-    void SetAltText(const std::string value);
+    void SetAltText(const std::string &value);
 
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
@@ -42,11 +32,11 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-    unsigned int GetWidth() const; 
-    void SetWidth(unsigned int value);
+    unsigned int GetPixelWidth() const; 
+    void SetPixelWidth(unsigned int value);
 
-    unsigned int GetHeight() const; 
-    void SetHeight(unsigned int value);
+    unsigned int GetPixelHeight() const; 
+    void SetPixelHeight(unsigned int value);
 
     virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
@@ -56,8 +46,8 @@ private:
     std::string m_url;
     ImageStyle m_imageStyle;
     ImageSize m_imageSize;
-    unsigned int m_width;
-    unsigned int m_height;
+    unsigned int m_pixelWidth;
+    unsigned int m_pixelHeight;
     std::string m_altText;
     HorizontalAlignment m_hAlignment;
     std::shared_ptr<BaseActionElement> m_selectAction;

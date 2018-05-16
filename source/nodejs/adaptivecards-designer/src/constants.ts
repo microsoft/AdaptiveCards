@@ -1,4 +1,49 @@
-{
+export const otherTestPayload: string = `{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.ShowCard",
+					"title": "Set due date",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "Input.Date",
+								"id": "dueDate",
+								"title": "Select due date"
+							},
+							{
+								"type": "Input.Text",
+								"id": "comment",
+								"isMultiline": true,
+								"placeholder": "Add a comment"
+							}
+						],
+						"actions": [
+							{
+								"type": "Action.OpenUrl",
+								"title": "OK",
+								"url": "http://adaptivecards.io"
+							}
+						]
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"title": "View",
+					"url": "http://adaptivecards.io"
+				}
+			]					
+		}
+	]
+}`;
+
+export const defaultPayload: string = `{
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
@@ -40,7 +85,7 @@
 								{
 									"type": "TextBlock",
 									"spacing": "none",
-									"text": "Created {{DATE(2017-02-14T06:08:39Z, SHORT)}}",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,SHORT)}}",
 									"isSubtle": true,
 									"wrap": true
 								}
@@ -91,37 +136,29 @@
 				"body": [
 					{
 						"type": "Input.Date",
-						"id": "dueDate"
-					}
-				],
-				"actions": [
-					{
-						"type": "Action.Submit",
-						"title": "OK"
-					}
-				]
-			}
-		},
-		{
-			"type": "Action.ShowCard",
-			"title": "Comment",
-			"card": {
-				"type": "AdaptiveCard",
-				"body": [
+						"id": "dueDate",
+						"title": "Select due date"
+					},
 					{
 						"type": "Input.Text",
 						"id": "comment",
 						"isMultiline": true,
-						"placeholder": "Enter your comment"
+						"placeholder": "Add a comment"
 					}
 				],
 				"actions": [
-					{
-						"type": "Action.Submit",
-						"title": "OK"
-					}
+				    {
+				        "type": "Action.OpenUrl",
+						"title": "OK",
+						"url": "http://adaptivecards.io"
+			        }
 				]
 			}
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "View",
+			"url": "http://adaptivecards.io"
 		}
 	]
-}
+}`;

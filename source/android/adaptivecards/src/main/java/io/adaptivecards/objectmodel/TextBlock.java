@@ -38,11 +38,7 @@ public class TextBlock extends BaseCardElement {
   }
 
   public TextBlock() {
-    this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_0(), true);
-  }
-
-  public TextBlock(Spacing spacing, boolean separator, String text, TextSize textSize, TextWeight textWeight, ForegroundColor color, boolean isSubtle, boolean wrap, int maxLines, HorizontalAlignment hAlignment, String language) {
-    this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(spacing.swigValue(), separator, text, textSize.swigValue(), textWeight.swigValue(), color.swigValue(), isSubtle, wrap, maxLines, hAlignment.swigValue(), language), true);
+    this(AdaptiveCardObjectModelJNI.new_TextBlock(), true);
   }
 
   public JsonValue SerializeToJsonValue() {

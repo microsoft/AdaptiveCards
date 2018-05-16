@@ -18,6 +18,8 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result.supportsInteractivity = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::SupportsInteractivity, result.supportsInteractivity);
 
+    result.imageBaseUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
+
     result.factSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetConfig>(
         json, AdaptiveCardSchemaKey::FactSet, result.factSet, FactSetConfig::Deserialize);
 
@@ -169,6 +171,9 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
 
     result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextConfig>(
         json, AdaptiveCardSchemaKey::Value, defaultValue.value, TextConfig::Deserialize);
+
+    // Value doesn't support maxWidth, so reset to the default value.
+    result.value.maxWidth = defaultValue.value.maxWidth;
 
     return result;
 }

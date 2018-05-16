@@ -27,6 +27,8 @@ namespace AdaptiveCardTestApp.ViewModels
 
             const string linkedCardsFolder = "LinkedCards\\";
             const string linkedHostConfigsFolder = "LinkedHostConfigs\\";
+            const string expected = "Expected\\";
+            const string results = "Results\\";
             if (file.Path.Contains(linkedCardsFolder))
             {
                 answer.Name = file.Path.Substring(file.Path.IndexOf(linkedCardsFolder) + linkedCardsFolder.Length);
@@ -35,12 +37,21 @@ namespace AdaptiveCardTestApp.ViewModels
             {
                 answer.Name = file.Path.Substring(file.Path.IndexOf(linkedHostConfigsFolder) + linkedHostConfigsFolder.Length);
             }
+            else if (file.Path.Contains(expected))
+            {
+                answer.Name = file.Path.Substring(file.Path.IndexOf(expected) + expected.Length);
+            }
+            else if (file.Path.Contains(results))
+            {
+                answer.Name = file.Path.Substring(file.Path.IndexOf(results) + expected.Length);
+            }
             else
             {
                 throw new NotImplementedException("Unknown path: " + file.Path);
             }
 
             answer.Contents = await FileIO.ReadTextAsync(file);
+            answer.Contents = answer.Contents.Replace("\r\n", "\n");
             answer.Hash = ToSha1(answer.Contents).Substring(0, 7);
 
             return answer;

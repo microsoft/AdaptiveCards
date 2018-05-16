@@ -744,20 +744,38 @@ std::wstring StringToWstring(const std::string& in)
 
 std::string WstringToString(const std::wstring& input)
 {
-    // Different platforms and compilers use different sizes for wchar_t, 
-    // in Windows the size for wchar_t is 2 bytes (https://docs.microsoft.com/en-us/cpp/cpp/char-wchar-t-char16-t-char32-t)
-    // while Android and iOS have a wchar_t size of 4 bytes
-    #pragma warning( push )
-    #pragma warning( disable : 4127)
-    if (sizeof(wchar_t) == 2)
-    #pragma warning( pop )
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
+    return utfConverter.to_bytes(input);
+}
+
+void RemoteResourceElementToUriStringVector(
+    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResourceElement,
+    std::vector<std::string>& resourceUris)
+{
+    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>> remoteResourceUris;
+    THROW_IF_FAILED(remoteResourceElement->GetResourceUris(remoteResourceUris.GetAddressOf()));
+
+    ComPtr<IIterable<ABI::Windows::Foundation::Uri*>> vectorIterable;
+    THROW_IF_FAILED(remoteResourceUris.As<IIterable<ABI::Windows::Foundation::Uri*>>(&vectorIterable));
+
+    Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Foundation::Uri*>> vectorIterator;
+    HRESULT hr = vectorIterable->First(&vectorIterator);
+
+    boolean hasCurrent;
+    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
+
+    while (SUCCEEDED(hr) && hasCurrent)
     {
-        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-        return utfConverter.to_bytes(input);
-    }
-    else
-    {
-        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utfConverter;
-        return utfConverter.to_bytes(input);
+        ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> uri;
+        THROW_IF_FAILED(vectorIterator->get_Current(&uri));
+
+        HString uriHString;
+        THROW_IF_FAILED(uri->get_AbsoluteUri(uriHString.GetAddressOf()));
+        std::string uriString;
+        THROW_IF_FAILED(HStringToUTF8(uriHString.Get(), uriString));
+
+        resourceUris.push_back(uriString);
+
+        hr = vectorIterator->MoveNext(&hasCurrent);
     }
 }

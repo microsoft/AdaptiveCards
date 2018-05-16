@@ -44,6 +44,7 @@ void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult &x)
     }
     m_codeGenTokens.splice(m_codeGenTokens.end(), x.m_codeGenTokens);
     m_emphasisLookUpTable.splice(m_emphasisLookUpTable.end(), x.m_emphasisLookUpTable);
+    m_isHTMLTagsAdded = m_isHTMLTagsAdded || x.HasHtmlTags();
 }
 
 // append MarkDownHtmlGenerator object to callee's prased result
@@ -228,7 +229,7 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
                 }
             }
             // check which one has leftover delims
-            (*currentLeftEmphasis)->GenerateTags(*currentEmphasis);
+            m_isHTMLTagsAdded = (*currentLeftEmphasis)->GenerateTags(*currentEmphasis) || m_isHTMLTagsAdded;
 
             // all right delims used, move to next
             if ((*currentEmphasis)->IsDone())
@@ -247,4 +248,14 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
             currentEmphasis++;
         }
     }
+}
+
+bool MarkDownParsedResult::HasHtmlTags()
+{
+    return m_isHTMLTagsAdded;
+}
+
+void MarkDownParsedResult::FoundHtmlTags()
+{
+    m_isHTMLTagsAdded = true;
 }

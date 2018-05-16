@@ -54,7 +54,7 @@ struct TextConfig
     ForegroundColor color = ForegroundColor::Default;
     bool isSubtle = false;
     bool wrap = true;
-    unsigned int maxWidth = 150;
+    unsigned int maxWidth = (unsigned int) ~0;
 
     static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
 };
@@ -112,8 +112,8 @@ struct AdaptiveCardConfig
 
 struct FactSetConfig
 {
-    TextConfig title = { TextWeight::Bolder };
-    TextConfig value;
+    TextConfig title{ TextWeight::Bolder, TextSize::Default, ForegroundColor::Default, false, true, 150 };
+    TextConfig value{ TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, (unsigned int)~0 };
     unsigned int spacing = 10;
 
     static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -176,6 +176,7 @@ struct HostConfig
     FontSizesConfig fontSizes;
     FontWeightsConfig fontWeights;
     bool supportsInteractivity = true;
+    std::string imageBaseUrl;
     ImageSizesConfig imageSizes;
     ImageConfig image;
     SeparatorConfig separator;
