@@ -321,7 +321,8 @@ using namespace AdaptiveCards;
                  ^{
                       // Initializing NSMutableAttributedString for HTML rendering is very slow
                       NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
-
+                      // Drop newline char
+                      [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
                       __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
                       // synchronize access to text map
                       dispatch_sync(_serial_text_queue,
