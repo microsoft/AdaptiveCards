@@ -2110,6 +2110,7 @@ enum ActionButtonState {
 }
 
 class ActionButton {
+    private _parentContainerStyle: string;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
 
@@ -2117,6 +2118,7 @@ class ActionButton {
         let hostConfig = this.action.parent.hostConfig;
 
         this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
+        this.action.renderedElement.classList.add("style-" + this._parentContainerStyle);
 
         if (this.action instanceof ShowCardAction) {
             this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expandable"));
@@ -2134,8 +2136,9 @@ class ActionButton {
 
     readonly action: Action;
 
-    constructor(action: Action) {
+    constructor(action: Action, parentContainerStyle: string) {
         this.action = action;
+        this._parentContainerStyle = parentContainerStyle;
 
         this.action.render();
         this.action.renderedElement.onclick = (e) => { this.click(); };
@@ -2672,6 +2675,15 @@ class ActionCollection {
         }
     }
 
+    private getParentContainer(): Container {
+        if (this._owner instanceof Container) {
+            return this._owner;
+        }
+        else {
+            return this._owner.getParentContainer();
+        }
+    }
+
     items: Array<Action> = [];
     buttons: Array<ActionButton> = [];
 
@@ -2846,9 +2858,11 @@ class ActionCollection {
                 }
             }
 
+            let parentContainerStyle = this.getParentContainer().style;
+
             for (var i = 0; i < this.items.length; i++) {
                 if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
-                    var actionButton = new ActionButton(this.items[i]);
+                    var actionButton = new ActionButton(this.items[i], parentContainerStyle);
                     actionButton.action.renderedElement.style.overflow = "hidden";
                     actionButton.action.renderedElement.style.overflow = "table-cell";
                     actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
@@ -3318,7 +3332,7 @@ export class Container extends CardElementContainer {
         let hostConfig = this.hostConfig;
 
         var element = document.createElement("div");
-        element.className = hostConfig.makeCssClassName("ac-container");
+        element.classList.add(hostConfig.makeCssClassName("ac-container"));
         element.style.display = "flex";
         element.style.flexDirection = "column";
 

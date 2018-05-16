@@ -4,6 +4,7 @@ import * as Constants from "./constants";
 import * as Designer from "./card-designer";
 import { HostContainer } from "./containers/host-container";
 import { OutlookContainer } from "./containers/outlook-container";
+import { LightTeamsContainer, DarkTeamsContainer } from "./containers/teams-container";
 import { CortanaContainer } from "./containers/cortana-container";
 import { SkypeContainer } from "./containers/skype-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
@@ -77,14 +78,14 @@ function scheduleCardRefresh() {
     }
 }
 
-function updateDesignerLayout() {
-    app.designer.updateLayout(false);
-}
-
 function scheduleLayoutUpdate() {
     clearTimeout(updateLayoutTimer);
 
-    updateLayoutTimer = setTimeout(updateDesignerLayout, 50);
+    updateLayoutTimer = setTimeout(
+        () => {
+            app.designer.updateLayout(false);
+        },
+        50);
 }
 
 // Monaco loads asynchronously via a call to require() from index.html
@@ -220,12 +221,14 @@ class DesignerApp {
 
     private addContainers() {
         this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+        this.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light (preview)", "css/teams-container-light.css"));
+        this.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark (preview)", "css/teams-container-dark.css"));
         this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
         this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
     }
 
     private recreateDesigner() {
-        var styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
+        let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
     
         if (styleSheetLinkElement == null) {
             styleSheetLinkElement = document.createElement("link");
@@ -237,6 +240,12 @@ class DesignerApp {
         styleSheetLinkElement.rel = "stylesheet";
         styleSheetLinkElement.type = "text/css";
         styleSheetLinkElement.href = this._selectedHostContainer.styleSheet;
+
+        let designerBackground = document.getElementById("designerBackground");
+
+        if (designerBackground) {
+            designerBackground.style.backgroundColor = this._selectedHostContainer.getBackgroundColor();
+        }
     
         this._selectedHostContainer.initialize();
     
