@@ -575,8 +575,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 
-        [propget] HRESULT BackgroundImageUri([out, retval] HSTRING* value);
-        [propput] HRESULT BackgroundImageUri([in] HSTRING value);
+        [propget] HRESULT BackgroundImage([out, retval] HSTRING* value);
+        [propput] HRESULT BackgroundImage([in] HSTRING value);
 
         [propget] HRESULT Language([out, retval] HSTRING* value);
         [propput] HRESULT Language([in] HSTRING value);
@@ -693,8 +693,8 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveImage : IInspectable
     {
-        [propget] HRESULT Uri([out, retval] HSTRING* value);
-        [propput] HRESULT Uri([in] HSTRING value);
+        [propget] HRESULT Url([out, retval] HSTRING* value);
+        [propput] HRESULT Url([in] HSTRING value);
 
         [propget] HRESULT Style([out, retval] ImageStyle* value);
         [propput] HRESULT Style([in] ImageStyle value);
@@ -2077,8 +2077,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
-        [propget] HRESULT IconUri([out, retval] HSTRING* value);
-        [propput] HRESULT IconUri([in] HSTRING value);
+        [propget] HRESULT IconUrl([out, retval] HSTRING* value);
+        [propput] HRESULT IconUrl([in] HSTRING value);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
