@@ -155,7 +155,6 @@ AdaptiveNamespaceStart
 
             ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
             THROW_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
-
             XamlBuilder::SetVerticalContentAlignmentToChildren(bodyElementContainer.Get(), verticalContentAlignment);
 
             ComPtr<IAdaptiveActionElement> selectAction;
@@ -2834,44 +2833,11 @@ AdaptiveNamespaceStart
         _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment)
     {
         ComPtr<T> localContainer(container);
-        ComPtr<IPanel> containerAsPanel;
+        ComPtr<IWholeItemsPanel> containerAsPanel;
         THROW_IF_FAILED(localContainer.As(&containerAsPanel));
 
-        ComPtr<IVector<UIElement*>> containerChildren;
-        unsigned int childrenCount{};
-        THROW_IF_FAILED(containerAsPanel->get_Children(containerChildren.GetAddressOf()));
-        THROW_IF_FAILED(containerChildren->get_Size(&childrenCount));
-
-        for (unsigned int i{}; i < childrenCount; ++i)
-        {
-            ComPtr<IUIElement> child;
-            THROW_IF_FAILED(containerChildren->GetAt(i, child.GetAddressOf()));
-
-            ComPtr<IFrameworkElement> childAsFrameworkElement;
-            THROW_IF_FAILED(child.As(&childAsFrameworkElement));
-
-            switch (verticalContentAlignment)
-            {
-                case ABI::AdaptiveNamespace::VerticalContentAlignment::Top:
-                    THROW_IF_FAILED(childAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
-                    break;
-
-                case ABI::AdaptiveNamespace::VerticalContentAlignment::Center:
-                    THROW_IF_FAILED(childAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Center));
-                    break;
-
-                case ABI::AdaptiveNamespace::VerticalContentAlignment::Bottom:
-                    THROW_IF_FAILED(childAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Bottom));
-                    break;
-
-                case ABI::AdaptiveNamespace::VerticalContentAlignment::Stretch:
-                default:
-                    THROW_IF_FAILED(childAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Stretch));
-                    break;
-            }
-
-        }
-
+        ComPtr<WholeItemsPanel> panel = PeekInnards<WholeItemsPanel>(containerAsPanel);
+        panel->SetVerticalContentAlignment(verticalContentAlignment);
     }
 
 AdaptiveNamespaceEnd
