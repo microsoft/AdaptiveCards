@@ -10,8 +10,12 @@
 #import "CustomActionOpenURLRenderer.h"
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
+#import "CustomTextBlockRenderer.h"
 
 @interface ViewController ()
+{
+    BOOL _enableCustomRenderer;
+}
 
 @end
 
@@ -56,6 +60,23 @@
                               @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
+- (IBAction)toggleCustomRenderer:(id)sender
+{
+    _enableCustomRenderer = !_enableCustomRenderer;
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    if(_enableCustomRenderer){
+        // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809
+        [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
+        [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
+        [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
+    } else
+    {
+        [registration setActionRenderer:nil cardElementType:@3];
+        [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
+        [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
+    }
+    [self update:self.editableStr];
+}
 
 - (IBAction)applyText:(id)sender
 {
@@ -75,6 +96,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self registerForKeyboardNotifications];
+    _enableCustomRenderer = NO;
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     self.ACVTabVC.delegate = self;
@@ -124,10 +146,25 @@
     [self.applyButton addTarget:self action:@selector(applyText:)
                forControlEvents:UIControlEventTouchUpInside];
     [buttonLayout addArrangedSubview:self.applyButton];
+
+    // custon renderer button
+    self.enableCustomRendererButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.enableCustomRendererButton setTitle:@"Enable Custom Renderer" forState:UIControlStateNormal];
+    [self.enableCustomRendererButton setTitleColor:[UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1] forState:UIControlStateSelected];
+    [self.enableCustomRendererButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+
+    self.enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
+    self.enableCustomRendererButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
+      [NSLayoutConstraint constraintWithItem:_enableCustomRendererButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
+
+    [self.enableCustomRendererButton addTarget:self action:@selector(toggleCustomRenderer:)
+               forControlEvents:UIControlEventTouchUpInside];
+    [buttonLayout addArrangedSubview:self.enableCustomRendererButton];
+
     [self.view addSubview:buttonLayout];
     buttonLayout.translatesAutoresizingMaskIntoConstraints = NO;
     buttonLayout.alignment = UIStackViewAlignmentCenter;
-    buttonLayout.distribution = UIStackViewDistributionFillEqually;
+    buttonLayout.distribution = UIStackViewDistributionFillProportionally;
     buttonLayout.spacing = 10;
 
     [NSLayoutConstraint constraintWithItem:buttonLayout attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30].active = YES;
@@ -165,18 +202,16 @@
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
     if(cardParseResult.isValid){
+        ACRRegistration *registration = [ACRRegistration getInstance];
+            
+        CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
+        [registration setCustomElementParser:progressBarRenderer];
+
         renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:300];
     }	
     
     if(renderResult.succeeded)
     {
-        ACRRegistration *registration = [ACRRegistration getInstance];
-        // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809 
-        [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
-        [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
-
-        CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-        [registration setCustomElementParser:progressBarRenderer];
         ACRView *ad = renderResult.view;
         ad.acrActionDelegate = self;
         if(self.curView)
