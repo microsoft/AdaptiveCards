@@ -57,6 +57,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
                 GridLayout.spec(GridLayout.UNDEFINED),
                 GridLayout.spec(GridLayout.UNDEFINED));
 
+        parem.rightMargin = (int) spacing;
         if (isValue)
         {
             parem.width = 0;
