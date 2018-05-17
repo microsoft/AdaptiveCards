@@ -164,7 +164,7 @@ AdaptiveNamespaceStart
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
 
-        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImageUrl.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImage.GetAddressOf()));
 
         return S_OK;
     }
@@ -225,15 +225,15 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_BackgroundImage(HSTRING* backgroundImageUri)
+    HRESULT AdaptiveCard::get_BackgroundImage(HSTRING* backgroundImage)
     {
-        return m_backgroundImageUrl.CopyTo(backgroundImageUri);
+        return m_backgroundImage.CopyTo(backgroundImage);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_BackgroundImageUrl(HSTRING backgroundImageUri)
+    HRESULT AdaptiveCard::put_BackgroundImage(HSTRING backgroundImage)
     {
-        return m_backgroundImageUrl.Set(backgroundImageUri);
+        return m_backgroundImage.Set(backgroundImage);
     }
 
     _Use_decl_annotations_
@@ -292,7 +292,7 @@ AdaptiveNamespaceStart
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
         adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
-        adaptiveCard->SetBackgroundImage(HStringToUTF8(m_backgroundImageUrl.Get()));
+        adaptiveCard->SetBackgroundImage(HStringToUTF8(m_backgroundImage.Get()));
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 
