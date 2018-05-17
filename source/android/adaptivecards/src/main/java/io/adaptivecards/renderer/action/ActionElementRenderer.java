@@ -194,6 +194,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         if (orientation == ActionsOrientation.Horizontal)
         {
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            long spacing = hostConfig.getActions().getButtonSpacing();
+            layoutParams.rightMargin = Util.dpToPixels(context, spacing);
         }
         else
         {
