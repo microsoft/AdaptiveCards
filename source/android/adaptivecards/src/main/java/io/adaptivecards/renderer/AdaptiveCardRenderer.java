@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
@@ -20,6 +21,7 @@ import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
@@ -211,6 +213,13 @@ public class AdaptiveCardRenderer
             loaderAsync.execute(imageUrl);
         }
 
+        BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
+        if (selectAction != null)
+        {
+            rootLayout.setClickable(true);
+            rootLayout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, selectAction, cardActionHandler));
+        }
+
         return rootLayout;
     }
 
@@ -233,7 +242,8 @@ public class AdaptiveCardRenderer
             actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         }
 
-        if (hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Vertical.swigValue())
+        int actionButtonsLayoutOrientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
         {
             actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
         }
@@ -242,9 +252,24 @@ public class AdaptiveCardRenderer
             actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
         }
 
+
+        Spacing spacing = hostConfig.getActions().getSpacing();
+        /* Passing false for seperator since we do not have any configuration for seperator in actionsConfig */
+        BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);
+
         if (viewGroup != null)
         {
-            viewGroup.addView(actionButtonsLayout);
+            if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
+            {
+                HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
+                actionButtonsContainer.setHorizontalScrollBarEnabled(false);
+                actionButtonsContainer.addView(actionButtonsLayout);
+                viewGroup.addView(actionButtonsContainer);
+            }
+            else
+            {
+                viewGroup.addView(actionButtonsLayout);
+            }
         }
 
         int i = 0;
@@ -253,6 +278,15 @@ public class AdaptiveCardRenderer
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
             ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
+        }
+
+        if (viewGroup != null && hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Horizontal.swigValue())
+        {
+            HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
+            horizontalScrollView.setHorizontalScrollBarEnabled(false);
+            viewGroup.removeView(actionButtonsLayout);
+            horizontalScrollView.addView(actionButtonsLayout);
+            viewGroup.addView(horizontalScrollView);
         }
 
         if (i >= maxActions && size != maxActions)
