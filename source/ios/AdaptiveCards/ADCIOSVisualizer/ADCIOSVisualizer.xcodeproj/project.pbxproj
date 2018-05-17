@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
+		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
+		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */ = {isa = PBXBuildFile; fileRef = F4071C821FD63D5300AF4FEA /* Solitaire.json */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
 		F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
@@ -66,8 +69,6 @@
 		F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF91F79853B00F6EBFD /* StockUpdate.json */; };
 		F4933D071F79853B00F6EBFD /* WeatherCompact.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */; };
 		F4933D081F79853B00F6EBFD /* WeatherLarge.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CFB1F79853B00F6EBFD /* WeatherLarge.json */; };
-		F49CECC01F62412E00D7FB55 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */; };
-		F49CECC11F62412E00D7FB55 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D33E851F04705800941E44 /* ACVTableViewController.m */; };
 		F4D402161F7DB0BF00D0356B /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D402151F7DB0BF00D0356B /* sample.json */; };
 		F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
@@ -102,7 +103,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F49CECC11F62412E00D7FB55 /* AdaptiveCards.framework in Embed Frameworks */,
+				6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,6 +111,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
+		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
+		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4071C821FD63D5300AF4FEA /* Solitaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Solitaire.json; path = ../../../../samples/v1.0/Scenarios/Solitaire.json; sourceTree = "<group>"; };
 		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -197,7 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F49CECC01F62412E00D7FB55 /* AdaptiveCards.framework in Frameworks */,
+				6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +222,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6BF339E120A66A3F00DA5973 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F423C0691EE1FB6100905679 = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +239,7 @@
 				F423C0911EE1FB6100905679 /* ADCIOSVisualizerTests */,
 				F423C09C1EE1FB6100905679 /* ADCIOSVisualizerUITests */,
 				F423C0731EE1FB6100905679 /* Products */,
+				6BF339E120A66A3F00DA5973 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -243,6 +256,8 @@
 		F423C0741EE1FB6100905679 /* ADCIOSVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */,
+				6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */,
 				F4F44BA8204CF98900A2F24C /* CustomProgressBarRenderer.h */,
 				F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */,
 				F4F44B74203FE73D00A2F24C /* CustomInputNumberRenderer.h */,
@@ -415,7 +430,7 @@
 		F423C06A1EE1FB6100905679 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					F423C0711EE1FB6100905679 = {
@@ -543,6 +558,7 @@
 			files = (
 				F4F44BAA204CF98900A2F24C /* CustomProgressBarRenderer.mm in Sources */,
 				F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */,
+				6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */,
 				F423C07D1EE1FB6100905679 /* ViewController.m in Sources */,
 				F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */,
 				F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */,
@@ -609,7 +625,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -617,6 +633,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -624,6 +641,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -663,7 +681,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -671,6 +689,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -678,6 +697,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

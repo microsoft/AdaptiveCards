@@ -10,6 +10,7 @@
 #import "ACOAdaptiveCardPrivate.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRRendererPrivate.h"
+#import "ACRRegistration.h"
 #import <AVFoundation/AVFoundation.h>
 #import "Container.h"
 #import "ColumnSet.h"
@@ -146,8 +147,13 @@ using namespace AdaptiveCards;
 // Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
 - (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
 {
+    ACRRegistration *rendererRegistration = [ACRRegistration getInstance];
+    
     for(auto &elem : body)
     {
+        if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) elem->GetElementType()] == YES){
+            continue;
+        }
         switch (elem->GetElementType())
         {
             case CardElementType::TextBlock:
@@ -301,18 +307,18 @@ using namespace AdaptiveCards;
 
             // if correctly initialized, fonFamilyNames array is bigger than zero
             NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-            for(NSUInteger index = 0; index < [_hostConfig.fontFamilyNames count] - 1; ++index){
-                [fontFamilyName appendString:_hostConfig.fontFamilyNames[index]];
+            for(NSUInteger index = 0; index < [self->_hostConfig.fontFamilyNames count] - 1; ++index){
+                [fontFamilyName appendString:self->_hostConfig.fontFamilyNames[index]];
                 [fontFamilyName appendString:@"', '"];
             }
-            [fontFamilyName appendString:_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
+            [fontFamilyName appendString:self->_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
             [fontFamilyName appendString:@"'"];
 
             // Font and text size are applied as CSS style by appending it to the html string
             parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
                                                                   fontFamilyName,
-                                                                  [_hostConfig getTextBlockTextSize:textConfigForBlock.size],
-                                                                  [_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
+                                                                  [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
+                                                                  [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
             // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
             NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
             NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
@@ -325,14 +331,14 @@ using namespace AdaptiveCards;
                       [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
                       __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
                       // synchronize access to text map
-                      dispatch_sync(_serial_text_queue,
+                     dispatch_sync(self->_serial_text_queue,
                           ^{
                                // UILabel is not ready, cache UILabel
-                               if(!_textMap[elementId]) {
-                                   _textMap[elementId] = content;
+                              if(!self->_textMap[elementId]) {
+                                  self->_textMap[elementId] = content;
                                } // UILable is ready, get labeltextBlockElement
                                else {
-                                   lab = _textMap[elementId];
+                                   lab = self->_textMap[elementId];
                                }
                           });
 
@@ -345,15 +351,15 @@ using namespace AdaptiveCards;
 
                           // Obtain text color to apply to the attributed string
                           ACRContainerStyle style = lab.style;
-                          ColorsConfig &colorConfig = (style == ACREmphasis)? [_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
-                                                                                                 [_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
+                          ColorsConfig &colorConfig = (style == ACREmphasis)? [self->_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
+                          [self->_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
                           // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
                           [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfigForBlock.color colorsConfig:colorConfig subtleOption:textConfigForBlock.isSubtle],} range:NSMakeRange(0, content.length)];
                           lab.attributedText = content;
                           if(CardElementType::FactSet == elementTypeForBlock) {
                               CGSize size = lab.intrinsicContentSize;
-                              if(lab.isTitle && (size.width > [_hostConfig getHostConfig]->factSet.title.maxWidth)) {
-                                  NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:[_hostConfig getHostConfig]->factSet.title.maxWidth];
+                              if(lab.isTitle && (size.width > [self->_hostConfig getHostConfig]->factSet.title.maxWidth)) {
+                                  NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:[self->_hostConfig getHostConfig]->factSet.title.maxWidth];
                                   constraint.active = YES;
                               }
                           }
@@ -387,19 +393,19 @@ using namespace AdaptiveCards;
              NSURL *url = [NSURL URLWithString:urlStr];
              // download image
              UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-             CGSize cgsize = [_hostConfig getImageSize:imgElem->GetImageSize()];
+            CGSize cgsize = [self->_hostConfig getImageSize:imgElem->GetImageSize()];
 
              // UITask can't be run on global queue, add task to main queue
              dispatch_async(dispatch_get_main_queue(),
                  ^{
                       __block UIImageView *view = nil;
                       // synchronize access to image map
-                      dispatch_sync(_serial_queue,
+                     dispatch_sync(self->_serial_queue,
                           ^{
-                               if(!_imageViewMap[key]) {// UIImageView is not ready, cache UIImage
-                                   _imageViewMap[key] = img;
+                              if(!self->_imageViewMap[key]) {// UIImageView is not ready, cache UIImage
+                                  self->_imageViewMap[key] = img;
                                } else {// UIImageView ready, get view
-                                   view = _imageViewMap[key];
+                                   view = self->_imageViewMap[key];
                                }
                           });
                       // if view is available, set image to it, and continue image processing
@@ -468,22 +474,22 @@ using namespace AdaptiveCards;
                     ^{
                         __block UIButton *button = nil;
                         // synchronize access to image map
-                        dispatch_sync(_serial_queue,
+                        dispatch_sync(self->_serial_queue,
                             ^{
-                                if(!_actionsMap[key]) // UIButton is not ready, cache UIImageView
+                                if(!self->_actionsMap[key]) // UIButton is not ready, cache UIImageView
                                 {
-                                    _actionsMap[key] = imageView;
+                                    self->_actionsMap[key] = imageView;
                                 }
                                 else // UIButton ready, get view
                                 {
-                                    button = _actionsMap[key];
+                                    button = self->_actionsMap[key];
                                 }
                             });
 
                         // if view is available, set image to it, and continue image processing
                         if(button)
                         {
-                            [ACRView setImageView:imageView inButton:button withConfig:_hostConfig];
+                            [ACRView setImageView:imageView inButton:button withConfig:self->_hostConfig];
 
                             // remove tag
                             std::string id = act->GetId();
