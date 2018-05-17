@@ -3,6 +3,7 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -40,7 +41,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
+    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle, boolean isValue)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
@@ -51,10 +52,18 @@ public class FactSetRenderer extends BaseCardElementRenderer
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);
+
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
                 GridLayout.spec(GridLayout.UNDEFINED),
                 GridLayout.spec(GridLayout.UNDEFINED));
+
         parem.rightMargin = (int) spacing;
+        if (isValue)
+        {
+            parem.width = 0;
+            parem.setGravity(Gravity.FILL_HORIZONTAL);
+        }
+
         textView.setLayoutParams(parem);
         return textView;
     }
@@ -93,8 +102,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
-            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
-            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle, false));
+            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle, true));
         }
 
         viewGroup.addView(gridLayout);
