@@ -47,16 +47,13 @@
 
     NSString* parsedString = nil;
     // MarkDownParser transforms text with MarkDown to a html string
-    std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement].c_str());
+    std::string text = [ACOHostConfig getLocalizedDate:textBlockElement].c_str();
+    std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(text);
     parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
     // if correctly initialized, fonFamilyNames array is bigger than zero
     NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-    for(NSUInteger index = 0; index < [acoConfig.fontFamilyNames count] - 1; ++index){
-        [fontFamilyName appendString:acoConfig.fontFamilyNames[index]];
-        [fontFamilyName appendString:@"', '"];
-    }
-    [fontFamilyName appendString:acoConfig.fontFamilyNames[[acoConfig.fontFamilyNames count] - 1]];
+    [fontFamilyName appendString:[acoConfig.fontFamilyNames componentsJoinedByString:@"', '"]];
     [fontFamilyName appendString:@"'"];
 
     // Font and text size are applied as CSS style by appending it to the html string
@@ -86,7 +83,7 @@
     lab.attributedText = content;
 
     lab.numberOfLines = int(textBlockElement->GetMaxLines());
-    if(!lab.numberOfLines and !textBlockElement->GetWrap()){
+    if(!lab.numberOfLines && !textBlockElement->GetWrap()){
         lab.numberOfLines = 1;
     }
 
