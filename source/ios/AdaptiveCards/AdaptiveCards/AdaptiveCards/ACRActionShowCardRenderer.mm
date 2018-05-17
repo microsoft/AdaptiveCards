@@ -34,10 +34,10 @@
                                           encoding:NSUTF8StringEncoding];
     UIButton *button = [UIButton acr_renderButton:rootView title:title andHostConfig:[acoConfig getHostConfig]];
 
-    ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:action->GetCard()
-                                                                         config:acoConfig
-                                                                      superview:superview
-                                                                       rootView:rootView];
+    ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithActionElement:action
+                                                                          config:acoConfig
+                                                                       superview:superview
+                                                                        rootView:rootView];
     [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
