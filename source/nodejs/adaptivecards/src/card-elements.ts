@@ -3911,7 +3911,7 @@ export class Column extends Container {
 
     get hasVisibleSeparator(): boolean {
         if (this.parent && this.parent instanceof ColumnSet) {
-            return !this.parent.isLeftMostElement(this);
+            return this.separatorElement && !this.parent.isLeftMostElement(this);
         }
         else {
             return false;
