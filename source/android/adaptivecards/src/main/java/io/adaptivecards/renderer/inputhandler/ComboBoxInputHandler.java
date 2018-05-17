@@ -26,7 +26,7 @@ public class ComboBoxInputHandler extends BaseInputHandler
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
         int index = getSpinner().getSelectedItemPosition();
         String selectedItem = "";
-        if (index >= 0)
+        if (index >= 0 && index < choiceSetInput.GetChoices().size())
         {
             selectedItem = choiceSetInput.GetChoices().get(index).GetValue();
         }
