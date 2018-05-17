@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
@@ -240,7 +241,8 @@ public class AdaptiveCardRenderer
             actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         }
 
-        if (hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Vertical.swigValue())
+        int actionButtonsLayoutOrientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
         {
             actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
         }
@@ -251,7 +253,17 @@ public class AdaptiveCardRenderer
 
         if (viewGroup != null)
         {
-            viewGroup.addView(actionButtonsLayout);
+            if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
+            {
+                HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
+                actionButtonsContainer.setHorizontalScrollBarEnabled(false);
+                actionButtonsContainer.addView(actionButtonsLayout);
+                viewGroup.addView(actionButtonsContainer);
+            }
+            else
+            {
+                viewGroup.addView(actionButtonsLayout);
+            }
         }
 
         int i = 0;
