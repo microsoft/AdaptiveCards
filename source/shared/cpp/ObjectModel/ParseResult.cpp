@@ -13,12 +13,12 @@ ParseResult::ParseResult(
 {
 }
 
-std::shared_ptr<AdaptiveCard> ParseResult::GetAdaptiveCard()
+std::shared_ptr<AdaptiveCard> ParseResult::GetAdaptiveCard() const
 {
     return m_adaptiveCard;
 }
 
-std::vector<std::shared_ptr<AdaptiveCardParseWarning>> ParseResult::GetWarnings()
+std::vector<std::shared_ptr<AdaptiveCardParseWarning>> ParseResult::GetWarnings() const
 {
     return m_warnings;
 }

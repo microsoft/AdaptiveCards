@@ -47,7 +47,7 @@ public:
 
     static Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
-    static Json::Value GetJsonValueFromString(const std::string jsonString);
+    static Json::Value GetJsonValueFromString(const std::string &jsonString);
 
     static Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
 
@@ -106,7 +106,7 @@ public:
     // throws if the key is missing or the value mapped to the key is the wrong type
     static void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
 
-    static std::string ToLowercase(const std::string value);
+    static std::string ToLowercase(const std::string &value);
 
 private:
     ParseUtil();
@@ -121,7 +121,7 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
     try
     {
         const std::string propertyName = AdaptiveCardSchemaKeyToString(key);
-        auto propertyValue = json.get(propertyName, Json::Value());
+        auto const &propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
             if (isRequired)

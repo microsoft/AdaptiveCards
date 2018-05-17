@@ -10,7 +10,7 @@ DateInput::DateInput() :
     PopulateKnownPropertiesSet();
 }
 
-Json::Value DateInput::SerializeToJsonValue()
+Json::Value DateInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
@@ -42,7 +42,7 @@ std::string DateInput::GetMax() const
     return m_max;
 }
 
-void DateInput::SetMax(const std::string value)
+void DateInput::SetMax(const std::string &value)
 {
     m_max = value;
 }
@@ -52,7 +52,7 @@ std::string DateInput::GetMin() const
     return m_min;
 }
 
-void DateInput::SetMin(const std::string value)
+void DateInput::SetMin(const std::string &value)
 {
     m_min = value;
 }
@@ -62,7 +62,7 @@ std::string DateInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void DateInput::SetPlaceholder(const std::string value)
+void DateInput::SetPlaceholder(const std::string &value)
 {
     m_placeholder = value;
 }
@@ -72,7 +72,7 @@ std::string DateInput::GetValue() const
     return m_value;
 }
 
-void DateInput::SetValue(const std::string value)
+void DateInput::SetValue(const std::string &value)
 {
     m_value = value;
 }

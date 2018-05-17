@@ -15,7 +15,7 @@ std::string Column::GetWidth() const
     return m_width;
 }
 
-void Column::SetWidth(const std::string value)
+void Column::SetWidth(const std::string &value)
 {
     m_width = ParseUtil::ToLowercase(value);
 }
@@ -51,13 +51,13 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
     return m_items;
 }
 
-std::string Column::Serialize()
+std::string Column::Serialize() const
 {
     Json::FastWriter writer;
     return writer.write(SerializeToJsonValue());
 }
 
-Json::Value Column::SerializeToJsonValue()
+Json::Value Column::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -112,10 +112,10 @@ std::shared_ptr<Column> Column::Deserialize(
         {
             if (columnWidth.size() == foundIndex + unit.size())
             {
-                std::vector<std::string> requestedDimensions = { columnWidth };
-                std::vector<int> parsedDimensions;
-                ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimensions);
-                column->SetPixelWidth(parsedDimensions[0]);
+                std::string requestedDimensions = columnWidth;
+                int parsedDimension = 0;
+                ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimension);
+                column->SetPixelWidth(parsedDimension);
             }
             else 
             {

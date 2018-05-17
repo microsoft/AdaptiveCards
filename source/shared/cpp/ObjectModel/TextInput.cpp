@@ -7,12 +7,13 @@ using namespace AdaptiveSharedNamespace;
 TextInput::TextInput() :
     BaseInputElement(CardElementType::TextInput),
     m_isMultiline(false),
-    m_maxLength(0)
+    m_maxLength(0),
+    m_style(TextInputStyle::Text)
 {
     PopulateKnownPropertiesSet();
 }
 
-Json::Value TextInput::SerializeToJsonValue()
+Json::Value TextInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
@@ -49,7 +50,7 @@ std::string TextInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void TextInput::SetPlaceholder(const std::string value)
+void TextInput::SetPlaceholder(const std::string &value)
 {
     m_placeholder = value;
 }
@@ -59,7 +60,7 @@ std::string TextInput::GetValue() const
     return m_value;
 }
 
-void TextInput::SetValue(const std::string value)
+void TextInput::SetValue(const std::string &value)
 {
     m_value = value;
 }
