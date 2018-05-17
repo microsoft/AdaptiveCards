@@ -29,16 +29,7 @@ AdaptiveNamespaceStart
             return E_INVALIDARG;
         }
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-        
-        std::wstring imageUri = StringToWstring(sharedImage->GetUrl());
-        if (!imageUri.empty())
-        {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_url.GetAddressOf()));
-        }
+        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
 
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
@@ -53,16 +44,15 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Url(IUriRuntimeClass** url)
+    HRESULT AdaptiveImage::get_Url(HSTRING* url)
     {
         return m_url.CopyTo(url);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Url(IUriRuntimeClass* url)
+    HRESULT AdaptiveImage::put_Url(HSTRING url)
     {
-        m_url = url;
-        return S_OK;
+        return m_url.Set(url);
     }
 
     _Use_decl_annotations_
@@ -180,15 +170,7 @@ AdaptiveNamespaceStart
             image->SetSelectAction(sharedAction);
         }
 
-        if (m_url != nullptr)
-        {
-            HString urlTemp;
-            m_url->get_AbsoluteUri(urlTemp.GetAddressOf());
-
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-            image->SetUrl(urlString);
-        }
+        image->SetUrl(HStringToUTF8(m_url.Get()));
 
         if (m_altText != nullptr)
         {

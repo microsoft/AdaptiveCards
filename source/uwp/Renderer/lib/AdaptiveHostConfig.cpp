@@ -65,6 +65,7 @@ AdaptiveNamespaceStart
     {
         m_supportsInteractivity = sharedHostConfig.supportsInteractivity;
         RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.fontFamily, m_fontFamily.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.imageBaseUrl, m_imageBaseUrl.GetAddressOf()));
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontSizesConfig>(m_fontSizes.GetAddressOf(), sharedHostConfig.fontSizes));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(), sharedHostConfig.fontWeights));
@@ -131,6 +132,18 @@ AdaptiveNamespaceStart
     {
         m_supportsInteractivity = supportsInteractivity;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::get_ImageBaseUrl(HSTRING* imageBaseUrl)
+    {
+        return m_imageBaseUrl.CopyTo(imageBaseUrl);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::put_ImageBaseUrl(HSTRING imageBaseUrl)
+    {
+        return m_imageBaseUrl.Set(imageBaseUrl);
     }
 
     _Use_decl_annotations_
