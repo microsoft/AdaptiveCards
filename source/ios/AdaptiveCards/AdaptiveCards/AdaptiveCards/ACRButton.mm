@@ -23,8 +23,13 @@
          andHostConfig:(ACOHostConfig *)config;
 {
     NSBundle* bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    UIButton *button = [bundle loadNibNamed:@"ACRButton" owner:view options:nil][0];
-
+    UIButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    [button setBackgroundColor:[UIColor colorWithRed:0.0
+                                               green:122.0/255.0
+                                                blue:1.0
+                                               alpha:1.0]];
 
     CGSize contentSize = [button.titleLabel intrinsicContentSize];
     [button setFrame:CGRectMake(0, 0, contentSize.width, contentSize.height)];
