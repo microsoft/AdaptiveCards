@@ -218,14 +218,6 @@
             [self.curView removeFromSuperview];
 
         self.curView = ad;
-        [_scrView addSubview:ad];
-        UIView *view = self.curView;
-        view.translatesAutoresizingMaskIntoConstraints = NO;
-
-        [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
     }
 }
 
@@ -291,7 +283,14 @@
 
 - (void)didLoadElements
 {
-    NSLog(@"didLoadElements");
+    [_scrView addSubview:self.curView];
+    UIView *view = self.curView;
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
 }
 
 - (void)registerForKeyboardNotifications
