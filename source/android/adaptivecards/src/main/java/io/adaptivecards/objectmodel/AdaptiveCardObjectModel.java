@@ -33,6 +33,14 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.ActionTypeFromString(actionType));
   }
 
+  public static String HeightTypeToString(HeightType heightType) {
+    return AdaptiveCardObjectModelJNI.HeightTypeToString(heightType.swigValue());
+  }
+
+  public static HeightType HeightTypeFromString(String heightType) {
+    return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.HeightTypeFromString(heightType));
+  }
+
   public static String HorizontalAlignmentToString(HorizontalAlignment alignment) {
     return AdaptiveCardObjectModelJNI.HorizontalAlignmentToString(alignment.swigValue());
   }

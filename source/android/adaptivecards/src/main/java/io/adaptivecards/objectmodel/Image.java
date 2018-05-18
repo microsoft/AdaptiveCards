@@ -94,20 +94,20 @@ public class Image extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Image_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
-  public long GetWidth() {
-    return AdaptiveCardObjectModelJNI.Image_GetWidth(swigCPtr, this);
+  public long GetPixelWidth() {
+    return AdaptiveCardObjectModelJNI.Image_GetPixelWidth(swigCPtr, this);
   }
 
-  public void SetWidth(long value) {
-    AdaptiveCardObjectModelJNI.Image_SetWidth(swigCPtr, this, value);
+  public void SetPixelWidth(long value) {
+    AdaptiveCardObjectModelJNI.Image_SetPixelWidth(swigCPtr, this, value);
   }
 
-  public long GetHeight() {
-    return AdaptiveCardObjectModelJNI.Image_GetHeight(swigCPtr, this);
+  public long GetPixelHeight() {
+    return AdaptiveCardObjectModelJNI.Image_GetPixelHeight(swigCPtr, this);
   }
 
-  public void SetHeight(long value) {
-    AdaptiveCardObjectModelJNI.Image_SetHeight(swigCPtr, this, value);
+  public void SetPixelHeight(long value) {
+    AdaptiveCardObjectModelJNI.Image_SetPixelHeight(swigCPtr, this, value);
   }
 
   public void GetResourceUris(StringVector resourceUris) {
