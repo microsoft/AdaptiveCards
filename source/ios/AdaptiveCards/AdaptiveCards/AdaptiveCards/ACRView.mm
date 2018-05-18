@@ -298,7 +298,7 @@ using namespace AdaptiveCards;
             if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
                 // MarkDownParser transforms text with MarkDown to a html string
-                std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement].c_str());
+                std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
                 parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
             } else {
                 std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(textForBlock.c_str());
@@ -307,11 +307,7 @@ using namespace AdaptiveCards;
 
             // if correctly initialized, fonFamilyNames array is bigger than zero
             NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-            for(NSUInteger index = 0; index < [self->_hostConfig.fontFamilyNames count] - 1; ++index){
-                [fontFamilyName appendString:self->_hostConfig.fontFamilyNames[index]];
-                [fontFamilyName appendString:@"', '"];
-            }
-            [fontFamilyName appendString:self->_hostConfig.fontFamilyNames[[_hostConfig.fontFamilyNames count] - 1]];
+            [fontFamilyName appendString:[self->_hostConfig.fontFamilyNames componentsJoinedByString:@"', '"]];
             [fontFamilyName appendString:@"'"];
 
             // Font and text size are applied as CSS style by appending it to the html string
