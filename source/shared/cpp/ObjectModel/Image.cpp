@@ -201,7 +201,6 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
             {
                 if (eachDimension.size() == foundIndex + unit.size())
                 // validate user inputs
-                const std::string unit = "px";
                 ValidateUserInputForDimensionWithUnit(unit, eachDimension, parsedDimension);
             }
         }

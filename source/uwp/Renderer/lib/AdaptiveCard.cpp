@@ -165,16 +165,7 @@ AdaptiveNamespaceStart
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-
-        std::wstring imageUri = StringToWstring(sharedAdaptiveCard->GetBackgroundImage());
-        if (!imageUri.empty())
-        {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_backgroundImage.GetAddressOf()));
-        }
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImage.GetAddressOf()));
 
         return S_OK;
     }
@@ -235,17 +226,16 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_BackgroundImage(IUriRuntimeClass** url)
+    HRESULT AdaptiveCard::get_BackgroundImage(HSTRING* backgroundImage)
     {
-        return m_backgroundImage.CopyTo(url);
+        return m_backgroundImage.CopyTo(backgroundImage);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_BackgroundImage(IUriRuntimeClass* url) try
+    HRESULT AdaptiveCard::put_BackgroundImage(HSTRING backgroundImage)
     {
-        m_backgroundImage = url;
-        return S_OK;
-    } CATCH_RETURN;
+        return m_backgroundImage.Set(backgroundImage);
+    }
 
     _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveCard::get_SelectAction(IAdaptiveActionElement** action)
@@ -318,15 +308,7 @@ AdaptiveNamespaceStart
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
         adaptiveCard->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
         adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
-
-        if (m_backgroundImage != nullptr)
-        {
-            HString urlTemp;
-            m_backgroundImage->get_AbsoluteUri(urlTemp.GetAddressOf());
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-            adaptiveCard->SetBackgroundImage(urlString);
-        }
+        adaptiveCard->SetBackgroundImage(HStringToUTF8(m_backgroundImage.Get()));
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 
