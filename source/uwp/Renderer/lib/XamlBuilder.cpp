@@ -353,6 +353,7 @@ AdaptiveNamespaceStart
         // Outer panel that contains the main body and any inline show cards
         ComPtr<WholeItemsPanel> outerPanel;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&outerPanel));
+        outerPanel->SetMainPanel(TRUE);
         ComPtr<IPanel> outerPanelAsPanel;
         THROW_IF_FAILED(outerPanel.As(&outerPanelAsPanel));
 
@@ -367,14 +368,14 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get());
 
-        // Assign vertical alignment to the top so that on fixed height cards, the content
-        // still renders at the top even if the content is shorter than the full card
-        THROW_IF_FAILED(bodyElementHostAsElement->put_VerticalAlignment(VerticalAlignment_Top));
+        ABI::AdaptiveNamespace::HeightType adaptiveCardHeightType;
+        THROW_IF_FAILED(adaptiveCard->get_Height(&adaptiveCardHeightType));
 
-        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), outerPanelAsPanel.Get());
+        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), outerPanelAsPanel.Get(), adaptiveCardHeightType);
         THROW_IF_FAILED(bodyElementHost.CopyTo(bodyElementContainer));
+        
+        XamlHelpers::AppendXamlElementToPanel(outerPanelAsPanel.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
 
-        XamlHelpers::AppendXamlElementToPanel(outerPanelAsPanel.Get(), rootAsPanel.Get());
         THROW_IF_FAILED(outerPanelAsPanel.CopyTo(outerElementContainer));
 
         if (m_fixedDimensions)
@@ -384,6 +385,13 @@ AdaptiveNamespaceStart
             rootAsFrameworkElement->put_Width(m_fixedWidth);
             rootAsFrameworkElement->put_Height(m_fixedHeight);
             rootAsFrameworkElement->put_MaxHeight(m_fixedHeight);
+        }
+
+        if (adaptiveCardHeightType == ABI::AdaptiveNamespace::HeightType::Stretch)
+        {
+            ComPtr<IFrameworkElement> rootAsFrameworkElement;
+            THROW_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
+            rootAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Stretch);
         }
 
         ComPtr<IUIElement> rootAsUIElement;
@@ -684,9 +692,14 @@ AdaptiveNamespaceStart
                         XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
                     }
                 }
+
                 ComPtr<IUIElement> newControl;
                 elementRenderer->Render(element, renderContext, renderArgs, &newControl);
-                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel);
+
+                ABI::AdaptiveNamespace::HeightType heightType{};
+                THROW_IF_FAILED(element->get_Height(&heightType));
+                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
+
                 childCreatedCallback(newControl.Get());
             }
             else
@@ -1452,6 +1465,7 @@ AdaptiveNamespaceStart
         ComPtr<IUIElement> frameworkElementAsUIElement;
         RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
         RETURN_IF_FAILED(frameworkElementAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+
         return S_OK;
     }
 
@@ -1735,7 +1749,12 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
-        THROW_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(VerticalAlignment_Top));
+        ABI::AdaptiveNamespace::HeightType containerHeightType{};
+        THROW_IF_FAILED(cardElement->get_Height(&containerHeightType));
+        if (containerHeightType == ABI::AdaptiveNamespace::HeightType::Auto)
+        {
+            THROW_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(VerticalAlignment_Top));
+        }
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
@@ -1743,7 +1762,7 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::ContainerStyle parentContainerStyle;
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
 
-        bool hasExplicitContainerStyle = true;
+        bool hasExplicitContainerStyle{true};
         if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
@@ -1879,13 +1898,16 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveColumnSet> adaptiveColumnSet;
         THROW_IF_FAILED(cardElement.As(&adaptiveColumnSet));
 
+        ComPtr<WholeItemsPanel> gridContainer;
+        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&gridContainer));
+
         ComPtr<IGrid> xamlGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IGridStatics> gridStatics;
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
         ComPtr<IVector<IAdaptiveColumn*>> columns;
         THROW_IF_FAILED(adaptiveColumnSet->get_Columns(&columns));
-        int currentColumn = 0;
+        int currentColumn{};
         ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
         ComPtr<IAdaptiveElementRenderer> columnRenderer;
@@ -1969,13 +1991,13 @@ AdaptiveNamespaceStart
             }
             else if (isStretchResult == 0 || !adaptiveColumnWidth.IsValid() || (widthAsDouble <= 0))
             {
-                // If stretch specified, or column size invalid or set to non-positive, use stretch with default of 1
+                // If stretch specified, or column width invalid or set to non-positive, use stretch with default of 1
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
                 columnWidth.Value = 1;
             }
             else
             {
-                // If user specified specific valid size, use that star size
+                // If user specified specific valid width, use that star width
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
                 columnWidth.Value = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
             }
@@ -2004,14 +2026,27 @@ AdaptiveNamespaceStart
         ComPtr<IFrameworkElement> columnSetAsFrameworkElement;
         THROW_IF_FAILED(xamlGrid.As(&columnSetAsFrameworkElement));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.ColumnSet", columnSetAsFrameworkElement.Get()));
+        THROW_IF_FAILED(columnSetAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
 
+        ComPtr<IPanel> gridContainerAsPanel;
+        THROW_IF_FAILED(gridContainer.As(&gridContainerAsPanel));
+        ComPtr<IUIElement> gridContainerAsUIElement;
+        THROW_IF_FAILED(gridContainer.As(&gridContainerAsUIElement));
+
         ComPtr<IUIElement> gridAsUIElement;
         THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
 
-        HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, gridAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, columnSetControl);
+        ComPtr<IAdaptiveCardElement> columnSetAsCardElement;
+        THROW_IF_FAILED(adaptiveColumnSet.As(&columnSetAsCardElement));
+
+        ABI::AdaptiveNamespace::HeightType columnSetHeightType;
+        THROW_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
+
+        XamlHelpers::AppendXamlElementToPanel(xamlGrid.Get(), gridContainerAsPanel.Get(), columnSetHeightType);
+        HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, gridContainerAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, columnSetControl);
     }
 
     _Use_decl_annotations_
@@ -2042,13 +2077,21 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(columnDefinitions->Append(titleColumn.Get()));
         THROW_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
 
+        GridLength factSetGridHeight = {0, GridUnitType::GridUnitType_Auto};
+        ABI::AdaptiveNamespace::HeightType heightType;
+        THROW_IF_FAILED(cardElement->get_Height(&heightType));
+        if (heightType == ABI::AdaptiveNamespace::HeightType::Stretch)
+        {
+            factSetGridHeight = {1, GridUnitType::GridUnitType_Star};
+        }
+
         ComPtr<IVector<IAdaptiveFact*>> facts;
         THROW_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
         int currentFact = 0;
-        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [xamlGrid, gridStatics, factSetGridTitleLength, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
+        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [xamlGrid, gridStatics, factSetGridHeight, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact)
         {
             ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
-            THROW_IF_FAILED(factRow->put_Height(factSetGridTitleLength));
+            THROW_IF_FAILED(factRow->put_Height(factSetGridHeight));
 
             ComPtr<IVector<RowDefinition*>> rowDefinitions;
             THROW_IF_FAILED(xamlGrid->get_RowDefinitions(&rowDefinitions));
@@ -2569,6 +2612,11 @@ AdaptiveNamespaceStart
         ComPtr<IFrameworkElement> frameworkElement;
         THROW_IF_FAILED(textBox.As(&frameworkElement));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", frameworkElement.Get()));
+
+        if (!isMultiLine)
+        {
+            THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+        }
 
         THROW_IF_FAILED(textBox.CopyTo(textInputControl));
         AddInputValueToContext(renderContext, adaptiveCardElement, *textInputControl);

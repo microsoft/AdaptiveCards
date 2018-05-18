@@ -203,6 +203,30 @@ void GetActionTypeEnumMappings(
     }
 }
 
+void GetHeightTypeEnumMappings(
+    std::unordered_map<HeightType, std::string, EnumHash> * heightTypeEnumToNameOut,
+    std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo> * heightTypeNameToEnumOut)
+{
+    static std::unordered_map<HeightType, std::string, EnumHash> heightTypeEnumToName =
+    {
+        { HeightType::Auto, "Auto" },
+        { HeightType::Stretch, "Stretch" }
+    };
+
+    static std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+        heightTypeNameToEnum = GenerateStringToEnumMap<HeightType>(heightTypeEnumToName);
+
+    if (heightTypeEnumToNameOut != nullptr)
+    {
+        *heightTypeEnumToNameOut = heightTypeEnumToName;
+    }
+
+    if (heightTypeNameToEnumOut != nullptr)
+    {
+        *heightTypeNameToEnumOut = heightTypeNameToEnum;
+    }
+}
+
 void GetSpacingMappings(
     std::unordered_map<Spacing, std::string, EnumHash> * spacingEnumToNameOut,
     std::unordered_map<std::string, Spacing, CaseInsensitiveHash, CaseInsensitiveEqualTo> * spacingNameToEnumOut)
@@ -653,6 +677,32 @@ ActionType ActionTypeFromString(const std::string& actionType)
     }
 
     return actionTypeNameToEnum[actionType];
+}
+
+const std::string HeightTypeToString(HeightType heightType)
+{
+    std::unordered_map<HeightType, std::string, EnumHash> heightTypeEnumToName;
+    GetHeightTypeEnumMappings(&heightTypeEnumToName, nullptr);
+
+    if (heightTypeEnumToName.find(heightType) == heightTypeEnumToName.end())
+    {
+        throw std::out_of_range("Invalid HeightType type");
+    }
+
+    return heightTypeEnumToName[heightType];
+}
+
+HeightType HeightTypeFromString(const std::string& heightType)
+{
+    std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo> heightTypeNameToEnum;
+    GetHeightTypeEnumMappings(nullptr, &heightTypeNameToEnum);
+
+    if (heightTypeNameToEnum.find(heightType) == heightTypeNameToEnum.end())
+    {
+        return HeightType::Auto;
+    }
+
+    return heightTypeNameToEnum[heightType];
 }
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment)

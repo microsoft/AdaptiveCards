@@ -44,6 +44,9 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* heightType);
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType heightType);
+
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
         IFACEMETHODIMP GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris);
@@ -64,6 +67,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_minVersion;
         Microsoft::WRL::Wrappers::HString m_fallbackText;
         Microsoft::WRL::Wrappers::HString m_speak;
+        ABI::AdaptiveNamespace::HeightType m_height;
         Microsoft::WRL::Wrappers::HString m_language;
 
         Microsoft::WRL::Wrappers::HString m_backgroundImage;

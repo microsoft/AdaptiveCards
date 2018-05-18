@@ -407,6 +407,17 @@ AdaptiveNamespaceStart
         LeftOfTitle
     } IconPlacement;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum HeightType
+    {
+        Auto = 0,
+        Stretch
+    } HeightType;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -435,6 +446,9 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT ElementType([out, retval] ElementType* value);
         [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
+
+        [propget] HRESULT Height([out, retval] HeightType* value);
+        [propput] HRESULT Height([in] HeightType value);
 
         [propget] HRESULT Spacing([out, retval] Spacing* value);
         [propput] HRESULT Spacing([in] Spacing value);
@@ -589,6 +603,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT Height([out, retval] HeightType* value);
+        [propput] HRESULT Height([in] HeightType value);
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
 

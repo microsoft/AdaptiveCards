@@ -12,7 +12,7 @@ class Container;
 class BaseCardElement
 {
 public:
-    BaseCardElement(CardElementType type, Spacing spacing, bool separator);
+    BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
     BaseCardElement(CardElementType type);
 
     virtual ~BaseCardElement();
@@ -22,6 +22,9 @@ public:
 
     virtual bool GetSeparator() const;
     virtual void SetSeparator(const bool value);
+
+    HeightType GetHeight() const;
+    void SetHeight(const HeightType value);
 
     virtual Spacing GetSpacing() const;
     virtual void SetSpacing(const Spacing value);
@@ -56,6 +59,7 @@ private:
     std::string m_typeString;
     bool m_separator;
     Json::Value m_additionalProperties;
+    HeightType m_height;
 };
 
 template <typename T>
@@ -70,6 +74,8 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString)); 
     baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
     baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
+    baseCardElement->SetHeight(
+        ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
 
     // Walk all properties and put any unknown ones in the additional properties json
     for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)

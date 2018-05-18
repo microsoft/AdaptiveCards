@@ -34,10 +34,10 @@ AdaptiveNamespaceStart
     // IFrameworkElementOverrides
     HRESULT WholeItemsPanel::MeasureOverride(Size availableSize, __RPC__out Size *returnValue)
     {
-        unsigned int count = 0;
-        float currentHeight = 0;
-        float maxDesiredWidth = 0;
-        bool visible = true;
+        unsigned int count{};
+        float currentHeight{};
+        float maxDesiredWidth{};
+        bool visible{true};
 
         ComPtr<IVector<UIElement*>> spChildren;
         ComPtr<IPanel> spThisAsPanel;
@@ -47,11 +47,13 @@ AdaptiveNamespaceStart
 
         const Size noVerticalLimit{ availableSize.Width, numeric_limits<float>::infinity() };
 
+        unsigned int stretchableCount{};
         m_visibleCount = count;
-        for (unsigned int i = 0; i < count; i++)
+        for (unsigned int i{}; i < count; ++i)
         {
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
+
             RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
 
             if (visible)
@@ -86,7 +88,7 @@ AdaptiveNamespaceStart
                             bool isChildTruncated = false;
                             RETURN_IF_FAILED(IsAnySubgroupTruncated(spChildAsPanel.Get(), &isChildTruncated));
                             keepItem = !isChildTruncated;
-                            m_isTruncated = keepItem;
+                            m_isTruncated = !keepItem;
                         }
                     }
                     ComPtr<ITextBlock> spTextBlock;
@@ -202,13 +204,19 @@ AdaptiveNamespaceStart
                     visible = false;
                     continue;
                 }
-                else
-                {
-                    currentHeight = newHeight;
-                }
                 currentHeight = newHeight;
                 maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
             }
+        }
+       
+        m_calculatedSize = currentHeight;
+        if (m_visibleCount == count)
+        {
+            m_allElementsRendered = true;
+        }
+        else // In the first pass, all the contents will always fit
+        {
+            m_allElementsRendered = false;
         }
 
         // If inside an infinity/auto width container
@@ -227,7 +235,7 @@ AdaptiveNamespaceStart
 
     HRESULT WholeItemsPanel::ArrangeOverride(Size finalSize, __RPC__out Size *returnValue)
     {
-        float currentHeight = 0;
+        float currentHeight{};
         ComPtr<IVector<UIElement*>> spChildren;
 
         ComPtr<IPanel> spThisAsPanel;
@@ -235,7 +243,14 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
         RETURN_IF_FAILED(spChildren->get_Size(&m_measuredCount));
 
-        for (unsigned int i = 0; i < m_measuredCount; i++) {
+		float extraPaddingPerItem{};
+		if (!m_stretchableItems.empty())
+		{
+			extraPaddingPerItem = floor((finalSize.Height - m_calculatedSize) / m_stretchableItems.size());
+		}
+
+        for (unsigned int i{}; i < m_measuredCount; ++i)
+        {
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
 
@@ -244,12 +259,15 @@ AdaptiveNamespaceStart
 
             if (i < m_visibleCount)
             {
-
                 float childHeight = childSize.Height;
                 float newHeight = currentHeight + childSize.Height;
 
-                // If we have truncated the first item newHeight may be greater than finalSize
-                if (newHeight > finalSize.Height)
+                if (m_allElementsRendered && IsUIElementInStretchableList(spChild.Get()))
+                {
+                    childHeight += extraPaddingPerItem;
+                    newHeight += extraPaddingPerItem;
+                } 
+                else if (newHeight > finalSize.Height) // If we have truncated the first item newHeight may be greater than finalSize
                 {
                     childHeight = finalSize.Height - currentHeight;
                     newHeight = finalSize.Height;
@@ -353,6 +371,41 @@ AdaptiveNamespaceStart
     void WholeItemsPanel::SetMainPanel(_In_ bool value)
     {
         m_isMainPanel = value;
+    }
+
+    void WholeItemsPanel::AddElementToStretchablesList(_In_ IUIElement* element)
+    {
+        ComPtr<IUIElement> localElement(element);
+        ComPtr<IUIElement4> elementWithAccessKey;
+        if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
+        {
+            std::string elementAccessKey = std::to_string(m_accessKeyCount);
+            ++m_accessKeyCount;
+
+            HSTRING accessKey;
+            if (SUCCEEDED(UTF8ToHString(elementAccessKey, &accessKey)))
+            {
+                elementWithAccessKey->put_AccessKey(accessKey);
+                m_stretchableItems.insert(elementAccessKey);
+            }
+        }
+    }
+
+    bool WholeItemsPanel::IsUIElementInStretchableList(_In_ IUIElement* element)
+    {
+        ComPtr<IUIElement> localElement(element);
+        ComPtr<IUIElement4> elementWithAccessKey;
+        if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
+        {
+            HSTRING elementAccessKey;
+            if (SUCCEEDED(elementWithAccessKey->get_AccessKey(&elementAccessKey)))
+            {
+                std::string accessKey = HStringToUTF8(elementAccessKey);
+                return (m_stretchableItems.find(accessKey) != m_stretchableItems.end());
+            }
+        }
+
+        return false; // Couldn't get access key, weird, so it wasnt found
     }
 
     _Check_return_ HRESULT
@@ -519,4 +572,5 @@ AdaptiveNamespaceStart
 
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
+
 AdaptiveNamespaceEnd
