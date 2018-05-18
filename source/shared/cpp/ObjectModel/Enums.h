@@ -317,7 +317,6 @@ enum class IconPlacement
     LeftOfTitle
 };
 
-
 enum class VerticalContentAlignment
 {
     Stretch = 0,

@@ -12,7 +12,7 @@ class Container;
 class BaseCardElement
 {
 public:
-    BaseCardElement(CardElementType type, Spacing spacing, bool separator);
+    BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
     BaseCardElement(CardElementType type);
 
     virtual ~BaseCardElement();

@@ -10,17 +10,19 @@ using namespace AdaptiveSharedNamespace;
 BaseCardElement::BaseCardElement(
     CardElementType type,
     Spacing spacing,
-    bool separator) :
+    bool separator,
+    HeightType height) :
     m_type(type),
     m_spacing(spacing),
     m_typeString(CardElementTypeToString(type)),
-    m_separator(separator)
+    m_separator(separator),
+    m_height(height)
 {
     PopulateKnownPropertiesSet();
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
-    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type)), m_separator(false)
+    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type)), m_separator(false), m_height(HeightType::Auto)
 {
     PopulateKnownPropertiesSet();
 }
@@ -30,6 +32,7 @@ void BaseCardElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height));
 }
 
 BaseCardElement::~BaseCardElement()

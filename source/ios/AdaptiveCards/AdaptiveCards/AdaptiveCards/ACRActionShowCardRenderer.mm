@@ -35,10 +35,10 @@
     
     UIButton *button = [UIButton rootView:rootView baseActionElement:acoElem title:title iconUrl:iconUrl andHostConfig:acoConfig];
 
-    ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:action->GetCard()
-                                                                         config:acoConfig
-                                                                      superview:superview
-                                                                       rootView:rootView];
+    ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithActionElement:action
+                                                                          config:acoConfig
+                                                                       superview:superview
+                                                                        rootView:rootView];
     [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];

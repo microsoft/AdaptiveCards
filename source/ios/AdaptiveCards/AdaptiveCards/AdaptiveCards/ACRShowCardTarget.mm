@@ -11,7 +11,9 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
+#import "ACOBaseActionElementPrivate.h"
 #import "ACRView.h"
+#import "BaseActionElement.h"
 
 @implementation ACRShowCardTarget
 {
@@ -20,9 +22,10 @@
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak ACRView *_rootView;
     __weak UIView *_adcView;
+    ACOBaseActionElement *_actionElement;
 }
 
-- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
+- (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ShowCardAction> const &)showCardActionElement
                               config:(ACOHostConfig *)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                             rootView:(ACRView *)rootView
@@ -30,11 +33,14 @@
     self = [super init];
     if(self)
     {
-        _adaptiveCard = adaptiveCard;
+        _adaptiveCard = showCardActionElement->GetCard();
         _config = config;
         _superview = superview;
         _rootView = rootView;
         _adcView = nil;
+        std::shared_ptr<ShowCardAction> showCardAction = std::make_shared<ShowCardAction>();
+        showCardAction->SetCard(showCardActionElement->GetCard());
+        _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:std::dynamic_pointer_cast<BaseActionElement>(showCardAction)];
     }
     return self;
 }
@@ -125,7 +131,8 @@
 
 - (IBAction)toggleVisibilityOfShowCard
 {
-    _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
+    _adcView.hidden = (_adcView.hidden == YES)? NO: YES;    
+    [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 
 - (void)doSelectAction
