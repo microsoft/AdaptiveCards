@@ -9,6 +9,7 @@ using Windows.ApplicationModel;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 
 namespace AdaptiveCardTestApp.ViewModels
 {
@@ -20,6 +21,9 @@ namespace AdaptiveCardTestApp.ViewModels
         public string HostConfigName { get; set; }
         public FileViewModel HostConfigFile { get; set; }
 
+        public FileViewModel RoundtrippedJsonModel { get; set; }
+        public FileViewModel ExpectedRoundtrippedJsonModel { get; set; }
+
         private TestStatus _status;
         public TestStatus Status
         {
@@ -30,13 +34,17 @@ namespace AdaptiveCardTestApp.ViewModels
         public string ExpectedError { get; set; }
 
         public StorageFile ExpectedImageFile { get; set; }
+        public StorageFile ExpectedRoundtrippedJsonFile { get; set; }
 
         public string ActualError { get; set; }
 
         public StorageFile ActualImageFile { get; set; }
+        public StorageFile ActualRoundTrippedJsonFile { get; set; }
+        public UIElement XamlCard { get; set; }
 
         public bool DidHostConfigChange => _oldHostConfigHash != null && _oldHostConfigHash != HostConfigFile.Hash;
         public bool DidCardPayloadChange => _oldCardHash != null && _oldCardHash != CardFile.Hash;
+        public bool DidRoundtrippedJsonChange => ExpectedRoundtrippedJsonModel != null && ExpectedRoundtrippedJsonModel.Hash != RoundtrippedJsonModel.Hash;
 
         private StorageFolder _expectedFolder;
         private StorageFolder _sourceHostConfigsFolder;
@@ -50,18 +58,22 @@ namespace AdaptiveCardTestApp.ViewModels
             FileViewModel hostConfigFile,
             string actualError,
             StorageFile actualImageFile,
+            StorageFile actualJsonFile,
             StorageFolder expectedFolder,
             StorageFolder sourceHostConfigsFolder,
-            StorageFolder sourceCardsFolder)
+            StorageFolder sourceCardsFolder,
+            UIElement xamlCard)
         {
             var answer = new TestResultViewModel()
             {
                 CardName = cardFile.Name,
                 CardFile = cardFile,
+                XamlCard = xamlCard,
                 HostConfigName = hostConfigFile.Name,
                 HostConfigFile = hostConfigFile,
                 ActualError = actualError,
                 ActualImageFile = actualImageFile,
+                ActualRoundTrippedJsonFile = actualJsonFile,
                 _expectedFolder = expectedFolder,
                 _sourceHostConfigsFolder = sourceHostConfigsFolder,
                 _sourceCardsFolder = sourceCardsFolder,
@@ -87,6 +99,7 @@ namespace AdaptiveCardTestApp.ViewModels
                     else
                     {
                         answer.ExpectedImageFile = await expectedFolder.GetFileAsync(answer._expectedFileNameWithoutExtension + ".png");
+                        answer.ExpectedRoundtrippedJsonFile = await expectedFolder.GetFileAsync(GetStrippedFileName(answer.CardFile) + "ToJson.json");
                     }
                 }
 
@@ -117,6 +130,14 @@ namespace AdaptiveCardTestApp.ViewModels
                     {
                         answer.Status = TestStatus.Failed;
                     }
+
+                    // Check if the round tripped json is the same
+                    answer.ExpectedRoundtrippedJsonModel = await FileViewModel.LoadAsync(answer.ExpectedRoundtrippedJsonFile);
+                    answer.RoundtrippedJsonModel = await FileViewModel.LoadAsync(answer.ActualRoundTrippedJsonFile);
+                    if (answer.DidRoundtrippedJsonChange)
+                    {
+                        answer.Status = (answer.Status == TestStatus.Passed) ? TestStatus.JsonFailed : TestStatus.ImageAndJsonFailed;
+                    }
                 }
 
                 // Otherwise one had image and one had error, so fail
@@ -130,7 +151,9 @@ namespace AdaptiveCardTestApp.ViewModels
                 if (storedInfo.HostConfigHash != hostConfigFile.Hash
                     || storedInfo.CardHash != cardFile.Hash)
                 {
-                    answer.Status = (answer.Status == TestStatus.Failed) ? 
+                    answer.Status = (answer.Status == TestStatus.Failed ||
+                                     answer.Status == TestStatus.ImageAndJsonFailed ||
+                                     answer.Status == TestStatus.JsonFailed) ? 
                         TestStatus.FailedButSourceWasChanged : 
                         TestStatus.PassedButSourceWasChanged;
                 }
@@ -277,6 +300,9 @@ namespace AdaptiveCardTestApp.ViewModels
                 {
                     var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".png", CreationCollisionOption.ReplaceExisting);
                     await ActualImageFile.CopyAndReplaceAsync(expectedFile);
+
+                    var expectedJsonFile = await _expectedFolder.CreateFileAsync(GetStrippedFileName(CardFile) + "ToJson.json", CreationCollisionOption.ReplaceExisting);
+                    await ActualRoundTrippedJsonFile.CopyAndReplaceAsync(expectedJsonFile);
                 }
 
                 // Update the status
@@ -311,9 +337,19 @@ namespace AdaptiveCardTestApp.ViewModels
         PassedButSourceWasChanged,
 
         /// <summary>
-        /// Visual did NOT match, and source files (payload and host config) were identical
+        /// Visual did NOT match, and source files (payload and host config) were identical, Json round tripping matches
         /// </summary>
         Failed,
+
+        /// <summary>
+        /// Visual did NOT match, and source files (payload and host config) were identical, Json round tripping doesn't match
+        /// </summary>
+        ImageAndJsonFailed,
+
+        /// <summary>
+        /// Visual identically matched, Roundtripped json did not match, and source files (payload and host config) were identical
+        /// </summary>
+        JsonFailed,
 
         /// <summary>
         /// Visual did NOT match, but source files (payload and host config) changed, so changes are possibly expected

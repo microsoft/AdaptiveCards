@@ -13,6 +13,10 @@
 #include <Image.h>
 #include <windows.foundation.collections.h>
 
+#ifdef ADAPTIVE_CARDS_WINDOWS
+using namespace InternalNamespace;
+#endif
+
 HRESULT WStringToHString(const std::wstring& in, HSTRING* out);
 
 std::string WstringToString(const std::wstring& in);
@@ -33,81 +37,81 @@ bool Boolify(const boolean value);
 HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept;
 
 HRESULT GetColorFromAdaptiveColor(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor adaptiveColor,
-    ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+    ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveNamespace::ForegroundColor adaptiveColor,
+    ABI::AdaptiveNamespace::ContainerStyle containerStyle,
     bool isSubtle,
     ABI::Windows::UI::Color *uiColor) noexcept;
 
 HRESULT GetBackgroundColorFromStyle(
-    ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style,
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveNamespace::ContainerStyle style,
+    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
 
 HRESULT GetSpacingSizeFromSpacing(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing,
+    ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveNamespace::Spacing spacing,
     UINT* spacingSize) noexcept;
 
 HRESULT GenerateSharedElements(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* items,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements);
 
 HRESULT GenerateSharedAction(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
-    std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction); 
+    ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+    std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedAction); 
 
 HRESULT GenerateSharedActions(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* items,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& containedElements);
 
 HRESULT GenerateSharedImages(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements);
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>* items,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements);
 
 HRESULT GenerateSharedFacts(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements);
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveFact*>* items,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::Fact>>& containedElements);
 
 HRESULT GenerateSharedChoices(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements);
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* items,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements);
 
 HRESULT GenerateContainedElementsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateActionsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& actions,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateActionProjection(
-    const std::shared_ptr<AdaptiveCards::BaseActionElement> action,
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** projectedAction) noexcept;
+    const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> action,
+    ABI::AdaptiveNamespace::IAdaptiveActionElement** projectedAction) noexcept;
 
 HRESULT GenerateColumnsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColumn*>* projectedParentContainer) noexcept;
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Column>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveColumn*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateFactsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact*>* projectedParentContainer) noexcept;
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Fact>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveFact*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateImagesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage*>* projectedParentContainer) noexcept;
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateInputChoicesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateSeparatorProjection(
-    std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparator** projectedSeparator) noexcept;
+    std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,
+    ABI::AdaptiveNamespace::IAdaptiveSeparator** projectedSeparator) noexcept;
 
 HRESULT GenerateSharedSeparator(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparator* separator,
-    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut)noexcept;
+    ABI::AdaptiveNamespace::IAdaptiveSeparator* separator,
+    std::shared_ptr<AdaptiveSharedNamespace::Separator>* sharedSeparatorOut)noexcept;
 
 HRESULT StringToJsonObject(const std::string inputString, ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT HStringToJsonObject(const HSTRING& inputHString, ABI::Windows::Data::Json::IJsonObject** result);
@@ -122,10 +126,10 @@ HRESULT JsonValueToString(ABI::Windows::Data::Json::IJsonValue* inputJsonValue, 
 HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT JsonObjectToJsonCpp(ABI::Windows::Data::Json::IJsonObject* jsonObject, Json::Value* jsonCppValue);
 
-HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Rendering::Uwp::ActionType projectedActionType, HSTRING* result);
-HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Rendering::Uwp::ElementType projectedElementType, HSTRING* result);
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projectedActionType, HSTRING* result);
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projectedElementType, HSTRING* result);
 
-typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveActionEventArgs*>> ActionEventSource;
+typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>> ActionEventSource;
 
 // Peek interface to help get implementation types from winrt interfaces
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
@@ -150,3 +154,7 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     }
     return inner;
 }
+
+void RemoteResourceElementToUriStringVector(
+    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResources,
+    std::vector<std::string>& resourceUris);

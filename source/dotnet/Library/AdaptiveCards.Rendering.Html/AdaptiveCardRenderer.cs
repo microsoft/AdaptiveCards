@@ -434,6 +434,8 @@ namespace AdaptiveCards.Rendering.Html
                     Color = context.Config.FactSet.Title.Color,
                     Weight = context.Config.FactSet.Title.Weight,
                     IsSubtle = context.Config.FactSet.Title.IsSubtle,
+                    Wrap = context.Config.FactSet.Title.Wrap,
+                    MaxWidth = context.Config.FactSet.Title.MaxWidth
                 };
                 var uiTitle = context.Render(factTitle)
                     .AddClass("ac-facttitle")
@@ -446,6 +448,8 @@ namespace AdaptiveCards.Rendering.Html
                     Color = context.Config.FactSet.Value.Color,
                     Weight = context.Config.FactSet.Value.Weight,
                     IsSubtle = context.Config.FactSet.Value.IsSubtle,
+                    Wrap = context.Config.FactSet.Value.Wrap,
+                    // MaxWidth is not supported on the Value of FactSet. Do not set it.
                 };
                 var uiValue = context.Render(factValue)
                     .AddClass("ac-factvalue");
@@ -453,10 +457,13 @@ namespace AdaptiveCards.Rendering.Html
                 // create row in factset 
                 var uiRow = uiFactSet
                     .AddBodyRow();
+                uiRow.Style("height", "1px");
 
                 // add elements as cells
-                uiRow.AddCell().AddClass("ac-factset-titlecell").Append(uiTitle);
-                uiRow.AddCell().AddClass("ac-factset-valuecell").Append(uiValue);
+                uiRow.AddCell().AddClass("ac-factset-titlecell").Style("height", "inherit")
+                    .Style("max-width", $"{context.Config.FactSet.Title.MaxWidth}px")
+                    .Append(uiTitle);
+                uiRow.AddCell().AddClass("ac-factset-valuecell").Style("height", "inherit").Append(uiValue);
             }
             return uiFactSet;
         }
@@ -505,8 +512,8 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
-                .Style("font-weight", $"{weight}");
-
+                .Style("font-weight", $"{weight}")
+                .Style("height", "100%");
 
             if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock

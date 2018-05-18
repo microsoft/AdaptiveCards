@@ -3,14 +3,13 @@
 #include <vector>
 #include "Enums.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     class DateTimePreparsedToken
     {
     public:
         DateTimePreparsedToken();
-        DateTimePreparsedToken(std::string text, DateTimePreparsedTokenFormat format);
-        DateTimePreparsedToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format);
+        DateTimePreparsedToken(std::string const &text, DateTimePreparsedTokenFormat format);
+        DateTimePreparsedToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format);
 
         std::string GetText() const;
         DateTimePreparsedTokenFormat GetFormat() const;
@@ -26,4 +25,4 @@ namespace AdaptiveCards
         struct tm m_date;
         DateTimePreparsedTokenFormat m_format;
     };
-}
+AdaptiveSharedNamespaceEnd

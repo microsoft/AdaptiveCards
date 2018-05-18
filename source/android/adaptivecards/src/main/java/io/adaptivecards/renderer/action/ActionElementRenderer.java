@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
@@ -193,6 +194,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         if (orientation == ActionsOrientation.Horizontal)
         {
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            long spacing = hostConfig.getActions().getButtonSpacing();
+            layoutParams.rightMargin = Util.dpToPixels(context, spacing);
         }
         else
         {
@@ -261,7 +264,15 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()), 0, 0);
             invisibleCard.setLayoutParams(layoutParams);
 
-            ViewGroup parent = (ViewGroup) viewGroup.getParent().getParent();
+            ViewGroup parent = (ViewGroup) viewGroup.getParent();
+            if(parent instanceof HorizontalScrollView) // Required when the actions are set in horizontal
+            {
+                parent = (ViewGroup) parent.getParent().getParent();
+            }
+            else
+            {
+                parent = (ViewGroup) parent.getParent();
+            }
 
             ViewGroup hiddenCards = (ViewGroup) parent.getChildAt(1);
             hiddenCards.addView(invisibleCard);

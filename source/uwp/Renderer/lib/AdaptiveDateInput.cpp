@@ -5,21 +5,20 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
         return RuntimeClassInitialize(dateInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput) try
+    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput) try
     {
         if (sharedDateInput == nullptr)
         {
@@ -90,30 +89,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     { 
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(dateInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(dateInput)));
 
-        std::string max;
-        RETURN_IF_FAILED(HStringToUTF8(m_max.Get(), max));
-        dateInput->SetMax(max);
-
-        std::string min;
-        RETURN_IF_FAILED(HStringToUTF8(m_min.Get(), min));
-        dateInput->SetMin(min);
-
-        std::string placeholder;
-        RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
-        dateInput->SetPlaceholder(placeholder);
-
-        std::string value;
-        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
-        dateInput->SetValue(value);
+        dateInput->SetMax(HStringToUTF8(m_max.Get()));
+        dateInput->SetMin(HStringToUTF8(m_min.Get()));
+        dateInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
+        dateInput->SetValue(HStringToUTF8(m_value.Get()));
 
         sharedModel = dateInput;
 
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

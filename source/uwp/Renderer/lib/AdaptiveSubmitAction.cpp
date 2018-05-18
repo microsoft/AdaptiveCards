@@ -3,19 +3,18 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::SubmitAction> submitAction = std::make_shared<AdaptiveCards::SubmitAction>();
+        std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction = std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
         return RuntimeClassInitialize(submitAction);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction) try
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction) try
     {
         if (sharedSubmitAction == nullptr)
         {
@@ -23,14 +22,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         }
 
         RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedSubmitAction));
+        InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::Submit;
+        *actionType = ABI::AdaptiveNamespace::ActionType::Submit;
         return S_OK;
     }
 
@@ -47,10 +46,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel) try
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::SubmitAction> submitAction = std::make_shared<AdaptiveCards::SubmitAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(submitAction)));
+        std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction = std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(submitAction)));
 
         std::string jsonAsString;
         RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
@@ -59,4 +58,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = submitAction;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

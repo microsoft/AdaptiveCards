@@ -5,47 +5,38 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveImage::AdaptiveImage()
     {
     }
 
     HRESULT AdaptiveImage::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();
+        std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
         return RuntimeClassInitialize(image);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Image>& sharedImage) try
+    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage) try
     {
         if (sharedImage == nullptr)
         {
             return E_INVALIDARG;
         }
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-        
-        std::wstring imageUri = StringToWstring(sharedImage->GetUrl());
-        if (!imageUri.empty())
-        {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_url.GetAddressOf()));
-        }
+        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
 
-        m_imageStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageStyle>(sharedImage->GetImageStyle());
-        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImage->GetImageSize());
-        m_horizontalAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
+        m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
+        m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
+        m_pixelWidth = sharedImage->GetPixelWidth();
+        m_pixelHeight = sharedImage->GetPixelHeight();
+        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
-
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImage));
@@ -53,43 +44,70 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Url(IUriRuntimeClass** url)
+    HRESULT AdaptiveImage::get_Url(HSTRING* url)
     {
         return m_url.CopyTo(url);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Url(IUriRuntimeClass* url)
+    HRESULT AdaptiveImage::put_Url(HSTRING url)
     {
-        m_url = url;
-        return S_OK;
+        return m_url.Set(url);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Style(ABI::AdaptiveCards::Rendering::Uwp::ImageStyle* imageStyle)
+    HRESULT AdaptiveImage::get_Style(ABI::AdaptiveNamespace::ImageStyle* imageStyle)
     {
         *imageStyle = m_imageStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ImageStyle imageStyle)
+    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveNamespace::ImageStyle imageStyle)
     {
         m_imageStyle = imageStyle;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Size(ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImage::get_Size(ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_PixelWidth(UINT32* pixelWidth)
+    {
+        *pixelWidth = m_pixelWidth;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_PixelWidth(UINT32 pixelWidth)
+    {
+        m_pixelWidth = pixelWidth;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_PixelHeight(UINT32* pixelHeight)
+    {
+        *pixelHeight = m_pixelHeight;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_PixelHeight(UINT32 pixelHeight)
+    {
+        m_pixelHeight = pixelHeight;
         return S_OK;
     }
 
@@ -106,14 +124,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
@@ -139,11 +157,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedImage) try
+    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedImage) try
     {
-        std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();
+        std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(image)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(image)));
 
         if (m_selectAction != nullptr)
         {
@@ -152,15 +170,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             image->SetSelectAction(sharedAction);
         }
 
-        if (m_url != nullptr)
-        {
-            HString urlTemp;
-            m_url->get_AbsoluteUri(urlTemp.GetAddressOf());
-
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-            image->SetUrl(urlString);
-        }
+        image->SetUrl(HStringToUTF8(m_url.Get()));
 
         if (m_altText != nullptr)
         {
@@ -169,11 +179,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             image->SetAltText(out);
         }
             
-        image->SetImageStyle(static_cast<AdaptiveCards::ImageStyle>(m_imageStyle));
-        image->SetImageSize(static_cast<AdaptiveCards::ImageSize>(m_imageSize));
-        image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+        image->SetImageStyle(static_cast<AdaptiveSharedNamespace::ImageStyle>(m_imageStyle));
+        image->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
+        image->SetPixelHeight(m_pixelHeight);
+        image->SetPixelWidth(m_pixelWidth);
+        image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         sharedImage = image;
         return S_OK;
     } CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

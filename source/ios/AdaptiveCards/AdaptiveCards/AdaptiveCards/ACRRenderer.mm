@@ -29,12 +29,12 @@ using namespace AdaptiveCards;
 }
 
 // This interface is exposed to outside, and returns ACRRenderResult object
-// This object contains a viewController instance which defer rendering adaptiveCard untill viewDidLoad is called.
+// This object contains a viewController instance which defer rendering adaptiveCard until viewDidLoad is called.
 + (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
     // Initializes ACRView instance with HostConfig and AdaptiveCard
-    // ACRViewController does not render adaptiveCard untill viewDidLoad calls render
+    // ACRViewController does not render adaptiveCard until viewDidLoad calls render
     ACRView *view = [[ACRView alloc] init:card hostconfig:config widthConstraint:width];
     result.view = view;
     result.succeeded = YES;
@@ -42,12 +42,12 @@ using namespace AdaptiveCards;
 }
 
 // This interface is exposed to outside, and returns ACRRenderResult object
-// This object contains a viewController instance which defer rendering adaptiveCard untill viewDidLoad is called.
+// This object contains a viewController instance which defer rendering adaptiveCard until viewDidLoad is called.
 + (ACRRenderResult *)renderAsViewController:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>)acrActionDelegate
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
     // Initializes ACRView instance with HostConfig and AdaptiveCard
-    // ACRView does not render adaptiveCard untill viewDidLoad calls render
+    // ACRView does not render adaptiveCard until viewDidLoad calls render
     ACRViewController *viewcontroller = [[ACRViewController alloc] init:card hostconfig:config frame:frame delegate:acrActionDelegate];
     result.viewcontroller = viewcontroller;
     result.succeeded = YES;
@@ -62,12 +62,14 @@ using namespace AdaptiveCards;
                          hostconfig:(ACOHostConfig *)config
 {
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
-
     ACRColumnView *verticalView = containingView;
-
+    
     if(!body.empty())
     {
         [rootView addTasksToConcurrentQueue:body];
+        // addTasksToConcurrentQueue spawns concurrent tasks, this flag indicates that
+        // all tasks have been added to work queues, and is needed for complete notification to work properly
+        rootView.seenAllElements = YES;
 
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
@@ -78,11 +80,13 @@ using namespace AdaptiveCards;
         [[rootView card] setInputs:inputs];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+        [rootView addActionsToConcurrentQueue:actions];
 
         [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
         // renders buttons and their associated actions
         [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
     }
+    
     return verticalView;
 }
 

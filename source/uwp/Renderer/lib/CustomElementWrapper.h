@@ -3,13 +3,12 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
-    class CustomElementWrapper : public AdaptiveCards::BaseCardElement
+AdaptiveNamespaceStart
+    class CustomElementWrapper : public AdaptiveSharedNamespace::BaseCardElement
     {
     public:
-        CustomElementWrapper(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement):
-            BaseCardElement(AdaptiveCards::CardElementType::Custom),
+        CustomElementWrapper(ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement):
+            BaseCardElement(AdaptiveSharedNamespace::CardElementType::Custom),
             m_cardElement(cardElement)
         {}
 
@@ -20,13 +19,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         void SetSpacing(const Spacing value) override;
 
         std::string GetId() const override;
-        void SetId(const std::string value) override;
+        void SetId(const std::string& value) override;
 
-        virtual Json::Value SerializeToJsonValue() override;
+        virtual Json::Value SerializeToJsonValue() const override;
 
-        HRESULT GetWrappedElement(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** cardElement);
+        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+
+        HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement> m_cardElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_cardElement;
     };
-}}}
+AdaptiveNamespaceEnd

@@ -1,4 +1,15 @@
 #pragma once
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+#include "winPch.h"
+#endif
+
+#ifndef AdaptiveSharedNamespaceStart
+#define AdaptiveSharedNamespaceStart namespace AdaptiveCards { 
+#define AdaptiveSharedNamespace AdaptiveCards
+#define AdaptiveSharedNamespaceEnd }
+#endif
+
 #include <memory>
 #include <vector>
 #include <string>

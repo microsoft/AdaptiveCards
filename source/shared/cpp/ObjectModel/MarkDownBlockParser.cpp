@@ -2,7 +2,7 @@
 #include <iostream>
 #include "MarkDownBlockParser.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 // Parses according to each key words
 void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
@@ -471,6 +471,7 @@ void LinkParser::CaptureLinkToken()
         std::make_shared<MarkDownStringHtmlGenerator>(html_string);
 
     m_parsedResult.Clear();
+    m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
 }
 
@@ -621,6 +622,7 @@ void ListParser::CaptureListToken()
         std::make_shared<MarkDownListHtmlGenerator>(html_string);
 
     m_parsedResult.Clear();
+    m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
 }
 
@@ -674,5 +676,6 @@ void OrderedListParser::CaptureOrderedListToken(std::string &number_string)
         std::make_shared<MarkDownOrderedListHtmlGenerator>(html_string, number_string);
 
     m_parsedResult.Clear();
+    m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
 }

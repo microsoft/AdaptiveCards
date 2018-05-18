@@ -2,7 +2,7 @@
 #include "HostConfig.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 HostConfig HostConfig::DeserializeFromString(const std::string jsonString)
 {
@@ -17,6 +17,8 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
 
     result.supportsInteractivity = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::SupportsInteractivity, result.supportsInteractivity);
+
+    result.imageBaseUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
 
     result.factSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetConfig>(
         json, AdaptiveCardSchemaKey::FactSet, result.factSet, FactSetConfig::Deserialize);
@@ -170,6 +172,9 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
     result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextConfig>(
         json, AdaptiveCardSchemaKey::Value, defaultValue.value, TextConfig::Deserialize);
 
+    // Value doesn't support maxWidth, so reset to the default value.
+    result.value.maxWidth = defaultValue.value.maxWidth;
+
     return result;
 }
 
@@ -213,7 +218,7 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
     return result;
 }
 
-SpacingConfig AdaptiveCards::SpacingConfig::Deserialize(const Json::Value & json, const SpacingConfig & defaultValue)
+SpacingConfig SpacingConfig::Deserialize(const Json::Value & json, const SpacingConfig & defaultValue)
 {
     SpacingConfig result;
 
@@ -238,7 +243,7 @@ SpacingConfig AdaptiveCards::SpacingConfig::Deserialize(const Json::Value & json
     return result;
 }
 
-SeparatorConfig AdaptiveCards::SeparatorConfig::Deserialize(const Json::Value & json, const SeparatorConfig & defaultValue)
+SeparatorConfig SeparatorConfig::Deserialize(const Json::Value & json, const SeparatorConfig & defaultValue)
 {
     SeparatorConfig result;
 
@@ -251,7 +256,7 @@ SeparatorConfig AdaptiveCards::SeparatorConfig::Deserialize(const Json::Value & 
     return result;
 }
 
-ContainerStyleDefinition AdaptiveCards::ContainerStyleDefinition::Deserialize(const Json::Value & json, const ContainerStyleDefinition & defaultValue)
+ContainerStyleDefinition ContainerStyleDefinition::Deserialize(const Json::Value & json, const ContainerStyleDefinition & defaultValue)
 {
     ContainerStyleDefinition result;
 
@@ -269,7 +274,7 @@ ContainerStyleDefinition AdaptiveCards::ContainerStyleDefinition::Deserialize(co
     return result;
 }
 
-ContainerStylesDefinition AdaptiveCards::ContainerStylesDefinition::Deserialize(const Json::Value & json, const ContainerStylesDefinition & defaultValue)
+ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Value & json, const ContainerStylesDefinition & defaultValue)
 {
     ContainerStylesDefinition result;
 
@@ -282,7 +287,7 @@ ContainerStylesDefinition AdaptiveCards::ContainerStylesDefinition::Deserialize(
     return result;
 }
 
-FontWeightsConfig AdaptiveCards::FontWeightsConfig::Deserialize(const Json::Value & json, const FontWeightsConfig & defaultValue)
+FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value & json, const FontWeightsConfig & defaultValue)
 {
     FontWeightsConfig result;
 
@@ -298,7 +303,7 @@ FontWeightsConfig AdaptiveCards::FontWeightsConfig::Deserialize(const Json::Valu
     return result;
 }
 
-ImageConfig AdaptiveCards::ImageConfig::Deserialize(const Json::Value & json, const ImageConfig & defaultValue)
+ImageConfig ImageConfig::Deserialize(const Json::Value & json, const ImageConfig & defaultValue)
 {
     ImageConfig result;
 

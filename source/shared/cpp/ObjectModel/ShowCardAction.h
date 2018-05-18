@@ -6,19 +6,20 @@
 #include "Enums.h"
 #include "ActionParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class ShowCardAction : public BaseActionElement
 {
 public:
     ShowCardAction();
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
-    std::shared_ptr<AdaptiveCards::AdaptiveCard> GetCard() const;
-    void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);
+    std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> GetCard() const;
+    void SetCard(const std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>);
 
     void SetLanguage(const std::string& value);
+
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
     void PopulateKnownPropertiesSet();
@@ -38,4 +39,4 @@ class ShowCardActionParser : public ActionElementParser
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

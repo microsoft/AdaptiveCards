@@ -7,29 +7,16 @@
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class TextBlock : public BaseCardElement
 {
 public:
     TextBlock();
-    TextBlock(
-        Spacing spacing,
-        bool separator,
-        std::string text,
-        TextSize textSize,
-        TextWeight textWeight,
-        ForegroundColor color,
-        bool isSubtle,
-        bool wrap,
-        int maxLines,
-        HorizontalAlignment hAlignment,
-        std::string language);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::string GetText() const;
-    void SetText(const std::string value);
+    void SetText(const std::string &value);
     DateTimePreparser GetTextForDateParsing() const;
 
     TextSize GetTextSize() const;
@@ -82,4 +69,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

@@ -21,8 +21,20 @@ namespace AdaptiveCards.Test
             Assert.IsTrue(files.Count > 1);
             foreach (var file in files)
             {
+                // TODO: bring this test back when issue #1334 is implemented
+                if (file.Contains("Image.Explicit.Size"))
+                    continue;
+
                 // TODO: bring these tests back when bug #940 is closed
                 if (file.Contains("Container.Style") || file.Contains("ShowCard.Style"))
+                    continue;
+
+                // TODO: bring this test back when issue #389 is implemented
+                if (file.Contains("NotificationCard"))
+                    continue;
+
+                // TODO: bring this test back when issue #1440 is implemented
+                if (file.Contains("Image.ImageBaseUrl"))
                     continue;
 
                 try

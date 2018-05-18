@@ -2,10 +2,9 @@
 #include "CustomActionWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
 
 std::string CustomActionWrapper::GetId() const
 {
@@ -14,7 +13,7 @@ std::string CustomActionWrapper::GetId() const
     return HStringToUTF8(id.Get());
 }
 
-void CustomActionWrapper::SetId(const std::string value)
+void CustomActionWrapper::SetId(const std::string& value)
 {
     Wrappers::HString id;
     THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
@@ -28,14 +27,14 @@ std::string CustomActionWrapper::GetTitle() const
     return HStringToUTF8(title.Get());
 }
 
-void CustomActionWrapper::SetTitle(const std::string value)
+void CustomActionWrapper::SetTitle(const std::string& value)
 {
     Wrappers::HString title; 
     THROW_IF_FAILED(UTF8ToHString(value, title.GetAddressOf()));
     THROW_IF_FAILED(m_actionElement->put_Title(title.Get()));
 }
 
-Json::Value CustomActionWrapper::SerializeToJsonValue()
+Json::Value CustomActionWrapper::SerializeToJsonValue() const
 {
     ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
     THROW_IF_FAILED(m_actionElement->ToJson(&jsonObject));
@@ -46,9 +45,17 @@ Json::Value CustomActionWrapper::SerializeToJsonValue()
     return jsonCppValue;
 }
 
-HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** actionElement)
+HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement)
 {
     return m_actionElement.CopyTo(actionElement);
 }
 
-}}}
+void CustomActionWrapper::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources> remoteResources;
+    if (SUCCEEDED(m_actionElement.As(&remoteResources)))
+    {
+        RemoteResourceElementToUriStringVector(remoteResources.Get(), resourceUris);
+    }
+}
+AdaptiveNamespaceEnd

@@ -14,8 +14,7 @@
 #include "ToggleInput.h"
 #include "UnknownElement.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
     ElementParserRegistration::ElementParserRegistration()
     {
         m_knownElements.insert({ 
@@ -51,7 +50,7 @@ namespace AdaptiveCards
         });
     }
 
-    void ElementParserRegistration::AddParser(std::string elementType, std::shared_ptr<BaseCardElementParser> parser)
+    void ElementParserRegistration::AddParser(std::string const &elementType, std::shared_ptr<BaseCardElementParser> parser)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -63,7 +62,7 @@ namespace AdaptiveCards
         }
     }
 
-    void ElementParserRegistration::RemoveParser(std::string elementType)
+    void ElementParserRegistration::RemoveParser(std::string const &elementType)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -75,7 +74,7 @@ namespace AdaptiveCards
         }
     }
 
-    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string elementType)
+    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const &elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())
@@ -87,4 +86,4 @@ namespace AdaptiveCards
             return std::shared_ptr<BaseCardElementParser>(nullptr);
         }
     }
-}
+AdaptiveSharedNamespaceEnd

@@ -5,8 +5,7 @@
 #include <list>
 #include "BaseCardElement.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 enum DelimiterType
 {
@@ -102,7 +101,7 @@ class MarkDownEmphasisHtmlGenerator : public MarkDownHtmlGenerator
         bool IsSameType(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token);
         bool IsDone() const { return m_numberOfUnusedDelimiters == 0; }
         int GetNumberOfUnusedDelimiters() const { return m_numberOfUnusedDelimiters; };
-        void GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token);
+        bool GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token);
         void ReverseDirectionType() { m_directionType = !m_directionType; };
     protected:
         enum 
@@ -196,4 +195,4 @@ class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator
         std::string m_numberString;
 };
 
-}
+AdaptiveSharedNamespaceEnd

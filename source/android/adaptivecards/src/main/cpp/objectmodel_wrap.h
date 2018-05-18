@@ -28,12 +28,13 @@ public:
     virtual void SetId(std::string const value);
     virtual AdaptiveCards::CardElementType const GetElementType() const;
     virtual Json::Value SerializeToJsonValue();
+    virtual void GetResourceUris(std::vector< std::string > &resourceUris);
 public:
     bool swig_overrides(int n) {
-      return (n < 10 ? swig_override[n] : false);
+      return (n < 11 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<10> swig_override;
+    Swig::BoolArray<11> swig_override;
 };
 
 class SwigDirector_BaseActionElement : public AdaptiveCards::BaseActionElement, public Swig::Director {
@@ -52,12 +53,13 @@ public:
     virtual void SetIconUrl(std::string const &value);
     virtual AdaptiveCards::ActionType const GetElementType() const;
     virtual Json::Value SerializeToJsonValue();
+    virtual void GetResourceUris(std::vector< std::string > &resourceUris);
 public:
     bool swig_overrides(int n) {
-      return (n < 10 ? swig_override[n] : false);
+      return (n < 11 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<10> swig_override;
+    Swig::BoolArray<11> swig_override;
 };
 
 class SwigDirector_ActionElementParser : public AdaptiveCards::ActionElementParser, public Swig::Director {

@@ -5,24 +5,23 @@
 #include "Image.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class BaseCardElement;
 class ImageSet : public BaseCardElement
 {
 friend class ImageSetParser;
 public:
     ImageSet();
-    ImageSet(Spacing spacing, bool separation);
-    ImageSet(Spacing spacing, bool separation, std::vector<std::shared_ptr<Image>>& images);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     ImageSize GetImageSize() const;
     void SetImageSize(const ImageSize value);
 
     std::vector<std::shared_ptr<Image>>& GetImages();
     const std::vector<std::shared_ptr<Image>>& GetImages() const;
+
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
     void PopulateKnownPropertiesSet();
@@ -44,4 +43,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

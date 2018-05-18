@@ -3,27 +3,28 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
-    class CustomActionWrapper : public AdaptiveCards::BaseActionElement
+AdaptiveNamespaceStart
+    class CustomActionWrapper : public AdaptiveSharedNamespace::BaseActionElement
     {
     public:
-        CustomActionWrapper(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* actionElement) :
-            AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom),
+        CustomActionWrapper(ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
+            AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom),
             m_actionElement(actionElement)
         {}
 
         std::string GetId() const override;
-        void SetId(const std::string value) override;
+        void SetId(const std::string& value) override;
 
         std::string GetTitle() const override;
-        void SetTitle(const std::string value) override;
+        void SetTitle(const std::string& value) override;
 
-        virtual Json::Value SerializeToJsonValue() override;
+        virtual Json::Value SerializeToJsonValue() const override;
 
-        HRESULT GetWrappedElement(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** actionElement);
+        HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
+
+        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_actionElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_actionElement;
     };
-}}}
+AdaptiveNamespaceEnd

@@ -6,21 +6,20 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput = std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
         return RuntimeClassInitialize(toggleInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput) try
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput) try
     {
         if (sharedToggleInput == nullptr)
         {
@@ -91,30 +90,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput = std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(toggleInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(toggleInput)));
 
-        std::string title;
-        RETURN_IF_FAILED(HStringToUTF8(m_title.Get(), title));
-        toggleInput->SetTitle(title);
-
-        std::string value;
-        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
-        toggleInput->SetValue(value);
-
-        std::string valueOn;
-        RETURN_IF_FAILED(HStringToUTF8(m_valueOn.Get(), valueOn));
-        toggleInput->SetValueOn(valueOn);
-
-        std::string valueOff;
-        RETURN_IF_FAILED(HStringToUTF8(m_valueOff.Get(), valueOff));
-        toggleInput->SetValueOff(valueOff);
+        toggleInput->SetTitle(HStringToUTF8(m_title.Get()));
+        toggleInput->SetValue(HStringToUTF8(m_value.Get()));
+        toggleInput->SetValueOn(HStringToUTF8(m_valueOn.Get()));
+        toggleInput->SetValueOff(HStringToUTF8(m_valueOff.Get()));
 
         sharedModel = toggleInput;
 
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

@@ -7,13 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveColumn::AdaptiveColumn()
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
@@ -21,18 +20,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
+        std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
         return RuntimeClassInitialize(column);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn) try
+    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn) try
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
 
-        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedColumn->GetStyle());
+        m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumn->GetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
+        m_pixelWidth = sharedColumn->GetPixelWidth();
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
         return S_OK;
@@ -51,14 +51,26 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveColumn::get_PixelWidth(UINT32* pixelWidth)
+    {
+        return *pixelWidth = m_pixelWidth;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth)
+    {
+        return m_pixelWidth = pixelWidth;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
+    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
@@ -90,13 +102,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(column)));
+        std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(column)));
 
-        column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+        column->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         column->SetWidth(HStringToUTF8(m_width.Get()));
+        column->SetPixelWidth(m_pixelWidth);
 
         if (m_selectAction != nullptr)
         {
@@ -110,4 +123,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = column;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

@@ -4,32 +4,11 @@
 #include "ColumnSet.h"
 #include "Util.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None)
 {
     PopulateKnownPropertiesSet();
-}
-
-Container::Container(
-    Spacing spacing,
-    bool separator,
-    ContainerStyle style,
-    std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Container, spacing, separator),
-    m_style(style),
-    m_items(items)
-{
-    PopulateKnownPropertiesSet();
-}
-
-Container::Container(
-    Spacing spacing,
-    bool separator,
-    ContainerStyle style) :
-    BaseCardElement(CardElementType::Container, spacing, separator),
-    m_style(style)
-{
 }
 
 const std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems() const
@@ -67,27 +46,25 @@ void Container::SetLanguage(const std::string& value)
     PropagateLanguage(value, m_items);
 }
 
-Json::Value Container::SerializeToJsonValue()
+Json::Value Container::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    ContainerStyle style = GetStyle();
-    if (style != ContainerStyle::None)
+    if (m_style != ContainerStyle::None)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
     }
 
-    std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    std::string const &itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
-    for (const auto& cardElement : GetItems())
+    for (const auto& cardElement : m_items)
     {
         root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
     }
 
-    std::shared_ptr<BaseActionElement> selectAction = GetSelectAction();
-    if (selectAction != nullptr)
+    if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;
@@ -109,7 +86,8 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
     auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Items, false);
     container->m_items = std::move(cardElements);
 
-    container->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction));
+    // Parse optional selectAction
+    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }
@@ -127,4 +105,14 @@ void Container::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items));
+}
+
+void Container::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto items = GetItems();
+    for (auto item : items)
+    {
+        item->GetResourceUris(resourceUris);
+    }
+    return;
 }

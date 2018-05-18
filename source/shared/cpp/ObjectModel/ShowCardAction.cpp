@@ -3,14 +3,14 @@
 #include "ParseUtil.h"
 #include "ShowCardAction.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 ShowCardAction::ShowCardAction() : BaseActionElement(ActionType::ShowCard)
 {
     PopulateKnownPropertiesSet();
 }
 
-Json::Value ShowCardAction::SerializeToJsonValue()
+Json::Value ShowCardAction::SerializeToJsonValue() const
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
 
@@ -19,12 +19,12 @@ Json::Value ShowCardAction::SerializeToJsonValue()
     return root;
 }
 
-std::shared_ptr<AdaptiveCard> AdaptiveCards::ShowCardAction::GetCard() const
+std::shared_ptr<AdaptiveCard> ShowCardAction::GetCard() const
 {
     return m_card;
 }
 
-void AdaptiveCards::ShowCardAction::SetCard(const std::shared_ptr<AdaptiveCard> card)
+void ShowCardAction::SetCard(const std::shared_ptr<AdaptiveCard> card)
 {
     m_card = card;
 }
@@ -62,4 +62,12 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::DeserializeFromString(
 void ShowCardAction::PopulateKnownPropertiesSet() 
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card));
+}
+
+void ShowCardAction::GetResourceUris(std::vector<std::string>& resourceUris)
+{
+    auto card = GetCard();
+    auto showCardImages = card->GetResourceUris();
+    resourceUris.insert(resourceUris.end(), showCardImages.begin(), showCardImages.end());
+    return;
 }

@@ -38,11 +38,7 @@ public class Image extends BaseCardElement {
   }
 
   public Image() {
-    this(AdaptiveCardObjectModelJNI.new_Image__SWIG_0(), true);
-  }
-
-  public Image(Spacing spacing, boolean separator, String uri, ImageStyle imageStyle, ImageSize imageSize, String altText, HorizontalAlignment hAlignment) {
-    this(AdaptiveCardObjectModelJNI.new_Image__SWIG_1(spacing.swigValue(), separator, uri, imageStyle.swigValue(), imageSize.swigValue(), altText, hAlignment.swigValue()), true);
+    this(AdaptiveCardObjectModelJNI.new_Image(), true);
   }
 
   public JsonValue SerializeToJsonValue() {
@@ -96,6 +92,26 @@ public class Image extends BaseCardElement {
 
   public void SetSelectAction(BaseActionElement action) {
     AdaptiveCardObjectModelJNI.Image_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
+  }
+
+  public long GetWidth() {
+    return AdaptiveCardObjectModelJNI.Image_GetWidth(swigCPtr, this);
+  }
+
+  public void SetWidth(long value) {
+    AdaptiveCardObjectModelJNI.Image_SetWidth(swigCPtr, this, value);
+  }
+
+  public long GetHeight() {
+    return AdaptiveCardObjectModelJNI.Image_GetHeight(swigCPtr, this);
+  }
+
+  public void SetHeight(long value) {
+    AdaptiveCardObjectModelJNI.Image_SetHeight(swigCPtr, this, value);
+  }
+
+  public void GetResourceUris(StringVector resourceUris) {
+    AdaptiveCardObjectModelJNI.Image_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
   }
 
   public static Image dynamic_cast(BaseCardElement baseCardElement) {

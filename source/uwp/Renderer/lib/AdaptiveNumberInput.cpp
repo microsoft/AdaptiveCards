@@ -6,21 +6,20 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::NumberInput> numberInput = std::make_shared<AdaptiveCards::NumberInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput = std::make_shared<AdaptiveSharedNamespace::NumberInput>();
         return RuntimeClassInitialize(numberInput);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::NumberInput>& sharedNumberInput) try
+    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput) try
     {
         if (sharedNumberInput == nullptr)
         {
@@ -97,21 +96,18 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveCards::NumberInput> numberInput = std::make_shared<AdaptiveCards::NumberInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput = std::make_shared<AdaptiveSharedNamespace::NumberInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseInputElement>(numberInput)));
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(numberInput)));
 
         numberInput->SetMin(m_min);
         numberInput->SetMax(m_max);
-        numberInput->SetMax(m_value);
-
-        std::string placeholder;
-        RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
-        numberInput->SetPlaceholder(placeholder);
+        numberInput->SetValue(m_value);
+        numberInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
 
         sharedModel = numberInput;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

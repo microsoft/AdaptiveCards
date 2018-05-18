@@ -6,16 +6,14 @@
 #include "Column.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class ColumnSet : public BaseCardElement
 {
 friend class ColumnSetParser;
 public:
     ColumnSet();
-    ColumnSet(std::vector<std::shared_ptr<Column>>& columns);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::vector<std::shared_ptr<Column>>& GetColumns();
     const std::vector<std::shared_ptr<Column>>& GetColumns() const;
@@ -24,6 +22,8 @@ public:
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
     void SetLanguage(const std::string& language);
+
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
     void PopulateKnownPropertiesSet();
@@ -46,4 +46,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd
