@@ -302,10 +302,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void Image_SetHorizontalAlignment(long jarg1, Image jarg1_, int jarg2);
   public final static native long Image_GetSelectAction(long jarg1, Image jarg1_);
   public final static native void Image_SetSelectAction(long jarg1, Image jarg1_, long jarg2, BaseActionElement jarg2_);
-  public final static native long Image_GetWidth(long jarg1, Image jarg1_);
-  public final static native void Image_SetWidth(long jarg1, Image jarg1_, long jarg2);
-  public final static native long Image_GetHeight(long jarg1, Image jarg1_);
-  public final static native void Image_SetHeight(long jarg1, Image jarg1_, long jarg2);
+  public final static native long Image_GetPixelWidth(long jarg1, Image jarg1_);
+  public final static native void Image_SetPixelWidth(long jarg1, Image jarg1_, long jarg2);
+  public final static native long Image_GetPixelHeight(long jarg1, Image jarg1_);
+  public final static native void Image_SetPixelHeight(long jarg1, Image jarg1_, long jarg2);
   public final static native void Image_GetResourceUris(long jarg1, Image jarg1_, long jarg2, StringVector jarg2_);
   public final static native long Image_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Image(long jarg1);
@@ -536,8 +536,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void AdaptiveCard_SetLanguage(long jarg1, AdaptiveCard jarg1_, String jarg2);
   public final static native long AdaptiveCard_GetSelectAction(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetSelectAction(long jarg1, AdaptiveCard jarg1_, long jarg2, BaseActionElement jarg2_);
-  public final static native long AdaptiveCard_GetBody(long jarg1, AdaptiveCard jarg1_);
-  public final static native long AdaptiveCard_GetActions(long jarg1, AdaptiveCard jarg1_);
+  public final static native long AdaptiveCard_GetBody__SWIG_0(long jarg1, AdaptiveCard jarg1_);
+  public final static native long AdaptiveCard_GetActions__SWIG_0(long jarg1, AdaptiveCard jarg1_);
   public final static native long AdaptiveCard_GetResourceUris(long jarg1, AdaptiveCard jarg1_);
   public final static native int AdaptiveCard_GetElementType(long jarg1, AdaptiveCard jarg1_);
   public final static native long AdaptiveCard_DeserializeFromFile__SWIG_0(String jarg1, double jarg2, long jarg3, ElementParserRegistration jarg3_, long jarg4, ActionParserRegistration jarg4_) throws java.io.IOException;

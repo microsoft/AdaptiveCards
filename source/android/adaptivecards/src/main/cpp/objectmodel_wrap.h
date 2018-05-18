@@ -19,15 +19,15 @@ public:
     SwigDirector_BaseCardElement(JNIEnv *jenv, AdaptiveCards::CardElementType type);
     virtual ~SwigDirector_BaseCardElement();
     virtual std::string GetElementTypeString() const;
-    virtual void SetElementTypeString(std::string const value);
+    virtual void SetElementTypeString(std::string const &value);
     virtual bool GetSeparator() const;
     virtual void SetSeparator(bool const value);
     virtual AdaptiveCards::Spacing GetSpacing() const;
     virtual void SetSpacing(AdaptiveCards::Spacing const value);
     virtual std::string GetId() const;
-    virtual void SetId(std::string const value);
+    virtual void SetId(std::string const &value);
     virtual AdaptiveCards::CardElementType const GetElementType() const;
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() const;
     virtual void GetResourceUris(std::vector< std::string > &resourceUris);
 public:
     bool swig_overrides(int n) {
@@ -44,15 +44,15 @@ public:
     SwigDirector_BaseActionElement(JNIEnv *jenv, AdaptiveCards::ActionType type);
     virtual ~SwigDirector_BaseActionElement();
     virtual std::string GetElementTypeString() const;
-    virtual void SetElementTypeString(std::string const value);
+    virtual void SetElementTypeString(std::string const &value);
     virtual std::string GetTitle() const;
-    virtual void SetTitle(std::string const value);
+    virtual void SetTitle(std::string const &value);
     virtual std::string GetId() const;
-    virtual void SetId(std::string const value);
+    virtual void SetId(std::string const &value);
     virtual std::string GetIconUrl() const;
     virtual void SetIconUrl(std::string const &value);
     virtual AdaptiveCards::ActionType const GetElementType() const;
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() const;
     virtual void GetResourceUris(std::vector< std::string > &resourceUris);
 public:
     bool swig_overrides(int n) {

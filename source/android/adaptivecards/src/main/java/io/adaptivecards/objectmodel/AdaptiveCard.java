@@ -105,11 +105,11 @@ public class AdaptiveCard {
   }
 
   public BaseCardElementVector GetBody() {
-    return new BaseCardElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetBody(swigCPtr, this), false);
+    return new BaseCardElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetBody__SWIG_0(swigCPtr, this), false);
   }
 
   public BaseActionElementVector GetActions() {
-    return new BaseActionElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions(swigCPtr, this), false);
+    return new BaseActionElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions__SWIG_0(swigCPtr, this), false);
   }
 
   public StringVector GetResourceUris() {
