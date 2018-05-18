@@ -48,7 +48,7 @@ uploadArchives {
                 }
                 pom {
                     setGroupId "io.adaptivecards"
-                    setVersion '1.0.1'
+                    setVersion '1.0.2'
                 }
 
                 pom.project {
