@@ -60,6 +60,7 @@ using namespace AdaptiveCards;
 - (instancetype)init:(ACOAdaptiveCard *)card
           hostconfig:(ACOHostConfig *)config
      widthConstraint:(float)width
+adaptiveCardDelegate:(id<ACRActionDelegate>)delegate
 {
     self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
     if(self){
@@ -67,6 +68,7 @@ using namespace AdaptiveCards;
         if(config){
             _hostConfig = config;
         }
+        self.acrActionDelegate = delegate;
         [self render];
     }
     return self;
@@ -118,7 +120,6 @@ using namespace AdaptiveCards;
             [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
         }
     }
-    [self callDidLoadElementsIfNeeded];
     return newView;
 }
 
@@ -137,9 +138,9 @@ using namespace AdaptiveCards;
 {
     if (!_numberOfRunningTasks && _seenAllElements == YES){
         // Call back app with didLoadElements
-        if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)])
+        if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements:)])
         {
-            [[self acrActionDelegate] didLoadElements];
+            [[self acrActionDelegate] didLoadElements: self];
         }
     }
 }

@@ -17,6 +17,7 @@
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "ACRViewController.h"
+#import "ACRActionDelegate.h"
 
 using namespace AdaptiveCards;
 
@@ -30,14 +31,18 @@ using namespace AdaptiveCards;
 
 // This interface is exposed to outside, and returns ACRRenderResult object
 // This object contains a viewController instance which defer rendering adaptiveCard until viewDidLoad is called.
-+ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width
++ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width delegate:(id<ACRActionDelegate>)delegate
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
     // Initializes ACRView instance with HostConfig and AdaptiveCard
     // ACRViewController does not render adaptiveCard until viewDidLoad calls render
-    ACRView *view = [[ACRView alloc] init:card hostconfig:config widthConstraint:width];
+    ACRView *view = [[ACRView alloc] init:card
+                               hostconfig:config
+                          widthConstraint:width
+                     adaptiveCardDelegate:delegate];
     result.view = view;
     result.succeeded = YES;
+    [result.view callDidLoadElementsIfNeeded];
     return result;
 }
 
@@ -67,10 +72,6 @@ using namespace AdaptiveCards;
     if(!body.empty())
     {
         [rootView addTasksToConcurrentQueue:body];
-        // addTasksToConcurrentQueue spawns concurrent tasks, this flag indicates that
-        // all tasks have been added to work queues, and is needed for complete notification to work properly
-        rootView.seenAllElements = YES;
-
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
         [verticalView setStyle:style];
@@ -85,6 +86,10 @@ using namespace AdaptiveCards;
         [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
         // renders buttons and their associated actions
         [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
+        
+        // addTasksToConcurrentQueue spawns concurrent tasks, this flag indicates that
+        // all tasks have been added to work queues, and is needed for complete notification to work properly
+        rootView.seenAllElements = YES;
     }
     
     return verticalView;

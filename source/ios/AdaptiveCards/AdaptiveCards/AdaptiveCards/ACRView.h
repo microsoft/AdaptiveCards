@@ -17,7 +17,10 @@
 @property (weak) id<ACRActionDelegate>acrActionDelegate;
 @property BOOL seenAllElements;
 
-- (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config widthConstraint:(float)width;
+- (instancetype)init:(ACOAdaptiveCard *)card
+          hostconfig:(ACOHostConfig *)config
+     widthConstraint:(float)width
+adaptiveCardDelegate:(id<ACRActionDelegate>)delegate;
 
 - (NSMutableDictionary *)getImageMap;
 
@@ -32,6 +35,8 @@
 - (ACOAdaptiveCard *)card;
 
 - (UIView *)render;
+
+- (void)callDidLoadElementsIfNeeded;
 
 + (void) setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config;
 @end

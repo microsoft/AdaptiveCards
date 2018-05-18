@@ -207,18 +207,18 @@
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
 
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:300];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:300 delegate:self];
     }	
-    
+    /*
     if(renderResult.succeeded)
     {
         ACRView *ad = renderResult.view;
-        ad.acrActionDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
 
         self.curView = ad;
     }
+     */
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -281,10 +281,13 @@
     NSLog(@"Http Request fetched: %@", request);    
 }
 
-- (void)didLoadElements
+- (void)didLoadElements:(ACRView *)view
 {
-    [_scrView addSubview:self.curView];
-    UIView *view = self.curView;
+    if(self.curView)
+        [self.curView removeFromSuperview];
+    
+    self.curView = view;
+    [_scrView addSubview:view];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     
     [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;

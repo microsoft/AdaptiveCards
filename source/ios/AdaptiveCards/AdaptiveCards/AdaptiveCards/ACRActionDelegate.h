@@ -9,6 +9,8 @@
 #import "ACOAdaptiveCard.h"
 #import "ACOBaseActionElement.h"
 
+@class ACRView;
+
 @protocol ACRActionDelegate <NSObject>
 
 - (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action;
@@ -16,6 +18,6 @@
 - (void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)naviationController;
 
 @optional
-- (void)didLoadElements;
+- (void)didLoadElements:(ACRView *)view;
 
 @end
