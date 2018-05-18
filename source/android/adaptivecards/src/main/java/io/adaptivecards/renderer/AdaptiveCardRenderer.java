@@ -280,15 +280,6 @@ public class AdaptiveCardRenderer
             ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
         }
 
-        if (viewGroup != null && hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Horizontal.swigValue())
-        {
-            HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
-            horizontalScrollView.setHorizontalScrollBarEnabled(false);
-            viewGroup.removeView(actionButtonsLayout);
-            horizontalScrollView.addView(actionButtonsLayout);
-            viewGroup.addView(horizontalScrollView);
-        }
-
         if (i >= maxActions && size != maxActions)
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
