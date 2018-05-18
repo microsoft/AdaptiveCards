@@ -18,7 +18,7 @@ public:
     virtual ~BaseCardElement();
 
     virtual std::string GetElementTypeString() const;
-    virtual void SetElementTypeString(const std::string value);
+    virtual void SetElementTypeString(const std::string &value);
 
     virtual bool GetSeparator() const;
     virtual void SetSeparator(const bool value);
@@ -27,18 +27,18 @@ public:
     virtual void SetSpacing(const Spacing value);
 
     virtual std::string GetId() const;
-    virtual void SetId(const std::string value);
+    virtual void SetId(const std::string &value);
 
     virtual const CardElementType GetElementType() const;
 
-    std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    std::string Serialize() const;
+    virtual Json::Value SerializeToJsonValue() const;
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
-    Json::Value GetAdditionalProperties();
-    void SetAdditionalProperties(Json::Value additionalProperties);
+    Json::Value GetAdditionalProperties() const;
+    void SetAdditionalProperties(const Json::Value &additionalProperties);
 
     virtual void GetResourceUris(std::vector<std::string>& resourceUris);
 

@@ -25,7 +25,7 @@ DateTimePreparser::DateTimePreparser() :
 {
 }
 
-DateTimePreparser::DateTimePreparser(std::string in)
+DateTimePreparser::DateTimePreparser(std::string const &in)
 {
     ParseDateTime(in);
 }
@@ -35,12 +35,12 @@ std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparser::GetTextT
     return m_textTokenCollection;
 }
 
-bool DateTimePreparser::HasDateTokens()
+bool DateTimePreparser::HasDateTokens() const
 {
     return m_hasDateTokens;
 }
 
-void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddTextToken(std::string const &text, DateTimePreparsedTokenFormat format)
 {
     if (!text.empty())
     {
@@ -48,13 +48,13 @@ void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFor
     }
 }
 
-void DateTimePreparser::AddDateToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddDateToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format)
 {
     m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, date, format));
     m_hasDateTokens = true;
 }
 
-std::string DateTimePreparser::Concatenate()
+std::string DateTimePreparser::Concatenate() const
 {
     std::string formedString;
     for (const auto& piece : m_textTokenCollection)
@@ -89,7 +89,7 @@ bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours,
     return false;
 }
 
-void DateTimePreparser::ParseDateTime(std::string in)
+void DateTimePreparser::ParseDateTime(std::string const &in)
 {
     std::vector<DateTimePreparsedToken> sections;
 

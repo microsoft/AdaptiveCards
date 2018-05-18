@@ -213,6 +213,13 @@ public class AdaptiveCardRenderer
             loaderAsync.execute(imageUrl);
         }
 
+        BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
+        if (selectAction != null)
+        {
+            rootLayout.setClickable(true);
+            rootLayout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, selectAction, cardActionHandler));
+        }
+
         return rootLayout;
     }
 
@@ -235,7 +242,8 @@ public class AdaptiveCardRenderer
             actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         }
 
-        if (hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Vertical.swigValue())
+        int actionButtonsLayoutOrientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
         {
             actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
         }
@@ -251,7 +259,17 @@ public class AdaptiveCardRenderer
 
         if (viewGroup != null)
         {
-            viewGroup.addView(actionButtonsLayout);
+            if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
+            {
+                HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
+                actionButtonsContainer.setHorizontalScrollBarEnabled(false);
+                actionButtonsContainer.addView(actionButtonsLayout);
+                viewGroup.addView(actionButtonsContainer);
+            }
+            else
+            {
+                viewGroup.addView(actionButtonsLayout);
+            }
         }
 
         int i = 0;

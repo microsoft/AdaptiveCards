@@ -51,7 +51,7 @@ std::string ChoiceInput::GetTitle() const
     return m_title;
 }
 
-void ChoiceInput::SetTitle(const std::string title)
+void ChoiceInput::SetTitle(const std::string &title)
 {
     m_title = title;
 }
@@ -61,7 +61,7 @@ std::string ChoiceInput::GetValue() const
     return m_value;
 }
 
-void ChoiceInput::SetValue(const std::string value)
+void ChoiceInput::SetValue(const std::string &value)
 {
     m_value = value;
 }

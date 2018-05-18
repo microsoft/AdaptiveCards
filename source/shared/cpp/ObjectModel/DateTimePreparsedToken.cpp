@@ -7,11 +7,11 @@ DateTimePreparsedToken::DateTimePreparsedToken() : m_text(""), m_format(DateTime
 {
 }
 
-DateTimePreparsedToken::DateTimePreparsedToken(std::string text, DateTimePreparsedTokenFormat format) : m_text(text), m_format(format)
+DateTimePreparsedToken::DateTimePreparsedToken(std::string const &text, DateTimePreparsedTokenFormat format) : m_text(text), m_format(format)
 {
 }
 
-DateTimePreparsedToken::DateTimePreparsedToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format) :
+DateTimePreparsedToken::DateTimePreparsedToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format) :
     m_text(text), m_date(date), m_format(format)
 {
 }

@@ -24,4 +24,8 @@
 
 - (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser;
 
+- (BOOL) isElementRendererOverriden:(ACRCardElementType)cardElementType;
+
+- (BOOL) isActionRendererOverriden:(NSNumber *)cardElementType;
+
 @end

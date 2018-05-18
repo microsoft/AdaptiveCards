@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Adaptive Cards Designer (preview)</title>
+        <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
+    
+        <script src="editor/monaco/min/vs/loader.js"></script>
+        <script src="editor/monaco-loader.js"></script>
+    
+        <script src="dist/adaptivecards-designer.js"></script>
+
+        <link rel="stylesheet" href="css/app.css" type="text/css" />
+        <link rel="stylesheet" href="css/adaptivecards-default.css" type="text/css" />
+        <link rel="stylesheet" href="css/card-designer.css" type="text/css" />
+        <link rel="stylesheet" href="css/adaptivecards-controls.css" type="text/css"/>
+    </head>
+    <body>
+        <div style="display: flex; flex-direction: column; height: 100%;">
+            <div id="header" style="flex: 0 0 auto; background-color: black; display: flex; align-items: center;">
+                <img src="./assets/adaptive-card-square-150.png" style="flex: 0 0 48px; height: 48px; margin-right: 20px;"/>
+                <span style="color: white; font-size: 22px;">Adaptive Cards Designer (preview)</span>
+            </div>
+            <div id="toolbar" style="flex: 0 0 auto; background-color: #F1F1F1; display: flex; align-items: center; border-bottom: 1px solid #D2D2D2; padding: 0 20px 0 20px;">
+                <span style="color: black;">Host:</span>
+                <div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 16px 0px 8px;"></div>
+                <div id="btnNewCard" class="toolbar-button toolbar-icon-card" title="Start a new card from scratch">New card</div>
+            </div>
+            <div style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
+                <div style="flex: 1 0 150px; padding: 10px; border-right: 1px solid #D2D2D2; overflow-y: auto;">
+                    <div id="toolPalette"></div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
+                    <div style="display: flex; flex: 1 1 100%; overflow: auto;">
+                        <div style="flex: 1 1 70%; padding: 10px 40px 10px 10px; overflow: auto; background-color: #F6F6F6;">
+                            <div id="designerHost" style="margin: 10px 30px 30px 10px;"></div>
+                        </div>
+                        <div id="verticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
+                        <div id="propertySheetHost" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto; padding: 10px;"></div>
+                    </div>
+                    <div id="horizontalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-top: 1px solid #D2D2D2; border-bottom: 1px solid #D2D2D2; cursor: ns-resize;"></div>
+                    <div id="jsonEditorHost" style="flex: 0 0 auto; display: flex; height: 300px; overflow: hidden;">
+                        <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
