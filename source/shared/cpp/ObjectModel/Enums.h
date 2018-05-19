@@ -27,7 +27,7 @@ struct CaseInsensitiveEqualTo {
 
 struct CaseInsensitiveHash {
     size_t operator() (const std::string& keyval) const {
-        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, char c) { return acc + static_cast<size_t>(std::tolower(c)); });
+        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, char c) { return acc + static_cast<size_t>(std::toupper(c)); });
     }
 };
 
@@ -316,6 +316,12 @@ enum class IconPlacement
     LeftOfTitle
 };
 
+enum class HeightType
+{
+    Auto = 0,
+    Stretch
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 
@@ -324,6 +330,9 @@ CardElementType CardElementTypeFromString(const std::string& elementType);
 
 const std::string ActionTypeToString(ActionType actionType);
 ActionType ActionTypeFromString(const std::string& actionType);
+
+const std::string HeightTypeToString(HeightType heightType);
+HeightType HeightTypeFromString(const std::string& heightType);
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);

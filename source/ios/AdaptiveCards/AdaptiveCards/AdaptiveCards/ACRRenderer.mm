@@ -64,8 +64,7 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
     
-    if(!body.empty())
-    {
+    if(!body.empty()) {
         [rootView addTasksToConcurrentQueue:body];
         // addTasksToConcurrentQueue spawns concurrent tasks, this flag indicates that
         // all tasks have been added to work queues, and is needed for complete notification to work properly
@@ -81,10 +80,12 @@ using namespace AdaptiveCards;
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
         [rootView addActionsToConcurrentQueue:actions];
-
         [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
-        // renders buttons and their associated actions
-        [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
+        if(!actions.empty()) {
+            // renders buttons and their associated actions
+            [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
+        }
+        [verticalView adjustHuggingForLastElement];
     }
     
     return verticalView;

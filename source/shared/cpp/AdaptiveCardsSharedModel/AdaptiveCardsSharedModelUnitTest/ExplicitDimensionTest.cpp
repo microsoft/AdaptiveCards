@@ -37,9 +37,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
             std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image =  std::static_pointer_cast<Image>(elem);
-            int width = image->GetWidth();
+            int width = image->GetPixelWidth();
             Assert::AreEqual(10, width);
-            int height = image->GetHeight();
+            int height = image->GetPixelHeight();
             Assert::AreEqual(50, height);
         }
         TEST_METHOD(PositiveTestWithOneDimensionOnly)
@@ -60,9 +60,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
             std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image =  std::static_pointer_cast<Image>(elem);
-            int height = image->GetHeight();
+            int height = image->GetPixelHeight();
             Assert::AreEqual(10, height);
-            int width = image->GetWidth();
+            int width = image->GetPixelWidth();
             Assert::AreEqual(0, width);
         }
 

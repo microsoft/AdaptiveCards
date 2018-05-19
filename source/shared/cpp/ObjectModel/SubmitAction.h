@@ -15,7 +15,7 @@ public:
     Json::Value GetDataJsonAsValue() const;
     void SetDataJson(const Json::Value &value);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
 private:
     void PopulateKnownPropertiesSet();

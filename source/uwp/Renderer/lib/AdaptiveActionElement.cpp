@@ -18,16 +18,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-
-        std::wstring iconUrl = StringToWstring(sharedModel->GetIconUrl());
-        if (!iconUrl.empty())
-        {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(iconUrl.c_str()).Get(), m_iconUrl.GetAddressOf()));
-        }
+        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
 
         return S_OK;
     }
@@ -52,15 +43,16 @@ AdaptiveNamespaceStart
         return m_id.Set(id);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_IconUrl(IUriRuntimeClass** iconUrl)
+    _Use_decl_annotations_
+        HRESULT AdaptiveActionElementBase::get_IconUrl(HSTRING* iconUrl)
     {
         return m_iconUrl.CopyTo(iconUrl);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_IconUrl(IUriRuntimeClass* iconUrl)
+    _Use_decl_annotations_
+        HRESULT AdaptiveActionElementBase::put_IconUrl(HSTRING iconUrl)
     {
-        m_iconUrl = iconUrl;
-        return S_OK;
+        return m_iconUrl.Set(iconUrl);
     }
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
@@ -92,16 +84,7 @@ AdaptiveNamespaceStart
     {
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
-        
-        if (m_iconUrl != nullptr)
-        {
-            HString urlTemp;
-            m_iconUrl->get_AbsoluteUri(urlTemp.GetAddressOf());
-
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-            sharedCardElement->SetIconUrl(urlString);
-        }
+        sharedCardElement->SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
 
         if (m_additionalProperties != nullptr)
         {

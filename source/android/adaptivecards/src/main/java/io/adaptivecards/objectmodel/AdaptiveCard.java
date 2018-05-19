@@ -39,12 +39,12 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_0(), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, fallbackText, backgroundImage, style.swigValue(), speak, language), true);
+  public AdaptiveCard(String version, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language, HeightType height) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, fallbackText, backgroundImage, style.swigValue(), speak, language, height.swigValue()), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, fallbackText, backgroundImage, style.swigValue(), speak, language, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language, HeightType height, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, fallbackText, backgroundImage, style.swigValue(), speak, language, height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -95,6 +95,14 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetLanguage(swigCPtr, this, value);
   }
 
+  public HeightType GetHeight() {
+    return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCard_GetHeight(swigCPtr, this));
+  }
+
+  public void SetHeight(HeightType value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetHeight(swigCPtr, this, value.swigValue());
+  }
+
   public BaseActionElement GetSelectAction() {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetSelectAction(swigCPtr, this);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
@@ -105,11 +113,11 @@ public class AdaptiveCard {
   }
 
   public BaseCardElementVector GetBody() {
-    return new BaseCardElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetBody(swigCPtr, this), false);
+    return new BaseCardElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetBody__SWIG_0(swigCPtr, this), false);
   }
 
   public BaseActionElementVector GetActions() {
-    return new BaseActionElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions(swigCPtr, this), false);
+    return new BaseActionElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions__SWIG_0(swigCPtr, this), false);
   }
 
   public StringVector GetResourceUris() {

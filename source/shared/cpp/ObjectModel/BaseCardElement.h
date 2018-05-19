@@ -12,33 +12,36 @@ class Container;
 class BaseCardElement
 {
 public:
-    BaseCardElement(CardElementType type, Spacing spacing, bool separator);
+    BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
     BaseCardElement(CardElementType type);
 
     virtual ~BaseCardElement();
 
     virtual std::string GetElementTypeString() const;
-    virtual void SetElementTypeString(const std::string value);
+    virtual void SetElementTypeString(const std::string &value);
 
     virtual bool GetSeparator() const;
     virtual void SetSeparator(const bool value);
+
+    HeightType GetHeight() const;
+    void SetHeight(const HeightType value);
 
     virtual Spacing GetSpacing() const;
     virtual void SetSpacing(const Spacing value);
 
     virtual std::string GetId() const;
-    virtual void SetId(const std::string value);
+    virtual void SetId(const std::string &value);
 
     virtual const CardElementType GetElementType() const;
 
-    std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    std::string Serialize() const;
+    virtual Json::Value SerializeToJsonValue() const;
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
-    Json::Value GetAdditionalProperties();
-    void SetAdditionalProperties(Json::Value additionalProperties);
+    Json::Value GetAdditionalProperties() const;
+    void SetAdditionalProperties(const Json::Value &additionalProperties);
 
     virtual void GetResourceUris(std::vector<std::string>& resourceUris);
 
@@ -56,6 +59,7 @@ private:
     std::string m_typeString;
     bool m_separator;
     Json::Value m_additionalProperties;
+    HeightType m_height;
 };
 
 template <typename T>
@@ -70,6 +74,8 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString)); 
     baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
     baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
+    baseCardElement->SetHeight(
+        ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
 
     // Walk all properties and put any unknown ones in the additional properties json
     for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)

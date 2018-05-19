@@ -24,6 +24,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject);
 
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height);
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height);
+
         IFACEMETHODIMP ToJson(ABI::Windows::Data::Json::IJsonObject** result);
 
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedCardElement);
@@ -36,5 +39,6 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::Spacing m_spacing;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
+        ABI::AdaptiveNamespace::HeightType m_height;
     };
 AdaptiveNamespaceEnd

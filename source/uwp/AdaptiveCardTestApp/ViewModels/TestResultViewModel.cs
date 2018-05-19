@@ -44,7 +44,7 @@ namespace AdaptiveCardTestApp.ViewModels
 
         public bool DidHostConfigChange => _oldHostConfigHash != null && _oldHostConfigHash != HostConfigFile.Hash;
         public bool DidCardPayloadChange => _oldCardHash != null && _oldCardHash != CardFile.Hash;
-        public bool DidRoundtrippedJsonChange => ExpectedRoundtrippedJsonModel.Hash != RoundtrippedJsonModel.Hash;
+        public bool DidRoundtrippedJsonChange => ExpectedRoundtrippedJsonModel != null && ExpectedRoundtrippedJsonModel.Hash != RoundtrippedJsonModel.Hash;
 
         private StorageFolder _expectedFolder;
         private StorageFolder _sourceHostConfigsFolder;

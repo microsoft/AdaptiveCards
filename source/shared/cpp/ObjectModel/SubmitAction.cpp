@@ -24,7 +24,7 @@ void SubmitAction::SetDataJson(const Json::Value &value)
     m_dataJson = value;
 }
 
-Json::Value SubmitAction::SerializeToJsonValue()
+Json::Value SubmitAction::SerializeToJsonValue() const
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
 
