@@ -412,6 +412,19 @@ AdaptiveNamespaceStart
     [contract(InternalContract, 1)]
     [internal]
 #endif
+    typedef [v1_enum] enum VerticalContentAlignment
+    {
+        Stretch = 0,
+        Top,
+        Center,
+        Bottom
+    } VerticalContentAlignment;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum HeightType
     {
         Auto = 0,
@@ -603,6 +616,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
 
         [propget] HRESULT Height([out, retval] HeightType* value);
         [propput] HRESULT Height([in] HeightType value);
@@ -1102,6 +1118,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
 
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
+
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
@@ -1143,6 +1162,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
+
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
 
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);

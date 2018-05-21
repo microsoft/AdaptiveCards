@@ -18,6 +18,7 @@ AdaptiveCard::AdaptiveCard(std::string const &version,
     ContainerStyle style,
     std::string const &speak,
     std::string const &language,
+    VerticalContentAlignment verticalContentAlignment,
     HeightType height) :
     m_version(version),
     m_fallbackText(fallbackText),
@@ -25,6 +26,7 @@ AdaptiveCard::AdaptiveCard(std::string const &version,
     m_speak(speak),
     m_style(style),
     m_language(language),
+    m_verticalContentAlignment(verticalContentAlignment),
     m_height(height)
 {
 }
@@ -35,6 +37,7 @@ AdaptiveCard::AdaptiveCard(std::string const &version,
     ContainerStyle style,
     std::string const &speak,
     std::string const &language,
+    VerticalContentAlignment verticalContentAlignment,
     HeightType height,
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
@@ -43,6 +46,7 @@ AdaptiveCard::AdaptiveCard(std::string const &version,
     m_speak(speak),
     m_style(style),
     m_language(language),
+    m_verticalContentAlignment(verticalContentAlignment),
     m_height(height),
     m_body(body),
     m_actions(actions)
@@ -125,6 +129,8 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
         ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
+    VerticalContentAlignment verticalContentAlignment = ParseUtil::GetEnumValue<VerticalContentAlignment>(json, AdaptiveCardSchemaKey::VerticalContentAlignment, 
+        VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString);
     HeightType height = ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString);
 
     if (elementParserRegistration == nullptr)
@@ -141,7 +147,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false);
 
-    auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, height, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, verticalContentAlignment, height, body, actions);
     result->SetLanguage(language);
 
     // Parse optional selectAction
@@ -193,6 +199,10 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
     }
+    if (m_verticalContentAlignment != VerticalContentAlignment::Stretch)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
+    }
 
     HeightType height = GetHeight();
     if (height != HeightType::Auto)
@@ -227,7 +237,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
     const std::string& language)
 #endif // __ANDROID__
 {
-    std::shared_ptr<AdaptiveCard> fallbackCard = std::make_shared<AdaptiveCard>("1.0", fallbackText, "", ContainerStyle::Default, "", language, HeightType::Auto);
+    std::shared_ptr<AdaptiveCard> fallbackCard = std::make_shared<AdaptiveCard>("1.0", fallbackText, "", ContainerStyle::Default, "", language, VerticalContentAlignment::Stretch, HeightType::Auto);
 
     std::shared_ptr<TextBlock> textBlock = std::make_shared<TextBlock>();
     textBlock->SetText(fallbackText);
@@ -361,6 +371,16 @@ std::shared_ptr<BaseActionElement> AdaptiveCard::GetSelectAction() const
 void AdaptiveCard::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 {
     m_selectAction = action;
+}
+
+VerticalContentAlignment AdaptiveCard::GetVerticalContentAlignment() const
+{
+    return m_verticalContentAlignment;
+}
+
+void AdaptiveCard::SetVerticalContentAlignment(const VerticalContentAlignment value)
+{
+    m_verticalContentAlignment = value;
 }
 
 std::vector<std::string> AdaptiveCards::AdaptiveCard::GetResourceUris()

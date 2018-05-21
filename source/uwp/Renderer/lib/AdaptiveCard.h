@@ -38,6 +38,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
         IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
+        IFACEMETHODIMP get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment);
+        IFACEMETHODIMP put_VerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment);
+
         IFACEMETHODIMP get_Body(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>** body);
 
         IFACEMETHODIMP get_Actions(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>** actions);
@@ -74,6 +77,7 @@ AdaptiveNamespaceStart
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
+        ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
     };
 
     class AdaptiveCardStaticsImpl WrlFinal
