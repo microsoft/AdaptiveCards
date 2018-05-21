@@ -146,7 +146,7 @@ using namespace AdaptiveCards;
 - (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
 {
     ACRRegistration *rendererRegistration = [ACRRegistration getInstance];
-    
+
     for(auto &elem : body)
     {
         if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) elem->GetElementType()] == YES){
@@ -275,6 +275,7 @@ using namespace AdaptiveCards;
         }
     }
 }
+
 
 - (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
                     elementType:(CardElementType)elementType
@@ -556,4 +557,5 @@ using namespace AdaptiveCards;
     }
     [button addSubview:imageView];
 }
+
 @end
