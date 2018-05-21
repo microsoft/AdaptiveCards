@@ -113,8 +113,8 @@ class PaletteItem extends Designer.DraggableElement {
         return this.internalRender();
     }
 
-    createPeer(): Designer.CardElementPeer {
-        var peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(null, this.typeRegistration.createInstance());
+    createPeer(designer: Designer.CardDesigner, ): Designer.CardElementPeer {
+        var peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(designer, null, this.typeRegistration.createInstance());
         peer.initializeCardElement();
 
         return peer;
@@ -328,7 +328,7 @@ class DesignerApp {
         let peerDropped = false;
 
         if (this._draggedPaletteItem && isPointerOverDesigner) {
-            let peer = this._draggedPaletteItem.createPeer();
+            let peer = this._draggedPaletteItem.createPeer(this.designer);
 
             let clientCoordinates = this.designer.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
 
