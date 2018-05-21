@@ -148,7 +148,7 @@ using namespace AdaptiveCards;
 - (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
 {
     ACRRegistration *rendererRegistration = [ACRRegistration getInstance];
-    
+
     for(auto &elem : body)
     {
         if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) elem->GetElementType()] == YES){
@@ -264,19 +264,19 @@ using namespace AdaptiveCards;
 }
 
 // Walk through the actions found and process them concurrently
-- (void)addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions
-{
-    // Move this to a different function
-    for(auto &action : actions)
-    {
-        std::string iconUrl = action->GetIconUrl();
-        if(!iconUrl.empty())
-        {
-            [self tagBaseActionElement:action];
-            [self processActionWithIconConcurrently:action];
-        }
-    }
-}
+//- (void)addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions
+//{
+//    // Move this to a different function
+//    for(auto &action : actions)
+//    {
+//        std::string iconUrl = action->GetIconUrl();
+//        if(!iconUrl.empty())
+//        {
+//            [self tagBaseActionElement:action];
+//            [self processActionWithIconConcurrently:action];
+//        }
+//    }
+//}
 
 - (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
                     elementType:(CardElementType)elementType
