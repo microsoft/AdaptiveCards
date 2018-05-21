@@ -105,9 +105,9 @@
     valueStack.axis = UILayoutConstraintAxisVertical;
 
     ACRColumnSetView *factSetWrapperView = [[ACRColumnSetView alloc] init];
-    [factSetWrapperView addArrangedSubview:titleStack];  
+    [factSetWrapperView addArrangedSubview:titleStack];
     [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
-    [factSetWrapperView addArrangedSubview:valueStack];    
+    [factSetWrapperView addArrangedSubview:valueStack];
     [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
 
     [factSetWrapperView adjustHuggingForLastElement];
@@ -123,12 +123,17 @@
                                                   rootView:rootView
                                                    element:elem];
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         titleLab.isTitle = YES;
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->factSet.title.maxWidth];
+        constraint.active = YES;
+        constraint.priority = UILayoutPriorityDefaultHigh;
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
         UILabel *valueLab = [ACRFactSetRenderer buildLabel:value
                                                 hostConfig:acoConfig
                                                 textConfig:config->factSet.value
-                                            containerStyle:style        
+                                            containerStyle:style
                                                  elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                                   rootView:rootView
                                                    element:elem];
