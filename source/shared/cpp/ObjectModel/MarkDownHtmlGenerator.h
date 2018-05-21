@@ -18,11 +18,11 @@ enum DelimiterType
     Asterisk,
 };
 
-// this class knows how to generate html string of their types 
-// - MarkDownStringHtmlGenerator 
+// this class knows how to generate html string of their types
+// - MarkDownStringHtmlGenerator
 //   it is the most basic form,
 //   it simply retains and return text as string
-// - MarkDownEmphasisHtmlGenerator 
+// - MarkDownEmphasisHtmlGenerator
 //   it knows how to handle bold and italic html
 //   tags and apply those to its text when asked to generate html string
 // - MarkDownListHtmlGenerator
@@ -45,7 +45,7 @@ class MarkDownHtmlGenerator
         void MakeItTail() { m_isTail = true; }
         virtual bool IsNewLine() { return false; }
         virtual std::string GenerateHtmlString() = 0;
-        virtual MarkDownBlockType GetBlockType() const { return ContainerBlock; }; 
+        virtual MarkDownBlockType GetBlockType() const { return ContainerBlock; };
     protected:
         std::string m_token;
         std::ostringstream html;
@@ -53,64 +53,64 @@ class MarkDownHtmlGenerator
         bool m_isTail = false;
 };
 
-// - MarkDownStringHtmlGenerator 
+// - MarkDownStringHtmlGenerator
 //   it is the most basic form,
 //   it simply retains and return text as string
 class MarkDownStringHtmlGenerator : public MarkDownHtmlGenerator
-{ 
+{
     public:
         MarkDownStringHtmlGenerator(std::string &token) : MarkDownHtmlGenerator(token){};
         std::string GenerateHtmlString();
 };
 
-// - MarkDownNewLineHtmlGenerator 
+// - MarkDownNewLineHtmlGenerator
 //   it contains new line chars
-class MarkDownNewLineHtmlGenerator : public MarkDownStringHtmlGenerator 
-{ 
+class MarkDownNewLineHtmlGenerator : public MarkDownStringHtmlGenerator
+{
     public:
         MarkDownNewLineHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token){};
         bool IsNewLine() { return true; }
 };
 
-// - MarkDownEmphasisHtmlGenerator 
+// - MarkDownEmphasisHtmlGenerator
 //   it knows how to handle bold and italic html
 //   tags and apply those to its text when asked to generate html string
 class MarkDownEmphasisHtmlGenerator : public MarkDownHtmlGenerator
 {
     public:
-        MarkDownEmphasisHtmlGenerator(std::string &token, 
+        MarkDownEmphasisHtmlGenerator(std::string &token,
                 int sizeOfEmphasisDelimiterRun,
                 DelimiterType type
-                ) : MarkDownHtmlGenerator(token), 
+                ) : MarkDownHtmlGenerator(token),
         m_numberOfUnusedDelimiters(sizeOfEmphasisDelimiterRun), type(type){};
 
-        MarkDownEmphasisHtmlGenerator(std::string &token, 
+        MarkDownEmphasisHtmlGenerator(std::string &token,
                 int sizeOfEmphasisDelimiterRun,
                 DelimiterType type,
                 std::vector<std::string> &tags
-                ) : MarkDownHtmlGenerator(token), 
+                ) : MarkDownHtmlGenerator(token),
         m_numberOfUnusedDelimiters(sizeOfEmphasisDelimiterRun), type(type), m_tags(tags){};
 
         virtual bool IsRightEmphasis() const { return false; }
         virtual bool IsLeftEmphasis() const  { return false; }
         virtual bool IsLeftAndRightEmphasis() const { return false; }
-        virtual void PushItalicTag(); 
-        virtual void PushBoldTag(); 
+        virtual void PushItalicTag();
+        virtual void PushBoldTag();
 
-        bool IsMatch(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token);
-        bool IsSameType(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token);
+        bool IsMatch(const MarkDownEmphasisHtmlGenerator &token);
+        bool IsSameType(const MarkDownEmphasisHtmlGenerator &token);
         bool IsDone() const { return m_numberOfUnusedDelimiters == 0; }
         int GetNumberOfUnusedDelimiters() const { return m_numberOfUnusedDelimiters; };
-        bool GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token);
+        bool GenerateTags(MarkDownEmphasisHtmlGenerator &token);
         void ReverseDirectionType() { m_directionType = !m_directionType; };
     protected:
-        enum 
+        enum
         {
             Left = 0,
             Right = 1,
         };
 
-        int AdjustEmphasisCounts(int leftOver, std::shared_ptr<MarkDownEmphasisHtmlGenerator> rightToken);
+        int AdjustEmphasisCounts(int leftOver, MarkDownEmphasisHtmlGenerator &rightToken);
         int m_numberOfUnusedDelimiters;
         int m_directionType = Right;
         DelimiterType type;
@@ -118,79 +118,79 @@ class MarkDownEmphasisHtmlGenerator : public MarkDownHtmlGenerator
 
 };
 
-// - MarkDownLeftEmphasisHtmlGenerator 
+// - MarkDownLeftEmphasisHtmlGenerator
 //   it knows how to generates opening italic and bold html tags
-class MarkDownLeftEmphasisHtmlGenerator : public MarkDownEmphasisHtmlGenerator 
+class MarkDownLeftEmphasisHtmlGenerator : public MarkDownEmphasisHtmlGenerator
 {
     public:
-        MarkDownLeftEmphasisHtmlGenerator (std::string &token, 
+        MarkDownLeftEmphasisHtmlGenerator (std::string &token,
                 int sizeOfEmphasisDelimiterRun,
-                DelimiterType type) : MarkDownEmphasisHtmlGenerator(token, 
+                DelimiterType type) : MarkDownEmphasisHtmlGenerator(token,
                     sizeOfEmphasisDelimiterRun, type){};
-        
-        MarkDownLeftEmphasisHtmlGenerator(std::string &token, 
+
+        MarkDownLeftEmphasisHtmlGenerator(std::string &token,
                 int sizeOfEmphasisDelimiterRun,
-                DelimiterType type, std::vector<std::string> &tags) : MarkDownEmphasisHtmlGenerator(token, 
+                DelimiterType type, std::vector<std::string> &tags) : MarkDownEmphasisHtmlGenerator(token,
                     sizeOfEmphasisDelimiterRun, type, tags){};
 
         bool IsLeftEmphasis() const  { return true; }
         std::string GenerateHtmlString();
 };
 
-// - MarkDownRightEmphasisHtmlGenerator 
+// - MarkDownRightEmphasisHtmlGenerator
 //   it knows how to generates closing italic and bold html tags
-class MarkDownRightEmphasisHtmlGenerator : public MarkDownEmphasisHtmlGenerator 
+class MarkDownRightEmphasisHtmlGenerator : public MarkDownEmphasisHtmlGenerator
 {
     public:
-        MarkDownRightEmphasisHtmlGenerator(std::string &token, 
+        MarkDownRightEmphasisHtmlGenerator(std::string &token,
                 int sizeOfEmphasisDelimiterRun,
-                DelimiterType type) : MarkDownEmphasisHtmlGenerator(token, 
+                DelimiterType type) : MarkDownEmphasisHtmlGenerator(token,
                     sizeOfEmphasisDelimiterRun, type){};
 
         void GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator> &token);
         bool IsRightEmphasis() const { return true; }
         std::string GenerateHtmlString();
-        void PushItalicTag(); 
-        void PushBoldTag(); 
+        void PushItalicTag();
+        void PushBoldTag();
 };
 
-// - MarkDownLeftAndRightEmphasisHtmlGenerator 
+// - MarkDownLeftAndRightEmphasisHtmlGenerator
 //   it can have both directions, and its final direction is determined at the later stage
-class MarkDownLeftAndRightEmphasisHtmlGenerator : public MarkDownRightEmphasisHtmlGenerator 
+class MarkDownLeftAndRightEmphasisHtmlGenerator : public MarkDownRightEmphasisHtmlGenerator
 {
     public:
-        MarkDownLeftAndRightEmphasisHtmlGenerator(std::string &token, 
+        MarkDownLeftAndRightEmphasisHtmlGenerator(std::string &token,
                 int sizeOfEmphasisDelimiterRun,
-                DelimiterType type) : MarkDownRightEmphasisHtmlGenerator(token, 
+                DelimiterType type) : MarkDownRightEmphasisHtmlGenerator(token,
                     sizeOfEmphasisDelimiterRun, type) {};
         bool IsRightEmphasis() const { return m_directionType == Right; }
         bool IsLeftEmphasis() const  { return m_directionType == Left; }
         bool IsLeftAndRightEmphasis() const { return true; };
-        void PushItalicTag(); 
-        void PushBoldTag(); 
+        void PushItalicTag();
+        void PushBoldTag();
 };
 
 // - MarkDownListHtmlGenerator
 //   it functions simmilary as MarkDownStringHtmlGenerator, but its GetBlockType() returns
 //   UnorderedList type, this is used in generating html block tags <ul>
-class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator 
+class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator
 {
     public:
         MarkDownListHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token) {};
         std::string GenerateHtmlString();
-        MarkDownBlockType GetBlockType() const { return UnorderedList; }; 
+        MarkDownBlockType GetBlockType() const { return UnorderedList; };
 };
 
 // - MarkDownUnorderedListHtmlGenerator
 //   it functions simmilary as MarkDownStringHtmlGenerator, but its GetBlockType() returns
 //   OrderedList type, this is used in generating html block tags <ol>
-class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator 
+class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator
 {
     public:
-        MarkDownOrderedListHtmlGenerator(std::string &token, std::string &number_string) : 
+        MarkDownOrderedListHtmlGenerator(std::string &token, std::string &number_string) :
             MarkDownStringHtmlGenerator(token), m_numberString(number_string) {};
         std::string GenerateHtmlString();
-        MarkDownBlockType GetBlockType() const { return OrderedList; }; 
+        MarkDownBlockType GetBlockType() const { return OrderedList; };
     private:
         std::string m_numberString;
 };
