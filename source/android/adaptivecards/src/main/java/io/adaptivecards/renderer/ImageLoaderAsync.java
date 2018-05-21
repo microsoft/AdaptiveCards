@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.view.View;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
@@ -24,7 +25,7 @@ public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpReque
     {
         try
         {
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             byte[] bytes = HttpRequestHelper.get(args[0]);
             if (bytes == null)
             {
@@ -40,6 +41,10 @@ public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpReque
             }
 
             return new HttpRequestResult<Bitmap>(bitmap);
+        }
+        catch (MalformedURLException e) {
+            // If the url is malformed, try reading it from local resources
+            return Util.tryLocalImage(m_view.getContext(), args[0]);
         }
         catch (Exception excep)
         {

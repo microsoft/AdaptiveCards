@@ -29,6 +29,7 @@ import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Vector;
 
 public class AdaptiveCardRenderer
@@ -82,6 +83,10 @@ public class AdaptiveCardRenderer
                 }
 
                 return new HttpRequestResult<>(bitmap);
+            }
+            catch (MalformedURLException e) {
+                // If the url is malformed, try reading it from local resources
+                return Util.tryLocalImage(m_context, args[0]);
             }
             catch (Exception excep)
             {
