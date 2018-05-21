@@ -163,6 +163,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetLanguage(), m_language.GetAddressOf()));
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+        m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImage.GetAddressOf()));
@@ -277,6 +278,20 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    {
+        *verticalAlignment = m_verticalAlignment;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    {
+        m_verticalAlignment = verticalAlignment;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Height(ABI::AdaptiveNamespace::HeightType* heightType)
     {
         *heightType = m_height;
@@ -311,6 +326,7 @@ AdaptiveNamespaceStart
         adaptiveCard->SetBackgroundImage(HStringToUTF8(m_backgroundImage.Get()));
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
+        adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
 
         if (m_selectAction != nullptr)
         {

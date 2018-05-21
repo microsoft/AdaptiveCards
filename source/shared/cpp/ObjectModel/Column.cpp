@@ -5,7 +5,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0), m_style(ContainerStyle::None)
+Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0), m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Stretch)
 {
     PopulateKnownPropertiesSet();
 }
@@ -51,6 +51,16 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
     return m_items;
 }
 
+VerticalContentAlignment Column::GetVerticalContentAlignment() const
+{
+    return m_verticalContentAlignment;
+}
+
+void Column::SetVerticalContentAlignment(const VerticalContentAlignment value)
+{
+    m_verticalContentAlignment = value;
+}
+
 std::string Column::Serialize() const
 {
     Json::FastWriter writer;
@@ -69,6 +79,11 @@ Json::Value Column::SerializeToJsonValue() const
     if (m_style != ContainerStyle::None)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
+    }
+
+    if (m_verticalContentAlignment != VerticalContentAlignment::Stretch)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
@@ -129,6 +144,9 @@ std::shared_ptr<Column> Column::Deserialize(
     column->SetStyle(
         ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
+    column->SetVerticalContentAlignment(
+        ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString));
+
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Items, false);
     column->m_items = std::move(cardElements);
@@ -163,6 +181,7 @@ void Column::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment));
 }
 
 void Column::SetLanguage(const std::string& language)

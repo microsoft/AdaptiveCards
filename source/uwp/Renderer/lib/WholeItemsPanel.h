@@ -39,6 +39,7 @@ AdaptiveNamespaceStart
 
             void AddElementToStretchablesList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
             bool IsUIElementInStretchableList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
+            void SetVerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
 
             // ITypePeek method
             void *PeekAt(REFIID riid) override
@@ -54,6 +55,7 @@ AdaptiveNamespaceStart
         float m_calculatedSize{};
         bool m_allElementsRendered{};
         std::set<std::string> m_stretchableItems;
+        ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.
         // Some rules such as images vertical stretching only apply for this panel

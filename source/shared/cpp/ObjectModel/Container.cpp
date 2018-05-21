@@ -6,7 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None)
+Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Stretch)
 {
     PopulateKnownPropertiesSet();
 }
@@ -46,6 +46,16 @@ void Container::SetLanguage(const std::string& value)
     PropagateLanguage(value, m_items);
 }
 
+VerticalContentAlignment Container::GetVerticalContentAlignment() const
+{
+    return m_verticalContentAlignment;
+}
+
+void Container::SetVerticalContentAlignment(const VerticalContentAlignment value)
+{
+    m_verticalContentAlignment = value;
+}
+
 Json::Value Container::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
@@ -53,6 +63,11 @@ Json::Value Container::SerializeToJsonValue() const
     if (m_style != ContainerStyle::None)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
+    }
+
+    if (m_verticalContentAlignment != VerticalContentAlignment::Stretch)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
     std::string const &itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
@@ -82,6 +97,9 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
     container->SetStyle(
         ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
+    container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment, 
+        VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString));
+
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Items, false);
     container->m_items = std::move(cardElements);
@@ -103,6 +121,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(
 void Container::PopulateKnownPropertiesSet() 
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items));
 }

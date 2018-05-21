@@ -249,6 +249,18 @@ AdaptiveNamespaceStart
 			extraPaddingPerItem = floor((finalSize.Height - m_calculatedSize) / m_stretchableItems.size());
 		}
 
+        if (m_stretchableItems.empty())
+        {
+            if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Center)
+            {
+                currentHeight = (finalSize.Height - m_calculatedSize) / 2;
+            }
+            else if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Bottom)
+            {
+                currentHeight = finalSize.Height - m_calculatedSize;
+            }
+        }
+
         for (unsigned int i{}; i < m_measuredCount; ++i)
         {
             ComPtr<IUIElement> spChild;
@@ -406,6 +418,11 @@ AdaptiveNamespaceStart
         }
 
         return false; // Couldn't get access key, weird, so it wasnt found
+    }
+
+    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment)
+    {
+        m_verticalContentAlignment = verticalContentAlignment;
     }
 
     _Check_return_ HRESULT

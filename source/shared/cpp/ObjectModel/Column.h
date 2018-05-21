@@ -42,6 +42,9 @@ public:
 
     void SetLanguage(const std::string& language);
 
+    VerticalContentAlignment GetVerticalContentAlignment() const;
+    void SetVerticalContentAlignment(const VerticalContentAlignment value);
+
     virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
@@ -52,5 +55,6 @@ private:
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;
     ContainerStyle m_style;
+    VerticalContentAlignment m_verticalContentAlignment;
 };
 AdaptiveSharedNamespaceEnd

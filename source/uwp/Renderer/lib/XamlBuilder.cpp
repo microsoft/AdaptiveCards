@@ -153,6 +153,10 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
             BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
 
+            ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
+            THROW_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
+            XamlBuilder::SetVerticalContentAlignmentToChildren(bodyElementContainer.Get(), verticalContentAlignment);
+
             ComPtr<IAdaptiveActionElement> selectAction;
             THROW_IF_FAILED(adaptiveCard->get_SelectAction(&selectAction));
 
@@ -375,7 +379,6 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(bodyElementHost.CopyTo(bodyElementContainer));
         
         XamlHelpers::AppendXamlElementToPanel(outerPanelAsPanel.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
-
         THROW_IF_FAILED(outerPanelAsPanel.CopyTo(outerElementContainer));
 
         if (m_fixedDimensions)
@@ -1806,6 +1809,11 @@ AdaptiveNamespaceStart
             }
         }
 
+        ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
+        THROW_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignment));
+
+        XamlBuilder::SetVerticalContentAlignmentToChildren(containerPanel.Get(), verticalContentAlignment);
+
         ComPtr<IUIElement> containerPanelAsUIElement;
         THROW_IF_FAILED(containerPanel.As(&containerPanelAsUIElement));
         THROW_IF_FAILED(containerBorder->put_Child(containerPanelAsUIElement.Get()));
@@ -1869,6 +1877,11 @@ AdaptiveNamespaceStart
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
         BuildPanelChildren(childItems.Get(), columnPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
+
+        ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
+        THROW_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
+
+        XamlBuilder::SetVerticalContentAlignmentToChildren(columnPanel.Get(), verticalContentAlignment);
 
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
@@ -2857,4 +2870,19 @@ AdaptiveNamespaceStart
             return args->put_Handled(TRUE);
         }).Get(), &clickToken);
     }
+
+    _Use_decl_annotations_
+    template<typename T>
+    static void XamlBuilder::SetVerticalContentAlignmentToChildren(
+        _In_ T* container,
+        _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment)
+    {
+        ComPtr<T> localContainer(container);
+        ComPtr<IWholeItemsPanel> containerAsPanel;
+        THROW_IF_FAILED(localContainer.As(&containerAsPanel));
+
+        ComPtr<WholeItemsPanel> panel = PeekInnards<WholeItemsPanel>(containerAsPanel);
+        panel->SetVerticalContentAlignment(verticalContentAlignment);
+    }
+
 AdaptiveNamespaceEnd
