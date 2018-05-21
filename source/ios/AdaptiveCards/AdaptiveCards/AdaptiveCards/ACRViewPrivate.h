@@ -15,5 +15,5 @@
 // from main thread, so images process won't block UI thread.
 - (void) addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body;
 // Different method to just handle the actions so they wont be processed multiple times
-- (void) addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &) actions;
+//- (void) addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &) actions;
 @end
