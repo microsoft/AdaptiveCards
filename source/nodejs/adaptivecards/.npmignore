@@ -1,0 +1,7 @@
+/src
+/scss
+/dist/*.map
+/lib/*.map
+/*.html
+/*.json
+/*.js

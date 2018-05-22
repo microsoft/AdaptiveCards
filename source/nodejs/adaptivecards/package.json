@@ -14,10 +14,6 @@
   ],
   "main": "lib/adaptivecards.js",
   "types": "lib/adaptivecards.d.ts",
-  "files": [
-    "lib",
-    "dist"
-  ],
   "scripts": {
     "test": "jest --forceExit --runInBand",
     "clean": "rimraf build lib dist",
