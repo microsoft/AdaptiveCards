@@ -139,6 +139,7 @@ AdaptiveNamespaceStart
             _In_ HSTRING url,
             _Inout_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
+
         template<typename T>
         void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource, ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
         template<typename T>
@@ -253,6 +254,11 @@ AdaptiveNamespaceStart
         static HRESULT SetImageSizeAsTextBlockSize(
             _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
             _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+
+        template<typename T>
+        static void SetVerticalContentAlignmentToChildren(
+            _In_ T* container, 
+            _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
 
     };
 AdaptiveNamespaceEnd

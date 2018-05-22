@@ -1,0 +1,65 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"height": "stretch",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "The left column has a very, very long text which makes it very tall. Because it is tall, the right column is also very tall. The right column contains two TextBlocks; one is displaying at the top of the column, while the other one is displayed at the bottom. That is achieved by setting the first TextBlock's **height** property to **stretch**. The left column has a very, very long text which makes it very tall. Because it is tall, the right column is also very tall. The right column contains two TextBlocks; one is displaying at the top of the column, while the other one is displayed at the bottom. That is achieved by setting the first TextBlock's **height** property to **stretch**.",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"width": 1,
+					"spacing": "large",
+					"separator": true,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "First TextBlock displayed at the top",
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"height": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "One textblock",
+									"wrap": true,
+									"height": "stretch"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Another textblock",
+									"wrap": true,
+									"height": "stretch"
+								},
+								{
+									"type": "TextBlock",
+									"text": "A third one",
+									"wrap": true,
+									"height": "stretch"
+								},
+								{
+									"type": "TextBlock",
+									"text": "One last textblock",
+									"wrap": true,
+									"height": "stretch"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

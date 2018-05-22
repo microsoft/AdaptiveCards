@@ -41,6 +41,8 @@
 
     [superview addTarget:target];
 
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+
     return button;
 }
 @end

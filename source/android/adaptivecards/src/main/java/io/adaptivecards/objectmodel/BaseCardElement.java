@@ -56,8 +56,8 @@ public class BaseCardElement {
      return o != null ? (BaseCardElement)o : this; 
   }
 
-  public BaseCardElement(CardElementType type, Spacing spacing, boolean separator) {
-    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_0(type.swigValue(), spacing.swigValue(), separator), true);
+  public BaseCardElement(CardElementType type, Spacing spacing, boolean separator, HeightType height) {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_0(type.swigValue(), spacing.swigValue(), separator, height.swigValue()), true);
     AdaptiveCardObjectModelJNI.BaseCardElement_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
@@ -80,6 +80,14 @@ public class BaseCardElement {
 
   public void SetSeparator(boolean value) {
     if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparator(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparatorSwigExplicitBaseCardElement(swigCPtr, this, value);
+  }
+
+  public HeightType GetHeight() {
+    return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetHeight(swigCPtr, this));
+  }
+
+  public void SetHeight(HeightType value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetHeight(swigCPtr, this, value.swigValue());
   }
 
   public Spacing GetSpacing() {

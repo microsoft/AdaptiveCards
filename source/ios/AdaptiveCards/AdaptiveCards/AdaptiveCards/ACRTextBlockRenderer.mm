@@ -83,19 +83,10 @@
         lab.numberOfLines = 1;
     }
 
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] init];
-
-    [wrappingview addSubview:lab];
-
-    [wrappingview setAlignmentForSubview:txtBlck->GetHorizontalAlignment()];
-
-    [viewGroup addArrangedSubview:wrappingview];
-
-    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
-
-    lab.translatesAutoresizingMaskIntoConstraints = false;
-
-    return wrappingview;
+    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    
+    [viewGroup addArrangedSubview:lab];
+    return lab;
 }
 
 @end

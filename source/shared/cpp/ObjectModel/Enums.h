@@ -148,6 +148,7 @@ enum class AdaptiveCardSchemaKey
     ValueOff,
     ValueOn,
     Version,
+    VerticalContentAlignment,
     Warning,
     Weight,
     Width,
@@ -316,6 +317,20 @@ enum class IconPlacement
     LeftOfTitle
 };
 
+enum class VerticalContentAlignment
+{
+    Stretch = 0,
+    Top,
+    Center,
+    Bottom
+};
+
+enum class HeightType
+{
+    Auto = 0,
+    Stretch
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 
@@ -324,6 +339,9 @@ CardElementType CardElementTypeFromString(const std::string& elementType);
 
 const std::string ActionTypeToString(ActionType actionType);
 ActionType ActionTypeFromString(const std::string& actionType);
+
+const std::string HeightTypeToString(HeightType heightType);
+HeightType HeightTypeFromString(const std::string& heightType);
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);
@@ -369,6 +387,9 @@ ActionAlignment ActionAlignmentFromString(const std::string& alignment);
 
 const std::string IconPlacementToString(IconPlacement placement);
 IconPlacement IconPlacementFromString(const std::string& placement);
+
+const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment);
+VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment);
 
 template <typename T>
 const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>
