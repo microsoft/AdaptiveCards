@@ -41,6 +41,10 @@ namespace AdaptiveCards.Test
                 if (file.Contains("Image.ImageBaseUrl"))
                     continue;
 
+                // TODO: bring this test back when issue #1415 is implemented
+                if (file.Contains("Image.BackgroundColor"))
+                    continue;
+
                 try
                 {
                     var json = File.ReadAllText(file, Encoding.UTF8);
