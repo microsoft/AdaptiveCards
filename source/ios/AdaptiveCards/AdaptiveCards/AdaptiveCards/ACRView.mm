@@ -140,7 +140,7 @@ adaptiveCardDelegate:(id<ACRActionDelegate>)delegate
         // Call back app with didLoadElements
         if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements:)])
         {
-            [[self acrActionDelegate] didLoadElements: self];
+            [[self acrActionDelegate] didLoadElements:self];
         }
     }
 }
