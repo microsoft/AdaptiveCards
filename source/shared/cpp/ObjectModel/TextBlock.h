@@ -11,7 +11,7 @@ namespace AdaptiveSharedNamespace
 {
     class TextBlock : public BaseCardElement
     {
-        public:
+    public:
         TextBlock();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -44,7 +44,7 @@ namespace AdaptiveSharedNamespace
         void SetLanguage(const std::string& value);
         std::string GetLanguage();
 
-        private:
+    private:
         std::string m_text;
         TextSize m_textSize;
         TextWeight m_textWeight;
@@ -59,7 +59,7 @@ namespace AdaptiveSharedNamespace
 
     class TextBlockParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);

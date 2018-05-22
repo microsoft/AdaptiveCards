@@ -12,7 +12,7 @@ namespace AdaptiveSharedNamespace
     class Container;
     class BaseCardElement
     {
-        public:
+    public:
         BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
         BaseCardElement(CardElementType type);
 
@@ -46,12 +46,12 @@ namespace AdaptiveSharedNamespace
 
         virtual void GetResourceUris(std::vector<std::string>& resourceUris);
 
-        protected:
+    protected:
         static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
 
         std::unordered_set<std::string> m_knownProperties;
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         CardElementType m_type;

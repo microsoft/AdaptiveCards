@@ -12,7 +12,7 @@ namespace AdaptiveSharedNamespace
     {
         friend class ContainerParser;
 
-        public:
+    public:
         Container();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -33,7 +33,7 @@ namespace AdaptiveSharedNamespace
 
         virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         ContainerStyle m_style;
@@ -44,7 +44,7 @@ namespace AdaptiveSharedNamespace
 
     class ContainerParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);

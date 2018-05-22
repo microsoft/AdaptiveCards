@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class Fact
     {
-        public:
+    public:
         Fact();
         Fact(std::string const& title, std::string const& value);
 
@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
 
-        private:
+    private:
         std::string m_title;
         std::string m_value;
     };

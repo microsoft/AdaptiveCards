@@ -9,13 +9,13 @@ namespace AdaptiveSharedNamespace
     // Still have to rename this thing
     class DateTimePreparser
     {
-        public:
+    public:
         DateTimePreparser();
         DateTimePreparser(std::string const& in);
         std::vector<std::shared_ptr<DateTimePreparsedToken>> GetTextTokens() const;
         bool HasDateTokens() const;
 
-        private:
+    private:
         void AddTextToken(std::string const& text, DateTimePreparsedTokenFormat format);
         void AddDateToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format);
         std::string Concatenate() const;

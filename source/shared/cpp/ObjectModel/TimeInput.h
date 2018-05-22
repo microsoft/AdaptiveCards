@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class TimeInput : public BaseInputElement
     {
-        public:
+    public:
         TimeInput();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -26,7 +26,7 @@ namespace AdaptiveSharedNamespace
         std::string GetValue() const;
         void SetValue(const std::string& value);
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::string m_max;
@@ -37,7 +37,7 @@ namespace AdaptiveSharedNamespace
 
     class TimeInputParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);

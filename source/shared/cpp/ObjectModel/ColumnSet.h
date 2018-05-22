@@ -12,7 +12,7 @@ namespace AdaptiveSharedNamespace
     {
         friend class ColumnSetParser;
 
-        public:
+    public:
         ColumnSet();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -27,7 +27,7 @@ namespace AdaptiveSharedNamespace
 
         virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>,
@@ -39,7 +39,7 @@ namespace AdaptiveSharedNamespace
 
     class ColumnSetParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);

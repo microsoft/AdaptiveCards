@@ -7,7 +7,7 @@ namespace AdaptiveSharedNamespace
 {
     class DateTimePreparsedToken
     {
-        public:
+    public:
         DateTimePreparsedToken();
         DateTimePreparsedToken(std::string const& text, DateTimePreparsedTokenFormat format);
         DateTimePreparsedToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format);
@@ -21,7 +21,7 @@ namespace AdaptiveSharedNamespace
         // return values 1900 onward
         int GetYear() const;
 
-        private:
+    private:
         std::string m_text;
         struct tm m_date;
         DateTimePreparsedTokenFormat m_format;

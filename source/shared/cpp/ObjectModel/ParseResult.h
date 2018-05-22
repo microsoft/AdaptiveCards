@@ -9,14 +9,14 @@ namespace AdaptiveSharedNamespace
 
     class ParseResult
     {
-        public:
+    public:
         ParseResult(std::shared_ptr<AdaptiveCard> adaptiveCard,
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings);
 
         std::shared_ptr<AdaptiveCard> GetAdaptiveCard() const;
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> GetWarnings() const;
 
-        private:
+    private:
         std::shared_ptr<AdaptiveCard> m_adaptiveCard;
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> m_warnings;
     };
