@@ -744,7 +744,7 @@ std::string WstringToString(const std::wstring& input)
 }
 
 void RemoteResourceElementToUriStringVector(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResourceElement,
+    ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResourceElement,
     std::vector<std::string>& resourceUris)
 {
     ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>> remoteResourceUris;
