@@ -124,6 +124,7 @@ public enum AdaptiveCardSchemaKey {
   ValueOff,
   ValueOn,
   Version,
+  VerticalContentAlignment,
   Warning,
   Weight,
   Width,

@@ -100,6 +100,14 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetLanguage(swigCPtr, this, language);
   }
 
+  public VerticalContentAlignment GetVerticalContentAlignment() {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetVerticalContentAlignment(swigCPtr, this));
+  }
+
+  public void SetVerticalContentAlignment(VerticalContentAlignment value) {
+    AdaptiveCardObjectModelJNI.Column_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
+  }
+
   public void GetResourceUris(StringVector resourceUris) {
     AdaptiveCardObjectModelJNI.Column_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
   }
