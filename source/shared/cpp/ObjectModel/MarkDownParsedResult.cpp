@@ -18,7 +18,7 @@ void MarkDownParsedResult::AddBlockTags()
     m_codeGenTokens.back()->MakeItTail();
 }
 
-void MarkDownParsedResult::MarkTags(MarkDownHtmlGenerator &x)
+void MarkDownParsedResult::MarkTags(MarkDownHtmlGenerator& x)
 {
     if (m_codeGenTokens.back()->GetBlockType() != x.GetBlockType())
     {
@@ -48,7 +48,7 @@ void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult& x)
 }
 
 // append MarkDownHtmlGenerator object to callee's prased result
-void MarkDownParsedResult::AppendToTokens(const std::shared_ptr<MarkDownHtmlGenerator> &x)
+void MarkDownParsedResult::AppendToTokens(const std::shared_ptr<MarkDownHtmlGenerator>& x)
 {
     if (!m_codeGenTokens.empty())
     {
@@ -161,15 +161,14 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
             //        if either or both of them are, then their sum is not multipe of 3
             //
             //     if matches are not found
-            //     1. search left emphasis tokens first for match because of rule 14 matches on the left side is preferred
+            //     1. search left emphasis tokens first for match because of rule 14 matches on the left side is
+            //     preferred
             //        if match is found set left emphasis as the new left emphasis token and proceed to token processing
             //        any non-matching left emphasis will be poped, in this way it always move forward
             //        if still no match is found,
             //     2. search right
-            //        if the right emphasis can be left empahs search matching right emphasis tokens using the right emphasis
-            //        as left emphasis
-            //        else
-            //        use current left emphasis to search, and pop current right emphasis
+            //        if the right emphasis can be left empahs search matching right emphasis tokens using the right
+            //        emphasis as left emphasis else use current left emphasis to search, and pop current right emphasis
             if (!(*currentLeftEmphasis)->IsMatch(*(*currentEmphasis)))
             {
                 std::vector<std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>>::iterator> store;

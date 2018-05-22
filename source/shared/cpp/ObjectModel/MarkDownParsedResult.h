@@ -38,7 +38,7 @@ namespace AdaptiveSharedNamespace
         void FoundHtmlTags();
 
         private:
-        void MarkTags(const std::shared_ptr<MarkDownHtmlGenerator>&);
+        void MarkTags(MarkDownHtmlGenerator&);
         std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_codeGenTokens;
         std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> m_emphasisLookUpTable;
         bool m_isHTMLTagsAdded;
