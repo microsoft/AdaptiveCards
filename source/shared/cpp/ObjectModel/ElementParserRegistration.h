@@ -12,7 +12,7 @@ namespace AdaptiveSharedNamespace
 
     class BaseCardElementParser
     {
-        public:
+    public:
         virtual std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
@@ -21,7 +21,7 @@ namespace AdaptiveSharedNamespace
 
     class ElementParserRegistration
     {
-        public:
+    public:
         ElementParserRegistration();
 
         void AddParser(
@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
         void RemoveParser(std::string const& elementType);
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const& elementType);
 
-        private:
+    private:
         std::unordered_set<std::string> m_knownElements;
         std::unordered_map<std::string, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser>,
             CaseInsensitiveHash, CaseInsensitiveEqualTo>

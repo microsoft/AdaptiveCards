@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
 {
     class BaseInputElement : public BaseCardElement
     {
-        public:
+    public:
         BaseInputElement(CardElementType elementType);
         BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
 
@@ -25,7 +25,7 @@ namespace AdaptiveSharedNamespace
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        private:
+    private:
         std::string m_id;
         bool m_isRequired;
     };

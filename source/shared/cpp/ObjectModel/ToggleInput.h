@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class ToggleInput : public BaseInputElement
     {
-        public:
+    public:
         ToggleInput();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -26,7 +26,7 @@ namespace AdaptiveSharedNamespace
         std::string GetValueOn() const;
         void SetValueOn(const std::string& value);
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::string m_title;
@@ -37,7 +37,7 @@ namespace AdaptiveSharedNamespace
 
     class ToggleInputParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);

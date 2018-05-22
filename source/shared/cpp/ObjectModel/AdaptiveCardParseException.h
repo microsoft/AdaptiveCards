@@ -7,7 +7,7 @@ namespace AdaptiveSharedNamespace
 {
     class AdaptiveCardParseException : public std::exception
     {
-        public:
+    public:
         AdaptiveCardParseException(AdaptiveSharedNamespace::ErrorStatusCode statusCode, const std::string& message);
         ~AdaptiveCardParseException();
 
@@ -15,7 +15,7 @@ namespace AdaptiveSharedNamespace
         AdaptiveSharedNamespace::ErrorStatusCode GetStatusCode() const;
         const std::string& GetReason() const;
 
-        private:
+    private:
         const AdaptiveSharedNamespace::ErrorStatusCode m_statusCode;
         const std::string m_message;
     };

@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class SubmitAction : public BaseActionElement
     {
-        public:
+    public:
         SubmitAction();
 
         std::string GetDataJson() const;
@@ -17,7 +17,7 @@ namespace AdaptiveSharedNamespace
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::string m_dataJson;

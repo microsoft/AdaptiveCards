@@ -13,7 +13,7 @@ namespace AdaptiveSharedNamespace
     {
         friend class FactSetParser;
 
-        public:
+    public:
         FactSet();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -21,7 +21,7 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<Fact>>& GetFacts();
         const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::vector<std::shared_ptr<Fact>> m_facts;
@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
 
     class FactSetParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);

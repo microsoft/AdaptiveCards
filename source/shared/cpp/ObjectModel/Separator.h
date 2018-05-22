@@ -8,7 +8,7 @@ namespace AdaptiveSharedNamespace
 {
     class Separator
     {
-        public:
+    public:
         Separator();
 
         std::string Serialize();
@@ -23,7 +23,7 @@ namespace AdaptiveSharedNamespace
         static std::shared_ptr<Separator> Deserialize(const Json::Value& root);
         static std::shared_ptr<Separator> DeserializeFromString(const std::string& jsonString);
 
-        private:
+    private:
         SeparatorThickness m_thickness;
         ForegroundColor m_color;
     };

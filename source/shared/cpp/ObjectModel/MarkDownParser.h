@@ -13,14 +13,14 @@ namespace AdaptiveSharedNamespace
 {
     class MarkDownParser
     {
-        public:
+    public:
         MarkDownParser(const std::string& txt);
 
         std::string TransformToHtml();
 
         bool HasHtmlTags();
 
-        private:
+    private:
         void ParseBlock();
         std::string EscapeText();
         std::string m_text;

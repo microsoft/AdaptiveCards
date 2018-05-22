@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
 {
     class Image : public BaseCardElement
     {
-        public:
+    public:
         Image();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -41,7 +41,7 @@ namespace AdaptiveSharedNamespace
 
         virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::string m_url;
@@ -56,7 +56,7 @@ namespace AdaptiveSharedNamespace
 
     class ImageParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);

@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
 {
     class ShowCardAction : public BaseActionElement
     {
-        public:
+    public:
         ShowCardAction();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -22,7 +22,7 @@ namespace AdaptiveSharedNamespace
 
         virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::shared_ptr<AdaptiveCard> m_card;

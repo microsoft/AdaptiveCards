@@ -12,7 +12,7 @@ namespace AdaptiveSharedNamespace
 
     class AdaptiveCard
     {
-        public:
+    public:
         AdaptiveCard();
         AdaptiveCard(std::string const& version, std::string const& fallbackText, std::string const& backgroundImage,
             ContainerStyle style, std::string const& speak, std::string const& language,
@@ -86,7 +86,7 @@ namespace AdaptiveSharedNamespace
         Json::Value SerializeToJsonValue() const;
         std::string Serialize() const;
 
-        private:
+    private:
         std::string m_version;
         std::string m_fallbackText;
         std::string m_backgroundImage;

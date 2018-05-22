@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class BaseActionElement
     {
-        public:
+    public:
         BaseActionElement(ActionType type);
 
         virtual ~BaseActionElement();
@@ -39,7 +39,7 @@ namespace AdaptiveSharedNamespace
 
         virtual void GetResourceUris(std::vector<std::string>& resourceUris);
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         ActionType m_type;
@@ -49,7 +49,7 @@ namespace AdaptiveSharedNamespace
         std::string m_iconUrl;
         Json::Value m_additionalProperties;
 
-        protected:
+    protected:
         std::unordered_set<std::string> m_knownProperties;
     };
 

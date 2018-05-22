@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
     // Holds Parsing Result of MarkDown String
     class MarkDownParsedResult
     {
-        public:
+    public:
         MarkDownParsedResult() : m_isHTMLTagsAdded(false){};
         // Translate Intermediate Parsing Result to a form that can be
         // written to html string
@@ -37,7 +37,7 @@ namespace AdaptiveSharedNamespace
         bool HasHtmlTags();
         void FoundHtmlTags();
 
-        private:
+    private:
         void MarkTags(MarkDownHtmlGenerator&);
         std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_codeGenTokens;
         std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> m_emphasisLookUpTable;

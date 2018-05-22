@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class ChoiceInput
     {
-        public:
+    public:
         ChoiceInput();
 
         std::string Serialize();
@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
 
-        private:
+    private:
         std::string m_title;
         std::string m_value;
     };

@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class Column : public BaseCardElement
     {
-        public:
+    public:
         Column();
 
         virtual std::string Serialize() const;
@@ -45,7 +45,7 @@ namespace AdaptiveSharedNamespace
 
         virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::string m_width;

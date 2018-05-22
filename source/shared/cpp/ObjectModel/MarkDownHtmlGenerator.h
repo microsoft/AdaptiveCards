@@ -31,7 +31,7 @@ namespace AdaptiveSharedNamespace
     //   list uses block tag of <ul> all others use <p>
     class MarkDownHtmlGenerator
     {
-        public:
+    public:
         enum MarkDownBlockType
         {
             ContainerBlock,
@@ -47,7 +47,7 @@ namespace AdaptiveSharedNamespace
         virtual std::string GenerateHtmlString() = 0;
         virtual MarkDownBlockType GetBlockType() const { return ContainerBlock; };
 
-        protected:
+    protected:
         std::string m_token;
         std::ostringstream html;
         bool m_isHead = false;
@@ -59,7 +59,7 @@ namespace AdaptiveSharedNamespace
     //   it simply retains and return text as string
     class MarkDownStringHtmlGenerator : public MarkDownHtmlGenerator
     {
-        public:
+    public:
         MarkDownStringHtmlGenerator(std::string& token) : MarkDownHtmlGenerator(token){};
         std::string GenerateHtmlString();
     };
@@ -68,7 +68,7 @@ namespace AdaptiveSharedNamespace
     //   it contains new line chars
     class MarkDownNewLineHtmlGenerator : public MarkDownStringHtmlGenerator
     {
-        public:
+    public:
         MarkDownNewLineHtmlGenerator(std::string& token) : MarkDownStringHtmlGenerator(token){};
         bool IsNewLine() { return true; }
     };
@@ -78,7 +78,7 @@ namespace AdaptiveSharedNamespace
     //   tags and apply those to its text when asked to generate html string
     class MarkDownEmphasisHtmlGenerator : public MarkDownHtmlGenerator
     {
-        public:
+    public:
         MarkDownEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
             MarkDownHtmlGenerator(token), m_numberOfUnusedDelimiters(sizeOfEmphasisDelimiterRun), type(type){};
 
@@ -100,7 +100,7 @@ namespace AdaptiveSharedNamespace
         bool GenerateTags(MarkDownEmphasisHtmlGenerator& token);
         void ReverseDirectionType() { m_directionType = !m_directionType; };
 
-        protected:
+    protected:
         enum
         {
             Left = 0,
@@ -118,7 +118,7 @@ namespace AdaptiveSharedNamespace
     //   it knows how to generates opening italic and bold html tags
     class MarkDownLeftEmphasisHtmlGenerator : public MarkDownEmphasisHtmlGenerator
     {
-        public:
+    public:
         MarkDownLeftEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
             MarkDownEmphasisHtmlGenerator(token, sizeOfEmphasisDelimiterRun, type){};
 
@@ -134,11 +134,11 @@ namespace AdaptiveSharedNamespace
     //   it knows how to generates closing italic and bold html tags
     class MarkDownRightEmphasisHtmlGenerator : public MarkDownEmphasisHtmlGenerator
     {
-        public:
+    public:
         MarkDownRightEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
             MarkDownEmphasisHtmlGenerator(token, sizeOfEmphasisDelimiterRun, type){};
 
-        void GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator>& token);
+        void GenerateTags(MarkDownEmphasisHtmlGenerator& token);
         bool IsRightEmphasis() const { return true; }
         std::string GenerateHtmlString();
         void PushItalicTag();
@@ -149,7 +149,7 @@ namespace AdaptiveSharedNamespace
     //   it can have both directions, and its final direction is determined at the later stage
     class MarkDownLeftAndRightEmphasisHtmlGenerator : public MarkDownRightEmphasisHtmlGenerator
     {
-        public:
+    public:
         MarkDownLeftAndRightEmphasisHtmlGenerator(
             std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
             MarkDownRightEmphasisHtmlGenerator(token, sizeOfEmphasisDelimiterRun, type){};
@@ -165,7 +165,7 @@ namespace AdaptiveSharedNamespace
     //   UnorderedList type, this is used in generating html block tags <ul>
     class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator
     {
-        public:
+    public:
         MarkDownListHtmlGenerator(std::string& token) : MarkDownStringHtmlGenerator(token){};
         std::string GenerateHtmlString();
         MarkDownBlockType GetBlockType() const { return UnorderedList; };
@@ -176,13 +176,13 @@ namespace AdaptiveSharedNamespace
     //   OrderedList type, this is used in generating html block tags <ol>
     class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator
     {
-        public:
+    public:
         MarkDownOrderedListHtmlGenerator(std::string& token, std::string& number_string) :
             MarkDownStringHtmlGenerator(token), m_numberString(number_string){};
         std::string GenerateHtmlString();
         MarkDownBlockType GetBlockType() const { return OrderedList; };
 
-        private:
+    private:
         std::string m_numberString;
     };
 

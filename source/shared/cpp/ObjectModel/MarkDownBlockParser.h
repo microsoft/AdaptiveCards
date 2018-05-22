@@ -8,7 +8,7 @@ namespace AdaptiveSharedNamespace
 {
     class MarkDownBlockParser
     {
-        public:
+    public:
         MarkDownBlockParser(){};
         // Matches each MarkDown's Syntax Form
         // For each match, stream moves to the next char
@@ -18,14 +18,14 @@ namespace AdaptiveSharedNamespace
         // Returns Parse result
         MarkDownParsedResult& GetParsedResult() { return m_parsedResult; }
 
-        protected:
+    protected:
         // Holds parsed results
         MarkDownParsedResult m_parsedResult;
     };
 
     class EmphasisParser : public MarkDownBlockParser
     {
-        public:
+    public:
         enum EmphasisState
         {
             // Text is being handled
@@ -71,7 +71,7 @@ namespace AdaptiveSharedNamespace
         // Callback function that handles the Emphasis State
         static EmphasisState MatchEmphasis(EmphasisParser&, std::stringstream&, std::string&);
 
-        protected:
+    protected:
         bool m_checkLookAhead = false;
         bool m_checkIntraWord = false;
         int m_lookBehind = Init;
@@ -91,10 +91,10 @@ namespace AdaptiveSharedNamespace
 
     class LinkParser : public MarkDownBlockParser
     {
-        public:
+    public:
         void Match(std::stringstream&);
 
-        private:
+    private:
         void CaptureLinkToken();
 
         // Matches Initial sytax of link
@@ -114,7 +114,7 @@ namespace AdaptiveSharedNamespace
 
     class ListParser : public MarkDownBlockParser
     {
-        public:
+    public:
         void Match(std::stringstream&);
         bool MatchNewListItem(std::stringstream&);
         bool MatchNewBlock(std::stringstream&);
@@ -123,20 +123,20 @@ namespace AdaptiveSharedNamespace
         static bool IsDot(int ch) { return ch == '.'; };
         static bool IsNewLine(int ch) { return (ch == '\r') || (ch == '\n'); };
 
-        protected:
+    protected:
         void ParseSubBlocks(std::stringstream&);
         bool CompleteListParsing(std::stringstream& stream);
 
-        private:
+    private:
         void CaptureListToken();
     };
 
     class OrderedListParser : public ListParser
     {
-        public:
+    public:
         void Match(std::stringstream&);
 
-        private:
+    private:
         void CaptureOrderedListToken(std::string&);
     };
 } // namespace AdaptiveSharedNamespace

@@ -1,6 +1,6 @@
 Language: Cpp
 Standard: Cpp11
-AccessModifierOffset: 0
+AccessModifierOffset: -4
 AlignAfterOpenBracket: DontAlign
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
@@ -18,22 +18,7 @@ AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: true
 BinPackArguments: true
 BinPackParameters: true
-BreakBeforeBraces: Allman #Custom
-#BraceWrapping:
-#  AfterClass: true
-#  AfterControlStatement: true
-#  AfterEnum: true
-#  AfterFunction: true
-#  AfterNamespace: true
-#  AfterStruct: true
-#  AfterUnion: true
-#  AfterExternBlock: true
-#  BeforeCatch: true
-#  BeforeElse: true
-#  IndentBraces: false
-#  SplitEmptyFunction: false
-#  SplitEmptyRecord: false
-#  SplitEmptyNamespace: false
+BreakBeforeBraces: Allman
 BreakBeforeBinaryOperators: None
 BreakBeforeInheritanceComma: false
 BreakBeforeTernaryOperators: false
@@ -59,8 +44,5 @@ SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
 SpaceAfterTemplateKeyword: false
 SpaceBeforeAssignmentOperators: true
-#SpaceBeforeCtorInitializerColon: true
-#SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: ControlStatements
-#SpaceBeforeRangeBasedForLoopColon: false
 UseTab: Never

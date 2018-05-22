@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class OpenUrlAction : public BaseActionElement
     {
-        public:
+    public:
         OpenUrlAction();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -17,7 +17,7 @@ namespace AdaptiveSharedNamespace
         std::string GetUrl() const;
         void SetUrl(const std::string& value);
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::string m_url;

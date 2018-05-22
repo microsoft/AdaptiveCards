@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     class NumberInput : public BaseInputElement
     {
-        public:
+    public:
         NumberInput();
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -26,7 +26,7 @@ namespace AdaptiveSharedNamespace
         int GetMin() const;
         void SetMin(const int value);
 
-        private:
+    private:
         void PopulateKnownPropertiesSet();
 
         std::string m_placeholder;
@@ -37,7 +37,7 @@ namespace AdaptiveSharedNamespace
 
     class NumberInputParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);

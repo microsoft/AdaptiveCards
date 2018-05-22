@@ -14,7 +14,7 @@ namespace AdaptiveSharedNamespace
 
     class ParseUtil
     {
-        public:
+    public:
         static void ThrowIfNotJsonObject(const Json::Value& json);
 
         static void ExpectString(const Json::Value& json);
@@ -99,7 +99,7 @@ namespace AdaptiveSharedNamespace
 
         static std::string ToLowercase(const std::string& value);
 
-        private:
+    private:
         ParseUtil();
         ~ParseUtil();
     };

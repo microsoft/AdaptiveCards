@@ -11,13 +11,13 @@ namespace AdaptiveSharedNamespace
 {
     class UnknownElement : public BaseCardElement
     {
-        public:
+    public:
         UnknownElement();
     };
 
     class UnknownElementParser : public BaseCardElementParser
     {
-        public:
+    public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);
