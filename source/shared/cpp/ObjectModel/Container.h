@@ -6,51 +6,51 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
-class Container : public BaseCardElement
+namespace AdaptiveSharedNamespace
 {
-friend class ContainerParser;
-public:
-    Container();
+    class Container : public BaseCardElement
+    {
+        friend class ContainerParser;
 
-    virtual Json::Value SerializeToJsonValue() const override;
+        public:
+        Container();
 
-    std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
-    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
+        virtual Json::Value SerializeToJsonValue() const override;
 
-    ContainerStyle GetStyle() const;
-    void SetStyle(const ContainerStyle value);
+        std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
+        const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
-    std::shared_ptr<BaseActionElement> GetSelectAction() const;
-    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+        ContainerStyle GetStyle() const;
+        void SetStyle(const ContainerStyle value);
 
-    void SetLanguage(const std::string& value);
+        std::shared_ptr<BaseActionElement> GetSelectAction() const;
+        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-    VerticalContentAlignment GetVerticalContentAlignment() const;
-    void SetVerticalContentAlignment(const VerticalContentAlignment value);
+        void SetLanguage(const std::string& value);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+        VerticalContentAlignment GetVerticalContentAlignment() const;
+        void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
-private:
-    void PopulateKnownPropertiesSet();
+        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
-    ContainerStyle m_style;
-    VerticalContentAlignment m_verticalContentAlignment;
-    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
-    std::shared_ptr<BaseActionElement> m_selectAction;
-};
+        private:
+        void PopulateKnownPropertiesSet();
 
-class ContainerParser : public BaseCardElementParser
-{
-public:
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        ContainerStyle m_style;
+        VerticalContentAlignment m_verticalContentAlignment;
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+        std::shared_ptr<BaseActionElement> m_selectAction;
+    };
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
-AdaptiveSharedNamespaceEnd
+    class ContainerParser : public BaseCardElementParser
+    {
+        public:
+        std::shared_ptr<BaseCardElement> Deserialize(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+    };
+} // namespace AdaptiveSharedNamespace

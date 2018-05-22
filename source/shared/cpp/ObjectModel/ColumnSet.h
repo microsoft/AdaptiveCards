@@ -6,44 +6,46 @@
 #include "Column.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
-class ColumnSet : public BaseCardElement
+namespace AdaptiveSharedNamespace
 {
-friend class ColumnSetParser;
-public:
-    ColumnSet();
+    class ColumnSet : public BaseCardElement
+    {
+        friend class ColumnSetParser;
 
-    virtual Json::Value SerializeToJsonValue() const override;
+        public:
+        ColumnSet();
 
-    std::vector<std::shared_ptr<Column>>& GetColumns();
-    const std::vector<std::shared_ptr<Column>>& GetColumns() const;
+        virtual Json::Value SerializeToJsonValue() const override;
 
-    std::shared_ptr<BaseActionElement> GetSelectAction() const;
-    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+        std::vector<std::shared_ptr<Column>>& GetColumns();
+        const std::vector<std::shared_ptr<Column>>& GetColumns() const;
 
-    void SetLanguage(const std::string& language);
+        std::shared_ptr<BaseActionElement> GetSelectAction() const;
+        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+        void SetLanguage(const std::string& language);
 
-private:
-    void PopulateKnownPropertiesSet();
+        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
-    std::vector<std::shared_ptr<Column>> m_columns;
-    std::shared_ptr<BaseActionElement> m_selectAction;
-};
+        private:
+        void PopulateKnownPropertiesSet();
 
-class ColumnSetParser : public BaseCardElementParser
-{
-public:
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>,
+            EnumHash>
+            ColumnParser;
+        std::vector<std::shared_ptr<Column>> m_columns;
+        std::shared_ptr<BaseActionElement> m_selectAction;
+    };
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
-AdaptiveSharedNamespaceEnd
+    class ColumnSetParser : public BaseCardElementParser
+    {
+        public:
+        std::shared_ptr<BaseCardElement> Deserialize(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+    };
+} // namespace AdaptiveSharedNamespace

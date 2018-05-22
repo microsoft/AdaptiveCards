@@ -5,33 +5,32 @@
 #include "Enums.h"
 #include "ActionParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
-class OpenUrlAction : public BaseActionElement
+namespace AdaptiveSharedNamespace
 {
-public:
-    OpenUrlAction();
+    class OpenUrlAction : public BaseActionElement
+    {
+        public:
+        OpenUrlAction();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+        virtual Json::Value SerializeToJsonValue() const override;
 
-    std::string GetUrl() const;
-    void SetUrl(const std::string &value);
+        std::string GetUrl() const;
+        void SetUrl(const std::string& value);
 
-private:
-    void PopulateKnownPropertiesSet();
+        private:
+        void PopulateKnownPropertiesSet();
 
-    std::string m_url;
-};
+        std::string m_url;
+    };
 
-class OpenUrlActionParser : public ActionElementParser
-{
-    std::shared_ptr<BaseActionElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& value);
+    class OpenUrlActionParser : public ActionElementParser
+    {
+        std::shared_ptr<BaseActionElement> Deserialize(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& value);
 
-    std::shared_ptr<BaseActionElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
-AdaptiveSharedNamespaceEnd
+        std::shared_ptr<BaseActionElement> DeserializeFromString(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+    };
+} // namespace AdaptiveSharedNamespace

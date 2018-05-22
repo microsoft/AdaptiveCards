@@ -5,33 +5,32 @@
 #include "Enums.h"
 #include "ActionParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
-class SubmitAction : public BaseActionElement
+namespace AdaptiveSharedNamespace
 {
-public:
-    SubmitAction();
+    class SubmitAction : public BaseActionElement
+    {
+        public:
+        SubmitAction();
 
-    std::string GetDataJson() const;
-    void SetDataJson(const std::string &value);
+        std::string GetDataJson() const;
+        void SetDataJson(const std::string& value);
 
-    virtual Json::Value SerializeToJsonValue() const override;
+        virtual Json::Value SerializeToJsonValue() const override;
 
-private:
-    void PopulateKnownPropertiesSet();
+        private:
+        void PopulateKnownPropertiesSet();
 
-    std::string m_dataJson;
-};
+        std::string m_dataJson;
+    };
 
-class SubmitActionParser : public ActionElementParser
-{
-    std::shared_ptr<BaseActionElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& value);
+    class SubmitActionParser : public ActionElementParser
+    {
+        std::shared_ptr<BaseActionElement> Deserialize(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& value);
 
-    std::shared_ptr<BaseActionElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
-AdaptiveSharedNamespaceEnd
+        std::shared_ptr<BaseActionElement> DeserializeFromString(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+    };
+} // namespace AdaptiveSharedNamespace

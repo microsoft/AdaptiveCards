@@ -5,22 +5,19 @@
 
 using namespace AdaptiveSharedNamespace;
 
-BaseActionElement::BaseActionElement(ActionType type) :
-    m_type(type), m_typeString(ActionTypeToString(type))
+BaseActionElement::BaseActionElement(ActionType type) : m_type(type), m_typeString(ActionTypeToString(type))
 {
     PopulateKnownPropertiesSet();
 }
 
-BaseActionElement::~BaseActionElement()
-{
-}
+BaseActionElement::~BaseActionElement() {}
 
 std::string BaseActionElement::GetElementTypeString() const
 {
     return m_typeString;
 }
 
-void BaseActionElement::SetElementTypeString(const std::string &value)
+void BaseActionElement::SetElementTypeString(const std::string& value)
 {
     m_typeString = value;
 }
@@ -30,7 +27,7 @@ std::string BaseActionElement::GetTitle() const
     return m_title;
 }
 
-void BaseActionElement::SetTitle(const std::string &value)
+void BaseActionElement::SetTitle(const std::string& value)
 {
     m_title = value;
 }
@@ -40,7 +37,7 @@ std::string BaseActionElement::GetId() const
     return m_id;
 }
 
-void BaseActionElement::SetId(const std::string &value)
+void BaseActionElement::SetId(const std::string& value)
 {
     m_id = value;
 }
@@ -86,7 +83,7 @@ Json::Value BaseActionElement::GetAdditionalProperties() const
     return m_additionalProperties;
 }
 
-void BaseActionElement::SetAdditionalProperties(Json::Value const &value)
+void BaseActionElement::SetAdditionalProperties(Json::Value const& value)
 {
     m_additionalProperties = value;
 }

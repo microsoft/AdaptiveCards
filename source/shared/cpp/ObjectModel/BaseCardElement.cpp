@@ -7,22 +7,16 @@
 
 using namespace AdaptiveSharedNamespace;
 
-BaseCardElement::BaseCardElement(
-    CardElementType type,
-    Spacing spacing,
-    bool separator,
-    HeightType height) :
-    m_type(type),
-    m_spacing(spacing),
-    m_typeString(CardElementTypeToString(type)),
-    m_separator(separator),
+BaseCardElement::BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height) :
+    m_type(type), m_spacing(spacing), m_typeString(CardElementTypeToString(type)), m_separator(separator),
     m_height(height)
 {
     PopulateKnownPropertiesSet();
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
-    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type)), m_separator(false), m_height(HeightType::Auto)
+    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type)), m_separator(false),
+    m_height(HeightType::Auto)
 {
     PopulateKnownPropertiesSet();
 }
@@ -35,16 +29,14 @@ void BaseCardElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height));
 }
 
-BaseCardElement::~BaseCardElement()
-{
-}
+BaseCardElement::~BaseCardElement() {}
 
 std::string BaseCardElement::GetElementTypeString() const
 {
     return m_typeString;
 }
 
-void BaseCardElement::SetElementTypeString(const std::string &value)
+void BaseCardElement::SetElementTypeString(const std::string& value)
 {
     m_typeString = value;
 }
@@ -84,7 +76,7 @@ std::string BaseCardElement::GetId() const
     return m_id;
 }
 
-void BaseCardElement::SetId(const std::string &value)
+void BaseCardElement::SetId(const std::string& value)
 {
     m_id = value;
 }
@@ -101,7 +93,7 @@ std::string BaseCardElement::Serialize() const
 }
 
 Json::Value BaseCardElement::SerializeToJsonValue() const
- {
+{
     Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
 
@@ -128,7 +120,7 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
     return root;
 }
 
-Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction) 
+Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
 {
     if (selectAction != nullptr)
     {
@@ -142,7 +134,7 @@ Json::Value BaseCardElement::GetAdditionalProperties() const
     return m_additionalProperties;
 }
 
-void BaseCardElement::SetAdditionalProperties(Json::Value const &value)
+void BaseCardElement::SetAdditionalProperties(Json::Value const& value)
 {
     m_additionalProperties = value;
 }
