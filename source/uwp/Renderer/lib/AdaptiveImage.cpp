@@ -58,13 +58,13 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveImage::get_BackgroundColor(HSTRING* backgroundColor)
+    HRESULT AdaptiveImage::get_BackgroundColor(HSTRING* backgroundColor)
     {
         return m_backgroundColor.CopyTo(backgroundColor);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveImage::put_BackgroundColor(HSTRING backgroundColor)
+    HRESULT AdaptiveImage::put_BackgroundColor(HSTRING backgroundColor)
     {
         return m_backgroundColor.Set(backgroundColor);
     }

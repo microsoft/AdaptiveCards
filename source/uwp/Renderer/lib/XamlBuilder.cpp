@@ -1665,9 +1665,9 @@ AdaptiveNamespaceStart
                 ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
                 THROW_IF_FAILED(border->put_Background(backgroundColorBrush.Get()));
 
-                IUIElement* imageAsUiElement;
-                THROW_IF_FAILED(xamlImage.CopyTo(&imageAsUiElement));
-                border->put_Child(imageAsUiElement);
+                ComPtr<IUIElement> imageAsUiElement;
+                THROW_IF_FAILED(xamlImage.CopyTo(imageAsUiElement.GetAddressOf()));
+                THROW_IF_FAILED(border->put_Child(imageAsUiElement.Get()));
 
                 THROW_IF_FAILED(border.As(&frameworkElement));
             }
