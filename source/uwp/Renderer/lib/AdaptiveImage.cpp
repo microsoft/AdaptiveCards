@@ -185,6 +185,7 @@ AdaptiveNamespaceStart
         }
 
         image->SetUrl(HStringToUTF8(m_url.Get()));
+        image->SetBackgroundColor(HStringToUTF8(m_backgroundColor.Get()));
 
         if (m_altText != nullptr)
         {
