@@ -1565,16 +1565,23 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
 
+        HSTRING backgroundColor;
+        THROW_IF_FAILED(adaptiveImage->get_BackgroundColor(&backgroundColor));
+
         ComPtr<IFrameworkElement> frameworkElement;
         if (imageStyle == ImageStyle_Person)
         {
             ComPtr<IEllipse> ellipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
+            ComPtr<IEllipse> backgroundEllipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
             SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
 
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
+
+            ComPtr<IShape> backgroundEllipseAsShape;
+            THROW_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
 
             // Set Auto, None, and Stretch to Stretch_UniformToFill. An ellipse set to Stretch_Uniform ends up with size 0.
             if (size == ABI::AdaptiveNamespace::ImageSize::None ||
@@ -1583,29 +1590,21 @@ AdaptiveNamespaceStart
                 hasExplicitMeasurements)
             {
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
+                THROW_IF_FAILED(backgroundEllipseAsShape->put_Stretch(stretch));
             }
 
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
 
-            HSTRING backgroundColor;
-            THROW_IF_FAILED(adaptiveImage->get_BackgroundColor(&backgroundColor));
-
             if (backgroundColor != nullptr)
             {
-                // Create a grid to contain the background color ellipse and the image ellipse
-                //ComPtr<IEllipse> backgroundEllipse = ellipse;
-                ComPtr<IEllipse> backgroundEllipse;
-                THROW_IF_FAILED(ellipse.CopyTo(&backgroundEllipse));
-
-                ComPtr<IShape> backgroundEllipseAsShape;
-                THROW_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
-
+                // Fill the background ellipse with solid color brush
                 ABI::Windows::UI::Color color;
                 THROW_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
                 ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
                 THROW_IF_FAILED(backgroundEllipseAsShape->put_Fill(backgroundColorBrush.Get()));
 
+                // Create a grid to contain the background color ellipse and the image ellipse
                 ComPtr<IGrid> imageGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
                 ComPtr<IPanel> panel;
@@ -1655,7 +1654,27 @@ AdaptiveNamespaceStart
         {
             ComPtr<IImage> xamlImage = XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
             SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get());
-            THROW_IF_FAILED(xamlImage.As(&frameworkElement));
+
+            if (backgroundColor != nullptr)
+            {
+                // Create a surronding border with solid color background to contain the image
+                ComPtr<IBorder> border = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+
+                ABI::Windows::UI::Color color;
+                THROW_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
+                ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
+                THROW_IF_FAILED(border->put_Background(backgroundColorBrush.Get()));
+
+                IUIElement* imageAsUiElement;
+                THROW_IF_FAILED(xamlImage.CopyTo(&imageAsUiElement));
+                border->put_Child(imageAsUiElement);
+
+                THROW_IF_FAILED(border.As(&frameworkElement));
+            }
+            else
+            {
+                THROW_IF_FAILED(xamlImage.As(&frameworkElement));
+            }
 
             if(isAspectRatioNeeded)
             {
