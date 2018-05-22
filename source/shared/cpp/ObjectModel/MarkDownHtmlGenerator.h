@@ -40,7 +40,7 @@ namespace AdaptiveSharedNamespace
         };
 
         MarkDownHtmlGenerator() : m_token(""){};
-        MarkDownHtmlGenerator(std::string& token) : m_token(token){};
+        MarkDownHtmlGenerator(std::string &token) : m_token(token){};
         void MakeItHead() { m_isHead = true; }
         void MakeItTail() { m_isTail = true; }
         virtual bool IsNewLine() { return false; }
@@ -60,7 +60,7 @@ namespace AdaptiveSharedNamespace
     class MarkDownStringHtmlGenerator : public MarkDownHtmlGenerator
     {
     public:
-        MarkDownStringHtmlGenerator(std::string& token) : MarkDownHtmlGenerator(token){};
+        MarkDownStringHtmlGenerator(std::string &token) : MarkDownHtmlGenerator(token){};
         std::string GenerateHtmlString();
     };
 
@@ -69,7 +69,7 @@ namespace AdaptiveSharedNamespace
     class MarkDownNewLineHtmlGenerator : public MarkDownStringHtmlGenerator
     {
     public:
-        MarkDownNewLineHtmlGenerator(std::string& token) : MarkDownStringHtmlGenerator(token){};
+        MarkDownNewLineHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token){};
         bool IsNewLine() { return true; }
     };
 
@@ -79,11 +79,11 @@ namespace AdaptiveSharedNamespace
     class MarkDownEmphasisHtmlGenerator : public MarkDownHtmlGenerator
     {
     public:
-        MarkDownEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
+        MarkDownEmphasisHtmlGenerator(std::string &token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
             MarkDownHtmlGenerator(token), m_numberOfUnusedDelimiters(sizeOfEmphasisDelimiterRun), type(type){};
 
         MarkDownEmphasisHtmlGenerator(
-            std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type, std::vector<std::string>& tags) :
+            std::string &token, int sizeOfEmphasisDelimiterRun, DelimiterType type, std::vector<std::string> &tags) :
             MarkDownHtmlGenerator(token),
             m_numberOfUnusedDelimiters(sizeOfEmphasisDelimiterRun), type(type), m_tags(tags){};
 
@@ -93,11 +93,11 @@ namespace AdaptiveSharedNamespace
         virtual void PushItalicTag();
         virtual void PushBoldTag();
 
-        bool IsMatch(const MarkDownEmphasisHtmlGenerator& token);
-        bool IsSameType(const MarkDownEmphasisHtmlGenerator& token);
+        bool IsMatch(const MarkDownEmphasisHtmlGenerator &token);
+        bool IsSameType(const MarkDownEmphasisHtmlGenerator &token);
         bool IsDone() const { return m_numberOfUnusedDelimiters == 0; }
         int GetNumberOfUnusedDelimiters() const { return m_numberOfUnusedDelimiters; };
-        bool GenerateTags(MarkDownEmphasisHtmlGenerator& token);
+        bool GenerateTags(MarkDownEmphasisHtmlGenerator &token);
         void ReverseDirectionType() { m_directionType = !m_directionType; };
 
     protected:
@@ -107,7 +107,7 @@ namespace AdaptiveSharedNamespace
             Right = 1,
         };
 
-        int AdjustEmphasisCounts(int leftOver, MarkDownEmphasisHtmlGenerator& rightToken);
+        int AdjustEmphasisCounts(int leftOver, MarkDownEmphasisHtmlGenerator &rightToken);
         int m_numberOfUnusedDelimiters;
         int m_directionType = Right;
         DelimiterType type;
@@ -119,11 +119,11 @@ namespace AdaptiveSharedNamespace
     class MarkDownLeftEmphasisHtmlGenerator : public MarkDownEmphasisHtmlGenerator
     {
     public:
-        MarkDownLeftEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
+        MarkDownLeftEmphasisHtmlGenerator(std::string &token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
             MarkDownEmphasisHtmlGenerator(token, sizeOfEmphasisDelimiterRun, type){};
 
         MarkDownLeftEmphasisHtmlGenerator(
-            std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type, std::vector<std::string>& tags) :
+            std::string &token, int sizeOfEmphasisDelimiterRun, DelimiterType type, std::vector<std::string> &tags) :
             MarkDownEmphasisHtmlGenerator(token, sizeOfEmphasisDelimiterRun, type, tags){};
 
         bool IsLeftEmphasis() const { return true; }
@@ -135,10 +135,10 @@ namespace AdaptiveSharedNamespace
     class MarkDownRightEmphasisHtmlGenerator : public MarkDownEmphasisHtmlGenerator
     {
     public:
-        MarkDownRightEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
+        MarkDownRightEmphasisHtmlGenerator(std::string &token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
             MarkDownEmphasisHtmlGenerator(token, sizeOfEmphasisDelimiterRun, type){};
 
-        void GenerateTags(MarkDownEmphasisHtmlGenerator& token);
+        void GenerateTags(MarkDownEmphasisHtmlGenerator &token);
         bool IsRightEmphasis() const { return true; }
         std::string GenerateHtmlString();
         void PushItalicTag();
@@ -151,7 +151,7 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownLeftAndRightEmphasisHtmlGenerator(
-            std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
+            std::string &token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
             MarkDownRightEmphasisHtmlGenerator(token, sizeOfEmphasisDelimiterRun, type){};
         bool IsRightEmphasis() const { return m_directionType == Right; }
         bool IsLeftEmphasis() const { return m_directionType == Left; }
@@ -166,7 +166,7 @@ namespace AdaptiveSharedNamespace
     class MarkDownListHtmlGenerator : public MarkDownStringHtmlGenerator
     {
     public:
-        MarkDownListHtmlGenerator(std::string& token) : MarkDownStringHtmlGenerator(token){};
+        MarkDownListHtmlGenerator(std::string &token) : MarkDownStringHtmlGenerator(token){};
         std::string GenerateHtmlString();
         MarkDownBlockType GetBlockType() const { return UnorderedList; };
     };
@@ -177,7 +177,7 @@ namespace AdaptiveSharedNamespace
     class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator
     {
     public:
-        MarkDownOrderedListHtmlGenerator(std::string& token, std::string& number_string) :
+        MarkDownOrderedListHtmlGenerator(std::string &token, std::string &number_string) :
             MarkDownStringHtmlGenerator(token), m_numberString(number_string){};
         std::string GenerateHtmlString();
         MarkDownBlockType GetBlockType() const { return OrderedList; };

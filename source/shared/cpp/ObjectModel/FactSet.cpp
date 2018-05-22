@@ -10,12 +10,12 @@ FactSet::FactSet() : BaseCardElement(CardElementType::FactSet)
     PopulateKnownPropertiesSet();
 }
 
-const std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts() const
+const std::vector<std::shared_ptr<Fact>> &FactSet::GetFacts() const
 {
     return m_facts;
 }
 
-std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
+std::vector<std::shared_ptr<Fact>> &FactSet::GetFacts()
 {
     return m_facts;
 }
@@ -26,7 +26,7 @@ Json::Value FactSet::SerializeToJsonValue() const
 
     std::string factsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts);
     root[factsPropertyName] = Json::Value(Json::arrayValue);
-    for (const auto& fact : GetFacts())
+    for (const auto &fact : GetFacts())
     {
         root[factsPropertyName].append(fact->SerializeToJsonValue());
     }
@@ -36,7 +36,7 @@ Json::Value FactSet::SerializeToJsonValue() const
 
 std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& value)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::FactSet);
 
@@ -52,7 +52,7 @@ std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> FactSetParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return FactSetParser::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

@@ -67,7 +67,7 @@ std::string TextBlock::GetText() const
     return m_text;
 }
 
-void TextBlock::SetText(const std::string& value)
+void TextBlock::SetText(const std::string &value)
 {
     m_text = value;
 }
@@ -152,13 +152,13 @@ std::string TextBlock::GetLanguage()
     return m_language;
 }
 
-void TextBlock::SetLanguage(const std::string& value)
+void TextBlock::SetLanguage(const std::string &value)
 {
     m_language = value;
 }
 
 std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value& json)
+    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TextBlock);
 
@@ -182,7 +182,7 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> TextBlockParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return TextBlockParser::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

@@ -21,7 +21,7 @@ namespace AdaptiveSharedNamespace
 
     struct CaseInsensitiveEqualTo
     {
-        bool operator()(const std::string& lhs, const std::string& rhs) const
+        bool operator()(const std::string &lhs, const std::string &rhs) const
         {
             return strncasecmp(lhs.c_str(), rhs.c_str(), CHAR_MAX) == 0;
         }
@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
 
     struct CaseInsensitiveHash
     {
-        size_t operator()(const std::string& keyval) const
+        size_t operator()(const std::string &keyval) const
         {
             return std::accumulate(keyval.begin(), keyval.end(), size_t{0},
                 [](size_t acc, char c) { return acc + static_cast<size_t>(std::toupper(c)); });
@@ -351,71 +351,71 @@ namespace AdaptiveSharedNamespace
     };
 
     const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
-    AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
+    AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string &type);
 
     const std::string CardElementTypeToString(CardElementType elementType);
-    CardElementType CardElementTypeFromString(const std::string& elementType);
+    CardElementType CardElementTypeFromString(const std::string &elementType);
 
     const std::string ActionTypeToString(ActionType actionType);
-    ActionType ActionTypeFromString(const std::string& actionType);
+    ActionType ActionTypeFromString(const std::string &actionType);
 
     const std::string HeightTypeToString(HeightType heightType);
-    HeightType HeightTypeFromString(const std::string& heightType);
+    HeightType HeightTypeFromString(const std::string &heightType);
 
     const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
-    HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);
+    HorizontalAlignment HorizontalAlignmentFromString(const std::string &alignment);
 
     const std::string ForegroundColorToString(ForegroundColor type);
-    ForegroundColor ForegroundColorFromString(const std::string& type);
+    ForegroundColor ForegroundColorFromString(const std::string &type);
 
     const std::string TextWeightToString(TextWeight type);
-    TextWeight TextWeightFromString(const std::string& type);
+    TextWeight TextWeightFromString(const std::string &type);
 
     const std::string TextSizeToString(TextSize size);
-    TextSize TextSizeFromString(const std::string& size);
+    TextSize TextSizeFromString(const std::string &size);
 
     const std::string ImageSizeToString(ImageSize size);
-    ImageSize ImageSizeFromString(const std::string& size);
+    ImageSize ImageSizeFromString(const std::string &size);
 
     const std::string SpacingToString(Spacing spacing);
-    Spacing SpacingFromString(const std::string& spacing);
+    Spacing SpacingFromString(const std::string &spacing);
 
     const std::string SeparatorThicknessToString(SeparatorThickness separatorThickness);
-    SeparatorThickness SeparatorThicknessFromString(const std::string& separatorThickness);
+    SeparatorThickness SeparatorThicknessFromString(const std::string &separatorThickness);
 
     const std::string ImageStyleToString(ImageStyle style);
-    ImageStyle ImageStyleFromString(const std::string& style);
+    ImageStyle ImageStyleFromString(const std::string &style);
 
     const std::string ActionsOrientationToString(ActionsOrientation orientation);
-    ActionsOrientation ActionsOrientationFromString(const std::string& orientation);
+    ActionsOrientation ActionsOrientationFromString(const std::string &orientation);
 
     const std::string ActionModeToString(ActionMode mode);
-    ActionMode ActionModeFromString(const std::string& mode);
+    ActionMode ActionModeFromString(const std::string &mode);
 
     const std::string ChoiceSetStyleToString(ChoiceSetStyle style);
-    ChoiceSetStyle ChoiceSetStyleFromString(const std::string& style);
+    ChoiceSetStyle ChoiceSetStyleFromString(const std::string &style);
 
     const std::string TextInputStyleToString(TextInputStyle style);
-    TextInputStyle TextInputStyleFromString(const std::string& style);
+    TextInputStyle TextInputStyleFromString(const std::string &style);
 
     const std::string ContainerStyleToString(ContainerStyle style);
-    ContainerStyle ContainerStyleFromString(const std::string& style);
+    ContainerStyle ContainerStyleFromString(const std::string &style);
 
     const std::string ActionAlignmentToString(ActionAlignment alignment);
-    ActionAlignment ActionAlignmentFromString(const std::string& alignment);
+    ActionAlignment ActionAlignmentFromString(const std::string &alignment);
 
     const std::string IconPlacementToString(IconPlacement placement);
-    IconPlacement IconPlacementFromString(const std::string& placement);
+    IconPlacement IconPlacementFromString(const std::string &placement);
 
     const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment);
-    VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment);
+    VerticalContentAlignment VerticalContentAlignmentFromString(const std::string &verticalContentAlignment);
 
     template<typename T>
     const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo> GenerateStringToEnumMap(
-        const std::unordered_map<T, std::string, EnumHash>& keyToStringMap)
+        const std::unordered_map<T, std::string, EnumHash> &keyToStringMap)
     {
         std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo> result;
-        for (auto& kv : keyToStringMap)
+        for (auto &kv : keyToStringMap)
         {
             result[kv.second] = kv.first;
         }

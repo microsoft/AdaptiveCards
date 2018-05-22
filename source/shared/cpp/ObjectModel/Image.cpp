@@ -82,7 +82,7 @@ std::string Image::GetUrl() const
     return m_url;
 }
 
-void Image::SetUrl(const std::string& value)
+void Image::SetUrl(const std::string &value)
 {
     m_url = value;
 }
@@ -122,7 +122,7 @@ std::string Image::GetAltText() const
     return m_altText;
 }
 
-void Image::SetAltText(const std::string& value)
+void Image::SetAltText(const std::string &value)
 {
     m_altText = value;
 }
@@ -169,7 +169,7 @@ void Image::SetPixelHeight(unsigned int value)
 
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return ImageParser::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
@@ -177,7 +177,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
 
 std::shared_ptr<BaseCardElement> ImageParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& json)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::Image);
     return ImageParser::DeserializeWithoutCheckingType(elementParserRegistration, actionParserRegistration, json);
@@ -185,7 +185,7 @@ std::shared_ptr<BaseCardElement> ImageParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& json)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &json)
 {
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
@@ -251,7 +251,7 @@ void Image::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }
 
-void Image::GetResourceUris(std::vector<std::string>& resourceUris)
+void Image::GetResourceUris(std::vector<std::string> &resourceUris)
 {
     auto url = GetUrl();
     resourceUris.push_back(url);

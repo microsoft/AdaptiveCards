@@ -14,7 +14,7 @@ namespace AdaptiveSharedNamespace
         unsigned int largeFontSize = 17;
         unsigned int extraLargeFontSize = 20;
 
-        static FontSizesConfig Deserialize(const Json::Value& json, const FontSizesConfig& defaultValue);
+        static FontSizesConfig Deserialize(const Json::Value &json, const FontSizesConfig &defaultValue);
     };
 
     struct FontWeightsConfig
@@ -23,7 +23,7 @@ namespace AdaptiveSharedNamespace
         unsigned int defaultWeight = 400;
         unsigned int bolderWeight = 800;
 
-        static FontWeightsConfig Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue);
+        static FontWeightsConfig Deserialize(const Json::Value &json, const FontWeightsConfig &defaultValue);
     };
 
     struct ColorConfig
@@ -31,7 +31,7 @@ namespace AdaptiveSharedNamespace
         std::string defaultColor;
         std::string subtleColor;
 
-        static ColorConfig Deserialize(const Json::Value& json, const ColorConfig& defaultValue);
+        static ColorConfig Deserialize(const Json::Value &json, const ColorConfig &defaultValue);
     };
 
     struct ColorsConfig
@@ -44,7 +44,7 @@ namespace AdaptiveSharedNamespace
         ColorConfig warning = {"#FFFFD700", "#B2FFD700"};
         ColorConfig attention = {"#FF8B0000", "#B28B0000"};
 
-        static ColorsConfig Deserialize(const Json::Value& json, const ColorsConfig& defaultValue);
+        static ColorsConfig Deserialize(const Json::Value &json, const ColorsConfig &defaultValue);
     };
 
     struct TextConfig
@@ -56,7 +56,7 @@ namespace AdaptiveSharedNamespace
         bool wrap = true;
         unsigned int maxWidth = (unsigned int)~0;
 
-        static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
+        static TextConfig Deserialize(const Json::Value &json, const TextConfig &defaultValue);
     };
 
     struct SpacingConfig
@@ -68,7 +68,7 @@ namespace AdaptiveSharedNamespace
         unsigned int extraLargeSpacing = 40;
         unsigned int paddingSpacing = 20;
 
-        static SpacingConfig Deserialize(const Json::Value& json, const SpacingConfig& defaultValue);
+        static SpacingConfig Deserialize(const Json::Value &json, const SpacingConfig &defaultValue);
     };
 
     struct SeparatorConfig
@@ -76,7 +76,7 @@ namespace AdaptiveSharedNamespace
         unsigned int lineThickness = 1;
         std::string lineColor = "#B2000000";
 
-        static SeparatorConfig Deserialize(const Json::Value& json, const SeparatorConfig& defaultValue);
+        static SeparatorConfig Deserialize(const Json::Value &json, const SeparatorConfig &defaultValue);
     };
 
     struct ImageSizesConfig
@@ -85,7 +85,7 @@ namespace AdaptiveSharedNamespace
         unsigned int mediumSize = 120;
         unsigned int largeSize = 180;
 
-        static ImageSizesConfig Deserialize(const Json::Value& json, const ImageSizesConfig& defaultValue);
+        static ImageSizesConfig Deserialize(const Json::Value &json, const ImageSizesConfig &defaultValue);
     };
 
     struct ImageSetConfig
@@ -93,21 +93,21 @@ namespace AdaptiveSharedNamespace
         ImageSize imageSize = ImageSize::Auto;
         unsigned int maxImageHeight = 100;
 
-        static ImageSetConfig Deserialize(const Json::Value& json, const ImageSetConfig& defaultValue);
+        static ImageSetConfig Deserialize(const Json::Value &json, const ImageSetConfig &defaultValue);
     };
 
     struct ImageConfig
     {
         ImageSize imageSize = ImageSize::Auto;
 
-        static ImageConfig Deserialize(const Json::Value& json, const ImageConfig& defaultValue);
+        static ImageConfig Deserialize(const Json::Value &json, const ImageConfig &defaultValue);
     };
 
     struct AdaptiveCardConfig
     {
         bool allowCustomStyle = true;
 
-        static AdaptiveCardConfig Deserialize(const Json::Value& json, const AdaptiveCardConfig& defaultValue);
+        static AdaptiveCardConfig Deserialize(const Json::Value &json, const AdaptiveCardConfig &defaultValue);
     };
 
     struct FactSetConfig
@@ -117,7 +117,7 @@ namespace AdaptiveSharedNamespace
             TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, (unsigned int)~0};
         unsigned int spacing = 10;
 
-        static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
+        static FactSetConfig Deserialize(const Json::Value &json, const FactSetConfig &defaultValue);
     };
 
     struct ContainerStyleDefinition
@@ -129,7 +129,7 @@ namespace AdaptiveSharedNamespace
         ColorsConfig foregroundColors;
 
         static ContainerStyleDefinition Deserialize(
-            const Json::Value& json, const ContainerStyleDefinition& defaultValue);
+            const Json::Value &json, const ContainerStyleDefinition &defaultValue);
     };
 
     struct ContainerStylesDefinition
@@ -147,7 +147,7 @@ namespace AdaptiveSharedNamespace
             }};
 
         static ContainerStylesDefinition Deserialize(
-            const Json::Value& json, const ContainerStylesDefinition& defaultValue);
+            const Json::Value &json, const ContainerStylesDefinition &defaultValue);
     };
 
     struct ShowCardActionConfig
@@ -156,7 +156,7 @@ namespace AdaptiveSharedNamespace
         ContainerStyle style = ContainerStyle::Emphasis;
         unsigned int inlineTopMargin = 16;
 
-        static ShowCardActionConfig Deserialize(const Json::Value& json, const ShowCardActionConfig& defaultValue);
+        static ShowCardActionConfig Deserialize(const Json::Value &json, const ShowCardActionConfig &defaultValue);
     };
 
     struct ActionsConfig
@@ -169,7 +169,7 @@ namespace AdaptiveSharedNamespace
         Spacing spacing = Spacing::Default;
         IconPlacement iconPlacement = IconPlacement::AboveTitle;
 
-        static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
+        static ActionsConfig Deserialize(const Json::Value &json, const ActionsConfig &defaultValue);
     };
 
     struct HostConfig
@@ -189,7 +189,7 @@ namespace AdaptiveSharedNamespace
         ActionsConfig actions;
         ContainerStylesDefinition containerStyles;
 
-        static HostConfig Deserialize(const Json::Value& json);
+        static HostConfig Deserialize(const Json::Value &json);
         static HostConfig DeserializeFromString(const std::string jsonString);
     };
 } // namespace AdaptiveSharedNamespace

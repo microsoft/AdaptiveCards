@@ -16,14 +16,14 @@ namespace AdaptiveSharedNamespace
         virtual Json::Value SerializeToJsonValue() const override;
 
         static std::shared_ptr<Column> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &root);
 
         static std::shared_ptr<Column> DeserializeFromString(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString);
 
         std::string GetWidth() const;
-        void SetWidth(const std::string& value);
+        void SetWidth(const std::string &value);
 
         // explicit width takes precedence over relative width
         int GetPixelWidth() const;
@@ -32,18 +32,18 @@ namespace AdaptiveSharedNamespace
         ContainerStyle GetStyle() const;
         void SetStyle(const ContainerStyle value);
 
-        std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
-        const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
+        std::vector<std::shared_ptr<BaseCardElement>> &GetItems();
+        const std::vector<std::shared_ptr<BaseCardElement>> &GetItems() const;
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-        void SetLanguage(const std::string& language);
+        void SetLanguage(const std::string &language);
 
         VerticalContentAlignment GetVerticalContentAlignment() const;
         void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
-        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+        virtual void GetResourceUris(std::vector<std::string> &resourceUris) override;
 
     private:
         void PopulateKnownPropertiesSet();

@@ -17,7 +17,7 @@ std::string Column::GetWidth() const
     return m_width;
 }
 
-void Column::SetWidth(const std::string& value)
+void Column::SetWidth(const std::string &value)
 {
     m_width = ParseUtil::ToLowercase(value);
 }
@@ -43,12 +43,12 @@ void Column::SetStyle(const ContainerStyle value)
     m_style = value;
 }
 
-const std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems() const
+const std::vector<std::shared_ptr<BaseCardElement>> &Column::GetItems() const
 {
     return m_items;
 }
 
-std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
+std::vector<std::shared_ptr<BaseCardElement>> &Column::GetItems()
 {
     return m_items;
 }
@@ -91,7 +91,7 @@ Json::Value Column::SerializeToJsonValue() const
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[propertyName] = Json::Value(Json::arrayValue);
-    for (const auto& cardElement : m_items)
+    for (const auto &cardElement : m_items)
     {
         root[propertyName].append(cardElement->SerializeToJsonValue());
     }
@@ -106,7 +106,7 @@ Json::Value Column::SerializeToJsonValue() const
 }
 
 std::shared_ptr<Column> Column::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& value)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &value)
 {
     auto column = BaseCardElement::Deserialize<Column>(value);
 
@@ -165,7 +165,7 @@ std::shared_ptr<Column> Column::Deserialize(std::shared_ptr<ElementParserRegistr
 
 std::shared_ptr<Column> Column::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return Column::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
@@ -190,12 +190,12 @@ void Column::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment));
 }
 
-void Column::SetLanguage(const std::string& language)
+void Column::SetLanguage(const std::string &language)
 {
     PropagateLanguage(language, m_items);
 }
 
-void Column::GetResourceUris(std::vector<std::string>& resourceUris)
+void Column::GetResourceUris(std::vector<std::string> &resourceUris)
 {
     auto columnItems = GetItems();
     for (auto item : columnItems)

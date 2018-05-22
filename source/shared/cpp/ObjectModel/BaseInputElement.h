@@ -15,10 +15,10 @@ namespace AdaptiveSharedNamespace
         BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
 
         std::string GetId() const override;
-        virtual void SetId(const std::string& value) override;
+        virtual void SetId(const std::string &value) override;
 
         template<typename T>
-        static std::shared_ptr<T> Deserialize(const Json::Value& json);
+        static std::shared_ptr<T> Deserialize(const Json::Value &json);
 
         bool GetIsRequired() const;
         void SetIsRequired(const bool isRequired);
@@ -31,7 +31,7 @@ namespace AdaptiveSharedNamespace
     };
 
     template<typename T>
-    std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value& json)
+    std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value &json)
     {
         std::shared_ptr<T> baseInputElement = BaseCardElement::Deserialize<T>(json);
 

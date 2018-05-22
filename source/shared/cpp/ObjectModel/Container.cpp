@@ -13,12 +13,12 @@ Container::Container() :
     PopulateKnownPropertiesSet();
 }
 
-const std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems() const
+const std::vector<std::shared_ptr<BaseCardElement>> &Container::GetItems() const
 {
     return m_items;
 }
 
-std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
+std::vector<std::shared_ptr<BaseCardElement>> &Container::GetItems()
 {
     return m_items;
 }
@@ -43,7 +43,7 @@ void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-void Container::SetLanguage(const std::string& value)
+void Container::SetLanguage(const std::string &value)
 {
     PropagateLanguage(value, m_items);
 }
@@ -73,9 +73,9 @@ Json::Value Container::SerializeToJsonValue() const
             VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
-    std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    std::string const &itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
-    for (const auto& cardElement : m_items)
+    for (const auto &cardElement : m_items)
     {
         root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
     }
@@ -91,7 +91,7 @@ Json::Value Container::SerializeToJsonValue() const
 
 std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& value)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
@@ -118,7 +118,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return ContainerParser::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
@@ -132,7 +132,7 @@ void Container::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items));
 }
 
-void Container::GetResourceUris(std::vector<std::string>& resourceUris)
+void Container::GetResourceUris(std::vector<std::string> &resourceUris)
 {
     auto items = GetItems();
     for (auto item : items)

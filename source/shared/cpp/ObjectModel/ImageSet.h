@@ -20,10 +20,10 @@ namespace AdaptiveSharedNamespace
         ImageSize GetImageSize() const;
         void SetImageSize(const ImageSize value);
 
-        std::vector<std::shared_ptr<Image>>& GetImages();
-        const std::vector<std::shared_ptr<Image>>& GetImages() const;
+        std::vector<std::shared_ptr<Image>> &GetImages();
+        const std::vector<std::shared_ptr<Image>> &GetImages() const;
 
-        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+        virtual void GetResourceUris(std::vector<std::string> &resourceUris) override;
 
     private:
         void PopulateKnownPropertiesSet();
@@ -37,10 +37,10 @@ namespace AdaptiveSharedNamespace
     public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &root);
 
         std::shared_ptr<BaseCardElement> DeserializeFromString(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString);
     };
 } // namespace AdaptiveSharedNamespace

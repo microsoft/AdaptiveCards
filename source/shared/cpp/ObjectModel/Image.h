@@ -16,7 +16,7 @@ namespace AdaptiveSharedNamespace
         virtual Json::Value SerializeToJsonValue() const override;
 
         std::string GetUrl() const;
-        void SetUrl(const std::string& value);
+        void SetUrl(const std::string &value);
 
         std::string GetBackgroundColor() const;
         void SetBackgroundColor(const std::string &value);
@@ -28,7 +28,7 @@ namespace AdaptiveSharedNamespace
         void SetImageSize(const ImageSize value);
 
         std::string GetAltText() const;
-        void SetAltText(const std::string& value);
+        void SetAltText(const std::string &value);
 
         HorizontalAlignment GetHorizontalAlignment() const;
         void SetHorizontalAlignment(const HorizontalAlignment value);
@@ -42,7 +42,7 @@ namespace AdaptiveSharedNamespace
         unsigned int GetPixelHeight() const;
         void SetPixelHeight(unsigned int value);
 
-        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+        virtual void GetResourceUris(std::vector<std::string> &resourceUris) override;
 
     private:
         void PopulateKnownPropertiesSet();
@@ -63,14 +63,14 @@ namespace AdaptiveSharedNamespace
     public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &root);
 
         std::shared_ptr<BaseCardElement> DeserializeWithoutCheckingType(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &root);
 
         std::shared_ptr<BaseCardElement> DeserializeFromString(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString);
     };
 } // namespace AdaptiveSharedNamespace
