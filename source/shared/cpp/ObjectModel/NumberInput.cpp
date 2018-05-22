@@ -43,7 +43,7 @@ std::string NumberInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void NumberInput::SetPlaceholder(const std::string& value)
+void NumberInput::SetPlaceholder(const std::string &value)
 {
     m_placeholder = value;
 }
@@ -79,7 +79,7 @@ void NumberInput::SetMin(const int value)
 }
 
 std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value& json)
+    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::NumberInput);
 
@@ -95,7 +95,7 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return NumberInputParser::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

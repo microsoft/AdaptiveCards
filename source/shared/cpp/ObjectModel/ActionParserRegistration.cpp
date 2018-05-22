@@ -20,7 +20,7 @@ namespace AdaptiveSharedNamespace
     }
 
     void ActionParserRegistration::AddParser(
-        std::string const& elementType, std::shared_ptr<ActionElementParser> parser)
+        std::string const &elementType, std::shared_ptr<ActionElementParser> parser)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -33,7 +33,7 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    void ActionParserRegistration::RemoveParser(std::string const& elementType)
+    void ActionParserRegistration::RemoveParser(std::string const &elementType)
     {
         if (m_knownElements.find(elementType) != m_knownElements.end())
         {
@@ -41,7 +41,7 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string const& elementType)
+    std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string const &elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ActionParserRegistration::m_cardElementParsers.end())

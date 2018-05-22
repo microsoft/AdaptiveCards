@@ -10,8 +10,8 @@ using namespace AdaptiveSharedNamespace;
 
 AdaptiveCard::AdaptiveCard() : m_style(ContainerStyle::None), m_height(HeightType::Auto) {}
 
-AdaptiveCard::AdaptiveCard(std::string const& version, std::string const& fallbackText,
-    std::string const& backgroundImage, ContainerStyle style, std::string const& speak, std::string const& language,
+AdaptiveCard::AdaptiveCard(std::string const &version, std::string const &fallbackText,
+    std::string const &backgroundImage, ContainerStyle style, std::string const &speak, std::string const &language,
     VerticalContentAlignment verticalContentAlignment, HeightType height) :
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
@@ -19,10 +19,10 @@ AdaptiveCard::AdaptiveCard(std::string const& version, std::string const& fallba
 {
 }
 
-AdaptiveCard::AdaptiveCard(std::string const& version, std::string const& fallbackText,
-    std::string const& backgroundImage, ContainerStyle style, std::string const& speak, std::string const& language,
+AdaptiveCard::AdaptiveCard(std::string const &version, std::string const &fallbackText,
+    std::string const &backgroundImage, ContainerStyle style, std::string const &speak, std::string const &language,
     VerticalContentAlignment verticalContentAlignment, HeightType height,
-    std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
+    std::vector<std::shared_ptr<BaseCardElement>> &body, std::vector<std::shared_ptr<BaseActionElement>> &actions) :
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
     m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_body(body),
@@ -31,12 +31,12 @@ AdaptiveCard::AdaptiveCard(std::string const& version, std::string const& fallba
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile, double rendererVersion,
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string &jsonFile, double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration>
         actionParserRegistration) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile, double rendererVersion,
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string &jsonFile, double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
@@ -50,12 +50,12 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, double rendererVersion,
+std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value &json, double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration>
         actionParserRegistration) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, double rendererVersion,
+std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value &json, double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
@@ -137,12 +137,12 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString, double rendererVersion,
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string &jsonString, double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration>
         actionParserRegistration) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString, double rendererVersion,
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string &jsonString, double rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
@@ -192,14 +192,14 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
 
     std::string bodyPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body);
     root[bodyPropertyName] = Json::Value(Json::arrayValue);
-    for (const auto& cardElement : GetBody())
+    for (const auto &cardElement : GetBody())
     {
         root[bodyPropertyName].append(cardElement->SerializeToJsonValue());
     }
 
     std::string actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
     root[actionsPropertyName] = Json::Value(Json::arrayValue);
-    for (const auto& action : GetActions())
+    for (const auto &action : GetActions())
     {
         root[actionsPropertyName].append(action->SerializeToJsonValue());
     }
@@ -208,11 +208,11 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
 }
 
 #ifdef __ANDROID__
-std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(const std::string& fallbackText,
-    const std::string& language) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(const std::string &fallbackText,
+    const std::string &language) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
 std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
-    const std::string& fallbackText, const std::string& language)
+    const std::string &fallbackText, const std::string &language)
 #endif // __ANDROID__
 {
     std::shared_ptr<AdaptiveCard> fallbackCard = std::make_shared<AdaptiveCard>("1.0", fallbackText, "",
@@ -238,7 +238,7 @@ std::string AdaptiveCard::GetVersion() const
     return m_version;
 }
 
-void AdaptiveCard::SetVersion(const std::string& value)
+void AdaptiveCard::SetVersion(const std::string &value)
 {
     m_version = value;
 }
@@ -248,7 +248,7 @@ std::string AdaptiveCard::GetFallbackText() const
     return m_fallbackText;
 }
 
-void AdaptiveCard::SetFallbackText(const std::string& value)
+void AdaptiveCard::SetFallbackText(const std::string &value)
 {
     m_fallbackText = value;
 }
@@ -258,7 +258,7 @@ std::string AdaptiveCard::GetBackgroundImage() const
     return m_backgroundImage;
 }
 
-void AdaptiveCard::SetBackgroundImage(const std::string& value)
+void AdaptiveCard::SetBackgroundImage(const std::string &value)
 {
     m_backgroundImage = value;
 }
@@ -268,7 +268,7 @@ std::string AdaptiveCard::GetSpeak() const
     return m_speak;
 }
 
-void AdaptiveCard::SetSpeak(const std::string& value)
+void AdaptiveCard::SetSpeak(const std::string &value)
 {
     m_speak = value;
 }
@@ -288,13 +288,13 @@ std::string AdaptiveCard::GetLanguage() const
     return m_language;
 }
 
-void AdaptiveCard::SetLanguage(const std::string& value)
+void AdaptiveCard::SetLanguage(const std::string &value)
 {
     m_language = value;
     // Propagate language to ColumnSet, Containers, TextBlocks and showCardActions
     PropagateLanguage(value, m_body);
 
-    for (auto& actionElement : m_actions)
+    for (auto &actionElement : m_actions)
     {
         if (actionElement->GetElementType() == ActionType::ShowCard)
         {
@@ -322,22 +322,22 @@ const CardElementType AdaptiveCard::GetElementType() const
     return CardElementType::AdaptiveCard;
 }
 
-std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody()
+std::vector<std::shared_ptr<BaseCardElement>> &AdaptiveCard::GetBody()
 {
     return m_body;
 }
 
-const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody() const
+const std::vector<std::shared_ptr<BaseCardElement>> &AdaptiveCard::GetBody() const
 {
     return m_body;
 }
 
-std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions()
+std::vector<std::shared_ptr<BaseActionElement>> &AdaptiveCard::GetActions()
 {
     return m_actions;
 }
 
-const std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions() const
+const std::vector<std::shared_ptr<BaseActionElement>> &AdaptiveCard::GetActions() const
 {
     return m_actions;
 }

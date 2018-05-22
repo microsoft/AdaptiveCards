@@ -4,9 +4,9 @@
 #include "Container.h"
 #include "TextBlock.h"
 
-void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<BaseCardElement>>& m_body)
+void PropagateLanguage(const std::string &language, std::vector<std::shared_ptr<BaseCardElement>> &m_body)
 {
-    for (auto& bodyElement : m_body)
+    for (auto &bodyElement : m_body)
     {
         CardElementType elementType = bodyElement->GetElementType();
 
@@ -38,7 +38,7 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
 }
 
 void ValidateUserInputForDimensionWithUnit(
-    const std::string& unit, const std::string& requestedDimension, int& parsedDimension)
+    const std::string &unit, const std::string &requestedDimension, int &parsedDimension)
 {
     if (requestedDimension.empty())
     {
@@ -62,13 +62,13 @@ void ValidateUserInputForDimensionWithUnit(
             }
             parsedDimension = (int)parsedVal;
         }
-        catch (const std::invalid_argument& e)
+        catch (const std::invalid_argument &e)
         {
             (void)e;
             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
                 "unsigned integer is accepted but received : " + requestedDimension);
         }
-        catch (const std::out_of_range& e)
+        catch (const std::out_of_range &e)
         {
             (void)e;
             throw AdaptiveCardParseException(

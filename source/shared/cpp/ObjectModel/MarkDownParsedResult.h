@@ -18,16 +18,16 @@ namespace AdaptiveSharedNamespace
         // Write to html string
         std::string GenerateHtmlString();
         // Append contents of the given parsing result object
-        void AppendParseResult(MarkDownParsedResult&);
+        void AppendParseResult(MarkDownParsedResult &);
         // Append html code gen object to parse result
-        void AppendToTokens(const std::shared_ptr<MarkDownHtmlGenerator>&);
+        void AppendToTokens(const std::shared_ptr<MarkDownHtmlGenerator> &);
         // Append emphasis html code gen object to parse result
-        void AppendToLookUpTable(const std::shared_ptr<MarkDownEmphasisHtmlGenerator>&);
+        void AppendToLookUpTable(const std::shared_ptr<MarkDownEmphasisHtmlGenerator> &);
         // Take a char and convert it html code gen and append it to the result
         // It is used to store MarkDown keywords such as '[', ']', '(', ')'
         void AddNewTokenToParsedResult(char ch);
         // Take string and convert it html code gen and append it to the result
-        void AddNewTokenToParsedResult(std::string& word);
+        void AddNewTokenToParsedResult(std::string &word);
         // Take a new line char and convert it html code gen and append it to the result
         // It is used to store MarkDown keywords such as '\r', '\n'
         void AddNewLineTokenToParsedResult(char ch);
@@ -38,7 +38,7 @@ namespace AdaptiveSharedNamespace
         void FoundHtmlTags();
 
     private:
-        void MarkTags(MarkDownHtmlGenerator&);
+        void MarkTags(MarkDownHtmlGenerator &);
         std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_codeGenTokens;
         std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> m_emphasisLookUpTable;
         bool m_isHTMLTagsAdded;

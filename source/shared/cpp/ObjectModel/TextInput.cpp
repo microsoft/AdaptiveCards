@@ -47,7 +47,7 @@ std::string TextInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void TextInput::SetPlaceholder(const std::string& value)
+void TextInput::SetPlaceholder(const std::string &value)
 {
     m_placeholder = value;
 }
@@ -57,7 +57,7 @@ std::string TextInput::GetValue() const
     return m_value;
 }
 
-void TextInput::SetValue(const std::string& value)
+void TextInput::SetValue(const std::string &value)
 {
     m_value = value;
 }
@@ -93,7 +93,7 @@ void TextInput::SetTextInputStyle(const TextInputStyle value)
 }
 
 std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value& json)
+    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TextInput);
 
@@ -111,7 +111,7 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> TextInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return TextInputParser::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

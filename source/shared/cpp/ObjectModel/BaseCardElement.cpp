@@ -36,7 +36,7 @@ std::string BaseCardElement::GetElementTypeString() const
     return m_typeString;
 }
 
-void BaseCardElement::SetElementTypeString(const std::string& value)
+void BaseCardElement::SetElementTypeString(const std::string &value)
 {
     m_typeString = value;
 }
@@ -76,7 +76,7 @@ std::string BaseCardElement::GetId() const
     return m_id;
 }
 
-void BaseCardElement::SetId(const std::string& value)
+void BaseCardElement::SetId(const std::string &value)
 {
     m_id = value;
 }
@@ -134,12 +134,12 @@ Json::Value BaseCardElement::GetAdditionalProperties() const
     return m_additionalProperties;
 }
 
-void BaseCardElement::SetAdditionalProperties(Json::Value const& value)
+void BaseCardElement::SetAdditionalProperties(Json::Value const &value)
 {
     m_additionalProperties = value;
 }
 
-void BaseCardElement::GetResourceUris(std::vector<std::string>&)
+void BaseCardElement::GetResourceUris(std::vector<std::string> &)
 {
     return;
 }

@@ -20,8 +20,8 @@ namespace AdaptiveSharedNamespace
         ForegroundColor GetColor() const;
         void SetColor(const ForegroundColor value);
 
-        static std::shared_ptr<Separator> Deserialize(const Json::Value& root);
-        static std::shared_ptr<Separator> DeserializeFromString(const std::string& jsonString);
+        static std::shared_ptr<Separator> Deserialize(const Json::Value &root);
+        static std::shared_ptr<Separator> DeserializeFromString(const std::string &jsonString);
 
     private:
         SeparatorThickness m_thickness;

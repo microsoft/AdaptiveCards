@@ -5,7 +5,7 @@
 using namespace AdaptiveSharedNamespace;
 
 // Parses according to each key words
-void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
+void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
 {
     switch (stream.peek())
     {
@@ -78,7 +78,7 @@ void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
 // capture until it can't capture anymore.
 // it moves two states, emphasis state and text state,
 // at each transition of state, one token is captured
-void EmphasisParser::Match(std::stringstream& stream)
+void EmphasisParser::Match(std::stringstream &stream)
 {
     while (m_current_state != EmphasisState::Captured)
     {
@@ -88,7 +88,7 @@ void EmphasisParser::Match(std::stringstream& stream)
 
 /// captures text until it see emphasis character. When it does, switch to Emphasis state
 EmphasisParser::EmphasisState EmphasisParser::MatchText(
-    EmphasisParser& parser, std::stringstream& stream, std::string& token)
+    EmphasisParser &parser, std::stringstream &stream, std::string &token)
 {
     /// MarkDown keywords
     if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '\n' ||
@@ -124,7 +124,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(
 
 /// captures text untill it see none-emphasis character. When it does, switch to text state
 EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(
-    EmphasisParser& parser, std::stringstream& stream, std::string& token)
+    EmphasisParser &parser, std::stringstream &stream, std::string &token)
 {
     // key word is encountered, flush what is being processed, and have those keyword
     // handled by ParseBlock()
@@ -167,7 +167,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(
 
 // Captures remaining charaters in given token
 // and causes the emphasis parsing to terminate
-void EmphasisParser::Flush(int ch, std::string& currentToken)
+void EmphasisParser::Flush(int ch, std::string &currentToken)
 {
     if (m_current_state == EmphasisState::Emphasis)
     {
@@ -186,7 +186,7 @@ bool EmphasisParser::IsMarkDownDelimiter(int ch)
     return ((ch == '*' || ch == '_') && (m_lookBehind != Escape));
 }
 
-void EmphasisParser::CaptureCurrentCollectedStringAsRegularToken(std::string& currentToken)
+void EmphasisParser::CaptureCurrentCollectedStringAsRegularToken(std::string &currentToken)
 {
     if (currentToken.empty())
         return;
@@ -243,7 +243,7 @@ bool EmphasisParser::IsRightEmphasisDelimiter(int ch)
     ;
 }
 
-bool EmphasisParser::TryCapturingRightEmphasisToken(int ch, std::string& currentToken)
+bool EmphasisParser::TryCapturingRightEmphasisToken(int ch, std::string &currentToken)
 {
     if (IsRightEmphasisDelimiter(ch))
     {
@@ -272,7 +272,7 @@ bool EmphasisParser::TryCapturingRightEmphasisToken(int ch, std::string& current
     return false;
 }
 
-bool EmphasisParser::TryCapturingLeftEmphasisToken(int ch, std::string& currentToken)
+bool EmphasisParser::TryCapturingLeftEmphasisToken(int ch, std::string &currentToken)
 {
     // left emphasis detected, save emphasis for later reference
     if (IsLeftEmphasisDelimiter(ch))
@@ -309,7 +309,7 @@ void EmphasisParser::UpdateLookBehind(int ch)
     }
 }
 
-void EmphasisParser::CaptureEmphasisToken(int ch, std::string& currentToken)
+void EmphasisParser::CaptureEmphasisToken(int ch, std::string &currentToken)
 {
     if (!TryCapturingRightEmphasisToken(ch, currentToken) && !TryCapturingLeftEmphasisToken(ch, currentToken) &&
         !currentToken.empty())
@@ -320,7 +320,7 @@ void EmphasisParser::CaptureEmphasisToken(int ch, std::string& currentToken)
     }
 }
 
-void LinkParser::Match(std::stringstream& stream)
+void LinkParser::Match(std::stringstream &stream)
 {
     // link syntax check, match keyword at each stage
     if (MatchAtLinkInit(stream) && MatchAtLinkTextRun(stream) && MatchAtLinkTextEnd(stream) &&
@@ -332,7 +332,7 @@ void LinkParser::Match(std::stringstream& stream)
 }
 
 // link is in form of [txt](url), this method matches '['
-bool LinkParser::MatchAtLinkInit(std::stringstream& lookahead)
+bool LinkParser::MatchAtLinkInit(std::stringstream &lookahead)
 {
     if (lookahead.peek() == '[')
     {
@@ -346,7 +346,7 @@ bool LinkParser::MatchAtLinkInit(std::stringstream& lookahead)
 }
 
 // link is in form of [txt](url), this method matches txt
-bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
+bool LinkParser::MatchAtLinkTextRun(std::stringstream &lookahead)
 {
     if (lookahead.peek() == ']')
     {
@@ -380,7 +380,7 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
 }
 
 // link is in form of [txt](url), this method matches ']'
-bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
+bool LinkParser::MatchAtLinkTextEnd(std::stringstream &lookahead)
 {
     if (lookahead.peek() == '(')
     {
@@ -393,7 +393,7 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 }
 
 // link is in form of [txt](url), this method matches '('
-bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
+bool LinkParser::MatchAtLinkDestinationStart(std::stringstream &lookahead)
 {
     // control key is detected, syntax check failed
     if (iscntrl(lookahead.peek()))
@@ -421,7 +421,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 }
 
 // link is in form of [txt](url), this method matches ')'
-bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
+bool LinkParser::MatchAtLinkDestinationRun(std::stringstream &lookahead)
 {
     if (isspace(lookahead.peek()) || iscntrl(lookahead.peek()))
     {
@@ -480,7 +480,7 @@ void LinkParser::CaptureLinkToken()
 
 // list marker have form of ^-\s+ or \r-\s+
 // this method matches -\s
-bool ListParser::MatchNewListItem(std::stringstream& stream)
+bool ListParser::MatchNewListItem(std::stringstream &stream)
 {
     if (IsHyphen(stream.peek()))
     {
@@ -501,7 +501,7 @@ bool ListParser::MatchNewListItem(std::stringstream& stream)
 // before calling this method
 // this method will return true, after it mataches new line char
 // at least once.
-bool ListParser::MatchNewBlock(std::stringstream& stream)
+bool ListParser::MatchNewBlock(std::stringstream &stream)
 {
     if (IsNewLine(stream.peek()))
     {
@@ -518,7 +518,7 @@ bool ListParser::MatchNewBlock(std::stringstream& stream)
 
 // ordered list marker has form of ^\d+\.\s* or [\r,\n]\d+\.\s*, and this method checks the syntax
 // this method matches \d+\.
-bool ListParser::MatchNewOrderedListItem(std::stringstream& stream, std::string& number_string)
+bool ListParser::MatchNewOrderedListItem(std::stringstream &stream, std::string &number_string)
 {
     do
     {
@@ -538,7 +538,7 @@ bool ListParser::MatchNewOrderedListItem(std::stringstream& stream, std::string&
 // parse blocks that wasn't captured
 // if what we encounter is one of following items, start of new list, list item, or new block element,
 // we do not include in the current block, we return, and have it handled by the caller
-void ListParser::ParseSubBlocks(std::stringstream& stream)
+void ListParser::ParseSubBlocks(std::stringstream &stream)
 {
     while (!stream.eof())
     {
@@ -569,7 +569,7 @@ void ListParser::ParseSubBlocks(std::stringstream& stream)
     }
 }
 
-bool ListParser::CompleteListParsing(std::stringstream& stream)
+bool ListParser::CompleteListParsing(std::stringstream &stream)
 {
     // check for - of -\s+ list marker
     if (stream.peek() == ' ')
@@ -592,7 +592,7 @@ bool ListParser::CompleteListParsing(std::stringstream& stream)
 }
 
 // list marker has a form of ^-\s+ or [\r, \n]-\s+, and this method checks the syntax
-void ListParser::Match(std::stringstream& stream)
+void ListParser::Match(std::stringstream &stream)
 {
     // check for - of -\s+ list marker
     if (IsHyphen(stream.peek()))
@@ -629,7 +629,7 @@ void ListParser::CaptureListToken()
 }
 
 // ordered list marker has form of ^\d+\.\s* or [\r,\n]\d+\.\s*, and this method checks the syntax
-void OrderedListParser::Match(std::stringstream& stream)
+void OrderedListParser::Match(std::stringstream &stream)
 {
     // used to capture digit char
     std::string number_string = "";
@@ -662,7 +662,7 @@ void OrderedListParser::Match(std::stringstream& stream)
     }
 }
 
-void OrderedListParser::CaptureOrderedListToken(std::string& number_string)
+void OrderedListParser::CaptureOrderedListToken(std::string &number_string)
 {
     std::ostringstream html;
     m_parsedResult.Translate();

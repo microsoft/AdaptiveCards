@@ -10,12 +10,12 @@ ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetIn
     PopulateKnownPropertiesSet();
 }
 
-const std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices() const
+const std::vector<std::shared_ptr<ChoiceInput>> &ChoiceSetInput::GetChoices() const
 {
     return m_choices;
 }
 
-std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices()
+std::vector<std::shared_ptr<ChoiceInput>> &ChoiceSetInput::GetChoices()
 {
     return m_choices;
 }
@@ -38,7 +38,7 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
     root[propertyName] = Json::Value(Json::arrayValue);
-    for (const auto& choice : m_choices)
+    for (const auto &choice : m_choices)
     {
         root[propertyName].append(choice->SerializeToJsonValue());
     }
@@ -71,14 +71,14 @@ std::string ChoiceSetInput::GetValue() const
     return m_value;
 }
 
-void ChoiceSetInput::SetValue(std::string const& value)
+void ChoiceSetInput::SetValue(std::string const &value)
 {
     m_value = value;
 }
 
 std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& json)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ChoiceSetInput);
 
@@ -99,7 +99,7 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ChoiceSetInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return ChoiceSetInputParser::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

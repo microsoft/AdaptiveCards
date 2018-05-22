@@ -19,7 +19,7 @@ namespace AdaptiveSharedNamespace
         virtual ~BaseCardElement();
 
         virtual std::string GetElementTypeString() const;
-        virtual void SetElementTypeString(const std::string& value);
+        virtual void SetElementTypeString(const std::string &value);
 
         virtual bool GetSeparator() const;
         virtual void SetSeparator(const bool value);
@@ -31,7 +31,7 @@ namespace AdaptiveSharedNamespace
         virtual void SetSpacing(const Spacing value);
 
         virtual std::string GetId() const;
-        virtual void SetId(const std::string& value);
+        virtual void SetId(const std::string &value);
 
         virtual const CardElementType GetElementType() const;
 
@@ -39,12 +39,12 @@ namespace AdaptiveSharedNamespace
         virtual Json::Value SerializeToJsonValue() const;
 
         template<typename T>
-        static std::shared_ptr<T> Deserialize(const Json::Value& json);
+        static std::shared_ptr<T> Deserialize(const Json::Value &json);
 
         Json::Value GetAdditionalProperties() const;
-        void SetAdditionalProperties(const Json::Value& additionalProperties);
+        void SetAdditionalProperties(const Json::Value &additionalProperties);
 
-        virtual void GetResourceUris(std::vector<std::string>& resourceUris);
+        virtual void GetResourceUris(std::vector<std::string> &resourceUris);
 
     protected:
         static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
@@ -64,7 +64,7 @@ namespace AdaptiveSharedNamespace
     };
 
     template<typename T>
-    std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
+    std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value &json)
     {
         std::shared_ptr<T> cardElement = std::make_shared<T>();
         std::shared_ptr<BaseCardElement> baseCardElement = cardElement;

@@ -14,7 +14,7 @@ namespace AdaptiveSharedNamespace
     class MarkDownParser
     {
     public:
-        MarkDownParser(const std::string& txt);
+        MarkDownParser(const std::string &txt);
 
         std::string TransformToHtml();
 

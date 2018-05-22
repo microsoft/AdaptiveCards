@@ -22,7 +22,7 @@ using namespace AdaptiveSharedNamespace;
 
 DateTimePreparser::DateTimePreparser() : m_hasDateTokens(false) {}
 
-DateTimePreparser::DateTimePreparser(std::string const& in)
+DateTimePreparser::DateTimePreparser(std::string const &in)
 {
     ParseDateTime(in);
 }
@@ -37,7 +37,7 @@ bool DateTimePreparser::HasDateTokens() const
     return m_hasDateTokens;
 }
 
-void DateTimePreparser::AddTextToken(std::string const& text, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddTextToken(std::string const &text, DateTimePreparsedTokenFormat format)
 {
     if (!text.empty())
     {
@@ -45,7 +45,7 @@ void DateTimePreparser::AddTextToken(std::string const& text, DateTimePreparsedT
     }
 }
 
-void DateTimePreparser::AddDateToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddDateToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format)
 {
     m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, date, format));
     m_hasDateTokens = true;
@@ -54,14 +54,14 @@ void DateTimePreparser::AddDateToken(std::string const& text, struct tm date, Da
 std::string DateTimePreparser::Concatenate() const
 {
     std::string formedString;
-    for (const auto& piece : m_textTokenCollection)
+    for (const auto &piece : m_textTokenCollection)
     {
         formedString += piece->GetText();
     }
     return formedString;
 }
 
-bool DateTimePreparser::IsValidTimeAndDate(const struct tm& parsedTm, int hours, int minutes)
+bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
 {
     if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 && parsedTm.tm_min <= 60 &&
         parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
@@ -86,7 +86,7 @@ bool DateTimePreparser::IsValidTimeAndDate(const struct tm& parsedTm, int hours,
     return false;
 }
 
-void DateTimePreparser::ParseDateTime(std::string const& in)
+void DateTimePreparser::ParseDateTime(std::string const &in)
 {
     std::vector<DateTimePreparsedToken> sections;
 
@@ -121,7 +121,7 @@ void DateTimePreparser::ParseDateTime(std::string const& in)
         struct tm parsedTm
         {
         };
-        int* addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon, &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+        int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon, &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
             &parsedTm.tm_sec, &hours, &minutes};
 
         if (matches[Style].matched)

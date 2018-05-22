@@ -9,7 +9,7 @@ HostConfig HostConfig::DeserializeFromString(const std::string jsonString)
     return HostConfig::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-HostConfig HostConfig::Deserialize(const Json::Value& json)
+HostConfig HostConfig::Deserialize(const Json::Value &json)
 {
     HostConfig result;
     std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
@@ -56,7 +56,7 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     return result;
 }
 
-FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const FontSizesConfig& defaultValue)
+FontSizesConfig FontSizesConfig::Deserialize(const Json::Value &json, const FontSizesConfig &defaultValue)
 {
     FontSizesConfig result;
     result.smallFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Small, defaultValue.smallFontSize);
@@ -68,7 +68,7 @@ FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const Font
     return result;
 }
 
-ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig& defaultValue)
+ColorConfig ColorConfig::Deserialize(const Json::Value &json, const ColorConfig &defaultValue)
 {
     ColorConfig result;
     std::string defaultColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Default);
@@ -80,7 +80,7 @@ ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig&
     return result;
 }
 
-ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConfig& defaultValue)
+ColorsConfig ColorsConfig::Deserialize(const Json::Value &json, const ColorsConfig &defaultValue)
 {
     ColorsConfig result;
     auto colorDeserializer = &ColorConfig::Deserialize;
@@ -109,7 +109,7 @@ ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConf
     return result;
 }
 
-TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& defaultValue)
+TextConfig TextConfig::Deserialize(const Json::Value &json, const TextConfig &defaultValue)
 {
     TextConfig result;
     result.weight = ParseUtil::GetEnumValue<TextWeight>(
@@ -130,7 +130,7 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
     return result;
 }
 
-ImageSizesConfig ImageSizesConfig::Deserialize(const Json::Value& json, const ImageSizesConfig& defaultValue)
+ImageSizesConfig ImageSizesConfig::Deserialize(const Json::Value &json, const ImageSizesConfig &defaultValue)
 {
     ImageSizesConfig result;
     result.smallSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Small, defaultValue.smallSize);
@@ -140,7 +140,7 @@ ImageSizesConfig ImageSizesConfig::Deserialize(const Json::Value& json, const Im
     return result;
 }
 
-AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, const AdaptiveCardConfig& defaultValue)
+AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value &json, const AdaptiveCardConfig &defaultValue)
 {
     AdaptiveCardConfig result;
     result.allowCustomStyle =
@@ -149,7 +149,7 @@ AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, cons
     return result;
 }
 
-ImageSetConfig ImageSetConfig::Deserialize(const Json::Value& json, const ImageSetConfig& defaultValue)
+ImageSetConfig ImageSetConfig::Deserialize(const Json::Value &json, const ImageSetConfig &defaultValue)
 {
     ImageSetConfig result;
     result.imageSize = ParseUtil::GetEnumValue<ImageSize>(
@@ -161,7 +161,7 @@ ImageSetConfig ImageSetConfig::Deserialize(const Json::Value& json, const ImageS
     return result;
 }
 
-FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetConfig& defaultValue)
+FactSetConfig FactSetConfig::Deserialize(const Json::Value &json, const FactSetConfig &defaultValue)
 {
     FactSetConfig result;
 
@@ -179,7 +179,7 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
 }
 
 ShowCardActionConfig ShowCardActionConfig::Deserialize(
-    const Json::Value& json, const ShowCardActionConfig& defaultValue)
+    const Json::Value &json, const ShowCardActionConfig &defaultValue)
 {
     ShowCardActionConfig result;
     result.actionMode = ParseUtil::GetEnumValue<ActionMode>(
@@ -192,7 +192,7 @@ ShowCardActionConfig ShowCardActionConfig::Deserialize(
     return result;
 }
 
-ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsConfig& defaultValue)
+ActionsConfig ActionsConfig::Deserialize(const Json::Value &json, const ActionsConfig &defaultValue)
 {
     ActionsConfig result;
 
@@ -218,7 +218,7 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
     return result;
 }
 
-SpacingConfig SpacingConfig::Deserialize(const Json::Value& json, const SpacingConfig& defaultValue)
+SpacingConfig SpacingConfig::Deserialize(const Json::Value &json, const SpacingConfig &defaultValue)
 {
     SpacingConfig result;
 
@@ -238,7 +238,7 @@ SpacingConfig SpacingConfig::Deserialize(const Json::Value& json, const SpacingC
     return result;
 }
 
-SeparatorConfig SeparatorConfig::Deserialize(const Json::Value& json, const SeparatorConfig& defaultValue)
+SeparatorConfig SeparatorConfig::Deserialize(const Json::Value &json, const SeparatorConfig &defaultValue)
 {
     SeparatorConfig result;
 
@@ -251,7 +251,7 @@ SeparatorConfig SeparatorConfig::Deserialize(const Json::Value& json, const Sepa
 }
 
 ContainerStyleDefinition ContainerStyleDefinition::Deserialize(
-    const Json::Value& json, const ContainerStyleDefinition& defaultValue)
+    const Json::Value &json, const ContainerStyleDefinition &defaultValue)
 {
     ContainerStyleDefinition result;
 
@@ -271,7 +271,7 @@ ContainerStyleDefinition ContainerStyleDefinition::Deserialize(
 }
 
 ContainerStylesDefinition ContainerStylesDefinition::Deserialize(
-    const Json::Value& json, const ContainerStylesDefinition& defaultValue)
+    const Json::Value &json, const ContainerStylesDefinition &defaultValue)
 {
     ContainerStylesDefinition result;
 
@@ -284,7 +284,7 @@ ContainerStylesDefinition ContainerStylesDefinition::Deserialize(
     return result;
 }
 
-FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue)
+FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value &json, const FontWeightsConfig &defaultValue)
 {
     FontWeightsConfig result;
 
@@ -297,7 +297,7 @@ FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value& json, const 
     return result;
 }
 
-ImageConfig ImageConfig::Deserialize(const Json::Value& json, const ImageConfig& defaultValue)
+ImageConfig ImageConfig::Deserialize(const Json::Value &json, const ImageConfig &defaultValue)
 {
     ImageConfig result;
 

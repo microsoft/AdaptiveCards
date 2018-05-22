@@ -38,7 +38,7 @@ std::string ToggleInput::GetTitle() const
     return m_title;
 }
 
-void ToggleInput::SetTitle(const std::string& value)
+void ToggleInput::SetTitle(const std::string &value)
 {
     m_title = value;
 }
@@ -48,11 +48,11 @@ std::string ToggleInput::GetValue() const
     return m_value;
 }
 
-void ToggleInput::SetValue(const std::string& value)
+void ToggleInput::SetValue(const std::string &value)
 {
     m_value = value;
 }
-void ToggleInput::SetValueOff(const std::string& valueOff)
+void ToggleInput::SetValueOff(const std::string &valueOff)
 {
     m_valueOff = valueOff;
 }
@@ -67,13 +67,13 @@ std::string ToggleInput::GetValueOn() const
     return m_valueOn;
 }
 
-void ToggleInput::SetValueOn(const std::string& valueOn)
+void ToggleInput::SetValueOn(const std::string &valueOn)
 {
     m_valueOn = valueOn;
 }
 
 std::shared_ptr<BaseCardElement> ToggleInputParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value& json)
+    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ToggleInput);
 
@@ -99,7 +99,7 @@ std::shared_ptr<BaseCardElement> ToggleInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ToggleInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
     return ToggleInputParser::Deserialize(
         elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));

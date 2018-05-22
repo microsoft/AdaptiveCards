@@ -13,7 +13,7 @@ namespace AdaptiveSharedNamespace
         SubmitAction();
 
         std::string GetDataJson() const;
-        void SetDataJson(const std::string& value);
+        void SetDataJson(const std::string &value);
 
         virtual Json::Value SerializeToJsonValue() const override;
 
@@ -27,10 +27,10 @@ namespace AdaptiveSharedNamespace
     {
         std::shared_ptr<BaseActionElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& value);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &value);
 
         std::shared_ptr<BaseActionElement> DeserializeFromString(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString);
     };
 } // namespace AdaptiveSharedNamespace

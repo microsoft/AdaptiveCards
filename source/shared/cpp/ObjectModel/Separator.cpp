@@ -6,7 +6,7 @@ using namespace AdaptiveSharedNamespace;
 
 Separator::Separator() : m_thickness(SeparatorThickness::Default), m_color(ForegroundColor::Default) {}
 
-std::shared_ptr<Separator> Separator::Deserialize(const Json::Value& json)
+std::shared_ptr<Separator> Separator::Deserialize(const Json::Value &json)
 {
     std::shared_ptr<Separator> separator = std::make_shared<Separator>();
 
@@ -18,7 +18,7 @@ std::shared_ptr<Separator> Separator::Deserialize(const Json::Value& json)
     return separator;
 }
 
-std::shared_ptr<Separator> Separator::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<Separator> Separator::DeserializeFromString(const std::string &jsonString)
 {
     return Separator::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }

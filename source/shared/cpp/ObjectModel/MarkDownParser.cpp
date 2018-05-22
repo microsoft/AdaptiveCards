@@ -6,7 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-MarkDownParser::MarkDownParser(const std::string& txt) : m_text(txt), m_hasHTMLTag(false) {}
+MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_hasHTMLTag(false) {}
 
 // transforms string to html
 std::string MarkDownParser::TransformToHtml()

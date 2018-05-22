@@ -15,7 +15,7 @@ namespace AdaptiveSharedNamespace
         virtual Json::Value SerializeToJsonValue() const override;
 
         std::string GetPlaceholder() const;
-        void SetPlaceholder(const std::string& value);
+        void SetPlaceholder(const std::string &value);
 
         int GetValue() const;
         void SetValue(const int value);
@@ -40,10 +40,10 @@ namespace AdaptiveSharedNamespace
     public:
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& root);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &root);
 
         std::shared_ptr<BaseCardElement> DeserializeFromString(
             std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString);
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString);
     };
 } // namespace AdaptiveSharedNamespace
