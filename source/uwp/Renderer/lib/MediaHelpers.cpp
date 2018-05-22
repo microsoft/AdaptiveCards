@@ -132,9 +132,9 @@ void CreatePosterContainerWithPlayButton(
     // Add the play button. Draw slightly smaller and larger versions of the icon in the light 
     // color. This will create a dark button with a light outline so it shows up on all poster image colors.
     // TODO: Handle custom play button from host config
-    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Light, .45);
-    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Light, .55);
-    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Dark, .5);
+    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Light, .25);
+    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Light, .35);
+    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Dark, .3);
 
     ComPtr<IUIElement> posterRelativePanelAsUIElement;
     THROW_IF_FAILED(posterRelativePanel.As(&posterRelativePanelAsUIElement));
