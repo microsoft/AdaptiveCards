@@ -5,9 +5,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-ImageSet::ImageSet() : 
-    BaseCardElement(CardElementType::ImageSet),
-    m_imageSize(ImageSize::None)
+ImageSet::ImageSet() : BaseCardElement(CardElementType::ImageSet), m_imageSize(ImageSize::None)
 {
     PopulateKnownPropertiesSet();
 }
@@ -41,7 +39,7 @@ Json::Value ImageSet::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)] = ImageSizeToString(GetImageSize());
     }
 
-    std::string const &itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
+    std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& image : m_images)
     {
@@ -53,18 +51,19 @@ Json::Value ImageSet::SerializeToJsonValue() const
 
 std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const Json::Value& value)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ImageSet);
 
     auto imageSet = BaseCardElement::Deserialize<ImageSet>(value);
 
     // Get ImageSize
-    imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
+    imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(
+        value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
 
     // Parse Images
-    auto images = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Images, true);
+    auto images = ParseUtil::GetElementCollection(
+        elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Images, true);
 
     for (auto image : images)
     {
@@ -76,13 +75,13 @@ std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
 {
-    return ImageSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ImageSetParser::Deserialize(
+        elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ImageSet::PopulateKnownPropertiesSet() 
+void ImageSet::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize));

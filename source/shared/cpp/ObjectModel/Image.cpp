@@ -6,12 +6,8 @@
 using namespace AdaptiveSharedNamespace;
 
 Image::Image() :
-    BaseCardElement(CardElementType::Image),
-    m_imageStyle(ImageStyle::Default),
-    m_imageSize(ImageSize::None),
-    m_pixelWidth(0),
-    m_pixelHeight(0),
-    m_hAlignment(HorizontalAlignment::Left)
+    BaseCardElement(CardElementType::Image), m_imageStyle(ImageStyle::Default), m_imageSize(ImageSize::None),
+    m_pixelWidth(0), m_pixelHeight(0), m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
 }
@@ -74,7 +70,8 @@ Json::Value Image::SerializeToJsonValue() const
 
     if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
+            BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;
@@ -85,7 +82,7 @@ std::string Image::GetUrl() const
     return m_url;
 }
 
-void Image::SetUrl(const std::string &value)
+void Image::SetUrl(const std::string& value)
 {
     m_url = value;
 }
@@ -125,7 +122,7 @@ std::string Image::GetAltText() const
     return m_altText;
 }
 
-void Image::SetAltText(const std::string &value)
+void Image::SetAltText(const std::string& value)
 {
     m_altText = value;
 }
@@ -150,7 +147,7 @@ void Image::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-unsigned int Image::GetPixelWidth() const 
+unsigned int Image::GetPixelWidth() const
 {
     return m_pixelWidth;
 }
@@ -172,16 +169,15 @@ void Image::SetPixelHeight(unsigned int value)
 
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string& jsonString)
 {
-    return ImageParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ImageParser::Deserialize(
+        elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::shared_ptr<BaseCardElement> ImageParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const Json::Value& json)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::Image);
     return ImageParser::DeserializeWithoutCheckingType(elementParserRegistration, actionParserRegistration, json);
@@ -189,16 +185,17 @@ std::shared_ptr<BaseCardElement> ImageParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const Json::Value& json)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value& json)
 {
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
     image->SetBackgroundColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor));
-    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
+    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(
+        json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
-    image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+    image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
+        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
 
     std::vector<std::string> requestedDimensions;
     requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width));
@@ -213,11 +210,11 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
             const std::string unit = "px";
             std::size_t foundIndex = eachDimension.find(unit);
             /// check if width is determined explicitly
-            if (std::string::npos != foundIndex) 
+            if (std::string::npos != foundIndex)
             {
                 if (eachDimension.size() == foundIndex + unit.size())
-                // validate user inputs
-                ValidateUserInputForDimensionWithUnit(unit, eachDimension, parsedDimension);
+                    // validate user inputs
+                    ValidateUserInputForDimensionWithUnit(unit, eachDimension, parsedDimension);
             }
         }
         parsedDimensions.push_back(parsedDimension);
@@ -230,16 +227,18 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     }
     else
     {
-        image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
+        image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(
+            json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
     }
 
     // Parse optional selectAction
-    image->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false));
+    image->SetSelectAction(ParseUtil::GetSelectAction(
+        elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false));
 
     return image;
 }
 
-void Image::PopulateKnownPropertiesSet() 
+void Image::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor));

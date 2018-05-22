@@ -4,14 +4,15 @@
 #include "Enums.h"
 #include "json/json.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace
+{
     class BaseActionElement;
     class ElementParserRegistration;
     class ActionParserRegistration;
 
     class ActionElementParser
     {
-    public:
+        public:
         virtual std::shared_ptr<BaseActionElement> Deserialize(
             std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
@@ -20,16 +21,18 @@ AdaptiveSharedNamespaceStart
 
     class ActionParserRegistration
     {
-    public:
-
+        public:
         ActionParserRegistration();
 
-        void AddParser(std::string const &elementType, std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> parser);
-        void RemoveParser(std::string const &elementType);
-        std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> GetParser(std::string const &elementType);
+        void AddParser(
+            std::string const& elementType, std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> parser);
+        void RemoveParser(std::string const& elementType);
+        std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> GetParser(std::string const& elementType);
 
-    private:
+        private:
         std::unordered_set<std::string> m_knownElements;
-        std::unordered_map<std::string, std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
+        std::unordered_map<std::string, std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser>,
+            CaseInsensitiveHash, CaseInsensitiveEqualTo>
+            m_cardElementParsers;
     };
-AdaptiveSharedNamespaceEnd
+} // namespace AdaptiveSharedNamespace
