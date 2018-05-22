@@ -31,6 +31,8 @@ AdaptiveNamespaceStart
 
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
 
+        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetBackgroundColor(), m_backgroundColor.GetAddressOf()));
+
         m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
         m_pixelWidth = sharedImage->GetPixelWidth();
@@ -53,6 +55,18 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveImage::put_Url(HSTRING url)
     {
         return m_url.Set(url);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_BackgroundColor(HSTRING* backgroundColor)
+    {
+        return m_backgroundColor.CopyTo(backgroundColor);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_BackgroundColor(HSTRING backgroundColor)
+    {
+        return m_backgroundColor.Set(backgroundColor);
     }
 
     _Use_decl_annotations_
@@ -171,6 +185,7 @@ AdaptiveNamespaceStart
         }
 
         image->SetUrl(HStringToUTF8(m_url.Get()));
+        image->SetBackgroundColor(HStringToUTF8(m_backgroundColor.Get()));
 
         if (m_altText != nullptr)
         {
