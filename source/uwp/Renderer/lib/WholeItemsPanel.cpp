@@ -47,7 +47,6 @@ AdaptiveNamespaceStart
 
         const Size noVerticalLimit{ availableSize.Width, numeric_limits<float>::infinity() };
 
-        unsigned int stretchableCount{};
         m_visibleCount = count;
         for (unsigned int i{}; i < count; ++i)
         {
