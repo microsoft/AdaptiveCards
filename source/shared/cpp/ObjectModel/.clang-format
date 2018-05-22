@@ -4,7 +4,7 @@ AccessModifierOffset: -4
 AlignAfterOpenBracket: DontAlign
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
-AlignEscapedNewlines: Left
+AlignEscapedNewlines: DontAlign
 AlignOperands: false
 AlignTrailingComments: false
 AllowAllParametersOfDeclarationOnNextLine: false
@@ -45,4 +45,10 @@ SpaceAfterCStyleCast: false
 SpaceAfterTemplateKeyword: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: false
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
 UseTab: Never
