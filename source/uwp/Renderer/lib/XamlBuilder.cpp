@@ -477,6 +477,7 @@ AdaptiveNamespaceStart
         ComPtr<IShape> ellipseAsShape;
         ComPtr<IEllipse> ellipse(destination);
         THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
+
         THROW_IF_FAILED(ellipseAsShape->put_Fill(brush.Get()));
     };
 
@@ -1586,7 +1587,39 @@ AdaptiveNamespaceStart
 
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
-            THROW_IF_FAILED(ellipse.As(&frameworkElement));
+
+            HSTRING backgroundColor;
+            THROW_IF_FAILED(adaptiveImage->get_BackgroundColor(&backgroundColor));
+
+            if (backgroundColor != nullptr)
+            {
+                // Create a grid to contain the background color ellipse and the image ellipse
+                //ComPtr<IEllipse> backgroundEllipse = ellipse;
+                ComPtr<IEllipse> backgroundEllipse;
+                THROW_IF_FAILED(ellipse.CopyTo(&backgroundEllipse));
+
+                ComPtr<IShape> backgroundEllipseAsShape;
+                THROW_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
+
+                ABI::Windows::UI::Color color;
+                THROW_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
+                ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
+                THROW_IF_FAILED(backgroundEllipseAsShape->put_Fill(backgroundColorBrush.Get()));
+
+                ComPtr<IGrid> imageGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+
+                ComPtr<IPanel> panel;
+                THROW_IF_FAILED(imageGrid.As(&panel));
+
+                XamlHelpers::AppendXamlElementToPanel(backgroundEllipse.Get(), panel.Get());
+                XamlHelpers::AppendXamlElementToPanel(ellipse.Get(), panel.Get());
+
+                THROW_IF_FAILED(imageGrid.As(&frameworkElement));
+            }
+            else
+            {
+                THROW_IF_FAILED(ellipse.As(&frameworkElement));
+            }
 
             // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
             if (size == ABI::AdaptiveNamespace::ImageSize::Auto &&
