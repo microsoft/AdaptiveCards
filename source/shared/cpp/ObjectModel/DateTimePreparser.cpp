@@ -1,9 +1,9 @@
 #include "pch.h"
 
 #if defined(__ANDROID__) || (__APPLE__) || (__linux__)
-#define LOCALTIME(X,Y) (nullptr == localtime_r(Y, X))
+#define LOCALTIME(X, Y) (nullptr == localtime_r(Y, X))
 #else
-#define LOCALTIME(X,Y) localtime_s(X,Y)
+#define LOCALTIME(X, Y) localtime_s(X, Y)
 #endif
 
 #include "DateTimePreparsedToken.h"
@@ -20,10 +20,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-DateTimePreparser::DateTimePreparser() :
-    m_hasDateTokens(false)
-{
-}
+DateTimePreparser::DateTimePreparser() : m_hasDateTokens(false) {}
 
 DateTimePreparser::DateTimePreparser(std::string const &in)
 {
@@ -57,7 +54,7 @@ void DateTimePreparser::AddDateToken(std::string const &text, struct tm date, Da
 std::string DateTimePreparser::Concatenate() const
 {
     std::string formedString;
-    for (const auto& piece : m_textTokenCollection)
+    for (const auto &piece : m_textTokenCollection)
     {
         formedString += piece->GetText();
     }
@@ -66,8 +63,8 @@ std::string DateTimePreparser::Concatenate() const
 
 bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
 {
-    if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 &&
-        parsedTm.tm_min <= 60 && parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
+    if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 && parsedTm.tm_min <= 60 &&
+        parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
     {
         if (parsedTm.tm_mon == 4 || parsedTm.tm_mon == 6 || parsedTm.tm_mon == 9 || parsedTm.tm_mon == 11)
         {
@@ -93,7 +90,8 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
 {
     std::vector<DateTimePreparsedToken> sections;
 
-    std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
+    std::regex pattern(
+        "\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
     std::smatch matches;
     std::string text = in;
     enum MatchIndex
@@ -116,13 +114,14 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
     while (std::regex_search(text, matches, pattern))
     {
         time_t offset{};
-        int  formatStyle{};
+        int formatStyle{};
         // Date is matched
         bool isDate = matches[IsDate].matched;
         int hours{}, minutes{};
-        struct tm parsedTm{};
-        int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
-            &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+        struct tm parsedTm
+        {
+        };
+        int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon, &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
             &parsedTm.tm_sec, &hours, &minutes};
 
         if (matches[Style].matched)
@@ -155,8 +154,8 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
         // check for date and time validation
         if (IsValidTimeAndDate(parsedTm, hours, minutes))
         {
-            // maches offset sign, 
-            // Z == UTC, 
+            // maches offset sign,
+            // Z == UTC,
             // + == time added from UTC
             // - == time subtracted from UTC
             if (matches[TimeZone].matched)
@@ -167,7 +166,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
                 offset = (time_t)hours + (time_t)minutes;
 
                 wchar_t zone = matches[TimeZone].str()[0];
-                // time zone offset calculation 
+                // time zone offset calculation
                 if (zone == '+')
                 {
                     offset *= -1;
@@ -194,12 +193,14 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
             offset += ((time_t)(nTzOffset / 100) * 3600 + (time_t)(nTzOffset % 100) * 60);
             // add offset to utc
             utc += offset;
-            struct tm result{};
+            struct tm result
+            {
+            };
 
             // converts to local time from utc
             if (!LOCALTIME(&result, &utc))
             {
-                // localtime() set dst, put_time adjusts time accordingly which is not what we want since 
+                // localtime() set dst, put_time adjusts time accordingly which is not what we want since
                 // we have already taken cared of it in our calculation
                 if (result.tm_isdst == 1)
                 {
@@ -210,18 +211,19 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
                 {
                     switch (formatStyle)
                     {
-                        // SHORT Style
-                        case 'S':
-                            AddDateToken(matches[0].str(), result, DateTimePreparsedTokenFormat::DateShort);
-                            break;
-                        // LONG Style
-                        case 'L':
-                            AddDateToken(matches[0].str(), result, DateTimePreparsedTokenFormat::DateLong);
-                            break;
-                        // COMPACT or DEFAULT Style
-                        case 'C': default:
-                            AddDateToken(matches[0].str(), result , DateTimePreparsedTokenFormat::DateCompact);
-                            break;
+                    // SHORT Style
+                    case 'S':
+                        AddDateToken(matches[0].str(), result, DateTimePreparsedTokenFormat::DateShort);
+                        break;
+                    // LONG Style
+                    case 'L':
+                        AddDateToken(matches[0].str(), result, DateTimePreparsedTokenFormat::DateLong);
+                        break;
+                    // COMPACT or DEFAULT Style
+                    case 'C':
+                    default:
+                        AddDateToken(matches[0].str(), result, DateTimePreparsedTokenFormat::DateCompact);
+                        break;
                     }
                 }
                 else
@@ -236,7 +238,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
         {
             AddTextToken(matches[0].str(), DateTimePreparsedTokenFormat::RegularString);
         }
-        
+
         text = matches.suffix().str();
     }
 

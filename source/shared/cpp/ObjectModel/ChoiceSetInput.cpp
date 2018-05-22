@@ -10,12 +10,12 @@ ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetIn
     PopulateKnownPropertiesSet();
 }
 
-const std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices() const
+const std::vector<std::shared_ptr<ChoiceInput>> &ChoiceSetInput::GetChoices() const
 {
     return m_choices;
 }
 
-std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices()
+std::vector<std::shared_ptr<ChoiceInput>> &ChoiceSetInput::GetChoices()
 {
     return m_choices;
 }
@@ -38,7 +38,7 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
     root[propertyName] = Json::Value(Json::arrayValue);
-    for (const auto& choice : m_choices)
+    for (const auto &choice : m_choices)
     {
         root[propertyName].append(choice->SerializeToJsonValue());
     }
@@ -78,19 +78,20 @@ void ChoiceSetInput::SetValue(std::string const &value)
 
 std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const Json::Value& json)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ChoiceSetInput);
 
     auto choiceSet = BaseInputElement::Deserialize<ChoiceSetInput>(json);
 
-    choiceSet->SetChoiceSetStyle(ParseUtil::GetEnumValue<ChoiceSetStyle>(json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
+    choiceSet->SetChoiceSetStyle(ParseUtil::GetEnumValue<ChoiceSetStyle>(
+        json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
     choiceSet->SetIsMultiSelect(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiSelect, false));
     choiceSet->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, false));
 
     // Parse Choices
-    auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, true);
+    auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(elementParserRegistration,
+        actionParserRegistration, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, true);
     choiceSet->m_choices = std::move(choices);
 
     return choiceSet;
@@ -98,13 +99,13 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ChoiceSetInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
-    return ChoiceSetInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ChoiceSetInputParser::Deserialize(
+        elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ChoiceSetInput::PopulateKnownPropertiesSet() 
+void ChoiceSetInput::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect));

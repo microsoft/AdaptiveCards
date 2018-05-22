@@ -5,15 +5,12 @@
 
 using namespace AdaptiveSharedNamespace;
 
-BaseActionElement::BaseActionElement(ActionType type) :
-    m_type(type), m_typeString(ActionTypeToString(type))
+BaseActionElement::BaseActionElement(ActionType type) : m_type(type), m_typeString(ActionTypeToString(type))
 {
     PopulateKnownPropertiesSet();
 }
 
-BaseActionElement::~BaseActionElement()
-{
-}
+BaseActionElement::~BaseActionElement() {}
 
 std::string BaseActionElement::GetElementTypeString() const
 {
@@ -50,7 +47,7 @@ std::string BaseActionElement::GetIconUrl() const
     return m_iconUrl;
 }
 
-void BaseActionElement::SetIconUrl(const std::string& value)
+void BaseActionElement::SetIconUrl(const std::string &value)
 {
     m_iconUrl = value;
 }
@@ -99,7 +96,7 @@ void BaseActionElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl));
 }
 
-void BaseActionElement::GetResourceUris(std::vector<std::string>&)
+void BaseActionElement::GetResourceUris(std::vector<std::string> &)
 {
     return;
 }

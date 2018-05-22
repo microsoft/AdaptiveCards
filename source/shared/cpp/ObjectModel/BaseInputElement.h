@@ -6,39 +6,40 @@
 #include "ParseUtil.h"
 #include "BaseCardElement.h"
 
-AdaptiveSharedNamespaceStart
-class BaseInputElement : public BaseCardElement
+namespace AdaptiveSharedNamespace
 {
-public:
-    BaseInputElement(CardElementType elementType);
-    BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
+    class BaseInputElement : public BaseCardElement
+    {
+    public:
+        BaseInputElement(CardElementType elementType);
+        BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
 
-    std::string GetId() const override;
-    virtual void SetId(const std::string &value) override;
+        std::string GetId() const override;
+        virtual void SetId(const std::string &value) override;
 
-    template <typename T>
-    static std::shared_ptr<T> Deserialize(const Json::Value& json);
+        template<typename T>
+        static std::shared_ptr<T> Deserialize(const Json::Value &json);
 
-    bool GetIsRequired() const;
-    void SetIsRequired(const bool isRequired);
+        bool GetIsRequired() const;
+        void SetIsRequired(const bool isRequired);
 
-    virtual Json::Value SerializeToJsonValue() const override;
+        virtual Json::Value SerializeToJsonValue() const override;
 
-private:
-    std::string m_id;
-    bool m_isRequired;
-};
+    private:
+        std::string m_id;
+        bool m_isRequired;
+    };
 
-template <typename T>
-std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value& json)
-{
-    std::shared_ptr<T> baseInputElement = BaseCardElement::Deserialize<T>(json);
+    template<typename T>
+    std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value &json)
+    {
+        std::shared_ptr<T> baseInputElement = BaseCardElement::Deserialize<T>(json);
 
-    ParseUtil::ThrowIfNotJsonObject(json);
+        ParseUtil::ThrowIfNotJsonObject(json);
 
-    baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
-    baseInputElement->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
+        baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
+        baseInputElement->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
 
-    return baseInputElement;
-}
-AdaptiveSharedNamespaceEnd
+        return baseInputElement;
+    }
+} // namespace AdaptiveSharedNamespace

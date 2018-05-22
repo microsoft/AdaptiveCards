@@ -5,42 +5,42 @@
 #include "Image.h"
 #include "BaseCardElement.h"
 
-AdaptiveSharedNamespaceStart
-class BaseCardElement;
-class ImageSet : public BaseCardElement
+namespace AdaptiveSharedNamespace
 {
-friend class ImageSetParser;
-public:
-    ImageSet();
+    class BaseCardElement;
+    class ImageSet : public BaseCardElement
+    {
+        friend class ImageSetParser;
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    public:
+        ImageSet();
 
-    ImageSize GetImageSize() const;
-    void SetImageSize(const ImageSize value);
+        virtual Json::Value SerializeToJsonValue() const override;
 
-    std::vector<std::shared_ptr<Image>>& GetImages();
-    const std::vector<std::shared_ptr<Image>>& GetImages() const;
+        ImageSize GetImageSize() const;
+        void SetImageSize(const ImageSize value);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+        std::vector<std::shared_ptr<Image>> &GetImages();
+        const std::vector<std::shared_ptr<Image>> &GetImages() const;
 
-private:
-    void PopulateKnownPropertiesSet();
+        virtual void GetResourceUris(std::vector<std::string> &resourceUris) override;
 
-    std::vector<std::shared_ptr<Image>> m_images;
-    ImageSize m_imageSize;
-};
-    
-class ImageSetParser : public BaseCardElementParser
-{
-public:
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+    private:
+        void PopulateKnownPropertiesSet();
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
-AdaptiveSharedNamespaceEnd
+        std::vector<std::shared_ptr<Image>> m_images;
+        ImageSize m_imageSize;
+    };
+
+    class ImageSetParser : public BaseCardElementParser
+    {
+    public:
+        std::shared_ptr<BaseCardElement> Deserialize(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &root);
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString);
+    };
+} // namespace AdaptiveSharedNamespace

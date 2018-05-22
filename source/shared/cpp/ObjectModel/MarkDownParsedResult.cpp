@@ -91,8 +91,7 @@ void MarkDownParsedResult::AddNewTokenToParsedResult(char ch)
 // create and add new MarkDownStringHtmlGenerator object that has string word
 void MarkDownParsedResult::AddNewTokenToParsedResult(std::string &word)
 {
-    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
-        std::make_shared<MarkDownStringHtmlGenerator>(word);
+    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken = std::make_shared<MarkDownStringHtmlGenerator>(word);
     AppendToTokens(htmlToken);
 }
 
@@ -100,8 +99,7 @@ void MarkDownParsedResult::AddNewTokenToParsedResult(std::string &word)
 void MarkDownParsedResult::AddNewLineTokenToParsedResult(char ch)
 {
     std::string string_token = std::string(1, ch);
-    std::shared_ptr<MarkDownHtmlGenerator> htmlToken =
-        std::make_shared<MarkDownNewLineHtmlGenerator>(string_token);
+    std::shared_ptr<MarkDownHtmlGenerator> htmlToken = std::make_shared<MarkDownNewLineHtmlGenerator>(string_token);
     AppendToTokens(htmlToken);
 }
 
@@ -163,15 +161,14 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
             //        if either or both of them are, then their sum is not multipe of 3
             //
             //     if matches are not found
-            //     1. search left emphasis tokens first for match because of rule 14 matches on the left side is preferred
+            //     1. search left emphasis tokens first for match because of rule 14 matches on the left side is
+            //     preferred
             //        if match is found set left emphasis as the new left emphasis token and proceed to token processing
             //        any non-matching left emphasis will be poped, in this way it always move forward
             //        if still no match is found,
             //     2. search right
-            //        if the right emphasis can be left empahs search matching right emphasis tokens using the right emphasis
-            //        as left emphasis
-            //        else
-            //        use current left emphasis to search, and pop current right emphasis
+            //        if the right emphasis can be left empahs search matching right emphasis tokens using the right
+            //        emphasis as left emphasis else use current left emphasis to search, and pop current right emphasis
             if (!(*currentLeftEmphasis)->IsMatch(*(*currentEmphasis)))
             {
                 std::vector<std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>>::iterator> store;
@@ -215,7 +212,7 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
                     // check for the reason why we had to backtrack
                     if ((*leftEmphasisToExplore.back())->IsSameType(*(*currentEmphasis)))
                     {
-                        //right emphasis becomes left emphasis
+                        // right emphasis becomes left emphasis
                         /// create new left empahsis html generator from right
                         (*currentEmphasis)->ReverseDirectionType();
                     }

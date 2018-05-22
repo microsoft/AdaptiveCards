@@ -4,10 +4,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-ToggleInput::ToggleInput() :
-    BaseInputElement(CardElementType::ToggleInput),
-    m_valueOff("false"),
-    m_valueOn("true")
+ToggleInput::ToggleInput() : BaseInputElement(CardElementType::ToggleInput), m_valueOff("false"), m_valueOn("true")
 {
     PopulateKnownPropertiesSet();
 }
@@ -76,9 +73,7 @@ void ToggleInput::SetValueOn(const std::string &valueOn)
 }
 
 std::shared_ptr<BaseCardElement> ToggleInputParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>,
-    const Json::Value& json)
+    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ToggleInput);
 
@@ -104,13 +99,13 @@ std::shared_ptr<BaseCardElement> ToggleInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> ToggleInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
-    return ToggleInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ToggleInputParser::Deserialize(
+        elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ToggleInput::PopulateKnownPropertiesSet() 
+void ToggleInput::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));

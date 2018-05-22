@@ -6,9 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_hasHTMLTag(false)
-{
-}
+MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_hasHTMLTag(false) {}
 
 // transforms string to html
 std::string MarkDownParser::TransformToHtml()
@@ -20,11 +18,11 @@ std::string MarkDownParser::TransformToHtml()
     // begin parsing html blocks
     ParseBlock();
 
-    // process further what is parsed before outputting 
+    // process further what is parsed before outputting
     // html string
     m_parsedResult.Translate();
 
-    //add block tags such as <p> <ul>
+    // add block tags such as <p> <ul>
     m_parsedResult.AddBlockTags();
 
     m_hasHTMLTag = m_parsedResult.HasHtmlTags();

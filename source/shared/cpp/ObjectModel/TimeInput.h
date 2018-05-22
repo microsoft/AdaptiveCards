@@ -5,46 +5,45 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
-class TimeInput : public BaseInputElement
+namespace AdaptiveSharedNamespace
 {
-public:
-    TimeInput();
+    class TimeInput : public BaseInputElement
+    {
+    public:
+        TimeInput();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+        virtual Json::Value SerializeToJsonValue() const override;
 
-    std::string GetMax() const;
-    void SetMax(const std::string &value);
+        std::string GetMax() const;
+        void SetMax(const std::string &value);
 
-    std::string GetMin() const;
-    void SetMin(const std::string &value);
+        std::string GetMin() const;
+        void SetMin(const std::string &value);
 
-    std::string GetPlaceholder() const;
-    void SetPlaceholder(const std::string &value);
+        std::string GetPlaceholder() const;
+        void SetPlaceholder(const std::string &value);
 
-    std::string GetValue() const;
-    void SetValue(const std::string &value);
+        std::string GetValue() const;
+        void SetValue(const std::string &value);
 
-private:
-    void PopulateKnownPropertiesSet();
+    private:
+        void PopulateKnownPropertiesSet();
 
-    std::string m_max;
-    std::string m_min;
-    std::string m_placeholder;
-    std::string m_value;
-};
+        std::string m_max;
+        std::string m_min;
+        std::string m_placeholder;
+        std::string m_value;
+    };
 
-class TimeInputParser : public BaseCardElementParser
-{
-public:
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+    class TimeInputParser : public BaseCardElementParser
+    {
+    public:
+        std::shared_ptr<BaseCardElement> Deserialize(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const Json::Value &root);
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
-AdaptiveSharedNamespaceEnd
+        std::shared_ptr<BaseCardElement> DeserializeFromString(
+            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString);
+    };
+} // namespace AdaptiveSharedNamespace

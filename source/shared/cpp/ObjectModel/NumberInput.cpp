@@ -5,9 +5,7 @@
 using namespace AdaptiveSharedNamespace;
 
 NumberInput::NumberInput() :
-    BaseInputElement(CardElementType::NumberInput),
-    m_value(0),
-    m_max(std::numeric_limits<int>::max()),
+    BaseInputElement(CardElementType::NumberInput), m_value(0), m_max(std::numeric_limits<int>::max()),
     m_min(std::numeric_limits<int>::min())
 {
     PopulateKnownPropertiesSet();
@@ -81,9 +79,7 @@ void NumberInput::SetMin(const int value)
 }
 
 std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>,
-    const Json::Value& json)
+    std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value &json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::NumberInput);
 
@@ -99,13 +95,13 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
 
 std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const std::string& jsonString)
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, const std::string &jsonString)
 {
-    return NumberInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return NumberInputParser::Deserialize(
+        elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void NumberInput::PopulateKnownPropertiesSet() 
+void NumberInput::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
