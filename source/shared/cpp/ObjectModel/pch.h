@@ -23,7 +23,7 @@
 #include <fstream>
 #include <locale>
 
-#ifndef __ANDROID__
+#if !defined(__ANDROID__) && !defined(__APPLE__)
 #include <CppCoreCheck\warnings.h>
 #pragma warning(disable: ALL_CPPCORECHECK_WARNINGS)
 #pragma warning(default: CPPCORECHECK_STYLE_WARNINGS)
