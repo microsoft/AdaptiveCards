@@ -46,7 +46,8 @@ namespace AdaptiveSharedNamespace
         virtual bool IsNewLine() { return false; }
         virtual std::string GenerateHtmlString() = 0;
         virtual MarkDownBlockType GetBlockType() const { return ContainerBlock; };
-    protected:
+
+        protected:
         std::string m_token;
         std::ostringstream html;
         bool m_isHead = false;
@@ -92,11 +93,11 @@ namespace AdaptiveSharedNamespace
         virtual void PushItalicTag();
         virtual void PushBoldTag();
 
-        bool IsMatch(std::shared_ptr<MarkDownEmphasisHtmlGenerator>& token);
-        bool IsSameType(std::shared_ptr<MarkDownEmphasisHtmlGenerator>& token);
+        bool IsMatch(const MarkDownEmphasisHtmlGenerator& token);
+        bool IsSameType(const MarkDownEmphasisHtmlGenerator& token);
         bool IsDone() const { return m_numberOfUnusedDelimiters == 0; }
         int GetNumberOfUnusedDelimiters() const { return m_numberOfUnusedDelimiters; };
-        bool GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator>& token);
+        bool GenerateTags(MarkDownEmphasisHtmlGenerator& token);
         void ReverseDirectionType() { m_directionType = !m_directionType; };
 
         protected:
@@ -106,7 +107,7 @@ namespace AdaptiveSharedNamespace
             Right = 1,
         };
 
-        int AdjustEmphasisCounts(int leftOver, MarkDownEmphasisHtmlGenerator &rightToken);
+        int AdjustEmphasisCounts(int leftOver, MarkDownEmphasisHtmlGenerator& rightToken);
         int m_numberOfUnusedDelimiters;
         int m_directionType = Right;
         DelimiterType type;
