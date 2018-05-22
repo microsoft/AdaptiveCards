@@ -4496,6 +4496,42 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_VerticalContentAlignmentToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+  jstring jresult = 0 ;
+  AdaptiveCards::VerticalContentAlignment arg1 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (AdaptiveCards::VerticalContentAlignment)jarg1; 
+  result = AdaptiveCards::VerticalContentAlignmentToString(arg1);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_VerticalContentAlignmentFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+  jint jresult = 0 ;
+  std::string *arg1 = 0 ;
+  AdaptiveCards::VerticalContentAlignment result;
+  
+  (void)jenv;
+  (void)jcls;
+  if(!jarg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
+  if (!arg1_pstr) return 0;
+  std::string arg1_str(arg1_pstr);
+  arg1 = &arg1_str;
+  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
+  result = (AdaptiveCards::VerticalContentAlignment)AdaptiveCards::VerticalContentAlignmentFromString((std::string const &)*arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElement_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jint jarg1, jint jarg2, jboolean jarg3, jint jarg4) {
   jlong jresult = 0 ;
   AdaptiveCards::CardElementType arg1 ;
@@ -6350,6 +6386,40 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1GetVerticalContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
+  std::shared_ptr< AdaptiveCards::Container const > *smartarg1 = 0 ;
+  AdaptiveCards::VerticalContentAlignment result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::Container > **)&jarg1;
+  arg1 = (AdaptiveCards::Container *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (AdaptiveCards::VerticalContentAlignment)((AdaptiveCards::Container const *)arg1)->GetVerticalContentAlignment();
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1SetVerticalContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
+  AdaptiveCards::VerticalContentAlignment arg2 ;
+  std::shared_ptr< AdaptiveCards::Container > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::Container > **)&jarg1;
+  arg1 = (AdaptiveCards::Container *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = (AdaptiveCards::VerticalContentAlignment)jarg2; 
+  (arg1)->SetVerticalContentAlignment(arg2);
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Container_1GetResourceUris(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::Container *arg1 = (AdaptiveCards::Container *) 0 ;
   std::vector< std::string > *arg2 = 0 ;
@@ -7575,6 +7645,40 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   (arg1)->SetLanguage((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1GetVerticalContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
+  std::shared_ptr< AdaptiveCards::Column const > *smartarg1 = 0 ;
+  AdaptiveCards::VerticalContentAlignment result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::Column > **)&jarg1;
+  arg1 = (AdaptiveCards::Column *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (AdaptiveCards::VerticalContentAlignment)((AdaptiveCards::Column const *)arg1)->GetVerticalContentAlignment();
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetVerticalContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
+  AdaptiveCards::VerticalContentAlignment arg2 ;
+  std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::Column > **)&jarg1;
+  arg1 = (AdaptiveCards::Column *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = (AdaptiveCards::VerticalContentAlignment)jarg2; 
+  (arg1)->SetVerticalContentAlignment(arg2);
 }
 
 
@@ -11214,7 +11318,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3, jint jarg4, jstring jarg5, jstring jarg6, jint jarg7) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3, jint jarg4, jstring jarg5, jstring jarg6, jint jarg7, jint jarg8) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -11222,7 +11326,8 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ContainerStyle arg4 ;
   std::string *arg5 = 0 ;
   std::string *arg6 = 0 ;
-  AdaptiveCards::HeightType arg7 ;
+  AdaptiveCards::VerticalContentAlignment arg7 ;
+  AdaptiveCards::HeightType arg8 ;
   AdaptiveCards::AdaptiveCard *result = 0 ;
   
   (void)jenv;
@@ -11273,8 +11378,9 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string arg6_str(arg6_pstr);
   arg6 = &arg6_str;
   jenv->ReleaseStringUTFChars(jarg6, arg6_pstr); 
-  arg7 = (AdaptiveCards::HeightType)jarg7; 
-  result = (AdaptiveCards::AdaptiveCard *)new AdaptiveCards::AdaptiveCard((std::string const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,(std::string const &)*arg5,(std::string const &)*arg6,arg7);
+  arg7 = (AdaptiveCards::VerticalContentAlignment)jarg7; 
+  arg8 = (AdaptiveCards::HeightType)jarg8; 
+  result = (AdaptiveCards::AdaptiveCard *)new AdaptiveCards::AdaptiveCard((std::string const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,(std::string const &)*arg5,(std::string const &)*arg6,arg7,arg8);
   
   *(std::shared_ptr<  AdaptiveCards::AdaptiveCard > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::AdaptiveCard >(result SWIG_NO_NULL_DELETER_1) : 0;
   
@@ -11282,7 +11388,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3, jint jarg4, jstring jarg5, jstring jarg6, jint jarg7, jlong jarg8, jobject jarg8_, jlong jarg9, jobject jarg9_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCard_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3, jint jarg4, jstring jarg5, jstring jarg6, jint jarg7, jint jarg8, jlong jarg9, jobject jarg9_, jlong jarg10, jobject jarg10_) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -11290,15 +11396,16 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ContainerStyle arg4 ;
   std::string *arg5 = 0 ;
   std::string *arg6 = 0 ;
-  AdaptiveCards::HeightType arg7 ;
-  std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg8 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg9 = 0 ;
+  AdaptiveCards::VerticalContentAlignment arg7 ;
+  AdaptiveCards::HeightType arg8 ;
+  std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg9 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg10 = 0 ;
   AdaptiveCards::AdaptiveCard *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  (void)jarg8_;
   (void)jarg9_;
+  (void)jarg10_;
   if(!jarg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
@@ -11345,18 +11452,19 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string arg6_str(arg6_pstr);
   arg6 = &arg6_str;
   jenv->ReleaseStringUTFChars(jarg6, arg6_pstr); 
-  arg7 = (AdaptiveCards::HeightType)jarg7; 
-  arg8 = *(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > **)&jarg8;
-  if (!arg8) {
+  arg7 = (AdaptiveCards::VerticalContentAlignment)jarg7; 
+  arg8 = (AdaptiveCards::HeightType)jarg8; 
+  arg9 = *(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > **)&jarg9;
+  if (!arg9) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > & reference is null");
     return 0;
   } 
-  arg9 = *(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > **)&jarg9;
-  if (!arg9) {
+  arg10 = *(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > **)&jarg10;
+  if (!arg10) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > & reference is null");
     return 0;
   } 
-  result = (AdaptiveCards::AdaptiveCard *)new AdaptiveCards::AdaptiveCard((std::string const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,(std::string const &)*arg5,(std::string const &)*arg6,arg7,*arg8,*arg9);
+  result = (AdaptiveCards::AdaptiveCard *)new AdaptiveCards::AdaptiveCard((std::string const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,(std::string const &)*arg5,(std::string const &)*arg6,arg7,arg8,*arg9,*arg10);
   
   *(std::shared_ptr<  AdaptiveCards::AdaptiveCard > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::AdaptiveCard >(result SWIG_NO_NULL_DELETER_1) : 0;
   
@@ -11605,6 +11713,40 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   (arg1)->SetLanguage((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetVerticalContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
+  std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
+  AdaptiveCards::VerticalContentAlignment result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::AdaptiveCard > **)&jarg1;
+  arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (AdaptiveCards::VerticalContentAlignment)((AdaptiveCards::AdaptiveCard const *)arg1)->GetVerticalContentAlignment();
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetVerticalContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
+  AdaptiveCards::VerticalContentAlignment arg2 ;
+  std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::AdaptiveCard > **)&jarg1;
+  arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = (AdaptiveCards::VerticalContentAlignment)jarg2; 
+  (arg1)->SetVerticalContentAlignment(arg2);
 }
 
 

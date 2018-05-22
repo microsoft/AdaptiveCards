@@ -161,4 +161,12 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return IconPlacement.swigToEnum(AdaptiveCardObjectModelJNI.IconPlacementFromString(placement));
   }
 
+  public static String VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment) {
+    return AdaptiveCardObjectModelJNI.VerticalContentAlignmentToString(verticalContentAlignment.swigValue());
+  }
+
+  public static VerticalContentAlignment VerticalContentAlignmentFromString(String verticalContentAlignment) {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.VerticalContentAlignmentFromString(verticalContentAlignment));
+  }
+
 }
