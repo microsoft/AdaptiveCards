@@ -156,5 +156,5 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
 }
 
 void RemoteResourceElementToUriStringVector(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResources,
+    ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResources,
     std::vector<std::string>& resourceUris);

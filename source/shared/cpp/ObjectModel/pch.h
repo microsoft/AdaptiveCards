@@ -5,7 +5,7 @@
 #endif
 
 #ifndef AdaptiveSharedNamespaceStart
-#define AdaptiveSharedNamespaceStart namespace AdaptiveCards { 
+#define AdaptiveSharedNamespaceStart namespace AdaptiveCards {
 #define AdaptiveSharedNamespace AdaptiveCards
 #define AdaptiveSharedNamespaceEnd }
 #endif
@@ -22,3 +22,12 @@
 #include <unordered_set>
 #include <fstream>
 #include <locale>
+
+#if !defined(__ANDROID__) && !defined(__APPLE__)
+#include <CppCoreCheck\warnings.h>
+#pragma warning(disable: ALL_CPPCORECHECK_WARNINGS)
+#pragma warning(default: CPPCORECHECK_STYLE_WARNINGS)
+#pragma warning(default: CPPCORECHECK_CONCURRENCY_WARNINGS)
+#pragma warning(default: CPPCORECHECK_ARITHMETIC_WARNINGS)
+#pragma warning(default: CPPCORECHECK_UNIQUE_POINTER_WARNINGS)
+#endif

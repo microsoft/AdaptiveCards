@@ -452,7 +452,7 @@ AdaptiveNamespaceStart
     void XamlBuilder::SetImageSource(
         T* destination,
         IImageSource* imageSource,
-        ABI::Windows::UI::Xaml::Media::Stretch stretch)
+        ABI::Windows::UI::Xaml::Media::Stretch /*stretch*/)
     {
         THROW_IF_FAILED(destination->put_Source(imageSource));
     };
