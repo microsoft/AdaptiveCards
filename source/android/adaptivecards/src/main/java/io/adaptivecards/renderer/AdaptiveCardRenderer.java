@@ -30,7 +30,6 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Vector;
 
 public class AdaptiveCardRenderer
 {
@@ -55,12 +54,14 @@ public class AdaptiveCardRenderer
         private Context m_context;
         private LinearLayout m_layout;
         private RenderedAdaptiveCard m_renderedCard;
+        private String m_imageBaseUrl;
 
-        public BackgroundImageLoader(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout)
+        public BackgroundImageLoader(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl)
         {
             m_context = context;
             m_layout = layout;
             m_renderedCard = renderedCard;
+            m_imageBaseUrl = imageBaseUrl;
         }
 
         @Override
@@ -86,7 +87,7 @@ public class AdaptiveCardRenderer
             }
             catch (MalformedURLException e) {
                 // If the url is malformed, try reading it from local resources
-                return Util.tryLocalImage(m_context, args[0]);
+                return Util.loadLocalImage(m_imageBaseUrl, m_context, args[0]);
             }
             catch (Exception excep)
             {
@@ -214,7 +215,7 @@ public class AdaptiveCardRenderer
         String imageUrl = adaptiveCard.GetBackgroundImage();
         if (!imageUrl.isEmpty())
         {
-            BackgroundImageLoader loaderAsync = new BackgroundImageLoader(renderedCard, context, layout);
+            BackgroundImageLoader loaderAsync = new BackgroundImageLoader(renderedCard, context, layout, hostConfig.getImageBaseUrl());
             loaderAsync.execute(imageUrl);
         }
 

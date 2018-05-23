@@ -20,18 +20,23 @@ public final class Util {
         return returnVal;
     }
 
-    /** Helper function to load local image URL from res/drawable */
-    public static HttpRequestResult<Bitmap> tryLocalImage(Context context, String url)
+    /** Helper function to load local image URL from res/ */
+    public static HttpRequestResult<Bitmap> loadLocalImage(String imageBaseUrl, Context context, String url)
     {
         try
         {
+            if (imageBaseUrl == null || imageBaseUrl.isEmpty())
+            {
+                throw new Exception("Image Base URL is not specified or empty");
+            }
+
             String authority = context.getPackageName();
-            String type = "drawable";
 
             // Get image identifier
             Resources resources = context.getResources();
-            int identifier = resources.getIdentifier(url, type, authority);
-            if (identifier == 0) {
+            int identifier = resources.getIdentifier(url, imageBaseUrl, authority);
+            if (identifier == 0)
+            {
                 throw new Exception("Image not found: " + url);
             }
 

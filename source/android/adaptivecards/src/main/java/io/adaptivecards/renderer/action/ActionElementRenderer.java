@@ -144,9 +144,9 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     private class ActionElementRendererImageLoaderAsync extends ImageLoaderAsync
     {
 
-        protected ActionElementRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, IconPlacement iconPlacement)
+        protected ActionElementRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement)
         {
-            super(renderedCard, containerView);
+            super(renderedCard, containerView, imageBaseUrl);
             m_iconPlacement = iconPlacement;
         }
 
@@ -211,7 +211,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         String iconUrl = baseActionElement.GetIconUrl();
         if( !iconUrl.isEmpty() ) {
-            ActionElementRendererImageLoaderAsync imageLoader = new ActionElementRendererImageLoaderAsync(renderedCard, button, hostConfig.getActions().getIconPlacement());
+            ActionElementRendererImageLoaderAsync imageLoader = new ActionElementRendererImageLoaderAsync(renderedCard, button, hostConfig.getImageBaseUrl(), hostConfig.getActions().getIconPlacement());
             imageLoader.execute(baseActionElement.GetIconUrl());
 
             // Only when the icon must be placed to the left of the title, we have to do this

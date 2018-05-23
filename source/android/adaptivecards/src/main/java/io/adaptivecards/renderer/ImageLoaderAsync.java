@@ -14,10 +14,11 @@ import io.adaptivecards.renderer.http.HttpRequestResult;
 public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
 {
 
-    public ImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView)
+    public ImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl)
     {
         m_view = containerView;
         m_renderedCard = renderedCard;
+        m_imageBaseUrl = imageBaseUrl;
     }
 
     @Override
@@ -44,7 +45,7 @@ public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpReque
         }
         catch (MalformedURLException e) {
             // If the url is malformed, try reading it from local resources
-            return Util.tryLocalImage(m_view.getContext(), args[0]);
+            return Util.loadLocalImage(m_imageBaseUrl, m_view.getContext(), args[0]);
         }
         catch (Exception excep)
         {
@@ -70,5 +71,6 @@ public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpReque
 
     protected View m_view; // button and imageview inherit from this
     private RenderedAdaptiveCard m_renderedCard;
+    private String m_imageBaseUrl;
 
 }

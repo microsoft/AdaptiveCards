@@ -49,9 +49,9 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private class ImageRendererImageLoaderAsync extends ImageLoaderAsync
     {
-        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, ImageStyle imageStyle)
+        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle)
         {
-            super(renderedCard, imageView);
+            super(renderedCard, imageView, imageBaseUrl);
             m_imageStyle = imageStyle;
         }
 
@@ -123,7 +123,7 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(image);
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, image.GetImageStyle());
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle());
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
