@@ -49,66 +49,23 @@ void GetMediaPosterAsImage(
     THROW_IF_FAILED(posterAsImage.CopyTo(posterImage));
 }
 
-void AddPlayButtonIconToImageInRelativePanel(
-    IPanel * mediaPanel,
-    IFrameworkElement * posterImage,
-    IAdaptiveRenderArgs* renderArgs,
-    IAdaptiveHostConfig * hostConfig,
-    ABI::AdaptiveNamespace::ForegroundColor color,
-    DOUBLE scale)
+void AddPlayButtonIcon(
+    IPanel * mediaPanel)
 {
     // Create a play symbol icon
     ComPtr<ISymbolIcon> playIcon = XamlHelpers::CreateXamlClass<ISymbolIcon>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_SymbolIcon));
     THROW_IF_FAILED(playIcon->put_Symbol(Symbol::Symbol_Play));
 
-    // Set the color
-    ComPtr<IIconElement> playIconAsIconElement;
-    THROW_IF_FAILED(playIcon.As(&playIconAsIconElement));
-
-    ABI::AdaptiveNamespace::ContainerStyle containerStyle;
-    THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
-
-    ABI::Windows::UI::Color brushColor;
-    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, color, containerStyle, false, &brushColor));
-
-    ComPtr<IBrush> brush = XamlBuilder::GetSolidColorBrush(brushColor);
-    THROW_IF_FAILED(playIconAsIconElement->put_Foreground(brush.Get()));
-
-    // Put it in a viewbox so that it can scale with the image
     ComPtr<IUIElement> playIconAsUIElement;
-    THROW_IF_FAILED(playIcon.As(&playIconAsUIElement));
+    playIcon.As(&playIconAsUIElement);
 
-    ComPtr<IViewbox> playIconViewbox = XamlHelpers::CreateXamlClass<IViewbox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Viewbox));
-    THROW_IF_FAILED(playIconViewbox->put_Child(playIconAsUIElement.Get()));
-
-    // Set the viewbox to be centered on the image in the relative panel
+    // Set the icon to be centered on the image in the relative panel
     ComPtr<IRelativePanelStatics> relativePanelStatics;
     THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(), &relativePanelStatics));
-    ComPtr<IUIElement> playIconViewboxAsUIElement;
-    THROW_IF_FAILED(playIconViewbox.As(&playIconViewboxAsUIElement));
-    THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWith(playIconViewboxAsUIElement.Get(), posterImage));
-    THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWith(playIconViewboxAsUIElement.Get(), posterImage));
+    THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(playIconAsUIElement.Get(), true));
+    THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconAsUIElement.Get(), true));
 
-    XamlHelpers::AppendXamlElementToPanel(playIconViewbox.Get(), mediaPanel);
-
-    // Get a strong reference to the poster image to pass to the lambda
-    ComPtr<IFrameworkElement> localPosterImage{ posterImage };
-
-    // Add a handler to size changed on the image so that the play button scales with the image
-    EventRegistrationToken sizeChangedToken;
-    ComPtr<IFrameworkElement> playIconViewboxAsFrameworkElement;
-    THROW_IF_FAILED(playIconViewbox.As(&playIconViewboxAsFrameworkElement));
-    posterImage->add_SizeChanged(Callback<ISizeChangedEventHandler>([playIconViewboxAsFrameworkElement, localPosterImage, scale](IInspectable* /*sender*/, ISizeChangedEventArgs* /*args*/) -> HRESULT
-    {
-        DOUBLE imageHeight, imageWidth;
-        RETURN_IF_FAILED(localPosterImage->get_ActualHeight(&imageHeight));
-        RETURN_IF_FAILED(localPosterImage->get_ActualWidth(&imageWidth));
-
-        RETURN_IF_FAILED(playIconViewboxAsFrameworkElement->put_Height(imageHeight * scale));
-        RETURN_IF_FAILED(playIconViewboxAsFrameworkElement->put_Width(imageWidth * scale));
-
-        return S_OK;
-    }).Get(), &sizeChangedToken);
+    XamlHelpers::AppendXamlElementToPanel(playIcon.Get(), mediaPanel);
 }
 
 void CreatePosterContainerWithPlayButton(
@@ -132,9 +89,7 @@ void CreatePosterContainerWithPlayButton(
     // Add the play button. Draw slightly smaller and larger versions of the icon in the light 
     // color. This will create a dark button with a light outline so it shows up on all poster image colors.
     // TODO: Handle custom play button from host config
-    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Light, .25);
-    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Light, .35);
-    AddPlayButtonIconToImageInRelativePanel(mediaPanel.Get(), posterImageAsFrameworkElement.Get(), renderArgs, hostConfig, ABI::AdaptiveNamespace::ForegroundColor::Dark, .3);
+    AddPlayButtonIcon(mediaPanel.Get());
 
     ComPtr<IUIElement> posterRelativePanelAsUIElement;
     THROW_IF_FAILED(posterRelativePanel.As(&posterRelativePanelAsUIElement));
