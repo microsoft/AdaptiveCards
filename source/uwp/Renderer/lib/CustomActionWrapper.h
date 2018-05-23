@@ -13,14 +13,16 @@ AdaptiveNamespaceStart
         {}
 
         std::string GetId() const override;
-        void SetId(const std::string value) override;
+        void SetId(const std::string& value) override;
 
         std::string GetTitle() const override;
-        void SetTitle(const std::string value) override;
+        void SetTitle(const std::string& value) override;
 
-        virtual Json::Value SerializeToJsonValue() override;
+        virtual Json::Value SerializeToJsonValue() const override;
 
         HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
+
+        virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_actionElement;

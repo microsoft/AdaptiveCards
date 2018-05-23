@@ -23,8 +23,11 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage);
 
         // IAdaptiveImage
-        IFACEMETHODIMP get_Url(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
-        IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
+        IFACEMETHODIMP get_Url(_Out_ HSTRING *uri);
+        IFACEMETHODIMP put_Url(_In_ HSTRING uri);
+
+        IFACEMETHODIMP get_BackgroundColor(_Out_ HSTRING *backgroundColor);
+        IFACEMETHODIMP put_BackgroundColor(_In_ HSTRING backgroundColor);
 
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ImageStyle* imageStyle);
         IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveNamespace::ImageStyle imageStyle);
@@ -32,11 +35,11 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize);
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveNamespace::ImageSize imageSize);
 
-        IFACEMETHODIMP get_Width(UINT32* Width);
-        IFACEMETHODIMP put_Width(UINT32 Width);
+        IFACEMETHODIMP get_PixelWidth(UINT32* Width);
+        IFACEMETHODIMP put_PixelWidth(UINT32 Width);
 
-        IFACEMETHODIMP get_Height(UINT32* Height);
-        IFACEMETHODIMP put_Height(UINT32 Height);
+        IFACEMETHODIMP get_PixelHeight(UINT32* Height);
+        IFACEMETHODIMP put_PixelHeight(UINT32 Height);
 
         IFACEMETHODIMP get_AltText(_Out_ HSTRING *text);
         IFACEMETHODIMP put_AltText(_In_ HSTRING text);
@@ -68,6 +71,9 @@ AdaptiveNamespaceStart
 
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) override;
 
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height) { return AdaptiveCardElementBase::get_Height(height); }
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height) { return AdaptiveCardElementBase::put_Height(height); }
+
         // ITypePeek method
         void *PeekAt(REFIID riid) override
         {
@@ -75,14 +81,15 @@ AdaptiveNamespaceStart
         }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_url;
+        Microsoft::WRL::Wrappers::HString m_url;
+        Microsoft::WRL::Wrappers::HString m_backgroundColor;
         ABI::AdaptiveNamespace::ImageStyle m_imageStyle;
         ABI::AdaptiveNamespace::ImageSize m_imageSize;
         Microsoft::WRL::Wrappers::HString m_altText;
         ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
-        UINT32 m_width;
-        UINT32 m_height;
+        UINT32 m_pixelWidth;
+        UINT32 m_pixelHeight;
     };
 
     ActivatableClass(AdaptiveImage);

@@ -160,19 +160,13 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetVersion(), m_version.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetLanguage(), m_language.GetAddressOf()));
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+        m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
+        m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-
-        std::wstring imageUri = StringToWstring(sharedAdaptiveCard->GetBackgroundImage());
-        if (!imageUri.empty())
-        {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_backgroundImage.GetAddressOf()));
-        }
+        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImage.GetAddressOf()));
 
         return S_OK;
     }
@@ -202,6 +196,18 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Language(HSTRING* language)
+    {
+        return m_language.CopyTo(language);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Language(HSTRING language)
+    {
+        return m_language.Set(language);
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Body(IVector<IAdaptiveCardElement*>** body)
     {
         return m_body.CopyTo(body);
@@ -221,17 +227,16 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_BackgroundImage(IUriRuntimeClass** url)
+    HRESULT AdaptiveCard::get_BackgroundImage(HSTRING* backgroundImage)
     {
-        return m_backgroundImage.CopyTo(url);
+        return m_backgroundImage.CopyTo(backgroundImage);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_BackgroundImage(IUriRuntimeClass* url) try
+    HRESULT AdaptiveCard::put_BackgroundImage(HSTRING backgroundImage)
     {
-        m_backgroundImage = url;
-        return S_OK;
-    } CATCH_RETURN;
+        return m_backgroundImage.Set(backgroundImage);
+    }
 
     _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveCard::get_SelectAction(IAdaptiveActionElement** action)
@@ -273,6 +278,34 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    {
+        *verticalAlignment = m_verticalAlignment;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    {
+        m_verticalAlignment = verticalAlignment;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Height(ABI::AdaptiveNamespace::HeightType* heightType)
+    {
+        *heightType = m_height;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Height(ABI::AdaptiveNamespace::HeightType heightType)
+    {
+        m_height = heightType;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveCard::ToJson(IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
@@ -288,23 +321,54 @@ AdaptiveNamespaceStart
         adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
-
-        if (m_backgroundImage != nullptr)
-        {
-            HString urlTemp;
-            m_backgroundImage->get_AbsoluteUri(urlTemp.GetAddressOf());
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-            adaptiveCard->SetBackgroundImage(urlString);
-        }
+        adaptiveCard->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
+        adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
+        adaptiveCard->SetBackgroundImage(HStringToUTF8(m_backgroundImage.Get()));
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
+        adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
 
-        GenerateSharedAction(m_selectAction.Get(), adaptiveCard->GetSelectAction());
+        if (m_selectAction != nullptr)
+        {
+            std::shared_ptr<BaseActionElement> sharedAction;
+            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
+            adaptiveCard->SetSelectAction(sharedAction);
+        }
+
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
 
         sharedModel = adaptiveCard;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris)
+    {
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
+        GetSharedModel(sharedModel);
+
+        std::vector<std::string> resourceUriStrings = sharedModel->GetResourceUris();
+
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::Windows::Foundation::Uri*>> resourceUris = Make<Vector<Uri*>>();
+        for (auto resourceUriString : resourceUriStrings)
+        {
+            HString resourceUriHString;
+            RETURN_IF_FAILED(UTF8ToHString(resourceUriString, resourceUriHString.GetAddressOf()));
+         
+            ComPtr<IUriRuntimeClass> resourceUri;
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(resourceUriHString.Get(), resourceUri.GetAddressOf()));
+
+            RETURN_IF_FAILED(resourceUris->Append(resourceUri.Get()));
+        }
+
+        RETURN_IF_FAILED(resourceUris->GetView(uris));
+
         return S_OK;
     }
 AdaptiveNamespaceEnd

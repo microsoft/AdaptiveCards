@@ -8,10 +8,10 @@ AdaptiveSharedNamespaceStart
 class AdaptiveCardParseWarning
 {
 public:
-    AdaptiveCardParseWarning(const AdaptiveSharedNamespace::WarningStatusCode statusCode, const std::string& message);
+    AdaptiveCardParseWarning(AdaptiveSharedNamespace::WarningStatusCode statusCode, const std::string& message);
     ~AdaptiveCardParseWarning();
 
-    const AdaptiveSharedNamespace::WarningStatusCode GetStatusCode() const;
+    AdaptiveSharedNamespace::WarningStatusCode GetStatusCode() const;
     const std::string& GetReason() const;
 
 private:

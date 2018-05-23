@@ -11,6 +11,7 @@
 #include <Column.h>
 #include <Fact.h>
 #include <Image.h>
+#include <MediaSource.h>
 #include <windows.foundation.collections.h>
 
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -77,6 +78,10 @@ HRESULT GenerateSharedChoices(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* items,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements);
 
+HRESULT GenerateSharedMediaSources(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* items,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements);
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
@@ -104,6 +109,10 @@ HRESULT GenerateImagesProjection(
 HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
+
+HRESULT GenerateMediaSourcesProjection(
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateSeparatorProjection(
     std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,
@@ -154,3 +163,12 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     }
     return inner;
 }
+
+void RemoteResourceElementToUriStringVector(
+    ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResources,
+    std::vector<std::string>& resourceUris);
+
+void GetUrlFromString(
+    ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    HSTRING urlString,
+    ABI::Windows::Foundation::IUriRuntimeClass** url);

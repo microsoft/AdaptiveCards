@@ -10,16 +10,16 @@ class Fact
 {
 public:
     Fact();
-    Fact(std::string title, std::string value);
+    Fact(std::string const &title, std::string const &value);
 
     std::string Serialize();
     Json::Value SerializeToJsonValue();
 
     std::string GetTitle() const;
-    void SetTitle(const std::string value);
+    void SetTitle(const std::string &value);
 
     std::string GetValue() const;
-    void SetValue(const std::string value);
+    void SetValue(const std::string &value);
 
     static std::shared_ptr<Fact> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,

@@ -104,11 +104,8 @@ AdaptiveNamespaceStart
 
         numberInput->SetMin(m_min);
         numberInput->SetMax(m_max);
-        numberInput->SetMax(m_value);
-
-        std::string placeholder;
-        RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
-        numberInput->SetPlaceholder(placeholder);
+        numberInput->SetValue(m_value);
+        numberInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
 
         sharedModel = numberInput;
         return S_OK;

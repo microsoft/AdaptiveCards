@@ -31,6 +31,18 @@ export function appendChild(node: Node, child: Node) {
     }
 }
 
+export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
+    if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
+        target[propertyName] = propertyValue;
+    }
+}
+
+export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
+    if (defaultValue === undefined || defaultValue !== propertyValue) {
+        target[propertyName] = enumType[propertyValue];
+    }
+}
+
 export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
     if (isNullOrEmpty(name)) {
         return defaultValue;
@@ -156,6 +168,10 @@ export class StringWithSubstitutions {
         };
 
         this._isProcessed = true;
+    }
+
+    getOriginal(): string {
+        return this._original;
     }
 
     get(): string {

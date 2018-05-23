@@ -3,6 +3,7 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -51,10 +52,13 @@ public class FactSetRenderer extends BaseCardElementRenderer
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);
+
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
                 GridLayout.spec(GridLayout.UNDEFINED),
                 GridLayout.spec(GridLayout.UNDEFINED));
+
         parem.rightMargin = (int) spacing;
+
         textView.setLayoutParams(parem);
         return textView;
     }

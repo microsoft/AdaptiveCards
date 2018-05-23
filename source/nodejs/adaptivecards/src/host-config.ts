@@ -339,6 +339,8 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
 
+    cssClassNamePrefix: string = null;
+
     constructor(obj?: any) {
         if (obj) {
             if (typeof obj === "string" || obj instanceof String) {
@@ -407,5 +409,23 @@ export class HostConfig {
             default:
                 return 0;
         }
+    }
+
+    makeCssClassName(...classNames: string[]): string {
+        let result = "";
+
+        for (let i = 0; i < classNames.length; i++) {
+            if (i > 0) {
+                result += " ";
+            }
+
+            if (this.cssClassNamePrefix) {
+                result += this.cssClassNamePrefix + "-";
+            }
+
+            result += classNames[i];
+        }
+
+        return result;
     }
 }

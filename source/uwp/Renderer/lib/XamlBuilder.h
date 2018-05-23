@@ -103,6 +103,11 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
             _Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
+        static void BuildMedia(
+            _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
         template<typename T>
         static HRESULT TryGetResourceFromResourceDictionaries(
             _In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
@@ -113,6 +118,8 @@ AdaptiveNamespaceStart
             ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             std::wstring resourceName,
             ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement);
+
+        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
 
     private:
         ImageLoadTracker m_imageLoadTracker;
@@ -136,9 +143,10 @@ AdaptiveNamespaceStart
 
         void ApplyBackgroundToRoot(
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-            _In_ ABI::Windows::Foundation::IUriRuntimeClass* uri,
+            _In_ HSTRING url,
             _Inout_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
+
         template<typename T>
         void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource, ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
         template<typename T>
@@ -181,7 +189,6 @@ AdaptiveNamespaceStart
         static void ApplyMarginToXamlElement(
             _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
             _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
-        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
         static void StyleXamlTextBlock(
             _In_ ABI::AdaptiveNamespace::TextSize size,
             _In_ ABI::AdaptiveNamespace::ForegroundColor color,
@@ -253,6 +260,11 @@ AdaptiveNamespaceStart
         static HRESULT SetImageSizeAsTextBlockSize(
             _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
             _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+
+        template<typename T>
+        static void SetVerticalContentAlignmentToChildren(
+            _In_ T* container, 
+            _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
 
     };
 AdaptiveNamespaceEnd

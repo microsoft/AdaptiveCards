@@ -40,6 +40,7 @@
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
     ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] init];
+    [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [columnSetView setStyle:[viewGroup style]];
 
     ACRBaseCardElementRenderer *columRenderer =

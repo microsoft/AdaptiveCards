@@ -37,9 +37,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
             std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image =  std::static_pointer_cast<Image>(elem);
-            int width = image->GetWidth();
+            int width = image->GetPixelWidth();
             Assert::AreEqual(10, width);
-            int height = image->GetHeight();
+            int height = image->GetPixelHeight();
             Assert::AreEqual(50, height);
         }
         TEST_METHOD(PositiveTestWithOneDimensionOnly)
@@ -60,9 +60,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
             std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image =  std::static_pointer_cast<Image>(elem);
-            int height = image->GetHeight();
+            int height = image->GetPixelHeight();
             Assert::AreEqual(10, height);
-            int width = image->GetWidth();
+            int width = image->GetPixelWidth();
             Assert::AreEqual(0, width);
         }
 
@@ -232,7 +232,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
             Assert::AreEqual<std::string>(column->GetWidth(), "20");
-            Assert::AreEqual<bool>(column->GetExplicitWidth() != 20, true);
+            Assert::AreEqual<bool>(column->GetPixelWidth() != 20, true);
         }
 
         TEST_METHOD(PositiveExplicitWidthTest)
@@ -261,7 +261,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
             Assert::AreEqual<std::string>("20px",  column->GetWidth());
-            Assert::AreEqual<bool>(column->GetExplicitWidth() == 20, true);
+            Assert::AreEqual<bool>(column->GetPixelWidth() == 20, true);
         }
 
         TEST_METHOD(ExplicitWidthMalformedUnitTest)

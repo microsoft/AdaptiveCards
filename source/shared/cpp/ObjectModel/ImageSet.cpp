@@ -12,26 +12,6 @@ ImageSet::ImageSet() :
     PopulateKnownPropertiesSet();
 }
 
-ImageSet::ImageSet(
-    Spacing spacing,
-    bool separation,
-    std::vector<std::shared_ptr<Image>>& images) :
-    BaseCardElement(CardElementType::ImageSet, spacing, separation),
-    m_images(images),
-    m_imageSize(ImageSize::None)
-{
-    PopulateKnownPropertiesSet();
-}
-
-ImageSet::ImageSet(
-    Spacing spacing,
-    bool separation) :
-    BaseCardElement(CardElementType::ImageSet, spacing, separation),
-    m_imageSize(ImageSize::None)
-{
-    PopulateKnownPropertiesSet();
-}
-
 ImageSize ImageSet::GetImageSize() const
 {
     return m_imageSize;
@@ -52,19 +32,18 @@ std::vector<std::shared_ptr<Image>>& ImageSet::GetImages()
     return m_images;
 }
 
-Json::Value ImageSet::SerializeToJsonValue()
+Json::Value ImageSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    ImageSize imageSize = GetImageSize();
-    if (imageSize != ImageSize::None)
+    if (m_imageSize != ImageSize::None)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)] = ImageSizeToString(GetImageSize());
     }
 
-    std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
+    std::string const &itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
-    for (const auto& image : GetImages())
+    for (const auto& image : m_images)
     {
         root[itemsPropertyName].append(image->SerializeToJsonValue());
     }

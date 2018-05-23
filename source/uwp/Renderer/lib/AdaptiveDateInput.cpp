@@ -90,26 +90,14 @@ AdaptiveNamespaceStart
     }
 
     HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
-    { 
+    {
         std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
-
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(dateInput)));
 
-        std::string max;
-        RETURN_IF_FAILED(HStringToUTF8(m_max.Get(), max));
-        dateInput->SetMax(max);
-
-        std::string min;
-        RETURN_IF_FAILED(HStringToUTF8(m_min.Get(), min));
-        dateInput->SetMin(min);
-
-        std::string placeholder;
-        RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
-        dateInput->SetPlaceholder(placeholder);
-
-        std::string value;
-        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
-        dateInput->SetValue(value);
+        dateInput->SetMax(HStringToUTF8(m_max.Get()));
+        dateInput->SetMin(HStringToUTF8(m_min.Get()));
+        dateInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
+        dateInput->SetValue(HStringToUTF8(m_value.Get()));
 
         sharedModel = dateInput;
 

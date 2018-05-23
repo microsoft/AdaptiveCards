@@ -7,6 +7,7 @@
 #include "FactSet.h"
 #include "Image.h"
 #include "ImageSet.h"
+#include "Media.h"
 #include "NumberInput.h"
 #include "TextBlock.h"
 #include "TextInput.h"
@@ -25,6 +26,7 @@ AdaptiveSharedNamespaceStart
             CardElementTypeToString(CardElementType::ImageSet),
             CardElementTypeToString(CardElementType::ChoiceSetInput),
             CardElementTypeToString(CardElementType::DateInput),
+            CardElementTypeToString(CardElementType::Media),
             CardElementTypeToString(CardElementType::NumberInput),
             CardElementTypeToString(CardElementType::TextBlock),
             CardElementTypeToString(CardElementType::TextInput),
@@ -41,6 +43,7 @@ AdaptiveSharedNamespaceStart
             { CardElementTypeToString(CardElementType::ImageSet), std::make_shared<ImageSetParser>() },
             { CardElementTypeToString(CardElementType::ChoiceSetInput), std::make_shared<ChoiceSetInputParser>() },
             { CardElementTypeToString(CardElementType::DateInput), std::make_shared<DateInputParser>() },
+            { CardElementTypeToString(CardElementType::Media), std::make_shared<MediaParser>() },
             { CardElementTypeToString(CardElementType::NumberInput), std::make_shared<NumberInputParser>() },
             { CardElementTypeToString(CardElementType::TextBlock), std::make_shared<TextBlockParser>() },
             { CardElementTypeToString(CardElementType::TextInput),  std::make_shared<TextInputParser>() },
@@ -50,7 +53,7 @@ AdaptiveSharedNamespaceStart
         });
     }
 
-    void ElementParserRegistration::AddParser(std::string elementType, std::shared_ptr<BaseCardElementParser> parser)
+    void ElementParserRegistration::AddParser(std::string const &elementType, std::shared_ptr<BaseCardElementParser> parser)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -62,7 +65,7 @@ AdaptiveSharedNamespaceStart
         }
     }
 
-    void ElementParserRegistration::RemoveParser(std::string elementType)
+    void ElementParserRegistration::RemoveParser(std::string const &elementType)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -74,7 +77,7 @@ AdaptiveSharedNamespaceStart
         }
     }
 
-    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string elementType)
+    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const &elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())
