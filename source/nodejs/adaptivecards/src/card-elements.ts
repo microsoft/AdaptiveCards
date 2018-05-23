@@ -89,37 +89,6 @@ export interface IValidationError {
     message: string;
 }
 
-export class SizeAndUnit {
-    physicalSize: number;
-    unit: Enums.SizeUnit;
-
-    static parse(input: any): SizeAndUnit {
-        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
-
-        let regExp = /^([0-9]+)(px|\*)?$/g;
-        let matches = regExp.exec(input);
-    
-        if (matches && matches.length >= 2) {
-            result.physicalSize = parseInt(matches[1]);
-    
-            if (matches.length == 3) {
-                if (matches[2] == "px") {
-                    result.unit = Enums.SizeUnit.Pixel;
-                }
-            }
-    
-            return result;
-        }
-    
-        throw new Error("Invalid size: " + input);
-    }
-
-    constructor(physicalSize: number, unit: Enums.SizeUnit) {
-        this.physicalSize = physicalSize;
-        this.unit = unit;
-    }
-}
-
 export abstract class CardElement {
     private _lang: string = undefined;
     private _hostConfig?: HostConfig.HostConfig = null;
@@ -1013,7 +982,7 @@ export class Image extends CardElement {
         if (value) {
             if (typeof value === "string") {
                 try {
-                    let size = SizeAndUnit.parse(value);
+                    let size = Utils.SizeAndUnit.parse(value);
 
                     if (size.unit == Enums.SizeUnit.Pixel) {
                         return size.physicalSize;
@@ -1137,7 +1106,7 @@ export class Image extends CardElement {
     backgroundColor: string;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
-    width: SizeAndUnit;
+    width: Utils.SizeAndUnit;
     pixelWidth?: number = null;
     pixelHeight?: number = null;
     altText: string = "";
@@ -1844,6 +1813,8 @@ enum ActionButtonState {
 class ActionButton {
     private _action: Action;
     private _element: HTMLButtonElement = null;
+    private _titleElement: HTMLElement;
+    private _iconCssClass: string = "noIcon";
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
 
@@ -1855,6 +1826,8 @@ class ActionButton {
 
     private updateCssStyle() {
         this._element.className = "ac-pushButton";
+
+        this._element.classList.add(this._iconCssClass);
 
         if (this._action instanceof ShowCardAction) {
             this._element.classList.add("expandable");
@@ -1873,12 +1846,50 @@ class ActionButton {
     constructor(action: Action) {
         this._action = action;
 
+        // Cache hostConfig for perf
+        let hostConfig = this.action.parent.hostConfig;
+
         this._element = document.createElement("button");
         this._element.type = "button";
+        this._element.style.display = "flex";
+        this._element.style.alignItems = "center";
+        this._element.style.justifyContent = "center";
 
-        this._element.style.overflow = "hidden";
-        this._element.style.whiteSpace = "nowrap";
-        this._element.style.textOverflow = "ellipsis";
+        if (Utils.isNullOrEmpty(this.action.iconUrl)) {
+            this._iconCssClass = "noIcon";
+
+            this._element.style.overflow = "hidden";
+            this._element.style.whiteSpace = "nowrap";
+            this._element.style.textOverflow = "ellipsis";
+
+            this._titleElement = this._element;
+        }
+        else {
+            let iconElement = document.createElement("div");
+            iconElement.style.width = hostConfig.actions.iconSize + "px";
+            iconElement.style.height = hostConfig.actions.iconSize + "px";;
+            iconElement.style.backgroundImage = "url('" + this.action.iconUrl + "')";
+            iconElement.style.backgroundPositionX = "center";
+            iconElement.style.backgroundPositionY = "center";
+            iconElement.style.backgroundRepeat = "no-repeat";
+            iconElement.style.backgroundSize = "contain";
+
+            this._titleElement = document.createElement("div");
+
+            if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
+                this._iconCssClass = "iconAbove";
+                this._element.style.flexDirection = "column";
+                iconElement.style.marginBottom = "4px";
+            }
+            else {
+                this._iconCssClass = "iconLeft";
+                iconElement.style.marginRight = "4px";
+            }
+
+            this._element.appendChild(iconElement);
+            this._element.appendChild(this._titleElement);
+        }
+
         this._element.onclick = (e) => { this.click(); };
 
         this.updateCssStyle();
@@ -1896,7 +1907,7 @@ class ActionButton {
 
     set text(value: string) {
         this._text = value;
-        this._element.innerText = this._text;
+        this._titleElement.innerText = this._text;
         this._element.setAttribute("aria-label", this._text);
     }
 
@@ -1961,6 +1972,7 @@ export abstract class Action {
     parse(json: any) {
         this.id = json["id"];
         this.title = json["title"];
+        this.iconUrl = json["iconUrl"];
     }
 
     getAllInputs(): Array<Input> {
@@ -1975,6 +1987,7 @@ export abstract class Action {
 
     id: string;
     title: string;
+    iconUrl: string;
 
     get parent(): CardElement {
         return this._parent;
@@ -3258,7 +3271,7 @@ export class Column extends Container {
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         renderedElement.style.minWidth = "0";
 
-        if (this.width instanceof SizeAndUnit) {
+        if (this.width instanceof Utils.SizeAndUnit) {
             if (this.width.unit == Enums.SizeUnit.Pixel) {
                 renderedElement.style.flex = "0 0 " + this.width.physicalSize + "px";
             }
@@ -3279,7 +3292,7 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    width: SizeAndUnit | "auto" | "stretch" = "auto";
+    width: Utils.SizeAndUnit | "auto" | "stretch" = "auto";
 
     getJsonTypeName(): string {
         return "Column";
@@ -3306,7 +3319,7 @@ export class Column extends Container {
 
         if (typeof jsonWidth === "number") {
             if (jsonWidth > 0) {
-                this.width = new SizeAndUnit(jsonWidth, Enums.SizeUnit.Weight);
+                this.width = new Utils.SizeAndUnit(jsonWidth, Enums.SizeUnit.Weight);
             }
             else {
                 invalidWidth = true;
@@ -3315,7 +3328,7 @@ export class Column extends Container {
         else if (typeof jsonWidth === "string") {
             if (jsonWidth != "auto" && jsonWidth != "stretch") {
                 try {
-                    this.width = SizeAndUnit.parse(jsonWidth);
+                    this.width = Utils.SizeAndUnit.parse(jsonWidth);
                 }
                 catch (e) {
                     invalidWidth = true;
@@ -3395,7 +3408,7 @@ export class ColumnSet extends CardElement {
             var totalWeight: number = 0;
 
             for (let column of this._columns) {
-                if (column.width instanceof SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
+                if (column.width instanceof Utils.SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
                     totalWeight += column.width.physicalSize;
                 }
             }
@@ -3403,7 +3416,7 @@ export class ColumnSet extends CardElement {
             var renderedColumnCount: number = 0;
 
             for (let column of this._columns) {
-                if (column.width instanceof SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
+                if (column.width instanceof Utils.SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
                     var computedWeight = 100 / totalWeight * column.width.physicalSize;
 
                     // Best way to emulate "internal" access I know of
