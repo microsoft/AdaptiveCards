@@ -2113,22 +2113,10 @@ enum ActionButtonState {
 class ActionButton {
     private _action: Action;
     private _element: HTMLButtonElement = null;
-    // private _iconCssClass: string = "noIcon";
     private _state: ActionButtonState = ActionButtonState.Normal;
-    // private _text: string;
 
     private updateCssStyle() {
         let hostConfig = this.action.parent.hostConfig;
-
-        // this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
-
-        // this.action.renderedElement.classList.add(this._iconCssClass);
-
-        /*
-        if (this.action instanceof ShowCardAction) {
-            this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expandable"));
-        }
-        */
 
        this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
        this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
@@ -2161,17 +2149,6 @@ class ActionButton {
             this.onClick(this);
         }
     }
-
-    /*
-    get text(): string {
-        return this._text;
-    }
-
-    set text(value: string) {
-        this._text = value;
-        this.action.renderedElement.setAttribute("aria-label", this._text);
-    }
-    */
 
     get state(): ActionButtonState {
         return this._state;
@@ -2230,13 +2207,11 @@ export abstract class Action {
         buttonElement.style.justifyContent = "center";
 
         if (Utils.isNullOrEmpty(this.iconUrl)) {
-            // this._iconCssClass = "noIcon";
             buttonElement.classList.add("noIcon");
-
             buttonElement.style.overflow = "hidden";
             buttonElement.style.whiteSpace = "nowrap";
             buttonElement.style.textOverflow = "ellipsis";
-            buttonElement.innerText = this.title; // this._titleElement = buttonElement;
+            buttonElement.innerText = this.title;
         }
         else {
             let iconElement = document.createElement("div");
@@ -2252,13 +2227,11 @@ export abstract class Action {
             titleElement.innerText = this.title;
 
             if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
-                // this._iconCssClass = "iconAbove";
                 buttonElement.classList.add("iconAbove");
                 buttonElement.style.flexDirection = "column";
                 iconElement.style.marginBottom = "4px";
             }
             else {
-                // this._iconCssClass = "iconLeft";
                 buttonElement.classList.add("iconLeft");
                 iconElement.style.marginRight = "4px";
             }
@@ -2922,7 +2895,6 @@ class ActionCollection {
                     actionButton.action.renderedElement.style.overflow = "hidden";
                     actionButton.action.renderedElement.style.overflow = "table-cell";
                     actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
-                    // actionButton.text = this.items[i].title;
                     actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                     this.buttons.push(actionButton);
