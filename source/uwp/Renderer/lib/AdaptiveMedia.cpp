@@ -24,7 +24,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetPoster(), m_poster.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetAltText(), m_altText.GetAddressOf()));
 
-        m_sources = Microsoft::WRL::Make<Vector<IAdaptiveMediaSource*>>();
+        m_sources = Microsoft::WRL::Make<Vector<AdaptiveMediaSource*>>();
         GenerateMediaSourcesProjection(sharedMedia->GetSources(), m_sources.Get());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedMedia));
@@ -63,7 +63,7 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveMedia::get_Sources(IVector<IAdaptiveMediaSource*>** sources)
+    HRESULT AdaptiveMedia::get_Sources(IVector<AdaptiveMediaSource*>** sources)
     {
         return m_sources.CopyTo(sources);
     }

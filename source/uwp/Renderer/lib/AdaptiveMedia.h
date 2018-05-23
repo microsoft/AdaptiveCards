@@ -26,7 +26,7 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_AltText(_Out_ HSTRING *text);
         IFACEMETHODIMP put_AltText(_In_ HSTRING text);
 
-        IFACEMETHODIMP get_Sources(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveMediaSource*>** mediaSources);
+        IFACEMETHODIMP get_Sources(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>** mediaSources);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
@@ -61,7 +61,7 @@ AdaptiveNamespaceStart
     private:
         Microsoft::WRL::Wrappers::HString m_poster;
         Microsoft::WRL::Wrappers::HString m_altText;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveMediaSource*>> m_sources;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>> m_sources;
 };
 
     ActivatableClass(AdaptiveMedia);

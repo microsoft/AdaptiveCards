@@ -79,7 +79,7 @@ HRESULT GenerateSharedChoices(
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements);
 
 HRESULT GenerateSharedMediaSources(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveMediaSource*>* items,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* items,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements);
 
 HRESULT GenerateContainedElementsProjection(
@@ -112,7 +112,7 @@ HRESULT GenerateInputChoicesProjection(
 
 HRESULT GenerateMediaSourcesProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveMediaSource*>* projectedParentContainer) noexcept;
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateSeparatorProjection(
     std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,

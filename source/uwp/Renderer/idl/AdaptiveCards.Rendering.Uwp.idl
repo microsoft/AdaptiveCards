@@ -42,6 +42,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveChoiceSetInput;
     runtimeclass AdaptiveDateInput;
     runtimeclass AdaptiveMedia;
+    runtimeclass AdaptiveMediaSource;
     runtimeclass AdaptiveNumberInput;
     runtimeclass AdaptiveTextInput;
     runtimeclass AdaptiveTimeInput;
@@ -446,6 +447,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
     }
 
     [
@@ -582,6 +584,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMediaSource),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(05F2F77A-D458-4F73-AAF7-06B91D4C37E6),
         contract(InternalContract, 1),
@@ -632,7 +635,7 @@ AdaptiveNamespaceStart
         [propget] HRESULT AltText([out, retval] HSTRING* value);
         [propput] HRESULT AltText([in] HSTRING value);
 
-        [propget] HRESULT Sources([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveMediaSource*>** value);
+        [propget] HRESULT Sources([out, retval] Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>** value);
     };
 
     [

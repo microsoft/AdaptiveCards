@@ -280,13 +280,26 @@ HRESULT GenerateSharedChoices(
 }
 
 HRESULT GenerateSharedMediaSources(
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveMediaSource*>* sources,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* sources,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements)
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveMediaSource>(sources, [&](ABI::AdaptiveNamespace::IAdaptiveMediaSource* source)
+    ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>> localSources(sources);
+    ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveMediaSource*>> vectorIterable;
+    THROW_IF_FAILED(localSources.As<IIterable<ABI::AdaptiveNamespace::AdaptiveMediaSource*>>(&vectorIterable));
+
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveNamespace::AdaptiveMediaSource*>> vectorIterator;
+    HRESULT hr = vectorIterable->First(&vectorIterator);
+
+    boolean hasCurrent;
+    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
+
+    while (SUCCEEDED(hr) && hasCurrent)
     {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveMediaSource> source;
+        THROW_IF_FAILED(vectorIterator->get_Current(&source));
+
         ComPtr<AdaptiveNamespace::AdaptiveMediaSource> adaptiveElement = PeekInnards<AdaptiveNamespace::AdaptiveMediaSource>(source);
         if (adaptiveElement == nullptr)
         {
@@ -296,8 +309,9 @@ HRESULT GenerateSharedMediaSources(
         std::shared_ptr<AdaptiveSharedNamespace::MediaSource> sharedSource;
         RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedSource));
         containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::MediaSource>(sharedSource));
-        return S_OK;
-    });
+
+        hr = vectorIterator->MoveNext(&hasCurrent);
+    }
 
     return S_OK;
 }
@@ -487,7 +501,7 @@ HRESULT GenerateInputChoicesProjection(
 
 HRESULT GenerateMediaSourcesProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveMediaSource*>* projectedParentContainer) noexcept try
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {

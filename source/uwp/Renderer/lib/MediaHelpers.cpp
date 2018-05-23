@@ -106,14 +106,14 @@ void GetMediaSource(
         L"audio/mpeg",
     };
 
-    ComPtr<IVector<IAdaptiveMediaSource*>> sources;
+    ComPtr<IVector<AdaptiveMediaSource*>> sources;
     THROW_IF_FAILED(adaptiveMedia->get_Sources(&sources));
 
-    ComPtr<IIterable<IAdaptiveMediaSource*>> sourcesIterable;
-    THROW_IF_FAILED(sources.As<IIterable<IAdaptiveMediaSource*>>(&sourcesIterable));
+    ComPtr<IIterable<AdaptiveMediaSource*>> sourcesIterable;
+    THROW_IF_FAILED(sources.As<IIterable<AdaptiveMediaSource*>>(&sourcesIterable));
 
     boolean hasCurrent;
-    ComPtr<IIterator<IAdaptiveMediaSource*>> sourceIterator;
+    ComPtr<IIterator<AdaptiveMediaSource*>> sourceIterator;
     HRESULT hr = sourcesIterable->First(&sourceIterator);
     THROW_IF_FAILED(sourceIterator->get_HasCurrent(&hasCurrent));
 

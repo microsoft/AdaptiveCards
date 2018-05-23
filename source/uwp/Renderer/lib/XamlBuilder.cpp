@@ -2775,7 +2775,11 @@ AdaptiveNamespaceStart
                 ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Media was present in card, but interactivity is not supported").Get());
 
-            THROW_IF_FAILED(posterImage.CopyTo(&mediaControl));
+            if (posterImage != nullptr)
+            {
+                THROW_IF_FAILED(posterImage.CopyTo(&mediaControl));
+            }
+
             return;
         }
 
@@ -2849,13 +2853,13 @@ AdaptiveNamespaceStart
             EventRegistrationToken clickToken;
             THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([posterContainer, mediaElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
             {
-                THROW_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+                RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
 
                 ComPtr<IUIElement> mediaAsUIElement;
-                THROW_IF_FAILED(mediaElement.As(&mediaAsUIElement));
-                THROW_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
+                RETURN_IF_FAILED(mediaElement.As(&mediaAsUIElement));
+                RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
 
-                THROW_IF_FAILED(mediaElement->Play());
+                RETURN_IF_FAILED(mediaElement->Play());
 
                 return S_OK;
             }).Get(), &clickToken));
