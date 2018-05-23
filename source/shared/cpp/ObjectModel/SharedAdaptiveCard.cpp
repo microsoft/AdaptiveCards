@@ -383,7 +383,7 @@ void AdaptiveCard::SetVerticalContentAlignment(const VerticalContentAlignment va
     m_verticalContentAlignment = value;
 }
 
-std::vector<std::string> AdaptiveCards::AdaptiveCard::GetResourceUris()
+std::vector<std::string> AdaptiveCard::GetResourceUris()
 {
     auto uriVector = std::vector<std::string>();
 

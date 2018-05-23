@@ -17,6 +17,9 @@ public:
     std::string GetUrl() const;
     void SetUrl(const std::string &value);
 
+    std::string GetBackgroundColor() const;
+    void SetBackgroundColor(const std::string &value);
+
     ImageStyle GetImageStyle() const;
     void SetImageStyle(const ImageStyle value);
 
@@ -44,6 +47,7 @@ private:
     void PopulateKnownPropertiesSet();
 
     std::string m_url;
+    std::string m_backgroundColor;
     ImageStyle m_imageStyle;
     ImageSize m_imageSize;
     unsigned int m_pixelWidth;

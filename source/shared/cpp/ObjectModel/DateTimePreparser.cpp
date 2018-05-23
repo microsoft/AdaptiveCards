@@ -164,7 +164,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
                 // converts to seconds
                 hours *= 3600;
                 minutes *= 60;
-                offset = hours + minutes;
+                offset = (time_t)hours + (time_t)minutes;
 
                 wchar_t zone = matches[TimeZone].str()[0];
                 // time zone offset calculation 
@@ -186,12 +186,12 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
                 AddTextToken(matches[0], DateTimePreparsedTokenFormat::RegularString);
             }
 
-            wchar_t tzOffsetBuff[6]{};
+            char tzOffsetBuff[6]{};
             // gets local time zone offset
-            wcsftime(tzOffsetBuff, 6, L"%z", &parsedTm);
-            std::wstring localTimeZoneOffsetStr(tzOffsetBuff);
+            strftime(tzOffsetBuff, 6, "%z", &parsedTm);
+            std::string localTimeZoneOffsetStr(tzOffsetBuff);
             int nTzOffset = std::stoi(localTimeZoneOffsetStr);
-            offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
+            offset += ((time_t)(nTzOffset / 100) * 3600 + (time_t)(nTzOffset % 100) * 60);
             // add offset to utc
             utc += offset;
             struct tm result{};

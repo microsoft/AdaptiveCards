@@ -52,7 +52,7 @@ HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptive
 
 void CustomActionWrapper::GetResourceUris(std::vector<std::string>& resourceUris)
 {
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources> remoteResources;
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources> remoteResources;
     if (SUCCEEDED(m_actionElement.As(&remoteResources)))
     {
         RemoteResourceElementToUriStringVector(remoteResources.Get(), resourceUris);
