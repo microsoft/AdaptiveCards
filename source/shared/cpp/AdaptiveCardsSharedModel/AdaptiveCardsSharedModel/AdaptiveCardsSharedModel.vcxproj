@@ -138,6 +138,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\ObjectModel\Media.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MediaSource.cpp" />
     <ClCompile Include="..\..\ObjectModel\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -209,6 +211,8 @@
     <ClInclude Include="..\..\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownParser.h" />
+    <ClInclude Include="..\..\ObjectModel\Media.h" />
+    <ClInclude Include="..\..\ObjectModel\MediaSource.h" />
     <ClInclude Include="..\..\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\ObjectModel\OpenUrlAction.h" />
     <ClInclude Include="..\..\ObjectModel\ParseResult.h" />

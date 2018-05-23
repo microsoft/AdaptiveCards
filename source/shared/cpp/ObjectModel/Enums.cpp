@@ -87,10 +87,12 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::MaxWidth, "maxWidth" },
         { AdaptiveCardSchemaKey::Medium, "medium" },
         { AdaptiveCardSchemaKey::Method, "method" },
+        { AdaptiveCardSchemaKey::MimeType, "mimeType" },
         { AdaptiveCardSchemaKey::Min, "min" },
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
+        { AdaptiveCardSchemaKey::Poster, "poster" },
         { AdaptiveCardSchemaKey::Right, "right" },
         { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
         { AdaptiveCardSchemaKey::Separator, "separator" },
@@ -100,6 +102,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ShowCardActionConfig, "showCardActionConfig" },
         { AdaptiveCardSchemaKey::Size, "size" },
         { AdaptiveCardSchemaKey::Small, "small" },
+        { AdaptiveCardSchemaKey::Sources, "sources" },
         { AdaptiveCardSchemaKey::Spacing, "spacing" },
         { AdaptiveCardSchemaKey::SpacingDefinition, "spacingDefinition" },
         { AdaptiveCardSchemaKey::Speak, "speak" },
@@ -165,7 +168,8 @@ void GetCardElementTypeEnumMappings(
         { CardElementType::ToggleInput, "Input.Toggle" },
         { CardElementType::TextBlock, "TextBlock" },
         { CardElementType::Custom, "Custom" },
-        { CardElementType::Unknown, "Unknown" }
+        { CardElementType::Unknown, "Unknown" },
+        { CardElementType::Media, "Media" },
     };
     static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> cardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(cardElementTypeEnumToName);
 

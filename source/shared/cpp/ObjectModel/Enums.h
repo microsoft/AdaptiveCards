@@ -112,10 +112,12 @@ enum class AdaptiveCardSchemaKey
     MaxWidth,
     Medium,
     Method,
+    MimeType,
     Min,
     NumberInput,
     Padding,
     Placeholder,
+    Poster,
     Right,
     SelectAction,
     Separator,
@@ -124,6 +126,7 @@ enum class AdaptiveCardSchemaKey
     ShowCardActionConfig,
     Size,
     Small,
+    Sources,
     Spacing,
     SpacingDefinition,
     Speak,
@@ -228,6 +231,7 @@ enum class CardElementType
     ToggleInput,
     Custom,
     Unknown,
+    Media
 };
 
 enum class ActionType

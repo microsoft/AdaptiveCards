@@ -108,6 +108,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ChoiceInputVector_get(long jarg1, ChoiceInputVector jarg1_, int jarg2);
   public final static native void ChoiceInputVector_set(long jarg1, ChoiceInputVector jarg1_, int jarg2, long jarg3, ChoiceInput jarg3_);
   public final static native void delete_ChoiceInputVector(long jarg1);
+  public final static native long new_MediaSourceVector__SWIG_0();
+  public final static native long new_MediaSourceVector__SWIG_1(long jarg1);
+  public final static native long MediaSourceVector_size(long jarg1, MediaSourceVector jarg1_);
+  public final static native long MediaSourceVector_capacity(long jarg1, MediaSourceVector jarg1_);
+  public final static native void MediaSourceVector_reserve(long jarg1, MediaSourceVector jarg1_, long jarg2);
+  public final static native boolean MediaSourceVector_isEmpty(long jarg1, MediaSourceVector jarg1_);
+  public final static native void MediaSourceVector_clear(long jarg1, MediaSourceVector jarg1_);
+  public final static native void MediaSourceVector_add(long jarg1, MediaSourceVector jarg1_, long jarg2, MediaSource jarg2_);
+  public final static native long MediaSourceVector_get(long jarg1, MediaSourceVector jarg1_, int jarg2);
+  public final static native void MediaSourceVector_set(long jarg1, MediaSourceVector jarg1_, int jarg2, long jarg3, MediaSource jarg3_);
+  public final static native void delete_MediaSourceVector(long jarg1);
   public final static native long new_BaseActionElementVector__SWIG_0();
   public final static native long new_BaseActionElementVector__SWIG_1(long jarg1);
   public final static native long BaseActionElementVector_size(long jarg1, BaseActionElementVector jarg1_);
@@ -811,6 +822,30 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long TextBlockParser_DeserializeFromString(long jarg1, TextBlockParser jarg1_, long jarg2, ElementParserRegistration jarg2_, long jarg3, ActionParserRegistration jarg3_, String jarg4);
   public final static native long new_TextBlockParser();
   public final static native void delete_TextBlockParser(long jarg1);
+  public final static native long new_MediaSource();
+  public final static native long MediaSource_SerializeToJsonValue(long jarg1, MediaSource jarg1_);
+  public final static native String MediaSource_GetMimeType(long jarg1, MediaSource jarg1_);
+  public final static native void MediaSource_SetMimeType(long jarg1, MediaSource jarg1_, String jarg2);
+  public final static native String MediaSource_GetUrl(long jarg1, MediaSource jarg1_);
+  public final static native void MediaSource_SetUrl(long jarg1, MediaSource jarg1_, String jarg2);
+  public final static native void delete_MediaSource(long jarg1);
+  public final static native long MediaSourceParser_Deserialize(long jarg1, ElementParserRegistration jarg1_, long jarg2, ActionParserRegistration jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long MediaSourceParser_DeserializeFromString(long jarg1, ElementParserRegistration jarg1_, long jarg2, ActionParserRegistration jarg2_, String jarg3);
+  public final static native long new_MediaSourceParser();
+  public final static native void delete_MediaSourceParser(long jarg1);
+  public final static native long new_Media();
+  public final static native long Media_SerializeToJsonValue(long jarg1, Media jarg1_);
+  public final static native String Media_GetPoster(long jarg1, Media jarg1_);
+  public final static native void Media_SetPoster(long jarg1, Media jarg1_, String jarg2);
+  public final static native String Media_GetAltText(long jarg1, Media jarg1_);
+  public final static native void Media_SetAltText(long jarg1, Media jarg1_, String jarg2);
+  public final static native long Media_GetSources(long jarg1, Media jarg1_);
+  public final static native long Media_dynamic_cast(long jarg1, BaseCardElement jarg1_);
+  public final static native void delete_Media(long jarg1);
+  public final static native long MediaParser_Deserialize(long jarg1, MediaParser jarg1_, long jarg2, ElementParserRegistration jarg2_, long jarg3, ActionParserRegistration jarg3_, long jarg4, JsonValue jarg4_);
+  public final static native long MediaParser_DeserializeFromString(long jarg1, MediaParser jarg1_, long jarg2, ElementParserRegistration jarg2_, long jarg3, ActionParserRegistration jarg3_, String jarg4);
+  public final static native long new_MediaParser();
+  public final static native void delete_MediaParser(long jarg1);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long Container_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ContainerParser_SWIGSmartPtrUpcast(long jarg1);
@@ -843,6 +878,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long SubmitActionParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long TextBlock_SWIGSmartPtrUpcast(long jarg1);
   public final static native long TextBlockParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long Media_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long MediaParser_SWIGSmartPtrUpcast(long jarg1);
 
   public static String SwigDirector_BaseCardElement_GetElementTypeString(BaseCardElement jself) {
     return jself.GetElementTypeString();

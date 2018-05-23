@@ -20,6 +20,7 @@
 #include "MarkDownParser.h"
 #include "HtmlHelpers.h"
 #include "DateTimeParser.h"
+#include "MediaHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -1506,38 +1507,19 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        THROW_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-
         HSTRING url;
         THROW_IF_FAILED(adaptiveImage->get_Url(&url));
 
         ComPtr<IUriRuntimeClass> imageUrl;
+        GetUrlFromString(hostConfig.Get(), url, imageUrl.GetAddressOf());
 
-        // Try to treat URI as absolute
-        boolean isUrlRelative = FAILED(uriActivationFactory->CreateUri(url, imageUrl.GetAddressOf()));
-
-        // Otherwise, try to treat URI as relative
-        if (isUrlRelative)
+        if (imageUrl == nullptr)
         {
-            HSTRING imageBaseUrl;
-            THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(&imageBaseUrl));
-
-            if (imageBaseUrl == NULL) {
-                renderContext->AddWarning(
-                    ABI::AdaptiveNamespace::WarningStatusCode::AssetLoadFailed,
-                    HStringReference(L"Image not found").Get());
-                *imageControl = nullptr;
-                return;
-            }
-
-            THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(
-                imageBaseUrl,
-                url,
-                imageUrl.GetAddressOf())
-            );
+            renderContext->AddWarning(
+                ABI::AdaptiveNamespace::WarningStatusCode::AssetLoadFailed,
+                HStringReference(L"Image not found").Get());
+            *imageControl = nullptr;
+            return;
         }
 
         UINT32 pixelWidth = 0, pixelHeight = 0;
@@ -2768,6 +2750,124 @@ AdaptiveNamespaceStart
         AddInputValueToContext(renderContext, adaptiveCardElement, *toggleInputControl);
     }
 
+    _Use_decl_annotations_
+    void XamlBuilder::BuildMedia(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
+        IUIElement** mediaControl)
+    {
+        ComPtr<IAdaptiveCardElement> localCardElement{ adaptiveCardElement };
+        ComPtr<IAdaptiveMedia> adaptiveMedia;
+        THROW_IF_FAILED(localCardElement.As(&adaptiveMedia));
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        // Get the poster image
+        ComPtr<IImage> posterImage;
+        GetMediaPosterAsImage(renderContext, renderArgs, adaptiveMedia.Get(), &posterImage);
+
+        // If the host doesn't support interactivity we're done here, just return the poster image
+        if (!SupportsInteractivity(hostConfig.Get()))
+        {
+            renderContext->AddWarning(
+                ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Media was present in card, but interactivity is not supported").Get());
+
+            if (posterImage != nullptr)
+            {
+                THROW_IF_FAILED(posterImage.CopyTo(&mediaControl));
+            }
+
+            return;
+        }
+
+        // Create a media element and set it's source
+        ComPtr<IMediaElement> mediaElement = XamlHelpers::CreateXamlClass<IMediaElement>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
+
+        ComPtr<IUriRuntimeClass> mediaSourceUrl;
+        GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf());
+
+        if (mediaSourceUrl == nullptr)
+        {
+            renderContext->AddWarning(
+                ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedMediaType,
+                HStringReference(L"Unsupported media element dropped").Get());
+            return;
+        }
+
+        // TODO: Support loading media via resource resolvers
+        THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl.Get()));
+
+        // Configure Auto Play and Controls
+        ComPtr<IFrameworkElement> mediaAsFrameworkElement;
+        THROW_IF_FAILED(mediaElement.As(&mediaAsFrameworkElement));
+        THROW_IF_FAILED(mediaElement->put_AutoPlay(false));
+
+        ComPtr<IMediaElement2> mediaElement2;
+        THROW_IF_FAILED(mediaElement.As(&mediaElement2));
+        THROW_IF_FAILED(mediaElement2->put_AreTransportControlsEnabled(true));
+
+        ComPtr<IUIElement> mediaUIElement;
+        THROW_IF_FAILED(mediaElement.As(&mediaUIElement));
+
+        if (posterImage == nullptr)
+        {
+            // If there's no poster, just return the media element
+            mediaElement.CopyTo(mediaControl);
+        }
+        else
+        {
+            // Put the poster image in a container with a play button
+            ComPtr<IUIElement> posterContainer;
+            CreatePosterContainerWithPlayButton(posterImage.Get(), renderArgs, hostConfig.Get(), &posterContainer);
+
+            // Set the poster on the media element
+            ComPtr<IImageSource> posterImageSource;
+            THROW_IF_FAILED(posterImage->get_Source(&posterImageSource));
+            THROW_IF_FAILED(mediaElement->put_PosterSource(posterImageSource.Get()));
+
+            // Make the media element collapsed until the user clicks
+            THROW_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
+
+            // Create a panel to hold the poster and the media element
+            ComPtr<IStackPanel> mediaStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+            ComPtr<IPanel> mediaPanel;
+            THROW_IF_FAILED(mediaStackPanel.As(&mediaPanel));
+
+            XamlHelpers::AppendXamlElementToPanel(posterContainer.Get(), mediaPanel.Get());
+            XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
+
+            // Wrap in touch target
+            ComPtr<IUIElement> mediaPanelAsUIElement;
+            THROW_IF_FAILED(mediaPanel.As(&mediaPanelAsUIElement));
+
+            ComPtr<IUIElement> touchTargetUIElement;
+            WrapInTouchTarget(adaptiveCardElement, mediaPanelAsUIElement.Get(), nullptr, renderContext, true, &touchTargetUIElement);
+
+            ComPtr<IButtonBase> touchTargetAsButtonBase;
+            THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
+
+            // When the user clicks: hide the poster, show the media element, play the media
+            EventRegistrationToken clickToken;
+            THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([posterContainer, mediaElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+            {
+                RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+
+                ComPtr<IUIElement> mediaAsUIElement;
+                RETURN_IF_FAILED(mediaElement.As(&mediaAsUIElement));
+                RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
+
+                RETURN_IF_FAILED(mediaElement->Play());
+
+                return S_OK;
+            }).Get(), &clickToken));
+
+            THROW_IF_FAILED(touchTargetUIElement.CopyTo(mediaControl));
+        }
+    }
+
     bool XamlBuilder::SupportsInteractivity(IAdaptiveHostConfig* hostConfig)
     {
         boolean supportsInteractivity;
@@ -2785,24 +2885,28 @@ AdaptiveNamespaceStart
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        ABI::AdaptiveNamespace::ActionType actionType;
-        THROW_IF_FAILED(action->get_ActionType(&actionType));
 
-        // TODO: In future should support inline ShowCard, but that's complicated for inline elements
-        if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
+        if (action != nullptr)
         {
-            ComPtr<IAdaptiveActionsConfig> actionsConfig;
-            THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-            ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
-            THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-            ABI::AdaptiveNamespace::ActionMode showCardActionMode;
-            THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-            if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
+            ABI::AdaptiveNamespace::ActionType actionType;
+            THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+            // TODO: In future should support inline ShowCard, but that's complicated for inline elements
+            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
             {
-                // Was inline show card, so don't wrap the element and just return
-                ComPtr<IUIElement> localElementToWrap(elementToWrap);
-                localElementToWrap.CopyTo(finalElement);
-                return;
+                ComPtr<IAdaptiveActionsConfig> actionsConfig;
+                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
+                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
+                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
+                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
+                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
+                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
+                {
+                    // Was inline show card, so don't wrap the element and just return
+                    ComPtr<IUIElement> localElementToWrap(elementToWrap);
+                    localElementToWrap.CopyTo(finalElement);
+                    return;
+                }
             }
         }
 
@@ -2852,7 +2956,10 @@ AdaptiveNamespaceStart
         // Style the hit target button
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.SelectAction", buttonAsFrameworkElement.Get()));
 
-        WireButtonClickToAction(button.Get(), action, renderContext);
+        if (action != nullptr)
+        {
+            WireButtonClickToAction(button.Get(), action, renderContext);
+        }
 
         THROW_IF_FAILED(button.CopyTo(finalElement));
     }
