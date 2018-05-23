@@ -47,7 +47,7 @@
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]] ;
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
 
-    UIView *prevView = nil, *curView = nil;
+    ACRColumnView *prevView = nil, *curView = nil, *stretchView = nil;
     float relativeColumnWidth = 0, prevRelColumnWidth = 0;
     float multiplier = 1.0;
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
@@ -57,15 +57,28 @@
     {
         [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
         [acoColumn setElem:column];
-        curView = (UIStackView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
-        try
-        {
-            relativeColumnWidth = std::stof(column->GetWidth());
-            if(prevRelColumnWidth)
-                multiplier = relativeColumnWidth / prevRelColumnWidth;
-        }
-        catch(...){ ;}
+        curView = (ACRColumnView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
 
+        if([curView.columnWidth isEqualToString:@"stretch"]){
+            if(stretchView){
+                [NSLayoutConstraint constraintWithItem:curView
+                                    attribute:NSLayoutAttributeWidth
+                                    relatedBy:NSLayoutRelationEqual
+                                    toItem:stretchView
+                                    attribute:NSLayoutAttributeWidth
+                                    multiplier:1
+                                    constant:0].active = YES;
+            }
+            stretchView = curView;
+        } else {
+            try
+            {
+                relativeColumnWidth = std::stof(column->GetWidth());
+                if(prevRelColumnWidth)
+                    multiplier = relativeColumnWidth / prevRelColumnWidth;
+            }
+            catch(...){ ;}
+        }
         if(prevView && prevRelColumnWidth)
         {
 
