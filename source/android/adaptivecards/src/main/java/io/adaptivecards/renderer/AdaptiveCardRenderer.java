@@ -30,6 +30,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 public class AdaptiveCardRenderer
 {
@@ -64,30 +65,46 @@ public class AdaptiveCardRenderer
             m_imageBaseUrl = imageBaseUrl;
         }
 
+        private HttpRequestResult<Bitmap> loadOnlineImage(String url) throws IOException, URISyntaxException
+        {
+            Bitmap bitmap;
+            byte[] bytes = HttpRequestHelper.get(url);
+            if (bytes == null)
+            {
+                throw new IOException("Failed to retrieve content from " + url);
+            }
+
+            bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+            if (bitmap == null)
+            {
+                throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
+            }
+
+            return new HttpRequestResult<>(bitmap);
+        }
+
         @Override
         protected HttpRequestResult<Bitmap> doInBackground(String... args)
         {
             try
             {
-                Bitmap bitmap;
-                byte[] bytes = HttpRequestHelper.get(args[0]);
-                if (bytes == null)
-                {
-                    throw new IOException("Failed to retrieve content from " + args[0]);
-                }
-
-                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                if (bitmap == null)
-                {
-                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
-                }
-
-                return new HttpRequestResult<>(bitmap);
+                return loadOnlineImage(args[0]);
             }
-            catch (MalformedURLException e) {
-                // If the url is malformed, try reading it from local resources
-                return Util.loadLocalImage(m_imageBaseUrl, m_context, args[0]);
+            catch (MalformedURLException e1) {
+                try
+                {
+                    return loadOnlineImage(m_imageBaseUrl + args[0]);
+                }
+                catch (MalformedURLException e2)
+                {
+                    // If the url is malformed, try reading it from local resources
+                    return Util.loadLocalImage(m_imageBaseUrl, m_context, args[0]);
+                }
+                catch (Exception e)
+                {
+                    return new HttpRequestResult<>(e);
+                }
             }
             catch (Exception excep)
             {
