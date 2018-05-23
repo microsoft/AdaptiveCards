@@ -729,6 +729,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT Url([out, retval] HSTRING* value);
         [propput] HRESULT Url([in] HSTRING value);
 
+        [propget] HRESULT BackgroundColor([out, retval] HSTRING* value);
+        [propput] HRESULT BackgroundColor([in] HSTRING value);
+
         [propget] HRESULT Style([out, retval] ImageStyle* value);
         [propput] HRESULT Style([in] ImageStyle value);
 
@@ -1310,6 +1313,10 @@ AdaptiveNamespaceStart
 
         HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
         HRESULT ResetFixedDimensions();
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>** result);
+#endif
 
         HRESULT RenderAdaptiveCard([in] AdaptiveCard* adaptiveCard, [out, retval] RenderedAdaptiveCard** result);
 

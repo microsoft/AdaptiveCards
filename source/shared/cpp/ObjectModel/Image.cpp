@@ -56,6 +56,11 @@ Json::Value Image::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url)] = m_url;
     }
 
+    if (!m_backgroundColor.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor)] = m_backgroundColor;
+    }
+
     if (m_hAlignment != HorizontalAlignment::Left)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
@@ -83,6 +88,16 @@ std::string Image::GetUrl() const
 void Image::SetUrl(const std::string &value)
 {
     m_url = value;
+}
+
+std::string Image::GetBackgroundColor() const
+{
+    return m_backgroundColor;
+}
+
+void Image::SetBackgroundColor(const std::string &value)
+{
+    m_backgroundColor = value;
 }
 
 ImageStyle Image::GetImageStyle() const
@@ -180,6 +195,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
+    image->SetBackgroundColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
@@ -226,6 +242,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
 void Image::PopulateKnownPropertiesSet() 
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText));

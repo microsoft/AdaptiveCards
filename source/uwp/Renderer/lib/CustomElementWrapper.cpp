@@ -58,7 +58,7 @@ AdaptiveNamespaceStart
 
     void CustomElementWrapper::GetResourceUris(std::vector<std::string>& resourceUris)
     {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources> remoteResources;
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources> remoteResources;
         if (SUCCEEDED(m_cardElement.As(&remoteResources)))
         {
             RemoteResourceElementToUriStringVector(remoteResources.Get(), resourceUris);
