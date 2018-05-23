@@ -59,7 +59,7 @@ void AddPlayButtonIcon(
     ComPtr<IUIElement> playIconAsUIElement;
     playIcon.As(&playIconAsUIElement);
 
-    // Set the icon to be centered on the image in the relative panel
+    // Set the icon to be centered in the relative panel
     ComPtr<IRelativePanelStatics> relativePanelStatics;
     THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(), &relativePanelStatics));
     THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(playIconAsUIElement.Get(), true));
@@ -86,8 +86,6 @@ void CreatePosterContainerWithPlayButton(
     ComPtr<IFrameworkElement> posterImageAsFrameworkElement;
     localPosterImage.As(&posterImageAsFrameworkElement);
 
-    // Add the play button. Draw slightly smaller and larger versions of the icon in the light 
-    // color. This will create a dark button with a light outline so it shows up on all poster image colors.
     // TODO: Handle custom play button from host config
     AddPlayButtonIcon(mediaPanel.Get());
 
