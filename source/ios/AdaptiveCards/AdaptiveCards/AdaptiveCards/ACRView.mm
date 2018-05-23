@@ -218,10 +218,13 @@ using namespace AdaptiveCards;
                 std::shared_ptr<ImageSet>imgSetElem = std::static_pointer_cast<ImageSet>(elem);
                 for(auto img :imgSetElem->GetImages()) { // loops through images in image set
                     std::shared_ptr<BaseCardElement> baseImgElem = std::static_pointer_cast<BaseCardElement>(img);
-                    /// tag a base card element with unique key
-                    [self tagBaseCardElement:baseImgElem];
                     img->SetImageSize(imgSetElem->GetImageSize());
-                    [self processImageConcurrently:img];
+
+                    if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) CardElementType::Image] == NO){
+                        /// tag a base card element with unique key
+                        [self tagBaseCardElement:baseImgElem];
+                        [self processImageConcurrently:img];
+                    }
                 }
                 break;
             }
