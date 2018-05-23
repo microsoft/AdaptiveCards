@@ -479,8 +479,14 @@ AdaptiveNamespaceStart
     };
 
     [
-        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(1D37C30F-9180-4CEF-A73C-C77ED00176DB),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
+#endif
     ]
     interface IAdaptiveElementWithRemoteResources : IInspectable
     {
