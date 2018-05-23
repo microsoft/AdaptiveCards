@@ -41,7 +41,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle, boolean isValue)
+    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
@@ -58,11 +58,6 @@ public class FactSetRenderer extends BaseCardElementRenderer
                 GridLayout.spec(GridLayout.UNDEFINED));
 
         parem.rightMargin = (int) spacing;
-        if (isValue)
-        {
-            parem.width = 0;
-            parem.setGravity(Gravity.FILL_HORIZONTAL);
-        }
 
         textView.setLayoutParams(parem);
         return textView;
@@ -102,8 +97,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
-            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle, false));
-            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle, true));
+            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
+            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
         }
 
         viewGroup.addView(gridLayout);
