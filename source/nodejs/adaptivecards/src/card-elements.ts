@@ -2206,12 +2206,17 @@ export abstract class Action {
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
 
+        let hasTitle = !Utils.isNullOrEmpty(this.title);
+
         if (Utils.isNullOrEmpty(this.iconUrl)) {
             buttonElement.classList.add("noIcon");
             buttonElement.style.overflow = "hidden";
             buttonElement.style.whiteSpace = "nowrap";
             buttonElement.style.textOverflow = "ellipsis";
-            buttonElement.innerText = this.title;
+
+            if (hasTitle) {
+                buttonElement.innerText = this.title;
+            }
         }
         else {
             let iconElement = document.createElement("div");
@@ -2224,16 +2229,25 @@ export abstract class Action {
             iconElement.style.backgroundSize = "contain";
 
             let titleElement = document.createElement("div");
-            titleElement.innerText = this.title;
+
+            if (hasTitle) {
+                titleElement.innerText = this.title;
+            }
 
             if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
                 buttonElement.classList.add("iconAbove");
                 buttonElement.style.flexDirection = "column";
-                iconElement.style.marginBottom = "4px";
+
+                if (hasTitle) {
+                    iconElement.style.marginBottom = "4px";
+                }
             }
             else {
                 buttonElement.classList.add("iconLeft");
-                iconElement.style.marginRight = "4px";
+                
+                if (hasTitle) {
+                    iconElement.style.marginRight = "4px";
+                }
             }
 
             buttonElement.appendChild(iconElement);
