@@ -41,7 +41,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
+    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle, boolean isValue)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
@@ -56,6 +56,11 @@ public class FactSetRenderer extends BaseCardElementRenderer
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
                 GridLayout.spec(GridLayout.UNDEFINED),
                 GridLayout.spec(GridLayout.UNDEFINED));
+
+        if (isValue)
+        {
+            parem.setGravity(Gravity.FILL_HORIZONTAL);
+        }
 
         parem.rightMargin = (int) spacing;
 
@@ -88,7 +93,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         GridLayout gridLayout = new GridLayout(context);
         gridLayout.setTag(factSet);
-        gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
         gridLayout.setColumnCount(2);
 
         FactVector factVector = factSet.GetFacts();
@@ -97,8 +102,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
-            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
-            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle, false));
+            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle, true));
         }
 
         viewGroup.addView(gridLayout);
