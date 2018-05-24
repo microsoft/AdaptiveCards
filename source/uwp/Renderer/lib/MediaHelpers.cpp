@@ -70,8 +70,8 @@ void AddPlayButtonIcon(
 
 void CreatePosterContainerWithPlayButton(
     IImage* posterImage,
-    IAdaptiveRenderArgs* renderArgs,
-    IAdaptiveHostConfig * hostConfig,
+    IAdaptiveRenderArgs* /*renderArgs*/,
+    IAdaptiveHostConfig * /*hostConfig*/,
     IUIElement ** posterContainer)
 {
     ComPtr<IRelativePanel> posterRelativePanel = XamlHelpers::CreateXamlClass<IRelativePanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel));
