@@ -7,8 +7,7 @@
 #include "Container.h"
 #include "ShowCardAction.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 void ParseUtil::ThrowIfNotJsonObject(const Json::Value& json)
 {
@@ -281,7 +280,7 @@ Json::Value ParseUtil::GetArray(
     return elementArray;
 }
 
-Json::Value ParseUtil::GetJsonValueFromString(const std::string jsonString)
+Json::Value ParseUtil::GetJsonValueFromString(const std::string &jsonString)
 {
     Json::Reader reader;
     Json::Value jsonValue;
@@ -303,10 +302,12 @@ Json::Value ParseUtil::ExtractJsonValue(const Json::Value& json, AdaptiveCardSch
     return propertyValue;
 }
 
-std::string ParseUtil::ToLowercase(std::string value)
+std::string ParseUtil::ToLowercase(std::string const &value)
 {
-    std::transform(value.begin(), value.end(), value.begin(), [](char c) { return std::tolower(c, std::locale()); });
-    return value;
+    std::string new_value;
+    new_value.resize(value.size());
+    std::transform(value.begin(), value.end(), new_value.begin(), [](char c) { return std::tolower(c, std::locale()); });
+    return new_value;
 }
 
 std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
@@ -404,6 +405,23 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
     return elements;
 }
 
+std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key,
+    bool isRequired)
+{
+    auto selectAction = ParseUtil::ExtractJsonValue(json, key, isRequired);
+
+    if (!selectAction.empty())
+    {
+        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, selectAction);
+    }
+
+    return nullptr;
+}
+
 ParseUtil::ParseUtil()
 {
 }
@@ -412,4 +430,4 @@ ParseUtil::~ParseUtil()
 {
 }
 
-}
+AdaptiveSharedNamespaceEnd

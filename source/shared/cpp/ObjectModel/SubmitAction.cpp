@@ -2,7 +2,7 @@
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit)
 {
@@ -14,16 +14,19 @@ std::string SubmitAction::GetDataJson() const
     return m_dataJson;
 }
 
-void SubmitAction::SetDataJson(const std::string value)
+void SubmitAction::SetDataJson(const std::string &value)
 {
     m_dataJson = value;
 }
 
-Json::Value SubmitAction::SerializeToJsonValue()
+Json::Value SubmitAction::SerializeToJsonValue() const
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data)] = GetDataJson();
+    if (!m_dataJson.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data)] = m_dataJson;
+    }
 
     return root;
 }

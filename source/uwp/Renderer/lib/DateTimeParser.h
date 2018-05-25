@@ -4,8 +4,7 @@
 #include <codecvt>
 #include <string>
 
-namespace AdaptiveCards
-{
+AdaptiveNamespaceStart
     class DateTimeParser
     {
     public:
@@ -13,6 +12,6 @@ namespace AdaptiveCards
         std::string GenerateString(DateTimePreparser text);
 
     private:
-        std::locale m_language;
+        std::string m_languageString;
     };
-}
+AdaptiveNamespaceEnd

@@ -7,13 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveColumn::AdaptiveColumn()
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
@@ -21,25 +20,24 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
+        std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
         return RuntimeClassInitialize(column);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn)
+    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn) try
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
 
-        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedColumn->GetStyle());
+        m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumn->GetStyle());
+        m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
+        m_pixelWidth = sharedColumn->GetPixelWidth();
 
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(sharedColumn->GetSpacing());
-        m_separator = sharedColumn->GetSeparator();
-        RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetId(), m_id.GetAddressOf()));
-        RETURN_IF_FAILED(JsonCppToJsonObject(sharedColumn->GetAdditionalProperties(), &m_additionalProperties));
+        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
         return S_OK;
-    }
+    } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Width(HSTRING* width)
@@ -54,16 +52,42 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveColumn::get_PixelWidth(UINT32* pixelWidth)
+    {
+        return *pixelWidth = m_pixelWidth;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth)
+    {
+        return m_pixelWidth = pixelWidth;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
+    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    {
+        *verticalAlignment = m_verticalAlignment;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    {
+        m_verticalAlignment = verticalAlignment;
         return S_OK;
     }
 
@@ -93,85 +117,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        *spacing = m_spacing;
-        return S_OK;
-    }
+        std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(column)));
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
-    {
-        m_spacing = spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Separator(boolean* separator)
-    {
-        *separator = m_separator;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Separator(boolean separator)
-    {
-        m_separator = separator;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Id(HSTRING* id)
-    {
-        return m_id.CopyTo(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Id(HSTRING id)
-    {
-        return m_id.Set(id);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_ElementTypeString(HSTRING* type)
-    {
-        ElementType typeEnum;
-        RETURN_IF_FAILED(get_ElementType(&typeEnum));
-        return ProjectedElementTypeToHString(typeEnum, type);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return m_additionalProperties.CopyTo(result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
-    {
-        m_additionalProperties = jsonObject;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        std::shared_ptr<AdaptiveCards::Column> sharedModel;
-        RETURN_IF_FAILED(GetSharedModel(sharedModel));
-
-        return StringToJsonObject(sharedModel->Serialize(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveCards::Column>& sharedModel) try
-    {
-        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
-
-        RETURN_IF_FAILED(SetSharedElementProperties(this, std::dynamic_pointer_cast<AdaptiveCards::BaseCardElement>(column)));
-
-        column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+        column->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
+        column->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
         column->SetWidth(HStringToUTF8(m_width.Get()));
+        column->SetPixelWidth(m_pixelWidth);
 
         if (m_selectAction != nullptr)
         {
@@ -185,4 +139,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         sharedModel = column;
         return S_OK;
     }CATCH_RETURN;
-}}}
+AdaptiveNamespaceEnd

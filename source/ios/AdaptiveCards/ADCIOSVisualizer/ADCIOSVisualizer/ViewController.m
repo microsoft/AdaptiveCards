@@ -10,8 +10,12 @@
 #import "CustomActionOpenURLRenderer.h"
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
+#import "CustomTextBlockRenderer.h"
 
 @interface ViewController ()
+{
+    BOOL _enableCustomRenderer;
+}
 
 @end
 
@@ -56,6 +60,23 @@
                               @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
+- (IBAction)toggleCustomRenderer:(id)sender
+{
+    _enableCustomRenderer = !_enableCustomRenderer;
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    if(_enableCustomRenderer){
+        // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809
+        [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
+        [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
+        [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
+    } else
+    {
+        [registration setActionRenderer:nil cardElementType:@3];
+        [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
+        [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
+    }
+    [self update:self.editableStr];
+}
 
 - (IBAction)applyText:(id)sender
 {
@@ -75,6 +96,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self registerForKeyboardNotifications];
+    _enableCustomRenderer = NO;
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     self.ACVTabVC.delegate = self;
@@ -100,6 +122,8 @@
     // try button
     buttonLayout.axis = UILayoutConstraintAxisHorizontal;
     self.tryButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [NSLayoutConstraint constraintWithItem:_tryButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
+
     [self.tryButton setTitle:@"Try Yourself" forState:UIControlStateNormal];
     [self.tryButton setTitleColor:[UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1] forState:UIControlStateSelected];
     [self.tryButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
@@ -117,31 +141,54 @@
 
     self.applyButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
     self.applyButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
+      [NSLayoutConstraint constraintWithItem:_applyButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
 
-    
     [self.applyButton addTarget:self action:@selector(applyText:)
                forControlEvents:UIControlEventTouchUpInside];
     [buttonLayout addArrangedSubview:self.applyButton];
+
+    // custon renderer button
+    self.enableCustomRendererButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.enableCustomRendererButton setTitle:@"Enable Custom Renderer" forState:UIControlStateNormal];
+    [self.enableCustomRendererButton setTitleColor:[UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1] forState:UIControlStateSelected];
+    [self.enableCustomRendererButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+
+    self.enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
+    self.enableCustomRendererButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
+      [NSLayoutConstraint constraintWithItem:_enableCustomRendererButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
+
+    [self.enableCustomRendererButton addTarget:self action:@selector(toggleCustomRenderer:)
+               forControlEvents:UIControlEventTouchUpInside];
+    [buttonLayout addArrangedSubview:self.enableCustomRendererButton];
+
     [self.view addSubview:buttonLayout];
     buttonLayout.translatesAutoresizingMaskIntoConstraints = NO;
-    buttonLayout.alignment = UIStackViewAlignmentLeading;
-    buttonLayout.distribution = UIStackViewDistributionFillEqually;
-    [self update:self.ACVTabVC.userSelectedJSon];
-    
+    buttonLayout.alignment = UIStackViewAlignmentCenter;
+    buttonLayout.distribution = UIStackViewDistributionFillProportionally;
+    buttonLayout.spacing = 10;
+
+    [NSLayoutConstraint constraintWithItem:buttonLayout attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30].active = YES;
+
+    _scrView = [[UIScrollView alloc] init];
+    _scrView.showsHorizontalScrollIndicator = NO;
+
     [self.view addSubview:self.scrView];
-    [self.scrView addSubview:self.curView];
+
     UIScrollView *scrollview = self.scrView;
     scrollview.showsVerticalScrollIndicator = YES;
-    UIView *view = self.curView;
-    view.translatesAutoresizingMaskIntoConstraints = NO;
+    _scrView.scrollEnabled = YES;
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, scrollview, buttonLayout);
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout, scrollview);
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-20-|",
+                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40@100-|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
+
     [ViewController applyConstraints:formats variables:viewMap];
+
+    [self update:self.ACVTabVC.userSelectedJSon];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -154,47 +201,33 @@
     ACRRenderResult *renderResult;
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
-    if(cardParseResult.isValid)
-    {
-        renderResult = [ACRRenderer render:cardParseResult.card
-                                    config:hostconfigParseResult.config
-                                     frame:CGRectMake(0, 0, 500, 0)];
+    if(cardParseResult.isValid){
+        ACRRegistration *registration = [ACRRegistration getInstance];
+            
+        CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
+        [registration setCustomElementParser:progressBarRenderer];
+
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:300];
     }	
     
     if(renderResult.succeeded)
     {
-        ACRRegistration *registration = [ACRRegistration getInstance];
-        // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809 
-        [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
-        [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
-
-        CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-        [registration setCustomElementParser:progressBarRenderer];
-        ACRViewController *adcVc = renderResult.viewcontroller;
-        adcVc.acrActionDelegate = self;
+        ACRView *ad = renderResult.view;
+        ad.acrActionDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
-        else
-        {
-            self.scrView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,0,0)];
-            self.scrView.showsHorizontalScrollIndicator = YES;
-        }
-        self.curView = adcVc.view;
-        self.scrView.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        [self addChildViewController:adcVc];
-        [self.scrView addSubview:adcVc.view];
 
-        [adcVc didMoveToParentViewController:self];
-        self.scrView.contentSize = self.curView.frame.size;
-        
-        UIScrollView *scrollview = self.scrView;
-        UIView *view = self.curView;
-        view.translatesAutoresizingMaskIntoConstraints = NO;
-        scrollview.translatesAutoresizingMaskIntoConstraints = NO;
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, scrollview);
-        NSArray<NSString *> *formats = [NSArray arrayWithObjects:@"H:|[view(<=scrollview)]|", @"V:|[view(>=scrollview)]|",nil];
-        [ViewController applyConstraints:formats variables:viewMap];
+        self.curView = ad;
+        if(_enableCustomRenderer){
+            [_scrView addSubview:self.curView];
+            UIView *view = self.curView;
+            view.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+        }
     }
 }
 
@@ -231,6 +264,10 @@
     }
 }
 
+- (void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)navigationController{
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
 - (void)didFetchUserResponses:(NSData *)json error:(NSError *)error
 {
     if(!error && json)
@@ -256,7 +293,14 @@
 
 - (void)didLoadElements
 {
-    NSLog(@"didLoadElements");
+    [_scrView addSubview:self.curView];
+    UIView *view = self.curView;
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
 }
 
 - (void)registerForKeyboardNotifications
@@ -274,11 +318,15 @@
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGRect kbFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGSize kbSize = kbFrame.size;
 
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    self.scrView.contentInset = contentInsets;
-    self.scrView.scrollIndicatorInsets = contentInsets;
+    CGRect scrollViewFrame = _scrView.frame;
+    if(scrollViewFrame.origin.y + scrollViewFrame.size.height > kbFrame.origin.y) {
+        self.scrView.contentInset = contentInsets;
+        self.scrView.scrollIndicatorInsets = contentInsets;
+    }
 }
 
 // Called when the UIKeyboardWillHideNotification is sent

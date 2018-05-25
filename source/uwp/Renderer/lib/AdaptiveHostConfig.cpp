@@ -16,11 +16,10 @@
 #include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfigParseResult** parseResult) noexcept try
     {
@@ -66,6 +65,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         m_supportsInteractivity = sharedHostConfig.supportsInteractivity;
         RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.fontFamily, m_fontFamily.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.imageBaseUrl, m_imageBaseUrl.GetAddressOf()));
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontSizesConfig>(m_fontSizes.GetAddressOf(), sharedHostConfig.fontSizes));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(), sharedHostConfig.fontWeights));
@@ -135,13 +135,25 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition** value)
+    HRESULT AdaptiveHostConfig::get_ImageBaseUrl(HSTRING* imageBaseUrl)
+    {
+        return m_imageBaseUrl.CopyTo(imageBaseUrl);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::put_ImageBaseUrl(HSTRING imageBaseUrl)
+    {
+        return m_imageBaseUrl.Set(imageBaseUrl);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition** value)
     {
         return m_containerStyles.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
     {
         m_containerStyles = containerStylesDefinition;
         return S_OK;
@@ -161,26 +173,26 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig** spacingConfig)
+    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveNamespace::IAdaptiveSpacingConfig** spacingConfig)
     {
         return m_spacing.CopyTo(spacingConfig);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig* spacingConfig)
+    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveNamespace::IAdaptiveSpacingConfig* spacingConfig)
     {
         m_spacing = spacingConfig;
         return S_OK;
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig** separatorConfig)
+    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig** separatorConfig)
     {
         return m_separator.CopyTo(separatorConfig);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig* separatorConfig)
+    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig* separatorConfig)
     {
         m_separator = separatorConfig;
         return S_OK;
@@ -250,4 +262,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_actions = actionsConfig;
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

@@ -14,6 +14,7 @@
 #import "ACRSeparator.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRView.h"
 
 @implementation ACRColumnSetRenderer
 
@@ -29,7 +30,7 @@
 }
 
 - (UIView* )render:(UIView<ACRIContentHoldingView> *)viewGroup
-            rootViewController:(UIViewController *)vc
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -39,6 +40,7 @@
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
     ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] init];
+    [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [columnSetView setStyle:[viewGroup style]];
 
     ACRBaseCardElementRenderer *columRenderer =
@@ -55,7 +57,7 @@
     {
         [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
         [acoColumn setElem:column];
-        curView = (UIStackView *)[columRenderer render:columnSetView rootViewController:vc inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
+        curView = (UIStackView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
         try
         {
             relativeColumnWidth = std::stof(column->GetWidth());
@@ -103,7 +105,7 @@
     // instantiate and add long press gesture recognizer
     UILongPressGestureRecognizer * gestureRecognizer =
         [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
-                                                         rootViewController:vc
+                                                                   rootView:rootView
                                                                  targetView:columnSetView
                                                               actionElement:selectAction
                                                                      inputs:inputs

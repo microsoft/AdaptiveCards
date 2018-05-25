@@ -5,8 +5,7 @@
 #include "json/json.h"
 #include "ParseUtil.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class BaseActionElement
 {
 public:
@@ -15,24 +14,29 @@ public:
     virtual ~BaseActionElement();
 
     virtual std::string GetElementTypeString() const;
-    virtual void SetElementTypeString(const std::string value);
+    virtual void SetElementTypeString(const std::string &value);
 
     virtual std::string GetTitle() const;
-    virtual void SetTitle(const std::string value);
+    virtual void SetTitle(const std::string &value);
 
     virtual std::string GetId() const;
-    virtual void SetId(const std::string value);
+    virtual void SetId(const std::string &value);
+
+    virtual std::string GetIconUrl() const;
+    virtual void SetIconUrl(const std::string& value);
 
     virtual const ActionType GetElementType() const;
 
-    std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    std::string Serialize() const;
+    virtual Json::Value SerializeToJsonValue() const;
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
-    Json::Value GetAdditionalProperties();
-    void SetAdditionalProperties(Json::Value additionalProperties);
+    Json::Value GetAdditionalProperties() const;
+    void SetAdditionalProperties(Json::Value const &additionalProperties);
+
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris);
 
 private:
     void PopulateKnownPropertiesSet();
@@ -41,6 +45,7 @@ private:
     std::string m_typeString;
     std::string m_title;
     std::string m_id;
+    std::string m_iconUrl;
     Json::Value m_additionalProperties;
 
 protected:
@@ -57,6 +62,7 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
 
     baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     baseActionElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
+    baseActionElement->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
 
     // Walk all properties and put any unknown ones in the additional properties json
     for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)
@@ -69,4 +75,5 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
     }
     return cardElement;
 }
-}
+AdaptiveSharedNamespaceEnd
+

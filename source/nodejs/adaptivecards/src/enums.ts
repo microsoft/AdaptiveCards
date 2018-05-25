@@ -6,6 +6,11 @@ export enum Size {
     Large
 }
 
+export enum SizeUnit {
+    Weight,
+    Pixel
+}
+
 export enum TextSize {
     Small,
     Default,
@@ -81,9 +86,22 @@ export enum BackgroundImageMode {
     Repeat
 }
 
-export enum ContainerStyle {
-    Default = "default",
-    Emphasis = "emphasis"
+/*
+    This should really be a string enum, e.g.
+    
+        export enum ContainerStyle {
+            Default = "default",
+            Emphasis = "emphasis"
+        }
+
+    However, some hosts do not use a version of TypeScript
+    recent enough to understand string enums. This is
+    a compatible construct that does not require using
+    a more recent version of TypeScript.
+*/
+export class ContainerStyle {
+    static readonly Default = "default";
+    static readonly Emphasis = "emphasis";
 }
 
 export enum ValidationError {

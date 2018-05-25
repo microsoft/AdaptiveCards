@@ -61,15 +61,19 @@ export abstract class HostContainer {
     private processNodes(nodes: NodeList, output: any[]): void {
         for (let i = 0; i < nodes.length; i++) {
             let node = nodes[i];
-            if (node.nodeName == 'p') {
+
+            if (node.nodeName == "p") {
                 this.processNodes(node.childNodes, output);
                 output.push(250);
-            } else if (node.nodeName == 's') {
+            }
+            else if (node.nodeName == "s") {
                 this.processNodes(node.childNodes, output);
                 output.push(100);
-            } else if (node.nodeName == 'break') {
+            }
+            else if (node.nodeName == "break" && node instanceof Element) {
                 if (node.attributes["strength"]) {
                     let strength = node.attributes["strength"].nodeValue;
+                    
                     if (strength == "weak") {
                         // output.push(50);
                     } else if (strength == "medium") {
@@ -79,20 +83,26 @@ export abstract class HostContainer {
                     } else if (strength == "x-strong") {
                         output.push(250);
                     }
-                } else if (node.attributes["time"]) {
+                }
+                else if (node.attributes["time"]) {
                     output.push(JSON.parse(node.attributes["time"].value));
                 }
-            } else if (node.nodeName == 'audio') {
+            }
+            else if (node.nodeName == "audio" && node instanceof Element) {
                 if (node.attributes["src"]) {
                     output.push(node.attributes["src"].value);
                 }
-            } else if (node.nodeName == 'say-as') {
+            }
+            else if (node.nodeName == "say-as") {
                 this.processNodes(node.childNodes, output);
-            } else if (node.nodeName == 'w') {
+            }
+            else if (node.nodeName == "w") {
                 this.processNodes(node.childNodes, output);
-            } else if (node.nodeName == 'phoneme') {
+            }
+            else if (node.nodeName == "phoneme") {
                 this.processNodes(node.childNodes, output);
-            } else {
+            }
+            else {
                 output.push(node.nodeValue);
             }
         }
@@ -102,7 +112,6 @@ export abstract class HostContainer {
         AdaptiveCard.elementTypeRegistry.reset();
         AdaptiveCard.actionTypeRegistry.reset();
         AdaptiveCard.useAutomaticContainerBleeding = false;
-        AdaptiveCard.preExpandSingleShowCardAction = false;
         AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
     }
 
@@ -117,6 +126,7 @@ export abstract class HostContainer {
 
     public getHostConfig(): HostConfig {
         return new HostConfig({
+            preExpandSingleShowCardAction: false,
             spacing: {
                 small: 3,
                 default: 8,

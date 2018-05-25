@@ -5,17 +5,16 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class NumberInput : public BaseInputElement
 {
 public:
     NumberInput();
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::string GetPlaceholder() const;
-    void SetPlaceholder(const std::string value);
+    void SetPlaceholder(const std::string &value);
 
     int GetValue() const;
     void SetValue(const int value);
@@ -48,4 +47,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

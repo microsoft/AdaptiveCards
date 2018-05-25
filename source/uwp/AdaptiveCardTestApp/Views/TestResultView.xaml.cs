@@ -48,8 +48,14 @@ namespace AdaptiveCardTestApp.Views
                     switch (model.Status)
                     {
                         case TestStatus.Failed:
+                        case TestStatus.JsonFailed:
+                        case TestStatus.ImageAndJsonFailed:
                         case TestStatus.FailedButSourceWasChanged:
                             ButtonSaveAsExpected.Content = "Accept new version";
+                            break;
+
+                        case TestStatus.PassedButSourceWasChanged:
+                            ButtonSaveAsExpected.Content = "Accept new source";
                             break;
 
                         case TestStatus.Passed:
@@ -60,6 +66,7 @@ namespace AdaptiveCardTestApp.Views
 
                 ButtonCompareCard.Visibility = model.DidCardPayloadChange ? Visibility.Visible : Visibility.Collapsed;
                 ButtonCompareHostConfig.Visibility = model.DidHostConfigChange ? Visibility.Visible : Visibility.Collapsed;
+                ButtonRoundTrippedJson.Visibility = model.DidRoundtrippedJsonChange ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -85,6 +92,14 @@ namespace AdaptiveCardTestApp.Views
             if (model != null)
             {
                 ShowComparison(await model.GetOldHostConfigContentsAsync(), model.HostConfigFile.Contents);
+            }
+        }
+        private async void ButtonRoundTrippedJson_Click(object sender, RoutedEventArgs e)
+        {
+            TestResultViewModel model = DataContext as TestResultViewModel;
+            if (model != null)
+            {
+                ShowComparison(model.ExpectedRoundtrippedJsonModel.Contents, model.RoundtrippedJsonModel.Contents);
             }
         }
 

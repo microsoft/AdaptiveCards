@@ -7,15 +7,11 @@
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class UnknownElement: public BaseCardElement
 {
 public:
     UnknownElement();
-    UnknownElement(Json::Value const &paylaod);
-        
-    virtual Json::Value SerializeToJsonValue() override;
 };
 
 class UnknownElementParser : public BaseCardElementParser
@@ -31,4 +27,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

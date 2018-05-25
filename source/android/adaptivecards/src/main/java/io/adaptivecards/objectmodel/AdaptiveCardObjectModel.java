@@ -33,6 +33,14 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.ActionTypeFromString(actionType));
   }
 
+  public static String HeightTypeToString(HeightType heightType) {
+    return AdaptiveCardObjectModelJNI.HeightTypeToString(heightType.swigValue());
+  }
+
+  public static HeightType HeightTypeFromString(String heightType) {
+    return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.HeightTypeFromString(heightType));
+  }
+
   public static String HorizontalAlignmentToString(HorizontalAlignment alignment) {
     return AdaptiveCardObjectModelJNI.HorizontalAlignmentToString(alignment.swigValue());
   }
@@ -143,6 +151,22 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
 
   public static ActionAlignment ActionAlignmentFromString(String alignment) {
     return ActionAlignment.swigToEnum(AdaptiveCardObjectModelJNI.ActionAlignmentFromString(alignment));
+  }
+
+  public static String IconPlacementToString(IconPlacement placement) {
+    return AdaptiveCardObjectModelJNI.IconPlacementToString(placement.swigValue());
+  }
+
+  public static IconPlacement IconPlacementFromString(String placement) {
+    return IconPlacement.swigToEnum(AdaptiveCardObjectModelJNI.IconPlacementFromString(placement));
+  }
+
+  public static String VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment) {
+    return AdaptiveCardObjectModelJNI.VerticalContentAlignmentToString(verticalContentAlignment.swigValue());
+  }
+
+  public static VerticalContentAlignment VerticalContentAlignmentFromString(String verticalContentAlignment) {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.VerticalContentAlignmentFromString(verticalContentAlignment));
   }
 
 }

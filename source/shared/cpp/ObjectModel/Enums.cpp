@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Enums.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> * adaptiveCardSchemaKeyEnumToNameOut,
@@ -55,9 +54,13 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::FontSizes, "fontSizes" },
         { AdaptiveCardSchemaKey::FontWeights, "fontWeights" },
         { AdaptiveCardSchemaKey::Good, "good" },
+        { AdaptiveCardSchemaKey::Height, "height" },
         { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
+        { AdaptiveCardSchemaKey::IconPlacement, "iconPlacement" },
+        { AdaptiveCardSchemaKey::IconUrl, "iconUrl" },
         { AdaptiveCardSchemaKey::Id, "id" },
         { AdaptiveCardSchemaKey::Image, "image" },
+        { AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl" },
         { AdaptiveCardSchemaKey::Images, "images" },
         { AdaptiveCardSchemaKey::ImageSet, "imageSet" },
         { AdaptiveCardSchemaKey::ImageSize, "imageSize" },
@@ -84,10 +87,12 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::MaxWidth, "maxWidth" },
         { AdaptiveCardSchemaKey::Medium, "medium" },
         { AdaptiveCardSchemaKey::Method, "method" },
+        { AdaptiveCardSchemaKey::MimeType, "mimeType" },
         { AdaptiveCardSchemaKey::Min, "min" },
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
+        { AdaptiveCardSchemaKey::Poster, "poster" },
         { AdaptiveCardSchemaKey::Right, "right" },
         { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
         { AdaptiveCardSchemaKey::Separator, "separator" },
@@ -97,6 +102,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ShowCardActionConfig, "showCardActionConfig" },
         { AdaptiveCardSchemaKey::Size, "size" },
         { AdaptiveCardSchemaKey::Small, "small" },
+        { AdaptiveCardSchemaKey::Sources, "sources" },
         { AdaptiveCardSchemaKey::Spacing, "spacing" },
         { AdaptiveCardSchemaKey::SpacingDefinition, "spacingDefinition" },
         { AdaptiveCardSchemaKey::Speak, "speak" },
@@ -121,6 +127,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ValueOff, "valueOff" },
         { AdaptiveCardSchemaKey::ValueOn, "valueOn" },
         { AdaptiveCardSchemaKey::Version, "version" },
+        { AdaptiveCardSchemaKey::VerticalContentAlignment, "verticalContentAlignment" },
         { AdaptiveCardSchemaKey::Warning, "warning" },
         { AdaptiveCardSchemaKey::Weight, "weight" },
         { AdaptiveCardSchemaKey::Width, "width" },
@@ -161,7 +168,8 @@ void GetCardElementTypeEnumMappings(
         { CardElementType::ToggleInput, "Input.Toggle" },
         { CardElementType::TextBlock, "TextBlock" },
         { CardElementType::Custom, "Custom" },
-        { CardElementType::Unknown, "Unknown" }
+        { CardElementType::Unknown, "Unknown" },
+        { CardElementType::Media, "Media" },
     };
     static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> cardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(cardElementTypeEnumToName);
 
@@ -197,6 +205,30 @@ void GetActionTypeEnumMappings(
     if (actionTypeNameToEnumOut != nullptr)
     {
         *actionTypeNameToEnumOut = actionTypeNameToEnum;
+    }
+}
+
+void GetHeightTypeEnumMappings(
+    std::unordered_map<HeightType, std::string, EnumHash> * heightTypeEnumToNameOut,
+    std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo> * heightTypeNameToEnumOut)
+{
+    static std::unordered_map<HeightType, std::string, EnumHash> heightTypeEnumToName =
+    {
+        { HeightType::Auto, "Auto" },
+        { HeightType::Stretch, "Stretch" }
+    };
+
+    static std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+        heightTypeNameToEnum = GenerateStringToEnumMap<HeightType>(heightTypeEnumToName);
+
+    if (heightTypeEnumToNameOut != nullptr)
+    {
+        *heightTypeEnumToNameOut = heightTypeEnumToName;
+    }
+
+    if (heightTypeNameToEnumOut != nullptr)
+    {
+        *heightTypeNameToEnumOut = heightTypeNameToEnum;
     }
 }
 
@@ -552,6 +584,53 @@ void GetActionAlignmentEnumMappings(
     }
 }
 
+void GetIconPlacementEnumMappings(
+    std::unordered_map<IconPlacement, std::string, EnumHash> * iconPlacementEnumToNameOut,
+    std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> * iconPlacementNameToEnumOut)
+{
+    static std::unordered_map<IconPlacement, std::string, EnumHash> iconPlacementEnumToName =
+    {
+        {IconPlacement::AboveTitle , "AboveTitle"},
+        {IconPlacement::LeftOfTitle, "LeftOfTitle"}
+    };
+    static std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> iconPlacementNameToEnum = GenerateStringToEnumMap<IconPlacement>(iconPlacementEnumToName);
+
+    if (iconPlacementEnumToNameOut != nullptr)
+    {
+        *iconPlacementEnumToNameOut = iconPlacementEnumToName;
+    }
+
+    if (iconPlacementNameToEnumOut != nullptr)
+    {
+        *iconPlacementNameToEnumOut = iconPlacementNameToEnum;
+    }
+}
+
+void GetVerticalContentAlignmentEnumMappings(
+    std::unordered_map<VerticalContentAlignment, std::string, EnumHash> * verticalContentAlignmentEnumToNameOut,
+    std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> * verticalContentAlignmentNameToEnumOut)
+{
+    static std::unordered_map<VerticalContentAlignment, std::string, EnumHash> verticalContentAlignmentEnumToName =
+    {
+        { VerticalContentAlignment::Stretch, "Stretch" },
+        { VerticalContentAlignment::Top, "Top" },
+        { VerticalContentAlignment::Center, "Center" },
+        { VerticalContentAlignment::Bottom, "Bottom" }
+    };
+    static std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum = 
+        GenerateStringToEnumMap<VerticalContentAlignment>(verticalContentAlignmentEnumToName);
+
+    if (verticalContentAlignmentEnumToNameOut != nullptr)
+    {
+        *verticalContentAlignmentEnumToNameOut = verticalContentAlignmentEnumToName;
+    }
+
+    if (verticalContentAlignmentNameToEnumOut != nullptr)
+    {
+        *verticalContentAlignmentNameToEnumOut = verticalContentAlignmentNameToEnum;
+    }
+}
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
 {
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> adaptiveCardSchemaKeyEnumToName;
@@ -628,6 +707,32 @@ ActionType ActionTypeFromString(const std::string& actionType)
     }
 
     return actionTypeNameToEnum[actionType];
+}
+
+const std::string HeightTypeToString(HeightType heightType)
+{
+    std::unordered_map<HeightType, std::string, EnumHash> heightTypeEnumToName;
+    GetHeightTypeEnumMappings(&heightTypeEnumToName, nullptr);
+
+    if (heightTypeEnumToName.find(heightType) == heightTypeEnumToName.end())
+    {
+        throw std::out_of_range("Invalid HeightType type");
+    }
+
+    return heightTypeEnumToName[heightType];
+}
+
+HeightType HeightTypeFromString(const std::string& heightType)
+{
+    std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo> heightTypeNameToEnum;
+    GetHeightTypeEnumMappings(nullptr, &heightTypeNameToEnum);
+
+    if (heightTypeNameToEnum.find(heightType) == heightTypeNameToEnum.end())
+    {
+        return HeightType::Auto;
+    }
+
+    return heightTypeNameToEnum[heightType];
 }
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment)
@@ -972,4 +1077,53 @@ ActionAlignment ActionAlignmentFromString(const std::string & alignment)
     }
     return actionAlignmentNameToEnum[alignment];
 }
+
+const std::string IconPlacementToString(IconPlacement placement)
+{
+    std::unordered_map<IconPlacement, std::string, EnumHash> iconPlacementEnumToName;
+    GetIconPlacementEnumMappings(&iconPlacementEnumToName, nullptr);
+
+    if (iconPlacementEnumToName.find(placement) == iconPlacementEnumToName.end())
+    {
+        throw std::out_of_range("Invalid IconPlacement");
+    }
+    return iconPlacementEnumToName[placement];
 }
+
+IconPlacement IconPlacementFromString(const std::string& placement)
+{
+    std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> iconPlacementNameToEnum;
+    GetIconPlacementEnumMappings(nullptr, &iconPlacementNameToEnum);
+
+    if (iconPlacementNameToEnum.find(placement) == iconPlacementNameToEnum.end())
+    {
+        return IconPlacement::AboveTitle;
+    }
+    return iconPlacementNameToEnum[placement];
+}
+
+const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment)
+{
+    std::unordered_map<VerticalContentAlignment, std::string, EnumHash> verticalContentAlignmentEnumToName;
+    GetVerticalContentAlignmentEnumMappings(&verticalContentAlignmentEnumToName, nullptr);
+
+    if (verticalContentAlignmentEnumToName.find(verticalContentAlignment) == verticalContentAlignmentEnumToName.end())
+    {
+        throw std::out_of_range("Invalid VerticalContentAlignment");
+    }
+    return verticalContentAlignmentEnumToName[verticalContentAlignment];
+}
+
+VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment)
+{
+    std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum;
+    GetVerticalContentAlignmentEnumMappings(nullptr, &verticalContentAlignmentNameToEnum);
+
+    if (verticalContentAlignmentNameToEnum.find(verticalContentAlignment) == verticalContentAlignmentNameToEnum.end())
+    {
+        return VerticalContentAlignment::Stretch;
+    }
+    return verticalContentAlignmentNameToEnum[verticalContentAlignment];
+}
+
+AdaptiveSharedNamespaceEnd

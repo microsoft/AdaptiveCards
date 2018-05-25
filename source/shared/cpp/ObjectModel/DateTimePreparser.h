@@ -4,23 +4,24 @@
 #include "Enums.h"
 #include "DateTimePreparsedToken.h"
 
-namespace AdaptiveCards
-{   
+AdaptiveSharedNamespaceStart   
     // Still have to rename this thing
     class DateTimePreparser
     {
     public:
         DateTimePreparser();
-        DateTimePreparser(std::string in);
+        DateTimePreparser(std::string const &in);
         std::vector<std::shared_ptr<DateTimePreparsedToken>> GetTextTokens() const;
-        void AddTextToken(std::string text, DateTimePreparsedTokenFormat format);
-        void AddDateToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format);
-        std::string Concatenate();
+        bool HasDateTokens() const;
 
     private:
+        void AddTextToken(std::string const &text, DateTimePreparsedTokenFormat format);
+        void AddDateToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format);
+        std::string Concatenate() const;
         static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
-        void ParseDateTime(std::string in);        
+        void ParseDateTime(std::string const &in);        
 
         std::vector<std::shared_ptr<DateTimePreparsedToken>> m_textTokenCollection;
+        bool m_hasDateTokens;
     };
-}
+AdaptiveSharedNamespaceEnd

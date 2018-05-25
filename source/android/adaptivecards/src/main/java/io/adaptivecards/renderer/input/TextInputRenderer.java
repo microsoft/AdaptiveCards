@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -105,6 +106,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             ContainerStyle containerStyle)
     {
+        if (!hostConfig.getSupportsInteractivity())
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.Text is not allowed"));
+            return null;
+        }
+
         TextInput textInput = null;
         if (baseCardElement instanceof TextInput)
         {

@@ -6,18 +6,15 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class BaseCardElement;
 class FactSet : public BaseCardElement
 {
 friend class FactSetParser;
 public:
     FactSet();
-    FactSet(Spacing spacing, bool separation);
-    FactSet(Spacing spacing, bool separation, std::vector<std::shared_ptr<Fact>>& facts);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::vector<std::shared_ptr<Fact>>& GetFacts();
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
@@ -41,4 +38,4 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

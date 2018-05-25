@@ -50,7 +50,6 @@ export class OutlookContainer extends HostContainer {
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 
-        Adaptive.AdaptiveCard.preExpandSingleShowCardAction = true;
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
     }
 
@@ -108,10 +107,6 @@ export class OutlookContainer extends HostContainer {
             (<Adaptive.Image>element).backgroundColor = json["backgroundColor"];
         }
 
-        if (element instanceof Adaptive.Column) {
-            (<Adaptive.Column>element).pixelWidth = json["pixelWidth"];
-        }
-
         if (element instanceof Adaptive.Container) {
             var padding = this.parsePadding(json["padding"]);
 
@@ -155,6 +150,7 @@ export class OutlookContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.HostConfig {
         return new Adaptive.HostConfig({
+            preExpandSingleShowCardAction: true,
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
             spacing: {

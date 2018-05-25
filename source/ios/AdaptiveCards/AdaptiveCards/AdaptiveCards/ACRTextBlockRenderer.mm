@@ -10,7 +10,7 @@
 #import "TextBlock.h"
 #import "HostConfig.h"
 #import "MarkDownParser.h"
-#import "ACRViewController.h"
+#import "ACRView.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRUILabel.h"
@@ -31,7 +31,7 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-rootViewController:(UIViewController *)vc
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -42,13 +42,12 @@ rootViewController:(UIViewController *)vc
     ACRUILabel *lab = [[ACRUILabel alloc] init];
     lab.style = [viewGroup style];
     __block NSMutableAttributedString *content = nil;
-    if(vc)
-    {
-        NSMutableDictionary *textMap = [(ACRViewController *)vc getTextMap];
+    if(rootView){
+        NSMutableDictionary *textMap = [rootView getTextMap];
         // Generate key for ImageViewMap
         NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
         // Syncronize access to imageViewMap
-        dispatch_sync([(ACRViewController *)vc getSerialTextQueue], ^{
+        dispatch_sync([rootView getSerialTextQueue], ^{
             if(textMap[key]) { // if content is available, get it, otherwise cache label, so it can be used used later
                 content = textMap[key];
             } else {
@@ -61,7 +60,7 @@ rootViewController:(UIViewController *)vc
     {
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment()];
 
         // Obtain text color to apply to the attributed string
@@ -72,33 +71,22 @@ rootViewController:(UIViewController *)vc
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle,
                                 NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],
-                                    NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:txtBlck->GetTextWeight()]} range:NSMakeRange(0, content.length - 1)];
+                                    NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:txtBlck->GetTextWeight()]} range:NSMakeRange(0, content.length)];
         lab.attributedText = content;
-
         std::string id = txtBlck->GetId();
         std::size_t idx = id.find_last_of('_');
         txtBlck->SetId(id.substr(0, idx));
     }
 
     lab.numberOfLines = int(txtBlck->GetMaxLines());
-    if(!lab.numberOfLines and !txtBlck->GetWrap())
-    {
+    if(!lab.numberOfLines and !txtBlck->GetWrap()){
         lab.numberOfLines = 1;
     }
 
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] init];
-
-    [wrappingview addSubview:lab];
-
-    [wrappingview setAlignmentForSubview:txtBlck->GetHorizontalAlignment()];
-
-    [viewGroup addArrangedSubview:wrappingview];
-
-    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
-
-    lab.translatesAutoresizingMaskIntoConstraints = false;
-
-    return wrappingview;
+    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    
+    [viewGroup addArrangedSubview:lab];
+    return lab;
 }
 
 @end

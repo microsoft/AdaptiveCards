@@ -5,36 +5,35 @@
 #include "Image.h"
 #include "XamlBuilder.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class AdaptiveImageRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser>
+        ABI::AdaptiveNamespace::IAdaptiveElementRenderer,
+        ABI::AdaptiveNamespace::IAdaptiveElementParser>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveImageRenderer, BaseTrust)
+        AdaptiveRuntime(AdaptiveImageRenderer)
 
     public:
         AdaptiveImageRenderer();
-        AdaptiveImageRenderer(std::shared_ptr<AdaptiveCards::Rendering::Uwp::XamlBuilder> xamlBuilder);
+        AdaptiveImageRenderer(std::shared_ptr<AdaptiveNamespace::XamlBuilder> xamlBuilder);
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(
-            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement,
-            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
 
         IFACEMETHODIMP FromJson(
             ABI::Windows::Data::Json::IJsonObject *,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParsers,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParsers,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element);
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParsers,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
+            ABI::AdaptiveNamespace::IAdaptiveCardElement** element);
 
     private:
-        std::shared_ptr<AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
+        std::shared_ptr<AdaptiveNamespace::XamlBuilder> m_xamlBuilder;
     };
 
     ActivatableClass(AdaptiveImageRenderer);
-}}}
+AdaptiveNamespaceEnd

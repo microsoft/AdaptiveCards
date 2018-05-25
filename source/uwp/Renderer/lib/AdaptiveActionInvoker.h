@@ -3,25 +3,24 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "RenderedAdaptiveCard.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class AdaptiveActionInvoker :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionInvoker>
+        ABI::AdaptiveNamespace::IAdaptiveActionInvoker>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionInvoker, BaseTrust)
+        AdaptiveRuntime(AdaptiveActionInvoker)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
+        HRESULT RuntimeClassInitialize(AdaptiveNamespace::RenderedAdaptiveCard* renderResult) noexcept;
 
-        IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* actionElement);
+        IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> m_renderResult;
+        Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;
     };
 
     ActivatableClass(AdaptiveActionInvoker);
-}}}
+AdaptiveNamespaceEnd

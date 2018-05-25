@@ -44,7 +44,10 @@ namespace AdaptiveCardTestApp.Pages
             {
                 model.Passed,
                 model.Failed,
+                model.JsonFailed,
+                model.ImageAndJsonFailed,
                 model.FailedButSourceWasChanged,
+                model.PassedButSourceWasChanged,
                 model.New
             };
 
@@ -53,9 +56,24 @@ namespace AdaptiveCardTestApp.Pages
                 ListViewCategories.SelectedItem = model.Failed;
             }
 
+            else if (model.JsonFailed.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.JsonFailed;
+            }
+
+            else if (model.ImageAndJsonFailed.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.ImageAndJsonFailed;
+            }
+
             else if (model.FailedButSourceWasChanged.Results.Count > 0)
             {
                 ListViewCategories.SelectedItem = model.FailedButSourceWasChanged;
+            }
+
+            else if (model.PassedButSourceWasChanged.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.PassedButSourceWasChanged;
             }
 
             else if (model.New.Results.Count > 0)

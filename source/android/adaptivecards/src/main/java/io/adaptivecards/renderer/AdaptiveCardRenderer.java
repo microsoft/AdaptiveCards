@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
@@ -20,6 +21,7 @@ import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
@@ -185,15 +187,23 @@ public class AdaptiveCardRenderer
 
         CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, style);
 
-        // Actions are optional
-        BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
-        if (baseActionElementList != null && baseActionElementList.size() > 0)
+        if (hostConfig.getSupportsInteractivity())
         {
-            LinearLayout showCardsLayout = new LinearLayout(context);
-            showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            rootLayout.addView(showCardsLayout);
-            
-            renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+            // Actions are optional
+            BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
+            if (baseActionElementList != null && baseActionElementList.size() > 0)
+            {
+                LinearLayout showCardsLayout = new LinearLayout(context);
+                showCardsLayout.setBackgroundColor(Color.parseColor(color));
+                showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                rootLayout.addView(showCardsLayout);
+
+                renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+            }
+        }
+        else
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Interactivity is not allowed. Actions not rendered."));
         }
 
         String imageUrl = adaptiveCard.GetBackgroundImage();
@@ -201,6 +211,13 @@ public class AdaptiveCardRenderer
         {
             BackgroundImageLoader loaderAsync = new BackgroundImageLoader(renderedCard, context, layout);
             loaderAsync.execute(imageUrl);
+        }
+
+        BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
+        if (selectAction != null)
+        {
+            rootLayout.setClickable(true);
+            rootLayout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, selectAction, cardActionHandler));
         }
 
         return rootLayout;
@@ -225,7 +242,8 @@ public class AdaptiveCardRenderer
             actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         }
 
-        if (hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Vertical.swigValue())
+        int actionButtonsLayoutOrientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
         {
             actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
         }
@@ -234,15 +252,37 @@ public class AdaptiveCardRenderer
             actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
         }
 
+
+        Spacing spacing = hostConfig.getActions().getSpacing();
+        /* Passing false for seperator since we do not have any configuration for seperator in actionsConfig */
+        BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);
+
         if (viewGroup != null)
         {
-            viewGroup.addView(actionButtonsLayout);
+            if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
+            {
+                HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
+                actionButtonsContainer.setHorizontalScrollBarEnabled(false);
+                actionButtonsContainer.addView(actionButtonsLayout);
+                viewGroup.addView(actionButtonsContainer);
+            }
+            else
+            {
+                viewGroup.addView(actionButtonsLayout);
+            }
         }
 
-        for (int i = 0; i < size && i < hostConfig.getActions().getMaxActions(); i++)
+        int i = 0;
+        long maxActions = hostConfig.getActions().getMaxActions();
+        for (; i < size && i < maxActions; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
             ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
+        }
+
+        if (i >= maxActions && size != maxActions)
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
         }
     }
 

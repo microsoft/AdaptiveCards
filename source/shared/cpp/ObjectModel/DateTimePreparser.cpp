@@ -18,13 +18,14 @@
 #include <iostream>
 #include <codecvt>
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
-DateTimePreparser::DateTimePreparser()
+DateTimePreparser::DateTimePreparser() :
+    m_hasDateTokens(false)
 {
 }
 
-DateTimePreparser::DateTimePreparser(std::string in)
+DateTimePreparser::DateTimePreparser(std::string const &in)
 {
     ParseDateTime(in);
 }
@@ -34,7 +35,12 @@ std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparser::GetTextT
     return m_textTokenCollection;
 }
 
-void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFormat format)
+bool DateTimePreparser::HasDateTokens() const
+{
+    return m_hasDateTokens;
+}
+
+void DateTimePreparser::AddTextToken(std::string const &text, DateTimePreparsedTokenFormat format)
 {
     if (!text.empty())
     {
@@ -42,12 +48,13 @@ void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFor
     }
 }
 
-void DateTimePreparser::AddDateToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddDateToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format)
 {
     m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, date, format));
+    m_hasDateTokens = true;
 }
 
-std::string DateTimePreparser::Concatenate()
+std::string DateTimePreparser::Concatenate() const
 {
     std::string formedString;
     for (const auto& piece : m_textTokenCollection)
@@ -82,7 +89,7 @@ bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours,
     return false;
 }
 
-void DateTimePreparser::ParseDateTime(std::string in)
+void DateTimePreparser::ParseDateTime(std::string const &in)
 {
     std::vector<DateTimePreparsedToken> sections;
 
@@ -157,7 +164,7 @@ void DateTimePreparser::ParseDateTime(std::string in)
                 // converts to seconds
                 hours *= 3600;
                 minutes *= 60;
-                offset = hours + minutes;
+                offset = (time_t)hours + (time_t)minutes;
 
                 wchar_t zone = matches[TimeZone].str()[0];
                 // time zone offset calculation 
@@ -179,12 +186,12 @@ void DateTimePreparser::ParseDateTime(std::string in)
                 AddTextToken(matches[0], DateTimePreparsedTokenFormat::RegularString);
             }
 
-            wchar_t tzOffsetBuff[6]{};
+            char tzOffsetBuff[6]{};
             // gets local time zone offset
-            wcsftime(tzOffsetBuff, 6, L"%z", &parsedTm);
-            std::wstring localTimeZoneOffsetStr(tzOffsetBuff);
+            strftime(tzOffsetBuff, 6, "%z", &parsedTm);
+            std::string localTimeZoneOffsetStr(tzOffsetBuff);
             int nTzOffset = std::stoi(localTimeZoneOffsetStr);
-            offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
+            offset += ((time_t)(nTzOffset / 100) * 3600 + (time_t)(nTzOffset % 100) * 60);
             // add offset to utc
             utc += offset;
             struct tm result{};

@@ -2,7 +2,7 @@
 #include "ParseUtil.h"
 #include "TimeInput.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 TimeInput::TimeInput() :
     BaseInputElement(CardElementType::TimeInput)
@@ -10,14 +10,29 @@ TimeInput::TimeInput() :
     PopulateKnownPropertiesSet();
 }
 
-Json::Value TimeInput::SerializeToJsonValue()
+Json::Value TimeInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = GetMax();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = GetMin();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = GetPlaceholder();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+    if (!m_max.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = m_max;
+    }
+
+    if (!m_min.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = m_min;
+    }
+
+    if (!m_placeholder.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = m_placeholder;
+    }
+
+    if (!m_value.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+    }
 
     return root;
 }
@@ -27,7 +42,7 @@ std::string TimeInput::GetMax() const
     return m_max;
 }
 
-void TimeInput::SetMax(const std::string value)
+void TimeInput::SetMax(const std::string &value)
 {
     m_max = value;
 }
@@ -37,7 +52,7 @@ std::string TimeInput::GetMin() const
     return m_min;
 }
 
-void TimeInput::SetMin(const std::string value)
+void TimeInput::SetMin(const std::string &value)
 {
     m_min = value;
 }
@@ -47,7 +62,7 @@ std::string TimeInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void TimeInput::SetPlaceholder(const std::string value)
+void TimeInput::SetPlaceholder(const std::string &value)
 {
     m_placeholder = value;
 }
@@ -57,7 +72,7 @@ std::string TimeInput::GetValue() const
     return m_value;
 }
 
-void TimeInput::SetValue(const std::string value)
+void TimeInput::SetValue(const std::string &value)
 {
     m_value = value;
 }

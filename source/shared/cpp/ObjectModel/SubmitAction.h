@@ -5,17 +5,16 @@
 #include "Enums.h"
 #include "ActionParserRegistration.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class SubmitAction : public BaseActionElement
 {
 public:
     SubmitAction();
 
     std::string GetDataJson() const;
-    void SetDataJson(const std::string value);
+    void SetDataJson(const std::string &value);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
 private:
     void PopulateKnownPropertiesSet();
@@ -35,4 +34,4 @@ class SubmitActionParser : public ActionElementParser
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         const std::string& jsonString);
 };
-}
+AdaptiveSharedNamespaceEnd

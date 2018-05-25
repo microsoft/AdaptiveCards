@@ -5,17 +5,14 @@
 #include "BaseActionElement.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveCards
-{
+AdaptiveSharedNamespaceStart
 class Column : public BaseCardElement
 {
 public:
     Column();
-    Column(Spacing spacing, bool separation, std::string size, ContainerStyle style);
-    Column(Spacing spacing, bool separation, std::string size, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual std::string Serialize() const;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     static std::shared_ptr<Column> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
@@ -28,7 +25,11 @@ public:
         const std::string& jsonString);
 
     std::string GetWidth() const;
-    void SetWidth(const std::string value);
+    void SetWidth(const std::string &value);
+
+    // explicit width takes precedence over relative width 
+    int GetPixelWidth() const;
+    void SetPixelWidth(const int value);
 
     ContainerStyle GetStyle() const;
     void SetStyle(const ContainerStyle value);
@@ -41,12 +42,19 @@ public:
 
     void SetLanguage(const std::string& language);
 
+    VerticalContentAlignment GetVerticalContentAlignment() const;
+    void SetVerticalContentAlignment(const VerticalContentAlignment value);
+
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+
 private:
     void PopulateKnownPropertiesSet();
 
     std::string m_width;
-    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
+    unsigned int m_pixelWidth;
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;
     ContainerStyle m_style;
+    VerticalContentAlignment m_verticalContentAlignment;
 };
-}
+AdaptiveSharedNamespaceEnd

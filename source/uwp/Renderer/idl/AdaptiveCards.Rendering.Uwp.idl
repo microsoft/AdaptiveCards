@@ -5,8 +5,26 @@ import "Windows.Foundation.idl";
 import "Windows.UI.Xaml.idl";
 import "Windows.Data.Json.idl";
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+#ifdef ADAPTIVE_CARDS_WINDOWS
+#include "winPch.h"
+#endif
+
+#ifndef AdaptiveNamespaceStart
+#define AdaptiveNamespaceStart namespace AdaptiveCards { namespace Rendering { namespace Uwp {
+#define AdaptiveNamespace AdaptiveCards::Rendering::Uwp
+#define AdaptiveNamespaceEnd }}}
+#endif
+
+AdaptiveNamespaceStart
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contractversion(1)]
+    [internal]
+    apicontract InternalContract
+    {
+    }
+#endif
+    
     runtimeclass AdaptiveCardRenderer;
     runtimeclass AdaptiveCardResourceResolvers;
     runtimeclass AdaptiveCardGetResourceStreamArgs;
@@ -23,6 +41,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     runtimeclass AdaptiveChoiceInput;
     runtimeclass AdaptiveChoiceSetInput;
     runtimeclass AdaptiveDateInput;
+    runtimeclass AdaptiveMedia;
+    runtimeclass AdaptiveMediaSource;
     runtimeclass AdaptiveNumberInput;
     runtimeclass AdaptiveTextInput;
     runtimeclass AdaptiveTimeInput;
@@ -111,7 +131,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     interface IAdaptiveTextConfig;
     interface IAdaptiveImageSizesConfig;
     interface IAdaptiveImageSetConfig;
-    interface IAdaptiveContainerStyleConfig;
     interface IAdaptiveImageConfig;
     interface IAdaptiveCardConfig;
     interface IAdaptiveFactSetConfig;
@@ -142,6 +161,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     interface IWholeItemsPanel;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum TextSize
     {
         Small = 0,
@@ -152,6 +175,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } TextSize;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum TextWeight
     {
         Lighter = 0,
@@ -160,6 +187,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } TextWeight;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ForegroundColor
     {
         Default = 0,
@@ -172,6 +203,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } ForegroundColor;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum HAlignment
     {
         Left = 0,
@@ -180,6 +215,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } HAlignment;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ElementType
     {
         Unsupported = 0,
@@ -199,10 +238,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         TextInput,
         TimeInput,
         ToggleInput,
-        Custom
+        Custom,
+        Media
     } ElementType;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ActionType
     {
         Unsupported = 0,
@@ -213,12 +257,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } ActionType;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ImageStyle {
         Default = 0,
         Person
     } ImageStyle;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ImageSize {
         None = 0,
         Auto,
@@ -229,12 +281,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } ImageSize;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum SeparatorThickness {
         Default = 0,
         Thick,
     } SeparatorThickness;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum Spacing {
         Default = 0,
         None,
@@ -246,12 +306,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } Spacing;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ActionsOrientation {
         Vertical = 0,
         Horizontal
     } ActionsOrientation;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ActionAlignment {
         Left = 0,
         Center,
@@ -260,18 +328,30 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } ActionAlignment;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ActionMode {
         Inline = 0,
         Popup
     } ActionMode;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ChoiceSetStyle {
         Compact = 0,
         Expanded
     } ChoiceSetStyle;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum TextInputStyle {
         Text = 0,
         Tel,
@@ -280,6 +360,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } TextInputStyle;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ContainerStyle {
         None = 0,
         Default,
@@ -287,6 +371,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } ContainerStyle;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum ErrorStatusCode {
         InvalidJson = 0,
         RenderFailed,
@@ -296,6 +384,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     } ErrorStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
     typedef [v1_enum] enum WarningStatusCode {
         UnknownElementType = 0,
         UnknownPropertyOnElement,
@@ -305,7 +397,43 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         MaxActionsExceeded,
         AssetLoadFailed,
         UnsupportedSchemaVersion,
+        UnsupportedMediaType
     } WarningStatusCode;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum IconPlacement
+    {
+        AboveTitle = 0,
+        LeftOfTitle
+    } IconPlacement;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum VerticalContentAlignment
+    {
+        Stretch = 0,
+        Top,
+        Center,
+        Bottom
+    } VerticalContentAlignment;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum HeightType
+    {
+        Auto = 0,
+        Stretch
+    } HeightType;
 
     declare
     {
@@ -318,19 +446,27 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         interface Windows.Foundation.Collections.IVector<IAdaptiveWarning*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
-        interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
-        interface Windows.Foundation.IReference<Windows.UI.Text.FontWeight>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
     }
 
     [
-        uuid(74D69C2F-7F1C-47FD-A319-F4B4E7F72EE9),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(21f8aa32-e8ca-41cb-b571-d7d234173a88),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(74D69C2F-7F1C-47FD-A319-F4B4E7F72EE9)
+#endif        
     ]
     interface IAdaptiveCardElement : IInspectable
     {
         [propget] HRESULT ElementType([out, retval] ElementType* value);
         [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
+
+        [propget] HRESULT Height([out, retval] HeightType* value);
+        [propput] HRESULT Height([in] HeightType value);
 
         [propget] HRESULT Spacing([out, retval] Spacing* value);
         [propput] HRESULT Spacing([in] Spacing value);
@@ -348,9 +484,30 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(a2a0727a-e4aa-423d-b5b0-4b85f7a534c4),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveSeparator)
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(1D37C30F-9180-4CEF-A73C-C77ED00176DB),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
+#endif
+    ]
+    interface IAdaptiveElementWithRemoteResources : IInspectable
+    {
+        HRESULT GetResourceUris([out, retval] Windows.Foundation.Collections.IVectorView<Windows.Foundation.Uri*>** result);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveSeparator),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(2bbbf18f-394d-48ce-b542-3820a6708a52),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(a2a0727a-e4aa-423d-b5b0-4b85f7a534c4)
+#endif        
     ]
     interface IAdaptiveSeparator : IInspectable
     {
@@ -363,17 +520,28 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveSeparator
     {
         [default] interface IAdaptiveSeparator;
     };
-    
+
     [
-        uuid(c4b68276-7cd0-4c3e-8498-3edb9ec6abfb),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTextBlock)
+        exclusiveto(AdaptiveTextBlock),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(bfafd94d-4c49-4022-b90d-16e03e7be798),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(c4b68276-7cd0-4c3e-8498-3edb9ec6abfb)
+#endif        
     ]
     interface IAdaptiveTextBlock : IInspectable
     {
@@ -407,7 +575,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveTextBlock
     {
@@ -416,9 +589,86 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(1fbf16f2-7c70-4b19-9d76-fb107fc33821),
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMediaSource),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(05F2F77A-D458-4F73-AAF7-06B91D4C37E6),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(5F8A6054-5EC8-4321-988E-3130A977C14C)
+#endif        
+    ]
+    interface IAdaptiveMediaSource : IInspectable
+    {
+        [propget] HRESULT MimeType([out, retval] HSTRING* value);
+        [propput] HRESULT MimeType([in] HSTRING value);
+
+        [propget] HRESULT Url([out, retval] HSTRING* value);
+        [propput] HRESULT Url([in] HSTRING value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMediaSource
+    {
+        [default] interface IAdaptiveMediaSource;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMedia),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(4E3499F8-2A99-4CE3-BA71-5F3799C1E06A),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(161BE390-2927-463C-9A46-21A756F2487B)
+#endif        
+    ]
+    interface IAdaptiveMedia : IInspectable
+    {
+        [propget] HRESULT Poster([out, retval] HSTRING* value);
+        [propput] HRESULT Poster([in] HSTRING value);
+
+        [propget] HRESULT AltText([out, retval] HSTRING* value);
+        [propput] HRESULT AltText([in] HSTRING value);
+
+        [propget] HRESULT Sources([out, retval] Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>** value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMedia
+    {
+        [default] interface IAdaptiveMedia;
+        interface IAdaptiveCardElement;
+    };
+
+    [
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveCard),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(a373da1b-6d07-4269-bead-2f5bb5cf4975),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(1fbf16f2-7c70-4b19-9d76-fb107fc33821)
+#endif        
     ]
     interface IAdaptiveCard : IInspectable
     {
@@ -434,8 +684,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 
-        [propget] HRESULT BackgroundImage([out, retval] Windows.Foundation.Uri** value);
-        [propput] HRESULT BackgroundImage([in] Windows.Foundation.Uri* value);
+        [propget] HRESULT BackgroundImage([out, retval] HSTRING* value);
+        [propput] HRESULT BackgroundImage([in] HSTRING value);
+
+        [propget] HRESULT Language([out, retval] HSTRING* value);
+        [propput] HRESULT Language([in] HSTRING value);
 
         [propget] HRESULT Speak([out, retval] HSTRING* value);
         [propput] HRESULT Speak([in] HSTRING value);
@@ -443,13 +696,30 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
 
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
+
+        [propget] HRESULT Height([out, retval] HeightType* value);
+        [propput] HRESULT Height([in] HeightType value);
+
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
+
+        HRESULT GetResourceUris([out, retval] Windows.Foundation.Collections.IVectorView<Windows.Foundation.Uri*>** result);
     };
 
     [
-        uuid(b4db0937-025a-4c08-980b-750703e77e37),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardParseResult)
+        exclusiveto(AdaptiveCardParseResult),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(b42d51d5-5916-4cdb-a020-6e24c3e5f7fd),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(b4db0937-025a-4c08-980b-750703e77e37)
+#endif        
     ]
     interface IAdaptiveCardParseResult : IInspectable
     {
@@ -461,6 +731,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [
         version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveCardParseResult
     {
@@ -468,9 +743,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     [
-        uuid(bace01f2-5642-4366-879a-dec601d8b7e3),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveCard),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(5a426551-3cfc-4688-87fb-7df80fcc9246),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(bace01f2-5642-4366-879a-dec601d8b7e3)
+#endif        
     ]
     interface IAdaptiveCardStatics : IInspectable
     {
@@ -502,7 +783,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [
         version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
-        static(IAdaptiveCardStatics, NTDDI_WIN10_RS1)
+        static(IAdaptiveCardStatics, NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        static(IAdaptiveCardStatics, InternalContract, 1),
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveCard
     {
@@ -510,19 +797,34 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     [
-        uuid(16452a2e-1152-47f3-90bd-6e4148b09669),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(3b0830aa-a03a-46c4-9204-32c051e34982),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(16452a2e-1152-47f3-90bd-6e4148b09669)
+#endif        
     ]
     interface IAdaptiveImage : IInspectable
     {
-        [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
-        [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
+        [propget] HRESULT Url([out, retval] HSTRING* value);
+        [propput] HRESULT Url([in] HSTRING value);
+
+        [propget] HRESULT BackgroundColor([out, retval] HSTRING* value);
+        [propput] HRESULT BackgroundColor([in] HSTRING value);
 
         [propget] HRESULT Style([out, retval] ImageStyle* value);
         [propput] HRESULT Style([in] ImageStyle value);
 
         [propget] HRESULT Size([out, retval] ImageSize* value);
         [propput] HRESULT Size([in] ImageSize value);
+
+        [propget] HRESULT PixelWidth([out, retval] UINT32* value);
+        [propput] HRESULT PixelWidth([in] UINT32 value);
+
+        [propget] HRESULT PixelHeight([out, retval] UINT32* value);
+        [propput] HRESULT PixelHeight([in] UINT32 value);
 
         [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
         [propput] HRESULT HorizontalAlignment([in] HAlignment value);
@@ -536,7 +838,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveImage
     {
@@ -545,9 +852,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(f618bd35-8fe3-46bd-8988-cdf5607314d1),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImageSet)
+        exclusiveto(AdaptiveImageSet),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(cb3e7434-e7dd-48d9-85a7-3981fb16b2e9),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(f618bd35-8fe3-46bd-8988-cdf5607314d1)
+#endif        
     ]
     interface IAdaptiveImageSet : IInspectable
     {
@@ -559,7 +872,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveImageSet
     {
@@ -568,8 +886,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(9b10f5ef-26e8-4d65-ba76-b986b5e90586),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(5238a2b8-9a13-4dc3-aa9e-5e1e3c1fcd70),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(9b10f5ef-26e8-4d65-ba76-b986b5e90586)
+#endif        
     ]
     interface IAdaptiveInputElement : IInspectable
     {
@@ -578,8 +902,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(99797dfe-d39c-43a4-9f2b-d457cc358e1e),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(ace5f894-2109-4c57-bde6-7e69069242a9),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(99797dfe-d39c-43a4-9f2b-d457cc358e1e)
+#endif        
     ]
     interface IAdaptiveChoiceInput : IInspectable
     {
@@ -594,7 +924,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveChoiceInput
     {
@@ -602,14 +937,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(ce0735ef-f983-4a5e-bdad-f5eb7f962faa),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(9fa2984c-a65e-4886-92b0-379ca242e955),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ce0735ef-f983-4a5e-bdad-f5eb7f962faa)
+#endif        
     ]
     interface IAdaptiveChoiceSetInput : IInspectable
     {
         [propget] HRESULT Value([out, retval] HSTRING * value);
         [propput] HRESULT Value([in] HSTRING value);
-
         [propget] HRESULT IsMultiSelect([out, retval] boolean* value);
         [propput] HRESULT IsMultiSelect([in] boolean value);
 
@@ -621,7 +961,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveChoiceSetInput
     {
@@ -631,9 +976,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(359e2cc5-9b8d-40bf-bbb2-2d3494d30991),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveDateInput)
+        exclusiveto(AdaptiveDateInput),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(547622b8-5670-4265-9459-5adce2630ce9),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(359e2cc5-9b8d-40bf-bbb2-2d3494d30991)
+#endif        
     ]
     interface IAdaptiveDateInput : IInspectable
     {
@@ -652,7 +1003,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveDateInput
     {
@@ -662,9 +1018,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(3bd0868c-5fbd-4341-91ff-4b07eb2bd54c),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveNumberInput)
+        exclusiveto(AdaptiveNumberInput),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(7c093cbd-cb81-4e3f-b3ae-82664ce87859),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(3bd0868c-5fbd-4341-91ff-4b07eb2bd54c)
+#endif        
     ]
     interface IAdaptiveNumberInput : IInspectable
     {
@@ -683,7 +1045,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveNumberInput
     {
@@ -693,9 +1060,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(ab30772b-172d-4595-bcd2-01001df19d1e),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTextInput)
+        exclusiveto(AdaptiveTextInput),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(c8affec2-c379-4efd-b126-3a8f7277ee88),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ab30772b-172d-4595-bcd2-01001df19d1e)
+#endif        
     ]
     interface IAdaptiveTextInput : IInspectable
     {
@@ -717,7 +1090,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveTextInput
     {
@@ -727,9 +1105,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(1ee90aff-93e8-4292-ac49-39d4c3289cd9),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTimeInput)
+        exclusiveto(AdaptiveTimeInput),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(a20ae4a6-7fff-4634-b1d9-2719a02d4967),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(1ee90aff-93e8-4292-ac49-39d4c3289cd9)
+#endif        
     ]
     interface IAdaptiveTimeInput : IInspectable
     {
@@ -748,7 +1132,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveTimeInput
     {
@@ -758,9 +1147,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(e8af72a5-597c-4a19-b9c2-1a597db1c79a),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveToggleInput)
+        exclusiveto(AdaptiveToggleInput),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(05cd9719-b591-4118-9d75-6b21b553123f),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(e8af72a5-597c-4a19-b9c2-1a597db1c79a)
+#endif        
     ]
     interface IAdaptiveToggleInput : IInspectable
     {
@@ -779,7 +1174,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveToggleInput
     {
@@ -789,13 +1189,22 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(60554c5a-32db-4130-8613-d39737ced7c4),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7)
+#endif        
     ]
     interface IAdaptiveContainer : IInspectable
     {
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
+
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
 
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
 
@@ -805,7 +1214,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveContainer
     {
@@ -814,26 +1228,42 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(91e03800-d239-43bc-b5fb-2ccfe0cc7fcb),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(fe3a3792-d916-4b9d-b54c-eb1e1b5c23b4),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(91e03800-d239-43bc-b5fb-2ccfe0cc7fcb)
+#endif        
     ]
     interface IAdaptiveColumn : IInspectable
     {
         [propget] HRESULT Width([out, retval] HSTRING* value);
         [propput] HRESULT Width([in] HSTRING value);
 
+        [propget] HRESULT PixelWidth([out, retval] UINT32* value);
+        [propput] HRESULT PixelWidth([in] UINT32 value);
+
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
 
-        [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
 
+        [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
     };
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveColumn
     {
@@ -842,9 +1272,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(4e3e1cd1-906b-4718-96ea-0a6e16bf0199),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveColumnSet)
+        exclusiveto(AdaptiveColumnSet),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(703d7c9a-ab48-4a9a-b3cf-60636f7ee953),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(4e3e1cd1-906b-4718-96ea-0a6e16bf0199)
+#endif        
     ]
     interface IAdaptiveColumnSet : IInspectable
     {
@@ -856,7 +1292,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveColumnSet
     {
@@ -866,8 +1307,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
 
     [
-        uuid(5c19aa31-03aa-4148-a529-75b855ba045b),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(d06f4235-e32a-4bba-9802-49a8e2d2c3b7),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(5c19aa31-03aa-4148-a529-75b855ba045b)
+#endif        
     ]
     interface IAdaptiveFact : IInspectable
     {
@@ -882,7 +1329,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveFact
     {
@@ -890,9 +1342,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(05457b99-8090-4937-a637-b469f8edc74f),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFactSet)
+        exclusiveto(AdaptiveFactSet),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(3d64cefc-f8e5-4304-99f5-2c37f2452ff4),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(05457b99-8090-4937-a637-b469f8edc74f)
+#endif        
     ]
     interface IAdaptiveFactSet : IInspectable
     {
@@ -901,7 +1359,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveFactSet
     {
@@ -910,9 +1373,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveCardRenderer),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(847e632d-328c-4b5e-86b3-685152dca0ce),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022)
+#endif        
     ]
     interface IAdaptiveCardRenderer : IInspectable
     {
@@ -927,6 +1396,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
         HRESULT ResetFixedDimensions();
 
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>** result);
+#endif
+
         HRESULT RenderAdaptiveCard([in] AdaptiveCard* adaptiveCard, [out, retval] RenderedAdaptiveCard** result);
 
         HRESULT RenderAdaptiveCardFromJsonString([in] HSTRING adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
@@ -938,6 +1411,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [
         version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveCardRenderer
     {
@@ -945,9 +1423,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(6bc7a30c-6971-474d-8dd3-bb9e1bcde381),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionEventArgs)
+        exclusiveto(AdaptiveActionEventArgs),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(57244994-491c-48da-8a20-af73e6bdf4d2),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(6bc7a30c-6971-474d-8dd3-bb9e1bcde381)
+#endif        
     ]
     interface IAdaptiveActionEventArgs : IInspectable
     {
@@ -957,6 +1441,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif        
     ]
     runtimeclass AdaptiveActionEventArgs
     {
@@ -964,9 +1452,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(ae687d0f-ce50-483c-8478-a17d017d4c25),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveContainerStyleDefinition)
+        exclusiveto(AdaptiveContainerStyleDefinition),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(a2d8b87c-7afa-4425-9c9b-38831dc0aef2),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ae687d0f-ce50-483c-8478-a17d017d4c25)
+#endif        
     ]
     interface IAdaptiveContainerStyleDefinition : IInspectable
     {
@@ -979,7 +1473,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveContainerStyleDefinition
     {
@@ -987,9 +1486,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(7e57fadd-78a6-4501-a769-a8a44bb9f9d2),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveContainerStylesDefinition)
+        exclusiveto(AdaptiveContainerStylesDefinition),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(40c9338b-b831-402e-b646-fd5038e09516),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7e57fadd-78a6-4501-a769-a8a44bb9f9d2)
+#endif        
     ]
     interface IAdaptiveContainerStylesDefinition : IInspectable
     {
@@ -1002,7 +1507,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveContainerStylesDefinition
     {
@@ -1010,9 +1520,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(ebca0eab-b08b-4087-9c42-4667ec6ab0e0),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFontSizesConfig)
+        exclusiveto(AdaptiveFontSizesConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(1843e1e9-edcb-4d49-a64e-99a82a0e8d09),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ebca0eab-b08b-4087-9c42-4667ec6ab0e0)
+#endif        
     ]
     interface IAdaptiveFontSizesConfig : IInspectable
     {
@@ -1034,7 +1550,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveFontSizesConfig
     {
@@ -1042,9 +1563,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(23c9d287-afdc-4ca4-87b4-92c551e4c8bc),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFontWeightsConfig)
+        exclusiveto(AdaptiveFontWeightsConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(59ab4d2a-e219-47fb-a202-74494469b410),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(23c9d287-afdc-4ca4-87b4-92c551e4c8bc)
+#endif        
     ]
     interface IAdaptiveFontWeightsConfig : IInspectable
     {
@@ -1060,7 +1587,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveFontWeightsConfig
     {
@@ -1068,9 +1600,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(421149d7-65e9-4ec9-b70b-802ba7d6cf98),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveColorConfig)
+        exclusiveto(AdaptiveColorConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(743e6ad3-c0ab-497d-a9c9-3dcf69e6a5a1),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(421149d7-65e9-4ec9-b70b-802ba7d6cf98)
+#endif        
     ]
     interface IAdaptiveColorConfig : IInspectable
     {
@@ -1083,7 +1621,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveColorConfig
     {
@@ -1091,9 +1634,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(1ade7d94-f0ae-4301-a9e2-b1f9c065916f),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveColorsConfig)
+        exclusiveto(AdaptiveColorsConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(e13e74e0-f944-4481-8fe9-4ac62a66bed0),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(1ade7d94-f0ae-4301-a9e2-b1f9c065916f)
+#endif        
     ]
     interface IAdaptiveColorsConfig : IInspectable
     {
@@ -1121,7 +1670,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveColorsConfig
     {
@@ -1129,9 +1683,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(d730ba59-1f48-4dc6-8375-17f364f6086a),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTextConfig)
+        exclusiveto(AdaptiveTextConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(2fa24f2c-843c-4f3f-be65-023528901970),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(d730ba59-1f48-4dc6-8375-17f364f6086a)
+#endif        
     ]
     interface IAdaptiveTextConfig : IInspectable
     {
@@ -1156,7 +1716,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveTextConfig
     {
@@ -1164,9 +1729,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(0e21ac82-4838-43cb-b7ef-7b023011061b),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveSpacingConfig)
+        exclusiveto(AdaptiveSpacingConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(f22005cd-d9b7-4ee1-9457-d1520951b021),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(0e21ac82-4838-43cb-b7ef-7b023011061b)
+#endif        
     ]
     interface IAdaptiveSpacingConfig : IInspectable
     {
@@ -1191,7 +1762,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveSpacingConfig
     {
@@ -1199,9 +1775,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(c34a155d-6913-4f8b-9b94-f4ab8c578aee),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveSeparatorConfig)
+        exclusiveto(AdaptiveSeparatorConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(05058274-c987-4361-a4f6-0c3d5f955ba4),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(c34a155d-6913-4f8b-9b94-f4ab8c578aee)
+#endif        
     ]
     interface IAdaptiveSeparatorConfig : IInspectable
     {
@@ -1214,7 +1796,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveSeparatorConfig
     {
@@ -1222,9 +1809,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(ce5cd318-502c-4017-a076-4f8cdbb0316d),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImageSizesConfig)
+        exclusiveto(AdaptiveImageSizesConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(ace2f9d0-3063-48ba-a69e-727246d1239d),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ce5cd318-502c-4017-a076-4f8cdbb0316d)
+#endif        
     ]
     interface IAdaptiveImageSizesConfig : IInspectable
     {
@@ -1240,7 +1833,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveImageSizesConfig
     {
@@ -1248,9 +1846,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
                 
     [
-        uuid(29685cc3-027f-4da8-9659-6d3a53c34d88),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImageSetConfig)
+        exclusiveto(AdaptiveImageSetConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(b5f7030a-7a42-4eaa-8cb1-88fb3ed81f66),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(29685cc3-027f-4da8-9659-6d3a53c34d88)
+#endif        
     ]
     interface IAdaptiveImageSetConfig : IInspectable
     {
@@ -1263,7 +1867,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveImageSetConfig
     {
@@ -1271,9 +1880,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     [
-        uuid(ba0d7d84-d708-4919-a2f2-5c322a6f5460),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImageConfig)
+        exclusiveto(AdaptiveImageConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(18a0c8f6-bcfc-41f9-964c-edd63fbfe0c3),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ba0d7d84-d708-4919-a2f2-5c322a6f5460)
+#endif        
     ]
     interface IAdaptiveImageConfig : IInspectable
     {
@@ -1283,7 +1898,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveImageConfig
     {
@@ -1291,9 +1911,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(9363ea9c-9f73-4e7d-8d6e-0559ac52b314),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardConfig)
+        exclusiveto(AdaptiveCardConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(27902b36-88db-421b-abd8-79a6cf3f1410),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(9363ea9c-9f73-4e7d-8d6e-0559ac52b314)
+#endif        
     ]
     interface IAdaptiveCardConfig : IInspectable
     {
@@ -1303,7 +1929,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveCardConfig
     {
@@ -1311,9 +1942,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(9949ed60-fbc0-49fd-80d4-29fb1184854d),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFactSetConfig)
+        exclusiveto(AdaptiveFactSetConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(d776f288-bdfa-434e-99d7-d1c6d2f21209),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(9949ed60-fbc0-49fd-80d4-29fb1184854d)
+#endif        
     ]
     interface IAdaptiveFactSetConfig : IInspectable
     {
@@ -1329,7 +1966,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveFactSetConfig
     {
@@ -1337,9 +1979,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(eacabf24-288c-4307-bd5a-5888a00da918),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveShowCardActionConfig)
+        exclusiveto(AdaptiveShowCardActionConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(4c394fd8-a63a-4710-89dd-014a55b8fb6c),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(eacabf24-288c-4307-bd5a-5888a00da918)
+#endif        
     ]
     interface IAdaptiveShowCardActionConfig : IInspectable
     {
@@ -1355,7 +2003,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveShowCardActionConfig
     {
@@ -1363,9 +2016,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(c01e7195-0c83-4fed-9911-3845bdb8ebc6),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionsConfig)
+        exclusiveto(AdaptiveActionsConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(e4157ef5-e8e9-412e-bef6-48771e3aa532),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ce6981d7-8989-42a3-b335-30cbf7108183)
+#endif        
     ]
     interface IAdaptiveActionsConfig : IInspectable
     {
@@ -1386,11 +2045,19 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT Spacing([out][retval] Spacing* value);
         [propput] HRESULT Spacing([in] Spacing value);
+
+        [propget] HRESULT IconPlacement([out][retval] IconPlacement* value);
+        [propput] HRESULT IconPlacement([in] IconPlacement value);
     };
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveActionsConfig
     {
@@ -1398,9 +2065,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(85ef9ddc-4599-4ab6-adf1-1e04238601a5),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveHostConfig)
+        exclusiveto(AdaptiveHostConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(15ae7240-f9b0-47e4-b444-62da42b8b863),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(85ef9ddc-4599-4ab6-adf1-1e04238601a5)
+#endif        
     ]
     interface IAdaptiveHostConfig : IInspectable
     {
@@ -1415,6 +2088,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         [propget] HRESULT SupportsInteractivity([out, retval] boolean* value);
         [propput] HRESULT SupportsInteractivity([in] boolean value);
+
+        [propget] HRESULT ImageBaseUrl([out, retval] HSTRING* value);
+        [propput] HRESULT ImageBaseUrl([in] HSTRING value);
 
         [propget] HRESULT ContainerStyles([out, retval] AdaptiveContainerStylesDefinition** value);
         [propput] HRESULT ContainerStyles([in] AdaptiveContainerStylesDefinition* value);
@@ -1445,9 +2121,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(0b1f8963-9d45-4ac0-9af4-cd7923f5206e),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveHostConfigParseResult)
+        exclusiveto(AdaptiveHostConfigParseResult),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(0e333f58-43b8-48d3-aa68-e30f7e7f1007),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(0b1f8963-9d45-4ac0-9af4-cd7923f5206e)
+#endif        
     ]
     interface IAdaptiveHostConfigParseResult : IInspectable
     {
@@ -1458,6 +2140,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [
         version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveHostConfigParseResult
     {
@@ -1465,9 +2152,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     [
-        uuid(1a09b9b7-d678-495f-949e-3ad677424fdb),
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveHostConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(11a659ac-a28d-42fc-ab0e-f103b3f5c4fd),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(1a09b9b7-d678-495f-949e-3ad677424fdb)
+#endif        
     ]
     interface IAdaptiveHostConfigStatics : IInspectable
     {
@@ -1478,7 +2171,13 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [
         version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
-        static(IAdaptiveHostConfigStatics, NTDDI_WIN10_RS1)
+        static(IAdaptiveHostConfigStatics, NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        static(IAdaptiveHostConfigStatics, InternalContract, 1),
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveHostConfig
     {
@@ -1486,8 +2185,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(f0076852-de82-4cc6-8cb3-26cf6ab3c196),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(8b83b4a0-582b-4aa6-801c-e692eae51f37),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(9ab61f28-0c62-4ad2-bda1-2c3d52bc461a)
+#endif        
     ]
     interface IAdaptiveActionElement : IInspectable
     {
@@ -1500,6 +2205,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
+        [propget] HRESULT IconUrl([out, retval] HSTRING* value);
+        [propput] HRESULT IconUrl([in] HSTRING value);
+
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
 
@@ -1507,8 +2215,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(d70a58cb-4d51-4f96-bb6b-2698eced32ff),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(8a7f7888-f53b-4fdb-8f3c-968da4352031),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(d70a58cb-4d51-4f96-bb6b-2698eced32ff)
+#endif        
     ]
     interface IAdaptiveOpenUrlAction : IInspectable
     {
@@ -1518,7 +2232,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveOpenUrlAction
     {
@@ -1527,8 +2246,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(435ea974-33c7-43b0-a6ac-8137c1b7bb44),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(201859e9-1179-4c2b-91fa-3f561210a7f6),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(435ea974-33c7-43b0-a6ac-8137c1b7bb44)
+#endif        
     ]
     interface IAdaptiveShowCardAction : IInspectable
     {
@@ -1538,7 +2263,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveShowCardAction
     {
@@ -1547,8 +2277,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(97b9b3a3-657b-4d38-a136-154cc8da19a9),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(c89015c8-1a8e-4819-8e93-d5fed276efc5),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(97b9b3a3-657b-4d38-a136-154cc8da19a9)
+#endif        
     ]
     interface IAdaptiveSubmitAction : IInspectable
     {
@@ -1558,7 +2294,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveSubmitAction
     {
@@ -1567,9 +2308,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(3b655db6-54d2-47e7-8658-b58ced5fb237),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardResourceResolvers)
+        exclusiveto(AdaptiveCardResourceResolvers),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(8e467d28-ef21-4b9c-aad5-36e6073b1132),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(3b655db6-54d2-47e7-8658-b58ced5fb237)
+#endif        
     ]
     interface IAdaptiveCardResourceResolvers : IInspectable
     {
@@ -1579,7 +2326,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveCardResourceResolvers
     {
@@ -1587,8 +2339,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(30f17ba9-133a-4484-8002-a8f4b6764e3f),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(1dd4f5ee-f11a-485c-a048-c2370d88e4e0),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(30f17ba9-133a-4484-8002-a8f4b6764e3f)
+#endif        
     ]
     interface IAdaptiveCardResourceResolver : IInspectable
     {
@@ -1596,9 +2354,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(e1d63f44-6550-454f-99f4-d02df5ae9b8c),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardGetResourceStreamArgs)
+        exclusiveto(AdaptiveCardGetResourceStreamArgs),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(602eee1f-5756-46bd-b703-b7a4130b25f4),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(e1d63f44-6550-454f-99f4-d02df5ae9b8c)
+#endif        
     ]
     interface IAdaptiveCardGetResourceStreamArgsFactory : IInspectable
     {
@@ -1609,9 +2373,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(0eea761b-5a3e-4f1f-86f6-d511c178e671),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardGetResourceStreamArgs)
+        exclusiveto(AdaptiveCardGetResourceStreamArgs),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(413365b8-3e56-4cb9-a06a-1f5d1d8c2dac),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(0eea761b-5a3e-4f1f-86f6-d511c178e671)
+#endif        
     ]
     interface IAdaptiveCardGetResourceStreamArgs : IInspectable
     {
@@ -1620,7 +2390,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(IAdaptiveCardGetResourceStreamArgsFactory, NTDDI_WIN10_RS1)
+        activatable(IAdaptiveCardGetResourceStreamArgsFactory, NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveCardGetResourceStreamArgs
     {
@@ -1628,9 +2403,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(7bf9ceac-105c-421a-8b4e-8e5be9ead986),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(RenderedAdaptiveCard)
+        exclusiveto(RenderedAdaptiveCard),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(81793291-582c-42f5-8582-8275b0a64913),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7bf9ceac-105c-421a-8b4e-8e5be9ead986)
+#endif        
     ]
     interface IRenderedAdaptiveCard : IInspectable
     {
@@ -1650,7 +2431,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass RenderedAdaptiveCard
     {
@@ -1658,9 +2444,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(a172be96-7ab5-4faa-a0fd-99e8160e359e),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveInputs)
+        exclusiveto(AdaptiveInputs),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(eb02a75b-0b51-4c3c-affb-1eeca347a6b9),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(a172be96-7ab5-4faa-a0fd-99e8160e359e)
+#endif        
     ]
     interface IAdaptiveInputs : IInspectable
     {
@@ -1670,7 +2462,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveInputs
     {
@@ -1678,8 +2475,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(c42c7757-8cf0-49dc-8c8e-a341963eaba2),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(3324e9f6-86f0-4d59-a06f-6bb464ffd558),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(c42c7757-8cf0-49dc-8c8e-a341963eaba2)
+#endif        
     ]
     interface IAdaptiveElementParser : IInspectable
     {
@@ -1691,9 +2494,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(ae307fdc-6a4e-4e10-a9d4-518ccee99c3b),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveElementParserRegistration)
+        exclusiveto(AdaptiveElementParserRegistration),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(494f5d4a-c005-4203-a170-1446cbaa857f),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(ae307fdc-6a4e-4e10-a9d4-518ccee99c3b)
+#endif        
     ]
     interface IAdaptiveElementParserRegistration : IInspectable
     {
@@ -1705,6 +2514,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     [
         version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveElementParserRegistration
     {
@@ -1712,9 +2526,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(a730c2e9-6ee8-4b03-b706-60138c66a4a8),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionParserRegistration)
+        exclusiveto(AdaptiveActionParserRegistration),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(b8484c16-a9bd-48bf-a28c-ef130c13300d),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(a730c2e9-6ee8-4b03-b706-60138c66a4a8)
+#endif        
     ]
     interface IAdaptiveActionParserRegistration : IInspectable
     {
@@ -1725,7 +2545,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveActionParserRegistration
     {
@@ -1733,8 +2558,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(355d37ed-d622-49c0-9b43-75975f1b6dbe),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(88a79c26-ded3-4b32-b57c-527fcbeff6a4),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(355d37ed-d622-49c0-9b43-75975f1b6dbe)
+#endif        
     ]
     interface IAdaptiveActionParser : IInspectable
     {
@@ -1746,9 +2577,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(f5a25e03-4d0e-4f0b-9ef6-3e6c37477e86),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveElementRendererRegistration)
+        exclusiveto(AdaptiveElementRendererRegistration),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(2ebd4f56-2c5a-45c1-acaf-d956578e8048),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(f5a25e03-4d0e-4f0b-9ef6-3e6c37477e86)
+#endif        
     ]
     interface IAdaptiveElementRendererRegistration : IInspectable
     {
@@ -1759,7 +2596,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveElementRendererRegistration
     {
@@ -1767,9 +2609,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(c7435e94-1028-4543-b52e-54126fcb411f),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionInvoker)
+        exclusiveto(AdaptiveActionInvoker),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(81d601c7-ebad-4445-a84d-2517d610c993),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(c7435e94-1028-4543-b52e-54126fcb411f)
+#endif        
     ]
     interface IAdaptiveActionInvoker : IInspectable
     {
@@ -1778,16 +2626,28 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveActionInvoker
     {
         [default] interface IAdaptiveActionInvoker;
     };
+        
 
     [
-        uuid(7855E78D-E217-4D12-9203-0136E79FF869 ),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(e138cceb-7a0a-41d4-9477-14e68e8cd67e),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7855E78D-E217-4D12-9203-0136E79FF869)
+#endif        
     ]
     interface IAdaptiveInputValue : IInspectable
     {
@@ -1796,9 +2656,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(d2ad59a2-01aa-4b39-b2a7-5ce1d4028fbb),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveRenderContext)
+        exclusiveto(AdaptiveRenderContext),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(98e4b78a-683c-48f2-a7d2-42b0556e5e63),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(d2ad59a2-01aa-4b39-b2a7-5ce1d4028fbb)
+#endif        
     ]
     interface IAdaptiveRenderContext : IInspectable
     {
@@ -1819,7 +2685,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveRenderContext
     {
@@ -1827,8 +2698,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(8682c91f-28e3-48fa-8de3-15ba4ec495ca),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(880f5743-9132-4ddc-a5e6-b2c6e9351063),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(8682c91f-28e3-48fa-8de3-15ba4ec495ca)
+#endif        
     ]
     interface IAdaptiveElementRenderer : IInspectable
     {
@@ -1837,7 +2714,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveTextBlockRenderer
     {
@@ -1847,7 +2729,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveImageRenderer
     {
@@ -1857,7 +2744,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveImageSetRenderer
     {
@@ -1867,7 +2759,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveContainerRenderer
     {
@@ -1877,7 +2774,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveColumnRenderer
     {
@@ -1887,7 +2789,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveColumnSetRenderer
     {
@@ -1897,7 +2804,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveFactRenderer
     {
@@ -1907,7 +2819,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveChoiceSetInputRenderer
     {
@@ -1917,7 +2834,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveDateInputRenderer
     {
@@ -1927,7 +2849,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveNumberInputRenderer
     {
@@ -1937,7 +2864,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveTextInputRenderer
     {
@@ -1947,7 +2879,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveTimeInputRenderer
     {
@@ -1957,7 +2894,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveToggleInputRenderer
     {
@@ -1967,7 +2909,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveFactSetRenderer
     {
@@ -1976,9 +2923,30 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(8615baba-2695-46d2-a764-9ab473c65bb9),
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveRenderArgs)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMediaRenderer
+    {
+        [default] interface IAdaptiveElementRenderer;
+        interface IAdaptiveElementParser;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveRenderArgs),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(e75cbfea-77a6-4562-be66-c86b36ac193a),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(8615baba-2695-46d2-a764-9ab473c65bb9)
+#endif        
     ]
     interface IAdaptiveRenderArgs : IInspectable
     {
@@ -1990,7 +2958,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveRenderArgs
     {
@@ -1998,8 +2971,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(c0222295-bbec-4ff6-bdf3-f207ce78df69),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(f3c95797-25ad-4ee1-a4ad-0fafb986213f),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(c0222295-bbec-4ff6-bdf3-f207ce78df69)
+#endif        
     ]
     interface IAdaptiveError : IInspectable
     {
@@ -2010,7 +2989,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveError
     {
@@ -2018,8 +3002,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     [
-        uuid(4b5b28fe-9645-4e11-89c9-b9d25dd1b777),
-        version(NTDDI_WIN10_RS1)
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(d978d794-6585-4e97-b602-9e6a2ffa3948),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(4b5b28fe-9645-4e11-89c9-b9d25dd1b777)
+#endif        
     ]
     interface IAdaptiveWarning : IInspectable
     {
@@ -2030,16 +3020,29 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
     ]
     runtimeclass AdaptiveWarning
     {
         [default] interface IAdaptiveWarning;
     };
 
-    [uuid(cced6652-8ca5-4841-b650-851770ec6ecf)]
-    [exclusiveto(WholeItemsPanel)]
-    [version(NTDDI_WIN10_RS1)]
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(WholeItemsPanel),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(bfe6f968-3c42-44df-b1e9-8830424a8616),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(cced6652-8ca5-4841-b650-851770ec6ecf)
+#endif        
+    ]
     interface IWholeItemsPanel : IInspectable
     {
         HRESULT GetAltText([out, retval] HSTRING *pResult);
@@ -2047,12 +3050,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         HRESULT IsTruncated([out, retval] boolean* pResult);
     }
 
-    [version(NTDDI_WIN10_RS1)]
-    [activatable(NTDDI_WIN10_RS1)]
-    [threading(both)]
-    [marshaling_behavior(agile)]
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+        threading(both),
+        marshaling_behavior(agile),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ]
     runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
     {
         [default] interface IWholeItemsPanel;
     }
-}}}
+
+AdaptiveNamespaceEnd

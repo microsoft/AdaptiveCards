@@ -4,52 +4,59 @@
 #include "Enums.h"
 #include "Container.h"
 #include <windows.foundation.h>
+#include "AdaptiveCardElement.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class DECLSPEC_UUID("d6031009-7039-4735-bd07-ab6d99b29f03") AdaptiveContainer :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainer,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
-            Microsoft::WRL::CloakedIid<ITypePeek>>
+            ABI::AdaptiveNamespace::IAdaptiveContainer,
+            ABI::AdaptiveNamespace::IAdaptiveCardElement,
+            Microsoft::WRL::CloakedIid<ITypePeek>,
+            Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveContainer, BaseTrust)
+        AdaptiveRuntime(AdaptiveContainer)
 
     public:
         AdaptiveContainer();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Container>& sharedcontainer);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedcontainer);
 
         // IAdaptiveContainer
-        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style);
-        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style);
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style);
+        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveNamespace::ContainerStyle style);
 
-        IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>** items);
+        IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>** items);
 
-        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** action);
-        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action);
+        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
+
+        IFACEMETHODIMP get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment);
+        IFACEMETHODIMP put_VerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing) { return AdaptiveCardElementBase::get_Spacing(spacing); }
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing) { return AdaptiveCardElementBase::put_Spacing(spacing); }
 
-        IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
-        IFACEMETHODIMP put_Separator(_In_ boolean separator);
+        IFACEMETHODIMP get_Separator(_Out_ boolean* separator) { return AdaptiveCardElementBase::get_Separator(separator); }
+        IFACEMETHODIMP put_Separator(_In_ boolean separator) { return AdaptiveCardElementBase::put_Separator(separator); }
 
-        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
-        IFACEMETHODIMP put_Id(_In_ HSTRING id);
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
+        IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value) { return AdaptiveCardElementBase::get_ElementTypeString(value); }
 
-        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::get_AdditionalProperties(result); }
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value) { return AdaptiveCardElementBase::put_AdditionalProperties(value); }
 
-        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
-        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::ToJson(result); }
 
-        HRESULT GetSharedModel(_In_ std::shared_ptr<AdaptiveCards::Container>& sharedModel);
+        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) override;
+
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height) { return AdaptiveCardElementBase::get_Height(height); }
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height) { return AdaptiveCardElementBase::put_Height(height); }
 
         // ITypePeek method
         void *PeekAt(REFIID riid) override
@@ -58,15 +65,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>> m_items;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_selectAction;
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle m_style;
-
-        boolean m_separator;
-        Microsoft::WRL::Wrappers::HString m_id;
-        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
-        Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>> m_items;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
+        ABI::AdaptiveNamespace::ContainerStyle m_style;
+        ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
     };
 
     ActivatableClass(AdaptiveContainer);
-}}}
+AdaptiveNamespaceEnd

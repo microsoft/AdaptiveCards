@@ -25,7 +25,14 @@ public class RadioGroupInputHandler extends BaseInputHandler
         // no need to validate
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
         int index = getRadioGroup().getCheckedRadioButtonId();
-        return choiceSetInput.GetChoices().get(index).GetValue();
+
+        // if no item was selected, index == -1, return empty string
+        if (index >= 0) {
+            return choiceSetInput.GetChoices().get(index).GetValue();
+        }
+        else {
+            return "";
+        }
     }
 
 }

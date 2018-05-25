@@ -6,16 +6,15 @@
 #include "ParseUtil.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveCards 
-{
+AdaptiveSharedNamespaceStart
 class BaseInputElement : public BaseCardElement
 {
 public:
     BaseInputElement(CardElementType elementType);
-    BaseInputElement(CardElementType type, Spacing spacing, bool separator);
+    BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
 
     std::string GetId() const override;
-    void SetId(const std::string value) override;
+    virtual void SetId(const std::string &value) override;
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
@@ -23,7 +22,7 @@ public:
     bool GetIsRequired() const;
     void SetIsRequired(const bool isRequired);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
 private:
     std::string m_id;
@@ -42,4 +41,4 @@ std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value& json)
 
     return baseInputElement;
 }
-}
+AdaptiveSharedNamespaceEnd
