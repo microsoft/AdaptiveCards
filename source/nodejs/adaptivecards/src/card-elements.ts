@@ -2118,6 +2118,10 @@ class ActionButton {
 
         this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
 
+        if (this.action.isPrimaryAction) {
+            this.action.renderedElement.classList.add(hostConfig.makeCssClassName("primaryAction"));
+        }
+
         if (this.action instanceof ShowCardAction) {
             this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expandable"));
         }
@@ -2185,6 +2189,7 @@ export abstract class Action {
 
     id: string;
     title: string;
+    isPrimaryAction: boolean;
 
     toJSON() {
         let result = {};
@@ -2192,7 +2197,7 @@ export abstract class Action {
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "id", this.id);
         Utils.setProperty(result, "title", this.title);
-
+        Utils.setProperty(result, "isPrimaryAction", this.isPrimaryAction);
         return result;
     }
 
@@ -2243,6 +2248,10 @@ export abstract class Action {
     parse(json: any) {
         this.id = json["id"];
         this.title = json["title"];
+        this.isPrimaryAction = false;
+        if (json["isPrimaryAction"] != null) {
+            this.isPrimaryAction = json["isPrimaryAction"];
+        }
     }
 
     remove(): boolean {
@@ -2780,6 +2789,8 @@ class ActionCollection {
         }
         else {
             var buttonStrip = document.createElement("div");
+            let hostConfig = this._owner.hostConfig;
+            buttonStrip.className = hostConfig.makeCssClassName("ac-actionStrip");
             buttonStrip.style.display = "flex";
 
             if (orientation == Enums.Orientation.Horizontal) {
