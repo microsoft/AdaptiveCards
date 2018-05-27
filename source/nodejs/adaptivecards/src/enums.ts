@@ -86,6 +86,11 @@ export enum BackgroundImageMode {
     Repeat
 }
 
+export enum ActionIconPlacement {
+    LeftOfTitle,
+    AboveTitle
+}
+
 /*
     This should really be a string enum, e.g.
     

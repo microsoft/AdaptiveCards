@@ -137,6 +137,8 @@ export class ActionsConfig {
     preExpandSingleShowCardAction?: boolean = false;
     actionsOrientation: Enums.Orientation = Enums.Orientation.Horizontal;
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
+    iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
+    iconSize: number = 24;
 
     constructor(obj?: any) {
         if (obj) {
@@ -147,6 +149,18 @@ export class ActionsConfig {
             this.preExpandSingleShowCardAction = Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false);
             this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
             this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
+            this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
+
+            try {
+                let sizeAndUnit = Utils.SizeAndUnit.parse(obj["iconSize"]);
+
+                if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
+                    this.iconSize = sizeAndUnit.physicalSize;
+                }
+            }
+            catch (e) {
+                // Swallow this, keep default icon size
+            }
         }
     }
 
