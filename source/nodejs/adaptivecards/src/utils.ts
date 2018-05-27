@@ -189,6 +189,37 @@ export class StringWithSubstitutions {
     }
 }
 
+export class SizeAndUnit {
+    physicalSize: number;
+    unit: Enums.SizeUnit;
+
+    static parse(input: any): SizeAndUnit {
+        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
+
+        let regExp = /^([0-9]+)(px|\*)?$/g;
+        let matches = regExp.exec(input);
+    
+        if (matches && matches.length >= 2) {
+            result.physicalSize = parseInt(matches[1]);
+    
+            if (matches.length == 3) {
+                if (matches[2] == "px") {
+                    result.unit = Enums.SizeUnit.Pixel;
+                }
+            }
+    
+            return result;
+        }
+    
+        throw new Error("Invalid size: " + input);
+    }
+
+    constructor(physicalSize: number, unit: Enums.SizeUnit) {
+        this.physicalSize = physicalSize;
+        this.unit = unit;
+    }
+}
+
 export function truncate(element: HTMLElement,
                          maxHeight: number,
                          lineHeight?: number) {
