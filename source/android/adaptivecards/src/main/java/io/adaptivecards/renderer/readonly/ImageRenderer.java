@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -52,12 +53,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    private class ImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
+    private class ImageRendererImageLoaderAsync extends InnerImageLoaderAsync
     {
-        ImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, ImageView imageView, ImageStyle imageStyle)
+        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle)
         {
-            m_context = context;
-            m_imageView = imageView;
+            super(renderedCard, imageView, imageBaseUrl);
             m_imageStyle = imageStyle;
             m_renderedCard = renderedCard;
         }
@@ -112,6 +112,13 @@ public class ImageRenderer extends BaseCardElementRenderer
             }
         }
 
+        @Override
+        protected void renderBitmap(Bitmap bitmap)
+        {
+            ImageView view = (ImageView) m_view ;
+            view.setImageBitmap(bitmap);
+        }
+
         private Context m_context;
         private ImageView m_imageView;
         private ImageStyle m_imageStyle;
@@ -160,7 +167,7 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(image);
-        ImageLoaderAsync imageLoaderAsync = new ImageLoaderAsync(renderedCard, context, imageView, image.GetImageStyle());
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, "", image.GetImageStyle());
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
