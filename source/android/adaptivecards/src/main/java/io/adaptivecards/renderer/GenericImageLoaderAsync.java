@@ -69,14 +69,13 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     // Helper function to load online image URL
     private HttpRequestResult<Bitmap> loadOnlineImage(String url) throws IOException, URISyntaxException
     {
-        Bitmap bitmap;
         byte[] bytes = HttpRequestHelper.get(url);
         if (bytes == null)
         {
             throw new IOException("Failed to retrieve content from " + url);
         }
 
-        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         bitmap = styleBitmap(bitmap);
 
         if (bitmap == null)
