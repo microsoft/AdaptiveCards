@@ -11,10 +11,12 @@
 }
 
 .skypeContainer {
+  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-align: start;
-      align-items: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
 a.ac-anchor {
@@ -59,7 +61,6 @@ a.ac-anchor:visited:active {
   font-size: 14px;
   font-weight: 400;
   padding: 4px 10px 6px 10px;
-  height: 31px;
   background-color: white;
   color: #0078d7;
 }
@@ -107,7 +108,8 @@ a.ac-anchor:visited:active {
 .hexagon {
   overflow: hidden;
   visibility: hidden;
-  transform: rotate(120deg);
+  -webkit-transform: rotate(120deg);
+          transform: rotate(120deg);
   cursor: pointer;
   width: 50px;
   height: 40px;
@@ -118,7 +120,8 @@ a.ac-anchor:visited:active {
   overflow: hidden;
   width: 100%;
   height: 100%;
-  transform: rotate(-60deg);
+  -webkit-transform: rotate(-60deg);
+          transform: rotate(-60deg);
 }
 
 .hexagon-in2 {
@@ -129,5 +132,6 @@ a.ac-anchor:visited:active {
   background-image: url(../assets/bot-framework.png);
   background-size: 50px 50px;
   visibility: visible;
-  transform: rotate(-60deg);
+  -webkit-transform: rotate(-60deg);
+          transform: rotate(-60deg);
 }

@@ -74,6 +74,8 @@ license you like.
 
 #include "pch.h"
 
+#pragma warning(disable: ALL_CPPCORECHECK_WARNINGS)
+
 #include "json/json.h"
 
 #ifndef JSON_IS_AMALGAMATION

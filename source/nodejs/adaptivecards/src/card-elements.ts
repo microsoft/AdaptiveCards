@@ -1120,7 +1120,7 @@ export class Image extends CardElement {
         if (value) {
             if (typeof value === "string") {
                 try {
-                    let size = SizeAndUnit.parse(value);
+                    let size = Utils.SizeAndUnit.parse(value);
 
                     if (size.unit == Enums.SizeUnit.Pixel) {
                         return size.physicalSize;
@@ -1276,6 +1276,7 @@ export class Image extends CardElement {
     backgroundColor: string;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
+    width: Utils.SizeAndUnit;
     pixelWidth?: number = null;
     pixelHeight?: number = null;
     altText: string = "";
@@ -2111,8 +2112,9 @@ enum ActionButtonState {
 
 class ActionButton {
     private _parentContainerStyle: string;
+    private _action: Action;
+    private _element: HTMLButtonElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
-    private _text: string;
 
     private updateCssStyle() {
         let hostConfig = this.action.parent.hostConfig;
@@ -2123,6 +2125,9 @@ class ActionButton {
         if (this.action instanceof ShowCardAction) {
             this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expandable"));
         }
+
+        this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
+        this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
 
         switch (this._state) {
             case ActionButtonState.Expanded:
@@ -2154,16 +2159,6 @@ class ActionButton {
         }
     }
 
-    get text(): string {
-        return this._text;
-    }
-
-    set text(value: string) {
-        this._text = value;
-        this.action.renderedElement.innerText = this._text;
-        this.action.renderedElement.setAttribute("aria-label", this._text);
-    }
-
     get state(): ActionButtonState {
         return this._state;
     }
@@ -2184,10 +2179,15 @@ export abstract class Action {
         this._actionCollection = actionCollection;
     }
 
+    protected addCssClasses(element: HTMLElement) {
+        // Do nothing in base implementation
+    }
+
     abstract getJsonTypeName(): string;
 
     id: string;
     title: string;
+    iconUrl: string;
 
     toJSON() {
         let result = {};
@@ -2195,17 +2195,73 @@ export abstract class Action {
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "id", this.id);
         Utils.setProperty(result, "title", this.title);
+        Utils.setProperty(result, "iconUrl", this.iconUrl);
 
         return result;
     }
 
     render() {
-        var buttonElement = document.createElement("button");
-        buttonElement.type = "button";
+        // Cache hostConfig for perf
+        let hostConfig = this.parent.hostConfig;
 
-        buttonElement.style.overflow = "hidden";
-        buttonElement.style.whiteSpace = "nowrap";
-        buttonElement.style.textOverflow = "ellipsis";
+        var buttonElement = document.createElement("button");
+        buttonElement.className = hostConfig.makeCssClassName("ac-pushButton");
+
+        this.addCssClasses(buttonElement);
+
+        buttonElement.setAttribute("aria-label", this.title);
+        buttonElement.type = "button";
+        buttonElement.style.display = "flex";
+        buttonElement.style.alignItems = "center";
+        buttonElement.style.justifyContent = "center";
+
+        let hasTitle = !Utils.isNullOrEmpty(this.title);
+
+        if (Utils.isNullOrEmpty(this.iconUrl)) {
+            buttonElement.classList.add("noIcon");
+            buttonElement.style.overflow = "hidden";
+            buttonElement.style.whiteSpace = "nowrap";
+            buttonElement.style.textOverflow = "ellipsis";
+
+            if (hasTitle) {
+                buttonElement.innerText = this.title;
+            }
+        }
+        else {
+            let iconElement = document.createElement("div");
+            iconElement.style.width = hostConfig.actions.iconSize + "px";
+            iconElement.style.height = hostConfig.actions.iconSize + "px";;
+            iconElement.style.backgroundImage = "url('" + this.iconUrl + "')";
+            iconElement.style.backgroundPositionX = "center";
+            iconElement.style.backgroundPositionY = "center";
+            iconElement.style.backgroundRepeat = "no-repeat";
+            iconElement.style.backgroundSize = "contain";
+
+            let titleElement = document.createElement("div");
+
+            if (hasTitle) {
+                titleElement.innerText = this.title;
+            }
+
+            if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
+                buttonElement.classList.add("iconAbove");
+                buttonElement.style.flexDirection = "column";
+
+                if (hasTitle) {
+                    iconElement.style.marginBottom = "4px";
+                }
+            }
+            else {
+                buttonElement.classList.add("iconLeft");
+                
+                if (hasTitle) {
+                    iconElement.style.marginRight = "4px";
+                }
+            }
+
+            buttonElement.appendChild(iconElement);
+            buttonElement.appendChild(titleElement);
+        }
 
         this._renderedElement = buttonElement;
     }
@@ -2246,6 +2302,7 @@ export abstract class Action {
     parse(json: any) {
         this.id = json["id"];
         this.title = json["title"];
+        this.iconUrl = json["iconUrl"];
     }
 
     remove(): boolean {
@@ -2491,6 +2548,12 @@ export class HttpAction extends Action {
 }
 
 export class ShowCardAction extends Action {
+    protected addCssClasses(element: HTMLElement) {
+        super.addCssClasses(element);
+
+        element.classList.add(this.parent.hostConfig.makeCssClassName("expandable"));
+    }
+
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     getJsonTypeName(): string {
@@ -2866,7 +2929,6 @@ class ActionCollection {
                     actionButton.action.renderedElement.style.overflow = "hidden";
                     actionButton.action.renderedElement.style.overflow = "table-cell";
                     actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
-                    actionButton.text = this.items[i].title;
                     actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                     this.buttons.push(actionButton);
@@ -3811,7 +3873,7 @@ export class Column extends Container {
             renderedElement.style.minWidth = "0";
         }
 
-        if (this.width instanceof SizeAndUnit) {
+        if (this.width instanceof Utils.SizeAndUnit) {
             if (this.width.unit == Enums.SizeUnit.Pixel) {
                 renderedElement.style.flex = "0 0 " + this.width.physicalSize + "px";
             }
@@ -3832,7 +3894,7 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    width: SizeAndUnit | "auto" | "stretch" = "auto";
+    width: Utils.SizeAndUnit | "auto" | "stretch" = "auto";
 
     getJsonTypeName(): string {
         return "Column";
@@ -3877,7 +3939,7 @@ export class Column extends Container {
 
         if (typeof jsonWidth === "number") {
             if (jsonWidth > 0) {
-                this.width = new SizeAndUnit(jsonWidth, Enums.SizeUnit.Weight);
+                this.width = new Utils.SizeAndUnit(jsonWidth, Enums.SizeUnit.Weight);
             }
             else {
                 invalidWidth = true;
@@ -3886,7 +3948,7 @@ export class Column extends Container {
         else if (typeof jsonWidth === "string") {
             if (jsonWidth != "auto" && jsonWidth != "stretch") {
                 try {
-                    this.width = SizeAndUnit.parse(jsonWidth);
+                    this.width = Utils.SizeAndUnit.parse(jsonWidth);
                 }
                 catch (e) {
                     invalidWidth = true;
@@ -3978,7 +4040,7 @@ export class ColumnSet extends CardElementContainer {
             var totalWeight: number = 0;
 
             for (let column of this._columns) {
-                if (column.width instanceof SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
+                if (column.width instanceof Utils.SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
                     totalWeight += column.width.physicalSize;
                 }
             }
@@ -3986,7 +4048,7 @@ export class ColumnSet extends CardElementContainer {
             var renderedColumnCount: number = 0;
 
             for (let column of this._columns) {
-                if (column.width instanceof SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
+                if (column.width instanceof Utils.SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
                     var computedWeight = 100 / totalWeight * column.width.physicalSize;
 
                     // Best way to emulate "internal" access I know of

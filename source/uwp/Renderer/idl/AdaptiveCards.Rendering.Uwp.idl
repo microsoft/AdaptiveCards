@@ -41,6 +41,8 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveChoiceInput;
     runtimeclass AdaptiveChoiceSetInput;
     runtimeclass AdaptiveDateInput;
+    runtimeclass AdaptiveMedia;
+    runtimeclass AdaptiveMediaSource;
     runtimeclass AdaptiveNumberInput;
     runtimeclass AdaptiveTextInput;
     runtimeclass AdaptiveTimeInput;
@@ -236,7 +238,8 @@ AdaptiveNamespaceStart
         TextInput,
         TimeInput,
         ToggleInput,
-        Custom
+        Custom,
+        Media
     } ElementType;
 
     [version(NTDDI_WIN10_RS1)]
@@ -394,6 +397,7 @@ AdaptiveNamespaceStart
         MaxActionsExceeded,
         AssetLoadFailed,
         UnsupportedSchemaVersion,
+        UnsupportedMediaType
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -407,6 +411,30 @@ AdaptiveNamespaceStart
         LeftOfTitle
     } IconPlacement;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum VerticalContentAlignment
+    {
+        Stretch = 0,
+        Top,
+        Center,
+        Bottom
+    } VerticalContentAlignment;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum HeightType
+    {
+        Auto = 0,
+        Stretch
+    } HeightType;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -419,6 +447,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
     }
 
     [
@@ -436,6 +465,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT ElementType([out, retval] ElementType* value);
         [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
 
+        [propget] HRESULT Height([out, retval] HeightType* value);
+        [propput] HRESULT Height([in] HeightType value);
+
         [propget] HRESULT Spacing([out, retval] Spacing* value);
         [propput] HRESULT Spacing([in] Spacing value);
 
@@ -452,8 +484,14 @@ AdaptiveNamespaceStart
     };
 
     [
-        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(1D37C30F-9180-4CEF-A73C-C77ED00176DB),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
+#endif
     ]
     interface IAdaptiveElementWithRemoteResources : IInspectable
     {
@@ -552,6 +590,77 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMediaSource),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(05F2F77A-D458-4F73-AAF7-06B91D4C37E6),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(5F8A6054-5EC8-4321-988E-3130A977C14C)
+#endif        
+    ]
+    interface IAdaptiveMediaSource : IInspectable
+    {
+        [propget] HRESULT MimeType([out, retval] HSTRING* value);
+        [propput] HRESULT MimeType([in] HSTRING value);
+
+        [propget] HRESULT Url([out, retval] HSTRING* value);
+        [propput] HRESULT Url([in] HSTRING value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMediaSource
+    {
+        [default] interface IAdaptiveMediaSource;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMedia),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(4E3499F8-2A99-4CE3-BA71-5F3799C1E06A),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(161BE390-2927-463C-9A46-21A756F2487B)
+#endif        
+    ]
+    interface IAdaptiveMedia : IInspectable
+    {
+        [propget] HRESULT Poster([out, retval] HSTRING* value);
+        [propput] HRESULT Poster([in] HSTRING value);
+
+        [propget] HRESULT AltText([out, retval] HSTRING* value);
+        [propput] HRESULT AltText([in] HSTRING value);
+
+        [propget] HRESULT Sources([out, retval] Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>** value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMedia
+    {
+        [default] interface IAdaptiveMedia;
+        interface IAdaptiveCardElement;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveCard),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(a373da1b-6d07-4269-bead-2f5bb5cf4975),
@@ -575,11 +684,11 @@ AdaptiveNamespaceStart
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 
+        [propget] HRESULT BackgroundImage([out, retval] HSTRING* value);
+        [propput] HRESULT BackgroundImage([in] HSTRING value);
+
         [propget] HRESULT Language([out, retval] HSTRING* value);
         [propput] HRESULT Language([in] HSTRING value);
-
-        [propget] HRESULT BackgroundImage([out, retval] Windows.Foundation.Uri** value);
-        [propput] HRESULT BackgroundImage([in] Windows.Foundation.Uri* value);
 
         [propget] HRESULT Speak([out, retval] HSTRING* value);
         [propput] HRESULT Speak([in] HSTRING value);
@@ -589,6 +698,12 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
+
+        [propget] HRESULT Height([out, retval] HeightType* value);
+        [propput] HRESULT Height([in] HeightType value);
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
 
@@ -693,8 +808,11 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveImage : IInspectable
     {
-        [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
-        [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
+        [propget] HRESULT Url([out, retval] HSTRING* value);
+        [propput] HRESULT Url([in] HSTRING value);
+
+        [propget] HRESULT BackgroundColor([out, retval] HSTRING* value);
+        [propput] HRESULT BackgroundColor([in] HSTRING value);
 
         [propget] HRESULT Style([out, retval] ImageStyle* value);
         [propput] HRESULT Style([in] ImageStyle value);
@@ -1085,6 +1203,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
 
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
+
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
@@ -1126,6 +1247,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
+
+        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
+        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
 
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
@@ -1271,6 +1395,10 @@ AdaptiveNamespaceStart
 
         HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
         HRESULT ResetFixedDimensions();
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>** result);
+#endif
 
         HRESULT RenderAdaptiveCard([in] AdaptiveCard* adaptiveCard, [out, retval] RenderedAdaptiveCard** result);
 
@@ -1961,6 +2089,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT SupportsInteractivity([out, retval] boolean* value);
         [propput] HRESULT SupportsInteractivity([in] boolean value);
 
+        [propget] HRESULT ImageBaseUrl([out, retval] HSTRING* value);
+        [propput] HRESULT ImageBaseUrl([in] HSTRING value);
+
         [propget] HRESULT ContainerStyles([out, retval] AdaptiveContainerStylesDefinition** value);
         [propput] HRESULT ContainerStyles([in] AdaptiveContainerStylesDefinition* value);
 
@@ -2074,8 +2205,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
-        [propget] HRESULT IconUrl([out, retval] Windows.Foundation.Uri** value);
-        [propput] HRESULT IconUrl([in] Windows.Foundation.Uri* value);
+        [propget] HRESULT IconUrl([out, retval] HSTRING* value);
+        [propput] HRESULT IconUrl([in] HSTRING value);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
@@ -2786,6 +2917,21 @@ AdaptiveNamespaceStart
 #endif        
     ]
     runtimeclass AdaptiveFactSetRenderer
+    {
+        [default] interface IAdaptiveElementRenderer;
+        interface IAdaptiveElementParser;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMediaRenderer
     {
         [default] interface IAdaptiveElementRenderer;
         interface IAdaptiveElementParser;
