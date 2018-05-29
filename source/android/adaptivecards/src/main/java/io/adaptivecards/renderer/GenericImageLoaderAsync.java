@@ -1,23 +1,26 @@
 package io.adaptivecards.renderer;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.view.View;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 
-public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
+/** Abstract class that specifies image loading mechanism */
+public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
 {
+    RenderedAdaptiveCard m_renderedCard;
+    String m_imageBaseUrl;
 
-    public ImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl)
+    GenericImageLoaderAsync(RenderedAdaptiveCard renderedCard, String imageBaseUrl)
     {
-        m_view = containerView;
         m_renderedCard = renderedCard;
         m_imageBaseUrl = imageBaseUrl;
     }
@@ -42,25 +45,35 @@ public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpReque
         return new HttpRequestResult<>(bitmap);
     }
 
-    @Override
-    protected HttpRequestResult<Bitmap> doInBackground(String... args)
+    HttpRequestResult<Bitmap> loadImage(String path, Context context)
     {
+        // Try loading online using only the path first
         try
         {
-            return loadOnlineImage(args[0]);
+            return loadOnlineImage(path);
         }
-        catch (MalformedURLException e1)
-        {
+        catch (MalformedURLException e1) {
+            // Then try using image base URL to load online
             try
             {
-                return loadOnlineImage(m_imageBaseUrl + args[0]);
+                if (m_imageBaseUrl == null || m_imageBaseUrl.isEmpty())
+                {
+                    return new HttpRequestResult<>(new Exception("Image base URL is empty or not specified"));
+                }
+
+                // Construct a URL using the image base URL and path
+                URL urlContext = new URL(m_imageBaseUrl);
+                URL url = new URL(urlContext, path);
+
+                return loadOnlineImage(url.toString());
             }
             catch (MalformedURLException e2)
             {
-                // If the url is malformed, try reading it from local resources
-                return Util.loadLocalImage(m_imageBaseUrl, m_view.getContext(), args[0]);
+                // Then try reading it from local resources
+                return Util.loadLocalImage(m_imageBaseUrl, context, path);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 return new HttpRequestResult<>(e);
             }
         }
@@ -70,12 +83,18 @@ public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpReque
         }
     }
 
+    // By default, this function keeps the bitmap as is
+    protected Bitmap styleBitmap(Bitmap bitmap)
+    {
+        return bitmap;
+    }
+
     @Override
     protected void onPostExecute(HttpRequestResult<Bitmap> result)
     {
         if (result.isSuccessful())
         {
-            renderBitmap(result.getResult());
+            onSuccessfulPostExecute(result.getResult());
         }
         else
         {
@@ -83,11 +102,5 @@ public abstract class ImageLoaderAsync extends AsyncTask<String, Void, HttpReque
         }
     }
 
-    protected abstract Bitmap styleBitmap(Bitmap bitmap);
-    protected abstract void renderBitmap(Bitmap bitmap);
-
-    protected View m_view; // button and imageview inherit from this
-    private RenderedAdaptiveCard m_renderedCard;
-    private String m_imageBaseUrl;
-
+    abstract void onSuccessfulPostExecute(Bitmap result);
 }
