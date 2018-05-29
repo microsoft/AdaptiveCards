@@ -143,6 +143,9 @@
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveInputElement.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
+    <ClInclude Include="lib\AdaptiveMedia.h" />
+    <ClInclude Include="lib\AdaptiveMediaRenderer.h" />
+    <ClInclude Include="lib\AdaptiveMediaSource.h" />
     <ClInclude Include="lib\AdaptiveNumberInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
@@ -157,6 +160,7 @@
     <ClInclude Include="lib\DateTimeParser.h" />
     <ClInclude Include="lib\HtmlHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
+    <ClInclude Include="lib\MediaHelpers.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveSeparatorConfig.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
@@ -199,6 +203,10 @@
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClCompile Include="lib\AdaptiveMedia.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
+    <ClCompile Include="lib\MediaHelpers.cpp" />
     <ClCompile Include="lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

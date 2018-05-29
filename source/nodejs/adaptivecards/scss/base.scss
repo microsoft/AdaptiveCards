@@ -62,7 +62,7 @@ $font-family: 'Segoe UI', sans-serif;
 @mixin base-push-button(
     $font-size: 14px, 
     $font-weight: 600, 
-    $height: 31px,
+    $height: null,
     $padding: 4px 10px 5px 10px, 
     $user-select: none,
     

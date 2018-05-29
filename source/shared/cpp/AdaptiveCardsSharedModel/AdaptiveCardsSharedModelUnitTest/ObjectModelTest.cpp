@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
+#include "Media.h"
 #include "TextBlock.h"
+#include "SharedAdaptiveCard.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -8,7 +10,7 @@ using namespace std;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
-    TEST_CLASS(ParseUtilTest)
+    TEST_CLASS(ObjectModelTest)
     {
     public:
         // An empty JSON does not produce any selectAction
@@ -180,5 +182,47 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsFalse(selectAction == nullptr);
             Assert::AreEqual(selectAction->GetElementTypeString(), "Action.Submit"s);
         }
+
+        TEST_METHOD(MediaElementTest)
+        {
+            std::string cardWithMediaElement = "{\
+                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\" : \"AdaptiveCard\",\
+                \"version\" : \"1.0\",\
+                \"body\" : [\
+                    {\
+                        \"type\": \"Media\",\
+                        \"poster\" : \"http://adaptivecards.io/content/cats/1.png\",\
+                        \"altText\" : \"This is a video\",\
+                        \"sources\": [ \
+                            {\
+                                \"mimeType\": \"video/mp4\",\
+                                \"url\" : \"http://source1.mp4\" \
+                            },\
+                            { \
+                                \"mimeType\": \"video/avi\", \
+                                \"url\" : \"http://source2.avi\" \
+                            }\
+                        ]\
+                    }\
+                ]\
+            }";
+
+            auto card = AdaptiveCard::DeserializeFromString(cardWithMediaElement, 1.0)->GetAdaptiveCard();
+            std::shared_ptr<Media> mediaElement = std::static_pointer_cast<Media> (card->GetBody()[0]);
+
+            Assert::IsTrue(mediaElement->GetElementType() == CardElementType::Media);
+            Assert::AreEqual(mediaElement->GetElementTypeString(), "Media"s);
+            Assert::AreEqual(mediaElement->GetPoster(), "http://adaptivecards.io/content/cats/1.png"s);
+            Assert::AreEqual(mediaElement->GetAltText(), "This is a video"s);
+
+            auto sources = mediaElement->GetSources();
+            Assert::IsTrue(sources.size() == 2);
+            Assert::AreEqual(sources[0]->GetMimeType(), "video/mp4"s);
+            Assert::AreEqual(sources[0]->GetUrl(), "http://source1.mp4"s);
+            Assert::AreEqual(sources[1]->GetMimeType(), "video/avi"s);
+            Assert::AreEqual(sources[1]->GetUrl(), "http://source2.avi"s);
+        }
     };
 }
+

@@ -41,6 +41,8 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveChoiceInput;
     runtimeclass AdaptiveChoiceSetInput;
     runtimeclass AdaptiveDateInput;
+    runtimeclass AdaptiveMedia;
+    runtimeclass AdaptiveMediaSource;
     runtimeclass AdaptiveNumberInput;
     runtimeclass AdaptiveTextInput;
     runtimeclass AdaptiveTimeInput;
@@ -236,7 +238,8 @@ AdaptiveNamespaceStart
         TextInput,
         TimeInput,
         ToggleInput,
-        Custom
+        Custom,
+        Media
     } ElementType;
 
     [version(NTDDI_WIN10_RS1)]
@@ -394,6 +397,7 @@ AdaptiveNamespaceStart
         MaxActionsExceeded,
         AssetLoadFailed,
         UnsupportedSchemaVersion,
+        UnsupportedMediaType
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -443,6 +447,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
     }
 
     [
@@ -479,8 +484,14 @@ AdaptiveNamespaceStart
     };
 
     [
-        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(1D37C30F-9180-4CEF-A73C-C77ED00176DB),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
+#endif
     ]
     interface IAdaptiveElementWithRemoteResources : IInspectable
     {
@@ -574,6 +585,77 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveTextBlock
     {
         [default] interface IAdaptiveTextBlock;
+        interface IAdaptiveCardElement;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMediaSource),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(05F2F77A-D458-4F73-AAF7-06B91D4C37E6),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(5F8A6054-5EC8-4321-988E-3130A977C14C)
+#endif        
+    ]
+    interface IAdaptiveMediaSource : IInspectable
+    {
+        [propget] HRESULT MimeType([out, retval] HSTRING* value);
+        [propput] HRESULT MimeType([in] HSTRING value);
+
+        [propget] HRESULT Url([out, retval] HSTRING* value);
+        [propput] HRESULT Url([in] HSTRING value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMediaSource
+    {
+        [default] interface IAdaptiveMediaSource;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMedia),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(4E3499F8-2A99-4CE3-BA71-5F3799C1E06A),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(161BE390-2927-463C-9A46-21A756F2487B)
+#endif        
+    ]
+    interface IAdaptiveMedia : IInspectable
+    {
+        [propget] HRESULT Poster([out, retval] HSTRING* value);
+        [propput] HRESULT Poster([in] HSTRING value);
+
+        [propget] HRESULT AltText([out, retval] HSTRING* value);
+        [propput] HRESULT AltText([in] HSTRING value);
+
+        [propget] HRESULT Sources([out, retval] Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>** value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMedia
+    {
+        [default] interface IAdaptiveMedia;
         interface IAdaptiveCardElement;
     };
 
@@ -2835,6 +2917,21 @@ AdaptiveNamespaceStart
 #endif        
     ]
     runtimeclass AdaptiveFactSetRenderer
+    {
+        [default] interface IAdaptiveElementRenderer;
+        interface IAdaptiveElementParser;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMediaRenderer
     {
         [default] interface IAdaptiveElementRenderer;
         interface IAdaptiveElementParser;
