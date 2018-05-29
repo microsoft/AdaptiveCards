@@ -101,21 +101,23 @@ using namespace AdaptiveCards;
     }
     std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
     NSString* imgUrl = nil;
-    if(!backgroundImage.empty())
+    if(!backgroundImage.empty()){
         imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
-    if (imgUrl)
-    {
+    }
+    if (imgUrl){
         NSURL *url = [NSURL URLWithString:imgUrl];
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-        UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
-        [newView addSubview:imgView];
-        [newView sendSubviewToBack:imgView];
-        [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]|", nil];
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(imgView);
-        for(NSString *constraint in visualFormats){
-            [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+        if(img){
+            UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
+            [newView addSubview:imgView];
+            [newView sendSubviewToBack:imgView];
+            [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]|", nil];
+            NSDictionary *viewMap = NSDictionaryOfVariableBindings(imgView);
+            for(NSString *constraint in visualFormats){
+                [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+            }
         }
     }
     [self callDidLoadElementsIfNeeded];
