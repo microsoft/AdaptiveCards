@@ -19,6 +19,10 @@ public abstract class InnerImageLoaderAsync extends GenericImageLoaderAsync
     @Override
     protected HttpRequestResult<Bitmap> doInBackground(String... args)
     {
+        if (args.length == 0)
+        {
+            return null;
+        }
         return loadImage(args[0], m_view.getContext());
     }
 

@@ -1,11 +1,13 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -25,26 +27,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         m_imageBaseUrl = imageBaseUrl;
     }
 
-    private HttpRequestResult<Bitmap> loadOnlineImage(String url) throws IOException, URISyntaxException
-    {
-        Bitmap bitmap;
-        byte[] bytes = HttpRequestHelper.get(url);
-        if (bytes == null)
-        {
-            throw new IOException("Failed to retrieve content from " + url);
-        }
-
-        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        bitmap = styleBitmap(bitmap);
-
-        if (bitmap == null)
-        {
-            throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
-        }
-
-        return new HttpRequestResult<>(bitmap);
-    }
-
+    // Main function to try different ways to load an image
     HttpRequestResult<Bitmap> loadImage(String path, Context context)
     {
         // Try loading online using only the path first
@@ -70,7 +53,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
             catch (MalformedURLException e2)
             {
                 // Then try reading it from local resources
-                return Util.loadLocalImage(m_imageBaseUrl, context, path);
+                return loadLocalImage(m_imageBaseUrl, context, path);
             }
             catch (Exception e)
             {
@@ -80,6 +63,62 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         catch (Exception excep)
         {
             return new HttpRequestResult<>(excep);
+        }
+    }
+
+    // Helper function to load online image URL
+    private HttpRequestResult<Bitmap> loadOnlineImage(String url) throws IOException, URISyntaxException
+    {
+        Bitmap bitmap;
+        byte[] bytes = HttpRequestHelper.get(url);
+        if (bytes == null)
+        {
+            throw new IOException("Failed to retrieve content from " + url);
+        }
+
+        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        bitmap = styleBitmap(bitmap);
+
+        if (bitmap == null)
+        {
+            throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
+        }
+
+        return new HttpRequestResult<>(bitmap);
+    }
+
+    // Helper function to load local image URL from res/
+    private HttpRequestResult<Bitmap> loadLocalImage(String imageBaseUrl, Context context, String url)
+    {
+        try
+        {
+            if (imageBaseUrl == null || imageBaseUrl.isEmpty())
+            {
+                throw new Exception("Image Base URL is not specified or empty");
+            }
+
+            String authority = context.getPackageName();
+
+            // Get image identifier
+            Resources resources = context.getResources();
+            int identifier = resources.getIdentifier(url, imageBaseUrl, authority);
+            if (identifier == 0)
+            {
+                throw new Exception("Image not found: " + url);
+            }
+
+            InputStream ins = resources.openRawResource(identifier);
+            Bitmap bitmap = BitmapFactory.decodeStream(ins);
+            if (bitmap == null)
+            {
+                throw new Exception("Failed to convert local content to bitmap: " + url);
+            }
+
+            return new HttpRequestResult<>(bitmap);
+        }
+        catch (Exception e)
+        {
+            return new HttpRequestResult<>(e);
         }
     }
 

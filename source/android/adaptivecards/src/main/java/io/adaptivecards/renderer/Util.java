@@ -1,15 +1,8 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-
-import java.io.InputStream;
-
-import io.adaptivecards.renderer.http.HttpRequestResult;
 
 public final class Util {
 
@@ -18,40 +11,5 @@ public final class Util {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int returnVal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
         return returnVal;
-    }
-
-    /** Helper function to load local image URL from res/ */
-    public static HttpRequestResult<Bitmap> loadLocalImage(String imageBaseUrl, Context context, String url)
-    {
-        try
-        {
-            if (imageBaseUrl == null || imageBaseUrl.isEmpty())
-            {
-                throw new Exception("Image Base URL is not specified or empty");
-            }
-
-            String authority = context.getPackageName();
-
-            // Get image identifier
-            Resources resources = context.getResources();
-            int identifier = resources.getIdentifier(url, imageBaseUrl, authority);
-            if (identifier == 0)
-            {
-                throw new Exception("Image not found: " + url);
-            }
-
-            InputStream ins = resources.openRawResource(identifier);
-            Bitmap bitmap = BitmapFactory.decodeStream(ins);
-            if (bitmap == null)
-            {
-                throw new Exception("Failed to convert local content to bitmap: " + url);
-            }
-
-            return new HttpRequestResult<>(bitmap);
-        }
-        catch (Exception e)
-        {
-            return new HttpRequestResult<>(e);
-        }
     }
 }

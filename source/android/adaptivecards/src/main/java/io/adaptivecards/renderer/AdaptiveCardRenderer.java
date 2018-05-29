@@ -48,7 +48,7 @@ public class AdaptiveCardRenderer
         private Context m_context;
         private LinearLayout m_layout;
 
-        BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl)
+        public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl)
         {
             super(renderedCard, imageBaseUrl);
 
@@ -59,6 +59,10 @@ public class AdaptiveCardRenderer
         @Override
         protected HttpRequestResult<Bitmap> doInBackground(String... args)
         {
+            if (args.length == 0)
+            {
+                return null;
+            }
             return loadImage(args[0], m_context);
         }
 
