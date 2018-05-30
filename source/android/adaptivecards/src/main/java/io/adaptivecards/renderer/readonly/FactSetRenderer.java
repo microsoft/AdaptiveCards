@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -88,7 +89,15 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         GridLayout gridLayout = new GridLayout(context);
         gridLayout.setTag(factSet);
-        gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        if( factSet.GetHeight() == HeightType.Stretch )
+        {
+            gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+        }
+        else
+        {
+            gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
+
         gridLayout.setColumnCount(2);
 
         FactVector factVector = factSet.GetFacts();

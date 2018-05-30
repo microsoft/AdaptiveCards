@@ -1,12 +1,14 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -71,22 +73,37 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
+
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(columnSet);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        for (int i = 0; i < columnVectorSize; i++)
-        {
+
+        for (int i = 0; i < columnVectorSize; i++) {
             Column column = columnVector.get(i);
             columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, containerStyle);
         }
 
-        if (columnSet.GetSelectAction() != null)
-        {
+        if (columnSet.GetSelectAction() != null) {
             layout.setClickable(true);
             layout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
-        viewGroup.addView(layout);
+        if(columnSet.GetHeight() == HeightType.Stretch)
+        {
+            LinearLayout stretchLayout = new LinearLayout(context);
+            stretchLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            stretchLayout.setOrientation(LinearLayout.VERTICAL);
+
+            layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+
+            stretchLayout.addView(layout);
+            viewGroup.addView(stretchLayout);
+        }
+        else
+        {
+            layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            viewGroup.addView(layout);
+        }
+
         return layout;
     }
 
