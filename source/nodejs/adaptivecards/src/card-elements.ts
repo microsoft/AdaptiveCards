@@ -4468,7 +4468,12 @@ export abstract class ContainerWithActions extends Container {
             return super.isLastElementBleeding() ? !this.isDesignMode() : false;
         }
         else {
-            return this._actionCollection.expandedAction != null;
+            if (this._actionCollection.items.length == 1) {
+                return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
+            }
+            else {
+                return this._actionCollection.expandedAction != null;
+            }
         }
     }
 
@@ -4698,6 +4703,10 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected applyPadding() {
+        if (!this.renderedElement) {
+            return;
+        }
+
         var effectivePadding = this.padding ? this.padding.toSpacingDefinition(this.hostConfig) : this.internalPadding.toSpacingDefinition(this.hostConfig);
 
         this.renderedElement.style.paddingTop = effectivePadding.top + "px";
