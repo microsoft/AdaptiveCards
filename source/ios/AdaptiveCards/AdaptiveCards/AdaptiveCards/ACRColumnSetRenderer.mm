@@ -59,6 +59,7 @@
         [acoColumn setElem:column];
         curView = (ACRColumnView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
 
+        // when stretch, views with stretch properties should have equal width
         if([curView.columnWidth isEqualToString:@"stretch"]){
             if(stretchView){
                 [NSLayoutConstraint constraintWithItem:curView
@@ -70,14 +71,17 @@
                                     constant:0].active = YES;
             }
             stretchView = curView;
-        } else {
-            try
-            {
+        } else if(![curView.columnWidth isEqualToString:@"auto"]){
+            try{
                 relativeColumnWidth = std::stof(column->GetWidth());
                 if(prevRelColumnWidth)
                     multiplier = relativeColumnWidth / prevRelColumnWidth;
             }
-            catch(...){ ;}
+            catch(...){
+                multiplier = 1;
+                relativeColumnWidth = 1;
+                NSLog(@"unexpected column width property is given");
+            }
         }
         if(prevView && prevRelColumnWidth)
         {
