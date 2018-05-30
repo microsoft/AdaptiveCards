@@ -3873,20 +3873,21 @@ export class Column extends Container {
             renderedElement.style.minWidth = "0";
         }
 
-        if (this.width instanceof Utils.SizeAndUnit) {
-            if (this.width.unit == Enums.SizeUnit.Pixel) {
-                renderedElement.style.flex = "0 0 " + this.width.physicalSize + "px";
-            }
-            else {
-                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width.physicalSize) + "%";
-            }
-        }
-        else if (this.width === "auto") {
+        if (this.width === "auto") {
             renderedElement.style.flex = "0 1 auto";
         }
-        else {
-            // Stretch
+        else if (this.width === "stretch") {
             renderedElement.style.flex = "1 1 50px";
+        }
+        else {
+            let sizeAndUnit = <SizeAndUnit>this.width;
+
+            if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
+                renderedElement.style.flex = "0 0 " + sizeAndUnit.physicalSize + "px";
+            }
+            else {
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : sizeAndUnit.physicalSize) + "%";
+            }
         }
     }
 

@@ -1077,13 +1077,13 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
         
-        var width = addLabelAndInput(card, "Width:", Adaptive.TextInput);
+        let width = addLabelAndInput(card, "Width:", Adaptive.TextInput);
 
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
-            width.input.defaultValue = this.cardElement.width.physicalSize + (this.cardElement.width.unit == Adaptive.SizeUnit.Pixel ? "px" : "*");
+            width.input.defaultValue = this.cardElement.width.physicalSize.toString() + (this.cardElement.width.unit == Adaptive.SizeUnit.Pixel ? "px" : "*");
         }
         else {
-            width.input.defaultValue = this.cardElement.width;
+            width.input.defaultValue = this.cardElement.width.toString();
         }
 
         width.input.onValueChanged = () => {
@@ -1102,7 +1102,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             this.changed(false);
         }
 
-        var verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
+        let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
         verticalContentAlignment.input.isCompact = true;
         verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
         verticalContentAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
@@ -1115,7 +1115,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             this.changed(false);
         }
         
-        var actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
+        let actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
             if (actionSelector.input.value == "none") {
