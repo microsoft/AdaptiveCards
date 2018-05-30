@@ -2131,7 +2131,7 @@ class ActionButton {
         }
 
         if (this.action.isPrimary) {
-            this.action.renderedElement.classList.add(hostConfig.makeCssClassName("primaryAction"));
+            this.action.renderedElement.classList.add(hostConfig.makeCssClassName("primary"));
         }
 
     }
