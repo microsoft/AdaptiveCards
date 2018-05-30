@@ -62,6 +62,7 @@ public:
     static std::vector<std::shared_ptr<BaseCardElement>> GetElementCollection(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
         bool isRequired = false);
@@ -70,14 +71,16 @@ public:
     static std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value&)>& deserializer,
+        const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&, const Json::Value&)>& deserializer,
         bool isRequired = false);
 
     static std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
         bool isRequired = false);
@@ -85,6 +88,7 @@ public:
     static std::shared_ptr<BaseActionElement> GetSelectAction(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
         bool isRequired = false);
@@ -99,6 +103,7 @@ public:
     static std::shared_ptr<BaseActionElement> GetActionFromJsonValue(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& json);
 
     static void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
@@ -154,9 +159,10 @@ template <typename T>
 std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollectionOfSingleType(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
-    const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, const Json::Value&)>& deserializer,
+    const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&, const Json::Value&)>& deserializer,
     bool isRequired)
 {
     auto elementArray = GetArray(json, key, isRequired);
@@ -173,7 +179,7 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollectionOfSingleType(
     for (const Json::Value& curJsonValue : elementArray)
     {
         // Parse the element
-        auto el = deserializer(elementParserRegistration, actionParserRegistration, curJsonValue);
+        auto el = deserializer(elementParserRegistration, actionParserRegistration, warnings, curJsonValue);
         if (el != nullptr)
         {
             elements.push_back(el);

@@ -16,7 +16,9 @@ public enum WarningStatusCode {
   InteractivityNotSupported,
   MaxActionsExceeded,
   AssetLoadFailed,
-  UnsupportedSchemaVersion;
+  UnsupportedSchemaVersion,
+  UnsupportedMediaType,
+  InvalidMediaMix;
 
   public final int swigValue() {
     return swigValue;
