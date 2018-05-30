@@ -2843,8 +2843,7 @@ class ActionCollection {
         }
         else {
             var buttonStrip = document.createElement("div");
-            let hostConfig = this._owner.hostConfig;
-            buttonStrip.className = hostConfig.makeCssClassName("ac-actionStrip");
+            buttonStrip.className = this._owner.hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
 
             if (orientation == Enums.Orientation.Horizontal) {
