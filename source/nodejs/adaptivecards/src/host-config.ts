@@ -322,6 +322,15 @@ export class HostConfig {
         large: 21,
         extraLarge: 26
     };
+
+    readonly lineHeights = {
+		small: 16,
+		default: 19,
+		medium: 23,
+		large: 28,
+		extraLarge: 35
+    };
+    
     readonly fontWeights = {
         lighter: 200,
         default: 400,
@@ -357,6 +366,14 @@ export class HostConfig {
                 large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
                 extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
             };
+
+            this.lineHeights = {
+                    small: obj.lineHeights && obj.lineHeights["small"] || this.lineHeights.small,
+                    default: obj.lineHeights && obj.lineHeights["default"] || this.lineHeights.default,
+                    medium: obj.lineHeights && obj.lineHeights["medium"] || this.lineHeights.medium,
+                    large: obj.lineHeights && obj.lineHeights["large"] || this.lineHeights.large,
+                    extraLarge: obj.lineHeights && obj.lineHeights["extraLarge"] || this.lineHeights.extraLarge
+                };
 
             this.fontWeights = {
                 lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,

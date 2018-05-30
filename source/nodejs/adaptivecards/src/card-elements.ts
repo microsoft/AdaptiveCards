@@ -644,14 +644,14 @@ export abstract class CardElement {
 }
 
 export class TextBlock extends CardElement {
-    private _computedLineHeight: number;
+    private lineHeight: number;
     private _originalInnerHtml: string;
     private _text: string;
     private _processedText: string = null;
 
     private restoreOriginalContent() {
         var maxHeight = this.maxLines
-            ? (this._computedLineHeight * this.maxLines) + 'px'
+            ? (this.lineHeight * this.maxLines) + 'px'
             : null;
 
         this.renderedElement.style.maxHeight = maxHeight;
@@ -673,7 +673,7 @@ export class TextBlock extends CardElement {
                 ? this.renderedElement
                 : <HTMLElement>children[0];
 
-            Utils.truncate(element, maxHeight, this._computedLineHeight);
+            Utils.truncate(element, maxHeight, this.lineHeight);
             return true;
         }
 
@@ -722,12 +722,26 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            // Looks like 1.33 is the magic number to compute line-height
-            // from font size.
-            this._computedLineHeight = fontSize * 1.33;
+            switch (this.size) {
+                case Enums.TextSize.Small:
+                    this.lineHeight = this.hostConfig.lineHeights.small;
+                    break;
+                case Enums.TextSize.Medium:
+                    this.lineHeight = this.hostConfig.lineHeights.medium;
+                    break;
+                case Enums.TextSize.Large:
+                    this.lineHeight = this.hostConfig.lineHeights.large;
+                    break;
+                case Enums.TextSize.ExtraLarge:
+                    this.lineHeight = this.hostConfig.lineHeights.extraLarge;
+                    break;
+                default:
+                    this.lineHeight = this.hostConfig.lineHeights.default;
+                    break;
+            };
 
             element.style.fontSize = fontSize + "px";
-            element.style.lineHeight = this._computedLineHeight + "px";
+            element.style.lineHeight = this.lineHeight + "px";
 
             var parentContainer = this.getParentContainer();
             var styleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default, this.hostConfig.containerStyles.default);
@@ -817,7 +831,7 @@ export class TextBlock extends CardElement {
                 element.style.wordWrap = "break-word";
 
                 if (this.maxLines > 0) {
-                    element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
+                    element.style.maxHeight = (this.lineHeight * this.maxLines) + "px";
                     element.style.overflow = "hidden";
                 }
             }
@@ -839,7 +853,7 @@ export class TextBlock extends CardElement {
     }
 
     protected truncateOverflow(maxHeight: number): boolean {
-        if (maxHeight >= this._computedLineHeight) {
+        if (maxHeight >= this.lineHeight) {
             return this.truncateIfSupported(maxHeight);
         }
 
@@ -850,7 +864,7 @@ export class TextBlock extends CardElement {
         this.restoreOriginalContent();
 
         if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines) {
-            var maxHeight = this._computedLineHeight * this.maxLines;
+            var maxHeight = this.lineHeight * this.maxLines;
             this.truncateIfSupported(maxHeight);
         }
     }
@@ -939,7 +953,7 @@ export class TextBlock extends CardElement {
             // Reset the element's innerHTML in case the available room for
             // content has increased
             this.restoreOriginalContent();
-            var maxHeight = this._computedLineHeight * this.maxLines;
+            var maxHeight = this.lineHeight * this.maxLines;
             this.truncateIfSupported(maxHeight);
         }
     }
@@ -4914,6 +4928,13 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
             medium: 17,
             large: 21,
             extraLarge: 26
+        },
+        lineHeights: {
+            small: 16,
+            default: 19,
+            medium: 23,
+            large: 28,
+            extraLarge: 35
         },
         fontWeights: {
             lighter: 200,
