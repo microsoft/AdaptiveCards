@@ -30,39 +30,38 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     // Main function to try different ways to load an image
     HttpRequestResult<Bitmap> loadImage(String path, Context context)
     {
-        // Try loading online using only the path first
         try
         {
-            return loadOnlineImage(path);
-        }
-        catch (MalformedURLException e1) {
-            // Then try using image base URL to load online
+            // Try loading online using only the path first
             try
             {
-                if (m_imageBaseUrl == null || m_imageBaseUrl.isEmpty())
+                return loadOnlineImage(path);
+            }
+            catch (MalformedURLException e1) {
+                // Then try using image base URL to load online
+                try
                 {
-                    return new HttpRequestResult<>(new Exception("Image base URL is empty or not specified"));
+                    if (m_imageBaseUrl == null || m_imageBaseUrl.isEmpty())
+                    {
+                        throw new IOException("Image base URL is empty or not specified");
+                    }
+
+                    // Construct a URL using the image base URL and path
+                    URL urlContext = new URL(m_imageBaseUrl);
+                    URL url = new URL(urlContext, path);
+
+                    return loadOnlineImage(url.toString());
                 }
-
-                // Construct a URL using the image base URL and path
-                URL urlContext = new URL(m_imageBaseUrl);
-                URL url = new URL(urlContext, path);
-
-                return loadOnlineImage(url.toString());
-            }
-            catch (MalformedURLException e2)
-            {
-                // Then try reading it from local resources
-                return loadLocalImage(m_imageBaseUrl, context, path);
-            }
-            catch (Exception e)
-            {
-                return new HttpRequestResult<>(e);
+                catch (MalformedURLException e2)
+                {
+                    // Then try reading it from local resources
+                    return loadLocalImage(m_imageBaseUrl, context, path);
+                }
             }
         }
-        catch (Exception excep)
+        catch (Exception e)
         {
-            return new HttpRequestResult<>(excep);
+            return new HttpRequestResult<>(e);
         }
     }
 
@@ -87,38 +86,26 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     }
 
     // Helper function to load local image URL from res/
-    private HttpRequestResult<Bitmap> loadLocalImage(String imageBaseUrl, Context context, String url)
+    private HttpRequestResult<Bitmap> loadLocalImage(String imageBaseUrl, Context context, String url) throws IOException
     {
-        try
+        String authority = context.getPackageName();
+
+        // Get image identifier
+        Resources resources = context.getResources();
+        int identifier = resources.getIdentifier(url, imageBaseUrl, authority);
+        if (identifier == 0)
         {
-            if (imageBaseUrl == null || imageBaseUrl.isEmpty())
-            {
-                throw new Exception("Image Base URL is not specified or empty");
-            }
-
-            String authority = context.getPackageName();
-
-            // Get image identifier
-            Resources resources = context.getResources();
-            int identifier = resources.getIdentifier(url, imageBaseUrl, authority);
-            if (identifier == 0)
-            {
-                throw new Exception("Image not found: " + url);
-            }
-
-            InputStream ins = resources.openRawResource(identifier);
-            Bitmap bitmap = BitmapFactory.decodeStream(ins);
-            if (bitmap == null)
-            {
-                throw new Exception("Failed to convert local content to bitmap: " + url);
-            }
-
-            return new HttpRequestResult<>(bitmap);
+            throw new IOException("Image not found: " + url);
         }
-        catch (Exception e)
+
+        InputStream ins = resources.openRawResource(identifier);
+        Bitmap bitmap = BitmapFactory.decodeStream(ins);
+        if (bitmap == null)
         {
-            return new HttpRequestResult<>(e);
+            throw new IOException("Failed to convert local content to bitmap: " + url);
         }
+
+        return new HttpRequestResult<>(bitmap);
     }
 
     // By default, this function keeps the bitmap as is
