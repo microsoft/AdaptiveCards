@@ -104,7 +104,7 @@ public class CardRendererRegistration
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(tag);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         layout.setOrientation(LinearLayout.VERTICAL);
 
         if (viewGroup != null)
