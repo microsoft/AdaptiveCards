@@ -43,6 +43,12 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public bool SupportsInteractivity { get; set; } = true;
 
+        /// <summary>
+        /// Image Base URL for relative URLs
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string ImageBaseUrl { get; set; } = null;
+
         public int GetSpacing(AdaptiveSpacing spacing)
         {
             switch (spacing)
