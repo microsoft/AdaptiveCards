@@ -109,6 +109,13 @@ export class ContainerStyle {
     static readonly Emphasis = "emphasis";
 }
 
+export class InputTextStyle {
+    static readonly Text = "text";
+    static readonly Tel = "tel";
+    static readonly Url = "url";
+    static readonly Email = "email";
+}
+
 export enum ValidationError {
     Hint,
     ActionTypeNotAllowed,

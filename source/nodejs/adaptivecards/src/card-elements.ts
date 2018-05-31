@@ -1593,7 +1593,7 @@ export class TextInput extends Input {
         }
         else {
             this._inputElement = document.createElement("input");
-            this._inputElement.type = "text";
+            this._inputElement.type = (this.style == Enums.InputTextStyle.Email) ? "email" : "text";
             this._inputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
             this._inputElement.style.width = "100%";
             this._inputElement.tabIndex = 0;
@@ -1620,6 +1620,7 @@ export class TextInput extends Input {
     maxLength: number;
     isMultiline: boolean;
     placeholder: string;
+    style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
 
     getJsonTypeName(): string {
         return "Input.Text";
@@ -1631,6 +1632,7 @@ export class TextInput extends Input {
         Utils.setProperty(result, "placeholder", this.placeholder);
         Utils.setProperty(result, "maxLength", this.maxLength, 0);
         Utils.setProperty(result, "isMultiline", this.isMultiline, false);
+        Utils.setProperty(result, "style", this.style, Enums.InputTextStyle.Text);
 
         return result;
     }
@@ -1641,6 +1643,7 @@ export class TextInput extends Input {
         this.maxLength = json["maxLength"];
         this.isMultiline = json["isMultiline"];
         this.placeholder = json["placeholder"];
+        this.style = json["style"];
     }
 
     get value(): string {
