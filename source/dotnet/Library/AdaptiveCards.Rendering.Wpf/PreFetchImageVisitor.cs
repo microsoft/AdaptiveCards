@@ -47,6 +47,11 @@ namespace AdaptiveCards.Rendering.Wpf
             LoadedImages[url] = await _resourceResolver.LoadAssetAsync(url).ConfigureAwait(false);
         }
 
+        protected async Task GetImage(string url)
+        {
+            await GetImage(new Uri(url));
+        }
+
         public override void Visit(AdaptiveCard card)
         {
             if (card.BackgroundImage != null)

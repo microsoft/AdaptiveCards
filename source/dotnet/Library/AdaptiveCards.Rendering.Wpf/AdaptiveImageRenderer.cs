@@ -10,7 +10,32 @@ namespace AdaptiveCards.Rendering.Wpf
         public static FrameworkElement Render(AdaptiveImage image, AdaptiveRenderContext context)
         {
             var uiImage = new Image();
-            uiImage.SetSource(image.Url, context);
+
+            // Try to resolve the image URI
+            Uri imageUri = null;
+            try
+            {
+                // Try absolute
+                imageUri = new Uri(image.Url);
+            }
+            catch (UriFormatException)
+            {
+                if (!String.IsNullOrEmpty(context.Config.ImageBaseUrl))
+                {
+                    // Try relative with image base URL
+                    try
+                    {
+                        Uri baseUri = new Uri(context.Config.ImageBaseUrl);
+                        imageUri = new Uri(baseUri, image.Url);
+                    }
+                    catch (UriFormatException) {}
+                }
+            }
+
+            // If image URI is not eventually resolved, return the empty Image
+            if (imageUri == null) { return uiImage; }
+
+            uiImage.SetSource(imageUri, context);
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";
