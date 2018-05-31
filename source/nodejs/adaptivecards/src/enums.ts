@@ -91,6 +91,13 @@ export enum ActionIconPlacement {
     AboveTitle
 }
 
+export enum InputTextStyle {
+    Text,
+    Tel,
+    Url,
+    Email
+}
+
 /*
     This should really be a string enum, e.g.
     
@@ -107,13 +114,6 @@ export enum ActionIconPlacement {
 export class ContainerStyle {
     static readonly Default = "default";
     static readonly Emphasis = "emphasis";
-}
-
-export class InputTextStyle {
-    static readonly Text = "text";
-    static readonly Tel = "tel";
-    static readonly Url = "url";
-    static readonly Email = "email";
 }
 
 export enum ValidationError {
