@@ -56,7 +56,7 @@ namespace AdaptiveSharedNamespace
         std::string m_altText;
         HorizontalAlignment m_hAlignment;
         std::shared_ptr<BaseActionElement> m_selectAction;
-};
+    };
 
     class ImageParser : public BaseCardElementParser
     {
