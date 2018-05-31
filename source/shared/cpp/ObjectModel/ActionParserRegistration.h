@@ -5,7 +5,7 @@
 #include "json/json.h"
 #include "AdaptiveCardParseWarning.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
     class BaseActionElement;
     class ElementParserRegistration;
     class ActionParserRegistration;
@@ -34,4 +34,4 @@ AdaptiveSharedNamespaceStart
         std::unordered_set<std::string> m_knownElements;
         std::unordered_map<std::string, std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
     };
-AdaptiveSharedNamespaceEnd
+}

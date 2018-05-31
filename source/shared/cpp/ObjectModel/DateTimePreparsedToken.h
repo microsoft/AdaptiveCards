@@ -3,7 +3,7 @@
 #include <vector>
 #include "Enums.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
     class DateTimePreparsedToken
     {
     public:
@@ -15,7 +15,7 @@ AdaptiveSharedNamespaceStart
         DateTimePreparsedTokenFormat GetFormat() const;
         // returns values 1-31
         int GetDay() const;
-        // returns values 0-11 
+        // returns values 0-11
         int GetMonth() const;
         // return values 1900 onward
         int GetYear() const;
@@ -25,4 +25,4 @@ AdaptiveSharedNamespaceStart
         struct tm m_date;
         DateTimePreparsedTokenFormat m_format;
     };
-AdaptiveSharedNamespaceEnd
+}
