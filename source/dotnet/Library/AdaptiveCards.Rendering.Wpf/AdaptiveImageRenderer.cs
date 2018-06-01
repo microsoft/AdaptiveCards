@@ -13,30 +13,29 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiImage = new Image();
 
-            // Try to resolve the image URI
-            Uri imageUri = new Uri(image.Url, UriKind.RelativeOrAbsolute);
-            if (imageUri.IsAbsoluteUri)
+            // Handle URL depending on its type
+            if (image.Url.IsAbsoluteUri)
             {
                 // If it's an absolute URI, simply set the source
-                uiImage.SetSource(imageUri, context);
+                uiImage.SetSource(image.Url, context);
             }
             else
             {
                 // Otherwise, combine with image base URL and try again
                 string baseUrl = String.IsNullOrEmpty(context.Config.ImageBaseUrl) ? "" : context.Config.ImageBaseUrl;
-                string combined = Path.Combine(baseUrl, image.Url);
+                string combined = Path.Combine(baseUrl, image.UrlString);
 
-                imageUri = new Uri(combined, UriKind.RelativeOrAbsolute);
-                if (imageUri.IsAbsoluteUri)
+                image.Url = new Uri(combined, UriKind.RelativeOrAbsolute);
+                if (image.Url.IsAbsoluteUri)
                 {
-                    uiImage.SetSource(imageUri, context);
+                    uiImage.SetSource(image.Url, context);
                 }
                 else
                 {
                     // If it's still a relative URL, try loading directly from local resource
                     BitmapImage bi = new BitmapImage();
                     bi.BeginInit();
-                    bi.UriSource = imageUri;
+                    bi.UriSource = image.Url;
                     bi.EndInit();
 
                     uiImage.SetSource(bi);

@@ -21,6 +21,11 @@ namespace AdaptiveCards
 
         public AdaptiveImage(string url)
         {
+            Url = new Uri(url);
+        }
+
+        public AdaptiveImage(Uri url)
+        {
             Url = url;
         }
 
@@ -56,10 +61,24 @@ namespace AdaptiveCards
         /// </summary>
         [JsonRequired]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
         [DefaultValue(null)]
-        public string Url { get; set; }
+        public Uri Url { get; set; }
+
+        /// <summary>
+        ///     This is necessary for XML serialization. You should use the <see cref="F:Url" /> property directly.
+        /// </summary>
+#if !NETSTANDARD1_3
+        [XmlAttribute("Url")]
+        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+#endif
+        [JsonIgnore]
+        public string UrlString
+        {
+            get { return Url?.ToString(); }
+            set { Url = new Uri(value); }
+        }
 
         /// <summary>
         ///     Horizontal alignment for element
