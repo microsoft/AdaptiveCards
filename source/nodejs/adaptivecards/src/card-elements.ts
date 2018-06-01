@@ -2142,10 +2142,10 @@ class ActionButton {
     private updateCssStyle() {
         let hostConfig = this.action.parent.hostConfig;
 
-       this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
-       this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
+        this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
+        this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
 
-       switch (this._state) {
+        switch (this._state) {
             case ActionButtonState.Expanded:
                 this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expanded"));
                 break;
@@ -2153,6 +2153,11 @@ class ActionButton {
                 this.action.renderedElement.classList.add(hostConfig.makeCssClassName("subdued"));
                 break;
         }
+
+        if (this.action.isPrimary) {
+            this.action.renderedElement.classList.add(hostConfig.makeCssClassName("primary"));
+        }
+
     }
 
     readonly action: Action;
@@ -2203,6 +2208,7 @@ export abstract class Action {
     id: string;
     title: string;
     iconUrl: string;
+    isPrimary: boolean;
 
     toJSON() {
         let result = {};
@@ -2861,6 +2867,7 @@ class ActionCollection {
         }
         else {
             var buttonStrip = document.createElement("div");
+            buttonStrip.className = this._owner.hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
 
             if (orientation == Enums.Orientation.Horizontal) {
