@@ -29,6 +29,8 @@
 		6B7B1A9220B4D2AB00260731 /* MediaSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A8E20B4D2AA00260731 /* MediaSource.cpp */; };
 		6B7B1A9320B4D2AB00260731 /* MediaSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A8F20B4D2AA00260731 /* MediaSource.h */; };
 		6B7B1A9420B4D2AB00260731 /* Media.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9020B4D2AB00260731 /* Media.h */; };
+		6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */; };
+		6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
 		F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */; };
 		F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */; };
@@ -262,6 +264,8 @@
 		6B7B1A8E20B4D2AA00260731 /* MediaSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MediaSource.cpp; path = ../../../../shared/cpp/ObjectModel/MediaSource.cpp; sourceTree = "<group>"; };
 		6B7B1A8F20B4D2AA00260731 /* MediaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MediaSource.h; path = ../../../../shared/cpp/ObjectModel/MediaSource.h; sourceTree = "<group>"; };
 		6B7B1A9020B4D2AB00260731 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Media.h; path = ../../../../shared/cpp/ObjectModel/Media.h; sourceTree = "<group>"; };
+		6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRUIImageView.mm; sourceTree = "<group>"; };
+		6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRUIImageView.h; sourceTree = "<group>"; };
 		F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
 		F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetRenderer.h; sourceTree = "<group>"; };
@@ -715,6 +719,8 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
+				6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */,
+				6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */,
 				F4F44B9F204CED2300A2F24C /* ACRCustomRenderer.h */,
 				F4F44B9E204CED2300A2F24C /* ACRCustomRenderer.mm */,
 				F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */,
@@ -790,6 +796,7 @@
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,
 				F44873261EE2261F00FCAFAE /* TextInput.h in Headers */,
+				6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */,
 				F44873221EE2261F00FCAFAE /* SubmitAction.h in Headers */,
 				F44873201EE2261F00FCAFAE /* ShowCardAction.h in Headers */,
 				F448731B1EE2261F00FCAFAE /* OpenUrlAction.h in Headers */,
@@ -1114,6 +1121,7 @@
 				F43660781F0706D800EBA868 /* SharedAdaptiveCard.cpp in Sources */,
 				6B7B1A9120B4D2AB00260731 /* Media.cpp in Sources */,
 				F42E517A1FEC3840008F9642 /* MarkDownParser.cpp in Sources */,
+				6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */,
 				F4F6BA3B204F3109003741B6 /* ACRAggregateTarget.mm in Sources */,
 				F42741251EFB274C00399FBB /* ACRColumnRenderer.mm in Sources */,
 				F4F255701F98247600A80D39 /* ACOBaseActionElement.mm in Sources */,

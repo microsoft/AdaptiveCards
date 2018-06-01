@@ -22,6 +22,7 @@
 #import "MarkDownParser.h"
 #import "ImageSet.h"
 #import "ACRUILabel.h"
+#import "ACRUIImageView.h"
 #import "FactSet.h"
 
 using namespace AdaptiveCards;
@@ -108,7 +109,7 @@ using namespace AdaptiveCards;
         NSURL *url = [NSURL URLWithString:imgUrl];
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
         if(img){
-            UIImageView *imgView = [[UIImageView alloc] initWithImage:img];
+            ACRUIImageView *imgView = [[ACRUIImageView alloc] initWithImage:img];
             [newView addSubview:imgView];
             [newView sendSubviewToBack:imgView];
             [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -394,12 +395,12 @@ using namespace AdaptiveCards;
              NSURL *url = [NSURL URLWithString:urlStr];
              // download image
              UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-            CGSize cgsize = [self->_hostConfig getImageSize:imgElem->GetImageSize()];
+             CGSize cgsize = [self->_hostConfig getImageSize:imgElem->GetImageSize()];
 
              // UITask can't be run on global queue, add task to main queue
              dispatch_async(dispatch_get_main_queue(),
                  ^{
-                      __block UIImageView *view = nil;
+                      __block ACRUIImageView *view = nil;
                       // synchronize access to image map
                      dispatch_sync(self->_serial_queue,
                           ^{
@@ -468,7 +469,7 @@ using namespace AdaptiveCards;
 
                 // download image
                 UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-                UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+                ACRUIImageView *imageView = [[ACRUIImageView alloc] initWithImage:img];
 
                 // UITask can't be run on global queue, add task to main queue
                 dispatch_async(dispatch_get_main_queue(),
