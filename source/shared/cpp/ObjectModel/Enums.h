@@ -305,6 +305,8 @@ enum class WarningStatusCode {
     MaxActionsExceeded,
     AssetLoadFailed,
     UnsupportedSchemaVersion,
+    UnsupportedMediaType,
+    InvalidMediaMix,
 };
 
 enum class DateTimePreparsedTokenFormat {

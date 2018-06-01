@@ -397,7 +397,8 @@ AdaptiveNamespaceStart
         MaxActionsExceeded,
         AssetLoadFailed,
         UnsupportedSchemaVersion,
-        UnsupportedMediaType
+        UnsupportedMediaType,
+        InvalidMediaMix,
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -2490,6 +2491,7 @@ AdaptiveNamespaceStart
             [in] Windows.Data.Json.JsonObject* inputJson,
             [in] AdaptiveElementParserRegistration* elementParsers,
             [in] AdaptiveActionParserRegistration* actionParsers,
+            [in] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>* warnings,
             [out, retval] IAdaptiveCardElement** result);
     };
 
@@ -2573,6 +2575,7 @@ AdaptiveNamespaceStart
             [in] Windows.Data.Json.JsonObject* inputJson,
             [in] AdaptiveElementParserRegistration* elementParsers,
             [in] AdaptiveActionParserRegistration* actionParsers,
+            [in] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>* warnings,
             [out, retval] IAdaptiveActionElement** result);
     };
 

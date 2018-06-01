@@ -23,10 +23,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             actionParserRegistration.reset(new ActionParserRegistration());
 
             Json::Value json;
-
+            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
                 elementParserRegistration,
                 actionParserRegistration,
+                warnings,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
@@ -63,9 +64,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             Json::Value json = ParseUtil::GetJsonValueFromString(cardStr);
 
+            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
                 elementParserRegistration,
                 actionParserRegistration,
+                warnings,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
@@ -95,9 +98,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
+            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
                 elementParserRegistration,
                 actionParserRegistration,
+                warnings,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
@@ -139,9 +144,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
+            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
                 elementParserRegistration,
                 actionParserRegistration,
+                warnings,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
@@ -172,9 +179,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
+            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
                 elementParserRegistration,
                 actionParserRegistration,
+                warnings,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
