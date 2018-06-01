@@ -722,9 +722,30 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            // Looks like 1.33 is the magic number to compute line-height
-            // from font size.
-            this._computedLineHeight = fontSize * 1.33;
+            if (this.hostConfig.lineHeights) {
+                switch (this.size) {
+                    case Enums.TextSize.Small:
+                        this._computedLineHeight = this.hostConfig.lineHeights.small;
+                        break;
+                    case Enums.TextSize.Medium:
+                        this._computedLineHeight = this.hostConfig.lineHeights.medium;
+                        break;
+                    case Enums.TextSize.Large:
+                        this._computedLineHeight = this.hostConfig.lineHeights.large;
+                        break;
+                    case Enums.TextSize.ExtraLarge:
+                        this._computedLineHeight = this.hostConfig.lineHeights.extraLarge;
+                        break;
+                    default:
+                        this._computedLineHeight = this.hostConfig.lineHeights.default;
+                        break;    
+                }
+            }
+            else {
+                // Looks like 1.33 is the magic number to compute line-height
+                // from font size.
+                this._computedLineHeight = fontSize * 1.33;                
+            }
 
             element.style.fontSize = fontSize + "px";
             element.style.lineHeight = this._computedLineHeight + "px";
