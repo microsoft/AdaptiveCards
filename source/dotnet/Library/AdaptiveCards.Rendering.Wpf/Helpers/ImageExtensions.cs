@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -66,7 +67,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
         private static void SetBinding(Image image)
         {
-
             var binding = new Binding
             {
                 RelativeSource = RelativeSource.Self,
@@ -110,7 +110,8 @@ namespace AdaptiveCards.Rendering.Wpf
             if (url == null)
                 return;
 
-            BitmapImage bi = new BitmapImage();
+            BitmapImage bi;
+            ImageBrush ib;
 
             // Try to resolve the image URI
             if (url.IsAbsoluteUri)
@@ -132,9 +133,19 @@ namespace AdaptiveCards.Rendering.Wpf
                 else
                 {
                     // If it's still a relative URL, try loading directly from local resource
-                    bi.BeginInit();
-                    bi.UriSource = url;
-                    bi.EndInit();
+                    bi = new BitmapImage(url);
+
+                    ib = new ImageBrush(bi)
+                    {
+                        Stretch = Stretch.UniformToFill,
+                        AlignmentX = AlignmentX.Left,
+                        AlignmentY = AlignmentY.Top
+                    };
+
+                    // For some reason, this keeps failing for relative images (whether the image exists or not)
+                    //grid.Background = ib;
+
+                    return;
                 }
             }
 
