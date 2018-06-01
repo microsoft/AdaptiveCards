@@ -48,6 +48,25 @@ namespace AdaptiveCards.Rendering.Wpf
 
             image.Source = await context.ResolveImageSource(url);
 
+            if (image.Source == null)
+                return;
+
+            SetBinding(image);
+        }
+
+        public static void SetSource(this Image image, BitmapImage bi)
+        {
+            if (bi == null)
+                return;
+
+            image.Source = bi;
+
+            SetBinding(image);
+        }
+
+        private static void SetBinding(Image image)
+        {
+
             var binding = new Binding
             {
                 RelativeSource = RelativeSource.Self,

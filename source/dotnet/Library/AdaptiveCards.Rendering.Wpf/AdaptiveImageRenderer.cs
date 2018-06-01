@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -12,30 +14,35 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiImage = new Image();
 
             // Try to resolve the image URI
-            Uri imageUri = null;
-            try
+            Uri imageUri = new Uri(image.Url, UriKind.RelativeOrAbsolute);
+            if (imageUri.IsAbsoluteUri)
             {
-                // Try absolute
-                imageUri = new Uri(image.Url);
+                // If it's an absolute URI, simply set the source
+                uiImage.SetSource(imageUri, context);
             }
-            catch (UriFormatException)
+            else
             {
-                if (!String.IsNullOrEmpty(context.Config.ImageBaseUrl))
+                // Otherwise, combine with image base URL and try again
+                string baseUrl = String.IsNullOrEmpty(context.Config.ImageBaseUrl) ? "" : context.Config.ImageBaseUrl;
+                string combined = Path.Combine(baseUrl, image.Url);
+
+                imageUri = new Uri(combined, UriKind.RelativeOrAbsolute);
+                if (imageUri.IsAbsoluteUri)
                 {
-                    // Try relative with image base URL
-                    try
-                    {
-                        Uri baseUri = new Uri(context.Config.ImageBaseUrl);
-                        imageUri = new Uri(baseUri, image.Url);
-                    }
-                    catch (UriFormatException) {}
+                    uiImage.SetSource(imageUri, context);
+                }
+                else
+                {
+                    // If it's still a relative URL, try loading directly from local resource
+                    BitmapImage bi = new BitmapImage();
+                    bi.BeginInit();
+                    bi.UriSource = imageUri;
+                    bi.EndInit();
+
+                    uiImage.SetSource(bi);
                 }
             }
 
-            // If image URI is not eventually resolved, return the empty Image
-            if (imageUri == null) { return uiImage; }
-
-            uiImage.SetSource(imageUri, context);
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";
