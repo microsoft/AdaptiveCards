@@ -131,7 +131,7 @@ namespace AdaptiveCards
         public string BackgroundImageString
         {
             get { return BackgroundImage?.ToString(); }
-            set { BackgroundImage = new Uri(value, UriKind.RelativeOrAbsolute); }
+            set { BackgroundImage = new Uri(value); }
         }
 
         /// <summary>
