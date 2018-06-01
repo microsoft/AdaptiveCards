@@ -8,4 +8,6 @@
 
 @interface ACRColumnView:ACRContentStackView
 
+@property NSString *columnWidth;
+
 @end
