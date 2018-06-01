@@ -747,6 +747,13 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ActionsConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ActionsConfig jarg2_);
   public final static native long new_ActionsConfig();
   public final static native void delete_ActionsConfig(long jarg1);
+  public final static native void MediaConfig_defaultPoster_set(long jarg1, MediaConfig jarg1_, String jarg2);
+  public final static native String MediaConfig_defaultPoster_get(long jarg1, MediaConfig jarg1_);
+  public final static native void MediaConfig_playButton_set(long jarg1, MediaConfig jarg1_, String jarg2);
+  public final static native String MediaConfig_playButton_get(long jarg1, MediaConfig jarg1_);
+  public final static native long MediaConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, MediaConfig jarg2_);
+  public final static native long new_MediaConfig();
+  public final static native void delete_MediaConfig(long jarg1);
   public final static native void HostConfig_fontFamily_set(long jarg1, HostConfig jarg1_, String jarg2);
   public final static native String HostConfig_fontFamily_get(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_fontSizes_set(long jarg1, HostConfig jarg1_, long jarg2, FontSizesConfig jarg2_);
@@ -775,6 +782,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long HostConfig_actions_get(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_containerStyles_set(long jarg1, HostConfig jarg1_, long jarg2, ContainerStylesDefinition jarg2_);
   public final static native long HostConfig_containerStyles_get(long jarg1, HostConfig jarg1_);
+  public final static native void HostConfig_media_set(long jarg1, HostConfig jarg1_, long jarg2, MediaConfig jarg2_);
+  public final static native long HostConfig_media_get(long jarg1, HostConfig jarg1_);
   public final static native long HostConfig_Deserialize(long jarg1, JsonValue jarg1_);
   public final static native long HostConfig_DeserializeFromString(String jarg1);
   public final static native long new_HostConfig();

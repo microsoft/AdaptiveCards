@@ -53,6 +53,9 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result.actions = ParseUtil::ExtractJsonValueAndMergeWithDefault<ActionsConfig>(
         json, AdaptiveCardSchemaKey::Actions, result.actions, ActionsConfig::Deserialize);
 
+    result.media = ParseUtil::ExtractJsonValueAndMergeWithDefault<MediaConfig>(
+        json, AdaptiveCardSchemaKey::Media, result.media, MediaConfig::Deserialize);
+
     return result;
 }
 
@@ -310,5 +313,18 @@ ImageConfig ImageConfig::Deserialize(const Json::Value & json, const ImageConfig
     result.imageSize = ParseUtil::GetEnumValue<ImageSize>(
         json, AdaptiveCardSchemaKey::Size, defaultValue.imageSize, ImageSizeFromString);
 
+    return result;
+}
+
+MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig& defaultValue)
+{
+    MediaConfig result;
+
+    std::string defaultPoster = ParseUtil::GetString(json, AdaptiveCardSchemaKey::DefaultPoster);
+    result.defaultPoster = defaultPoster == "" ? defaultValue.defaultPoster : defaultPoster;
+
+    std::string playButton = ParseUtil::GetString(json, AdaptiveCardSchemaKey::PlayButton);
+    result.playButton = playButton == "" ? defaultValue.playButton : playButton;
+   
     return result;
 }

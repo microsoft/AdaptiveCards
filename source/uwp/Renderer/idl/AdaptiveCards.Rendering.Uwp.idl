@@ -65,6 +65,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveHostConfig;
     runtimeclass AdaptiveSpacingConfig;
     runtimeclass AdaptiveSeparatorConfig;
+    runtimeclass AdaptiveMediaConfig;
     runtimeclass AdaptiveContainerStyleDefinition;
     runtimeclass AdaptiveContainerStylesDefinition;
     runtimeclass RenderedAdaptiveCard;
@@ -2067,6 +2068,40 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMediaConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(FE60D4DC-02E9-4465-8235-7CA98620C17C),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(B8C95DEA-0668-4FD3-B1E2-98310610A6C3)
+#endif        
+    ]
+    interface IAdaptiveMediaConfig : IInspectable
+    {
+        [propget] HRESULT DefaultPoster([out, retval] HSTRING* value);
+        [propput] HRESULT DefaultPoster([in] HSTRING value);
+
+        [propget] HRESULT PlayButton([out][retval] HSTRING* value);
+        [propput] HRESULT PlayButton([in] HSTRING value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMediaConfig
+    {
+        [default] interface IAdaptiveMediaConfig;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveHostConfig),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(15ae7240-f9b0-47e4-b444-62da42b8b863),
@@ -2119,6 +2154,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Actions([out, retval] AdaptiveActionsConfig** value);
         [propput] HRESULT Actions([in] AdaptiveActionsConfig* value);
+
+        [propget] HRESULT Media([out, retval] AdaptiveMediaConfig** value);
+        [propput] HRESULT Media([in] AdaptiveMediaConfig* value);
     };
 
     [
