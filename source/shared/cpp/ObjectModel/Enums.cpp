@@ -17,6 +17,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation" },
         { AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard" },
         { AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle" },
+        { AdaptiveCardSchemaKey::AllowInlinePlayback, "allowInlinePlayback" },
         { AdaptiveCardSchemaKey::AltText, "altText" },
         { AdaptiveCardSchemaKey::Attention, "attention" },
         { AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor" },
