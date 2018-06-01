@@ -110,7 +110,35 @@ namespace AdaptiveCards.Rendering.Wpf
             if (url == null)
                 return;
 
-            grid.Background = new ImageBrush(await context.ResolveImageSource(url))
+            BitmapImage bi = new BitmapImage();
+
+            // Try to resolve the image URI
+            if (url.IsAbsoluteUri)
+            {
+                // If it's an absolute URI, simply set the source
+                bi = await context.ResolveImageSource(url);
+            }
+            else
+            {
+                // Otherwise, combine with image base URL and try again
+                string baseUrl = String.IsNullOrEmpty(context.Config.ImageBaseUrl) ? "" : context.Config.ImageBaseUrl;
+                string combined = Path.Combine(baseUrl, url.ToString());
+
+                url = new Uri(combined, UriKind.RelativeOrAbsolute);
+                if (url.IsAbsoluteUri)
+                {
+                    bi = await context.ResolveImageSource(url);
+                }
+                else
+                {
+                    // If it's still a relative URL, try loading directly from local resource
+                    bi.BeginInit();
+                    bi.UriSource = url;
+                    bi.EndInit();
+                }
+            }
+
+            grid.Background = new ImageBrush(bi)
             {
                 Stretch = Stretch.UniformToFill,
                 AlignmentX = AlignmentX.Left,
