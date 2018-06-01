@@ -4936,13 +4936,6 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
             large: 21,
             extraLarge: 26
         },
-        lineHeights: {
-            small: 16,
-            default: 19,
-            medium: 23,
-            large: 28,
-            extraLarge: 35
-        },
         fontWeights: {
             lighter: 200,
             default: 400,
