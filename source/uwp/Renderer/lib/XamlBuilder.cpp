@@ -2812,60 +2812,55 @@ AdaptiveNamespaceStart
         ComPtr<IUIElement> mediaUIElement;
         THROW_IF_FAILED(mediaElement.As(&mediaUIElement));
 
-        if (posterImage == nullptr)
-        {
-            // If there's no poster, just return the media element
-            mediaElement.CopyTo(mediaControl);
-        }
-        else
-        {
-            // Put the poster image in a container with a play button
-            ComPtr<IUIElement> posterContainer;
-            CreatePosterContainerWithPlayButton(posterImage.Get(), renderArgs, hostConfig.Get(), &posterContainer);
+        // Put the poster image in a container with a play button
+        ComPtr<IUIElement> posterContainer;
+        CreatePosterContainerWithPlayButton(posterImage.Get(), renderContext, renderArgs, &posterContainer);
 
+        if (posterImage != nullptr)
+        {
             // Set the poster on the media element
             ComPtr<IImageSource> posterImageSource;
             THROW_IF_FAILED(posterImage->get_Source(&posterImageSource));
             THROW_IF_FAILED(mediaElement->put_PosterSource(posterImageSource.Get()));
-
-            // Make the media element collapsed until the user clicks
-            THROW_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
-
-            // Create a panel to hold the poster and the media element
-            ComPtr<IStackPanel> mediaStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-            ComPtr<IPanel> mediaPanel;
-            THROW_IF_FAILED(mediaStackPanel.As(&mediaPanel));
-
-            XamlHelpers::AppendXamlElementToPanel(posterContainer.Get(), mediaPanel.Get());
-            XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
-
-            // Wrap in touch target
-            ComPtr<IUIElement> mediaPanelAsUIElement;
-            THROW_IF_FAILED(mediaPanel.As(&mediaPanelAsUIElement));
-
-            ComPtr<IUIElement> touchTargetUIElement;
-            WrapInTouchTarget(adaptiveCardElement, mediaPanelAsUIElement.Get(), nullptr, renderContext, true, &touchTargetUIElement);
-
-            ComPtr<IButtonBase> touchTargetAsButtonBase;
-            THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
-
-            // When the user clicks: hide the poster, show the media element, play the media
-            EventRegistrationToken clickToken;
-            THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([posterContainer, mediaElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-            {
-                RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
-
-                ComPtr<IUIElement> mediaAsUIElement;
-                RETURN_IF_FAILED(mediaElement.As(&mediaAsUIElement));
-                RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
-
-                RETURN_IF_FAILED(mediaElement->Play());
-
-                return S_OK;
-            }).Get(), &clickToken));
-
-            THROW_IF_FAILED(touchTargetUIElement.CopyTo(mediaControl));
         }
+
+        // Make the media element collapsed until the user clicks
+        THROW_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
+
+        // Create a panel to hold the poster and the media element
+        ComPtr<IStackPanel> mediaStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<IPanel> mediaPanel;
+        THROW_IF_FAILED(mediaStackPanel.As(&mediaPanel));
+
+        XamlHelpers::AppendXamlElementToPanel(posterContainer.Get(), mediaPanel.Get());
+        XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
+
+        // Wrap in touch target
+        ComPtr<IUIElement> mediaPanelAsUIElement;
+        THROW_IF_FAILED(mediaPanel.As(&mediaPanelAsUIElement));
+
+        ComPtr<IUIElement> touchTargetUIElement;
+        WrapInTouchTarget(adaptiveCardElement, mediaPanelAsUIElement.Get(), nullptr, renderContext, true, &touchTargetUIElement);
+
+        ComPtr<IButtonBase> touchTargetAsButtonBase;
+        THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
+
+        // When the user clicks: hide the poster, show the media element, play the media
+        EventRegistrationToken clickToken;
+        THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([posterContainer, mediaElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        {
+            RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+
+            ComPtr<IUIElement> mediaAsUIElement;
+            RETURN_IF_FAILED(mediaElement.As(&mediaAsUIElement));
+            RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
+
+            RETURN_IF_FAILED(mediaElement->Play());
+
+            return S_OK;
+        }).Get(), &clickToken));
+
+        THROW_IF_FAILED(touchTargetUIElement.CopyTo(mediaControl));
     }
 
     bool XamlBuilder::SupportsInteractivity(IAdaptiveHostConfig* hostConfig)

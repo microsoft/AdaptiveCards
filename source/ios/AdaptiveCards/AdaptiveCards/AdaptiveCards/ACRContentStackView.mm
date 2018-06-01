@@ -7,12 +7,14 @@
 
 #include "ACRContentStackView.h"
 #include "ACOHostConfigPrivate.h"
+#import "ACRShowCardTarget.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRContentStackView
 {
     NSMutableArray* _targets;
+    NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
     ACRContainerStyle _style;
 }
 
@@ -121,6 +123,7 @@ using namespace AdaptiveCards;
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
     _targets = [[NSMutableArray alloc] init];
+    _showcardTargets = [[NSMutableArray alloc] init];
 }
 
 - (CGSize)intrinsicContentSize
@@ -136,6 +139,17 @@ using namespace AdaptiveCards;
 - (void)addTarget:(NSObject *)target
 {
     [_targets addObject:target];
+
+    if([target isKindOfClass:[ACRShowCardTarget class]]){
+        [_showcardTargets addObject:(ACRShowCardTarget *)target];
+    }
+}
+
+- (void)hideAllShowCards
+{
+    for(ACRShowCardTarget *target in _showcardTargets){
+        [target hideShowCard];
+    }
 }
 
 // let the last element to strech

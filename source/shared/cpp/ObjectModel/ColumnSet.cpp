@@ -61,6 +61,7 @@ Json::Value ColumnSet::SerializeToJsonValue() const
 std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
@@ -68,11 +69,11 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
     auto container = BaseCardElement::Deserialize<ColumnSet>(value);
 
     // Parse Columns
-    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
+    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
     container->m_columns = std::move(cardElements);
 
     // Parse optional selectAction
-    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction, false));
+    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }
@@ -80,9 +81,10 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
 std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return ColumnSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ColumnSetParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void ColumnSet::PopulateKnownPropertiesSet() 

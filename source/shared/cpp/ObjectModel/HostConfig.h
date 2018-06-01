@@ -170,6 +170,14 @@ struct ActionsConfig
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
 };
 
+struct MediaConfig
+{
+    std::string defaultPoster;
+    std::string playButton;
+
+    static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
+};
+
 struct HostConfig
 {
     std::string fontFamily = "Calibri";
@@ -186,6 +194,7 @@ struct HostConfig
     FactSetConfig factSet;
     ActionsConfig actions;
     ContainerStylesDefinition containerStyles;
+    MediaConfig media;
 
     static HostConfig Deserialize(const Json::Value& json);
     static HostConfig DeserializeFromString(const std::string jsonString);

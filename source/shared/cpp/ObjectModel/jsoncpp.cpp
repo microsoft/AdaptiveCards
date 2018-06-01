@@ -74,7 +74,9 @@ license you like.
 
 #include "pch.h"
 
+#ifndef ADAPTIVE_CARDS_WINDOWS
 #pragma warning(disable: ALL_CPPCORECHECK_WARNINGS)
+#endif
 
 #include "json/json.h"
 

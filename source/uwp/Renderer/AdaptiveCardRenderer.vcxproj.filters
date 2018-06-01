@@ -85,6 +85,7 @@
     <ClCompile Include="lib\AdaptiveMediaRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="lib\AdaptiveMediaRenderer.h" />
     <ClInclude Include="lib\AdaptiveMediaSource.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
+    <ClInclude Include="lib\AdaptiveMediaConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
