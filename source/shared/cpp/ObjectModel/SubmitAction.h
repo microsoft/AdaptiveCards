@@ -12,14 +12,15 @@ public:
     SubmitAction();
 
     std::string GetDataJson() const;
-    void SetDataJson(const std::string &value);
+    Json::Value GetDataJsonAsValue() const;
+    void SetDataJson(const Json::Value &value);
 
     virtual Json::Value SerializeToJsonValue() const override;
 
 private:
     void PopulateKnownPropertiesSet();
 
-    std::string m_dataJson;
+    Json::Value m_dataJson;
 };
 
 class SubmitActionParser : public ActionElementParser
