@@ -36,7 +36,7 @@
         // Generate key for ImageViewMap
         NSString *key = [NSString stringWithCString:action->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
         // Syncronize access to imageViewMap
-        dispatch_async([rootView getSerialQueue], ^{
+        dispatch_sync([rootView getSerialQueue], ^{
             // if imageView is available, get it, otherwise cache UIButton, so it can be used once images are ready
             if(actionsViewMap[key] && [actionsViewMap[key] isKindOfClass:[UIImageView class]])
             {

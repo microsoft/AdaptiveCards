@@ -259,6 +259,21 @@ using namespace AdaptiveCards;
     }
 }
 
+// Walk through the actions found and process them concurrently
+- (void)addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions
+{
+    // Move this to a different function
+    for(auto &action : actions)
+    {
+        std::string iconUrl = action->GetIconUrl();
+        if(!iconUrl.empty())
+        {
+            [self tagBaseActionElement:action];
+            [self processActionWithIconConcurrently:action];
+        }
+    }
+}
+
 - (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
                     elementType:(CardElementType)elementType
                      textConfig:(TextConfig const &)textConfig
@@ -333,12 +348,73 @@ using namespace AdaptiveCards;
     );
 }
 
+- (void)processActionWithIconConcurrently:(std::shared_ptr<BaseActionElement> const &)action
+{
+    std::shared_ptr<BaseActionElement> act = action;
+
+    /// generate a string key to uniquely identify Image
+    if(!(act->GetIconUrl().empty()))
+    {
+        // run image downloading and processing on global queue which is concurrent and different from main queue
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+            ^{
+                NSString *urlStr = [NSString stringWithCString:act->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+                // generate key for imageMap from image element's id
+                NSString *key = [NSString stringWithCString:act->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+                NSURL *url = [NSURL URLWithString:urlStr];
+
+                // download image
+                UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                ACRUIImageView *imageView = [[ACRUIImageView alloc] initWithImage:img];
+
+                // UITask can't be run on global queue, add task to main queue
+                dispatch_async(dispatch_get_main_queue(),
+                    ^{
+                        __block UIButton *button = nil;
+                        // synchronize access to image map
+                        dispatch_sync(self->_serial_queue,
+                            ^{
+                                if(!self->_actionsMap[key]) // UIButton is not ready, cache UIImageView
+                                {
+                                    self->_actionsMap[key] = imageView;
+                                }
+                                else // UIButton ready, get view
+                                {
+                                    button = self->_actionsMap[key];
+                                }
+                            });
+
+                        // if view is available, set image to it, and continue image processing
+                        if(button)
+                        {
+                            [ACRView setImageView:imageView inButton:button withConfig:self->_hostConfig];
+
+                            // remove tag
+                            std::string id = act->GetId();
+                            std::size_t idx = id.find_last_of('_');
+                            act->SetId(id.substr(0, idx));
+                        }
+                    });
+                }
+            );
+    }
+}
+
 // add postfix to existing BaseCardElement ID to be used as key
 -(void)tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
     std::string serial_number_as_string = std::to_string(_serialNumber);
     // concat a newly generated key to a existing id, the key will be removed after use
     elem->SetId(elem->GetId() + "_" + serial_number_as_string);
+    ++_serialNumber;
+}
+
+// add postfix to existing BaseCardElement ID to be used as key
+-(void)tagBaseActionElement:(std::shared_ptr<BaseActionElement> const &)action
+{
+    std::string serial_number_as_string = std::to_string(_serialNumber);
+    // concat a newly generated key to a existing id, the key will be removed after use
+    action->SetId(action->GetId() + "_" + serial_number_as_string);
     ++_serialNumber;
 }
 
