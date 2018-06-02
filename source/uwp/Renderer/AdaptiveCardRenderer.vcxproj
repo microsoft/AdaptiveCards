@@ -144,6 +144,7 @@
     <ClInclude Include="lib\AdaptiveInputElement.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
     <ClInclude Include="lib\AdaptiveMedia.h" />
+    <ClInclude Include="lib\AdaptiveMediaConfig.h" />
     <ClInclude Include="lib\AdaptiveMediaRenderer.h" />
     <ClInclude Include="lib\AdaptiveMediaSource.h" />
     <ClInclude Include="lib\AdaptiveNumberInputRenderer.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClCompile Include="lib\AdaptiveMedia.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
     <ClCompile Include="lib\AdaptiveMediaRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />

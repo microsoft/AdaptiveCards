@@ -313,6 +313,7 @@ std::string ParseUtil::ToLowercase(std::string const &value)
 std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
     bool isRequired)
@@ -332,18 +333,18 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
         // Get the element's type
         std::string typeString = GetTypeAsString(curJsonValue);
 
+        // Use the parser that maps to the type
         std::shared_ptr<BaseCardElementParser> parser = elementParserRegistration->GetParser(typeString);
 
-        //Parse it if it's allowed by the current parsers
-        if (parser != nullptr)
-        {
-            // Use the parser that maps to the type
-            elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
-        }
-        else
+        if (parser == nullptr)
         {
             parser = elementParserRegistration->GetParser("Unknown");
-            elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
+        }
+
+        auto element = parser->Deserialize(elementParserRegistration, actionParserRegistration, warnings, curJsonValue);
+        if (element != nullptr)
+        {
+            elements.push_back(element);
         }
     }
 
@@ -353,6 +354,7 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
 std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json)
 {
     if (json.empty() || !json.isObject())
@@ -369,7 +371,7 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(
     if (parser != nullptr)
     {
         // Use the parser that maps to the type
-        return parser->Deserialize(elementParserRegistration, actionParserRegistration, json);
+        return parser->Deserialize(elementParserRegistration, actionParserRegistration, warnings, json);
     }
 
     return nullptr;
@@ -378,6 +380,7 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(
 std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
     bool isRequired)
@@ -395,7 +398,7 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
 
     for (const auto& curJsonValue : elementArray)
     {
-        auto action = ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, curJsonValue);
+        auto action = ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, warnings, curJsonValue);
         if (action != nullptr)
         {
             elements.push_back(action);
@@ -408,6 +411,7 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
 std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
     bool isRequired)
@@ -416,7 +420,7 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
 
     if (!selectAction.empty())
     {
-        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, selectAction);
+        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, warnings, selectAction);
     }
 
     return nullptr;

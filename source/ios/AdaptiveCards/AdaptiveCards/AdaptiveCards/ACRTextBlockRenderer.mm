@@ -83,6 +83,7 @@
     }
 
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [lab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     [viewGroup addArrangedSubview:lab];
     return lab;

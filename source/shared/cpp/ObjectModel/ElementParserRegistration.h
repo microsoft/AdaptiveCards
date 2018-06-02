@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "Enums.h"
 #include "json/json.h"
+#include "AdaptiveCardParseWarning.h"
 
 AdaptiveSharedNamespaceStart
     class BaseCardElement;
@@ -15,6 +16,7 @@ AdaptiveSharedNamespaceStart
         virtual std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
+            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
             const Json::Value& value) = 0;
     };
 

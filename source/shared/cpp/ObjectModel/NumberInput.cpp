@@ -83,6 +83,7 @@ void NumberInput::SetMin(const int value)
 std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
     std::shared_ptr<ActionParserRegistration>,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
     const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::NumberInput);
@@ -100,9 +101,10 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
 std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return NumberInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return NumberInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void NumberInput::PopulateKnownPropertiesSet() 
