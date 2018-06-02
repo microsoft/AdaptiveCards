@@ -33,5 +33,7 @@
 
 - (UIView *)render;
 
-+ (void) setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config;
++ (void)setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config;
+
+- (void)waitForAsyncTasksToFinish;
 @end

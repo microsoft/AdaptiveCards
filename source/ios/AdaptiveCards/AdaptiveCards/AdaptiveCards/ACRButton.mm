@@ -27,7 +27,7 @@
     CGSize contentSize = [button.titleLabel intrinsicContentSize];
     [button setFrame:CGRectMake(0, 0, contentSize.width, contentSize.height)];
     [button setContentEdgeInsets:UIEdgeInsetsMake(5,5,5,5)];
-    
+
     std::shared_ptr<AdaptiveCards::BaseActionElement> action = [acoAction element];
     if([iconUrl length] != 0)
     {
@@ -36,7 +36,7 @@
         // Generate key for ImageViewMap
         NSString *key = [NSString stringWithCString:action->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
         // Syncronize access to imageViewMap
-        dispatch_sync([rootView getSerialQueue], ^{
+        dispatch_async([rootView getSerialQueue], ^{
             // if imageView is available, get it, otherwise cache UIButton, so it can be used once images are ready
             if(actionsViewMap[key] && [actionsViewMap[key] isKindOfClass:[UIImageView class]])
             {
@@ -47,18 +47,18 @@
                 actionsViewMap[key] = button;
             }
         });
-        
+
         if(imgView)
-        {          
+        {
             [ACRView setImageView:imgView inButton:button withConfig:config];
-            
+
             // remove postfix added for imageMap access
             std::string id = action->GetId();
             std::size_t idx = id.find_last_of('_');
             action->SetId(id.substr(0, idx));
         }
     }
-    
+
     return button;
 }
 @end
