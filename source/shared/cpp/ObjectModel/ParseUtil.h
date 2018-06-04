@@ -7,7 +7,7 @@
 #include "ElementParserRegistration.h"
 #include "ActionParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class BaseCardElement;
 class BaseActionElement;
 
@@ -200,4 +200,4 @@ T ParseUtil::ExtractJsonValueAndMergeWithDefault(
     T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
     return result;
 }
-AdaptiveSharedNamespaceEnd
+}

@@ -7,7 +7,7 @@
 #include "Container.h"
 #include "ShowCardAction.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 void ParseUtil::ThrowIfNotJsonObject(const Json::Value& json)
 {
@@ -434,4 +434,4 @@ ParseUtil::~ParseUtil()
 {
 }
 
-AdaptiveSharedNamespaceEnd
+}

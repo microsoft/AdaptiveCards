@@ -8,7 +8,7 @@
 #include <strings.h>
 #endif // _WIN32
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 struct EnumHash
 {
@@ -411,4 +411,4 @@ GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyT
     }
     return result;
 }
-AdaptiveSharedNamespaceEnd
+}
