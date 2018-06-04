@@ -131,8 +131,9 @@
 
 - (IBAction)toggleVisibilityOfShowCard
 {
+    BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
-    _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
+    _adcView.hidden = (hidden == YES)? NO: YES;
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 
