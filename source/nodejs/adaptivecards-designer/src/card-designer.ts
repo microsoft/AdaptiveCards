@@ -1455,16 +1455,31 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
         }
 
         var isMultiline = new Adaptive.ToggleInput();
-        isMultiline.title = "Multi-line:";
+        isMultiline.title = "Multi-line";
         isMultiline.spacing = Adaptive.Spacing.Small;
         isMultiline.defaultValue = String(this.cardElement.isMultiline);
         isMultiline.onValueChanged = () => {
             this.cardElement.isMultiline = isMultiline.value == "true";
 
-            this.changed(false);
+            this.changed(true);
         }
 
         card.addItem(isMultiline);
+
+        if (!this.cardElement.isMultiline) {
+            var style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
+            style.input.isCompact = true;
+            style.input.choices.push(new Adaptive.Choice("Text", Adaptive.InputTextStyle.Text.toString()));
+            style.input.choices.push(new Adaptive.Choice("Email", Adaptive.InputTextStyle.Email.toString()));
+            style.input.choices.push(new Adaptive.Choice("Telephone", Adaptive.InputTextStyle.Tel.toString()));
+            style.input.choices.push(new Adaptive.Choice("Url", Adaptive.InputTextStyle.Url.toString()));
+            style.input.defaultValue = this.cardElement.style.toString();
+            style.input.onValueChanged = () => {
+                this.cardElement.style = <Adaptive.InputTextStyle>parseInt(style.input.value);
+
+                this.changed(false);
+            }
+        }
     }
 }
 
