@@ -106,17 +106,13 @@ namespace AdaptiveCards.Rendering.Wpf
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
-            if (card.SelectAction != null && context.Config.SupportsInteractivity)
-            {
-                // If card has a select action, create a button to contain the inner grid
-                var button = (Button) context.RenderSelectAction(card.SelectAction, outerGrid);
-                button.Content = grid;
+            outerGrid.Children.Add(grid);
 
-                // TODO: Remove overlapping action handling
-                return button;
+            if (card.SelectAction != null)
+            {
+                return context.RenderSelectAction(card.SelectAction, outerGrid);
             }
 
-            outerGrid.Children.Add(grid);
             return outerGrid;
         }
 

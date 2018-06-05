@@ -11,8 +11,16 @@ namespace AdaptiveCards.Rendering.Wpf
             if (context.Config.SupportsInteractivity)
             {
                 var uiButton = (Button) context.Render(selectAction);
-                uiButton.HorizontalAlignment = HorizontalAlignment.Left;
-                uiButton.Background = new SolidColorBrush(Colors.Transparent);
+                uiButton.HorizontalAlignment = HorizontalAlignment.Stretch;
+                uiButton.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+
+                // Adopt the child element's background to parent and set the child's background
+                // to be transparent in order for button's on mouse hover color to work properly
+                if (uiElement is Panel p)
+                {
+                    uiButton.Background = p.Background;
+                    p.Background = new SolidColorBrush(Colors.Transparent);
+                }
                 uiButton.BorderThickness = new Thickness(0);
                 uiButton.Content = uiElement;
                 uiButton.Style = context.GetStyle("Adaptive.Action.Tap");

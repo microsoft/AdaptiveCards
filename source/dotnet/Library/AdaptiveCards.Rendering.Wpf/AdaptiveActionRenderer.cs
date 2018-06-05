@@ -24,9 +24,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiButton = new Button
             {
-                //HorizontalAlignment = HorizontalAlignment.Stretch,
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
-                Padding = new Thickness(6, 4, 6, 4),
                 Content = new TextBlock
                 {
                     Text = action.Title,
