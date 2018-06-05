@@ -5,7 +5,7 @@
 #include <list>
 #include "BaseCardElement.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 enum DelimiterType
 {
@@ -195,4 +195,4 @@ class MarkDownOrderedListHtmlGenerator : public MarkDownStringHtmlGenerator
         std::string m_numberString;
 };
 
-AdaptiveSharedNamespaceEnd
+}

@@ -6,7 +6,7 @@
 #include "Enums.h"
 #include "ActionParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class ShowCardAction : public BaseActionElement
 {
 public:
@@ -41,4 +41,4 @@ class ShowCardActionParser : public ActionElementParser
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

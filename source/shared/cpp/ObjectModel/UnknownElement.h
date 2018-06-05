@@ -7,7 +7,7 @@
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class UnknownElement: public BaseCardElement
 {
 public:
@@ -29,4 +29,4 @@ public:
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}
