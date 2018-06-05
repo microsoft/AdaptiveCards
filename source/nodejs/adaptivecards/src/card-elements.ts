@@ -643,6 +643,12 @@ export abstract class CardElement {
     }
 }
 
+export abstract class CardElementContainer extends CardElement {
+    abstract getItemCount(): number;
+    abstract getItemAt(index: number): CardElement;
+    abstract removeItem(item: CardElement): boolean;
+}
+
 export class TextBlock extends CardElement {
     private _computedLineHeight: number;
     private _originalInnerHtml: string;
@@ -1426,7 +1432,7 @@ export class Image extends CardElement {
     }
 }
 
-export class ImageSet extends CardElement {
+export class ImageSet extends CardElementContainer {
     private _images: Array<Image> = [];
 
     protected internalRender(): HTMLElement {
@@ -1438,6 +1444,8 @@ export class ImageSet extends CardElement {
             element.style.flexWrap = "wrap";
 
             for (var i = 0; i < this._images.length; i++) {
+                this._images[i].size = this.imageSize;
+                
                 let renderedImage = this._images[i].render();
 
                 renderedImage.style.display = "inline-flex";
@@ -1454,6 +1462,32 @@ export class ImageSet extends CardElement {
 
     imageSize: Enums.Size = Enums.Size.Medium;
 
+    getItemCount(): number {
+        return this._images.length;
+    }
+
+    getItemAt(index: number): CardElement {
+        return this._images[index];
+    }
+
+    removeItem(item: CardElement): boolean {
+        if (item instanceof Image) {
+            var itemIndex = this._images.indexOf(item);
+
+            if (itemIndex >= 0) {
+                this._images.splice(itemIndex, 1);
+
+                item.setParent(null);
+
+                this.updateLayout();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     getJsonTypeName(): string {
         return "ImageSet";
     }
@@ -1461,7 +1495,7 @@ export class ImageSet extends CardElement {
     toJSON() {
         let result = super.toJSON();
 
-        Utils.setProperty(result, "imageSize", this.imageSize, Enums.Size.Medium);
+        Utils.setEnumProperty(Enums.Size, result, "imageSize", this.imageSize, Enums.Size.Medium);
 
         if (this._images.length > 0) {
             let images = [];
@@ -1483,11 +1517,12 @@ export class ImageSet extends CardElement {
 
         if (json["images"] != null) {
             let jsonImages = json["images"] as Array<any>;
+
             this._images = [];
+
             for (let i = 0; i < jsonImages.length; i++) {
                 var image = new Image();
                 image.parse(jsonImages[i]);
-                image.size = this.imageSize;
 
                 this.addImage(image);
             }
@@ -2219,6 +2254,8 @@ export abstract class Action {
     iconUrl: string;
     isPrimary: boolean;
 
+    onExecute: (sender: Action) => void;
+
     toJSON() {
         let result = {};
 
@@ -2301,6 +2338,10 @@ export abstract class Action {
     }
 
     execute() {
+        if (this.onExecute) {
+            this.onExecute(this);
+        }
+        
         raiseExecuteActionEvent(this);
     }
 
@@ -2450,6 +2491,11 @@ export class HttpHeader {
 
     name: string;
 
+    constructor(name: string = "", value: string = "") {
+        this.name = name;
+        this.value = value;
+    }
+
     toJSON() {
         return { name: this.name, value: this._value.getOriginal() };
     }
@@ -2573,7 +2619,11 @@ export class HttpAction extends Action {
     }
 
     get headers(): Array<HttpHeader> {
-        return this._headers;
+        return this._headers ? this._headers : [];
+    }
+
+    set headers(value: Array<HttpHeader>) {
+        this._headers = value;
     }
 }
 
@@ -3209,12 +3259,6 @@ export class BackgroundImage {
             }
         }
     }
-}
-
-export abstract class CardElementContainer extends CardElement {
-    abstract getItemCount(): number;
-    abstract getItemAt(index: number): CardElement;
-    abstract removeItem(item: CardElement): boolean;
 }
 
 export class Container extends CardElementContainer {
@@ -3892,6 +3936,8 @@ export class Container extends CardElementContainer {
     }
 }
 
+export type ColumnWidth = Utils.SizeAndUnit | "auto" | "stretch";
+
 export class Column extends Container {
     private _computedWeight: number = 0;
 
@@ -3926,7 +3972,13 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    width: Utils.SizeAndUnit | "auto" | "stretch" = "auto";
+    width: ColumnWidth = "auto";
+
+    constructor(width: ColumnWidth = "auto") {
+        super();
+
+        this.width = width;
+    }
 
     getJsonTypeName(): string {
         return "Column";
