@@ -5,7 +5,7 @@
 #include "Image.h"
 #include "BaseCardElement.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class BaseCardElement;
 class ImageSet : public BaseCardElement
 {
@@ -29,18 +29,20 @@ private:
     std::vector<std::shared_ptr<Image>> m_images;
     ImageSize m_imageSize;
 };
-    
+
 class ImageSetParser : public BaseCardElementParser
 {
 public:
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+        const Json::Value& root) override;
 
     std::shared_ptr<BaseCardElement> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

@@ -7,7 +7,7 @@
 #include "ParseUtil.h"
 #include "Separator.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class Container;
 class BaseCardElement
 {
@@ -71,7 +71,7 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
     ParseUtil::ThrowIfNotJsonObject(json);
 
     baseCardElement->SetSpacing(
-            ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString)); 
+            ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
     baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
     baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
     baseCardElement->SetHeight(
@@ -89,5 +89,4 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
 
     return cardElement;
 }
-AdaptiveSharedNamespaceEnd
-
+}

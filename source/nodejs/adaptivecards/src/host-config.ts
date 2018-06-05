@@ -225,6 +225,14 @@ class BuiltInContainerStyleDefinition extends ContainerStyleDefinition {
     }
 }
 
+export interface ILineHeightDefinitions {
+    small: number;
+    medium: number;
+    default: number;
+    large: number;
+    extraLarge: number;
+}
+
 export class ContainerStyleSet {
     private _allStyles: object = {};
 
@@ -298,6 +306,7 @@ export class ContainerStyleSet {
 export class HostConfig {
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
+    lineHeights?: ILineHeightDefinitions;
 
     fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
     
@@ -322,6 +331,7 @@ export class HostConfig {
         large: 21,
         extraLarge: 26
     };
+    
     readonly fontWeights = {
         lighter: 200,
         default: 400,
@@ -356,6 +366,16 @@ export class HostConfig {
                 medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
                 large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
                 extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
+            };
+
+            if (obj.lineHeights) {
+                this.lineHeights = {
+                    small: obj.lineHeights["small"],
+                    default: obj.lineHeights["default"],
+                    medium: obj.lineHeights["medium"],
+                    large: obj.lineHeights["large"],
+                    extraLarge: obj.lineHeights["extraLarge"]
+                };
             };
 
             this.fontWeights = {

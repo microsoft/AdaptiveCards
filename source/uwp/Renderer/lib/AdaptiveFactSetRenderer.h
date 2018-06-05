@@ -26,6 +26,7 @@ AdaptiveNamespaceStart
             ABI::Windows::Data::Json::IJsonObject *,
             ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParsers,
             ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
+            ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
             ABI::AdaptiveNamespace::IAdaptiveCardElement** element);
     };
 

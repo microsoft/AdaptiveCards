@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Enums.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> * adaptiveCardSchemaKeyEnumToNameOut,
@@ -45,6 +45,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::Data, "data" },
         { AdaptiveCardSchemaKey::DateInput, "dateInput" },
         { AdaptiveCardSchemaKey::Default, "default" },
+        { AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster" },
         { AdaptiveCardSchemaKey::Emphasis, "emphasis" },
         { AdaptiveCardSchemaKey::ExtraLarge, "extraLarge" },
         { AdaptiveCardSchemaKey::Facts, "facts" },
@@ -85,6 +86,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::MaxLength, "maxLength" },
         { AdaptiveCardSchemaKey::MaxLines, "maxLines" },
         { AdaptiveCardSchemaKey::MaxWidth, "maxWidth" },
+        { AdaptiveCardSchemaKey::Media, "media" },
         { AdaptiveCardSchemaKey::Medium, "medium" },
         { AdaptiveCardSchemaKey::Method, "method" },
         { AdaptiveCardSchemaKey::MimeType, "mimeType" },
@@ -92,6 +94,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
+        { AdaptiveCardSchemaKey::PlayButton, "playButton" },
         { AdaptiveCardSchemaKey::Poster, "poster" },
         { AdaptiveCardSchemaKey::Right, "right" },
         { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
@@ -617,7 +620,7 @@ void GetVerticalContentAlignmentEnumMappings(
         { VerticalContentAlignment::Center, "Center" },
         { VerticalContentAlignment::Bottom, "Bottom" }
     };
-    static std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum = 
+    static std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum =
         GenerateStringToEnumMap<VerticalContentAlignment>(verticalContentAlignmentEnumToName);
 
     if (verticalContentAlignmentEnumToNameOut != nullptr)
@@ -1126,4 +1129,4 @@ VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& v
     return verticalContentAlignmentNameToEnum[verticalContentAlignment];
 }
 
-AdaptiveSharedNamespaceEnd
+}
