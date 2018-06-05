@@ -3,12 +3,14 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -66,6 +68,19 @@ public class ContainerRenderer extends BaseCardElementRenderer
         if(container.GetHeight() == HeightType.Stretch)
         {
             containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        }
+
+        if( container.GetVerticalContentAlignment() == VerticalContentAlignment.Top )
+        {
+            containerView.setGravity(Gravity.TOP);
+        }
+        else if( container.GetVerticalContentAlignment() == VerticalContentAlignment.Center )
+        {
+            containerView.setGravity(Gravity.CENTER_VERTICAL);
+        }
+        else if( container.GetVerticalContentAlignment() == VerticalContentAlignment.Bottom )
+        {
+            containerView.setGravity(Gravity.BOTTOM);
         }
 
         if (!container.GetItems().isEmpty())

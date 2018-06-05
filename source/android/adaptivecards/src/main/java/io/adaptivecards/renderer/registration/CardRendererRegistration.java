@@ -3,11 +3,17 @@ package io.adaptivecards.renderer.registration;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.objectmodel.Column;
+import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -107,9 +113,61 @@ public class CardRendererRegistration
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        if (viewGroup != null)
+        VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Stretch;
+
+        if( tag instanceof BaseCardElement ){
+            BaseCardElement cardElementContainer = (BaseCardElement)tag;
+
+            if( cardElementContainer instanceof Column)
+            {
+                Column column = (Column)cardElementContainer;
+                verticalContentAlignment = column.GetVerticalContentAlignment();
+            }
+            else if( cardElementContainer instanceof Container)
+            {
+                Container container = (Container)cardElementContainer;
+                verticalContentAlignment = container.GetVerticalContentAlignment();
+            }
+        }
+        else if(tag instanceof AdaptiveCard)
         {
-            viewGroup.addView(layout);
+            AdaptiveCard adaptiveCard = (AdaptiveCard)tag;
+            verticalContentAlignment = adaptiveCard.GetVerticalContentAlignment();
+        }
+
+        if( verticalContentAlignment != VerticalContentAlignment.Stretch )
+        {
+            LinearLayout verticalAlignmentLayout = new LinearLayout(context);
+            verticalAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
+            verticalAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            if(verticalContentAlignment == VerticalContentAlignment.Top)
+            {
+                verticalAlignmentLayout.setGravity(Gravity.TOP);
+            }
+            else if (verticalContentAlignment == VerticalContentAlignment.Center)
+            {
+                verticalAlignmentLayout.setGravity(Gravity.CENTER_VERTICAL);
+            }
+            else
+            {
+                verticalAlignmentLayout.setGravity(Gravity.BOTTOM);
+            }
+
+            verticalAlignmentLayout.addView(layout);
+
+            if(viewGroup != null)
+            {
+                viewGroup.addView(verticalAlignmentLayout);
+            }
+        }
+        else
+        {
+            if (viewGroup != null)
+            {
+                viewGroup.addView(layout);
+            }
         }
 
         for (int i = 0; i < size; i++)

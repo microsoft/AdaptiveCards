@@ -21,6 +21,7 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Spacing;
+import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.http.HttpRequestResult;
@@ -126,6 +127,19 @@ public class AdaptiveCardRenderer
         else
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
+        if(adaptiveCard.GetVerticalContentAlignment() == VerticalContentAlignment.Top)
+        {
+            layout.setGravity(Gravity.TOP);
+        }
+        else if( adaptiveCard.GetVerticalContentAlignment() == VerticalContentAlignment.Center )
+        {
+            layout.setGravity(Gravity.CENTER_VERTICAL);
+        }
+        else if( adaptiveCard.GetVerticalContentAlignment() == VerticalContentAlignment.Bottom )
+        {
+            layout.setGravity(Gravity.BOTTOM);
         }
 
         layout.setOrientation(LinearLayout.VERTICAL);

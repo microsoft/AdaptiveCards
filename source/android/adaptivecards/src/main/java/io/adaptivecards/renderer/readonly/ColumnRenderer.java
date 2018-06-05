@@ -4,12 +4,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -67,9 +69,36 @@ public class ColumnRenderer extends BaseCardElementRenderer
         ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : column.GetStyle();
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout verticalContentAlignmentLayout = new LinearLayout(context);
+        verticalContentAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
+        verticalContentAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        VerticalContentAlignment contentAlignment = column.GetVerticalContentAlignment();
+        if(contentAlignment != VerticalContentAlignment.Stretch)
+        {
+            if(contentAlignment == VerticalContentAlignment.Top)
+            {
+                verticalContentAlignmentLayout.setGravity(Gravity.TOP);
+            }
+            else if( column.GetVerticalContentAlignment() == VerticalContentAlignment.Center )
+            {
+                verticalContentAlignmentLayout.setGravity(Gravity.CENTER_VERTICAL);
+            }
+            else if( column.GetVerticalContentAlignment() == VerticalContentAlignment.Bottom )
+            {
+                verticalContentAlignmentLayout.setGravity(Gravity.BOTTOM);
+            }
+        }
+        else
+        {
+            verticalContentAlignmentLayout.setGravity(Gravity.TOP);
+        }
+        returnedView.addView(verticalContentAlignmentLayout);
+
         if (!column.GetItems().isEmpty())
         {
-            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, returnedView, column, column.GetItems(), cardActionHandler, hostConfig, styleForThis);
+            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, verticalContentAlignmentLayout, column, column.GetItems(), cardActionHandler, hostConfig, styleForThis);
         }
         if (styleForThis != containerStyle)
         {
