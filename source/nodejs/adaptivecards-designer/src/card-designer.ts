@@ -2088,6 +2088,7 @@ export class CardDesigner {
     private _dragHandle: DragHandle;
     private _removeCommandElement: HTMLElement;
     private _peerCommandsHostElement: HTMLElement;
+    private _lastParseErrors: Array<Adaptive.IValidationError> = [];
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -2147,6 +2148,8 @@ export class CardDesigner {
     }
 
     private peerChanged(peer: DesignerPeer, updatePropertySheet: boolean) {
+        this._lastParseErrors = [];
+
         this.renderCard()
         this.updateLayout();
 
@@ -2172,6 +2175,14 @@ export class CardDesigner {
         this._cardHost.innerHTML = "";
 
         if (this.card) {
+            let validationErrors = this.card.validate();
+
+            let allErrors = validationErrors.concat(this._lastParseErrors);
+
+            if (this.onCardValidated) {
+                this.onCardValidated(allErrors);
+            }
+
             this._cardHost.appendChild(this.card.render());
         }
     }
@@ -2372,6 +2383,7 @@ export class CardDesigner {
         this.parentElement.appendChild(rootElement);
     }
 
+    onCardValidated: (errors: Array<Adaptive.IValidationError>) => void;
     onSelectedPeerChanged: (peer: DesignerPeer) => void;
     onLayoutUpdated: (isFullRefresh: boolean) => void;
 
@@ -2443,6 +2455,16 @@ export class CardDesigner {
         this._designerSurface.appendChild(this._dragHandle.renderedElement);
         this._designerSurface.appendChild(this._removeCommandElement);
         this._designerSurface.appendChild(this._peerCommandsHostElement);
+        
+        this.updateLayout();
+    }
+
+    parseCard(json: string) {
+        this._lastParseErrors = [];
+
+        this.card.parse(JSON.parse(json), this._lastParseErrors);
+
+        this.render();
     }
 
     updateLayout(isFullRefresh: boolean = true) {

@@ -27,6 +27,10 @@ function monacoEditorLoaded() {
     updateJsonFromCard();
 }
 
+function getCurrentJsonPayload(): string {
+    return isMonacoEditorLoaded ? monacoEditor.getValue() : Constants.defaultPayload;
+}
+
 var jsonUpdateTimer: NodeJS.Timer;
 var cardUpdateTimer: NodeJS.Timer;
 var updateLayoutTimer: NodeJS.Timer;
@@ -60,9 +64,8 @@ function updateCardFromJson() {
     try {
         preventJsonUpdate = true;
 
-        if (!preventCardUpdate && isMonacoEditorLoaded) {
-            app.card.parse(JSON.parse(monacoEditor.getValue()));
-            app.designer.render();
+        if (!preventCardUpdate) {
+            app.designer.parseCard(getCurrentJsonPayload());
         }
     }
     finally {
@@ -261,6 +264,34 @@ class DesignerApp {
                 scheduleJsonUpdate();
             }
         };
+        this._designer.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
+            let errorPane = document.getElementById("errorPane");
+            errorPane.innerHTML = "";
+
+            if (errors.length > 0) {
+                let errorMessages: Array<string> = [];
+
+                for (let error of errors) {
+                    if (errorMessages.indexOf(error.message) < 0) {
+                        errorMessages.push(error.message);
+                    }
+                }
+
+                for (let message of errorMessages) {
+                    let errorElement = document.createElement("div");
+                    errorElement.style.overflow = "hidden";
+                    errorElement.style.textOverflow = "ellipsis";
+                    errorElement.innerText = message;
+
+                    errorPane.appendChild(errorElement);
+                }
+
+                errorPane.style.display = null;
+            }
+            else {
+                errorPane.style.display = "none";
+            }
+        };
 
         this.buildPalette();
         this.buildPropertySheet(null);
@@ -408,18 +439,34 @@ class Splitter {
         if (this._isPointerDown) {
             e.preventDefault();
             
+            let sizeApplied = false;
+
             if (this.isVertical) {
-                this._sizedELement.style.width = (this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x)) + "px";
+                let newWidth = this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x);
+
+                if (newWidth >= this.minimum) {
+                    this._sizedELement.style.width = newWidth + "px";
+
+                    sizeApplied = true;
+                }
             }
             else {
-                this._sizedELement.style.height = (this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y)) + "px";
+                let newHeight = this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y);
+
+                if (newHeight >= this.minimum) {
+                    this._sizedELement.style.height = newHeight + "px";
+
+                    sizeApplied = true;
+                }
             }
 
-            if (this.onRezized) {
-                this.onRezized(this);
-            }
+            if (sizeApplied) {
+                if (this.onRezized) {
+                    this.onRezized(this);
+                }
 
-            this._lastClickedOffset = { x: e.x, y: e.y };
+                this._lastClickedOffset = { x: e.x, y: e.y };
+            }
         }
     }
     
@@ -434,6 +481,7 @@ class Splitter {
     onRezized: (sender: Splitter) => void;
 
     isVertical: boolean = false;
+    minimum: number = 50;
 
     constructor(splitterElement: HTMLElement, sizedElement: HTMLElement) {
         this._splitterElement = splitterElement;
@@ -472,7 +520,6 @@ window.onload = () => {
     card.onImageLoaded = (image: Adaptive.Image) => {
         scheduleLayoutUpdate();
     }
-    card.parse(JSON.parse(Constants.defaultPayload));
 
     app = new DesignerApp(document.getElementById("designerHost"));
     app.propertySheetHostElement = document.getElementById("propertySheetHost");
@@ -488,4 +535,6 @@ window.onload = () => {
     app.card = card;
 
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
+
+    updateCardFromJson();
 };
