@@ -282,17 +282,14 @@ using namespace AdaptiveCards;
             if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
                 markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
-                parsedString = [NSString stringWithCString:[ACOHostConfig getLocalizedDate:textBlockElement].c_str() encoding:NSUTF8StringEncoding];
             } else {
-                markDownParser = std::make_shared<MarkDownParser>(text);
-                parsedString = [NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding];
+                markDownParser = std::make_shared<MarkDownParser>(textForBlock);
             }
-
+            parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
             NSDictionary *data = nil;
             NSString *key = nil;
             // MarkDownParser transforms text with MarkDown to a html string
             if(markDownParser->HasHtmlTags()) {
-                parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
                 // Font and text size are applied as CSS style by appending it to the html string
                 parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
                                                                       fontFamilyName,
@@ -303,6 +300,7 @@ using namespace AdaptiveCards;
                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
                 data = @{@"html" : htmlData, @"options" : options};
             } else {
+                
                 float fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
                 fontweight = (fontweight - 400);
                 if(fontweight > 0) {

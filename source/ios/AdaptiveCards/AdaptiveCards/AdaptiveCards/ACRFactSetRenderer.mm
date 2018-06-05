@@ -57,6 +57,8 @@
             [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
         } else {
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+            [content deleteCharactersInRange:NSMakeRange(0, 3)];
+            [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
         }
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
