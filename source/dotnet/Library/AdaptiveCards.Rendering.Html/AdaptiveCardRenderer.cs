@@ -52,6 +52,7 @@ namespace AdaptiveCards.Rendering.Html
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);
+
                 var tag = context.Render(card);
                 return new RenderedAdaptiveCard(tag, card, context.Warnings);
             }
@@ -143,7 +144,43 @@ namespace AdaptiveCards.Rendering.Html
 
             AddContainerElements(uiCard, card.Body, card.Actions, context);
 
+            AddSelectAction(uiCard, card.SelectAction, context);
+
+            // Add all accumulated selectAction show cards
+            foreach (var showCard in context.ShowCardTags)
+            {
+                uiCard.Children.Add(showCard);
+            }
+
             return uiCard;
+        }
+
+        protected static void AddSelectAction(HtmlTag tag, AdaptiveAction selectAction, AdaptiveRenderContext context)
+        {
+            if (context.Config.SupportsInteractivity && selectAction != null)
+            {
+                tag.AddClass("ac-selectable");
+                AddActionAttributes(selectAction, tag, context);
+
+                // Create the additional card below for showCard actions
+                if (selectAction is AdaptiveShowCardAction showCardAction)
+                {
+                    var cardId = tag.Attributes["data-ac-showCardId"];
+
+                    var uiShowCard = context.Render(showCardAction.Card);
+                    if (uiShowCard != null)
+                    {
+                        uiShowCard.Attr("id", cardId)
+                            .AddClass("ac-showCard")
+                            .Style("padding", "0")
+                            .Style("display", "none")
+                            .Style("margin-top", $"{context.Config.Actions.ShowCard.InlineTopMargin}px");
+
+                        // Store all showCard tags inside context
+                        context.ShowCardTags.Add(uiShowCard);
+                    }
+                }
+            }
         }
 
         protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
@@ -309,12 +346,7 @@ namespace AdaptiveCards.Rendering.Html
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
-            // selectAction
-            if (context.Config.SupportsInteractivity && column.SelectAction != null)
-            {
-                uiColumn.AddClass("ac-selectable");
-                AddActionAttributes(column.SelectAction, uiColumn, context);
-            }
+            AddSelectAction(uiColumn, column.SelectAction, context);
 
             return uiColumn;
         }
@@ -326,12 +358,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("overflow", "hidden")
                 .Style("display", "flex");
 
-            // selectAction
-            if (context.Config.SupportsInteractivity && columnSet.SelectAction != null)
-            {
-                uiColumnSet.AddClass("ac-selectable");
-                AddActionAttributes(columnSet.SelectAction, uiColumnSet, context);
-            }
+            AddSelectAction(uiColumnSet, columnSet.SelectAction, context);
 
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
             {
@@ -410,11 +437,7 @@ namespace AdaptiveCards.Rendering.Html
 
             AddContainerElements(uiContainer, container.Items, null, context);
 
-            if (context.Config.SupportsInteractivity && container.SelectAction != null)
-            {
-                uiContainer.AddClass("ac-selectable");
-                AddActionAttributes(container.SelectAction, uiContainer, context);
-            }
+            AddSelectAction(uiContainer, container.SelectAction, context);
 
             return uiContainer;
         }
@@ -626,11 +649,7 @@ namespace AdaptiveCards.Rendering.Html
             }
             uiDiv.Children.Add(uiImage);
 
-            if (context.Config.SupportsInteractivity && image.SelectAction != null)
-            {
-                uiDiv.AddClass("ac-selectable");
-                AddActionAttributes(image.SelectAction, uiDiv, context);
-            }
+            AddSelectAction(uiDiv, image.SelectAction, context);
             return uiDiv;
         }
 
