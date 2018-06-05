@@ -58,10 +58,17 @@
         NSDictionary* data = textMap[key];
         NSData *htmlData = data[@"html"];
         NSDictionary *options = data[@"options"];
+        NSDictionary *descriptor = data[@"descriptor"];
+        NSString *text = data[@"nonhtml"];
+
         // Initializing NSMutableAttributedString for HTML rendering is very slow
-        content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
-        // Drop newline char
-        [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
+        if(htmlData) {
+            content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+            // Drop newline char
+            [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
+        } else {
+            content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+        }
 
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];

@@ -273,32 +273,49 @@ using namespace AdaptiveCards;
     dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
             NSString* parsedString = nil;
-            if(CardElementType::TextBlock == elementTypeForBlock){
-                std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
-                // MarkDownParser transforms text with MarkDown to a html string
-                std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
-                parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
-            } else {
-                std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(textForBlock.c_str());
-                parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
-            }
-
+            std::shared_ptr<MarkDownParser> markDownParser = nullptr;
             // if correctly initialized, fonFamilyNames array is bigger than zero
             NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
             [fontFamilyName appendString:[self->_hostConfig.fontFamilyNames componentsJoinedByString:@"', '"]];
             [fontFamilyName appendString:@"'"];
 
-            // Font and text size are applied as CSS style by appending it to the html string
-            parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
-                                                                  fontFamilyName,
-                                                                  [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
-                                                                  [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
-            // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
+            if(CardElementType::TextBlock == elementTypeForBlock){
+                std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
+                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
+                parsedString = [NSString stringWithCString:[ACOHostConfig getLocalizedDate:textBlockElement].c_str() encoding:NSUTF8StringEncoding];
+            } else {
+                markDownParser = std::make_shared<MarkDownParser>(text);
+                parsedString = [NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding];
+            }
 
-            NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-            NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-            NSDictionary *data = @{@"html" : htmlData, @"options" : options};
+            NSDictionary *data = nil;
             NSString *key = nil;
+            // MarkDownParser transforms text with MarkDown to a html string
+            if(markDownParser->HasHtmlTags()) {
+                parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+                // Font and text size are applied as CSS style by appending it to the html string
+                parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
+                                                                      fontFamilyName,
+                                                                      [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
+                                                                      [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
+                // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
+                NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+                NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
+                data = @{@"html" : htmlData, @"options" : options};
+            } else {
+                float fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
+                fontweight = (fontweight - 400);
+                if(fontweight > 0) {
+                    fontweight /= 500;
+                } else {
+                    fontweight = (-1) * (fontweight) / 300;
+                }
+                UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: fontFamilyName, UIFontWeightTrait:[NSNumber numberWithFloat:fontweight]}];
+                UIFont *font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size]];
+
+                NSDictionary *attributeDictionary = @{NSFontAttributeName:font};
+                data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
+            }
 
             if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
