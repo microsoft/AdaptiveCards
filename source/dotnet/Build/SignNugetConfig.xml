@@ -9,13 +9,13 @@
     <!-- AdaptiveCards -->
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.*.nupkg" signType="Nuget"  />
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.*.symbols.nupkg" signType="Nuget"  />
-    <!-- AdaptiveCards.Html -->
+    <!-- AdaptiveCards.Rendering.Html -->
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.Rendering.Html.*.nupkg" signType="Nuget"  />
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.Rendering.Html.*.symbols.nupkg" signType="Nuget"  />
-    <!-- AdaptiveCards.Wpf-->
+    <!-- AdaptiveCards.Rendering.Wpf-->
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.Rendering.Wpf.*.nupkg" signType="Nuget"  />
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.Rendering.Wpf.*.symbols.nupkg" signType="Nuget"  />
-    <!-- AdaptiveCards.Wpf.Xceed-->
+    <!-- AdaptiveCards.Rendering.Wpf.Xceed-->
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.Rendering.Wpf.Xceed.*.nupkg" signType="Nuget"  />
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.Rendering.Wpf.Xceed.*.symbols.nupkg" signType="Nuget"  />
   </job>
