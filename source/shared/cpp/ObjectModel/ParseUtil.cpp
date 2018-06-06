@@ -425,13 +425,4 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
 
     return nullptr;
 }
-
-ParseUtil::ParseUtil()
-{
-}
-
-ParseUtil::~ParseUtil()
-{
-}
-
 }
