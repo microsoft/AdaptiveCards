@@ -8,7 +8,7 @@
 #include <strings.h>
 #endif // _WIN32
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 struct EnumHash
 {
@@ -70,6 +70,7 @@ enum class AdaptiveCardSchemaKey
     Data,
     DateInput,
     Default,
+    DefaultPoster,
     Emphasis,
     ExtraLarge,
     Facts,
@@ -110,6 +111,7 @@ enum class AdaptiveCardSchemaKey
     MaxLength,
     MaxLines,
     MaxWidth,
+    Media, 
     Medium,
     Method,
     MimeType,
@@ -117,6 +119,7 @@ enum class AdaptiveCardSchemaKey
     NumberInput,
     Padding,
     Placeholder,
+    PlayButton,
     Poster,
     Right,
     SelectAction,
@@ -305,6 +308,8 @@ enum class WarningStatusCode {
     MaxActionsExceeded,
     AssetLoadFailed,
     UnsupportedSchemaVersion,
+    UnsupportedMediaType,
+    InvalidMediaMix,
 };
 
 enum class DateTimePreparsedTokenFormat {
@@ -406,4 +411,4 @@ GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyT
     }
     return result;
 }
-AdaptiveSharedNamespaceEnd
+}

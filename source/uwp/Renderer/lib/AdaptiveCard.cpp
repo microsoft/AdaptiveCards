@@ -103,18 +103,7 @@ AdaptiveNamespaceStart
             ComPtr<IVector<IAdaptiveWarning*>> warnings;
             RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
 
-            for (auto sharedWarning : sharedParseResult->GetWarnings())
-            {
-                HString warningMessage;
-                RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
-                            
-                ABI::AdaptiveNamespace::WarningStatusCode statusCode = static_cast<ABI::AdaptiveNamespace::WarningStatusCode>(sharedWarning->GetStatusCode());
-
-                ComPtr<IAdaptiveWarning> adaptiveWarning;
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
-
-                RETURN_IF_FAILED(warnings->Append(adaptiveWarning.Get()));
-            }
+            RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(sharedParseResult->GetWarnings(), warnings.Get()));
 
             return adaptiveParseResult.CopyTo(parseResult);
         }

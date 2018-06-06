@@ -24,6 +24,7 @@
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveToggleInput.h"
+#include "AdaptiveWarning.h"
 #include "CustomActionWrapper.h"
 #include "CustomElementWrapper.h"
 #include "enums.h"
@@ -867,4 +868,57 @@ void GetUrlFromString(
     }
 
     THROW_IF_FAILED(localUrl.CopyTo(url));
+}
+
+HRESULT SharedWarningsToAdaptiveWarnings(
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings)
+{
+    for (auto sharedWarning : sharedWarnings)
+    {
+        HString warningMessage;
+        RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
+
+        ABI::AdaptiveNamespace::WarningStatusCode statusCode = static_cast<ABI::AdaptiveNamespace::WarningStatusCode>(sharedWarning->GetStatusCode());
+
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveWarning> adaptiveWarning;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
+
+        RETURN_IF_FAILED(adaptiveWarnings->Append(adaptiveWarning.Get()));
+    }
+
+    return S_OK;
+}
+
+HRESULT AdaptiveWarningsToSharedWarnings(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings)
+{
+    ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>> localAdaptiveWarnings{ adaptiveWarnings };
+    ComPtr<IIterable<ABI::AdaptiveNamespace::IAdaptiveWarning*>> vectorIterable;
+    RETURN_IF_FAILED(localAdaptiveWarnings.As<IIterable<ABI::AdaptiveNamespace::IAdaptiveWarning*>>(&vectorIterable));
+
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveNamespace::IAdaptiveWarning*>> vectorIterator;
+    HRESULT hr = vectorIterable->First(&vectorIterator);
+
+    boolean hasCurrent;
+    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
+
+    while (SUCCEEDED(hr) && hasCurrent)
+    {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveWarning> adaptiveWarning;
+        RETURN_IF_FAILED(vectorIterator->get_Current(&adaptiveWarning));
+
+        HString message;
+        RETURN_IF_FAILED(adaptiveWarning->get_Message(message.GetAddressOf()));
+
+        ABI::AdaptiveNamespace::WarningStatusCode statusCode;
+        RETURN_IF_FAILED(adaptiveWarning->get_StatusCode(&statusCode));
+
+        sharedWarnings.push_back(std::make_shared<AdaptiveCardParseWarning>(static_cast<AdaptiveSharedNamespace::WarningStatusCode>(statusCode), HStringToUTF8(message.Get())));
+
+        hr = vectorIterator->MoveNext(&hasCurrent);
+    }
+
+    return S_OK;
 }

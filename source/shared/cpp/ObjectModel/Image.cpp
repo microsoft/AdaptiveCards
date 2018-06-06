@@ -173,23 +173,26 @@ void Image::SetPixelHeight(unsigned int value)
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return ImageParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ImageParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::shared_ptr<BaseCardElement> ImageParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::Image);
-    return ImageParser::DeserializeWithoutCheckingType(elementParserRegistration, actionParserRegistration, json);
+    return ImageParser::DeserializeWithoutCheckingType(elementParserRegistration, actionParserRegistration, warnings, json);
 }
 
 std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json)
 {
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
@@ -234,7 +237,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     }
 
     // Parse optional selectAction
-    image->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false));
+    image->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::SelectAction, false));
 
     return image;
 }
