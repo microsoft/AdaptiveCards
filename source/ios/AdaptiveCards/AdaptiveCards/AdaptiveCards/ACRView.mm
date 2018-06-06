@@ -351,11 +351,6 @@ using namespace AdaptiveCards;
     return _serial_queue;
 }
 
-- (dispatch_queue_t)getSerialTextQueue
-{
-    return _serial_text_queue;
-}
-
 - (NSMutableDictionary *)getTextMap
 {
     return _textMap;

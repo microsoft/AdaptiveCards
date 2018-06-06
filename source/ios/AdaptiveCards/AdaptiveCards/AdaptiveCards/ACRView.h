@@ -27,8 +27,6 @@
 
 - (NSMutableDictionary *)getActionsMap;
 
-- (dispatch_queue_t)getSerialTextQueue;
-
 - (ACOAdaptiveCard *)card;
 
 - (UIView *)render;
