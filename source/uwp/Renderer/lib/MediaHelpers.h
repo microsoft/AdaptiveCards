@@ -8,8 +8,8 @@ void GetMediaPosterAsImage(
 
 void CreatePosterContainerWithPlayButton(
     ABI::Windows::UI::Xaml::Controls::IImage* posterImage,
+    ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
     ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-    ABI::AdaptiveNamespace::IAdaptiveHostConfig * hostConfig,
     ABI::Windows::UI::Xaml::IUIElement ** posterContainer);
 
 void GetMediaSource(

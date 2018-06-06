@@ -37,18 +37,18 @@ public class ImageParser extends BaseCardElementParser {
     super.delete();
   }
 
-  public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(root), root);
+  public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.ImageParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
-  public BaseCardElement DeserializeWithoutCheckingType(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageParser_DeserializeWithoutCheckingType(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(root), root);
+  public BaseCardElement DeserializeWithoutCheckingType(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.ImageParser_DeserializeWithoutCheckingType(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
-  public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, jsonString);
+  public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.ImageParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 

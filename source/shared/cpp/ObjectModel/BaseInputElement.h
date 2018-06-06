@@ -6,7 +6,7 @@
 #include "ParseUtil.h"
 #include "BaseCardElement.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class BaseInputElement : public BaseCardElement
 {
 public:
@@ -41,4 +41,4 @@ std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value& json)
 
     return baseInputElement;
 }
-AdaptiveSharedNamespaceEnd
+}

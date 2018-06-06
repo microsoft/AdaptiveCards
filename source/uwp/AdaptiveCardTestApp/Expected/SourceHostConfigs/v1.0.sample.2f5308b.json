@@ -117,5 +117,9 @@
 			"wrap": true
 		},
 		"spacing": 10
+	},
+	"media": {
+		"defaultPoster": "http://adaptivecards.io/content/cats/2.png",
+		"playButton": "http://adaptivecards.io/content/cats/3.png"
 	}
 }

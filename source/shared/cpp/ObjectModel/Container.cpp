@@ -88,6 +88,7 @@ Json::Value Container::SerializeToJsonValue() const
 std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
@@ -101,11 +102,11 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
         VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString));
 
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Items, false);
+    auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Items, false);
     container->m_items = std::move(cardElements);
 
     // Parse optional selectAction
-    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction, false));
+    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }
@@ -113,9 +114,10 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
 std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return ContainerParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ContainerParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void Container::PopulateKnownPropertiesSet() 

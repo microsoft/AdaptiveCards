@@ -5,7 +5,7 @@
 #include "json/json.h"
 #include "ParseUtil.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class BaseActionElement
 {
 public:
@@ -75,5 +75,4 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
     }
     return cardElement;
 }
-AdaptiveSharedNamespaceEnd
-
+}

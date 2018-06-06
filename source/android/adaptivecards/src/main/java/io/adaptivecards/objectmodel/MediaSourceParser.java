@@ -35,13 +35,13 @@ public class MediaSourceParser {
     }
   }
 
-  public static MediaSource Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(root), root);
+  public static MediaSource Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new MediaSource(cPtr, true);
   }
 
-  public static MediaSource DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, jsonString);
+  public static MediaSource DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
     return (cPtr == 0) ? null : new MediaSource(cPtr, true);
   }
 
