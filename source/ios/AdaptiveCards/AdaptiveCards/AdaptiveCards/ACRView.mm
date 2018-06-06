@@ -55,7 +55,6 @@ using namespace AdaptiveCards;
         _global_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         _async_tasks_group = dispatch_group_create();
         _serialNumber = 0;
-        _seenAllElements = NO;
     }
     return self;
 }
