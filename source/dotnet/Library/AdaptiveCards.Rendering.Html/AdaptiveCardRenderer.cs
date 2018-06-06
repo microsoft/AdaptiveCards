@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
@@ -137,7 +138,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiCard.Style("font-family", context.Config.FontFamily);
 
             if (card.BackgroundImage != null)
-                uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
+                uiCard.Style("background-image", $"url('{ResolveImageUrl(card.BackgroundImage, context)}')")
                     .Style("background-repeat", "no-repeat")
                     .Style("background-size", "cover");
 
@@ -563,6 +564,24 @@ namespace AdaptiveCards.Rendering.Html
             return uiTextBlock;
         }
 
+        protected static String ResolveImageUrl(Uri uri, AdaptiveRenderContext context)
+        {
+            if (context.Config.ImageBaseUrl != null)
+            {
+                try
+                {
+                    Uri baseUri = new Uri(context.Config.ImageBaseUrl);
+                    return new Uri(baseUri, uri.ToString()).ToString();
+                }
+                catch (UriFormatException)
+                {
+                    return uri.ToString();
+                }
+            }
+
+            return uri.ToString();
+        }
+
         protected static HtmlTag ImageRender(AdaptiveImage image, AdaptiveRenderContext context)
         {
             var uiDiv = new DivTag()
@@ -592,7 +611,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiImage = new HtmlTag("img")
                 .Style("width", "100%")
                 .Attr("alt", image.AltText ?? "card image")
-                .Attr("src", image.Url.ToString());
+                .Attr("src", ResolveImageUrl(image.Url, context));
 
             switch (image.Style)
             {
