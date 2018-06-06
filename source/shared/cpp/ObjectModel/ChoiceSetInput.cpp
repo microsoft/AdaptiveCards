@@ -5,7 +5,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetInput)
+ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetInput), m_isMultiSelect(false),
+    m_choiceSetStyle(ChoiceSetStyle::Compact)
 {
     PopulateKnownPropertiesSet();
 }
@@ -106,7 +107,7 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::DeserializeFromString(
     return ChoiceSetInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ChoiceSetInput::PopulateKnownPropertiesSet() 
+void ChoiceSetInput::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect));

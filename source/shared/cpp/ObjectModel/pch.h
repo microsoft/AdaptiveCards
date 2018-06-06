@@ -28,4 +28,6 @@
 #pragma warning(default: CPPCORECHECK_CONCURRENCY_WARNINGS)
 #pragma warning(default: CPPCORECHECK_ARITHMETIC_WARNINGS)
 #pragma warning(default: CPPCORECHECK_UNIQUE_POINTER_WARNINGS)
+// ECppCoreCheckWarningCodes::WARNING_MEMBER_UNINIT
+#pragma warning(default: 26495)
 #endif
