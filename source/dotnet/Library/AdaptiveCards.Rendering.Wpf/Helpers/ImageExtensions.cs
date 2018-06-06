@@ -105,56 +105,51 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static async void SetBackgroundSource(this Grid grid, Uri url, AdaptiveRenderContext context)
+        public static async void SetBackgroundSource(this Grid grid, Uri uri, AdaptiveRenderContext context)
         {
-            if (url == null)
+            if (uri == null)
                 return;
 
-            BitmapImage bi;
-            ImageBrush ib;
+            BitmapImage bi = null;
 
             // Try to resolve the image URI
-            if (url.IsAbsoluteUri)
+            if (uri.IsAbsoluteUri)
             {
                 // If it's an absolute URI, simply set the source
-                bi = await context.ResolveImageSource(url);
+                bi = await context.ResolveImageSource(uri);
             }
             else
             {
-                // Otherwise, combine with image base URL and try again
-                string baseUrl = String.IsNullOrEmpty(context.Config.ImageBaseUrl) ? "" : context.Config.ImageBaseUrl;
-                string combined = Path.Combine(baseUrl, url.ToString());
-
-                url = new Uri(combined, UriKind.RelativeOrAbsolute);
-                if (url.IsAbsoluteUri)
+                // Otherwise, combine with image base URL and try again of specified
+                if (!String.IsNullOrEmpty(context.Config.ImageBaseUrl))
                 {
-                    bi = await context.ResolveImageSource(url);
-                }
-                else
-                {
-                    // If it's still a relative URL, try loading directly from local resource
-                    bi = new BitmapImage(url);
-
-                    ib = new ImageBrush(bi)
+                    try
                     {
-                        Stretch = Stretch.UniformToFill,
-                        AlignmentX = AlignmentX.Left,
-                        AlignmentY = AlignmentY.Top
-                    };
-
-                    // For some reason, this keeps failing for relative images (whether the image exists or not)
-                    //grid.Background = ib;
-
-                    return;
+                        Uri baseUri = new Uri(context.Config.ImageBaseUrl);
+                        Uri combinedUri = new Uri(baseUri, uri.ToString());
+                        if (uri.IsAbsoluteUri)
+                        {
+                            bi = await context.ResolveImageSource(combinedUri);
+                        }
+                        else
+                        {
+                            // If it's still a relative URL, don't load and return
+                            return;
+                        }
+                    }
+                    catch (UriFormatException) { return; }
                 }
             }
 
-            grid.Background = new ImageBrush(bi)
+            if (bi != null)
             {
-                Stretch = Stretch.UniformToFill,
-                AlignmentX = AlignmentX.Left,
-                AlignmentY = AlignmentY.Top
-            };
+                grid.Background = new ImageBrush(bi)
+                {
+                    Stretch = Stretch.UniformToFill,
+                    AlignmentX = AlignmentX.Left,
+                    AlignmentY = AlignmentY.Top
+                };
+            }
         }
 
         public static void SetImageProperties(this Image imageview, AdaptiveImage image, AdaptiveRenderContext context)

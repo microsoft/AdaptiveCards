@@ -21,24 +21,19 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else
             {
-                // Otherwise, combine with image base URL and try again
-                string baseUrl = String.IsNullOrEmpty(context.Config.ImageBaseUrl) ? "" : context.Config.ImageBaseUrl;
-                string combined = Path.Combine(baseUrl, image.UrlString);
-
-                image.Url = new Uri(combined, UriKind.RelativeOrAbsolute);
-                if (image.Url.IsAbsoluteUri)
+                // Otherwise, combine with image base URL and try again of specified
+                if (!String.IsNullOrEmpty(context.Config.ImageBaseUrl))
                 {
-                    uiImage.SetSource(image.Url, context);
-                }
-                else
-                {
-                    // If it's still a relative URL, try loading directly from local resource
-                    BitmapImage bi = new BitmapImage();
-                    bi.BeginInit();
-                    bi.UriSource = image.Url;
-                    bi.EndInit();
-
-                    uiImage.SetSource(bi);
+                    try
+                    {
+                        Uri baseUri = new Uri(context.Config.ImageBaseUrl);
+                        Uri uri = new Uri(baseUri, image.Url);
+                        if (uri.IsAbsoluteUri)
+                        {
+                            uiImage.SetSource(uri, context);
+                        }
+                    }
+                    catch (UriFormatException) { }
                 }
             }
 

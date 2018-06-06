@@ -5,6 +5,8 @@ using System.IO;
 using System.Net;
 using System.Net.Cache;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Resources;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -16,6 +18,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             Register("http", GetHttpAsync);
             Register("https", GetHttpAsync);
+            Register("pack", GetPackAsync);
         }
 
         private static async Task<MemoryStream> GetHttpAsync(Uri uri)
@@ -28,6 +31,33 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
+        /* Helper function to get stream from either Resource or Content */
+        private static StreamResourceInfo GetResourceOrContentStream(Uri uri)
+        {
+            StreamResourceInfo info = Application.GetResourceStream(uri);
+            if (info == null)
+                info = Application.GetContentStream(uri);
+
+            return info;
+        }
+
+        private static Task<MemoryStream> GetPackAsync(Uri uri)
+        {
+            try
+            {
+                var info = GetResourceOrContentStream(uri);
+                if (info == null)
+                    throw new IOException("Unable to locate pack URI");
+
+                var memoryStream = new MemoryStream();
+                info.Stream.CopyTo(memoryStream);
+                return Task.FromResult(memoryStream);
+            }
+            catch (Exception)
+            {
+                return Task.FromResult<MemoryStream>(null);
+            }
+        }
 
         public void Register(string uriScheme, Func<Uri, Task<MemoryStream>> loadAsset)
         {

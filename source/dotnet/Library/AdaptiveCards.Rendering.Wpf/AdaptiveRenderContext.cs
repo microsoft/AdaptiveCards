@@ -79,15 +79,15 @@ namespace AdaptiveCards.Rendering.Wpf
                 var source = new BitmapImage();
 
                 var stream = await streamTask;
+                source.BeginInit();
                 if (stream != null)
                 {
                     stream.Position = 0;
-                    source.BeginInit();
                     source.CacheOption = BitmapCacheOption.OnLoad;
                     source.StreamSource = stream;
-                    source.EndInit();
                     Debug.WriteLine($"ASSETS: Finished loading asset for {url} ({stream.Length} bytes)");
                 }
+                source.EndInit();
                 completeTask.SetResult(new object());
                 return source;
             }
