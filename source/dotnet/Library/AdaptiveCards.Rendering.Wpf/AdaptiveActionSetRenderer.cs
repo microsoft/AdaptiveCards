@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class AdaptiveActionSetRenderer
     {
-        public static void AddActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
+        public static void AddActions(Grid uiContainer, IList<AdaptiveAction> actions, bool isMainCard, AdaptiveRenderContext context)
         {
             if (!context.Config.SupportsInteractivity)
                 return;
@@ -45,7 +45,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 bool isInline = (actionsConfig.ShowCard.ActionMode == ShowCardActionMode.Inline);
 
-                if (isInline && actionsToProcess.Any(a => a is AdaptiveShowCardAction))
+                if (isInline && isMainCard && actionsToProcess.Any(a => a is AdaptiveShowCardAction))
                 {
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 }
@@ -76,13 +76,16 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (action is AdaptiveShowCardAction showCardAction)
                     {
-                        if (isInline)
+                        if (isInline && isMainCard)
                         {
                             Grid uiShowCardContainer = new Grid();
                             uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                             uiShowCardContainer.DataContext = showCardAction;
                             uiShowCardContainer.Margin = new Thickness(0, actionsConfig.ShowCard.InlineTopMargin, 0, 0);
                             uiShowCardContainer.Visibility = Visibility.Collapsed;
+
+                            // Mark this card as not the main card
+                            showCardAction.Card.IsMainCard = false;
 
                             // render the card
                             var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);                            

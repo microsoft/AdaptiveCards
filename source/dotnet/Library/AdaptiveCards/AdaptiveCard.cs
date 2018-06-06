@@ -79,6 +79,8 @@ namespace AdaptiveCards
 
         public bool ShouldSerializeBody() => Body?.Count > 0;
 
+        public bool IsMainCard = true;
+
         /// <summary>
         ///     Actions for the card
         /// </summary>

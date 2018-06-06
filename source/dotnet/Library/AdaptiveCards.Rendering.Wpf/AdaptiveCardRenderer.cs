@@ -104,7 +104,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
 
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
-            AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
+            AdaptiveActionSetRenderer.AddActions(grid, card.Actions, card.IsMainCard, context);
 
             outerGrid.Children.Add(grid);
             return outerGrid;
