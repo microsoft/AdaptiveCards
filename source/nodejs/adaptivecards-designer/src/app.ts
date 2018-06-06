@@ -95,15 +95,30 @@ function scheduleLayoutUpdate() {
 // App initialization needs to happen after.
 declare function loadMonacoEditor(schema: any, callback: () => void);
 
-class PaletteItem extends Designer.DraggableElement {
+abstract class BasePaletteItem extends Designer.DraggableElement {
+    protected abstract getText(): string;
+
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
         element.classList.add("acd-palette-item");
-        element.innerText = this.typeRegistration.typeName;
+        // element.innerText = this.typeRegistration.typeName;
+        element.innerText = this.getText();
 
         return element;
     }
 
+    cloneElement(): HTMLElement {
+        return this.internalRender();
+    }
+
+    abstract createPeer(designer: Designer.CardDesigner): Designer.CardElementPeer;
+}
+
+class ElementPaletteItem extends BasePaletteItem {
+    protected getText(): string {
+        return this.typeRegistration.typeName;
+    }
+    
     readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
 
     constructor(typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>) {
@@ -112,15 +127,45 @@ class PaletteItem extends Designer.DraggableElement {
         this.typeRegistration = typeRegistration;
     }
 
-    cloneElement(): HTMLElement {
-        return this.internalRender();
-    }
-
-    createPeer(designer: Designer.CardDesigner, ): Designer.CardElementPeer {
-        var peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(designer, null, this.typeRegistration.createInstance());
+    createPeer(designer: Designer.CardDesigner): Designer.CardElementPeer {
+        let peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(designer, null, this.typeRegistration.createInstance());
         peer.initializeCardElement();
 
         return peer;
+    }
+}
+
+class SnippetPaletteItem extends BasePaletteItem {
+    protected getText(): string {
+        return this.name;
+    }
+    
+    readonly name: string;
+    snippet: object;
+
+    constructor(name: string) {
+        super();
+
+        this.name = name;
+    }
+
+    createPeer(designer: Designer.CardDesigner): Designer.CardElementPeer {
+        if (this.snippet) {
+            let rootElementTypeName = this.snippet["type"];
+
+            if (rootElementTypeName) {
+                let adaptiveElement = Adaptive.AdaptiveCard.elementTypeRegistry.createInstance(rootElementTypeName);
+
+                if (adaptiveElement) {
+                    adaptiveElement.parse(this.snippet);
+
+                    let peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
+                    peer.initializeCardElement();
+            
+                    return peer;
+                }
+            }
+        }
     }
 }
 
@@ -128,7 +173,7 @@ class DesignerApp {
     private _designer: Designer.CardDesigner;
     private _designerHostElement: HTMLElement;
     private _paletteHostElement: HTMLElement;
-    private _draggedPaletteItem: PaletteItem;
+    private _draggedPaletteItem: BasePaletteItem;
     private _draggedElement: HTMLElement;
     private _currentMousePosition: Designer.IPoint;
     private _card: Adaptive.AdaptiveCard;
@@ -171,6 +216,22 @@ class DesignerApp {
             this.propertySheetHostElement.appendChild(card.render());
         }
     }
+
+    private addPaletteItem(paletteItem: BasePaletteItem) {
+        paletteItem.render();
+        paletteItem.onStartDrag = (sender: BasePaletteItem) => {
+            this._draggedPaletteItem = sender;
+
+            this._draggedElement = sender.cloneElement();
+            this._draggedElement.style.position = "absolute";
+            this._draggedElement.style.left = this._currentMousePosition.x + "px";
+            this._draggedElement.style.top = this._currentMousePosition.y + "px";
+
+            document.body.appendChild(this._draggedElement);
+        }
+
+        this.paletteHostElement.appendChild(paletteItem.renderedElement);
+    }
     
     private buildPalette() {
         if (this.paletteHostElement) {
@@ -193,22 +254,46 @@ class DesignerApp {
                 }
             )
 
+            let personaHeaderSnippet = new SnippetPaletteItem("Persona header");
+            personaHeaderSnippet.snippet = {
+                type: "ColumnSet",
+                columns: [
+                    {
+                        width: "auto",
+                        items: [
+                            {
+                                type: "Image",
+                                size: "Small",
+                                style: "Person",
+                                url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                            }
+                        ]
+                    },
+                    {
+                        width: "stretch",
+                        items: [
+                            {
+                                type: "TextBlock",
+                                text: "John Doe",
+                                weight: "Bolder",
+                                wrap: true
+                            },
+                            {
+                                type: "TextBlock",
+                                spacing: "None",
+                                text: "Additional information",
+                                wrap: true
+                            }
+                        ]
+                    }
+                ]
+            };
+
             for (var i = 0; i < sortedRegisteredTypes.length; i++) {
-                var paletteItem = new PaletteItem(sortedRegisteredTypes[i]);
-                paletteItem.render();
-                paletteItem.onStartDrag = (sender: PaletteItem) => {
-                    this._draggedPaletteItem = sender;
-        
-                    this._draggedElement = sender.cloneElement();
-                    this._draggedElement.style.position = "absolute";
-                    this._draggedElement.style.left = this._currentMousePosition.x + "px";
-                    this._draggedElement.style.top = this._currentMousePosition.y + "px";
-        
-                    document.body.appendChild(this._draggedElement);
-                }
-        
-                this.paletteHostElement.appendChild(paletteItem.renderedElement);
+                this.addPaletteItem(new ElementPaletteItem(sortedRegisteredTypes[i]));
             }
+
+            this.addPaletteItem(personaHeaderSnippet);
         }
     }
 
