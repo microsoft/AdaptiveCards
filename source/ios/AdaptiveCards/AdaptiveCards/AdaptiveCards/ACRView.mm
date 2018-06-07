@@ -280,10 +280,11 @@ using namespace AdaptiveCards;
             } else {
                 markDownParser = std::make_shared<MarkDownParser>(textForBlock);
             }
+            // MarkDownParser transforms text with MarkDown to a html string
             parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
             NSDictionary *data = nil;
-            NSString *key = nil;
-            // MarkDownParser transforms text with MarkDown to a html string
+
+            // use Apple's html rendering only if the string has markdowns
             if(markDownParser->HasHtmlTags()) {
                 NSString *fontFamilyName = nil;
                 if(!self->_hostConfig.fontFamilyNames){
@@ -301,23 +302,23 @@ using namespace AdaptiveCards;
                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
                 data = @{@"html" : htmlData, @"options" : options};
             } else {
-
                 int fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
+                // sanity check, 400 is the normal font;
                 if(fontweight <= 0 || fontweight > 900){
                     fontweight = 400;
                 }
                 UIFont *font = nil;
                 if(!self->_hostConfig.fontFamilyNames){
-		            // font weight as double
-                     fontweight = (fontweight - 400);
+		             // normalize font weight to scale of -1.0 to 1.0, and 400 is zero
+                     fontweight -= 400;
                      if(fontweight > 0) {
                          fontweight /= 500;
                      } else {
-                         fontweight = (fontweight) / 300;
+                         fontweight /= 300;
                      }
                     font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:fontweight];
                 } else {
-		            // font weight as string
+		            // font weight as string since font weight as double doesn't work
                     // normailze fontweight for indexing
                     fontweight -= 100;
                     fontweight /= 100;
@@ -332,6 +333,7 @@ using namespace AdaptiveCards;
                 data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
             }
 
+            NSString *key = nil;
             if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
                 NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];

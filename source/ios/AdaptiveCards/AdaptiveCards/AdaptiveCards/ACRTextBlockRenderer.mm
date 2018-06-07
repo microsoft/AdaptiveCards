@@ -59,6 +59,7 @@
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
         } else {
+            // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
             [content deleteCharactersInRange:NSMakeRange(0, 3)];
             [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
