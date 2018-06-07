@@ -55,7 +55,6 @@ using namespace AdaptiveCards;
         _global_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         _async_tasks_group = dispatch_group_create();
         _serialNumber = 0;
-        _seenAllElements = NO;
     }
     return self;
 }
@@ -274,10 +273,6 @@ using namespace AdaptiveCards;
         ^{
             NSString* parsedString = nil;
             std::shared_ptr<MarkDownParser> markDownParser = nullptr;
-            // if correctly initialized, fonFamilyNames array is bigger than zero
-            NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-            [fontFamilyName appendString:[self->_hostConfig.fontFamilyNames componentsJoinedByString:@"', '"]];
-            [fontFamilyName appendString:@"'"];
 
             if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
@@ -290,26 +285,45 @@ using namespace AdaptiveCards;
             NSString *key = nil;
             // MarkDownParser transforms text with MarkDown to a html string
             if(markDownParser->HasHtmlTags()) {
+                NSString *fontFamilyName = nil;
+                if(!self->_hostConfig.fontFamilyNames){
+                    fontFamilyName = @"'-apple-system',  'HelveticaNeue'";
+                } else {
+                    fontFamilyName = self->_hostConfig.fontFamilyNames[0];
+                }
                 // Font and text size are applied as CSS style by appending it to the html string
                 parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
                                                                       fontFamilyName,
                                                                       [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
                                                                       [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
                 // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
+
                 NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
                 data = @{@"html" : htmlData, @"options" : options};
             } else {
-                
-                float fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
-                fontweight = (fontweight - 400);
-                if(fontweight > 0) {
-                    fontweight /= 500;
-                } else {
-                    fontweight = (-1) * (fontweight) / 300;
+
+                int fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
+                if(fontweight <= 0 || fontweight > 900){
+                    fontweight = 400;
                 }
-                UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: fontFamilyName, UIFontWeightTrait:[NSNumber numberWithFloat:fontweight]}];
-                UIFont *font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size]];
+		// normailze fontweight for indexing
+                fontweight -= 100;
+                fontweight /= 100;
+                UIFont *font = nil;
+                if(!self->_hostConfig.fontFamilyNames){
+		    // font weight as double
+                    const UIFontWeight fontweights[] = { UIFontWeightUltraLight, UIFontWeightThin, UIFontWeightLight, UIFontWeightRegular,
+                                                         UIFontWeightMedium, UIFontWeightSemibold, UIFontWeightBold, UIFontWeightHeavy, UIFontWeightBlack };
+                    font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:fontweights[fontweight]];
+                } else {
+		    // font weight as string
+                    const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                                @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+                    UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: self->_hostConfig.fontFamilyNames[0],
+                                                                                                          UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
+                    font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size]];
+                }
 
                 NSDictionary *attributeDictionary = @{NSFontAttributeName:font};
                 data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
@@ -364,11 +378,6 @@ using namespace AdaptiveCards;
 - (dispatch_queue_t)getSerialQueue
 {
     return _serial_queue;
-}
-
-- (dispatch_queue_t)getSerialTextQueue
-{
-    return _serial_text_queue;
 }
 
 - (NSMutableDictionary *)getTextMap

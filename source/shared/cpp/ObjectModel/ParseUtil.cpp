@@ -7,7 +7,7 @@
 #include "Container.h"
 #include "ShowCardAction.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 void ParseUtil::ThrowIfNotJsonObject(const Json::Value& json)
 {
@@ -425,13 +425,4 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
 
     return nullptr;
 }
-
-ParseUtil::ParseUtil()
-{
 }
-
-ParseUtil::~ParseUtil()
-{
-}
-
-AdaptiveSharedNamespaceEnd

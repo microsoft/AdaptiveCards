@@ -4,10 +4,8 @@
 #include "winPch.h"
 #endif
 
-#ifndef AdaptiveSharedNamespaceStart
-#define AdaptiveSharedNamespaceStart namespace AdaptiveCards {
+#ifndef AdaptiveSharedNamespace
 #define AdaptiveSharedNamespace AdaptiveCards
-#define AdaptiveSharedNamespaceEnd }
 #endif
 
 #include <memory>
@@ -23,11 +21,13 @@
 #include <fstream>
 #include <locale>
 
-#if !defined(__ANDROID__) && !defined(__APPLE__) && !defined(ADAPTIVE_CARDS_WINDOWS)
+#if defined(_MSC_BUILD) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(ADAPTIVE_CARDS_WINDOWS)
 #include <CppCoreCheck\warnings.h>
 #pragma warning(disable: ALL_CPPCORECHECK_WARNINGS)
 #pragma warning(default: CPPCORECHECK_STYLE_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONCURRENCY_WARNINGS)
 #pragma warning(default: CPPCORECHECK_ARITHMETIC_WARNINGS)
 #pragma warning(default: CPPCORECHECK_UNIQUE_POINTER_WARNINGS)
+// ECppCoreCheckWarningCodes::WARNING_MEMBER_UNINIT
+#pragma warning(default: 26495)
 #endif

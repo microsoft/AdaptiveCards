@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "Enums.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 class AdaptiveCardParseWarning
 {
@@ -19,5 +19,4 @@ private:
     const std::string m_message;
 };
 
-AdaptiveSharedNamespaceEnd
-
+}

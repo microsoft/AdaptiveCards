@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -53,13 +55,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);
 
-        GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
-                GridLayout.spec(GridLayout.UNDEFINED),
-                GridLayout.spec(GridLayout.UNDEFINED));
-
-        parem.rightMargin = (int) spacing;
-
-        textView.setLayoutParams(parem);
+        textView.setPaddingRelative(0, 0, (int)spacing,0);
         return textView;
     }
 
@@ -86,10 +82,9 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         setSpacingAndSeparator(context, viewGroup, factSet.GetSpacing(), factSet.GetSeparator(), hostConfig, true);
 
-        GridLayout gridLayout = new GridLayout(context);
-        gridLayout.setTag(factSet);
-        gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        gridLayout.setColumnCount(2);
+        TableLayout tableLayout = new TableLayout(context);
+        tableLayout.setTag(factSet);
+        tableLayout.setColumnShrinkable(1, true);
 
         FactVector factVector = factSet.GetFacts();
         long factVectorSize = factVector.size();
@@ -97,12 +92,15 @@ public class FactSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
-            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
-            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            TableRow factRow = new TableRow(context);
+            factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            factRow.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
+            factRow.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            tableLayout.addView(factRow);
         }
 
-        viewGroup.addView(gridLayout);
-        return gridLayout;
+        viewGroup.addView(tableLayout);
+        return tableLayout;
     }
 
     private static FactSetRenderer s_instance = null;
