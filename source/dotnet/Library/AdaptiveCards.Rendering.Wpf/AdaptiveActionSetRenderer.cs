@@ -4,12 +4,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
     public static class AdaptiveActionSetRenderer
     {
-        public static void AddActions(Grid uiContainer, IList<AdaptiveAction> actions, bool isMainCard, AdaptiveRenderContext context)
+        public static void AddActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
         {
             if (!context.Config.SupportsInteractivity)
                 return;
@@ -45,13 +46,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 bool isInline = (actionsConfig.ShowCard.ActionMode == ShowCardActionMode.Inline);
 
-                if (isInline && isMainCard && actionsToProcess.Any(a => a is AdaptiveShowCardAction))
-                {
-                    uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                }
-
                 int iPos = 0;
-                List<FrameworkElement> actionBarCards = new List<FrameworkElement>();
                 foreach (var action in actionsToProcess)
                 {
                     // add actions
@@ -76,44 +71,65 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (action is AdaptiveShowCardAction showCardAction)
                     {
-                        if (isInline && isMainCard)
+                        if (isInline && context.CardDepth == 1)
                         {
-                            Grid uiShowCardContainer = new Grid();
-                            uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
-                            uiShowCardContainer.DataContext = showCardAction;
-                            uiShowCardContainer.Margin = new Thickness(0, actionsConfig.ShowCard.InlineTopMargin, 0, 0);
-                            uiShowCardContainer.Visibility = Visibility.Collapsed;
-
-                            // Mark this card as not the main card
-                            showCardAction.Card.IsMainCard = false;
-
-                            // render the card
-                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);                            
-                            uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
-                            uiShowCardWrapper.DataContext = showCardAction;
-
-                            // Remove the card padding
-                            var innerCard = (Grid)uiShowCardWrapper.Children[0];
-                            innerCard.Margin = new Thickness(0);
-
-                            uiShowCardContainer.Children.Add(uiShowCardWrapper);
-
-                            actionBarCards.Add(uiShowCardContainer);
-                            Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
-                            uiContainer.Children.Add(uiShowCardContainer);
-
-                            uiAction.Click += (sender, e) =>
-                            {
-                                bool showCard = (uiShowCardContainer.Visibility != Visibility.Visible);
-                                foreach (var actionBarCard in actionBarCards)
-                                    actionBarCard.Visibility = Visibility.Collapsed;
-                                if (showCard)
-                                    uiShowCardContainer.Visibility = Visibility.Visible;
-                            };
+                            FrameworkElement uiShowCardContainer = CreateShowCard(showCardAction, context, actionsConfig);
+                            context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiAction));
                         }
                     }
                 }
             }
+        }
+
+        public static FrameworkElement RenderSelectAction(this AdaptiveRenderContext context, AdaptiveAction selectAction, FrameworkElement uiElement)
+        {
+            if (context.Config.SupportsInteractivity)
+            {
+                var uiButton = (Button)context.Render(selectAction);
+                uiButton.HorizontalAlignment = HorizontalAlignment.Left;
+                uiButton.Background = new SolidColorBrush(Colors.Transparent);
+                uiButton.BorderThickness = new Thickness(0);
+                uiButton.Content = uiElement;
+                uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
+
+                // Handle ShowCard
+                if (selectAction is AdaptiveShowCardAction showCardAction)
+                {
+                    var actionsConfig = context.Config.Actions;
+                    bool isInline = (actionsConfig.ShowCard.ActionMode == ShowCardActionMode.Inline);
+                    if (isInline && context.CardDepth == 1)
+                    {
+                        FrameworkElement uiShowCardContainer = CreateShowCard(showCardAction, context, actionsConfig);
+                        context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiButton));
+                    }
+                }
+
+                return uiButton;
+            }
+
+            return uiElement;
+        }
+
+        private static FrameworkElement CreateShowCard(AdaptiveShowCardAction showCardAction, AdaptiveRenderContext context, ActionsConfig actionsConfig)
+        {
+            Grid uiShowCardContainer = new Grid();
+            uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
+            uiShowCardContainer.DataContext = showCardAction;
+            uiShowCardContainer.Margin = new Thickness(0, actionsConfig.ShowCard.InlineTopMargin, 0, 0);
+            uiShowCardContainer.Visibility = Visibility.Collapsed;
+
+            // render the card
+            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
+            uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
+            uiShowCardWrapper.DataContext = showCardAction;
+
+            // Remove the card padding
+            var innerCard = (Grid)uiShowCardWrapper.Children[0];
+            innerCard.Margin = new Thickness(0);
+
+            uiShowCardContainer.Children.Add(uiShowCardWrapper);
+
+            return uiShowCardContainer;
         }
     }
 }

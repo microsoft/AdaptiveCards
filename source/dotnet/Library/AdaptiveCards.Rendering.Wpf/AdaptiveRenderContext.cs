@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -111,6 +112,10 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
+        // Flag to distinuish the main card and action show cards
+        public int CardDepth = 0;
+
+        public IList<Tuple<FrameworkElement, Button>> ActionShowCards = new List<Tuple<FrameworkElement, Button>>();
 
         public virtual Style GetStyle(string styleName)
         {
@@ -148,7 +153,19 @@ namespace AdaptiveCards.Rendering.Wpf
             var renderer = ElementRenderers.Get(element.GetType());
             if (renderer != null)
             {
-                return renderer.Invoke(element, this);
+                if (element is AdaptiveCard)
+                {
+                    CardDepth += 1;
+                }
+
+                var rendered = renderer.Invoke(element, this);
+
+                if (element is AdaptiveCard)
+                {
+                    CardDepth -= 1;
+                }
+
+                return rendered;
             }
 
             Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));

@@ -102,14 +102,48 @@ namespace AdaptiveCards.Rendering.Wpf
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
-            AdaptiveActionSetRenderer.AddActions(grid, card.Actions, card.IsMainCard, context);
+            AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
+
+            // Only handle Action show cards for the main card
+            if (context.CardDepth == 1)
+            {
+                // Define a new row to contain all the show cards
+                if (context.ActionShowCards.Count > 0)
+                {
+                    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                }
+
+                foreach (var showCardTuple in context.ActionShowCards)
+                {
+                    var currentShowCard = showCardTuple.Item1;
+                    var uiButton = showCardTuple.Item2;
+
+                    Grid.SetRow(currentShowCard, grid.RowDefinitions.Count - 1);
+                    grid.Children.Add(currentShowCard);
+
+                    // Assign on click function to all button elements
+                    uiButton.Click += (sender, e) =>
+                    {
+                        bool isCardCollapsed = (currentShowCard.Visibility != Visibility.Visible);
+
+                        // Collapse all the show cards
+                        foreach (var t in context.ActionShowCards)
+                        {
+                            var showCard = t.Item1;
+                            showCard.Visibility = Visibility.Collapsed;
+                        }
+
+                        // If current card is previously collapsed, show it
+                        if (isCardCollapsed)
+                            currentShowCard.Visibility = Visibility.Visible;
+                    };
+                }
+            }
 
             outerGrid.Children.Add(grid);
             return outerGrid;
         }
-
 
         /// <summary>
         /// Renders an adaptive card.
