@@ -296,7 +296,6 @@ using namespace AdaptiveCards;
                                                                       fontFamilyName,
                                                                       [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
                                                                       [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
-                // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
 
                 NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
@@ -307,17 +306,21 @@ using namespace AdaptiveCards;
                 if(fontweight <= 0 || fontweight > 900){
                     fontweight = 400;
                 }
-		// normailze fontweight for indexing
-                fontweight -= 100;
-                fontweight /= 100;
                 UIFont *font = nil;
                 if(!self->_hostConfig.fontFamilyNames){
-		    // font weight as double
-                    const UIFontWeight fontweights[] = { UIFontWeightUltraLight, UIFontWeightThin, UIFontWeightLight, UIFontWeightRegular,
-                                                         UIFontWeightMedium, UIFontWeightSemibold, UIFontWeightBold, UIFontWeightHeavy, UIFontWeightBlack };
-                    font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:fontweights[fontweight]];
+		            // font weight as double
+                     fontweight = (fontweight - 400);
+                     if(fontweight > 0) {
+                         fontweight /= 500;
+                     } else {
+                         fontweight = (fontweight) / 300;
+                     }
+                    font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:fontweight];
                 } else {
-		    // font weight as string
+		            // font weight as string
+                    // normailze fontweight for indexing
+                    fontweight -= 100;
+                    fontweight /= 100;
                     const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                                 @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
                     UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: self->_hostConfig.fontFamilyNames[0],
