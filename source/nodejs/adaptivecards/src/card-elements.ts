@@ -2322,6 +2322,7 @@ export abstract class Action {
 
     parse(json: any) {
         raiseParseActionEvent(this, json);
+	    
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
