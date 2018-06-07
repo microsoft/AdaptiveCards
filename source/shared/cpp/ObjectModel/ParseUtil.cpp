@@ -187,7 +187,7 @@ void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyTy
 {
     std::string actualType = GetTypeAsString(json);
     std::string expectedTypeStr = CardElementTypeToString(bodyType);
-    bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
+    const bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
     if (!isTypeCorrect)
     {
         throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "The JSON element did not have the correct type. Expected: " + expectedTypeStr + ", Actual: " + actualType);
