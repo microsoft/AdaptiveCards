@@ -126,30 +126,30 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="..\..\..\samples\Tests\InvalidMediaMix.json" />
-    <None Include="..\..\..\samples\Tests\ColumnSet.FactSet.VerticalStretch.json">
+    <Content Include="..\..\..\samples\Tests\ColumnSet.FactSet.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.FactSet.VerticalStretch.json</Link>
-    </None>
-    <None Include="..\..\..\samples\Tests\ColumnSet.Image.VerticalStretch.json">
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.Image.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.Image.VerticalStretch.json</Link>
-    </None>
-    <None Include="..\..\..\samples\Tests\ColumnSet.ImageSet.VerticalStretch.json">
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.ImageSet.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.ImageSet.VerticalStretch.json</Link>
-    </None>
-    <None Include="..\..\..\samples\Tests\ColumnSet.Input.ChoiceSet.VerticalStretch.json">
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.ChoiceSet.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.Input.ChoiceSet.VerticalStretch.json</Link>
-    </None>
-    <None Include="..\..\..\samples\Tests\ColumnSet.Input.Date.VerticalStretch.json">
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Date.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.Input.Date.VerticalStretch.json</Link>
-    </None>
-    <None Include="..\..\..\samples\Tests\ColumnSet.Input.Number.VerticalStretch.json">
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Number.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.Input.Number.VerticalStretch.json</Link>
-    </None>
-    <None Include="..\..\..\samples\Tests\ColumnSet.Input.Time.VerticalStretch.json">
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Time.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.Input.Time.VerticalStretch.json</Link>
-    </None>
-    <None Include="..\..\..\samples\Tests\ColumnSet.Input.Toggle.VerticalStretch.json">
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Toggle.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.Input.Toggle.VerticalStretch.json</Link>
-    </None>
+    </Content>
     <None Include="AdaptiveCardTestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
