@@ -125,6 +125,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="..\..\..\samples\Tests\InvalidMediaMix.json" />
     <None Include="AdaptiveCardTestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -144,8 +145,80 @@
     <Content Include="..\..\..\samples\v1.0\Elements\*.json">
       <Link>LinkedCards\v1.0\Elements\%(FileName)</Link>
     </Content>
-    <Content Include="..\..\..\samples\Tests\*.json">
-      <Link>LinkedCards\Tests\%(FileName)</Link>
+    <Content Include="..\..\..\samples\Tests\Action.Title.json">
+      <Link>LinkedCards\Tests\Action.Title</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\AdaptiveCard.MinVersion.json">
+      <Link>LinkedCards\Tests\AdaptiveCard.MinVersion</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\AdaptiveCard.UnknownElements.json">
+      <Link>LinkedCards\Tests\AdaptiveCard.UnknownElements</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\AdaptiveCard.Version.json">
+      <Link>LinkedCards\Tests\AdaptiveCard.Version</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\AdditionalProperty.json">
+      <Link>LinkedCards\Tests\AdditionalProperty</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\AutoImageSet.json">
+      <Link>LinkedCards\Tests\AutoImageSet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\Column.Explicit.Size.json">
+      <Link>LinkedCards\Tests\Column.Explicit.Size</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.ImplicitColumnType.json">
+      <Link>LinkedCards\Tests\ColumnSet.ImplicitColumnType</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Text.VerticalStretch.json">
+      <Link>LinkedCards\Tests\ColumnSet.Input.Text.VerticalStretch</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.VerticalStretch.json">
+      <Link>LinkedCards\Tests\ColumnSet.VerticalStretch</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet_Container.VerticalStretch.json">
+      <Link>LinkedCards\Tests\ColumnSet_Container.VerticalStretch</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\CustomParsingTestUsingProgressBar.json">
+      <Link>LinkedCards\Tests\CustomParsingTestUsingProgressBar</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\DateTimeTestTranslation.json">
+      <Link>LinkedCards\Tests\DateTimeTestTranslation</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\FactSetWrapping.json">
+      <Link>LinkedCards\Tests\FactSetWrapping</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\FlightItinerary_en.json">
+      <Link>LinkedCards\Tests\FlightItinerary_en</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\FlightItinerary_es.json">
+      <Link>LinkedCards\Tests\FlightItinerary_es</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\FlightItinerary_es_fail.json">
+      <Link>LinkedCards\Tests\FlightItinerary_es_fail</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\Image.Explicit.Size.json">
+      <Link>LinkedCards\Tests\Image.Explicit.Size</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\InvalidMediaMix.json">
+      <Link>LinkedCards\Tests\InvalidMediaMix</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\Media.json">
+      <Link>LinkedCards\Tests\Media</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\TypeIsRequired.json">
+      <Link>LinkedCards\Tests\TypeIsRequired</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\VerticalContentAlignment.json">
+      <Link>LinkedCards\Tests\VerticalContentAlignment</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\VerticalContentAlignment_Column.json">
+      <Link>LinkedCards\Tests\VerticalContentAlignment_Column</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\VerticalContentAlignment_Container.json">
+      <Link>LinkedCards\Tests\VerticalContentAlignment_Container</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\VerticalStretch.json">
+      <Link>LinkedCards\Tests\VerticalStretch</Link>
     </Content>
     <Content Include="..\..\..\samples\v1.0\HostConfig\*.json">
       <Link>LinkedHostConfigs\v1.0\%(FileName)</Link>

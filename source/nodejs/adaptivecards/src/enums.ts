@@ -91,6 +91,13 @@ export enum ActionIconPlacement {
     AboveTitle
 }
 
+export enum InputTextStyle {
+    Text,
+    Tel,
+    Url,
+    Email
+}
+
 /*
     This should really be a string enum, e.g.
     

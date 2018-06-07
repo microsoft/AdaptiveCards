@@ -13,6 +13,7 @@
 #include <Image.h>
 #include <MediaSource.h>
 #include <windows.foundation.collections.h>
+#include "AdaptiveCardParseWarning.h"
 
 #ifdef ADAPTIVE_CARDS_WINDOWS
 using namespace InternalNamespace;
@@ -172,3 +173,11 @@ void GetUrlFromString(
     ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
     HSTRING urlString,
     ABI::Windows::Foundation::IUriRuntimeClass** url);
+
+HRESULT SharedWarningsToAdaptiveWarnings(
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings);
+
+HRESULT AdaptiveWarningsToSharedWarnings(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);

@@ -34,9 +34,7 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
                 textBlock->SetLanguage(language);
             }
         }
-
     }
-
 }
 
 void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension, int &parsedDimension)

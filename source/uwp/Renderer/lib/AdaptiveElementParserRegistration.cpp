@@ -3,6 +3,7 @@
 #include "AdaptiveActionParserRegistration.h"
 #include "CustomElementWrapper.h"
 #include "Util.h"
+#include "Vector.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -76,6 +77,7 @@ AdaptiveNamespaceStart
     std::shared_ptr<BaseCardElement> SharedModelElementParser::Deserialize(
         std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
@@ -96,7 +98,10 @@ AdaptiveNamespaceStart
         MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
 
         ComPtr<IAdaptiveCardElement> cardElement;
-        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), &cardElement));
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings = Make<Vector<IAdaptiveWarning*>>(); 
+        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), adaptiveWarnings.Get(), &cardElement));
+
+        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), warnings));
 
         std::shared_ptr<CustomElementWrapper> elementWrapper = std::make_shared<CustomElementWrapper>(cardElement.Get());
         return elementWrapper;

@@ -79,9 +79,9 @@ using namespace AdaptiveCards;
         [[rootView card] setInputs:inputs];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
-        [rootView addActionsToConcurrentQueue:actions];
-        [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
         if(!actions.empty()) {
+            [rootView addActionsToConcurrentQueue:actions];
+            [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
             // renders buttons and their associated actions
             [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
         }

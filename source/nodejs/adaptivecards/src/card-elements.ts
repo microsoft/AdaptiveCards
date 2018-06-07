@@ -722,9 +722,30 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            // Looks like 1.33 is the magic number to compute line-height
-            // from font size.
-            this._computedLineHeight = fontSize * 1.33;
+            if (this.hostConfig.lineHeights) {
+                switch (this.size) {
+                    case Enums.TextSize.Small:
+                        this._computedLineHeight = this.hostConfig.lineHeights.small;
+                        break;
+                    case Enums.TextSize.Medium:
+                        this._computedLineHeight = this.hostConfig.lineHeights.medium;
+                        break;
+                    case Enums.TextSize.Large:
+                        this._computedLineHeight = this.hostConfig.lineHeights.large;
+                        break;
+                    case Enums.TextSize.ExtraLarge:
+                        this._computedLineHeight = this.hostConfig.lineHeights.extraLarge;
+                        break;
+                    default:
+                        this._computedLineHeight = this.hostConfig.lineHeights.default;
+                        break;    
+                }
+            }
+            else {
+                // Looks like 1.33 is the magic number to compute line-height
+                // from font size.
+                this._computedLineHeight = fontSize * 1.33;                
+            }
 
             element.style.fontSize = fontSize + "px";
             element.style.lineHeight = this._computedLineHeight + "px";
@@ -1593,7 +1614,7 @@ export class TextInput extends Input {
         }
         else {
             this._inputElement = document.createElement("input");
-            this._inputElement.type = "text";
+            this._inputElement.type = Enums.InputTextStyle[this.style].toLowerCase();
             this._inputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
             this._inputElement.style.width = "100%";
             this._inputElement.tabIndex = 0;
@@ -1620,6 +1641,7 @@ export class TextInput extends Input {
     maxLength: number;
     isMultiline: boolean;
     placeholder: string;
+    style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
 
     getJsonTypeName(): string {
         return "Input.Text";
@@ -1631,6 +1653,7 @@ export class TextInput extends Input {
         Utils.setProperty(result, "placeholder", this.placeholder);
         Utils.setProperty(result, "maxLength", this.maxLength, 0);
         Utils.setProperty(result, "isMultiline", this.isMultiline, false);
+        Utils.setProperty(result, "style", this.style, Enums.InputTextStyle.Text);
 
         return result;
     }
@@ -1641,6 +1664,7 @@ export class TextInput extends Input {
         this.maxLength = json["maxLength"];
         this.isMultiline = json["isMultiline"];
         this.placeholder = json["placeholder"];
+        this.style =  Utils.getEnumValueOrDefault(Enums.InputTextStyle, json["style"], this.style);
     }
 
     get value(): string {
@@ -2118,10 +2142,10 @@ class ActionButton {
     private updateCssStyle() {
         let hostConfig = this.action.parent.hostConfig;
 
-       this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
-       this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
+        this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
+        this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
 
-       switch (this._state) {
+        switch (this._state) {
             case ActionButtonState.Expanded:
                 this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expanded"));
                 break;
@@ -2129,6 +2153,11 @@ class ActionButton {
                 this.action.renderedElement.classList.add(hostConfig.makeCssClassName("subdued"));
                 break;
         }
+
+        if (this.action.isPrimary) {
+            this.action.renderedElement.classList.add(hostConfig.makeCssClassName("primary"));
+        }
+
     }
 
     readonly action: Action;
@@ -2179,6 +2208,7 @@ export abstract class Action {
     id: string;
     title: string;
     iconUrl: string;
+    isPrimary: boolean;
 
     toJSON() {
         let result = {};
@@ -2291,6 +2321,8 @@ export abstract class Action {
     };
 
     parse(json: any) {
+        raiseParseActionEvent(this, json);
+	    
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
@@ -2837,6 +2869,7 @@ class ActionCollection {
         }
         else {
             var buttonStrip = document.createElement("div");
+            buttonStrip.className = this._owner.hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
 
             if (orientation == Enums.Orientation.Horizontal) {
@@ -4407,6 +4440,15 @@ function raiseParseElementEvent(element: CardElement, json: any) {
     }
 }
 
+function raiseParseActionEvent(element: Action, json: any) {
+	let card = element.parent.getRootElement() as AdaptiveCard;
+	let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
+
+	if (onParseActionHandler != null) {
+		onParseActionHandler(element, json);
+	}
+}
+
 function raiseParseError(error: IValidationError) {
     if (AdaptiveCard.onParseError != null) {
         AdaptiveCard.onParseError(error);
@@ -4650,6 +4692,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static onImageLoaded: (image: Image) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseElement: (element: CardElement, json: any) => void = null;
+    static onParseAction: (element: Action, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
     static processMarkdown = function (text: string): string {
@@ -4741,6 +4784,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     onParseElement: (element: CardElement, json: any) => void = null;
+	onParseAction: (element: Action, json: any) => void = null;
 
     version?: Version = new Version(1, 0);
     fallbackText: string;

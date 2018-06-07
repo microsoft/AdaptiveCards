@@ -2,10 +2,8 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
@@ -24,12 +22,8 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-
-import java.io.IOException;
-import java.util.Vector;
 
 public class AdaptiveCardRenderer
 {
@@ -49,59 +43,34 @@ public class AdaptiveCardRenderer
         return s_instance;
     }
 
-    private class BackgroundImageLoader extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
+    private class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
     {
         private Context m_context;
         private LinearLayout m_layout;
-        private RenderedAdaptiveCard m_renderedCard;
 
-        public BackgroundImageLoader(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout)
+        public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl)
         {
+            super(renderedCard, imageBaseUrl);
+
             m_context = context;
             m_layout = layout;
-            m_renderedCard = renderedCard;
         }
 
         @Override
         protected HttpRequestResult<Bitmap> doInBackground(String... args)
         {
-            try
+            if (args.length == 0)
             {
-                Bitmap bitmap;
-                byte[] bytes = HttpRequestHelper.get(args[0]);
-                if (bytes == null)
-                {
-                    throw new IOException("Failed to retrieve content from " + args[0]);
-                }
-
-                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                if (bitmap == null)
-                {
-                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
-                }
-
-                return new HttpRequestResult<>(bitmap);
+                return null;
             }
-            catch (Exception excep)
-            {
-                return new HttpRequestResult<>(excep);
-            }
+            return loadImage(args[0], m_context);
         }
 
-        @Override
-        protected void onPostExecute(HttpRequestResult<Bitmap> result)
+        void onSuccessfulPostExecute(Bitmap bitmap)
         {
-            if(result.isSuccessful())
-            {
-                BitmapDrawable background = new BitmapDrawable(m_context.getResources(), result.getResult());
-                m_layout.setBackground(background);
-                m_layout.bringChildToFront(m_layout.getChildAt(0));
-            }
-            else
-            {
-                m_renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNABLE_TO_LOAD_IMAGE, result.getException().getMessage()));
-            }
+            BitmapDrawable background = new BitmapDrawable(m_context.getResources(), bitmap);
+            m_layout.setBackground(background);
+            m_layout.bringChildToFront(m_layout.getChildAt(0));
         }
     }
 
@@ -209,7 +178,7 @@ public class AdaptiveCardRenderer
         String imageUrl = adaptiveCard.GetBackgroundImage();
         if (!imageUrl.isEmpty())
         {
-            BackgroundImageLoader loaderAsync = new BackgroundImageLoader(renderedCard, context, layout);
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.getImageBaseUrl());
             loaderAsync.execute(imageUrl);
         }
 

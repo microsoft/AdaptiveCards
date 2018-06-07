@@ -53,6 +53,14 @@ public class Image extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Image_SetUrl(swigCPtr, this, value);
   }
 
+  public String GetBackgroundColor() {
+    return AdaptiveCardObjectModelJNI.Image_GetBackgroundColor(swigCPtr, this);
+  }
+
+  public void SetBackgroundColor(String value) {
+    AdaptiveCardObjectModelJNI.Image_SetBackgroundColor(swigCPtr, this, value);
+  }
+
   public ImageStyle GetImageStyle() {
     return ImageStyle.swigToEnum(AdaptiveCardObjectModelJNI.Image_GetImageStyle(swigCPtr, this));
   }
