@@ -4,7 +4,7 @@
 #include "BaseCardElement.h"
 #include "MarkDownParsedResult.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
     class MarkDownBlockParser
     {
         public:
@@ -26,11 +26,11 @@ AdaptiveSharedNamespaceStart
     {
         public:
         enum EmphasisState
-        {   
+        {
             // Text is being handled
             Text = 0x0,
             // Emphasis is being handled
-            Emphasis = 0x1,   
+            Emphasis = 0x1,
             // Empahais Parsing is done
             Captured = 0x2,
         };
@@ -41,7 +41,7 @@ AdaptiveSharedNamespaceStart
         void Flush(int ch, std::string& currentToken);
         // check if given character is * or _
         bool IsMarkDownDelimiter(int ch);
-        void CaptureCurrentCollectedStringAsRegularToken(std::string&currentToken); 
+        void CaptureCurrentCollectedStringAsRegularToken(std::string&currentToken);
         void CaptureCurrentCollectedStringAsRegularToken();
         void UpdateCurrentEmphasisRunState(DelimiterType emphasisType);
         // Check if current delimiter will be considererd as a delimiter run
@@ -50,12 +50,12 @@ AdaptiveSharedNamespaceStart
         bool IsRightEmphasisDelimiter(int ch);
         // Attempt to capture current emphasis as right emphasis
         bool TryCapturingRightEmphasisToken(int ch, std::string &currentToken);
-        bool IsLeftEmphasisDelimiter(int ch) 
+        bool IsLeftEmphasisDelimiter(int ch)
         {
-            return (m_delimiterCnts && 
+            return (m_delimiterCnts &&
                     ch != EOF &&
-                    !isspace(ch) && 
-                    !(m_lookBehind == Alphanumeric && ispunct(ch)) && 
+                    !isspace(ch) &&
+                    !(m_lookBehind == Alphanumeric && ispunct(ch)) &&
                     !(m_lookBehind == Alphanumeric && m_currentDelimiterType == Underscore));
         };
         // Attempt to capture current emphasis as right emphasis
@@ -79,9 +79,9 @@ AdaptiveSharedNamespaceStart
         unsigned int m_current_state = 0;
 
         // vector of callback functions that handles state transistions
-        std::vector<MatchWithChar> m_stateMachine = 
+        std::vector<MatchWithChar> m_stateMachine =
             {
-                MatchText, 
+                MatchText,
                 MatchEmphasis,
             };
 
@@ -102,9 +102,9 @@ AdaptiveSharedNamespaceStart
         // Matches LinkText Run sytax of link
         bool MatchAtLinkTextRun(std::stringstream &);
         // Matches LinkText End sytax of link
-        bool MatchAtLinkTextEnd(std::stringstream &); 
+        bool MatchAtLinkTextEnd(std::stringstream &);
         // Matches LinkDestination Start sytax of link
-        bool MatchAtLinkDestinationStart(std::stringstream &); 
+        bool MatchAtLinkDestinationStart(std::stringstream &);
         // Matches LinkDestination Run sytax of link
         bool MatchAtLinkDestinationRun(std::stringstream &);
 
@@ -139,4 +139,4 @@ AdaptiveSharedNamespaceStart
         private:
         void CaptureOrderedListToken(std::string&);
     };
-AdaptiveSharedNamespaceEnd
+}

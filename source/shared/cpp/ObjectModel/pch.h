@@ -4,10 +4,8 @@
 #include "winPch.h"
 #endif
 
-#ifndef AdaptiveSharedNamespaceStart
-#define AdaptiveSharedNamespaceStart namespace AdaptiveCards {
+#ifndef AdaptiveSharedNamespace
 #define AdaptiveSharedNamespace AdaptiveCards
-#define AdaptiveSharedNamespaceEnd }
 #endif
 
 #include <memory>

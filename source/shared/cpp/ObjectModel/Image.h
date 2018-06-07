@@ -6,7 +6,7 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class Image : public BaseCardElement
 {
 public:
@@ -35,10 +35,10 @@ public:
     std::shared_ptr<BaseActionElement> GetSelectAction() const;
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-    unsigned int GetPixelWidth() const; 
+    unsigned int GetPixelWidth() const;
     void SetPixelWidth(unsigned int value);
 
-    unsigned int GetPixelHeight() const; 
+    unsigned int GetPixelHeight() const;
     void SetPixelHeight(unsigned int value);
 
     virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
@@ -78,4 +78,4 @@ public:
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

@@ -5,7 +5,7 @@
 #include "Image.h"
 #include "BaseCardElement.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class BaseCardElement;
 class ImageSet : public BaseCardElement
 {
@@ -29,7 +29,7 @@ private:
     std::vector<std::shared_ptr<Image>> m_images;
     ImageSize m_imageSize;
 };
-    
+
 class ImageSetParser : public BaseCardElementParser
 {
 public:
@@ -45,4 +45,4 @@ public:
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}
