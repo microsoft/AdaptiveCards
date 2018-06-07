@@ -379,7 +379,7 @@ export abstract class CardElement {
     }
 
     parse(json: any, errors?: Array<IValidationError>) {
-        raiseParseElementEvent(this, json);
+        raiseParseElementEvent(this, json, errors);
 
         this.id = json["id"];
         this.speak = json["speak"];
@@ -2387,6 +2387,8 @@ export abstract class Action {
     };
 
     parse(json: any, errors?: Array<IValidationError>) {
+        raiseParseActionEvent(this, json, errors);
+	    
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
@@ -4524,13 +4526,22 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     }
 }
 
-function raiseParseElementEvent(element: CardElement, json: any) {
+function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<IValidationError>) {
     let card = element.getRootElement() as AdaptiveCard;
     let onParseElementHandler = (card && card.onParseElement) ? card.onParseElement : AdaptiveCard.onParseElement;
 
     if (onParseElementHandler != null) {
-        onParseElementHandler(element, json);
+        onParseElementHandler(element, json, errors);
     }
+}
+
+function raiseParseActionEvent(element: Action, json: any, errors?: Array<IValidationError>) {
+	let card = element.parent.getRootElement() as AdaptiveCard;
+	let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
+
+	if (onParseActionHandler != null) {
+		onParseActionHandler(element, json, errors);
+	}
 }
 
 function raiseParseError(error: IValidationError, errors: Array<IValidationError>) {
@@ -4779,7 +4790,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onImageLoaded: (image: Image) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
-    static onParseElement: (element: CardElement, json: any) => void = null;
+    static onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
+    static onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
     static processMarkdown = function (text: string): string {
@@ -4870,7 +4882,8 @@ export class AdaptiveCard extends ContainerWithActions {
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
-    onParseElement: (element: CardElement, json: any) => void = null;
+    onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
+	onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
 
     version?: Version = new Version(1, 0);
     fallbackText: string;
