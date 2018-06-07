@@ -27,10 +27,7 @@ export function createActionInstance(json: any): Action {
 
     var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
 
-    if (result) {
-        result.parse(json);
-    }
-    else {
+    if (!result) {
         raiseParseError(
             {
                 error: Enums.ValidationError.UnknownActionType,
@@ -1402,6 +1399,11 @@ export class Image extends CardElement {
 
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
+
+            if (this.selectAction) {
+                this.selectAction.setParent(this);
+                this.selectAction.parse(selectActionJson);
+            }
         }
     }
 
@@ -2990,10 +2992,12 @@ class ActionCollection {
     }
 
     addAction(action: Action) {
-        if (!action.parent) {
+        if ((!action.parent || action.parent === this._owner) && this.items.indexOf(action) < 0) {
             this.items.push(action);
 
-            action.setParent(this._owner);
+            if (!action.parent) {
+                action.setParent(this._owner);
+            }
 
             invokeSetCollection(action, this);
         }
@@ -3113,7 +3117,14 @@ export class ActionSet extends CardElement {
             var jsonActions = json["actions"] as Array<any>;
 
             for (var i = 0; i < jsonActions.length; i++) {
-                this.addAction(createActionInstance(jsonActions[i]));
+                let action = createActionInstance(jsonActions[i]);
+
+                if (action) {
+                    action.setParent(this);
+                    action.parse(jsonActions[i]);
+
+                    this.addAction(action);
+                }
             }
         }
     }
@@ -3716,6 +3727,11 @@ export class Container extends CardElementContainer {
 
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
+
+            if (this.selectAction) {
+                this.selectAction.setParent(this);
+                this.selectAction.parse(selectActionJson);
+            }
         }
     }
 
@@ -4161,6 +4177,11 @@ export class ColumnSet extends CardElementContainer {
 
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson);
+
+            if (this.selectAction) {
+                this.selectAction.setParent(this);
+                this.selectAction.parse(selectActionJson);
+            }
         }
 
         if (json["columns"] != null) {
@@ -4440,12 +4461,12 @@ function raiseParseElementEvent(element: CardElement, json: any) {
     }
 }
 
-function raiseParseActionEvent(element: Action, json: any) {
-	let card = element.parent.getRootElement() as AdaptiveCard;
+function raiseParseActionEvent(action: Action, json: any) {
+	let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
 	let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
 	if (onParseActionHandler != null) {
-		onParseActionHandler(element, json);
+		onParseActionHandler(action, json);
 	}
 }
 
@@ -4543,6 +4564,9 @@ export abstract class ContainerWithActions extends Container {
                 var action = createActionInstance(jsonActions[i]);
 
                 if (action != null) {
+                    action.setParent(this);
+                    action.parse(jsonActions[i]);
+
                     this.addAction(action);
                 }
             }
@@ -4564,7 +4588,9 @@ export abstract class ContainerWithActions extends Container {
     }
 
     addAction(action: Action) {
-        this._actionCollection.addAction(action);
+        if (action) {
+            this._actionCollection.addAction(action);
+        }
     }
 
     clear() {
