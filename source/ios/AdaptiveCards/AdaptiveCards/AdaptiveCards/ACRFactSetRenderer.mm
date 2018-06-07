@@ -39,22 +39,19 @@
     lab.isFactSetLabel = YES;
     lab.translatesAutoresizingMaskIntoConstraints = NO;
     lab.style = style;
-    __block NSMutableAttributedString *content = nil;
+    NSMutableAttributedString *content = nil;
     if(rootView){
+        std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(element);
         NSMutableDictionary *textMap = [rootView getTextMap];
-        // Syncronize access to imageViewMap
-        dispatch_sync([rootView getSerialTextQueue], ^{
-            if(textMap[elementId]) { // if content is available, get it, otherwise cache label, so it can be used used later
-                content = textMap[elementId];
-            } else {
-                textMap[elementId] = lab;
-            }
-        });
-    }
-
-    if(content){
+        NSDictionary* data = textMap[elementId];
+        NSData *htmlData = data[@"html"];
+        NSDictionary *options = data[@"options"];
 
         std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+        // Initializing NSMutableAttributedString for HTML rendering is very slow
+        content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+        // Drop newline char
+        [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
@@ -70,7 +67,6 @@
                                     NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:textConfig.weight]}
                          range:NSMakeRange(0, content.length)];
         lab.attributedText = content;
-
         std::string ID = element->GetId();
         std::size_t idx = ID.find_last_of('_');
         if(std::string::npos != idx){
