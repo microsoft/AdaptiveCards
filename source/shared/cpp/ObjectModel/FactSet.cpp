@@ -60,7 +60,7 @@ std::shared_ptr<BaseCardElement> FactSetParser::DeserializeFromString(
     return FactSetParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void FactSet::PopulateKnownPropertiesSet() 
+void FactSet::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts)});
 }

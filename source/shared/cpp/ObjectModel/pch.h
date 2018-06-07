@@ -27,6 +27,7 @@
 #pragma warning(default: CPPCORECHECK_ARITHMETIC_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONCURRENCY_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONST_WARNINGS)
+#pragma warning(default: CPPCORECHECK_DECLARATION_WARNINGS)
 #pragma warning(default: CPPCORECHECK_STYLE_WARNINGS)
 #pragma warning(default: CPPCORECHECK_UNIQUE_POINTER_WARNINGS)
 

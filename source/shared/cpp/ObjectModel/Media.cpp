@@ -108,9 +108,9 @@ std::shared_ptr<BaseCardElement> MediaParser::DeserializeFromString(
     return MediaParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void Media::PopulateKnownPropertiesSet() 
+void Media::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources)});
 }
