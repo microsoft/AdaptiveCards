@@ -272,33 +272,63 @@ using namespace AdaptiveCards;
     dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
             NSString* parsedString = nil;
+            std::shared_ptr<MarkDownParser> markDownParser = nullptr;
+
             if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
-                // MarkDownParser transforms text with MarkDown to a html string
-                std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
-                parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
             } else {
-                std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>(textForBlock.c_str());
-                parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+                markDownParser = std::make_shared<MarkDownParser>(textForBlock);
+            }
+            // MarkDownParser transforms text with MarkDown to a html string
+            parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+            NSDictionary *data = nil;
+
+            // use Apple's html rendering only if the string has markdowns
+            if(markDownParser->HasHtmlTags()) {
+                NSString *fontFamilyName = nil;
+                if(!self->_hostConfig.fontFamilyNames){
+                    fontFamilyName = @"'-apple-system',  'HelveticaNeue'";
+                } else {
+                    fontFamilyName = self->_hostConfig.fontFamilyNames[0];
+                }
+                // Font and text size are applied as CSS style by appending it to the html string
+                parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
+                                                                      fontFamilyName,
+                                                                      [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
+                                                                      [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
+
+                NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+                NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
+                data = @{@"html" : htmlData, @"options" : options};
+            } else {
+                int fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
+                // sanity check, 400 is the normal font;
+                if(fontweight <= 0 || fontweight > 900){
+                    fontweight = 400;
+                }
+                UIFont *font = nil;
+                fontweight -= 100;
+                fontweight /= 100;
+                if(!self->_hostConfig.fontFamilyNames){
+                    const NSArray<NSNumber *> *fontweights = @[@(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
+                       @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack)];
+                    font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:[fontweights[fontweight] floatValue]];
+                } else {
+                    // font weight as string since font weight as double doesn't work
+                    // normailze fontweight for indexing
+                    const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                                @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+                    UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: self->_hostConfig.fontFamilyNames[0],
+                                                                                                          UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
+                    font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size]];
+                }
+
+                NSDictionary *attributeDictionary = @{NSFontAttributeName:font};
+                data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
             }
 
-            // if correctly initialized, fonFamilyNames array is bigger than zero
-            NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-            [fontFamilyName appendString:[self->_hostConfig.fontFamilyNames componentsJoinedByString:@"', '"]];
-            [fontFamilyName appendString:@"'"];
-
-            // Font and text size are applied as CSS style by appending it to the html string
-            parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
-                                                                  fontFamilyName,
-                                                                  [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
-                                                                  [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
-            // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
-
-            NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-            NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-            NSDictionary *data = @{@"html" : htmlData, @"options" : options};
             NSString *key = nil;
-
             if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
                 NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
