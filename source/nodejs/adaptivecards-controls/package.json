@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "build-dist": "webpack",
-    "tsc": "tsc -p .",
+    "tsc": "tsc -p .",    
+    "compile:watch": "npm run clean && tsc -w",
     "build": "npm run tsc && npm run build-dist && npm run dts",
     "watch": "webpack --watch",    
     "dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
