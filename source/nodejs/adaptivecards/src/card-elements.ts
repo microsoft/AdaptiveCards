@@ -94,19 +94,19 @@ export class SizeAndUnit {
 
         let regExp = /^([0-9]+)(px|\*)?$/g;
         let matches = regExp.exec(input);
-    
+
         if (matches && matches.length >= 2) {
             result.physicalSize = parseInt(matches[1]);
-    
+
             if (matches.length == 3) {
                 if (matches[2] == "px") {
                     result.unit = Enums.SizeUnit.Pixel;
                 }
             }
-    
+
             return result;
         }
-    
+
         throw new Error("Invalid size: " + input);
     }
 
@@ -146,7 +146,7 @@ export abstract class CardElement {
 
         if (this._separatorElement) {
             if (this.parent && this.parent.isFirstElement(this)) {
-                this._separatorElement.style.display = "none";                
+                this._separatorElement.style.display = "none";
             }
             else {
                 this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
@@ -217,10 +217,10 @@ export abstract class CardElement {
     }
 
     protected internalGetNonZeroPadding(padding: PaddingDefinition,
-                                        processTop: boolean = true,
-                                        processRight: boolean = true,
-                                        processBottom: boolean = true,
-                                        processLeft: boolean = true) {
+        processTop: boolean = true,
+        processRight: boolean = true,
+        processBottom: boolean = true,
+        processLeft: boolean = true) {
         if (processTop) {
             if (padding.top == Enums.Spacing.None) {
                 padding.top = this.internalPadding.top;
@@ -285,7 +285,7 @@ export abstract class CardElement {
 
     protected isDesignMode(): boolean {
         var rootElement = this.getRootElement();
-            
+
         return rootElement instanceof AdaptiveCard && rootElement.designMode;
     }
 
@@ -735,13 +735,13 @@ export class TextBlock extends CardElement {
                         break;
                     default:
                         this._computedLineHeight = this.hostConfig.lineHeights.default;
-                        break;    
+                        break;
                 }
             }
             else {
                 // Looks like 1.33 is the magic number to compute line-height
                 // from font size.
-                this._computedLineHeight = fontSize * 1.33;                
+                this._computedLineHeight = fontSize * 1.33;
             }
 
             element.style.fontSize = fontSize + "px";
@@ -1153,7 +1153,7 @@ export class Image extends CardElement {
                 {
                     error: Enums.ValidationError.InvalidPropertyValue,
                     message: "Invalid image " + name + ": " + value
-                });    
+                });
         }
 
         return 0;
@@ -1187,7 +1187,7 @@ export class Image extends CardElement {
                     element.style.width = this.hostConfig.imageSizes.medium + "px";
                     break;
             }
-        }    
+        }
     }
 
     protected get useDefaultSizing() {
@@ -2276,7 +2276,7 @@ export abstract class Action {
             }
             else {
                 buttonElement.classList.add("iconLeft");
-                
+
                 if (hasTitle) {
                     iconElement.style.marginRight = "4px";
                 }
@@ -2324,7 +2324,7 @@ export abstract class Action {
 
     parse(json: any) {
         raiseParseActionEvent(this, json);
-	    
+
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
@@ -3545,7 +3545,7 @@ export class Container extends CardElementContainer {
         for (let item of this._items) {
             handleElement(item);
         }
-        
+
         return true;
     }
 
@@ -4228,7 +4228,7 @@ export class ColumnSet extends CardElementContainer {
         super.updateLayout(processChildren);
 
         this.applyPadding();
-        
+
         if (processChildren) {
             for (var i = 0; i < this._columns.length; i++) {
                 this._columns[i].updateLayout();
@@ -4351,6 +4351,148 @@ export class ColumnSet extends CardElementContainer {
     }
 }
 
+export class Source {
+    mimeType: string;
+    url: string;
+
+    parse(json: any): Source {
+        this.mimeType = json["mimeType"];
+        this.url = json["url"];
+        return this;
+    }
+
+    toJSON() {
+        return { mimeType: this.mimeType, url: this.url };
+    }
+}
+
+export class Media extends CardElement {
+    poster: string;
+    altText: string;
+    sources: Array<Source> = [];
+    private _mediaType: string;
+    private _mediaElement: HTMLMediaElement;
+    static readonly acceptedMediaTypes = ["audio", "video"];
+
+    private processSources(): Array<Source> {
+        let typeFilter = (t): boolean => {
+            if (Media.acceptedMediaTypes.indexOf(t)) {
+                this._mediaType = t;
+                typeFilter = (tt) => tt === this._mediaType;
+                return true;
+            }
+            return false;
+        }
+        return this.sources.filter((s): boolean => {
+            if (s.mimeType) {
+                let mimeComponents = s.mimeType.split('/');
+                if (mimeComponents.length == 2) {
+                    return typeFilter(mimeComponents[0]);
+                }
+            }
+            return false;
+        });
+    }
+
+    private makeButton(label: string): HTMLAnchorElement {
+        let button = document.createElement("a");
+        button.className = "ac-media-button";
+        button.text = label;
+        return button;
+    }
+
+    protected internalRender(): HTMLElement {
+        var element = document.createElement("div");
+
+        element.className = this.hostConfig.makeCssClassName("ac-media");
+
+        let goodSources = this.processSources();
+
+        if (goodSources.length) {
+
+            this._mediaElement = <HTMLMediaElement>document.createElement(this._mediaType);
+            this._mediaElement.style.width = "100%";
+
+            goodSources.forEach(s => {
+                let src: HTMLSourceElement = document.createElement("source");
+                src.src = s.url;
+                src.type = s.mimeType;
+                this._mediaElement.appendChild(src);
+            });
+            element.appendChild(this._mediaElement);
+
+            var play_button = this.makeButton("▶️");
+            play_button.onclick = e => this.play();
+            element.appendChild(play_button);
+
+            var pause_button = this.makeButton("⏸️");
+            pause_button.onclick = e => this.pause();
+            element.appendChild(pause_button);
+
+            var stop_button = this.makeButton("⏹️");
+            stop_button.onclick = e => this.stop();
+            element.appendChild(stop_button);
+        }
+
+        return element;
+    }
+
+    play() {
+        this._mediaElement.play();
+    }
+
+    stop() {
+        this._mediaElement.load();
+        this._mediaElement.pause();
+    }
+
+    pause() {
+        this._mediaElement.pause();
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "poster", this.poster);
+        Utils.setProperty(result, "altText", this.altText);
+        if (this.sources.length) {
+            var sources = [];
+
+            for (let source of this.sources) {
+                sources.push(source.toJSON());
+            }
+
+            Utils.setProperty(result, "sources", sources);
+        }
+
+        return result;
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.poster = json.poster;
+        this.altText = json.altText;
+
+        if (json["sources"] != undefined) {
+            var sourceArray = json["sources"] as Array<any>;
+            this.sources = sourceArray.map((json: any) => new Source().parse(json));
+        }
+    }
+
+    getJsonTypeName(): string {
+        return "Media";
+    }
+
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak + '\n';
+
+        return null;
+    }
+
+}
+
 export class Version {
     private _versionString: string;
     private _major: number;
@@ -4462,12 +4604,12 @@ function raiseParseElementEvent(element: CardElement, json: any) {
 }
 
 function raiseParseActionEvent(action: Action, json: any) {
-	let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
-	let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
+    let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
-	if (onParseActionHandler != null) {
-		onParseActionHandler(action, json);
-	}
+    if (onParseActionHandler != null) {
+        onParseActionHandler(action, json);
+    }
 }
 
 function raiseParseError(error: IValidationError) {
@@ -4688,6 +4830,7 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("Input.Number", () => { return new NumberInput(); });
         this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
         this.registerType("Input.Toggle", () => { return new ToggleInput(); });
+        this.registerType("Media", () => { return new Media(); });
     }
 }
 
@@ -4810,7 +4953,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     onParseElement: (element: CardElement, json: any) => void = null;
-	onParseAction: (element: Action, json: any) => void = null;
+    onParseAction: (element: Action, json: any) => void = null;
 
     version?: Version = new Version(1, 0);
     fallbackText: string;
@@ -4875,7 +5018,7 @@ export class AdaptiveCard extends ContainerWithActions {
                     {
                         error: Enums.ValidationError.InvalidPropertyValue,
                         message: e.message
-                    });                        
+                    });
             }
         }
 
