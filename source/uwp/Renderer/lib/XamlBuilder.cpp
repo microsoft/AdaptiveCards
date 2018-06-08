@@ -1757,6 +1757,7 @@ AdaptiveNamespaceStart
                 break;
         }
 
+        THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement.Get()));
 
         ComPtr<IAdaptiveActionElement> selectAction;
@@ -2525,6 +2526,7 @@ AdaptiveNamespaceStart
         ComPtr<IFrameworkElement> datePickerAsFrameworkElement;
         THROW_IF_FAILED(datePicker.As(&datePickerAsFrameworkElement));
         THROW_IF_FAILED(datePickerAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+        THROW_IF_FAILED(datePickerAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
 
         THROW_IF_FAILED(datePicker.CopyTo(dateInputControl));
         
@@ -2582,6 +2584,7 @@ AdaptiveNamespaceStart
 
         ComPtr<IFrameworkElement> frameworkElement;
         THROW_IF_FAILED(textBox.As(&frameworkElement));
+        THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Number", frameworkElement.Get()));
 
         // TODO: Handle max and min?
@@ -2691,6 +2694,7 @@ AdaptiveNamespaceStart
         ComPtr<IFrameworkElement> timePickerAsFrameworkElement;
         THROW_IF_FAILED(timePicker.As(&timePickerAsFrameworkElement));
         THROW_IF_FAILED(timePickerAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+        THROW_IF_FAILED(timePickerAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
 
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Time", timePickerAsFrameworkElement.Get()));
 
@@ -2744,6 +2748,7 @@ AdaptiveNamespaceStart
 
         ComPtr<IFrameworkElement> frameworkElement;
         THROW_IF_FAILED(checkBox.As(&frameworkElement));
+        THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", frameworkElement.Get()));
 
         THROW_IF_FAILED(checkboxAsUIElement.CopyTo(toggleInputControl));
