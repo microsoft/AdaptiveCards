@@ -24,6 +24,7 @@
 		6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D01F32E53A008846EC /* ACRActionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D81F32F922008846EC /* ACRShowCardTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D61F32F922008846EC /* ACRShowCardTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */; };
+		6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B6840F91F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */; };
 		6B7B1A9120B4D2AB00260731 /* Media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A8D20B4D2AA00260731 /* Media.cpp */; };
 		6B7B1A9220B4D2AB00260731 /* MediaSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A8E20B4D2AA00260731 /* MediaSource.cpp */; };
@@ -794,6 +795,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
+				6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,
 				F44873261EE2261F00FCAFAE /* TextInput.h in Headers */,
 				F44873221EE2261F00FCAFAE /* SubmitAction.h in Headers */,
