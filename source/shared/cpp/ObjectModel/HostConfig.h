@@ -174,6 +174,7 @@ struct MediaConfig
 {
     std::string defaultPoster;
     std::string playButton;
+    bool allowInlinePlayback = true;
 
     static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
 };
