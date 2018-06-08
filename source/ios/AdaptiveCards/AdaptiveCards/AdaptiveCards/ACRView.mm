@@ -36,8 +36,9 @@ using namespace AdaptiveCards;
     NSMutableDictionary *_actionsMap;
     dispatch_queue_t _serial_queue;
     dispatch_queue_t _serial_text_queue;
+    dispatch_queue_t _global_queue;
+    dispatch_group_t _async_tasks_group;
     int _serialNumber;
-    int _numberOfRunningTasks;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -51,8 +52,9 @@ using namespace AdaptiveCards;
         _actionsMap = [[NSMutableDictionary alloc] init];
         _serial_queue = dispatch_queue_create("io.adaptiveCards.serial_queue", DISPATCH_QUEUE_SERIAL);
         _serial_text_queue = dispatch_queue_create("io.adaptiveCards.serial_text_queue", DISPATCH_QUEUE_SERIAL);
+        _global_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        _async_tasks_group = dispatch_group_create();
         _serialNumber = 0;
-        _seenAllElements = NO;
     }
     return self;
 }
@@ -125,25 +127,18 @@ using namespace AdaptiveCards;
     return newView;
 }
 
-- (void)addToAsyncRenderingList
+- (void)waitForAsyncTasksToFinish
 {
-    ++_numberOfRunningTasks;
-}
-
-- (void)removeFromAsyncRenderingListAndNotifyIfNeeded
-{
-    --_numberOfRunningTasks;
+    dispatch_group_wait(_async_tasks_group, DISPATCH_TIME_FOREVER);
     [self callDidLoadElementsIfNeeded];
 }
 
 - (void)callDidLoadElementsIfNeeded
 {
-    if (!_numberOfRunningTasks && _seenAllElements == YES){
-        // Call back app with didLoadElements
-        if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)])
-        {
-            [[self acrActionDelegate] didLoadElements];
-        }
+    // Call back app with didLoadElements
+    if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)])
+    {
+        [[self acrActionDelegate] didLoadElements];
     }
 }
 
@@ -172,13 +167,11 @@ using namespace AdaptiveCards;
                 };
 
                 /// tag a base card element with unique key
-                [self tagBaseCardElement:elem];
                 NSString *key = [NSString stringWithCString:textBlockElement->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                 std::string text;
                 [self processTextConcurrently:textBlockElement
                                   elementType:CardElementType::TextBlock
                                    textConfig:textConfig
-                          horizontalAlignment:textBlockElement->GetHorizontalAlignment()
                                     elementId:key
                                          text:text];
                 break;
@@ -195,7 +188,6 @@ using namespace AdaptiveCards;
                     [self processTextConcurrently:elem
                                       elementType:CardElementType::FactSet
                                        textConfig:[_hostConfig getHostConfig]->factSet.title
-                              horizontalAlignment:HorizontalAlignment::Left
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                              text:title];
 
@@ -203,7 +195,6 @@ using namespace AdaptiveCards;
                     [self processTextConcurrently:elem
                                       elementType:CardElementType::FactSet
                                        textConfig:[_hostConfig getHostConfig]->factSet.value
-                              horizontalAlignment:HorizontalAlignment::Left
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                              text:fact->GetValue()];
                 }
@@ -212,7 +203,6 @@ using namespace AdaptiveCards;
             case CardElementType::Image:
             {
                 /// tag a base card element with unique key
-                [self tagBaseCardElement:elem];
                 std::shared_ptr<Image>imgElem = std::static_pointer_cast<Image>(elem);
                 // dispatch to concurrent queue
                 [self processImageConcurrently:imgElem];
@@ -227,7 +217,6 @@ using namespace AdaptiveCards;
 
                     if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) CardElementType::Image] == NO){
                         /// tag a base card element with unique key
-                        [self tagBaseCardElement:baseImgElem];
                         [self processImageConcurrently:img];
                     }
                 }
@@ -269,36 +258,18 @@ using namespace AdaptiveCards;
     }
 }
 
-// Walk through the actions found and process them concurrently
-- (void)addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions
-{
-    // Move this to a different function
-    for(auto &action : actions)
-    {
-        std::string iconUrl = action->GetIconUrl();
-        if(!iconUrl.empty())
-        {
-            [self tagBaseActionElement:action];
-            [self processActionWithIconConcurrently:action];
-        }
-    }
-}
-
 - (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
                     elementType:(CardElementType)elementType
                      textConfig:(TextConfig const &)textConfig
-            horizontalAlignment:(HorizontalAlignment)horizontalAlignment
                       elementId:(NSString *)elementId
                            text:(std::string  const &)text
 {
-    [self addToAsyncRenderingList];
     std::shared_ptr<BaseCardElement> textElementForBlock = textElement;
     struct TextConfig textConfigForBlock = textConfig;
     std::string textForBlock = text;
     CardElementType elementTypeForBlock = elementType;
-
     /// dispatch to concurrent queue
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+    dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
             NSString* parsedString = nil;
             if(CardElementType::TextBlock == elementTypeForBlock){
@@ -322,188 +293,43 @@ using namespace AdaptiveCards;
                                                                   [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
                                                                   [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
             // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
+
             NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
             NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
+            NSDictionary *data = @{@"html" : htmlData, @"options" : options};
+            NSString *key = nil;
 
-            dispatch_async(dispatch_get_main_queue(),
-                 ^{
-                      // Initializing NSMutableAttributedString for HTML rendering is very slow
-                      NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
-                      // Drop newline char
-                      [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
-                      __block ACRUILabel *lab = nil; // generate key for text map from TextBlock element's id
-                      // synchronize access to text map
-                     dispatch_sync(self->_serial_text_queue,
-                          ^{
-                               // UILabel is not ready, cache UILabel
-                              if(!self->_textMap[elementId]) {
-                                  self->_textMap[elementId] = content;
-                               } // UILable is ready, get labeltextBlockElement
-                               else {
-                                   lab = self->_textMap[elementId];
-                               }
-                          });
-
-                       // if a label is available, set NSAttributedString to it
-                      if(lab) {
-                          // Set paragraph style such as line break mode and alignment
-                          NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-                          paragraphStyle.lineBreakMode = textConfigForBlock.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
-                          paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:horizontalAlignment];
-
-                          // Obtain text color to apply to the attributed string
-                          ACRContainerStyle style = lab.style;
-                          ColorsConfig &colorConfig = (style == ACREmphasis)? [self->_hostConfig getHostConfig]->containerStyles.emphasisPalette.foregroundColors:
-                          [self->_hostConfig getHostConfig]->containerStyles.defaultPalette.foregroundColors;
-                          // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-                          [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfigForBlock.color colorsConfig:colorConfig subtleOption:textConfigForBlock.isSubtle],} range:NSMakeRange(0, content.length)];
-                          lab.attributedText = content;
-                          if(CardElementType::FactSet == elementTypeForBlock) {
-                              CGSize size = lab.intrinsicContentSize;
-                              if(lab.isTitle && (size.width > [self->_hostConfig getHostConfig]->factSet.title.maxWidth)) {
-                                  NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:[self->_hostConfig getHostConfig]->factSet.title.maxWidth];
-                                  constraint.active = YES;
-                              }
-                          }
-
-                          // remove tag
-                          std::string id = textElementForBlock->GetId();
-                          std::size_t idx = id.find_last_of('_');
-                          if(std::string::npos != idx){
-                              textElementForBlock->SetId(id.substr(0, idx));
-                          }
-                      }
-                      [self removeFromAsyncRenderingListAndNotifyIfNeeded];
-                  });
-             }
-    );
+            if(CardElementType::TextBlock == elementTypeForBlock){
+                std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
+                NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
+                key = [number stringValue];
+            } else {
+                std::shared_ptr<FactSet> factSetElement = std::dynamic_pointer_cast<FactSet>(textElementForBlock);
+                key = elementId;
+            }
+            dispatch_sync(self->_serial_text_queue, ^{self->_textMap[key] = data; });
+         });
 }
 
 - (void)processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
 {
-    [self addToAsyncRenderingList];
-
     /// generate a string key to uniquely identify Image
     std::shared_ptr<Image> imgElem = imageElem;
     // run image downloading and processing on global queue which is concurrent and different from main queue
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+    dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
-             NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
-                                                   encoding:[NSString defaultCStringEncoding]];
-             // generate key for imageMap from image element's id
-             NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-             NSURL *url = [NSURL URLWithString:urlStr];
-             // download image
-             UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-             CGSize cgsize = [self->_hostConfig getImageSize:imgElem->GetImageSize()];
+            NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
+                                                  encoding:[NSString defaultCStringEncoding]];
+            // generate key for imageMap from image element's id
+            NSURL *url = [NSURL URLWithString:urlStr];
+            // download image
+            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
 
-             // UITask can't be run on global queue, add task to main queue
-             dispatch_async(dispatch_get_main_queue(),
-                 ^{
-                      __block ACRUIImageView *view = nil;
-                      // synchronize access to image map
-                     dispatch_sync(self->_serial_queue,
-                          ^{
-                              if(!self->_imageViewMap[key]) {// UIImageView is not ready, cache UIImage
-                                  self->_imageViewMap[key] = img;
-                               } else {// UIImageView ready, get view
-                                   view = self->_imageViewMap[key];
-                               }
-                          });
-                      // if view is available, set image to it, and continue image processing
-                      if(view) {
-                          view.image = img;
-                          if(img && (img.size.width > 0) && (imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None)){
-                              CGFloat heightToWidthRatio = img.size.height / img.size.width;
-                              [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
-                                                                                      attribute:NSLayoutAttributeHeight
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:view
-                                                                                      attribute:NSLayoutAttributeWidth
-                                                                                     multiplier:heightToWidthRatio
-                                                                                       constant:0]]];
-                              CGFloat widthToHeightRatio = img.size.width/ img.size.height;
-                              [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
-                                                                                      attribute:NSLayoutAttributeWidth
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:view
-                                                                                      attribute:NSLayoutAttributeHeight
-                                                                                     multiplier:widthToHeightRatio
-                                                                                       constant:0]]];
-                          }
-                          view.contentMode = UIViewContentModeScaleAspectFit;
-                          view.clipsToBounds = NO;
-                          if(imgElem->GetImageStyle() == ImageStyle::Person) {
-                              CALayer *imgLayer = view.layer;
-                              [imgLayer setCornerRadius:cgsize.width/2];
-                              [imgLayer setMasksToBounds:YES];
-                          }
-                          // remove tag
-                          std::string id = imgElem->GetId();
-                          std::size_t idx = id.find_last_of('_');
-                          imgElem->SetId(id.substr(0, idx));
-                      }
-
-                      [self removeFromAsyncRenderingListAndNotifyIfNeeded];
-                  });
-             }
+            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
+            NSString *key = [number stringValue];
+            dispatch_sync(self->_serial_queue, ^{self->_imageViewMap[key] = img; });
+         }
     );
-}
-
-- (void)processActionWithIconConcurrently:(std::shared_ptr<BaseActionElement> const &)action
-{
-    [self addToAsyncRenderingList];
-
-    std::shared_ptr<BaseActionElement> act = action;
-
-    /// generate a string key to uniquely identify Image
-    if(!(act->GetIconUrl().empty()))
-    {
-        // run image downloading and processing on global queue which is concurrent and different from main queue
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-            ^{
-                NSString *urlStr = [NSString stringWithCString:act->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
-                // generate key for imageMap from image element's id
-                NSString *key = [NSString stringWithCString:act->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-                NSURL *url = [NSURL URLWithString:urlStr];
-
-                // download image
-                UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-                ACRUIImageView *imageView = [[ACRUIImageView alloc] initWithImage:img];
-
-                // UITask can't be run on global queue, add task to main queue
-                dispatch_async(dispatch_get_main_queue(),
-                    ^{
-                        __block UIButton *button = nil;
-                        // synchronize access to image map
-                        dispatch_sync(self->_serial_queue,
-                            ^{
-                                if(!self->_actionsMap[key]) // UIButton is not ready, cache UIImageView
-                                {
-                                    self->_actionsMap[key] = imageView;
-                                }
-                                else // UIButton ready, get view
-                                {
-                                    button = self->_actionsMap[key];
-                                }
-                            });
-
-                        // if view is available, set image to it, and continue image processing
-                        if(button)
-                        {
-                            [ACRView setImageView:imageView inButton:button withConfig:self->_hostConfig];
-
-                            // remove tag
-                            std::string id = act->GetId();
-                            std::size_t idx = id.find_last_of('_');
-                            act->SetId(id.substr(0, idx));
-                        }
-
-                        [self removeFromAsyncRenderingListAndNotifyIfNeeded];
-                    });
-                }
-            );
-    }
 }
 
 // add postfix to existing BaseCardElement ID to be used as key
@@ -515,15 +341,6 @@ using namespace AdaptiveCards;
     ++_serialNumber;
 }
 
-// add postfix to existing BaseCardElement ID to be used as key
--(void)tagBaseActionElement:(std::shared_ptr<BaseActionElement> const &)action
-{
-    std::string serial_number_as_string = std::to_string(_serialNumber);
-    // concat a newly generated key to a existing id, the key will be removed after use
-    action->SetId(action->GetId() + "_" + serial_number_as_string);
-    ++_serialNumber;
-}
-
 - (NSMutableDictionary *)getImageMap
 {
     return _imageViewMap;
@@ -531,11 +348,6 @@ using namespace AdaptiveCards;
 - (dispatch_queue_t)getSerialQueue
 {
     return _serial_queue;
-}
-
-- (dispatch_queue_t)getSerialTextQueue
-{
-    return _serial_text_queue;
 }
 
 - (NSMutableDictionary *)getTextMap

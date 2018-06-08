@@ -41,41 +41,32 @@
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     ACRUILabel *lab = [[ACRUILabel alloc] init];
     lab.style = [viewGroup style];
-    __block NSMutableAttributedString *content = nil;
+    NSMutableAttributedString *content = nil;
     if(rootView){
         NSMutableDictionary *textMap = [rootView getTextMap];
         // Generate key for ImageViewMap
-        NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-        // Syncronize access to imageViewMap
-        dispatch_sync([rootView getSerialTextQueue], ^{
-            if(textMap[key]) { // if content is available, get it, otherwise cache label, so it can be used used later
-                content = textMap[key];
-            } else {
-                textMap[key] = lab;
-            }
-        });
-    }
+        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)txtBlck.get()];
+        NSString *key = [number stringValue];
+        NSDictionary* data = textMap[key];
+        NSData *htmlData = data[@"html"];
+        NSDictionary *options = data[@"options"];
+        // Initializing NSMutableAttributedString for HTML rendering is very slow
+        content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+        // Drop newline char
+        [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
 
-    if(content)
-    {
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
         paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment()];
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
         ColorsConfig &colorConfig = (style == ACREmphasis)? config->containerStyles.emphasisPalette.foregroundColors:
-                                                                         config->containerStyles.defaultPalette.foregroundColors;
-
+        config->containerStyles.defaultPalette.foregroundColors;
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle,
-                                NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],
-                                    NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:txtBlck->GetTextWeight()]} range:NSMakeRange(0, content.length)];
+        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],} range:NSMakeRange(0, content.length)];
         lab.attributedText = content;
-        std::string id = txtBlck->GetId();
-        std::size_t idx = id.find_last_of('_');
-        txtBlck->SetId(id.substr(0, idx));
     }
 
     lab.numberOfLines = int(txtBlck->GetMaxLines());
@@ -85,7 +76,7 @@
 
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [lab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    
+
     [viewGroup addArrangedSubview:lab];
     return lab;
 }
