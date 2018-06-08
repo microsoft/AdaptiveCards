@@ -205,7 +205,7 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
-    HeightType height = GetHeight();
+    const HeightType height = GetHeight();
     if (height != HeightType::Auto)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());

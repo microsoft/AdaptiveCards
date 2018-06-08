@@ -117,7 +117,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
         time_t offset{};
         int  formatStyle{};
         // Date is matched
-        bool isDate = matches[IsDate].matched;
+        const bool isDate = matches[IsDate].matched;
         int hours{}, minutes{};
         struct tm parsedTm{};
         int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
@@ -128,7 +128,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
         {
             // match for long/short/compact
             bool formatHasSpace = matches[Format].str()[1] == ' ';
-            int formatStartIndex = formatHasSpace ? 2 : 1;
+            const int formatStartIndex = formatHasSpace ? 2 : 1;
             formatStyle = matches[Format].str()[formatStartIndex];
         }
 
@@ -189,7 +189,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
             // gets local time zone offset
             strftime(tzOffsetBuff, 6, "%z", &parsedTm);
             std::string localTimeZoneOffsetStr(tzOffsetBuff);
-            int nTzOffset = std::stoi(localTimeZoneOffsetStr);
+            const int nTzOffset = std::stoi(localTimeZoneOffsetStr);
             offset += ((time_t)(nTzOffset / 100) * 3600 + (time_t)(nTzOffset % 100) * 60);
             // add offset to utc
             utc += offset;
