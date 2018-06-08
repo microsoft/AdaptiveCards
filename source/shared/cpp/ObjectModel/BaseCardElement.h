@@ -6,6 +6,7 @@
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
 #include "Separator.h"
+#include "RemoteResourceInformation.h"
 
 namespace AdaptiveSharedNamespace {
 class Container;
@@ -43,7 +44,7 @@ public:
     Json::Value GetAdditionalProperties() const;
     void SetAdditionalProperties(const Json::Value &additionalProperties);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris);
+    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
 
 protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);

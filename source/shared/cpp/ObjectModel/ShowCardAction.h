@@ -19,7 +19,7 @@ public:
 
     void SetLanguage(const std::string& value);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
 private:
     void PopulateKnownPropertiesSet();

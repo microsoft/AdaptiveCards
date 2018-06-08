@@ -384,25 +384,28 @@ void AdaptiveCard::SetVerticalContentAlignment(const VerticalContentAlignment va
     m_verticalContentAlignment = value;
 }
 
-std::vector<std::string> AdaptiveCard::GetResourceUris()
+std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()
 {
-    auto uriVector = std::vector<std::string>();
+    auto resourceVector = std::vector<RemoteResourceInformation>();
 
     auto backgroundImage = GetBackgroundImage();
     if (!backgroundImage.empty())
     {
-        uriVector.push_back(backgroundImage);
+        RemoteResourceInformation backgroundImageInfo;
+        backgroundImageInfo.url = backgroundImage;
+        backgroundImageInfo.resourceType = CardElementType::Image;
+        resourceVector.push_back(backgroundImageInfo);
     }
 
     for (auto item : m_body)
     {
-        item->GetResourceUris(uriVector);
+        item->GetResourceInformation(resourceVector);
     }
 
     for (auto item : m_actions)
     {
-        item->GetResourceUris(uriVector);
+        item->GetResourceInformation(resourceVector);
     }
 
-    return uriVector;
+    return resourceVector;
 }

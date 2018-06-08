@@ -45,6 +45,17 @@ void MediaSource::SetUrl(const std::string& value)
     m_url = value;
 }
 
+void MediaSource::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+{
+    RemoteResourceInformation sourceInfo;
+    sourceInfo.url = GetUrl();
+    sourceInfo.resourceType = CardElementType::Media;
+    sourceInfo.mimeType = GetMimeType();
+
+    resourceInfo.push_back(sourceInfo);
+    return;
+}
+
 std::shared_ptr<MediaSource> MediaSourceParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
     std::shared_ptr<ActionParserRegistration>,

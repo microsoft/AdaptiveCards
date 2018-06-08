@@ -6,6 +6,7 @@
 #include "AdaptiveCardParseException.h"
 #include "AdaptiveError.h"
 #include "AdaptiveWarning.h"
+#include "AdaptiveRemoteResourceInformation.h"
 
 #include <json.h>
 #include "Util.h"
@@ -332,31 +333,33 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris)
+    HRESULT AdaptiveCard::GetResourceInformation(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>** resourceInformationView)
     {
         std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
         GetSharedModel(sharedModel);
 
-        std::vector<std::string> resourceUriStrings = sharedModel->GetResourceUris();
+        std::vector<RemoteResourceInformation> sharedResourceInformationVector = sharedModel->GetResourceInformation();
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &uriActivationFactory));
-
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::Windows::Foundation::Uri*>> resourceUris = Make<Vector<Uri*>>();
-        for (auto resourceUriString : resourceUriStrings)
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> resourceInformation = Make<Vector<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>>();
+        for (auto sharedResourceInformation : sharedResourceInformationVector)
         {
-            HString resourceUriHString;
-            RETURN_IF_FAILED(UTF8ToHString(resourceUriString, resourceUriHString.GetAddressOf()));
-         
-            ComPtr<IUriRuntimeClass> resourceUri;
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(resourceUriHString.Get(), resourceUri.GetAddressOf()));
+            ComPtr<ABI::AdaptiveNamespace::IAdaptiveRemoteResourceInformation> remoteResourceInformation;
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRemoteResourceInformation>(remoteResourceInformation.GetAddressOf(), sharedResourceInformation));
 
-            RETURN_IF_FAILED(resourceUris->Append(resourceUri.Get()));
+            HString resourceUriHString;
+            RETURN_IF_FAILED(UTF8ToHString(sharedResourceInformation.url, resourceUriHString.GetAddressOf()));
+            RETURN_IF_FAILED(remoteResourceInformation->put_Url(resourceUriHString.Get()));
+
+            HString mimeType;
+            RETURN_IF_FAILED(UTF8ToHString(sharedResourceInformation.mimeType, mimeType.GetAddressOf()));
+            RETURN_IF_FAILED(remoteResourceInformation->put_MimeType(mimeType.Get()));
+
+            RETURN_IF_FAILED(remoteResourceInformation->put_ResourceType(static_cast<ABI::AdaptiveNamespace::ElementType>(sharedResourceInformation.resourceType)));
+
+            RETURN_IF_FAILED(resourceInformation->Append(remoteResourceInformation.Get()));
         }
 
-        RETURN_IF_FAILED(resourceUris->GetView(uris));
+        RETURN_IF_FAILED(resourceInformation->GetView(resourceInformationView));
 
         return S_OK;
     }
