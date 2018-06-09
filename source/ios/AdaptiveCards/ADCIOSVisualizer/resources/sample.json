@@ -1,6 +1,6 @@
 {
     "supportsInteractivity": true,
-    "fontFamily": "Segoe UI",
+    "fontFamily": "Helvetica Neue",
     "fontSizes": {
         "small": 12,
         "default": 14,
@@ -11,7 +11,7 @@
     "fontWeights": {
         "lighter": 200,
         "default": 400,
-        "bolder": 600
+        "bolder": 700
     },
     "imageSizes": {
         "small": 40,

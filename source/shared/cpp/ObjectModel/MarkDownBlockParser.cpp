@@ -90,7 +90,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, 
     {
         // encounterred first emphasis delimiter
         parser.CaptureCurrentCollectedStringAsRegularToken();
-        DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek());
+        const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek());
         // get previous character and update the look behind if it was captured before 
         if (stream.tellg())
         {
@@ -124,7 +124,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
     /// if another emphasis delimiter is encounterred, it is delimiter run
     if (parser.IsMarkDownDelimiter(stream.peek()))
     {
-        DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition((stream.peek()));
+        const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition((stream.peek()));
         if (parser.IsEmphasisDelimiterRun(emphasisType))
         {
             parser.UpdateCurrentEmphasisRunState(emphasisType);
@@ -541,7 +541,7 @@ void ListParser::ParseSubBlocks(std::stringstream &stream)
     {
         if (IsNewLine(stream.peek()))
         {
-            int newLineChar = stream.get();
+            const int newLineChar = stream.get();
             // check if it is the start of new block items
             if (isdigit(stream.peek()))
             {

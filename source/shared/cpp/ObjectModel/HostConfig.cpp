@@ -325,6 +325,9 @@ MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig&
 
     std::string playButton = ParseUtil::GetString(json, AdaptiveCardSchemaKey::PlayButton);
     result.playButton = playButton == "" ? defaultValue.playButton : playButton;
+
+    result.allowInlinePlayback = ParseUtil::GetBool(
+        json, AdaptiveCardSchemaKey::AllowInlinePlayback, defaultValue.allowInlinePlayback);
    
     return result;
 }
