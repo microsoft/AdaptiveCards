@@ -41,14 +41,6 @@
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     ACRUILabel *lab = [[ACRUILabel alloc] init];
     lab.style = [viewGroup style];
-    TextConfig textConfig =
-    {
-        .weight = txtBlck->GetTextWeight(),
-        .size = txtBlck->GetTextSize(),
-        .color = txtBlck->GetTextColor(),
-        .isSubtle = txtBlck->GetIsSubtle(),
-        .wrap = txtBlck->GetWrap()
-    };
     NSMutableAttributedString *content = nil;
     if(rootView){
         NSMutableDictionary *textMap = [rootView getTextMap];

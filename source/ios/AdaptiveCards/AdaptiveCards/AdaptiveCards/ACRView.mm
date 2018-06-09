@@ -273,10 +273,6 @@ using namespace AdaptiveCards;
         ^{
             NSString* parsedString = nil;
             std::shared_ptr<MarkDownParser> markDownParser = nullptr;
-            // if correctly initialized, fonFamilyNames array is bigger than zero
-            NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-            [fontFamilyName appendString:[self->_hostConfig.fontFamilyNames componentsJoinedByString:@"', '"]];
-            [fontFamilyName appendString:@"'"];
 
             if(CardElementType::TextBlock == elementTypeForBlock){
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
