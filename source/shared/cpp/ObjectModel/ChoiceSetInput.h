@@ -6,7 +6,7 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class BaseInputElement;
 class ChoiceSetInput : public BaseInputElement
 {
@@ -35,7 +35,7 @@ private:
     bool m_isMultiSelect;
     ChoiceSetStyle m_choiceSetStyle;
 
-    std::vector<std::shared_ptr<ChoiceInput>> m_choices; 
+    std::vector<std::shared_ptr<ChoiceInput>> m_choices;
 };
 
 class ChoiceSetInputParser : public BaseCardElementParser
@@ -46,11 +46,11 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& root) override;
-    
+
     std::shared_ptr<BaseCardElement> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

@@ -5,7 +5,7 @@
 #include "BaseActionElement.h"
 #include "BaseCardElement.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class Column : public BaseCardElement
 {
 public:
@@ -29,7 +29,7 @@ public:
     std::string GetWidth() const;
     void SetWidth(const std::string &value);
 
-    // explicit width takes precedence over relative width 
+    // explicit width takes precedence over relative width
     int GetPixelWidth() const;
     void SetPixelWidth(const int value);
 
@@ -59,4 +59,4 @@ private:
     ContainerStyle m_style;
     VerticalContentAlignment m_verticalContentAlignment;
 };
-AdaptiveSharedNamespaceEnd
+}

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Enums.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> * adaptiveCardSchemaKeyEnumToNameOut,
@@ -17,6 +17,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation" },
         { AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard" },
         { AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle" },
+        { AdaptiveCardSchemaKey::AllowInlinePlayback, "allowInlinePlayback" },
         { AdaptiveCardSchemaKey::AltText, "altText" },
         { AdaptiveCardSchemaKey::Attention, "attention" },
         { AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor" },
@@ -620,7 +621,7 @@ void GetVerticalContentAlignmentEnumMappings(
         { VerticalContentAlignment::Center, "Center" },
         { VerticalContentAlignment::Bottom, "Bottom" }
     };
-    static std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum = 
+    static std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum =
         GenerateStringToEnumMap<VerticalContentAlignment>(verticalContentAlignmentEnumToName);
 
     if (verticalContentAlignmentEnumToNameOut != nullptr)
@@ -1129,4 +1130,4 @@ VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& v
     return verticalContentAlignmentNameToEnum[verticalContentAlignment];
 }
 
-AdaptiveSharedNamespaceEnd
+}

@@ -5,8 +5,8 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
-class MediaSource 
+namespace AdaptiveSharedNamespace {
+class MediaSource
 {
 public:
     MediaSource();
@@ -39,4 +39,4 @@ public:
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

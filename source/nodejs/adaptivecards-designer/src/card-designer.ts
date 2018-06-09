@@ -1105,7 +1105,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             width.input.defaultValue = this.cardElement.width.physicalSize + (this.cardElement.width.unit == Adaptive.SizeUnit.Pixel ? "px" : "*");
         }
         else {
-            width.input.defaultValue = this.cardElement.width;
+            width.input.defaultValue = this.cardElement.width.toString();
         }
 
         width.input.onValueChanged = () => {

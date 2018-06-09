@@ -37,10 +37,6 @@ using namespace AdaptiveCards;
             _fontFamilyNames = @[requestedFontFamilyName];
         }
     }
-    // if the requested font family name is not supported, use system font instead
-    if(self && !_fontFamilyNames){
-        _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
-    }
     return self;
 }
 

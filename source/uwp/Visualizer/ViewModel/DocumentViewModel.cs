@@ -107,6 +107,41 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                             await m_actionDialog.ShowAsync();
                         };
+
+                        if (!MainPageViewModel.HostConfigEditor.HostConfig.Media.AllowInlinePlayback)
+                        {
+                            renderResult.MediaPlay += async (sender, e) =>
+                            {
+                                var onPlayDialog = new ContentDialog();
+                                onPlayDialog.Content = "MediaPlayEvent:";
+
+                                foreach (var source in e.Media.Sources)
+                                {
+                                    onPlayDialog.Content += "\n" + source.Url + " (" + source.MimeType + ")";
+                                }
+
+                                onPlayDialog.PrimaryButtonText = "Close";
+
+                                await onPlayDialog.ShowAsync();
+                            };
+                        }
+                        else
+                        {
+                            renderResult.MediaEnded += async (sender, e) =>
+                            {
+                                var mediaEndedDialog = new ContentDialog();
+                                mediaEndedDialog.Content = "Media Ended Event:";
+
+                                foreach (var source in e.Media.Sources)
+                                {
+                                    mediaEndedDialog.Content += "\n" + source.Url + " (" + source.MimeType + ")";
+                                }
+
+                                mediaEndedDialog.PrimaryButtonText = "Close";
+
+                                await mediaEndedDialog.ShowAsync();
+                            };
+                        }
                     }
                     else
                     {
