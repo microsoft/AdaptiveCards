@@ -94,7 +94,7 @@
             "style": "Emphasis"
         },
         "preExpandSingleShowCardAction": false,
-        "actionsOrientation": "Vertical",
+        "actionsOrientation": "Horizontal",
         "actionAlignment": "Stretch"
     },
     "adaptiveCard": {
