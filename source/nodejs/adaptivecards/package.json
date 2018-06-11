@@ -22,6 +22,7 @@
     "test": "jest --forceExit --runInBand",
     "clean": "rimraf build lib dist",
     "compile": "npm run clean && tsc",
+    "compile:watch": "npm run clean && tsc -w",
     "bundle": "cross-env NODE_ENV=production webpack",
     "build": "npm run compile && npm run bundle",
     "build:debug": "npm run clena && tsc -p ./tsconfig.debug.json && webpack",
