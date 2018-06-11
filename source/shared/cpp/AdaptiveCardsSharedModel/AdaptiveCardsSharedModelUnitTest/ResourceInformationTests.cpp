@@ -163,7 +163,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
 
             // Parse the card and get the image uris
-            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0)->GetAdaptiveCard()->GetResourceUris();
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0)->GetAdaptiveCard()->GetResourceInformation();
             ValidateResourceInformation(expectedValues, resourceInformation);
         }
 
@@ -215,7 +215,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                         m_customImage = value.get("customImageProperty", Json::Value()).asString();
                     }
 
-                    virtual void GetResourceUris(std::vector<RemoteResourceInformation>& resourceUris) override
+                    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override
                     {
                         RemoteResourceInformation resourceInfo;
                         resourceInfo.url = m_customImage;
@@ -263,7 +263,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             actionRegistration->AddParser("CustomActionWithImage", std::make_shared<TestCustomActionParser>());
 
             // Parse the card and get the image uris
-            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0, elementRegistration, actionRegistration)->GetAdaptiveCard()->GetResourceUris();
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0, elementRegistration, actionRegistration)->GetAdaptiveCard()->GetResourceInformation();
             ValidateResourceInformation(expectedValues, resourceInformation);
         }
     };
