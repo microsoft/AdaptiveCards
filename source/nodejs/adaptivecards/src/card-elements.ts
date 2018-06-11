@@ -132,6 +132,8 @@ export abstract class CardElement {
     private _defaultRenderedElementDisplayMode: string = null;
     private _padding: PaddingDefinition = null;
 
+    public internal_id: string;
+
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
             {
@@ -3203,6 +3205,10 @@ export class Container extends CardElementContainer {
     private _renderedItems: Array<CardElement> = [];
     private _style?: string = null;
 
+    public getItems(): Array<CardElement>{
+        return this._items;
+    }
+
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
             return false;
@@ -3717,7 +3723,17 @@ export class Container extends CardElementContainer {
         }
     }
 
+    private guidGenerator(): string {
+        const S4 = function() {
+           return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+        };
+        return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    }
+
     addItem(item: CardElement) {
+        if  (!item.internal_id) {
+            item.internal_id = `id_${this.guidGenerator()}`;
+        }
         this.insertItemAt(item, -1);
     }
 
@@ -4150,6 +4166,10 @@ export class ColumnSet extends CardElementContainer {
 
     getJsonTypeName(): string {
         return "ColumnSet";
+    }
+
+    getColumns(): Array<Column>{
+        return this._columns;
     }
 
     parse(json: any) {

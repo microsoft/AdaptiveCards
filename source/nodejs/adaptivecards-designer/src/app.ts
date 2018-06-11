@@ -132,19 +132,21 @@ class DesignerApp {
     private _hostContainerPicker: Controls.DropDown;
     private _selectedHostContainer: HostContainer;
 
-    public buildTreeViewSheet(peer: Designer.DesignerPeer) {
+    public buildTreeViewSheet(peer: Designer.CardElementPeer) {
         if (this.treeViewSheetHostElement) {
-            this.treeViewSheetHostElement.innerHTML = "";
-            const cardStructure = this._card.toJSON() as Adaptive.IAdaptiveCard;
-            const listItems = this.generateTreeViewElements(cardStructure.body);
-            const listActions = this.generateTreeViewElements(cardStructure.actions);
+            const selected_id = peer ? peer.cardElement.internal_id : "";
+
+            this.treeViewSheetHostElement.innerHTML = ""; 
+
+            const items = this._card.getItems();
+            const listItems = this.generateTreeViewElements(items, selected_id);
+            //const listActions = this.generateTreeViewElements(cardStructure.actions);
             this.treeViewSheetHostElement.appendChild(listItems);
-            this.treeViewSheetHostElement.appendChild(listActions);
+            //this.treeViewSheetHostElement.appendChild(listActions);
         }
     }
 
-    private generateTreeViewElements(cardItems) {
-
+    private generateTreeViewElements(cardItems: Array<Adaptive.CardElement>, selected_id: string = "" ) {
         if (!cardItems || cardItems.length === 0) {
             let node: HTMLElement = document.createElement("ul");
             return node;
@@ -156,13 +158,16 @@ class DesignerApp {
             let item = cardItems[itemIndex];
 
             let listItem = document.createElement("li");
-            listItem.textContent = item.type;
+            if (item.internal_id === selected_id) {
+                listItem.style.backgroundColor = "red";
+            }
+            listItem.textContent = item.getJsonTypeName();
             itemList.appendChild(listItem);
 
-            if (["Container", "Column"].indexOf(item.type) !== -1) {
-                itemList.appendChild(this.generateTreeViewElements(item.items));
-            } else if (item.type === "ColumnSet") {
-                itemList.appendChild(this.generateTreeViewElements(item.columns));
+            if (["Container", "Column"].indexOf(item.getJsonTypeName()) !== -1) {
+                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.Container).getItems(), selected_id));
+            } else if (item.getJsonTypeName() === "ColumnSet") {
+                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.ColumnSet).getColumns(), selected_id));
             }
 
             itemIndex++;
