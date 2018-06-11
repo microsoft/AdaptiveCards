@@ -14,6 +14,4 @@
 // Walk through adaptive cards elements and if images are found, download and process images concurrently and on different thread
 // from main thread, so images process won't block UI thread.
 - (void) addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body;
-// Different method to just handle the actions so they wont be processed multiple times
-- (void) addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &) actions;
 @end

@@ -8,7 +8,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-AdaptiveCard::AdaptiveCard(): m_style(ContainerStyle::None), m_height(HeightType::Auto)
+AdaptiveCard::AdaptiveCard(): m_style(ContainerStyle::None), m_height(HeightType::Auto),
+    m_verticalContentAlignment(VerticalContentAlignment::Stretch)
 {
 }
 
@@ -129,7 +130,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
         ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
-    VerticalContentAlignment verticalContentAlignment = ParseUtil::GetEnumValue<VerticalContentAlignment>(json, AdaptiveCardSchemaKey::VerticalContentAlignment, 
+    VerticalContentAlignment verticalContentAlignment = ParseUtil::GetEnumValue<VerticalContentAlignment>(json, AdaptiveCardSchemaKey::VerticalContentAlignment,
         VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString);
     HeightType height = ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString);
 
@@ -143,15 +144,15 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     }
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Body, false);
+    auto body = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::Body, false);
     // Parse actions if present
-    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::Actions, false);
+    auto actions = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::Actions, false);
 
     auto result = std::make_shared<AdaptiveCard>(version, fallbackText, backgroundImage, style, speak, language, verticalContentAlignment, height, body, actions);
     result->SetLanguage(language);
 
     // Parse optional selectAction
-    result->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction, false));
+    result->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::SelectAction, false));
 
     return std::make_shared<ParseResult>(result, warnings);
 }
@@ -204,7 +205,7 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
-    HeightType height = GetHeight();
+    const HeightType height = GetHeight();
     if (height != HeightType::Auto)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());

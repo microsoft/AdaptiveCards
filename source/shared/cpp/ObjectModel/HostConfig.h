@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 struct FontSizesConfig
 {
@@ -132,7 +132,7 @@ struct ContainerStyleDefinition
 struct ContainerStylesDefinition
 {
     ContainerStyleDefinition defaultPalette;
-    ContainerStyleDefinition emphasisPalette = 
+    ContainerStyleDefinition emphasisPalette =
     { "#08000000", "#08000000", 0,
         {
             { "#FF000000", "#B2000000" },   //defaultColor
@@ -170,6 +170,15 @@ struct ActionsConfig
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
 };
 
+struct MediaConfig
+{
+    std::string defaultPoster;
+    std::string playButton;
+    bool allowInlinePlayback = true;
+
+    static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
+};
+
 struct HostConfig
 {
     std::string fontFamily = "Calibri";
@@ -186,8 +195,9 @@ struct HostConfig
     FactSetConfig factSet;
     ActionsConfig actions;
     ContainerStylesDefinition containerStyles;
+    MediaConfig media;
 
     static HostConfig Deserialize(const Json::Value& json);
     static HostConfig DeserializeFromString(const std::string jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

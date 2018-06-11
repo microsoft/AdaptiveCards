@@ -7,7 +7,7 @@
 #include "ParseUtil.h"
 #include "Separator.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class Container;
 class BaseCardElement
 {
@@ -71,14 +71,14 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
     ParseUtil::ThrowIfNotJsonObject(json);
 
     baseCardElement->SetSpacing(
-            ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString)); 
+            ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
     baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
     baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
     baseCardElement->SetHeight(
         ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
 
     // Walk all properties and put any unknown ones in the additional properties json
-    for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)
+    for (auto it = json.begin(); it != json.end(); ++it)
     {
         std::string key = it.key().asCString();
         if (baseCardElement->m_knownProperties.find(key) == baseCardElement->m_knownProperties.end())
@@ -89,5 +89,4 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
 
     return cardElement;
 }
-AdaptiveSharedNamespaceEnd
-
+}

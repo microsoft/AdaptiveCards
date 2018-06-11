@@ -1,7 +1,17 @@
 #include "pch.h"
 #include "Enums.h"
 
-AdaptiveSharedNamespaceStart
+#ifdef USE_CPPCORECHECK
+#pragma warning(push)
+
+// Unfortunately, the checker for WARNING_NO_GLOBAL_INIT_CALLS (26426) has an issue: it considers initialization of the
+// below std::unordered_map statics to be global, and thus flags them all as having overly-complex initialization. We
+// want to keep this check on, in general, but turn it off for this file (all warning instances were reviewed prior to
+// disablement).
+#pragma warning(disable: 26426)
+#endif
+
+namespace AdaptiveSharedNamespace {
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> * adaptiveCardSchemaKeyEnumToNameOut,
@@ -17,6 +27,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation" },
         { AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard" },
         { AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle" },
+        { AdaptiveCardSchemaKey::AllowInlinePlayback, "allowInlinePlayback" },
         { AdaptiveCardSchemaKey::AltText, "altText" },
         { AdaptiveCardSchemaKey::Attention, "attention" },
         { AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor" },
@@ -45,6 +56,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::Data, "data" },
         { AdaptiveCardSchemaKey::DateInput, "dateInput" },
         { AdaptiveCardSchemaKey::Default, "default" },
+        { AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster" },
         { AdaptiveCardSchemaKey::Emphasis, "emphasis" },
         { AdaptiveCardSchemaKey::ExtraLarge, "extraLarge" },
         { AdaptiveCardSchemaKey::Facts, "facts" },
@@ -85,6 +97,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::MaxLength, "maxLength" },
         { AdaptiveCardSchemaKey::MaxLines, "maxLines" },
         { AdaptiveCardSchemaKey::MaxWidth, "maxWidth" },
+        { AdaptiveCardSchemaKey::Media, "media" },
         { AdaptiveCardSchemaKey::Medium, "medium" },
         { AdaptiveCardSchemaKey::Method, "method" },
         { AdaptiveCardSchemaKey::MimeType, "mimeType" },
@@ -92,6 +105,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
+        { AdaptiveCardSchemaKey::PlayButton, "playButton" },
         { AdaptiveCardSchemaKey::Poster, "poster" },
         { AdaptiveCardSchemaKey::Right, "right" },
         { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
@@ -617,7 +631,7 @@ void GetVerticalContentAlignmentEnumMappings(
         { VerticalContentAlignment::Center, "Center" },
         { VerticalContentAlignment::Bottom, "Bottom" }
     };
-    static std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum = 
+    static std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum =
         GenerateStringToEnumMap<VerticalContentAlignment>(verticalContentAlignmentEnumToName);
 
     if (verticalContentAlignmentEnumToNameOut != nullptr)
@@ -1126,4 +1140,8 @@ VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& v
     return verticalContentAlignmentNameToEnum[verticalContentAlignment];
 }
 
-AdaptiveSharedNamespaceEnd
+}
+
+#ifdef USE_CPPCORECHECK
+#pragma warning(pop)
+#endif
