@@ -135,8 +135,7 @@ class DesignerApp {
     public buildTreeViewSheet(peer: Designer.DesignerPeer) {
         if (this.treeViewSheetHostElement) {
             this.treeViewSheetHostElement.innerHTML = "";
-            const cardStructure = this._card.toJSON();
-            console.log(cardStructure);
+            const cardStructure = this._card.toJSON() as Adaptive.IAdaptiveCard;
             const listItems = this.generateTreeViewElements(cardStructure.body);
             const listActions = this.generateTreeViewElements(cardStructure.actions);
             this.treeViewSheetHostElement.appendChild(listItems);
