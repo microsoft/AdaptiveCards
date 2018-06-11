@@ -38,6 +38,7 @@ function updateJsonFromCard() {
 
         if (!preventJsonUpdate && isMonacoEditorLoaded) {
             monacoEditor.setValue(JSON.stringify(app.card.toJSON(), null, 4));
+            app.buildTreeViewSheet(null);
         }
     }
     finally {
@@ -130,6 +131,46 @@ class DesignerApp {
     private _card: Adaptive.AdaptiveCard;
     private _hostContainerPicker: Controls.DropDown;
     private _selectedHostContainer: HostContainer;
+
+    public buildTreeViewSheet(peer: Designer.DesignerPeer) {
+        if (this.treeViewSheetHostElement) {
+            this.treeViewSheetHostElement.innerHTML = "";
+            const cardStructure = this._card.toJSON();
+            console.log(cardStructure);
+            const listItems = this.generateTreeViewElements(cardStructure.body);
+            const listActions = this.generateTreeViewElements(cardStructure.actions);
+            this.treeViewSheetHostElement.appendChild(listItems);
+            this.treeViewSheetHostElement.appendChild(listActions);
+        }
+    }
+
+    private generateTreeViewElements(cardItems) {
+
+        if (!cardItems || cardItems.length === 0) {
+            let node: HTMLElement = document.createElement("ul");
+            return node;
+        }
+
+        let itemList: HTMLElement = document.createElement("ul");
+        let itemIndex: number = 0;
+        while(itemIndex < cardItems.length) {
+            let item = cardItems[itemIndex];
+
+            let listItem = document.createElement("li");
+            listItem.textContent = item.type;
+            itemList.appendChild(listItem);
+
+            if (["Container", "Column"].indexOf(item.type) !== -1) {
+                itemList.appendChild(this.generateTreeViewElements(item.items));
+            } else if (item.type === "ColumnSet") {
+                itemList.appendChild(this.generateTreeViewElements(item.columns));
+            }
+
+            itemIndex++;
+        }
+
+        return itemList;
+    }
 
     private buildPropertySheet(peer: Designer.DesignerPeer) {
         if (this.propertySheetHostElement) {
@@ -246,6 +287,7 @@ class DesignerApp {
         this._designer = new Designer.CardDesigner(this._selectedHostContainer.cardHost);
         this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
             this.buildPropertySheet(peer);
+            this.buildTreeViewSheet(peer);
         };
         this._designer.onLayoutUpdated = (isFullRefresh: boolean) => {
             if (isFullRefresh) {
@@ -255,6 +297,7 @@ class DesignerApp {
 
         this.buildPalette();
         this.buildPropertySheet(null);
+        this.buildTreeViewSheet(null);
 
         if (this._card) {
             this._card.hostConfig = this._selectedHostContainer.getHostConfig();
@@ -270,6 +313,7 @@ class DesignerApp {
     readonly hostContainers: Array<HostContainer> = [];
     
     propertySheetHostElement: HTMLElement;
+    treeViewSheetHostElement: HTMLElement;
     commandListHostElement: HTMLElement;
 
     constructor(designerHostElement: HTMLElement) {
@@ -439,7 +483,8 @@ class Splitter {
 
 var app: DesignerApp;
 var horizontalSplitter: Splitter;
-var verticalSplitter: Splitter;
+var propertyVerticalSplitter: Splitter;
+var treeViewVerticalSplitter: Splitter;
 
 window.onload = () => {
     document.getElementById("btnNewCard").onclick = (e) => {
@@ -453,11 +498,16 @@ window.onload = () => {
         }    
     }
 
-    verticalSplitter = new Splitter(document.getElementById("verticalSplitter"), document.getElementById("propertySheetHost"));
-    verticalSplitter.isVertical = true;
-    verticalSplitter.onRezized = (splitter: Splitter) => {
+    propertyVerticalSplitter
+        = new Splitter(document.getElementById("propertyVerticalSplitter"), document.getElementById("propertySheetHost"));
+    propertyVerticalSplitter.isVertical = true;
+    propertyVerticalSplitter.onRezized = (splitter: Splitter) => {
         scheduleLayoutUpdate();
     }
+
+    treeViewVerticalSplitter
+        = new Splitter(document.getElementById("treeViewVerticalSplitter"), document.getElementById("treeViewSheetHost"));
+    treeViewVerticalSplitter.isVertical = true;
 
     let card = new Adaptive.AdaptiveCard();
     card.onImageLoaded = (image: Adaptive.Image) => {
@@ -467,6 +517,7 @@ window.onload = () => {
 
     app = new DesignerApp(document.getElementById("designerHost"));
     app.propertySheetHostElement = document.getElementById("propertySheetHost");
+    app.treeViewSheetHostElement = document.getElementById("treeViewSheetHost");
     app.commandListHostElement = document.getElementById("commandsHost");
     app.paletteHostElement = document.getElementById("toolPalette");
 
