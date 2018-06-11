@@ -15,7 +15,11 @@ public:
     BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
     BaseCardElement(CardElementType type);
 
-    virtual ~BaseCardElement();
+    BaseCardElement(const BaseCardElement&) = default;
+    BaseCardElement(BaseCardElement&&) = default;
+    BaseCardElement& operator=(const BaseCardElement&) = default;
+    BaseCardElement& operator=(BaseCardElement&&) = default;
+    virtual ~BaseCardElement() = default;
 
     virtual std::string GetElementTypeString() const;
     virtual void SetElementTypeString(const std::string &value);
