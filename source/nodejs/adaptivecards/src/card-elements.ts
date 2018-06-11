@@ -2196,6 +2196,7 @@ export abstract class Action {
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
     private _renderedElement: HTMLElement = null;
+    public internal_id: string;
 
     private setCollection(actionCollection: ActionCollection) {
         this._actionCollection = actionCollection;
@@ -3723,16 +3724,9 @@ export class Container extends CardElementContainer {
         }
     }
 
-    private guidGenerator(): string {
-        const S4 = function() {
-           return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-        };
-        return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-    }
-
     addItem(item: CardElement) {
         if  (!item.internal_id) {
-            item.internal_id = `id_${this.guidGenerator()}`;
+            item.internal_id = `id_${Utils.guidGenerator()}`;
         }
         this.insertItemAt(item, -1);
     }
@@ -4521,6 +4515,10 @@ export abstract class ContainerWithActions extends Container {
         return result;
     }
 
+    getActions(): Array<Action> {
+        return this._actionCollection.items;
+    }
+
     getActionCount(): number {
         return this._actionCollection.items.length;
     }
@@ -4573,6 +4571,9 @@ export abstract class ContainerWithActions extends Container {
     }
 
     addAction(action: Action) {
+        if  (!action.internal_id) {
+            action.internal_id = `id_${Utils.guidGenerator()}`;
+        }
         this._actionCollection.addAction(action);
     }
 

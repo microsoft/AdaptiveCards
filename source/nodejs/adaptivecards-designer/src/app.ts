@@ -132,21 +132,24 @@ class DesignerApp {
     private _hostContainerPicker: Controls.DropDown;
     private _selectedHostContainer: HostContainer;
 
-    public buildTreeViewSheet(peer: Designer.CardElementPeer) {
+    public buildTreeViewSheet(peer: Designer.CardElementPeer | Designer.ActionPeer) {
         if (this.treeViewSheetHostElement) {
-            const selected_id = peer ? peer.cardElement.internal_id : "";
+            let selected_id;
+            if  (peer instanceof Designer.ActionPeer) {
+                selected_id = peer ? peer.action.internal_id : "";
+            } else {
+                selected_id = peer ? peer.cardElement.internal_id : "";
+            }
 
             this.treeViewSheetHostElement.innerHTML = ""; 
 
-            const items = this._card.getItems();
+            const items = [...this._card.getItems(), ...this._card.getActions()];
             const listItems = this.generateTreeViewElements(items, selected_id);
-            //const listActions = this.generateTreeViewElements(cardStructure.actions);
             this.treeViewSheetHostElement.appendChild(listItems);
-            //this.treeViewSheetHostElement.appendChild(listActions);
         }
     }
 
-    private generateTreeViewElements(cardItems: Array<Adaptive.CardElement>, selected_id: string = "" ) {
+    private generateTreeViewElements(cardItems: Array<Adaptive.CardElement | Adaptive.Action>, selected_id: string = "" ) {
         if (!cardItems || cardItems.length === 0) {
             let node: HTMLElement = document.createElement("ul");
             return node;
