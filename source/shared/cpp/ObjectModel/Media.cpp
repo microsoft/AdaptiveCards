@@ -61,9 +61,9 @@ std::vector<std::shared_ptr<MediaSource>>& Media::GetSources()
 
 void Media::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources)});
 }
 
 void Media::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
