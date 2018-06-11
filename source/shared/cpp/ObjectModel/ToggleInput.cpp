@@ -112,10 +112,10 @@ std::shared_ptr<BaseCardElement> ToggleInputParser::DeserializeFromString(
     return ToggleInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ToggleInput::PopulateKnownPropertiesSet() 
+void ToggleInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff)});
 }

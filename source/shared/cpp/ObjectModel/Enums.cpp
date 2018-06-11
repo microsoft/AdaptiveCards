@@ -1,6 +1,16 @@
 #include "pch.h"
 #include "Enums.h"
 
+#ifdef USE_CPPCORECHECK
+#pragma warning(push)
+
+// Unfortunately, the checker for WARNING_NO_GLOBAL_INIT_CALLS (26426) has an issue: it considers initialization of the
+// below std::unordered_map statics to be global, and thus flags them all as having overly-complex initialization. We
+// want to keep this check on, in general, but turn it off for this file (all warning instances were reviewed prior to
+// disablement).
+#pragma warning(disable: 26426)
+#endif
+
 namespace AdaptiveSharedNamespace {
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
@@ -1131,3 +1141,7 @@ VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& v
 }
 
 }
+
+#ifdef USE_CPPCORECHECK
+#pragma warning(pop)
+#endif

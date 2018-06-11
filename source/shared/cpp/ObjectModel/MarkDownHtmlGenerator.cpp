@@ -100,7 +100,7 @@ std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
     }
 
     // append tags; since left delims, append it in the reverse order
-    for (auto itr = m_tags.rbegin(); itr != m_tags.rend(); itr++)
+    for (auto itr = m_tags.rbegin(); itr != m_tags.rend(); ++itr)
     {
         html << *itr;
     }
@@ -131,7 +131,7 @@ void MarkDownRightEmphasisHtmlGenerator::PushBoldTag()
 std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
 {
     // append tags;
-    for (auto itr = m_tags.begin(); itr != m_tags.end(); itr++)
+    for (auto itr = m_tags.begin(); itr != m_tags.end(); ++itr)
     {
         html << *itr;
     }

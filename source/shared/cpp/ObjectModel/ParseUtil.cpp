@@ -306,7 +306,7 @@ std::string ParseUtil::ToLowercase(std::string const &value)
 {
     std::string new_value;
     new_value.resize(value.size());
-    std::transform(value.begin(), value.end(), new_value.begin(), [](char c) { return std::tolower(c, std::locale()); });
+    auto new_end = std::transform(value.begin(), value.end(), new_value.begin(), [](char c) { return std::tolower(c, std::locale()); });
     return new_value;
 }
 

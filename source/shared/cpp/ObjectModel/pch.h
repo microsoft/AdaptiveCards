@@ -22,11 +22,16 @@
 #include <locale>
 
 #if defined(_MSC_BUILD) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(ADAPTIVE_CARDS_WINDOWS)
+#define USE_CPPCORECHECK
+#endif
+
+#ifdef USE_CPPCORECHECK
 #include <CppCoreCheck\warnings.h>
 #pragma warning(disable: ALL_CPPCORECHECK_WARNINGS)
 #pragma warning(default: CPPCORECHECK_ARITHMETIC_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONCURRENCY_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONST_WARNINGS)
+#pragma warning(default: CPPCORECHECK_DECLARATION_WARNINGS)
 #pragma warning(default: CPPCORECHECK_STYLE_WARNINGS)
 #pragma warning(default: CPPCORECHECK_UNIQUE_POINTER_WARNINGS)
 
