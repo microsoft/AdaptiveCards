@@ -1,3 +1,4 @@
+
 //
 //  ACRView.m
 //  ACRView
@@ -308,20 +309,15 @@ using namespace AdaptiveCards;
                     fontweight = 400;
                 }
                 UIFont *font = nil;
+                fontweight -= 100;
+                fontweight /= 100;
                 if(!self->_hostConfig.fontFamilyNames){
-		             // normalize font weight to scale of -1.0 to 1.0, and 400 is zero
-                     fontweight -= 400;
-                     if(fontweight > 0) {
-                         fontweight /= 500;
-                     } else {
-                         fontweight /= 300;
-                     }
-                    font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:fontweight];
+                    const NSArray<NSNumber *> *fontweights = @[@(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
+                       @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack)];
+                    font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:[fontweights[fontweight] floatValue]];
                 } else {
-		            // font weight as string since font weight as double doesn't work
+                    // font weight as string since font weight as double doesn't work
                     // normailze fontweight for indexing
-                    fontweight -= 100;
-                    fontweight /= 100;
                     const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                                 @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
                     UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: self->_hostConfig.fontFamilyNames[0],

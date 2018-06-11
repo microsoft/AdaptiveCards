@@ -214,7 +214,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
         if (!eachDimension.empty() && (isdigit(eachDimension.at(0)) || ('-' == eachDimension.at(0))))
         {
             const std::string unit = "px";
-            std::size_t foundIndex = eachDimension.find(unit);
+            const std::size_t foundIndex = eachDimension.find(unit);
             /// check if width is determined explicitly
             if (std::string::npos != foundIndex) 
             {

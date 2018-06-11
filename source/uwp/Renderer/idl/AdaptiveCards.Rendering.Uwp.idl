@@ -70,6 +70,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveContainerStylesDefinition;
     runtimeclass RenderedAdaptiveCard;
     runtimeclass AdaptiveActionEventArgs;
+    runtimeclass AdaptiveMediaEventArgs;
     runtimeclass AdaptiveInputs;
     runtimeclass AdaptiveCardParseResult;
     runtimeclass AdaptiveHostConfigParseResult;
@@ -92,6 +93,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveRenderContext;
     runtimeclass AdaptiveRenderArgs;
     runtimeclass AdaptiveActionInvoker;
+    runtimeclass AdaptiveMediaEventInvoker;
     runtimeclass AdaptiveTextBlockRenderer;
     runtimeclass AdaptiveTextInputRenderer;
     runtimeclass AdaptiveTimeInputRenderer;
@@ -1455,6 +1457,35 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMediaEventArgs),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(DE57EF9E-1575-401A-9BD8-A84B9ADCB031),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(D7B0DE38-2ADC-48DC-9168-76E52986A4EE)
+#endif        
+    ]
+    interface IAdaptiveMediaEventArgs : IInspectable
+    {
+        [propget] HRESULT Media([out, retval] AdaptiveMedia** media);
+    }
+
+    [
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif        
+    ]
+    runtimeclass AdaptiveMediaEventArgs
+    {
+        [default] interface IAdaptiveMediaEventArgs;
+    };
+
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveContainerStyleDefinition),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(a2d8b87c-7afa-4425-9c9b-38831dc0aef2),
@@ -2084,6 +2115,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT PlayButton([out][retval] HSTRING* value);
         [propput] HRESULT PlayButton([in] HSTRING value);
+
+        [propget] HRESULT AllowInlinePlayback([out, retval] boolean* value);
+        [propput] HRESULT AllowInlinePlayback([in] boolean value);
     };
 
     [
@@ -2466,6 +2500,12 @@ AdaptiveNamespaceStart
 
         [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
         [eventremove] HRESULT Action([in] EventRegistrationToken token);
+
+        [eventadd] HRESULT MediaPlay([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveMediaEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
+        [eventremove] HRESULT MediaPlay([in] EventRegistrationToken token);
+
+        [eventadd] HRESULT MediaEnded([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveMediaEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
+        [eventremove] HRESULT MediaEnded([in] EventRegistrationToken token);
     };
 
     [
@@ -2679,6 +2719,37 @@ AdaptiveNamespaceStart
         [default] interface IAdaptiveActionInvoker;
     };
         
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveMediaEventInvoker),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(C4B6BBF1-599F-4CCF-904E-4CEFAAA44454),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(DBB394A0-2EDD-4D04-911D-8E1A5CEB88E2)
+#endif        
+    ]
+    interface IAdaptiveMediaEventInvoker : IInspectable
+    {
+        HRESULT SendMediaPlayEvent([in] AdaptiveMedia* mediaElement);
+        HRESULT SendMediaEndedEvent([in] AdaptiveMedia* mediaElement);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveMediaEventInvoker
+    {
+        [default] interface IAdaptiveMediaEventInvoker;
+    };
+
 
     [
         version(NTDDI_WIN10_RS1),
@@ -2716,6 +2787,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT ResourceResolvers([out, retval] AdaptiveCardResourceResolvers** value);
 
         [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
+
+        [propget] HRESULT MediaEventInvoker([out, retval] AdaptiveMediaEventInvoker** value);
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 

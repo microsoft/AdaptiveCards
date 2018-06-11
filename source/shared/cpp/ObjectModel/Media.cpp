@@ -80,7 +80,7 @@ std::shared_ptr<BaseCardElement> MediaParser::Deserialize(
         std::string currentMimeType = source->GetMimeType();
 
         std::string slash("/");
-        size_t slashPosition = currentMimeType.find(slash, 0);
+        const size_t slashPosition = currentMimeType.find(slash, 0);
         std::string currentMimeBaseType = currentMimeType.substr(0, slashPosition);
 
         if (mimeBaseType.empty())
