@@ -2788,49 +2788,9 @@ AdaptiveNamespaceStart
             return;
         }
 
-        // Create a media element and set it's source
-        ComPtr<IMediaElement> mediaElement = XamlHelpers::CreateXamlClass<IMediaElement>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
-
-        ComPtr<IUriRuntimeClass> mediaSourceUrl;
-        GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf());
-
-        if (mediaSourceUrl == nullptr)
-        {
-            renderContext->AddWarning(
-                ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedMediaType,
-                HStringReference(L"Unsupported media element dropped").Get());
-            return;
-        }
-
-        // TODO: Support loading media via resource resolvers
-        THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl.Get()));
-
-        // Configure Auto Play and Controls
-        ComPtr<IFrameworkElement> mediaAsFrameworkElement;
-        THROW_IF_FAILED(mediaElement.As(&mediaAsFrameworkElement));
-        THROW_IF_FAILED(mediaElement->put_AutoPlay(false));
-
-        ComPtr<IMediaElement2> mediaElement2;
-        THROW_IF_FAILED(mediaElement.As(&mediaElement2));
-        THROW_IF_FAILED(mediaElement2->put_AreTransportControlsEnabled(true));
-
-        ComPtr<IUIElement> mediaUIElement;
-        THROW_IF_FAILED(mediaElement.As(&mediaUIElement));
-
         // Put the poster image in a container with a play button
         ComPtr<IUIElement> posterContainer;
         CreatePosterContainerWithPlayButton(posterImage.Get(), renderContext, renderArgs, &posterContainer);
-
-        if (posterImage != nullptr)
-        {
-            // Set the poster on the media element
-            ComPtr<IImageSource> posterImageSource;
-            THROW_IF_FAILED(posterImage->get_Source(&posterImageSource));
-            THROW_IF_FAILED(mediaElement->put_PosterSource(posterImageSource.Get()));
-        }
-
-        // Make the media element collapsed until the user clicks
-        THROW_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
 
         // Create a panel to hold the poster and the media element
         ComPtr<IStackPanel> mediaStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
@@ -2838,7 +2798,71 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(mediaStackPanel.As(&mediaPanel));
 
         XamlHelpers::AppendXamlElementToPanel(posterContainer.Get(), mediaPanel.Get());
-        XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
+
+        // Check if this host allows inline playback
+        ComPtr<IAdaptiveMediaConfig> mediaConfig;
+        THROW_IF_FAILED(hostConfig->get_Media(&mediaConfig));
+
+        boolean allowInlinePlayback;
+        THROW_IF_FAILED(mediaConfig->get_AllowInlinePlayback(&allowInlinePlayback));
+
+        ComPtr<IAdaptiveMediaEventInvoker> mediaInvoker;
+        THROW_IF_FAILED(renderContext->get_MediaEventInvoker(&mediaInvoker));
+
+        ComPtr<IMediaElement> mediaElement;
+        if (allowInlinePlayback)
+        {
+            // Create a media element and set it's source
+            mediaElement = XamlHelpers::CreateXamlClass<IMediaElement>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
+
+            ComPtr<IUriRuntimeClass> mediaSourceUrl;
+            GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf());
+
+            if (mediaSourceUrl == nullptr)
+            {
+                renderContext->AddWarning(
+                    ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedMediaType,
+                    HStringReference(L"Unsupported media element dropped").Get());
+                return;
+            }
+
+            // TODO: Support loading media via resource resolvers
+            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl.Get()));
+
+            // Configure Auto Play and Controls
+            ComPtr<IFrameworkElement> mediaAsFrameworkElement;
+            THROW_IF_FAILED(mediaElement.As(&mediaAsFrameworkElement));
+            THROW_IF_FAILED(mediaElement->put_AutoPlay(false));
+
+            ComPtr<IMediaElement2> mediaElement2;
+            THROW_IF_FAILED(mediaElement.As(&mediaElement2));
+            THROW_IF_FAILED(mediaElement2->put_AreTransportControlsEnabled(true));
+
+            ComPtr<IUIElement> mediaUIElement;
+            THROW_IF_FAILED(mediaElement.As(&mediaUIElement));
+
+            if (posterImage != nullptr)
+            {
+                // Set the poster on the media element
+                ComPtr<IImageSource> posterImageSource;
+                THROW_IF_FAILED(posterImage->get_Source(&posterImageSource));
+                THROW_IF_FAILED(mediaElement->put_PosterSource(posterImageSource.Get()));
+            }
+
+            // Make the media element collapsed until the user clicks
+            THROW_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
+
+            // Add an event for media ended
+            EventRegistrationToken mediaEndedToken;
+            THROW_IF_FAILED(mediaElement->add_MediaEnded(Callback<IRoutedEventHandler>([mediaInvoker, adaptiveMedia](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+            {
+                RETURN_IF_FAILED(mediaInvoker->SendMediaEndedEvent(adaptiveMedia.Get()));
+
+                return S_OK;
+            }).Get(), &mediaEndedToken));
+
+            XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
+        }
 
         // Wrap in touch target
         ComPtr<IUIElement> mediaPanelAsUIElement;
@@ -2852,15 +2876,20 @@ AdaptiveNamespaceStart
 
         // When the user clicks: hide the poster, show the media element, play the media
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([posterContainer, mediaElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([posterContainer, mediaElement, mediaInvoker, adaptiveMedia](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
         {
-            RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+            if (mediaElement)
+            {
+                RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
 
-            ComPtr<IUIElement> mediaAsUIElement;
-            RETURN_IF_FAILED(mediaElement.As(&mediaAsUIElement));
-            RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
+                ComPtr<IUIElement> mediaAsUIElement;
+                RETURN_IF_FAILED(mediaElement.As(&mediaAsUIElement));
+                RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
 
-            RETURN_IF_FAILED(mediaElement->Play());
+                RETURN_IF_FAILED(mediaElement->Play());
+            }
+
+            RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia.Get()));
 
             return S_OK;
         }).Get(), &clickToken));

@@ -41,14 +41,6 @@
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     ACRUILabel *lab = [[ACRUILabel alloc] init];
     lab.style = [viewGroup style];
-    TextConfig textConfig =
-    {
-        .weight = txtBlck->GetTextWeight(),
-        .size = txtBlck->GetTextSize(),
-        .color = txtBlck->GetTextColor(),
-        .isSubtle = txtBlck->GetIsSubtle(),
-        .wrap = txtBlck->GetWrap()
-    };
     NSMutableAttributedString *content = nil;
     if(rootView){
         NSMutableDictionary *textMap = [rootView getTextMap];
@@ -67,6 +59,7 @@
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
         } else {
+            // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
             [content deleteCharactersInRange:NSMakeRange(0, 3)];
             [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
@@ -74,7 +67,7 @@
 
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+        paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
         paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment()];
 
         // Obtain text color to apply to the attributed string
@@ -82,7 +75,7 @@
         ColorsConfig &colorConfig = (style == ACREmphasis)? config->containerStyles.emphasisPalette.foregroundColors:
         config->containerStyles.defaultPalette.foregroundColors;
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfig.color colorsConfig:colorConfig subtleOption:textConfig.isSubtle],} range:NSMakeRange(0, content.length)];
+        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],} range:NSMakeRange(0, content.length)];
         lab.attributedText = content;
     }
 

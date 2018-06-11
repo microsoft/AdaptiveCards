@@ -3,16 +3,18 @@
 
 using namespace AdaptiveSharedNamespace;
 
-DateTimePreparsedToken::DateTimePreparsedToken() : m_text(""), m_format(DateTimePreparsedTokenFormat::RegularString)
+DateTimePreparsedToken::DateTimePreparsedToken() : m_text(""), m_format(DateTimePreparsedTokenFormat::RegularString),
+    m_date{}
 {
 }
 
-DateTimePreparsedToken::DateTimePreparsedToken(std::string const &text, DateTimePreparsedTokenFormat format) : m_text(text), m_format(format)
+DateTimePreparsedToken::DateTimePreparsedToken(std::string const &text, DateTimePreparsedTokenFormat format) :
+    m_text(text), m_format(format), m_date{}
 {
 }
 
-DateTimePreparsedToken::DateTimePreparsedToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format) :
-    m_text(text), m_date(date), m_format(format)
+DateTimePreparsedToken::DateTimePreparsedToken(std::string const &text, struct tm date,
+    DateTimePreparsedTokenFormat format) : m_text(text), m_date(date), m_format(format)
 {
 }
 

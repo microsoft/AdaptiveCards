@@ -122,7 +122,7 @@ std::shared_ptr<Column> Column::Deserialize(
     if (!columnWidth.empty() && (isdigit(columnWidth.at(0)) || ('-' == columnWidth.at(0))))
     {
         const std::string unit = "px";
-        std::size_t foundIndex = columnWidth.find(unit);
+        const std::size_t foundIndex = columnWidth.find(unit);
         /// check if width is determined explicitly
         if (std::string::npos != foundIndex) 
         {
