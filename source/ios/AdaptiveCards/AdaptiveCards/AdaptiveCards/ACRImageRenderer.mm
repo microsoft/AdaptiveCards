@@ -15,6 +15,7 @@
 #import "ACRView.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRUIImageView.h"
 
 @implementation ACRImageRenderer
 
@@ -37,9 +38,9 @@
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-    UIImageView *view;
+    ACRUIImageView *view;
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
-    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
+    view = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
     if(imgElem->GetImageSize() != ImageSize::Auto && imgElem->GetImageSize() != ImageSize::Stretch && imgElem->GetImageSize() != ImageSize::None){
         [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
                                                                 attribute:NSLayoutAttributeWidth
