@@ -63,7 +63,7 @@ bool MarkDownEmphasisHtmlGenerator::GenerateTags(MarkDownEmphasisHtmlGenerator &
     int delimiterCount = 0, leftOver = 0;
     leftOver = this->m_numberOfUnusedDelimiters - token.m_numberOfUnusedDelimiters;
     delimiterCount = this->AdjustEmphasisCounts(leftOver, token);
-    bool hasHtmlTags = (delimiterCount > 0);
+    const bool hasHtmlTags = (delimiterCount > 0);
 
     // emphasis found
     if (delimiterCount % 2)
@@ -95,7 +95,7 @@ std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
 {
     if (m_numberOfUnusedDelimiters)
     {
-        unsigned long startIdx = static_cast<unsigned long>(m_token.size()) - m_numberOfUnusedDelimiters;
+        const unsigned long startIdx = static_cast<unsigned long>(m_token.size()) - m_numberOfUnusedDelimiters;
         html << m_token.substr(startIdx, std::string::npos);
     }
 
@@ -139,7 +139,7 @@ std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
     // if there are unused emphasis, append them
     if (m_numberOfUnusedDelimiters)
     {
-        unsigned long startIdx = static_cast<unsigned long>(m_token.size()) - m_numberOfUnusedDelimiters;
+        const unsigned long startIdx = static_cast<unsigned long>(m_token.size()) - m_numberOfUnusedDelimiters;
         html << m_token.substr(startIdx, std::string::npos);
     }
 

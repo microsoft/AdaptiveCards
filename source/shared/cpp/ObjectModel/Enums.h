@@ -42,6 +42,7 @@ enum class AdaptiveCardSchemaKey
     ActionsOrientation,
     AdaptiveCard,
     AllowCustomStyle,
+    AllowInlinePlayback,
     AltText,
     Attention,
     BackgroundColor,

@@ -8,7 +8,7 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
 {
     for (auto& bodyElement : m_body)
     {
-        CardElementType elementType = bodyElement->GetElementType();
+        const CardElementType elementType = bodyElement->GetElementType();
 
         if (elementType == CardElementType::ColumnSet)
         {
@@ -45,7 +45,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
     }
     else
     {
-        std::size_t foundIndex = requestedDimension.find(unit);
+        const std::size_t foundIndex = requestedDimension.find(unit);
         if (std::string::npos == foundIndex || requestedDimension.size() != foundIndex + unit.size())
         {
             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is either missing or inproper form: " + requestedDimension);
