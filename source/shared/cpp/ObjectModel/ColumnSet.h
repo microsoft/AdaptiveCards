@@ -6,7 +6,7 @@
 #include "Column.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class ColumnSet : public BaseCardElement
 {
 friend class ColumnSetParser;
@@ -48,4 +48,4 @@ public:
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

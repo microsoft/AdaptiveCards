@@ -104,10 +104,10 @@ std::shared_ptr<BaseCardElement> TimeInputParser::DeserializeFromString(
     return TimeInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void TimeInput::PopulateKnownPropertiesSet() 
+void TimeInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)});
 }

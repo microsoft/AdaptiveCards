@@ -6,7 +6,7 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class Container : public BaseCardElement
 {
 friend class ContainerParser;
@@ -55,4 +55,4 @@ public:
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

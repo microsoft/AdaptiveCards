@@ -5,7 +5,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-ImageSet::ImageSet() : 
+ImageSet::ImageSet() :
     BaseCardElement(CardElementType::ImageSet),
     m_imageSize(ImageSize::None)
 {
@@ -84,10 +84,10 @@ std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(
     return ImageSetParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ImageSet::PopulateKnownPropertiesSet() 
+void ImageSet::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)});
 }
 
 void ImageSet::GetResourceUris(std::vector<std::string>& resourceUris)

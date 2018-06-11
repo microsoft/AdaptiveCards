@@ -5,7 +5,7 @@
 #include "json/json.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class ChoiceInput
 {
 public:
@@ -36,4 +36,4 @@ private:
     std::string m_title;
     std::string m_value;
 };
-AdaptiveSharedNamespaceEnd
+}

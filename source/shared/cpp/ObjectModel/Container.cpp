@@ -98,7 +98,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
     container->SetStyle(
         ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
-    container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment, 
+    container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment,
         VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString));
 
     // Parse Items
@@ -120,12 +120,12 @@ std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(
     return ContainerParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void Container::PopulateKnownPropertiesSet() 
+void Container::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items)});
 }
 
 void Container::GetResourceUris(std::vector<std::string>& resourceUris)
