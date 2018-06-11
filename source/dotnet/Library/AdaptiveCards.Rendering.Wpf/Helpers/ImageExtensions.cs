@@ -49,24 +49,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             image.Source = await context.ResolveImageSource(url);
 
-            if (image.Source == null)
-                return;
-
-            SetBinding(image);
-        }
-
-        public static void SetSource(this Image image, BitmapImage bi)
-        {
-            if (bi == null)
-                return;
-
-            image.Source = bi;
-
-            SetBinding(image);
-        }
-
-        private static void SetBinding(Image image)
-        {
             var binding = new Binding
             {
                 RelativeSource = RelativeSource.Self,
@@ -105,42 +87,48 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static async void SetBackgroundSource(this Grid grid, Uri uri, AdaptiveRenderContext context)
+        public static Uri ResolveFinalAbsoluteUri(Uri uri, String imageBaseUrl)
         {
             if (uri == null)
-                return;
+            {
+                return null;
+            }
 
-            BitmapImage bi = null;
-
-            // Try to resolve the image URI
             if (uri.IsAbsoluteUri)
             {
-                // If it's an absolute URI, simply set the source
-                bi = await context.ResolveImageSource(uri);
+                return uri;
             }
-            else
+
+            if (!String.IsNullOrEmpty(imageBaseUrl))
             {
-                // Otherwise, combine with image base URL and try again of specified
-                if (!String.IsNullOrEmpty(context.Config.ImageBaseUrl))
+                try
                 {
-                    try
+                    Uri baseUri = new Uri(imageBaseUrl);
+                    Uri finalUri = new Uri(baseUri, uri.ToString());
+                    if (finalUri.IsAbsoluteUri)
                     {
-                        Uri baseUri = new Uri(context.Config.ImageBaseUrl);
-                        Uri combinedUri = new Uri(baseUri, uri.ToString());
-                        if (uri.IsAbsoluteUri)
-                        {
-                            bi = await context.ResolveImageSource(combinedUri);
-                        }
-                        else
-                        {
-                            // If it's still a relative URL, don't load and return
-                            return;
-                        }
+                        return finalUri;
                     }
-                    catch (UriFormatException) { return; }
+                }
+                catch (UriFormatException)
+                {
+                    return null;
                 }
             }
 
+            return null;
+        }
+
+        public static async void SetBackgroundSource(this Grid grid, Uri uri, AdaptiveRenderContext context)
+        {
+            // Try to resolve the image URI
+            Uri finalUri = ResolveFinalAbsoluteUri(uri, context.Config.ImageBaseUrl);
+            if (finalUri == null)
+            {
+                return;
+            }
+
+            BitmapImage bi = await context.ResolveImageSource(finalUri);
             if (bi != null)
             {
                 grid.Background = new ImageBrush(bi)

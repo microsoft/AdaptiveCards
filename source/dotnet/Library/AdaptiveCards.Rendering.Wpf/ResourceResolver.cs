@@ -36,7 +36,9 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             StreamResourceInfo info = Application.GetResourceStream(uri);
             if (info == null)
+            {
                 info = Application.GetContentStream(uri);
+            }
 
             return info;
         }
@@ -47,7 +49,9 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var info = GetResourceOrContentStream(uri);
                 if (info == null)
+                {
                     throw new IOException("Unable to locate pack URI");
+                }
 
                 var memoryStream = new MemoryStream();
                 info.Stream.CopyTo(memoryStream);

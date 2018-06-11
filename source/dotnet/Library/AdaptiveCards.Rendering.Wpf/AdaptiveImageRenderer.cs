@@ -13,29 +13,14 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiImage = new Image();
 
-            // Handle URL depending on its type
-            if (image.Url.IsAbsoluteUri)
+            // Try to resolve the image URI
+            Uri finalUri = ImageExtensions.ResolveFinalAbsoluteUri(image.Url, context.Config.ImageBaseUrl);
+            if (finalUri == null)
             {
-                // If it's an absolute URI, simply set the source
-                uiImage.SetSource(image.Url, context);
+                return uiImage;
             }
-            else
-            {
-                // Otherwise, combine with image base URL and try again of specified
-                if (!String.IsNullOrEmpty(context.Config.ImageBaseUrl))
-                {
-                    try
-                    {
-                        Uri baseUri = new Uri(context.Config.ImageBaseUrl);
-                        Uri uri = new Uri(baseUri, image.Url);
-                        if (uri.IsAbsoluteUri)
-                        {
-                            uiImage.SetSource(uri, context);
-                        }
-                    }
-                    catch (UriFormatException) { }
-                }
-            }
+
+            uiImage.SetSource(finalUri, context);
 
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
