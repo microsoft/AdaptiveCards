@@ -52,8 +52,24 @@
     [toolBar sizeToFit];
     numInput.inputAccessoryView = toolBar;
 
-    [viewGroup addArrangedSubview: numInput];
-
+    if(elem->GetHeight() == HeightType::Stretch){
+        ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
+        [inputContainer addArrangedSubview: numInput];
+        
+        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+        UIView *blankTrailingSpace = [[UIView alloc] init];
+        blankTrailingSpace.backgroundColor = UIColor.clearColor;
+        
+        [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        [blankTrailingSpace setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        
+        [inputContainer addArrangedSubview:blankTrailingSpace];
+        
+        [viewGroup addArrangedSubview: inputContainer];
+    } else {
+        [viewGroup addArrangedSubview: numInput];
+    }
+    
     numInput.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];

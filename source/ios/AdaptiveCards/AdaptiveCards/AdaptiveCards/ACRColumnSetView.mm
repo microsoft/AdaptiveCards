@@ -14,7 +14,7 @@
     [super config];
     super.stackView.axis = UILayoutConstraintAxisHorizontal;
     super.stackView.distribution = UIStackViewDistributionFill;
-    super.stackView.alignment    = UIStackViewAlignmentLeading;
+    super.stackView.alignment    = UIStackViewAlignmentFill;
 }
 
 - (void)addArrangedSubview:(UIView* )view
