@@ -280,7 +280,6 @@ using namespace AdaptiveCards;
             } else {
                 markDownParser = std::make_shared<MarkDownParser>(textForBlock);
             }
-
             // MarkDownParser transforms text with MarkDown to a html string
             parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
             NSDictionary *data = nil;
