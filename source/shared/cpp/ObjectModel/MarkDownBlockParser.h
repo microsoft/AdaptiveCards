@@ -62,7 +62,7 @@ namespace AdaptiveSharedNamespace {
         bool TryCapturingLeftEmphasisToken(int ch, std::string &currentToken);
         void CaptureEmphasisToken(int ch, std::string &currentToken);
         void UpdateLookBehind(int ch);
-        static DelimiterType GetDelimiterTypeForCharAtCurrentPosition(int ch) { return (ch == '*')? Asterisk : Underscore; };
+        static constexpr DelimiterType GetDelimiterTypeForCharAtCurrentPosition(int ch) { return (ch == '*')? Asterisk : Underscore; };
 
         typedef EmphasisState (* MatchWithChar)(EmphasisParser&, std::stringstream &, std::string &);
         // Callback function that handles the Text State
@@ -119,9 +119,9 @@ namespace AdaptiveSharedNamespace {
         bool MatchNewListItem(std::stringstream &);
         bool MatchNewBlock(std::stringstream &);
         bool MatchNewOrderedListItem(std::stringstream &, std::string &);
-        static bool IsHyphen(int ch) { return ch == '-'; };
-        static bool IsDot(int ch) { return ch == '.'; };
-        static bool IsNewLine(int ch){ return (ch == '\r') || (ch == '\n');};
+        static constexpr bool IsHyphen(int ch) { return ch == '-'; };
+        static constexpr bool IsDot(int ch) { return ch == '.'; };
+        static constexpr bool IsNewLine(int ch){ return (ch == '\r') || (ch == '\n');};
 
         protected:
         void ParseSubBlocks(std::stringstream &);

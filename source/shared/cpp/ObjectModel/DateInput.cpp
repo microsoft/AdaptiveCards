@@ -104,10 +104,10 @@ std::shared_ptr<BaseCardElement> DateInputParser::DeserializeFromString(
     return DateInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void DateInput::PopulateKnownPropertiesSet() 
+void DateInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)});
 }

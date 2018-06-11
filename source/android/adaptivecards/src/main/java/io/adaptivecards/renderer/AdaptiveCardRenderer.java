@@ -18,6 +18,7 @@ import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -117,7 +118,16 @@ public class AdaptiveCardRenderer
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(adaptiveCard);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        if( adaptiveCard.GetHeight() == HeightType.Stretch )
+        {
+            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        }
+        else
+        {
+            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
         layout.setOrientation(LinearLayout.VERTICAL);
         int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
         layout.setPadding(padding, padding, padding, padding);

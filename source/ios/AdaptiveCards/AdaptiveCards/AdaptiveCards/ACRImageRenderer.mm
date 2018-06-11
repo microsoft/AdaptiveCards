@@ -58,51 +58,37 @@
                                                                  constant:cgsize.height]]];
     }
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
-    __block UIImage *img = nil;
-    // Generate key for ImageViewMap
-    NSString *key = [NSString stringWithCString:imgElem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+    UIImage *img = nil;
     // Syncronize access to imageViewMap
-    dispatch_sync([rootView getSerialQueue], ^{
-        // if image is available, get it, otherwise cache UIImageView, so it can be used once images are ready
-        if(imageViewMap[key] && [imageViewMap[key] isKindOfClass:[UIImage class]]) {
-            img = imageViewMap[key];
-        }
-        else {
-            imageViewMap[key] = view;
-        }
-    });
+    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
+    NSString *key = [number stringValue];
+    img = imageViewMap[key];
+    view.image = img;
+    if(img && (img.size.width > 0) && (imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None)){
+        CGFloat heightToWidthRatio = img.size.height / img.size.width;
+        [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                                attribute:NSLayoutAttributeHeight
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:view
+                                                                attribute:NSLayoutAttributeWidth
+                                                               multiplier:heightToWidthRatio
+                                                                 constant:0]]];
+        CGFloat widthToHeightRatio = img.size.width/ img.size.height;
+        [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                                attribute:NSLayoutAttributeWidth
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:view
+                                                                attribute:NSLayoutAttributeHeight
+                                                               multiplier:widthToHeightRatio
+                                                                 constant:0]]];
+    }
 
-    if(img) {// if image is ready, proceed to add it
-        view.image = img;
-        if(imgElem->GetImageSize() == ImageSize::Auto || imgElem->GetImageSize() == ImageSize::Stretch || imgElem->GetImageSize() == ImageSize::None){
-            CGFloat heightToWidthRatio = img.size.height / img.size.width;
-            [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
-                                                                    attribute:NSLayoutAttributeHeight
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:view
-                                                                    attribute:NSLayoutAttributeWidth
-                                                                   multiplier:heightToWidthRatio
-                                                                     constant:0]]];
-            CGFloat widthToHeightRatio = img.size.width/ img.size.height;
-            [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
-                                                                    attribute:NSLayoutAttributeWidth
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:view
-                                                                    attribute:NSLayoutAttributeHeight
-                                                                   multiplier:widthToHeightRatio
-                                                                     constant:0]]];
-        }
-        view.contentMode = UIViewContentModeScaleAspectFit;
-        view.clipsToBounds = NO;
-        if(imgElem->GetImageStyle() == ImageStyle::Person) {
-            CALayer *imgLayer = view.layer;
-            [imgLayer setCornerRadius:cgsize.width/2];
-            [imgLayer setMasksToBounds:YES];
-        }
-        // remove postfix added for imageMap access
-        std::string id = imgElem->GetId();
-        std::size_t idx = id.find_last_of('_');
-        imgElem->SetId(id.substr(0, idx));
+    view.contentMode = UIViewContentModeScaleAspectFit;
+    view.clipsToBounds = NO;
+    if(imgElem->GetImageStyle() == ImageStyle::Person) {
+        CALayer *imgLayer = view.layer;
+        [imgLayer setCornerRadius:cgsize.width/2];
+        [imgLayer setMasksToBounds:YES];
     }
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];

@@ -9,9 +9,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -24,6 +26,7 @@ import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.Vector;
+import java.util.zip.CheckedOutputStream;
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
@@ -91,7 +94,18 @@ public class TextInputRenderer extends BaseCardElementRenderer
             editText.setHint(placeHolder);
         }
 
-        viewGroup.addView(editText);
+        if(baseInputElement.GetHeight() == HeightType.Stretch)
+        {
+            LinearLayout containerLayout = new LinearLayout(context);
+            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+            containerLayout.addView(editText);
+            viewGroup.addView(containerLayout);
+        }
+        else
+        {
+            viewGroup.addView(editText);
+        }
         return editText;
     }
 

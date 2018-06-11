@@ -187,7 +187,7 @@ void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyTy
 {
     std::string actualType = GetTypeAsString(json);
     std::string expectedTypeStr = CardElementTypeToString(bodyType);
-    bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
+    const bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
     if (!isTypeCorrect)
     {
         throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "The JSON element did not have the correct type. Expected: " + expectedTypeStr + ", Actual: " + actualType);
@@ -306,7 +306,7 @@ std::string ParseUtil::ToLowercase(std::string const &value)
 {
     std::string new_value;
     new_value.resize(value.size());
-    std::transform(value.begin(), value.end(), new_value.begin(), [](char c) { return std::tolower(c, std::locale()); });
+    auto new_end = std::transform(value.begin(), value.end(), new_value.begin(), [](char c) { return std::tolower(c, std::locale()); });
     return new_value;
 }
 
@@ -425,13 +425,4 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
 
     return nullptr;
 }
-
-ParseUtil::ParseUtil()
-{
-}
-
-ParseUtil::~ParseUtil()
-{
-}
-
 }
