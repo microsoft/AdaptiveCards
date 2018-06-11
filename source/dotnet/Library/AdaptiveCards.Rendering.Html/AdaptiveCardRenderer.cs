@@ -52,7 +52,6 @@ namespace AdaptiveCards.Rendering.Html
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);
-
                 var tag = context.Render(card);
                 return new RenderedAdaptiveCard(tag, card, context.Warnings);
             }

@@ -11,6 +11,8 @@ namespace AdaptiveCards.Rendering.Wpf
             if (context.Config.SupportsInteractivity)
             {
                 var uiButton = (Button) context.Render(selectAction);
+
+                // Stretch both the button and button's content to avoid empty spaces
                 uiButton.HorizontalAlignment = HorizontalAlignment.Stretch;
                 uiButton.HorizontalContentAlignment = HorizontalAlignment.Stretch;
 
