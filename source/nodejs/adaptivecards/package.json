@@ -49,7 +49,8 @@
     "ts-jest": "^21.2.3",
     "tslint": "^4.4.2",
     "typescript": "^2.6.1",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "glob": "7.1.2"
   },
   "jest": {
     "rootDir": "src",

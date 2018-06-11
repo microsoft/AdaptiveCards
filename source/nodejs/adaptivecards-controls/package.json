@@ -23,7 +23,8 @@
     "ts-loader": "^2.0.0",
     "tslint": "^4.4.2",
     "typescript": "^2.1.5",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "glob": "7.1.2"
   },
   "author": "Microsoft",
   "license": "MIT"
