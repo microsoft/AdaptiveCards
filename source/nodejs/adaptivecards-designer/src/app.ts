@@ -171,9 +171,9 @@ class DesignerApp {
             });
             itemList.appendChild(listItem);
 
-            if (["Container", "Column"].indexOf(item.getJsonTypeName()) !== -1) {
+            if ([Adaptive.Container.name, Adaptive.Column.name].indexOf(item.getJsonTypeName()) !== -1) {
                 itemList.appendChild(this.generateTreeViewElements((item as Adaptive.Container).getItems(), peer));
-            } else if (item.getJsonTypeName() === "ColumnSet") {
+            } else if (item.getJsonTypeName() === Adaptive.ColumnSet.name) {
                 itemList.appendChild(this.generateTreeViewElements((item as Adaptive.ColumnSet).getColumns(), peer));
             }
 
