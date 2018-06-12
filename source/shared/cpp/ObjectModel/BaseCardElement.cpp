@@ -35,10 +35,6 @@ void BaseCardElement::PopulateKnownPropertiesSet()
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)});
 }
 
-BaseCardElement::~BaseCardElement()
-{
-}
-
 std::string BaseCardElement::GetElementTypeString() const
 {
     return m_typeString;

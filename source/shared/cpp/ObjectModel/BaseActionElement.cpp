@@ -11,10 +11,6 @@ BaseActionElement::BaseActionElement(ActionType type) :
     PopulateKnownPropertiesSet();
 }
 
-BaseActionElement::~BaseActionElement()
-{
-}
-
 std::string BaseActionElement::GetElementTypeString() const
 {
     return m_typeString;

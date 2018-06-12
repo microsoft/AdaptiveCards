@@ -37,4 +37,7 @@
 
 // ECppCoreCheckWarningCodes::WARNING_MEMBER_UNINIT
 #pragma warning(default: 26495)
+
+// ECppCoreCheckWarningCodes::WARNING_DEFINE_OR_DELETE_SPECIAL_OPS
+#pragma warning(default: 26432)
 #endif

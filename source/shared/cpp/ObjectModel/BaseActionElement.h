@@ -12,7 +12,11 @@ class BaseActionElement
 public:
     BaseActionElement(ActionType type);
 
-    virtual ~BaseActionElement();
+    BaseActionElement(const BaseActionElement&) = default;
+    BaseActionElement(BaseActionElement&&) = default;
+    BaseActionElement& operator=(const BaseActionElement&) = default;
+    BaseActionElement& operator=(BaseActionElement&&) = default;
+    virtual ~BaseActionElement() = default;
 
     virtual std::string GetElementTypeString() const;
     virtual void SetElementTypeString(const std::string &value);
