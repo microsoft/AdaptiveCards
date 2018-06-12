@@ -35,7 +35,7 @@ namespace AdaptiveSharedNamespace {
             Captured = 0x2,
         };
 
-        virtual void Match(std::stringstream &);
+        virtual void Match(std::stringstream &) override;
         // Captures remaining charaters in given token
         // and causes the emphasis parsing to terminate
         void Flush(int ch, std::string& currentToken);
@@ -92,7 +92,7 @@ namespace AdaptiveSharedNamespace {
     class LinkParser : public MarkDownBlockParser
     {
         public:
-        void Match(std::stringstream &);
+        void Match(std::stringstream &) override;
 
         private:
         void CaptureLinkToken();
@@ -115,7 +115,7 @@ namespace AdaptiveSharedNamespace {
     class ListParser : public MarkDownBlockParser
     {
         public:
-        void Match(std::stringstream &);
+        void Match(std::stringstream &) override;
         bool MatchNewListItem(std::stringstream &);
         bool MatchNewBlock(std::stringstream &);
         bool MatchNewOrderedListItem(std::stringstream &, std::string &);
@@ -134,7 +134,7 @@ namespace AdaptiveSharedNamespace {
     class OrderedListParser : public ListParser
     {
         public:
-        void Match(std::stringstream &);
+        void Match(std::stringstream &) override;
 
         private:
         void CaptureOrderedListToken(std::string&);

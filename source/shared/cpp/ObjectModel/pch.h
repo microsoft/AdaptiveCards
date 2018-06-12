@@ -40,4 +40,7 @@
 
 // ECppCoreCheckWarningCodes::WARNING_DEFINE_OR_DELETE_SPECIAL_OPS
 #pragma warning(default: 26432)
+
+// ECppCoreCheckWarningCodes::WARNING_OVERRIDE_EXPLICITLY
+#pragma warning(default: 26433)
 #endif
