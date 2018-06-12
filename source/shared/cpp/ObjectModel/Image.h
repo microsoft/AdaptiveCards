@@ -44,7 +44,7 @@ public:
     virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_url;
     std::string m_backgroundColor;

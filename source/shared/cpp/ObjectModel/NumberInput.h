@@ -26,7 +26,7 @@ public:
     void SetMin(const int value);
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_placeholder;
     int m_value;

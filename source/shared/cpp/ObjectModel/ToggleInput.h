@@ -26,7 +26,7 @@ public:
     void SetValueOn(const std::string &value);
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_title;
     std::string m_value;

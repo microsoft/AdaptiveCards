@@ -28,7 +28,7 @@ private:
     std::string m_altText;
     std::vector<std::shared_ptr<MediaSource>> m_sources;
 
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 };
 
 class MediaParser : public BaseCardElementParser

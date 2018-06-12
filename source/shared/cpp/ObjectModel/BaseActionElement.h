@@ -43,7 +43,7 @@ public:
     virtual void GetResourceUris(std::vector<std::string>& resourceUris);
 
 private:
-    void PopulateKnownPropertiesSet();
+    virtual void PopulateKnownPropertiesSet();
 
     ActionType m_type;
     std::string m_typeString;

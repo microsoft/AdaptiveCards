@@ -32,7 +32,7 @@ public:
     virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     ContainerStyle m_style;
     VerticalContentAlignment m_verticalContentAlignment;

@@ -43,4 +43,7 @@
 
 // ECppCoreCheckWarningCodes::WARNING_OVERRIDE_EXPLICITLY
 #pragma warning(default: 26433)
+
+// ECppCoreCheckWarningCodes::WARNING_DONT_HIDE_METHODS
+#pragma warning(default: 26434)
 #endif

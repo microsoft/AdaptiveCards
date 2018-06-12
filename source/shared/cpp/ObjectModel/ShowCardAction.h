@@ -22,7 +22,7 @@ public:
     virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::shared_ptr<AdaptiveCard> m_card;
 };

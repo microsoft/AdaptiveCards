@@ -24,7 +24,7 @@ public:
     virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::vector<std::shared_ptr<Image>> m_images;
     ImageSize m_imageSize;

@@ -18,7 +18,7 @@ public:
     virtual Json::Value SerializeToJsonValue() const override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     Json::Value m_dataJson;
 };

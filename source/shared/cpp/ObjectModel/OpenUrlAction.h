@@ -17,7 +17,7 @@ public:
     void SetUrl(const std::string &value);
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_url;
 };

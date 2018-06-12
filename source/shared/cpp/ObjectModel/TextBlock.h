@@ -52,7 +52,7 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
     std::string m_language;
 };
 

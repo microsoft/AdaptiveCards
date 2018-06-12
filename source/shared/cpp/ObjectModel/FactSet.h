@@ -20,7 +20,7 @@ public:
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::vector<std::shared_ptr<Fact>> m_facts;
 };

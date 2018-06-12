@@ -29,7 +29,7 @@ public:
     void SetValue(const std::string &value);
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_value;
     bool m_isMultiSelect;
