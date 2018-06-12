@@ -254,6 +254,11 @@ class DesignerApp {
                 }
             )
 
+            for (var i = 0; i < sortedRegisteredTypes.length; i++) {
+                this.addPaletteItem(new ElementPaletteItem(sortedRegisteredTypes[i]));
+            }
+
+            /* This is to test "snippet" support. Snippets are not yet fully baked
             let personaHeaderSnippet = new SnippetPaletteItem("Persona header");
             personaHeaderSnippet.snippet = {
                 type: "ColumnSet",
@@ -288,12 +293,9 @@ class DesignerApp {
                     }
                 ]
             };
-
-            for (var i = 0; i < sortedRegisteredTypes.length; i++) {
-                this.addPaletteItem(new ElementPaletteItem(sortedRegisteredTypes[i]));
-            }
-
+            
             this.addPaletteItem(personaHeaderSnippet);
+            */
         }
     }
 
