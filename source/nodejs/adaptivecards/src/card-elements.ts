@@ -2202,7 +2202,7 @@ export abstract class Action {
     private _renderedElement: HTMLElement = null;
     public elementId: string;
 
-    public constructor(){
+    public constructor() {
         this.elementId = Utils.guidGenerator();
     }
 
@@ -3214,7 +3214,7 @@ export class Container extends CardElementContainer {
     private _renderedItems: Array<CardElement> = [];
     private _style?: string = null;
 
-    public getItems(): Array<CardElement>{
+    public getItems(): Array<CardElement> {
         return this._items;
     }
 
@@ -4167,7 +4167,7 @@ export class ColumnSet extends CardElementContainer {
         return "ColumnSet";
     }
 
-    getColumns(): Array<Column>{
+    getColumns(): Array<Column> {
         return this._columns;
     }
 
