@@ -134,20 +134,26 @@ class DesignerApp {
 
     public buildTreeViewSheet(peer: Designer.DesignerPeer) {
         if (this.treeViewSheetHostElement) {
-            this.treeViewSheetHostElement.innerHTML = "";
-            const cardStructure = this._card.toJSON() as Adaptive.IAdaptiveCard;
-            const listItems = this.generateTreeViewElements(cardStructure.body);
-            const listActions = this.generateTreeViewElements(cardStructure.actions);
+
+            this.treeViewSheetHostElement.innerHTML = ""; 
+
+            const items = [...this._card.getItems(), ...this._card.getActions()];
+            const listItems = this.generateTreeViewElements(items, peer);
             this.treeViewSheetHostElement.appendChild(listItems);
-            this.treeViewSheetHostElement.appendChild(listActions);
         }
     }
 
-    private generateTreeViewElements(cardItems) {
-
+    private generateTreeViewElements(cardItems: Array<Adaptive.CardElement | Adaptive.Action>, peer: Designer.DesignerPeer ) {
         if (!cardItems || cardItems.length === 0) {
             let node: HTMLElement = document.createElement("ul");
             return node;
+        }
+
+        let selected_id;
+        if  (peer instanceof Designer.ActionPeer) {
+            selected_id = peer ? peer.action.elementId : "";
+        } else if(peer instanceof Designer.CardElementPeer) {
+            selected_id = peer ? peer.cardElement.elementId : "";
         }
 
         let itemList: HTMLElement = document.createElement("ul");
@@ -156,13 +162,19 @@ class DesignerApp {
             let item = cardItems[itemIndex];
 
             let listItem = document.createElement("li");
-            listItem.textContent = item.type;
+            if (selected_id && item.elementId === selected_id) {
+                listItem.style.backgroundColor = "red";
+            }
+            listItem.textContent = item.getJsonTypeName();
+            listItem.addEventListener("click", () => {
+                this._designer.setSelectedPeerById(item.elementId);
+            });
             itemList.appendChild(listItem);
 
-            if (["Container", "Column"].indexOf(item.type) !== -1) {
-                itemList.appendChild(this.generateTreeViewElements(item.items));
-            } else if (item.type === "ColumnSet") {
-                itemList.appendChild(this.generateTreeViewElements(item.columns));
+            if ([Adaptive.Container.name, Adaptive.Column.name].indexOf(item.getJsonTypeName()) !== -1) {
+                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.Container).getItems(), peer));
+            } else if (item.getJsonTypeName() === Adaptive.ColumnSet.name) {
+                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.ColumnSet).getColumns(), peer));
             }
 
             itemIndex++;

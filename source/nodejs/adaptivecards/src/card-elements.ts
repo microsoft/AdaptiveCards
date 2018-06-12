@@ -132,6 +132,12 @@ export abstract class CardElement {
     private _defaultRenderedElementDisplayMode: string = null;
     private _padding: PaddingDefinition = null;
 
+    public elementId: string;
+
+    public constructor(){
+        this.elementId = Utils.guidGenerator();
+    }
+
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
             {
@@ -2194,6 +2200,11 @@ export abstract class Action {
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
     private _renderedElement: HTMLElement = null;
+    public elementId: string;
+
+    public constructor() {
+        this.elementId = Utils.guidGenerator();
+    }
 
     private setCollection(actionCollection: ActionCollection) {
         this._actionCollection = actionCollection;
@@ -3203,6 +3214,10 @@ export class Container extends CardElementContainer {
     private _renderedItems: Array<CardElement> = [];
     private _style?: string = null;
 
+    public getItems(): Array<CardElement> {
+        return this._items;
+    }
+
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
             return false;
@@ -4152,6 +4167,10 @@ export class ColumnSet extends CardElementContainer {
         return "ColumnSet";
     }
 
+    getColumns(): Array<Column> {
+        return this._columns;
+    }
+
     parse(json: any) {
         super.parse(json);
 
@@ -4499,6 +4518,10 @@ export abstract class ContainerWithActions extends Container {
         Utils.setProperty(result, "actions", this._actionCollection.toJSON());
 
         return result;
+    }
+
+    getActions(): Array<Action> {
+        return this._actionCollection.items;
     }
 
     getActionCount(): number {
