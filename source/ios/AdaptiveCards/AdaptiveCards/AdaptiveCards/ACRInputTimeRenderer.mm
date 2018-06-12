@@ -42,12 +42,8 @@
             
             // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
             UIView *blankTrailingSpace = [[UIView alloc] init];
-            blankTrailingSpace.backgroundColor = UIColor.clearColor;
-            
-            [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-            [blankTrailingSpace setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-            
             [inputContainer addArrangedSubview:blankTrailingSpace];
+            [inputContainer adjustHuggingForLastElement];
             
             [(UIStackView *)viewGroup addArrangedSubview: inputContainer];
         } else {
