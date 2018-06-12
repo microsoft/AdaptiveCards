@@ -132,27 +132,28 @@ class DesignerApp {
     private _hostContainerPicker: Controls.DropDown;
     private _selectedHostContainer: HostContainer;
 
-    public buildTreeViewSheet(peer: Designer.CardElementPeer | Designer.ActionPeer) {
+    public buildTreeViewSheet(peer: Designer.DesignerPeer) {
         if (this.treeViewSheetHostElement) {
-            let selected_id;
-            if  (peer instanceof Designer.ActionPeer) {
-                selected_id = peer ? peer.action.internal_id : "";
-            } else {
-                selected_id = peer ? peer.cardElement.internal_id : "";
-            }
 
             this.treeViewSheetHostElement.innerHTML = ""; 
 
             const items = [...this._card.getItems(), ...this._card.getActions()];
-            const listItems = this.generateTreeViewElements(items, selected_id);
+            const listItems = this.generateTreeViewElements(items, peer);
             this.treeViewSheetHostElement.appendChild(listItems);
         }
     }
 
-    private generateTreeViewElements(cardItems: Array<Adaptive.CardElement | Adaptive.Action>, selected_id: string = "" ) {
+    private generateTreeViewElements(cardItems: Array<Adaptive.CardElement | Adaptive.Action>, peer: Designer.DesignerPeer ) {
         if (!cardItems || cardItems.length === 0) {
             let node: HTMLElement = document.createElement("ul");
             return node;
+        }
+
+        let selected_id;
+        if  (peer instanceof Designer.ActionPeer) {
+            selected_id = peer ? peer.action.elementId : "";
+        } else if(peer instanceof Designer.CardElementPeer) {
+            selected_id = peer ? peer.cardElement.elementId : "";
         }
 
         let itemList: HTMLElement = document.createElement("ul");
@@ -161,16 +162,19 @@ class DesignerApp {
             let item = cardItems[itemIndex];
 
             let listItem = document.createElement("li");
-            if (item.internal_id === selected_id) {
+            if (selected_id && item.elementId === selected_id) {
                 listItem.style.backgroundColor = "red";
             }
             listItem.textContent = item.getJsonTypeName();
+            listItem.addEventListener("click", () => {
+                this._designer.setSelectedPeerById(item.elementId);
+            });
             itemList.appendChild(listItem);
 
             if (["Container", "Column"].indexOf(item.getJsonTypeName()) !== -1) {
-                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.Container).getItems(), selected_id));
+                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.Container).getItems(), peer));
             } else if (item.getJsonTypeName() === "ColumnSet") {
-                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.ColumnSet).getColumns(), selected_id));
+                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.ColumnSet).getColumns(), peer));
             }
 
             itemIndex++;

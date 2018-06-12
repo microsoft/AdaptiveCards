@@ -132,7 +132,11 @@ export abstract class CardElement {
     private _defaultRenderedElementDisplayMode: string = null;
     private _padding: PaddingDefinition = null;
 
-    public internal_id: string;
+    public elementId: string;
+
+    public constructor(){
+        this.elementId = Utils.guidGenerator();
+    }
 
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
@@ -2196,7 +2200,11 @@ export abstract class Action {
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
     private _renderedElement: HTMLElement = null;
-    public internal_id: string;
+    public elementId: string;
+
+    public constructor(){
+        this.elementId = Utils.guidGenerator();
+    }
 
     private setCollection(actionCollection: ActionCollection) {
         this._actionCollection = actionCollection;
@@ -3725,9 +3733,6 @@ export class Container extends CardElementContainer {
     }
 
     addItem(item: CardElement) {
-        if  (!item.internal_id) {
-            item.internal_id = `id_${Utils.guidGenerator()}`;
-        }
         this.insertItemAt(item, -1);
     }
 
@@ -4571,9 +4576,6 @@ export abstract class ContainerWithActions extends Container {
     }
 
     addAction(action: Action) {
-        if  (!action.internal_id) {
-            action.internal_id = `id_${Utils.guidGenerator()}`;
-        }
         this._actionCollection.addAction(action);
     }
 
