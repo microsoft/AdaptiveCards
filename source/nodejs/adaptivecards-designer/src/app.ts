@@ -38,7 +38,7 @@ function updateJsonFromCard() {
 
         if (!preventJsonUpdate && isMonacoEditorLoaded) {
             monacoEditor.setValue(JSON.stringify(app.card.toJSON(), null, 4));
-            app.buildTreeViewSheet(null);
+            app.buildTreeViewSheet(app.designer.selectedPeer);
         }
     }
     finally {
