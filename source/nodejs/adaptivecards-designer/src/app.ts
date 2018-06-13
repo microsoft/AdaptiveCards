@@ -131,6 +131,7 @@ class DesignerApp {
     private _card: Adaptive.AdaptiveCard;
     private _hostContainerPicker: Controls.DropDown;
     private _selectedHostContainer: HostContainer;
+    private _treeViewFoldedElements: Array<string>;
 
     public buildTreeViewSheet(peer: Designer.DesignerPeer) {
         if (this.treeViewSheetHostElement) {
@@ -165,16 +166,27 @@ class DesignerApp {
             const listItem = this.createTreeViewListItem(item, selected_id, identationLevel);
             itemList.appendChild(listItem);
 
+            const isFolded = this._treeViewFoldedElements.indexOf(item.elementId) !== -1;
+
             if ([Adaptive.Container.name, Adaptive.Column.name].indexOf(item.getJsonTypeName()) !== -1) {
-                const newIdentation = identationLevel + 1;
-                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.Container).getItems(), peer, newIdentation));
+                itemList.appendChild(this.createChildList((item as Adaptive.Container).getItems(), peer, identationLevel, isFolded));
             } else if (item.getJsonTypeName() === Adaptive.ColumnSet.name) {
-                const newIdentation = identationLevel + 1;
-                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.ColumnSet).getColumns(), peer, newIdentation));
+                itemList.appendChild(this.createChildList((item as Adaptive.ColumnSet).getColumns(), peer, identationLevel, isFolded));
             }
+            
             itemIndex++;
         }
         return itemList;
+    }
+
+    private createChildList(items, peer, identationLevel, isFolded): HTMLElement {
+        const newItem = document.createElement("li");
+        newItem.className = "treeview__element";
+        if (isFolded) {
+            newItem.className += " is-folded";
+        }
+        newItem.appendChild(this.generateTreeViewElements(items, peer, ++identationLevel));
+        return newItem;
     }
 
     private createTreeViewListItem (item: Adaptive.CardElement | Adaptive.Action, selected_id: string, identationLevel: number): HTMLElement {
@@ -182,6 +194,13 @@ class DesignerApp {
         listItem.className = "treeview__element";
         if (selected_id && item.elementId === selected_id) {
             listItem.className += " is-selected";
+        }
+
+        if ([Adaptive.Container.name, Adaptive.Column.name, Adaptive.ColumnSet.name].indexOf(item.getJsonTypeName()) !== -1) {
+            let foldArrow = document.createElement("button");
+            foldArrow.className = `treeview__icon treeview__icon--arrow`;
+            foldArrow.addEventListener("click", () => {this.foldTreeViewContainer(item.elementId, foldArrow)});
+            listItem.appendChild(foldArrow);
         }
 
         let icon = document.createElement("span");
@@ -198,6 +217,19 @@ class DesignerApp {
         });
         listItem.style.paddingLeft = `${identationLevel * 24}px`;
         return listItem;
+    }
+
+    private foldTreeViewContainer(elementId: string, listElement: HTMLElement) {
+        const parent = listElement.parentElement;
+        const childList = parent.nextElementSibling as HTMLElement;
+        let addClassResult = childList.classList.toggle("is-folded")
+
+        if (addClassResult) {
+            this._treeViewFoldedElements.push(elementId);
+        } else {
+            let index = this._treeViewFoldedElements.indexOf(elementId);
+            this._treeViewFoldedElements.splice(index, 1);
+        }
     }
 
     private buildPropertySheet(peer: Designer.DesignerPeer) {
@@ -345,6 +377,7 @@ class DesignerApp {
     commandListHostElement: HTMLElement;
 
     constructor(designerHostElement: HTMLElement) {
+        this._treeViewFoldedElements = [];
         this._designerHostElement = designerHostElement;
 
         this.addContainers();
