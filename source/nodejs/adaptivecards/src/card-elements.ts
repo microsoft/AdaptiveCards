@@ -941,11 +941,13 @@ export class TextBlock extends CardElement {
     }
 
     renderSpeech(): string {
-        if (this.speak != null)
+        if (this.speak != null) {
             return this.speak + '\n';
+		}
 
-        if (this.text)
+        if (this.text) {
             return '<s>' + this.text + '</s>\n';
+		}
 
         return null;
     }
@@ -4351,11 +4353,11 @@ export class ColumnSet extends CardElementContainer {
     }
 }
 
-export class Source {
+export class MediaSource {
     mimeType: string;
     url: string;
 
-    parse(json: any): Source {
+    parse(json: any): MediaSource {
         this.mimeType = json["mimeType"];
         this.url = json["url"];
         return this;
@@ -4367,42 +4369,51 @@ export class Source {
 }
 
 export class Media extends CardElement {
-    poster: string;
-    altText: string;
-    sources: Array<Source> = [];
     private _mediaType: string;
     private _mediaElement: HTMLMediaElement;
+	private _playButton: HTMLAnchorElement;
+	private _pauseButton: HTMLAnchorElement;
+	private _resetButton: HTMLAnchorElement;
+	private _poster: Image;
+
     static readonly acceptedMediaTypes = ["audio", "video"];
 
-    private processSources(): Array<Source> {
-        let typeFilter = (t): boolean => {
-            if (Media.acceptedMediaTypes.indexOf(t)) {
-                this._mediaType = t;
-                typeFilter = (tt) => tt === this._mediaType;
-                return true;
-            }
-            return false;
-        }
-        return this.sources.filter((s): boolean => {
-            if (s.mimeType) {
-                let mimeComponents = s.mimeType.split('/');
-                if (mimeComponents.length == 2) {
-                    return typeFilter(mimeComponents[0]);
-                }
-            }
-            return false;
-        });
+    private processSources(): Array<MediaSource> {
+		let goodSources: Array<MediaSource> = [];
+
+		for (let source of this.sources) {
+			let mimeComponents = source.mimeType.split('/');
+
+			if (mimeComponents.length == 2) {
+				if (!this._mediaType) {
+					let index = Media.acceptedMediaTypes.indexOf(mimeComponents[0]);
+
+					if (index >= 0) {
+						this._mediaType = Media.acceptedMediaTypes[index];
+					}
+				}
+
+				if (mimeComponents[0] == this._mediaType) {
+					goodSources.push(source);
+				}
+			} 
+		}
+
+		return goodSources;
     }
 
-    private makeButton(label: string): HTMLAnchorElement {
+    private static makeButton(label: string, buttonHint: string, handler: ()=>void): HTMLAnchorElement {
         let button = document.createElement("a");
-        button.className = "ac-media-button";
+        button.classList.add("ac-media-button", buttonHint);
+		button.title = buttonHint;
+		button.onclick = e => { handler(); e.preventDefault(); return false; };
         button.text = label;
+		
         return button;
     }
 
     protected internalRender(): HTMLElement {
-        var element = document.createElement("div");
+        let element = <HTMLElement>document.createElement("div");
 
         element.className = this.hostConfig.makeCssClassName("ac-media");
 
@@ -4420,34 +4431,57 @@ export class Media extends CardElement {
                 this._mediaElement.appendChild(src);
             });
             element.appendChild(this._mediaElement);
+			
+			let controlBar = <HTMLDivElement>document.createElement("div");
+			controlBar.className = this.hostConfig.makeCssClassName("ac-controlbar");
+			controlBar.style.whiteSpace = "nowrap";
 
-            var play_button = this.makeButton("▶️");
-            play_button.onclick = e => this.play();
-            element.appendChild(play_button);
+            this._playButton = Media.makeButton("▶️", "play", ()=>this.play());
+            controlBar.appendChild(this._playButton);
 
-            var pause_button = this.makeButton("⏸️");
-            pause_button.onclick = e => this.pause();
-            element.appendChild(pause_button);
+            this._pauseButton = Media.makeButton("⏸️", "pause", ()=>this.pause());
+			this._pauseButton.style.display = "none";
+            controlBar.appendChild(this._pauseButton);
 
-            var stop_button = this.makeButton("⏹️");
-            stop_button.onclick = e => this.stop();
-            element.appendChild(stop_button);
+            this._resetButton = Media.makeButton("⏮️", "reset", ()=>this.reset());
+            controlBar.appendChild(this._resetButton);
+			
+			element.appendChild(controlBar);
         }
+		else {
+			let img = new Image();
+			img.url = this.poster;
+			if (this.sources.length > 0) {
+				let openAction = new OpenUrlAction();
+				openAction.url = this.sources[0].url;
+				img.selectAction = openAction;
+			}
+			let renderedImage = img.render();
+			element.appendChild(renderedImage);
+		}
 
         return element;
     }
+	
+	poster: string;
+    altText: string;
+    sources: Array<MediaSource> = [];
 
     play() {
         this._mediaElement.play();
+		this._playButton.style.display = "none";
+		this._pauseButton.style.display = "";
     }
 
-    stop() {
+    reset() {
         this._mediaElement.load();
         this._mediaElement.pause();
     }
 
     pause() {
         this._mediaElement.pause();
+		this._playButton.style.display = "";
+		this._pauseButton.style.display = "none";
     }
 
     toJSON() {
@@ -4476,7 +4510,7 @@ export class Media extends CardElement {
 
         if (json["sources"] != undefined) {
             var sourceArray = json["sources"] as Array<any>;
-            this.sources = sourceArray.map((json: any) => new Source().parse(json));
+            this.sources = sourceArray.map((json: any) => new MediaSource().parse(json));
         }
     }
 
@@ -4485,12 +4519,12 @@ export class Media extends CardElement {
     }
 
     renderSpeech(): string {
-        if (this.speak != null)
+        if (this.speak != null) {
             return this.speak + '\n';
+		}
 
         return null;
     }
-
 }
 
 export class Version {
