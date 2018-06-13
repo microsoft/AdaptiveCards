@@ -167,4 +167,21 @@ using namespace AdaptiveCards;
     dictionary[self.id] = [values componentsJoinedByString:@";"];
 }
 
+- (NSString *)getTitlesOfChoices
+{
+    NSMutableArray *values = [[NSMutableArray alloc] init];
+    NSEnumerator *enumerator = [_userSelections keyEnumerator];
+    NSNumber *key;
+    while(key = [enumerator nextObject])
+    {
+        if([_userSelections[key] boolValue] == YES)
+        {
+            [values addObject:
+             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[[key integerValue]]->GetTitle().c_str()
+                                encoding:NSUTF8StringEncoding]];
+        }
+    }
+    return [values componentsJoinedByString:@";"];
+}
+
 @end
