@@ -9,11 +9,11 @@
 
 @implementation ACRColumnView
 
-- (void)config
+- (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    [super config];
     super.stackView.axis = UILayoutConstraintAxisVertical;
     super.stackView.distribution = UIStackViewDistributionFill;
+    [super config:attributes];
 }
 
 - (void)addArrangedSubview:(UIView *)view
