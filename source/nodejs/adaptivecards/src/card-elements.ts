@@ -4509,13 +4509,10 @@ export class Media extends CardElement {
 
     protected internalRender(): HTMLElement {
         let element = <HTMLElement>document.createElement("div");
-
         element.className = this.hostConfig.makeCssClassName("ac-media");
-
         let goodSources = this.processSources();
 
         if (goodSources.length) {
-
             this._mediaElement = <HTMLMediaElement>document.createElement(this._mediaType);
             this._mediaElement.style.width = "100%";
 
@@ -4525,6 +4522,7 @@ export class Media extends CardElement {
                 src.type = s.mimeType;
                 this._mediaElement.appendChild(src);
             });
+			
             element.appendChild(this._mediaElement);
 			
 			let controlBar = <HTMLDivElement>document.createElement("div");
@@ -4552,6 +4550,7 @@ export class Media extends CardElement {
 				img.selectAction = openAction;
 			}
 			let renderedImage = img.render();
+			
 			element.appendChild(renderedImage);
 		}
 
@@ -4581,7 +4580,6 @@ export class Media extends CardElement {
 
     toJSON() {
         let result = super.toJSON();
-
         Utils.setProperty(result, "poster", this.poster);
         Utils.setProperty(result, "altText", this.altText);
         if (this.sources.length) {
