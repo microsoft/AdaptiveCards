@@ -14,6 +14,10 @@
     content: "\E7C2";
 }
 
+.acd-icon-image::before {
+    content: "\ECAB";
+}
+
 .acd-designersurface {
     outline: none;
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B268FE320CEF19400D99C1B /* Action.Scrolling.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B268FE220CEF19400D99C1B /* Action.Scrolling.json */; };
+		6B268FE520CEF89100D99C1B /* Action.OpenUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B268FE420CEF89100D99C1B /* Action.OpenUrl.json */; };
 		6B7B1A9B20C21CA900260731 /* SportingEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9920C21CA800260731 /* SportingEvent.json */; };
 		6B7B1A9C20C21CA900260731 /* NotificationCard.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9A20C21CA900260731 /* NotificationCard.json */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
@@ -22,7 +24,6 @@
 		F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */; };
 		F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.m */; };
 		F423C09E1EE1FB6100905679 /* ADCIOSVisualizerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.m */; };
-		F4933CC21F79852C00F6EBFD /* Action.OpenUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C951F79852C00F6EBFD /* Action.OpenUrl.json */; };
 		F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C961F79852C00F6EBFD /* Action.ShowCard.json */; };
 		F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */; };
 		F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C981F79852C00F6EBFD /* Action.Submit.json */; };
@@ -113,6 +114,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6B268FE220CEF19400D99C1B /* Action.Scrolling.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Scrolling.json; path = resources/Action.Scrolling.json; sourceTree = "<group>"; };
+		6B268FE420CEF89100D99C1B /* Action.OpenUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.json; path = ../../../../samples/v1.0/Elements/Action.OpenUrl.json; sourceTree = "<group>"; };
 		6B7B1A9920C21CA800260731 /* SportingEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SportingEvent.json; path = ../../../../samples/v1.0/Scenarios/SportingEvent.json; sourceTree = "<group>"; };
 		6B7B1A9A20C21CA900260731 /* NotificationCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = NotificationCard.json; path = ../../../../samples/v1.0/Scenarios/NotificationCard.json; sourceTree = "<group>"; };
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
@@ -136,7 +139,6 @@
 		F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADCIOSVisualizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCIOSVisualizerUITests.m; sourceTree = "<group>"; };
 		F423C09F1EE1FB6100905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F4933C951F79852C00F6EBFD /* Action.OpenUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.json; path = ../../../../samples/v1.0/Elements/Action.OpenUrl.json; sourceTree = "<group>"; };
 		F4933C961F79852C00F6EBFD /* Action.ShowCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.json; sourceTree = "<group>"; };
 		F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
 		F4933C981F79852C00F6EBFD /* Action.Submit.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.json; path = ../../../../samples/v1.0/Elements/Action.Submit.json; sourceTree = "<group>"; };
@@ -313,14 +315,16 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6B268FE420CEF89100D99C1B /* Action.OpenUrl.json */,
+				6B268FE220CEF19400D99C1B /* Action.Scrolling.json */,
 				6B7B1A9A20C21CA900260731 /* NotificationCard.json */,
 				6B7B1A9920C21CA800260731 /* SportingEvent.json */,
 				F4F44BA6204CF97100A2F24C /* CustomParsingTestUsingProgressBar.json */,
+				F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */,
 				F4F44B842048CDB300A2F24C /* AdditionalProperty.json */,
 				F4F44B8220478E1100A2F24C /* DateTimeTestTranslation.json */,
 				F4071C821FD63D5300AF4FEA /* Solitaire.json */,
 				F4D402151F7DB0BF00D0356B /* sample.json */,
-				F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */,
 				F4933CF01F79853B00F6EBFD /* CalendarReminder.json */,
 				F4933CF11F79853B00F6EBFD /* FlightItinerary.json */,
 				F4933CF21F79853B00F6EBFD /* FlightUpdate.json */,
@@ -330,9 +334,8 @@
 				F4933CF61F79853B00F6EBFD /* Inputs.json */,
 				F4933CF71F79853B00F6EBFD /* Restaurant.json */,
 				F4933CF91F79853B00F6EBFD /* StockUpdate.json */,
-				F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */,
 				F4933CFB1F79853B00F6EBFD /* WeatherLarge.json */,
-				F4933C951F79852C00F6EBFD /* Action.OpenUrl.json */,
+				F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */,
 				F4933C961F79852C00F6EBFD /* Action.ShowCard.json */,
 				F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */,
 				F4933C981F79852C00F6EBFD /* Action.Submit.json */,
@@ -485,12 +488,12 @@
 				F4933CE41F79852C00F6EBFD /* TextBlock.Color.json in Resources */,
 				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
 				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
+				6B268FE520CEF89100D99C1B /* Action.OpenUrl.json in Resources */,
 				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,
 				F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */,
 				6B7B1A9C20C21CA900260731 /* NotificationCard.json in Resources */,
 				F4933D081F79853B00F6EBFD /* WeatherLarge.json in Resources */,
 				F4933CCD1F79852C00F6EBFD /* ColumnSet.Spacing.json in Resources */,
-				F4933CC21F79852C00F6EBFD /* Action.OpenUrl.json in Resources */,
 				F4933CFE1F79853B00F6EBFD /* FlightItinerary.json in Resources */,
 				6B7B1A9B20C21CA900260731 /* SportingEvent.json in Resources */,
 				F4933CC81F79852C00F6EBFD /* Column.Style.json in Resources */,
@@ -507,6 +510,7 @@
 				F4933D011F79853B00F6EBFD /* ImageGallery.json in Resources */,
 				F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */,
 				F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */,
+				6B268FE320CEF19400D99C1B /* Action.Scrolling.json in Resources */,
 				F4933CFC1F79853B00F6EBFD /* ActivityUpdate.json in Resources */,
 				F4933CD51F79852C00F6EBFD /* Image.SelectAction.json in Resources */,
 				F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */,

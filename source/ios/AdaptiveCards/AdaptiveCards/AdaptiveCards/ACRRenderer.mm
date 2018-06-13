@@ -17,6 +17,7 @@
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "ACRViewController.h"
+#import "ACRContentHoldingUIScrollView.h"
 
 using namespace AdaptiveCards;
 
@@ -97,18 +98,19 @@ using namespace AdaptiveCards;
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     UIView<ACRIContentHoldingView> *childview = nil;
-    UILayoutConstraintAxis axis = UILayoutConstraintAxisVertical;
+    NSDictionary<NSString *, NSNumber*> *attributes =
+        @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->actions.buttonSpacing],
+          @"distribution":[NSNumber numberWithInt:UIStackViewDistributionFillEqually]};
+
     if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
-        childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
-        axis = UILayoutConstraintAxisHorizontal;
+        childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
     }
     else{
-        childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
+        childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
     }
 
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
-    [superview addArrangedSubview:childview];
-
+    float accumulatedWidth = 0, accumulatedHeight = 0, spacing = [config getHostConfig]->actions.buttonSpacing, maxWidth = 0, maxHeight = 0;
     for(const auto &elem:elems){
         ACRBaseActionElementRenderer *actionRenderer =
         [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
@@ -120,12 +122,55 @@ using namespace AdaptiveCards;
 
         [acoElem setElem:elem];
         UIButton *button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
+
+        accumulatedWidth += [button intrinsicContentSize].width;
+        accumulatedHeight += [button intrinsicContentSize].height;
+        maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
+        maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
+
         [childview addArrangedSubview:button];
-        [ACRSeparator renderSeparationWithFrame:CGRectMake(0,0,[config getHostConfig]->actions.buttonSpacing, [config getHostConfig]->actions.buttonSpacing)
-                                      superview:childview axis:axis];
     }
 
+    float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
     [childview adjustHuggingForLastElement];
+    if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
+        contentWidth += (elems.size() - 1) * spacing;
+        contentHeight = maxHeight;
+    } else {
+        contentHeight += (elems.size() - 1) * spacing;
+        contentWidth = maxWidth;
+    }
+    childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
+
+    ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, contentHeight)];
+    containingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [superview addArrangedSubview:containingView];
+    [containingView addSubview:childview];
+    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+    NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
+    NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
+
+    hConstraint.active = YES;
+    vConstraint.active = YES;
+
+    if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
+        hConstraint.priority = UILayoutPriorityDefaultLow;
+        if(contentWidth > superview.frame.size.width){
+            containingView.showsHorizontalScrollIndicator = YES;
+        } else
+        {
+            if([config getHostConfig]->actions.actionAlignment == ActionAlignment::Stretch){
+                [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeWidth
+                                             relatedBy:NSLayoutRelationEqual toItem:childview
+                                             attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+            }
+        }
+    } else {
+        vConstraint.priority = UILayoutPriorityDefaultLow;
+    }
     return childview;
 }
 

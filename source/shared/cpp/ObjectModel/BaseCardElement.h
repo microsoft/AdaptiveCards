@@ -15,7 +15,11 @@ public:
     BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
     BaseCardElement(CardElementType type);
 
-    virtual ~BaseCardElement();
+    BaseCardElement(const BaseCardElement&) = default;
+    BaseCardElement(BaseCardElement&&) = default;
+    BaseCardElement& operator=(const BaseCardElement&) = default;
+    BaseCardElement& operator=(BaseCardElement&&) = default;
+    virtual ~BaseCardElement() = default;
 
     virtual std::string GetElementTypeString() const;
     virtual void SetElementTypeString(const std::string &value);
@@ -78,7 +82,7 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
         ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
 
     // Walk all properties and put any unknown ones in the additional properties json
-    for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)
+    for (auto it = json.begin(); it != json.end(); ++it)
     {
         std::string key = it.key().asCString();
         if (baseCardElement->m_knownProperties.find(key) == baseCardElement->m_knownProperties.end())
