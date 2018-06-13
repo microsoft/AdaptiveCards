@@ -13,8 +13,8 @@
 {
     super.stackView.axis = UILayoutConstraintAxisHorizontal;
     super.stackView.distribution = UIStackViewDistributionFill;
-    super.stackView.alignment    = UIStackViewAlignmentFill;
-    //super.stackView.alignment    = UIStackViewAlignmentLeading;
+    // super.stackView.alignment    = UIStackViewAlignmentFill;
+    super.stackView.alignment    = UIStackViewAlignmentLeading;
     [super config:attributes];
 }
 
@@ -29,6 +29,11 @@
 {
     if([super.stackView.arrangedSubviews count])
         [[super.stackView.arrangedSubviews objectAtIndex:[super.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
+}
+
+- (void)setAlignmentForColumnStretch
+{
+    super.stackView.alignment = UIStackViewAlignmentFill;
 }
 
 @end

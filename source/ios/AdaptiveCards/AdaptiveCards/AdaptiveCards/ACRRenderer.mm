@@ -214,6 +214,12 @@ using namespace AdaptiveCards;
                 heightConstraint.priority = UILayoutPriorityDefaultLow;
                 heightConstraint.active = YES;
             }
+            
+            if([view isKindOfClass:[ACRColumnView class]]){
+                ACRColumnView *columnView = (ACRColumnView*)view;
+                columnView.hasStretchableView = YES;
+            }
+            
             prevStretchableElem = curStretchableElem;
         }
     }
