@@ -298,7 +298,7 @@ class DesignerApp {
         this._selectedHostContainer = this.hostContainers[0];
 
         this.recreateDesigner();
-        this._treeViewComponent = new Treeview(this._designer);
+        this._treeViewComponent = new Treeview();
     }
 
     createContainerPicker(): Controls.DropDown {
