@@ -20,7 +20,7 @@ function monacoEditorLoaded() {
         function (e) {
             scheduleCardRefresh();
         });
-    
+
     isMonacoEditorLoaded = true;
 
     updateJsonFromCard();
@@ -149,7 +149,7 @@ class DesignerApp {
             let node = document.createElement("ul");
             return node;
         }
-        
+
         let selected_id: string;
         if  (peer instanceof Designer.ActionPeer) {
             selected_id = peer ? peer.action.elementId : "";
@@ -173,7 +173,7 @@ class DesignerApp {
             } else if (item.getJsonTypeName() === Adaptive.ColumnSet.name) {
                 itemList.appendChild(this.createChildList((item as Adaptive.ColumnSet).getColumns(), peer, identationLevel, isFolded));
             }
-            
+
             itemIndex++;
         }
         return itemList;
@@ -198,8 +198,14 @@ class DesignerApp {
 
         if ([Adaptive.Container.name, Adaptive.Column.name, Adaptive.ColumnSet.name].indexOf(item.getJsonTypeName()) !== -1) {
             let foldArrow = document.createElement("button");
-            foldArrow.className = `treeview__icon treeview__icon--arrow`;
-            foldArrow.addEventListener("click", () => {this.foldTreeViewContainer(item.elementId, foldArrow)});
+            foldArrow.className = `btn treeview__icon treeview__icon--arrow`;
+            if (this._treeViewFoldedElements.indexOf(item.elementId) !== -1) {
+                foldArrow.classList.toggle("is-rotated");
+            }
+            foldArrow.addEventListener("click", () => {
+                this.foldTreeViewContainer(item.elementId, foldArrow);
+                foldArrow.classList.toggle("is-rotated");
+            });
             listItem.appendChild(foldArrow);
         }
 
@@ -264,11 +270,11 @@ class DesignerApp {
                     }
                 );
             }
-        
+
             this.propertySheetHostElement.appendChild(card.render());
         }
     }
-    
+
     private buildPalette() {
         if (this.paletteHostElement) {
             this.paletteHostElement.innerHTML = "";
@@ -295,15 +301,15 @@ class DesignerApp {
                 paletteItem.render();
                 paletteItem.onStartDrag = (sender: PaletteItem) => {
                     this._draggedPaletteItem = sender;
-        
+
                     this._draggedElement = sender.cloneElement();
                     this._draggedElement.style.position = "absolute";
                     this._draggedElement.style.left = this._currentMousePosition.x + "px";
                     this._draggedElement.style.top = this._currentMousePosition.y + "px";
-        
+
                     document.body.appendChild(this._draggedElement);
                 }
-        
+
                 this.paletteHostElement.appendChild(paletteItem.renderedElement);
             }
         }
@@ -327,20 +333,20 @@ class DesignerApp {
 
     private recreateDesigner() {
         var styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
-    
+
         if (styleSheetLinkElement == null) {
             styleSheetLinkElement = document.createElement("link");
             styleSheetLinkElement.id = "adaptiveCardStylesheet";
-    
+
             document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
         }
-    
+
         styleSheetLinkElement.rel = "stylesheet";
         styleSheetLinkElement.type = "text/css";
         styleSheetLinkElement.href = this._selectedHostContainer.styleSheet;
-    
+
         this._selectedHostContainer.initialize();
-    
+
         this._designerHostElement.innerHTML = "";
         this._selectedHostContainer.renderTo(this._designerHostElement);
 
@@ -371,7 +377,7 @@ class DesignerApp {
     }
 
     readonly hostContainers: Array<HostContainer> = [];
-    
+
     propertySheetHostElement: HTMLElement;
     treeViewSheetHostElement: HTMLElement;
     commandListHostElement: HTMLElement;
@@ -383,13 +389,13 @@ class DesignerApp {
         this.addContainers();
 
         this._selectedHostContainer = this.hostContainers[0];
-        
+
         this.recreateDesigner();
     }
 
     createContainerPicker(): Controls.DropDown {
         this._hostContainerPicker = new Controls.DropDown();
-        
+
         for (var i = 0; i < this.hostContainers.length; i++) {
             let item = new Controls.DropDownItem(i.toString(), this.hostContainers[i].name);
 
@@ -410,10 +416,10 @@ class DesignerApp {
         let card = {
             type: "AdaptiveCard",
             version: "1.0",
-            body: [                
+            body: [
             ]
         }
-        
+
         monacoEditor.setValue(JSON.stringify(card, null, 4));
     }
 
@@ -492,18 +498,18 @@ class Splitter {
 
     private pointerDown(e: PointerEvent) {
         e.preventDefault();
-    
+
         this._splitterElement.setPointerCapture(e.pointerId);
 
         this._lastClickedOffset = { x: e.x, y: e.y };
 
         this._isPointerDown = true;
     }
-    
+
     private pointerMove(e: PointerEvent) {
         if (this._isPointerDown) {
             e.preventDefault();
-            
+
             if (this.isVertical) {
                 this._sizedELement.style.width = (this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x)) + "px";
             }
@@ -518,10 +524,10 @@ class Splitter {
             this._lastClickedOffset = { x: e.x, y: e.y };
         }
     }
-    
+
     private pointerUp(e: PointerEvent) {
         e.preventDefault();
-    
+
         this._splitterElement.releasePointerCapture(e.pointerId);
 
         this._isPointerDown = false;
@@ -539,7 +545,7 @@ class Splitter {
         this._splitterElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
         this._splitterElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
         this._splitterElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
-    }    
+    }
 }
 
 var app: DesignerApp;
@@ -556,7 +562,7 @@ window.onload = () => {
     horizontalSplitter.onRezized = (splitter: Splitter) => {
         if (isMonacoEditorLoaded) {
             monacoEditor.layout();
-        }    
+        }
     }
 
     propertyVerticalSplitter
