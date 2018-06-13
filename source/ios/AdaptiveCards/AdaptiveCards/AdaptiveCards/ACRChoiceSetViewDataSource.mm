@@ -181,6 +181,9 @@ using namespace AdaptiveCards;
                                 encoding:NSUTF8StringEncoding]];
         }
     }
+    if([values count] == 0) {
+        return nil;
+    }
     return [values componentsJoinedByString:@";"];
 }
 
