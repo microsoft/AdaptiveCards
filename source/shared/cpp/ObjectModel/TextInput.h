@@ -11,7 +11,7 @@ class TextInput : public BaseInputElement
 public:
     TextInput();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     std::string GetPlaceholder() const;
     void SetPlaceholder(const std::string &value);
@@ -41,6 +41,13 @@ private:
 class TextInputParser : public BaseCardElementParser
 {
 public:
+    TextInputParser() = default;
+    TextInputParser(const TextInputParser&) = default;
+    TextInputParser(TextInputParser&&) = default;
+    TextInputParser& operator=(const TextInputParser&) = default;
+    TextInputParser& operator=(TextInputParser&&) = default;
+    virtual ~TextInputParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

@@ -13,7 +13,7 @@ friend class ImageSetParser;
 public:
     ImageSet();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     ImageSize GetImageSize() const;
     void SetImageSize(const ImageSize value);
@@ -21,7 +21,7 @@ public:
     std::vector<std::shared_ptr<Image>>& GetImages();
     const std::vector<std::shared_ptr<Image>>& GetImages() const;
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+    void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
     void PopulateKnownPropertiesSet() override;
@@ -33,6 +33,13 @@ private:
 class ImageSetParser : public BaseCardElementParser
 {
 public:
+    ImageSetParser() = default;
+    ImageSetParser(const ImageSetParser&) = default;
+    ImageSetParser(ImageSetParser&&) = default;
+    ImageSetParser& operator=(const ImageSetParser&) = default;
+    ImageSetParser& operator=(ImageSetParser&&) = default;
+    virtual ~ImageSetParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

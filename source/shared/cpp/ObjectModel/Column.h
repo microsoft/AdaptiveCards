@@ -12,7 +12,7 @@ public:
     Column();
 
     std::string Serialize() const override;
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     static std::shared_ptr<Column> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
@@ -47,7 +47,7 @@ public:
     VerticalContentAlignment GetVerticalContentAlignment() const;
     void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+    void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
     void PopulateKnownPropertiesSet() override;
