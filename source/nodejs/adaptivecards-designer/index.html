@@ -3,10 +3,10 @@
     <head>
         <title>Adaptive Cards Designer (preview)</title>
         <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
-    
+
         <script src="editor/monaco/min/vs/loader.js"></script>
         <script src="editor/monaco-loader.js"></script>
-    
+
         <script src="dist/adaptivecards-designer.js"></script>
 
         <link rel="stylesheet" href="css/app.css" type="text/css" />
@@ -37,7 +37,13 @@
                         </div>
                         <div id="treeViewVerticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
                         <div id="treeViewSheetHost" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto;">
-                            <nav class="treeViewSheetHost__header">Visual tree view</nav>
+                            <nav class="header-menu">
+                                <span class="header-menu__title">Visual tree view</span>
+                                <span class="header-menu__bullet">
+                                    <span class="header-menu__icon"></span>
+                                    <span class="header-menu__description">Hide</span>
+                                </span>
+                            </nav>
                             <section class="treeview"></section>
                         </div>
                         <div id="propertyVerticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
@@ -45,7 +51,7 @@
                     </div>
                     <div id="horizontalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-top: 1px solid #D2D2D2; border-bottom: 1px solid #D2D2D2; cursor: ns-resize;"></div>
                     <div id="jsonEditorHost" style="flex: 0 0 auto; display: flex; height: 300px; overflow: hidden;">
-                        <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>                
+                        <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
                     </div>
                 </div>
             </div>

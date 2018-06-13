@@ -107,17 +107,51 @@
     background-color: rgba(255, 0, 0, 0.2);
 }
 
+
+/*
+* Header menu
+*/
+.header-menu {
+    align-items: center;
+    background-color: #d8d8d8;
+    display: flex;
+    height: 30px;
+    justify-content: space-between;
+    padding: 6px 12px;
+}
+
+.header-menu__title {
+    color: #000000;
+}
+
+.header-menu__bullet {
+    align-items: center;
+    display: flex;
+}
+
+.header-menu__icon {
+    background-image: url("/assets/icons/hide.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    height: 20px;
+    margin-right: 4px;
+    width: 20px;
+}
+
+.header-menu__description {
+    color: #4a4a4a;
+}
+
+
 /*
 * Treeview Style
 */
-.treeViewSheetHost__header {
-    height: 25px;
-}
-
 .treeview {
     background-color: #f9f9f9;
-    height: calc(100% - 25px);
-    padding: 30px 0px 5px 0px;
+    height: calc(100% - 30px);
+    padding-bottom: 5px;
+    padding-top: 30px;
 }
 
 .treeview__container {
@@ -137,6 +171,10 @@
     margin-bottom: 5px;
 }
 
+.treeview__element.is-empty {
+    margin-bottom: 0;
+}
+
 .treeview__element:hover {
     cursor: pointer;
 }
@@ -146,21 +184,77 @@
 }
 
 .treeview__icon {
-    width: 12px;
-    height: 12px;
-    margin-right: 8px;
-    background-color: red;
-}
-
-.treeview__icon--arrow {
-    background-color: transparent;
-    background-image: url("/assets/arrow.png");
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
-    margin-right: 4px;
-    height: 12px;
-    width: 12px;
+    height: 20px;
+    margin-right: 8px;
+    width: 20px;
+}
+
+.treeview__icon--arrow {
+    background-image: url("/assets/arrow.png");
+    margin-right: 0;
+}
+
+.treeview__icon--textblock {
+    background-image: url("/assets/icons/textblock.png");
+}
+
+.treeview__icon--factset {
+    background-image: url("/assets/icons/fact-set.png");
+}
+
+.treeview__icon--image {
+    background-image: url("/assets/icons/image.png");
+}
+
+.treeview__icon--imageset {
+    background-image: url("/assets/icons/image-set.png");
+}
+
+.treeview__icon--inputtext {
+    background-image: url("/assets/icons/inputtext.png");
+}
+
+.treeview__icon--inputtoggle {
+    background-image: url("/assets/icons/toggle.png");
+}
+
+.treeview__icon--inputnumber {
+    background-image: url("/assets/icons/inputnumber.png");
+}
+
+.treeview__icon--inputdate {
+    background-image: url("/assets/icons/icon-date.png");
+}
+
+.treeview__icon--inputtime {
+    background-image: url("/assets/icons/time.png");
+}
+
+.treeview__icon--actionsubmit {
+    background-image: url("/assets/icons/submit.png");
+}
+
+.treeview__icon--actionopenurl {
+    background-image: url("/assets/icons/open-url.png");
+}
+
+.treeview__icon--container {
+    background-image: url("/assets/icons/container.png");
+}
+
+.treeview__icon--column {
+    background-image: url("/assets/icons/column.png");
+}
+
+.treeview__icon--columnset {
+    background-image: url("/assets/icons/column-set.png");
+}
+
+.treeview__icon--actionshowcard {
+    background-image: url("/assets/icons/showcard.png");
 }
 
 .treeview__icon--arrow.is-rotated {
@@ -168,6 +262,7 @@
 }
 
 .btn {
+    background-color: transparent;
     border: none;
     padding: 0;
 }

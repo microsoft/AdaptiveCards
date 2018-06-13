@@ -56,7 +56,7 @@ function getEffectiveMargins(element: HTMLElement): Rect {
         parseInt(computedStyles.marginRight),
         parseInt(computedStyles.marginBottom),
         parseInt(computedStyles.marginLeft)
-    );    
+    );
 }
 
 function getBoundingRectangleIncludingMargins(element: HTMLElement): Rect {
@@ -498,7 +498,7 @@ export abstract class DesignerPeer extends DraggableElement {
                 }
             }
         );
-            
+
         this._propertySheetHostConfig.cssClassNamePrefix = "default";
     }
 
@@ -516,7 +516,7 @@ export abstract class DesignerPeer extends DraggableElement {
     tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
         return false;
     }
-    
+
     addChild(peer: DesignerPeer) {
         this._children.push(peer);
         peer.parent = this;
@@ -553,7 +553,7 @@ export abstract class DesignerPeer extends DraggableElement {
         if (removeChildren) {
             while (this._children.length > 0) {
                 this._children[0].remove(onlyFromCard, removeChildren);
-            }        
+            }
         }
 
         var result = this.internalRemove();
@@ -812,7 +812,7 @@ export class CardElementPeer extends DesignerPeer {
         if (cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < cardElement.getItemCount(); i++) {
                 this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this, cardElement.getItemAt(i)));
-            }            
+            }
         }
 
         for (var i = 0; i < this.cardElement.getActionCount(); i++) {
@@ -874,7 +874,7 @@ export class CardElementPeer extends DesignerPeer {
                         this.cardElement.insertItemBefore(peer.cardElement, (<CardElementPeer>targetChild).cardElement);
                     }
                 }
-    
+
                 this.addChild(peer);
                 this.changed(false);
 
@@ -884,7 +884,7 @@ export class CardElementPeer extends DesignerPeer {
 
         return false;
     }
-    
+
     getBoundingRect(): Rect {
         var cardElementBoundingRect = getBoundingRectangleIncludingMargins(this.cardElement.renderedElement);
 
@@ -1098,7 +1098,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
-        
+
         var width = addLabelAndInput(card, "Width:", Adaptive.TextInput);
 
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
@@ -1120,7 +1120,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
                     this.cardElement.width = "auto";
                 }
             }
-            
+
             this.changed(false);
         }
 
@@ -1136,7 +1136,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
             this.changed(false);
         }
-        
+
         var actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
@@ -1304,7 +1304,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         url.input.defaultValue = this.cardElement.url;
         url.input.onValueChanged = () => {
             this.cardElement.url = url.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1313,7 +1313,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         altText.input.defaultValue = this.cardElement.altText;
         altText.input.onValueChanged = () => {
             this.cardElement.altText = altText.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1349,7 +1349,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
             catch (e) {
                 this.cardElement.pixelWidth = null;
             }
-            
+
             this.changed(false);
         }
 
@@ -1371,7 +1371,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
             catch (e) {
                 this.cardElement.pixelHeight = null;
             }
-            
+
             this.changed(false);
         }
 
@@ -1391,7 +1391,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         backgroundColor.input.defaultValue = this.cardElement.backgroundColor;
         backgroundColor.input.onValueChanged = () => {
             this.cardElement.backgroundColor = backgroundColor.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1436,7 +1436,7 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
         title.input.defaultValue = this.cardElement.title;
         title.input.onValueChanged = () => {
             this.cardElement.title = title.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1445,14 +1445,14 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
         defaultValue.input.defaultValue = this.cardElement.defaultValue;
         defaultValue.input.onValueChanged = () => {
             this.cardElement.defaultValue = defaultValue.input.value;
-            
+
             this.changed(false);
         }
     }
 
     initializeCardElement() {
         super.initializeCardElement();
-        
+
         this.cardElement.title = "New Input.Toggle";
     }
 }
@@ -1472,7 +1472,7 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
         placeholder.input.defaultValue = this.cardElement.placeholder;
         placeholder.input.onValueChanged = () => {
             this.cardElement.placeholder = placeholder.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1505,7 +1505,7 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
         placeholder.input.defaultValue = this.cardElement.placeholder;
         placeholder.input.onValueChanged = () => {
             this.cardElement.placeholder = placeholder.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1514,7 +1514,7 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
         min.input.defaultValue = this.cardElement.min;
         min.input.onValueChanged = () => {
             this.cardElement.min = min.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1523,7 +1523,7 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
         max.input.defaultValue = this.cardElement.max;
         max.input.onValueChanged = () => {
             this.cardElement.max = max.input.value;
-            
+
             this.changed(false);
         }
     }
@@ -1541,7 +1541,7 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
         valueOn.input.defaultValue = this.cardElement.valueOn;
         valueOn.input.onValueChanged = () => {
             this.cardElement.valueOn = valueOn.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1550,7 +1550,7 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
         valueOff.input.defaultValue = this.cardElement.valueOff;
         valueOff.input.onValueChanged = () => {
             this.cardElement.valueOff = valueOff.input.value;
-            
+
             this.changed(false);
         }
     }
@@ -1565,7 +1565,7 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
         placeholder.input.defaultValue = this.cardElement.placeholder;
         placeholder.input.onValueChanged = () => {
             this.cardElement.placeholder = placeholder.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1615,7 +1615,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         text.input.isMultiline = true;
         text.input.onValueChanged = () => {
             this.cardElement.text = text.input.value;
-            
+
             this.changed(false);
         }
 
@@ -1639,7 +1639,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
                 var newMaxLines = parseInt(maxLines.input.value);
 
                 this.cardElement.maxLines = newMaxLines;
-            
+
                 this.changed(false);
                 }
             catch (ex) {
@@ -1833,7 +1833,7 @@ class DragHandle extends DraggableElement {
         element.classList.add("acd-peerButton", "acd-icon-drag");
         element.title = "Drag to move this element";
         element.style.visibility = "hidden";
-        element.style.position = "absolute";   
+        element.style.position = "absolute";
         element.style.zIndex = "1000";
 
         return element;
@@ -2027,7 +2027,7 @@ export class CardDesigner {
 
             if (peer instanceof CardElementPeer && peer.cardElement == cardElement) {
                 return peer;
-            } 
+            }
         }
 
         return null;
@@ -2039,7 +2039,7 @@ export class CardDesigner {
 
             if (peer instanceof ActionPeer && peer.action == action) {
                 return peer;
-            } 
+            }
         }
 
         return null;
@@ -2051,7 +2051,7 @@ export class CardDesigner {
         if (isExpanded) {
             if (!peer) {
                 peer = new AdaptiveCardPeer(action.card);
-                
+
                 var parentPeer = this.findActionPeer(action);
 
                 if (parentPeer) {
@@ -2193,8 +2193,8 @@ export class CardDesigner {
         this._removeCommandElement.classList.add("acd-peerButton", "acd-circularButton", "acd-icon-remove");
         this._removeCommandElement.title = "Remove";
         this._removeCommandElement.style.visibility = "hidden";
-        this._removeCommandElement.style.position = "absolute";   
-        this._removeCommandElement.style.zIndex = "1000";   
+        this._removeCommandElement.style.position = "absolute";
+        this._removeCommandElement.style.zIndex = "1000";
         this._removeCommandElement.onclick = (e) => {
             this.removeSelected();
         }
@@ -2208,9 +2208,9 @@ export class CardDesigner {
 
         this._peerCommandsHostElement = document.createElement("div");
         this._peerCommandsHostElement.style.visibility = "hidden";
-        this._peerCommandsHostElement.style.position = "absolute";   
-        this._peerCommandsHostElement.style.display = "flex";   
-        this._peerCommandsHostElement.style.zIndex = "1000";   
+        this._peerCommandsHostElement.style.position = "absolute";
+        this._peerCommandsHostElement.style.display = "flex";
+        this._peerCommandsHostElement.style.zIndex = "1000";
 
         this._designerSurface.appendChild(this._dragHandle.renderedElement);
         this._designerSurface.appendChild(this._removeCommandElement);
