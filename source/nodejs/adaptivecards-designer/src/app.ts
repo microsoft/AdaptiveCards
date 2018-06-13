@@ -33,7 +33,7 @@ var updateLayoutTimer: NodeJS.Timer;
 var preventCardUpdate: boolean = false;
 
 function updateJsonFromCard() {
-    try {    
+    try {
         preventCardUpdate = true;
 
         if (!preventJsonUpdate && isMonacoEditorLoaded) {
@@ -134,53 +134,70 @@ class DesignerApp {
 
     public buildTreeViewSheet(peer: Designer.DesignerPeer) {
         if (this.treeViewSheetHostElement) {
-
-            this.treeViewSheetHostElement.innerHTML = ""; 
+            let treeview = this.treeViewSheetHostElement.getElementsByClassName("treeview")[0];
+            treeview.innerHTML = "";
 
             const items = [...this._card.getItems(), ...this._card.getActions()];
             const listItems = this.generateTreeViewElements(items, peer);
-            this.treeViewSheetHostElement.appendChild(listItems);
+            treeview.appendChild(listItems);
         }
     }
 
-    private generateTreeViewElements(cardItems: Array<Adaptive.CardElement | Adaptive.Action>, peer: Designer.DesignerPeer ) {
+    private generateTreeViewElements(cardItems: Array<Adaptive.CardElement | Adaptive.Action>, peer: Designer.DesignerPeer, identationLevel: number = 1): HTMLElement {
         if (!cardItems || cardItems.length === 0) {
-            let node: HTMLElement = document.createElement("ul");
+            let node = document.createElement("ul");
             return node;
         }
-
-        let selected_id;
+        
+        let selected_id: string;
         if  (peer instanceof Designer.ActionPeer) {
             selected_id = peer ? peer.action.elementId : "";
         } else if(peer instanceof Designer.CardElementPeer) {
             selected_id = peer ? peer.cardElement.elementId : "";
         }
 
-        let itemList: HTMLElement = document.createElement("ul");
-        let itemIndex: number = 0;
+        let itemList = document.createElement("ul");
+        itemList.className = "treeview__container";
+
+        let itemIndex = 0;
         while(itemIndex < cardItems.length) {
             let item = cardItems[itemIndex];
-
-            let listItem = document.createElement("li");
-            if (selected_id && item.elementId === selected_id) {
-                listItem.style.backgroundColor = "red";
-            }
-            listItem.textContent = item.getJsonTypeName();
-            listItem.addEventListener("click", () => {
-                this._designer.setSelectedPeerById(item.elementId);
-            });
+            const listItem = this.createTreeViewListItem(item, selected_id, identationLevel);
             itemList.appendChild(listItem);
 
             if ([Adaptive.Container.name, Adaptive.Column.name].indexOf(item.getJsonTypeName()) !== -1) {
-                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.Container).getItems(), peer));
+                const newIdentation = identationLevel + 1;
+                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.Container).getItems(), peer, newIdentation));
             } else if (item.getJsonTypeName() === Adaptive.ColumnSet.name) {
-                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.ColumnSet).getColumns(), peer));
+                const newIdentation = identationLevel + 1;
+                itemList.appendChild(this.generateTreeViewElements((item as Adaptive.ColumnSet).getColumns(), peer, newIdentation));
             }
-
             itemIndex++;
         }
-
         return itemList;
+    }
+
+    private createTreeViewListItem (item: Adaptive.CardElement | Adaptive.Action, selected_id: string, identationLevel: number): HTMLElement {
+        let listItem = document.createElement("li");
+        listItem.className = "treeview__element";
+        if (selected_id && item.elementId === selected_id) {
+            listItem.className += " is-selected";
+        }
+
+        let icon = document.createElement("span");
+        icon.className = `treeview__icon treeview__icon--${item.getJsonTypeName().toLowerCase()}`;
+        listItem.appendChild(icon);
+
+        let title = document.createElement("span");
+        title.className = `treeview__title`;
+        title.textContent = item.getJsonTypeName();
+        listItem.appendChild(title);
+
+        listItem.addEventListener("click", () => {
+            this._designer.setSelectedPeerById(item.elementId);
+        });
+        listItem.style.paddingLeft = `${identationLevel * 24}px`;
+        return listItem;
     }
 
     private buildPropertySheet(peer: Designer.DesignerPeer) {

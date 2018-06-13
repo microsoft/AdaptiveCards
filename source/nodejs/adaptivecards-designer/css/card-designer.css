@@ -106,3 +106,43 @@
 .acd-separation.selected {
     background-color: rgba(255, 0, 0, 0.2);
 }
+
+/*
+* Treeview Style
+*/
+.treeViewSheetHost__header {
+    height: 25px;
+}
+
+.treeview {
+    background-color: #f9f9f9;
+    height: calc(100% - 25px);
+    padding-top: 30px;
+}
+
+.treeview__container {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+.treeview__element{
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.treeview__element:hover{
+    cursor: pointer;
+}
+
+.treeview__element.is-selected {
+    background-color: #e7e7e7;
+}
+
+.treeview__icon {
+ width: 12px;
+ height: 12px;
+ margin-right: 8px;
+ background-color: red;
+}
