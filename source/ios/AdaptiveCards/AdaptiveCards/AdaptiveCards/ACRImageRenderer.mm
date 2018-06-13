@@ -116,6 +116,10 @@
         [view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        
+        UIView *blankTrailingSpace = [[UIView alloc] init];
+        [blankTrailingSpace setContentHuggingPriority:(UILayoutPriorityDefaultLow) forAxis:UILayoutConstraintAxisVertical];
+        [viewGroup addArrangedSubview:blankTrailingSpace];
     }
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
