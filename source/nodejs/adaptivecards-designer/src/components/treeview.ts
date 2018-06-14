@@ -98,8 +98,6 @@ export default class Treeview {
         listItem.appendChild(title);
 
         listItem.addEventListener("click", () => {
-            console.log(this._designer);
-            console.log(item.elementId);
             this._designer.setSelectedPeerById(item.elementId);
         });
         listItem.style.paddingLeft = `${identationLevel * 46 + 24}px`;

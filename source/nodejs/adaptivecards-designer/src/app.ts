@@ -9,6 +9,7 @@ import { CortanaContainer } from "./containers/cortana-container";
 import { SkypeContainer } from "./containers/skype-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import Treeview from "./components/treeview";
+import FullScreenHandler from "./components/fullscreenhandler";
 
 declare var monacoEditor: any;
 declare function loadMonacoEditor(schema, callback);
@@ -146,10 +147,6 @@ class DesignerApp {
             const listItems = this._treeViewComponent.generateTreeViewElements(items, peer);
             treeview.appendChild(listItems);
         }
-    }
-
-    public copyJson(): void {
-
     }
 
     private buildPropertySheet(peer: Designer.DesignerPeer) {
@@ -457,9 +454,10 @@ var propertyVerticalSplitter: Splitter;
 var treeViewVerticalSplitter: Splitter;
 
 window.onload = () => {
-    //document.querySelector(".js-copy-json").addEventListener("click", () => app.copyJson());
+    const fullScreenHandler = new FullScreenHandler(document.querySelector(".js-enter-fullscreen"));
+    fullScreenHandler.init();
 
-    new Clipboard('.js-copy-json', {
+    new Clipboard(".js-copy-json", {
         text: function() {
             return JSON.stringify(app.card.toJSON(), null, 4);
         }
