@@ -13,28 +13,40 @@ body {
 }
 
 .toolbar-btn {
-    padding: 11px;
+    align-items: center;
     border: 1px solid transparent;
+    cursor: pointer;
+    display: flex;
     font-style: normal;
     font-weight: normal;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    cursor: pointer;
+    margin-right: 50px;
+    padding-bottom: 11px;
+    padding-left: 38px;
+    padding-right: 14px;
+    padding-top: 11px;
+    position: relative;
     user-select: none;
-}
-
-.toolbar-btn:hover {
-    background-color: white;
 }
 
 .toolbar-btn:active {
     border: 1px solid black;
 }
 
-.toolbar-btn__icon-card:before {
-    font-family: 'FabricMDL2Icons';
-    font-size: 20px;
-    margin-right: 6px;
-    content: "\F321";
+.toolbar-btn:hover {
+    background-color: white;
+}
+
+.toolbar-btn__icon-copy::before,
+.toolbar-btn__icon-fullscreen::before {
+    left: 14px;
+    position: absolute;
+}
+
+.toolbar-btn__icon-copy::before {
+    content: url("/assets/icons/copy.png");
+}
+
+.toolbar-btn__icon-fullscreen::before {
+    content: url("/assets/icons/fullscreen.png");
 }
