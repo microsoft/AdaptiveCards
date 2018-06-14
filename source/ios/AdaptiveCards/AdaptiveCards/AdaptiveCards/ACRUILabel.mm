@@ -9,12 +9,6 @@
 
 @implementation ACRUILabel
 
--(instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    return self;
-}
-
 -(void)drawTextInRect:(CGRect)rect
 {
     if (_isFactSetLabel || _isStretchable) {

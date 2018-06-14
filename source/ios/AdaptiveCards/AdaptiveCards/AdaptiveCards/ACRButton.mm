@@ -10,11 +10,6 @@
 #import "ACRView.h"
 
 @implementation UIButton(ACRButton)
--(instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    return self;
-}
 
 + (UIButton* )rootView:(ACRView *)rootView
      baseActionElement:(ACOBaseActionElement *)acoAction
