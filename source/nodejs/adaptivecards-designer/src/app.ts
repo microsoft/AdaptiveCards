@@ -317,6 +317,15 @@ class DesignerApp {
         this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
     }
 
+    private rebuildElementTree() {
+        let elementTreeHost = document.getElementById("elementTreeHost");
+        elementTreeHost.innerHTML = "";
+    
+        if (this.designer.rootPeer) {
+            elementTreeHost.appendChild(this.designer.rootPeer.treeItem.render());
+        }
+    }
+
     private recreateDesigner() {
         let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
     
@@ -350,6 +359,8 @@ class DesignerApp {
             if (isFullRefresh) {
                 scheduleJsonUpdate();
             }
+
+            this.rebuildElementTree();
         };
         this._designer.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
             let errorPane = document.getElementById("errorPane");
@@ -582,24 +593,31 @@ class Splitter {
 }
 
 var app: DesignerApp;
-var horizontalSplitter: Splitter;
-var verticalSplitter: Splitter;
+var jsonEditorSplitter: Splitter;
+var propertySheetSplitter: Splitter;
+var elementTreeSplitter: Splitter;
 
 window.onload = () => {
     document.getElementById("btnNewCard").onclick = (e) => {
         app.newCard();
     }
 
-    horizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
-    horizontalSplitter.onRezized = (splitter: Splitter) => {
+    jsonEditorSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
+    jsonEditorSplitter.onRezized = (splitter: Splitter) => {
         if (isMonacoEditorLoaded) {
             monacoEditor.layout();
         }    
     }
 
-    verticalSplitter = new Splitter(document.getElementById("verticalSplitter"), document.getElementById("propertySheetHost"));
-    verticalSplitter.isVertical = true;
-    verticalSplitter.onRezized = (splitter: Splitter) => {
+    elementTreeSplitter = new Splitter(document.getElementById("elementTreeSplitter"), document.getElementById("elementTreeHost"));
+    elementTreeSplitter.isVertical = true;
+    elementTreeSplitter.onRezized = (splitter: Splitter) => {
+        scheduleLayoutUpdate();
+    }
+
+    propertySheetSplitter = new Splitter(document.getElementById("propertySheetSplitter"), document.getElementById("propertySheetHost"));
+    propertySheetSplitter.isVertical = true;
+    propertySheetSplitter.onRezized = (splitter: Splitter) => {
         scheduleLayoutUpdate();
     }
 
