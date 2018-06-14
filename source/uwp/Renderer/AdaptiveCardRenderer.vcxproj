@@ -151,9 +151,11 @@
     <ClInclude Include="lib\AdaptiveInputs.h" />
     <ClInclude Include="lib\AdaptiveMedia.h" />
     <ClInclude Include="lib\AdaptiveMediaConfig.h" />
+    <ClInclude Include="lib\AdaptiveMediaEventInvoker.h" />
     <ClInclude Include="lib\AdaptiveMediaRenderer.h" />
     <ClInclude Include="lib\AdaptiveMediaSource.h" />
     <ClInclude Include="lib\AdaptiveNumberInputRenderer.h" />
+    <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
@@ -212,8 +214,10 @@
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClCompile Include="lib\AdaptiveMedia.cpp" />
     <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveMediaRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
     <ClCompile Include="lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

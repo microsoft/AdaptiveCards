@@ -46,12 +46,21 @@
         NSDictionary* data = textMap[elementId];
         NSData *htmlData = data[@"html"];
         NSDictionary *options = data[@"options"];
+        NSDictionary *descriptor = data[@"descriptor"];
+        NSString *text = data[@"nonhtml"];
 
         std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
         // Initializing NSMutableAttributedString for HTML rendering is very slow
-        content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
-        // Drop newline char
-        [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
+        if(htmlData){
+            content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+            // Drop newline char
+            [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
+        } else {
+            // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
+            content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+            [content deleteCharactersInRange:NSMakeRange(0, 3)];
+            [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
+        }
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;

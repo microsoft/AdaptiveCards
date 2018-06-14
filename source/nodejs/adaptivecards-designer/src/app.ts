@@ -390,6 +390,34 @@ class DesignerApp {
                 errorPane.style.display = "none";
             }
         };
+        this._designer.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
+            let errorPane = document.getElementById("errorPane");
+            errorPane.innerHTML = "";
+
+            if (errors.length > 0) {
+                let errorMessages: Array<string> = [];
+
+                for (let error of errors) {
+                    if (errorMessages.indexOf(error.message) < 0) {
+                        errorMessages.push(error.message);
+                    }
+                }
+
+                for (let message of errorMessages) {
+                    let errorElement = document.createElement("div");
+                    errorElement.style.overflow = "hidden";
+                    errorElement.style.textOverflow = "ellipsis";
+                    errorElement.innerText = message;
+
+                    errorPane.appendChild(errorElement);
+                }
+
+                errorPane.style.display = null;
+            }
+            else {
+                errorPane.style.display = "none";
+            }
+        };
 
         this.buildPalette();
         this.buildPropertySheet(null);

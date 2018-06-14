@@ -108,6 +108,10 @@
                                            constant:0]];
         }
 
+        if( curView.hasStretchableView ){
+            [columnSetView setAlignmentForColumnStretch];
+        }
+        
         prevView = curView;
         prevRelColumnWidth = relativeColumnWidth;
     }
