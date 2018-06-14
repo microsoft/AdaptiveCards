@@ -15,12 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.renderer.ImageLoaderAsync;
+import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
@@ -47,11 +47,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    private class ImageRendererImageLoaderAsync extends ImageLoaderAsync
+    private class ImageRendererImageLoaderAsync extends InnerImageLoaderAsync
     {
-        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, ImageStyle imageStyle)
+        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle)
         {
-            super(renderedCard, imageView);
+            super(renderedCard, imageView, imageBaseUrl);
             m_imageStyle = imageStyle;
         }
 
@@ -69,7 +69,7 @@ public class ImageRenderer extends BaseCardElementRenderer
                 bitmap = circleBitmap;
             }
             return bitmap;
-        }
+    }
 
         @Override
         protected void renderBitmap(Bitmap bitmap)
@@ -123,18 +123,32 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(image);
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, image.GetImageStyle());
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle());
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
         if (image.GetImageSize() == ImageSize.Stretch)
         {
             //ImageView must match parent for stretch to work
-            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            if( image.GetHeight() == HeightType.Stretch )
+            {
+                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
+            }
+            else
+            {
+                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            }
         }
         else
         {
-            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            if( image.GetHeight() == HeightType.Stretch )
+            {
+                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
+            }
+            else
+            {
+                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            }
         }
 
         HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();

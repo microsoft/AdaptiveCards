@@ -22,6 +22,10 @@ export abstract class HostContainer {
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
     }
 
+    public getBackgroundColor(): string {
+        return "#F6F6F6";
+    }
+
     public parseElement(element: Adaptive.CardElement, json: any) {
         // Do nothing in base implementation
     }

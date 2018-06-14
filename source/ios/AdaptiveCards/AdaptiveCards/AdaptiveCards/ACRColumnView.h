@@ -8,4 +8,7 @@
 
 @interface ACRColumnView:ACRContentStackView
 
+@property NSString *columnWidth;
+@property BOOL hasStretchableView;
+
 @end

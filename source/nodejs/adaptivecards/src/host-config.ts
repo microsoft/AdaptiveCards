@@ -137,6 +137,8 @@ export class ActionsConfig {
     preExpandSingleShowCardAction?: boolean = false;
     actionsOrientation: Enums.Orientation = Enums.Orientation.Horizontal;
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
+    iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
+    iconSize: number = 24;
 
     constructor(obj?: any) {
         if (obj) {
@@ -147,6 +149,18 @@ export class ActionsConfig {
             this.preExpandSingleShowCardAction = Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false);
             this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
             this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
+            this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
+
+            try {
+                let sizeAndUnit = Utils.SizeAndUnit.parse(obj["iconSize"]);
+
+                if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
+                    this.iconSize = sizeAndUnit.physicalSize;
+                }
+            }
+            catch (e) {
+                // Swallow this, keep default icon size
+            }
         }
     }
 
@@ -209,6 +223,14 @@ class BuiltInContainerStyleDefinition extends ContainerStyleDefinition {
     get isBuiltIn(): boolean {
         return true;
     }
+}
+
+export interface ILineHeightDefinitions {
+    small: number;
+    medium: number;
+    default: number;
+    large: number;
+    extraLarge: number;
 }
 
 export class ContainerStyleSet {
@@ -284,6 +306,7 @@ export class ContainerStyleSet {
 export class HostConfig {
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
+    lineHeights?: ILineHeightDefinitions;
 
     fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
     
@@ -308,6 +331,7 @@ export class HostConfig {
         large: 21,
         extraLarge: 26
     };
+    
     readonly fontWeights = {
         lighter: 200,
         default: 400,
@@ -342,6 +366,16 @@ export class HostConfig {
                 medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
                 large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
                 extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
+            };
+
+            if (obj.lineHeights) {
+                this.lineHeights = {
+                    small: obj.lineHeights["small"],
+                    default: obj.lineHeights["default"],
+                    medium: obj.lineHeights["medium"],
+                    large: obj.lineHeights["large"],
+                    extraLarge: obj.lineHeights["extraLarge"]
+                };
             };
 
             this.fontWeights = {

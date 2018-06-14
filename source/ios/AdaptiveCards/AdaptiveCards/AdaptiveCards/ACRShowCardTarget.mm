@@ -51,7 +51,7 @@
     if(!inputs){
         inputs = [[NSMutableArray alloc] init];
     }
-    ACRColumnView *containingView = [[ACRColumnView alloc] init];
+    ACRColumnView *containingView = [[ACRColumnView alloc] initWithFrame:_rootView.frame];
     UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                     inputs:inputs
                                                   context:_rootView
@@ -131,13 +131,20 @@
 
 - (IBAction)toggleVisibilityOfShowCard
 {
-    _adcView.hidden = (_adcView.hidden == YES)? NO: YES;    
+    BOOL hidden = _adcView.hidden;
+    [_superview hideAllShowCards];
+    _adcView.hidden = (hidden == YES)? NO: YES;
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 
 - (void)doSelectAction
 {
     [self toggleVisibilityOfShowCard];
+}
+
+- (void)hideShowCard
+{
+    _adcView.hidden = YES;
 }
 
 @end

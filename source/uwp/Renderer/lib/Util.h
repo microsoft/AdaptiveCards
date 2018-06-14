@@ -11,7 +11,9 @@
 #include <Column.h>
 #include <Fact.h>
 #include <Image.h>
+#include <MediaSource.h>
 #include <windows.foundation.collections.h>
+#include "AdaptiveCardParseWarning.h"
 
 #ifdef ADAPTIVE_CARDS_WINDOWS
 using namespace InternalNamespace;
@@ -77,6 +79,10 @@ HRESULT GenerateSharedChoices(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* items,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements);
 
+HRESULT GenerateSharedMediaSources(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* items,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements);
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
@@ -105,6 +111,10 @@ HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
 
+HRESULT GenerateMediaSourcesProjection(
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* projectedParentContainer) noexcept;
+
 HRESULT GenerateSeparatorProjection(
     std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,
     ABI::AdaptiveNamespace::IAdaptiveSeparator** projectedSeparator) noexcept;
@@ -130,6 +140,7 @@ HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projecte
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projectedElementType, HSTRING* result);
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>> ActionEventSource;
+typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>> MediaEventSource;
 
 // Peek interface to help get implementation types from winrt interfaces
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
@@ -156,5 +167,18 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
 }
 
 void RemoteResourceElementToUriStringVector(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResources,
+    ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResources,
     std::vector<std::string>& resourceUris);
+
+void GetUrlFromString(
+    ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    HSTRING urlString,
+    ABI::Windows::Foundation::IUriRuntimeClass** url);
+
+HRESULT SharedWarningsToAdaptiveWarnings(
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings);
+
+HRESULT AdaptiveWarningsToSharedWarnings(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);

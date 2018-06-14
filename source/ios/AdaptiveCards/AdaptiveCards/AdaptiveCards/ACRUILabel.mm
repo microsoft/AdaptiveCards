@@ -17,7 +17,7 @@
 
 -(void)drawTextInRect:(CGRect)rect
 {
-    if (_isFactSetLabel) {
+    if (_isFactSetLabel || _isStretchable) {
         CGSize labelStringSize = [self.text boundingRectWithSize:CGSizeMake(self.frame.size.width, CGFLOAT_MAX)
                                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                                       attributes:@{NSFontAttributeName:self.font}

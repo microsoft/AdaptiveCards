@@ -26,6 +26,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Url(_Out_ HSTRING *uri);
         IFACEMETHODIMP put_Url(_In_ HSTRING uri);
 
+        IFACEMETHODIMP get_BackgroundColor(_Out_ HSTRING *backgroundColor);
+        IFACEMETHODIMP put_BackgroundColor(_In_ HSTRING backgroundColor);
+
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ImageStyle* imageStyle);
         IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveNamespace::ImageStyle imageStyle);
 
@@ -68,6 +71,9 @@ AdaptiveNamespaceStart
 
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) override;
 
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height) { return AdaptiveCardElementBase::get_Height(height); }
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height) { return AdaptiveCardElementBase::put_Height(height); }
+
         // ITypePeek method
         void *PeekAt(REFIID riid) override
         {
@@ -76,6 +82,7 @@ AdaptiveNamespaceStart
 
     private:
         Microsoft::WRL::Wrappers::HString m_url;
+        Microsoft::WRL::Wrappers::HString m_backgroundColor;
         ABI::AdaptiveNamespace::ImageStyle m_imageStyle;
         ABI::AdaptiveNamespace::ImageSize m_imageSize;
         Microsoft::WRL::Wrappers::HString m_altText;

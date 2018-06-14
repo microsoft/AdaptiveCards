@@ -7,13 +7,13 @@
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class TextBlock : public BaseCardElement
 {
 public:
     TextBlock();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     std::string GetText() const;
     void SetText(const std::string &value);
@@ -52,21 +52,30 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
     std::string m_language;
 };
 
 class TextBlockParser : public BaseCardElementParser
 {
 public:
+    TextBlockParser() = default;
+    TextBlockParser(const TextBlockParser&) = default;
+    TextBlockParser(TextBlockParser&&) = default;
+    TextBlockParser& operator=(const TextBlockParser&) = default;
+    TextBlockParser& operator=(TextBlockParser&&) = default;
+    virtual ~TextBlockParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+        const Json::Value& root) override;
 
     std::shared_ptr<BaseCardElement> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

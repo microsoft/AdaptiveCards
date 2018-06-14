@@ -81,6 +81,13 @@
     <ClCompile Include="lib\AdaptiveCardElement.cpp" />
     <ClCompile Include="lib\AdaptiveInputElement.cpp" />
     <ClCompile Include="lib\AdaptiveActionElement.cpp" />
+    <ClCompile Include="lib\AdaptiveMedia.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
+    <ClCompile Include="lib\MediaHelpers.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -169,6 +176,13 @@
     <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveInputElement.h" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
+    <ClInclude Include="lib\AdaptiveMedia.h" />
+    <ClInclude Include="lib\AdaptiveMediaRenderer.h" />
+    <ClInclude Include="lib\AdaptiveMediaSource.h" />
+    <ClInclude Include="lib\MediaHelpers.h" />
+    <ClInclude Include="lib\AdaptiveMediaConfig.h" />
+    <ClInclude Include="lib\AdaptiveMediaEventInvoker.h" />
+    <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

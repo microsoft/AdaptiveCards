@@ -54,18 +54,18 @@
                 actionsViewMap[key] = button;
             }
         });
-        
+
         if(imgView)
-        {          
+        {
             [ACRView setImageView:imgView inButton:button withConfig:config];
-            
+
             // remove postfix added for imageMap access
             std::string id = action->GetId();
             std::size_t idx = id.find_last_of('_');
             action->SetId(id.substr(0, idx));
         }
     }
-    
+
     return button;
 }
 @end

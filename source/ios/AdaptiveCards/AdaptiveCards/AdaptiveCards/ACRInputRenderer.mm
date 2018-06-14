@@ -47,6 +47,8 @@
     txtInput.isRequired  = inputBlck->GetIsRequired();
     txtInput.delegate = txtInput;
 
+    [txtInput setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+
     switch(inputBlck->GetTextInputStyle())
     {
         case TextInputStyle::Text:
@@ -83,10 +85,22 @@
         }
     }
 
-    [viewGroup addArrangedSubview: txtInput];
+    if(elem->GetHeight() == HeightType::Stretch){
+        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
+        [textInputContainer addArrangedSubview: txtInput];
+        
+        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+        UIView *blankTrailingSpace = [[UIView alloc] init];
+        [textInputContainer addArrangedSubview:blankTrailingSpace];
+        [textInputContainer adjustHuggingForLastElement];
+        
+        [viewGroup addArrangedSubview: textInputContainer];
+    } else {
+        [viewGroup addArrangedSubview:txtInput];
+    }
 
     txtInput.translatesAutoresizingMaskIntoConstraints = false;
-
+    
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
 
     NSDictionary *viewsMap = NSDictionaryOfVariableBindings(txtInput);

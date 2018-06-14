@@ -86,6 +86,7 @@
 		"maxActions": 5,
 		"spacing": "default",
 		"buttonSpacing": 10,
+		"iconPlacement": "leftOfTitle",
 		"showCard": {
 			"actionMode": "inline",
 			"inlineTopMargin": 16

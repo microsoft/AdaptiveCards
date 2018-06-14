@@ -83,6 +83,7 @@ using namespace AdaptiveCards;
         self.placeholder = placeHolderStr;
         self.text = valueStr;
         self.allowsEditingTextAttributes = NO;
+        self.borderStyle = UITextBorderStyleRoundedRect;
 
         if(date)
         {
@@ -110,9 +111,9 @@ using namespace AdaptiveCards;
 }
 
 - (IBAction)dismiss
-{
-    self.text = [self.formatter stringFromDate:((UIDatePicker *)self.inputView).date];
+{    
     [self endEditing:YES];
+    self.text = [self.formatter stringFromDate:((UIDatePicker *)self.inputView).date];
 }
 
 - (IBAction)update:(UIDatePicker *)picker

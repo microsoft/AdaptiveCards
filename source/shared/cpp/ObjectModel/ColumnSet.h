@@ -6,14 +6,14 @@
 #include "Column.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class ColumnSet : public BaseCardElement
 {
 friend class ColumnSetParser;
 public:
     ColumnSet();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     std::vector<std::shared_ptr<Column>>& GetColumns();
     const std::vector<std::shared_ptr<Column>>& GetColumns() const;
@@ -23,10 +23,10 @@ public:
 
     void SetLanguage(const std::string& language);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+    void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
     std::vector<std::shared_ptr<Column>> m_columns;
@@ -36,14 +36,23 @@ private:
 class ColumnSetParser : public BaseCardElementParser
 {
 public:
+    ColumnSetParser() = default;
+    ColumnSetParser(const ColumnSetParser&) = default;
+    ColumnSetParser(ColumnSetParser&&) = default;
+    ColumnSetParser& operator=(const ColumnSetParser&) = default;
+    ColumnSetParser& operator=(ColumnSetParser&&) = default;
+    virtual ~ColumnSetParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+        const Json::Value& root) override;
 
     std::shared_ptr<BaseCardElement> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

@@ -33,8 +33,16 @@ namespace AdaptiveCards.Test
                 if (file.Contains("NotificationCard"))
                     continue;
 
+                // TODO: bring this test back when issue #484 is implemented
+                if (file.Contains("ColumnSet.VerticalStretch") || file.Contains("ColumnSet_Container.VerticalStretch") || file.Contains("ColumnSet.Input.Text.VerticalStretch") || file.Contains("VerticalStretch"))
+                    continue;
+
                 // TODO: bring this test back when issue #1440 is implemented
                 if (file.Contains("Image.ImageBaseUrl"))
+                    continue;
+
+                // TODO: bring this test back when issue #1415 is implemented
+                if (file.Contains("Image.BackgroundColor"))
                     continue;
 
                 try

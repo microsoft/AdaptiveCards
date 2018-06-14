@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class Separator
 {
 public:
@@ -26,4 +26,4 @@ private:
     SeparatorThickness m_thickness;
     ForegroundColor m_color;
 };
-AdaptiveSharedNamespaceEnd
+}
