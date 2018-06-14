@@ -108,6 +108,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                             await m_actionDialog.ShowAsync();
                         };
 
+#if MASTER
                         if (!MainPageViewModel.HostConfigEditor.HostConfig.Media.AllowInlinePlayback)
                         {
                             renderResult.MediaPlay += async (sender, e) =>
@@ -142,6 +143,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                                 await mediaEndedDialog.ShowAsync();
                             };
                         }
+#endif
                     }
                     else
                     {
