@@ -12,7 +12,7 @@ class Image : public BaseCardElement
 public:
     Image();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     std::string GetUrl() const;
     void SetUrl(const std::string &value);
@@ -41,10 +41,10 @@ public:
     unsigned int GetPixelHeight() const;
     void SetPixelHeight(unsigned int value);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+    void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_url;
     std::string m_backgroundColor;
@@ -60,6 +60,13 @@ private:
 class ImageParser : public BaseCardElementParser
 {
 public:
+    ImageParser() = default;
+    ImageParser(const ImageParser&) = default;
+    ImageParser(ImageParser&&) = default;
+    ImageParser& operator=(const ImageParser&) = default;
+    ImageParser& operator=(ImageParser&&) = default;
+    virtual ~ImageParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

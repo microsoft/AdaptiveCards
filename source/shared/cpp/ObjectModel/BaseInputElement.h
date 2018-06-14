@@ -14,7 +14,7 @@ public:
     BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
 
     std::string GetId() const override;
-    virtual void SetId(const std::string &value) override;
+    void SetId(const std::string &value) override;
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
@@ -22,7 +22,7 @@ public:
     bool GetIsRequired() const;
     void SetIsRequired(const bool isRequired);
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
 private:
     std::string m_id;
