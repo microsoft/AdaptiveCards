@@ -34,6 +34,8 @@
 		6B7B1A9420B4D2AB00260731 /* Media.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9020B4D2AB00260731 /* Media.h */; };
 		6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */; };
 		6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */; };
+		6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30120D32A89005C8E15 /* ACRButton.xib */; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
 		F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */; };
@@ -142,7 +144,6 @@
 		F452CD581F68CD6F005394B2 /* HostConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F452CD571F68CD6F005394B2 /* HostConfig.cpp */; };
 		F45A071F1EF4BD67007C6503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071E1EF4BD67007C6503 /* UIKit.framework */; };
 		F4603238207575C7006C5358 /* ACRLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4603237207575A3006C5358 /* ACRLabelView.xib */; };
-		F460323F20757C57006C5358 /* ACRButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = F460323E20757C57006C5358 /* ACRButton.xib */; };
 		F460324120757F38006C5358 /* ACRTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = F460324020757F38006C5358 /* ACRTextField.xib */; };
 		F460324520758583006C5358 /* ACRDatePicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = F460324420758583006C5358 /* ACRDatePicker.xib */; };
 		F460324720759519006C5358 /* ACRDateTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = F460324620759519006C5358 /* ACRDateTextField.xib */; };
@@ -277,6 +278,8 @@
 		6B7B1A9020B4D2AB00260731 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Media.h; path = ../../../../shared/cpp/ObjectModel/Media.h; sourceTree = "<group>"; };
 		6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRUIImageView.mm; sourceTree = "<group>"; };
 		6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRUIImageView.h; sourceTree = "<group>"; };
+		6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRCellForCompactMode.xib; sourceTree = "<group>"; };
+		6B9AB30120D32A89005C8E15 /* ACRButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRButton.xib; sourceTree = "<group>"; };
 		F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
 		F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetRenderer.h; sourceTree = "<group>"; };
@@ -398,7 +401,6 @@
 		F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F45A071E1EF4BD67007C6503 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F4603237207575A3006C5358 /* ACRLabelView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRLabelView.xib; sourceTree = "<group>"; };
-		F460323E20757C57006C5358 /* ACRButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRButton.xib; sourceTree = "<group>"; };
 		F460324020757F38006C5358 /* ACRTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRTextField.xib; sourceTree = "<group>"; };
 		F460324420758583006C5358 /* ACRDatePicker.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRDatePicker.xib; sourceTree = "<group>"; };
 		F460324620759519006C5358 /* ACRDateTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRDateTextField.xib; sourceTree = "<group>"; };
@@ -809,8 +811,9 @@
 		F460323D20757AE6006C5358 /* XIB */ = {
 			isa = PBXGroup;
 			children = (
+				6B9AB30120D32A89005C8E15 /* ACRButton.xib */,
+				6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */,
 				F4603237207575A3006C5358 /* ACRLabelView.xib */,
-				F460323E20757C57006C5358 /* ACRButton.xib */,
 				F460324020757F38006C5358 /* ACRTextField.xib */,
 				F460324420758583006C5358 /* ACRDatePicker.xib */,
 				F460324620759519006C5358 /* ACRDateTextField.xib */,
@@ -1030,11 +1033,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F460324520758583006C5358 /* ACRDatePicker.xib in Resources */,
+				6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */,
 				F46032492075997D006C5358 /* ACRInputTableView.xib in Resources */,
-				F460323F20757C57006C5358 /* ACRButton.xib in Resources */,
 				F4603238207575C7006C5358 /* ACRLabelView.xib in Resources */,
 				F460324720759519006C5358 /* ACRDateTextField.xib in Resources */,
 				F460324120757F38006C5358 /* ACRTextField.xib in Resources */,
+				6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
