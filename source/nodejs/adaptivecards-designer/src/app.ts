@@ -65,6 +65,7 @@ function updateCardFromJson() {
         if (!preventCardUpdate && isMonacoEditorLoaded) {
             app.card.parse(JSON.parse(monacoEditor.getValue()));
             app.designer.render();
+            app.buildTreeViewSheet(app.designer.selectedPeer);
         }
     }
     finally {
