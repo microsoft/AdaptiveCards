@@ -33,7 +33,7 @@ using namespace AdaptiveCards;
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateStyle = dateStyle;
         formatter.locale = [NSLocale currentLocale];        
-        UIDatePicker *picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];//[[UIDatePicker alloc] init];
+        UIDatePicker *picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
         
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];

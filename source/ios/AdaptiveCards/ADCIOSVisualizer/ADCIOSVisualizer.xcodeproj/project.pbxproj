@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30184A9720D1B298001C5A68 /* InputsFormWithHeightStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30184A9620D1B298001C5A68 /* InputsFormWithHeightStretch.json */; };
 		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		30860BC320C9B5C9009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BB720C9B5C8009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */; };
 		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -127,7 +126,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		30184A9620D1B298001C5A68 /* InputsFormWithHeightStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = InputsFormWithHeightStretch.json; path = ../../../../samples/Tests/InputsFormWithHeightStretch.json; sourceTree = "<group>"; };
 		30860BB720C9B5C8009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.ChoiceSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.ChoiceSet.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BB920C9B5C8009F9D99 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BBA20C9B5C8009F9D99 /* ColumnSet.Input.Number.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.Number.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.Number.VerticalStretch.json; sourceTree = "<group>"; };
@@ -346,7 +344,6 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
-				30184A9620D1B298001C5A68 /* InputsFormWithHeightStretch.json */,
 				30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */,
 				30860BBE20C9B5C8009F9D99 /* ColumnSet.FactSet.VerticalStretch.json */,
 				30860BBB20C9B5C8009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json */,
@@ -526,7 +523,6 @@
 				F4933CDE1F79852C00F6EBFD /* Input.Number.json in Resources */,
 				F4933CE41F79852C00F6EBFD /* TextBlock.Color.json in Resources */,
 				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
-				30184A9720D1B298001C5A68 /* InputsFormWithHeightStretch.json in Resources */,
 				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,

@@ -70,7 +70,7 @@ using namespace AdaptiveCards;
         if(config){
             _hostConfig = config;
         }
-        return [self render];
+        [self render];
     }
     return self;
 }
@@ -107,30 +107,24 @@ using namespace AdaptiveCards;
     if(!backgroundImage.empty()){
         imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
     }
-    UIView *containingView;
-    
     if (imgUrl){
         NSURL *url = [NSURL URLWithString:imgUrl];
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
         if(img){
             ACRUIImageView *imgView = [[ACRUIImageView alloc] initWithImage:img];
-            //[imgView addSubview:newView];
-            //[imgView sendSubviewToBack:newView];
+            [newView addSubview:imgView];
+            [newView sendSubviewToBack:imgView];
             [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            containingView = imgView;
-        } else {
-            containingView = [[UIView alloc] init];
-            [containingView addSubview:newView];
+            [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]", nil];
+            NSDictionary *viewMap = NSDictionaryOfVariableBindings(imgView);
+            for(NSString *constraint in visualFormats){
+                [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+            }
         }
-        /*
-        [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:newView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0].active = YES;
-        [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:newView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0].active = YES;
-         */ 
-    } else {
-        return newView;
     }
     [self callDidLoadElementsIfNeeded];
-    return containingView;
+    return newView;
 }
 
 - (void)waitForAsyncTasksToFinish
@@ -308,7 +302,6 @@ using namespace AdaptiveCards;
                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
                 data = @{@"html" : htmlData, @"options" : options};
             } else {
-<<<<<<< Updated upstream
                 int fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
                 // sanity check, 400 is the normal font;
                 if(fontweight <= 0 || fontweight > 900){
@@ -321,13 +314,6 @@ using namespace AdaptiveCards;
                     const NSArray<NSNumber *> *fontweights = @[@(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
                        @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack)];
                     font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:[fontweights[fontweight] floatValue]];
-=======
-
-                float fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
-                fontweight = (fontweight - 400);
-                if(fontweight > 0) {
-                    fontweight /= 500;
->>>>>>> Stashed changes
                 } else {
                     // font weight as string since font weight as double doesn't work
                     // normailze fontweight for indexing

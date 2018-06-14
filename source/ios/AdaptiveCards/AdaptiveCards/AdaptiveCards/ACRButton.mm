@@ -25,15 +25,9 @@
     NSBundle* bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     UIButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    [button setBackgroundColor:[UIColor colorWithRed:0.0
-                                               green:122.0/255.0
-                                                blue:1.0
-                                               alpha:1.0]];
 
     CGSize contentSize = [button.titleLabel intrinsicContentSize];
     [button setFrame:CGRectMake(0, 0, contentSize.width, contentSize.height)];
-    [button setContentEdgeInsets:UIEdgeInsetsMake(5,5,5,5)];
 
     std::shared_ptr<AdaptiveCards::BaseActionElement> action = [acoAction element];
     if([iconUrl length] != 0)
