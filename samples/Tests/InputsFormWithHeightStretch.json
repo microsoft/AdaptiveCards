@@ -70,7 +70,7 @@
 							"type": "Image",
 							"url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg",
 							"size": "auto",
-                            "height": "stretch"
+							"height": "stretch"
 						}
 					]
 				}
