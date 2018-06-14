@@ -12,7 +12,7 @@ body {
     overflow: hidden;
 }
 
-.toolbar-button {
+.toolbar-btn {
     padding: 11px;
     border: 1px solid transparent;
     font-style: normal;
@@ -20,21 +20,21 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: default;
+    cursor: pointer;
     user-select: none;
 }
 
-.toolbar-icon-card:before {
+.toolbar-btn:hover {
+    background-color: white;
+}
+
+.toolbar-btn:active {
+    border: 1px solid black;
+}
+
+.toolbar-btn__icon-card:before {
     font-family: 'FabricMDL2Icons';
     font-size: 20px;
     margin-right: 6px;
     content: "\F321";
-}
-
-.toolbar-button:hover {
-    background-color: white;
-}
-
-.toolbar-button:active {
-    border: 1px solid black;
 }
