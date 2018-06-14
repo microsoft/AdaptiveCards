@@ -29,6 +29,7 @@
 #include <CppCoreCheck\warnings.h>
 #pragma warning(disable: ALL_CPPCORECHECK_WARNINGS)
 #pragma warning(default: CPPCORECHECK_ARITHMETIC_WARNINGS)
+#pragma warning(default: CPPCORECHECK_CLASS_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONCURRENCY_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONST_WARNINGS)
 #pragma warning(default: CPPCORECHECK_DECLARATION_WARNINGS)
@@ -38,6 +39,4 @@
 // ECppCoreCheckWarningCodes::WARNING_MEMBER_UNINIT
 #pragma warning(default: 26495)
 
-// ECppCoreCheckWarningCodes::WARNING_DEFINE_OR_DELETE_SPECIAL_OPS
-#pragma warning(default: 26432)
 #endif

@@ -11,8 +11,8 @@ class Column : public BaseCardElement
 public:
     Column();
 
-    virtual std::string Serialize() const;
-    virtual Json::Value SerializeToJsonValue() const override;
+    std::string Serialize() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     static std::shared_ptr<Column> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
@@ -47,10 +47,10 @@ public:
     VerticalContentAlignment GetVerticalContentAlignment() const;
     void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
+    void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_width;
     unsigned int m_pixelWidth;
