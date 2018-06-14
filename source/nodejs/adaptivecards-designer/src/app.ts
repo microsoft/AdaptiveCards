@@ -1,3 +1,4 @@
+import * as Clipboard from "clipboard";
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
 import * as Constants from "./constants";
@@ -144,6 +145,10 @@ class DesignerApp {
             const listItems = this._treeViewComponent.generateTreeViewElements(items, peer);
             treeview.appendChild(listItems);
         }
+    }
+
+    public copyJson(): void {
+
     }
 
     private buildPropertySheet(peer: Designer.DesignerPeer) {
@@ -320,17 +325,6 @@ class DesignerApp {
         return this._hostContainerPicker;
     }
 
-    newCard() {
-        let card = {
-            type: "AdaptiveCard",
-            version: "1.0",
-            body: [
-            ]
-        }
-
-        monacoEditor.setValue(JSON.stringify(card, null, 4));
-    }
-
     handlePointerMove(e: PointerEvent) {
         this._currentMousePosition = { x: e.x, y: e.y };
 
@@ -462,9 +456,13 @@ var propertyVerticalSplitter: Splitter;
 var treeViewVerticalSplitter: Splitter;
 
 window.onload = () => {
-    document.getElementById("btnNewCard").onclick = (e) => {
-        app.newCard();
-    }
+    //document.querySelector(".js-copy-json").addEventListener("click", () => app.copyJson());
+
+    new Clipboard('.js-copy-json', {
+        text: function() {
+            return JSON.stringify(app.card.toJSON(), null, 4);
+        }
+    });
 
     horizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
     horizontalSplitter.onRezized = (splitter: Splitter) => {
