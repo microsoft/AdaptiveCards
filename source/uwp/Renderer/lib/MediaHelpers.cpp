@@ -344,7 +344,7 @@ HRESULT HandleMediaClick(
             ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
 
-            // And call the resolver to get the image stream
+            // Call the resolver to get the media stream
             ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
             RETURN_IF_FAILED(resourceResolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
 
