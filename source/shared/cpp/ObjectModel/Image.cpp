@@ -255,9 +255,11 @@ void Image::PopulateKnownPropertiesSet()
         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
 }
 
-void Image::GetResourceUris(std::vector<std::string>& resourceUris)
+void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
-    auto url = GetUrl();
-    resourceUris.push_back(url);
+    RemoteResourceInformation imageResourceInfo;
+    imageResourceInfo.url = GetUrl();
+    imageResourceInfo.resourceType = CardElementType::Image;
+    resourceInfo.push_back(imageResourceInfo);
     return;
 }

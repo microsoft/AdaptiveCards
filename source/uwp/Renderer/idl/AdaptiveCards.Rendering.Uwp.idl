@@ -98,6 +98,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveTextInputRenderer;
     runtimeclass AdaptiveTimeInputRenderer;
     runtimeclass AdaptiveToggleInputRenderer;
+    runtimeclass AdaptiveRemoteResourceInformation;
 
     runtimeclass WholeItemsPanel;
 
@@ -452,6 +453,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>;
     }
 
     [
@@ -489,6 +491,43 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveRemoteResourceInformation),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(6E1610FE-E49E-47B9-BCF6-BAB6C893D57F),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(384C6E7C-B5AC-4A6C-A6F4-F060C1AD583E),
+#endif
+    ]
+    interface IAdaptiveRemoteResourceInformation : IInspectable
+    {
+        [propget] HRESULT Url([out, retval] HSTRING* value);
+        [propput] HRESULT Url([in] HSTRING value);
+
+        [propget] HRESULT ResourceType([out, retval] ElementType* value);
+        [propput] HRESULT ResourceType([in] ElementType value);
+
+        [propget] HRESULT MimeType([out, retval] HSTRING* value);
+        [propput] HRESULT MimeType([in] HSTRING value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveRemoteResourceInformation
+    {
+        [default] interface IAdaptiveRemoteResourceInformation;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(1D37C30F-9180-4CEF-A73C-C77ED00176DB),
         contract(InternalContract, 1),
@@ -499,7 +538,7 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveElementWithRemoteResources : IInspectable
     {
-        HRESULT GetResourceUris([out, retval] Windows.Foundation.Collections.IVectorView<Windows.Foundation.Uri*>** result);
+        HRESULT GetResourceInformation([out, retval] Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation*>** result);
     };
 
     [
@@ -711,7 +750,7 @@ AdaptiveNamespaceStart
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
 
-        HRESULT GetResourceUris([out, retval] Windows.Foundation.Collections.IVectorView<Windows.Foundation.Uri*>** result);
+        HRESULT GetResourceInformation([out, retval] Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation*>** result);
     };
 
     [

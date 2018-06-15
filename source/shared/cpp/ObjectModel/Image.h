@@ -41,7 +41,7 @@ public:
     unsigned int GetPixelHeight() const;
     void SetPixelHeight(unsigned int value);
 
-    void GetResourceUris(std::vector<std::string>& resourceUris) override;
+    void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
 private:
     void PopulateKnownPropertiesSet() override;

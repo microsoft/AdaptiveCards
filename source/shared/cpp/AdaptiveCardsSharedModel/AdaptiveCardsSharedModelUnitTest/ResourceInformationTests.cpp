@@ -15,20 +15,50 @@ namespace AdaptiveCardsSharedModelUnitTest
 {
     TEST_CLASS(GatherImagesTest)
     {
+    private:
+        void ValidateResourceInformation(
+            std::vector<RemoteResourceInformation>& expectedValues,
+            std::vector<RemoteResourceInformation>& resourceInfos)
+        {
+            Assert::AreEqual(expectedValues.size(), resourceInfos.size());
+
+            for (auto expectedValue : expectedValues)
+            {
+                bool found = false;
+                for (auto resourceInfo : resourceInfos)
+                {
+                    if (resourceInfo.url == expectedValue.url &&
+                        resourceInfo.resourceType == expectedValue.resourceType &&
+                        resourceInfo.mimeType == expectedValue.mimeType)
+                    {
+                        found = true;
+                    }
+                }
+
+                if (!found)
+                {
+                    Assert::Fail(L"Expected resource information not found");
+                }
+            }
+        }
+
     public:
         TEST_METHOD(CanGatherImages)
         {
             // Expected images to find in the card
-            std::vector<std::string> expectedValues = {
-                "BackgroundImage.png",
-                "Image.png",
-                "ImageSet.Image1.png",
-                "ImageSet.Image2.png",
-                "Container.Image1.png",
-                "Container.Image2.png",
-                "ColumnSet.Column1.Image.png",
-                "ColumnSet.Column2.Image.png",
-                "ShowCard.Image.png"
+            std::vector<RemoteResourceInformation> expectedValues = {
+                {"BackgroundImage.png", CardElementType::Image, ""},
+                { "Image.png", CardElementType::Image, "" },
+                { "ImageSet.Image1.png", CardElementType::Image, "" },
+                { "ImageSet.Image2.png", CardElementType::Image, "" },
+                { "Container.Image1.png", CardElementType::Image, "" },
+                { "Container.Image2.png", CardElementType::Image, "" },
+                { "ColumnSet.Column1.Image.png", CardElementType::Image, "" },
+                { "ColumnSet.Column2.Image.png", CardElementType::Image, "" },
+                { "ShowCard.Image.png", CardElementType::Image, "" },
+                { "Media.Poster.png", CardElementType::Image, "" },
+                { "Media1.mp4", CardElementType::Media, "video/mp4" },
+                { "Media2.ogg", CardElementType::Media, "video/ogg" },
             };
 
             // Test card containing all supported image locations
@@ -42,6 +72,20 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {\
                         \"type\": \"Image\",\
                         \"url\": \"Image.png\"\
+                    },\
+                    {\
+                        \"type\": \"Media\",\
+                        \"poster\": \"Media.Poster.png\",\
+                        \"sources\" : [ \
+                            {\
+                                \"mimeType\": \"video/mp4\",\
+                                \"url\" : \"Media1.mp4\"\
+                            },\
+                            {\
+                                \"mimeType\": \"video/ogg\",\
+                                \"url\" : \"Media2.ogg\"\
+                            }\
+                        ]\
                     },\
                     {\
                         \"type\": \"ImageSet\",\
@@ -119,28 +163,18 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
 
             // Parse the card and get the image uris
-            auto imageUris = AdaptiveCard::DeserializeFromString(testJsonString, 1.0)->GetAdaptiveCard()->GetResourceUris();
-
-            // Confirm we find the expected images
-            Assert::AreEqual(expectedValues.size(), imageUris.size());
-
-            for (auto expectedValue : expectedValues)
-            {
-                if (imageUris.end() == std::find(imageUris.begin(), imageUris.end(), expectedValue))
-                {
-                    Assert::Fail(L"Expected image not found");
-                }
-            }
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0)->GetAdaptiveCard()->GetResourceInformation();
+            ValidateResourceInformation(expectedValues, resourceInformation);
         }
 
         TEST_METHOD(CanGatherCustomImages)
         {
             // Expected images to find in the card
-            std::vector<std::string> expectedValues = {
-                "BackgroundImage.png",
-                "Image.png",
-                "Custom.png",
-                "Action.Custom.png"
+            std::vector<RemoteResourceInformation> expectedValues = {
+                { "BackgroundImage.png", CardElementType::Image, "" },
+                { "Image.png", CardElementType::Image, "" },
+                { "Custom.png", CardElementType::Image, "" },
+                { "Action.Custom.png", CardElementType::Image, "" },
             };
 
             // Test card containing custom element and action with images
@@ -181,9 +215,12 @@ namespace AdaptiveCardsSharedModelUnitTest
                         m_customImage = value.get("customImageProperty", Json::Value()).asString();
                     }
 
-                    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override
+                    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override
                     {
-                        resourceUris.push_back(m_customImage);
+                        RemoteResourceInformation resourceInfo;
+                        resourceInfo.url = m_customImage;
+                        resourceInfo.resourceType = CardElementType::Image;
+                        resourceUris.push_back(resourceInfo);
                     }
 
                 private:
@@ -226,18 +263,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             actionRegistration->AddParser("CustomActionWithImage", std::make_shared<TestCustomActionParser>());
 
             // Parse the card and get the image uris
-            auto imageUris = AdaptiveCard::DeserializeFromString(testJsonString, 1.0, elementRegistration, actionRegistration)->GetAdaptiveCard()->GetResourceUris();
-
-            // Confirm we find the expected images
-            Assert::AreEqual(expectedValues.size(), imageUris.size());
-
-            for (auto expectedValue : expectedValues)
-            {
-                if (imageUris.end() == std::find(imageUris.begin(), imageUris.end(), expectedValue))
-                {
-                    Assert::Fail(L"Expected image not found");
-                }
-            }
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0, elementRegistration, actionRegistration)->GetAdaptiveCard()->GetResourceInformation();
+            ValidateResourceInformation(expectedValues, resourceInformation);
         }
     };
 }
