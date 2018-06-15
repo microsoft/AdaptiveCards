@@ -2,6 +2,7 @@
 #include "XamlHelpers.h"
 #include "XamlBuilder.h"
 #include "AdaptiveImage.h"
+#include "AdaptiveCardGetResourceStreamArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -14,6 +15,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Shapes;
+using namespace ABI::Windows::Storage::Streams;
 
 const DOUBLE c_playIconSize = 30;
 const DOUBLE c_playIconCornerRadius = 5;
@@ -223,7 +225,8 @@ void CreatePosterContainerWithPlayButton(
 void GetMediaSource(
     IAdaptiveHostConfig* hostConfig,
     IAdaptiveMedia* adaptiveMedia,
-    IUriRuntimeClass** mediaSourceUrl)
+    IUriRuntimeClass** mediaSourceUrl,
+    HSTRING * mimeType)
 {
     LPWSTR supportedMimeTypes[] =
     {
@@ -276,5 +279,102 @@ void GetMediaSource(
         GetUrlFromString(hostConfig, url.Get(), sourceUrl.GetAddressOf());
 
         THROW_IF_FAILED(sourceUrl.CopyTo(mediaSourceUrl));
+        THROW_IF_FAILED(selectedSource->get_MimeType(mimeType));
     }
+}
+
+HRESULT HandleMediaResourceResolverCompleted(
+    IAsyncOperation<IRandomAccessStream*>* operation,
+    AsyncStatus status,
+    IMediaElement* mediaElement,
+    HSTRING mimeType)
+{
+    if (status == AsyncStatus::Completed)
+    {
+        // Get the random access stream
+        ComPtr<IRandomAccessStream> randomAccessStream;
+        RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
+
+        if (randomAccessStream != nullptr)
+        {
+            RETURN_IF_FAILED(mediaElement->SetSource(randomAccessStream.Get(), mimeType));
+        }
+    }
+    return S_OK;
+}
+
+HRESULT HandleMediaClick(
+    IAdaptiveRenderContext* renderContext,
+    IAdaptiveMedia* adaptiveMedia,
+    IMediaElement* mediaElement,
+    IUIElement* posterContainer,
+    IUriRuntimeClass* mediaSourceUrl,
+    HSTRING mimeType,
+    IAdaptiveMediaEventInvoker* mediaInvoker)
+{
+    // When the user clicks: hide the poster, show the media element, open and play the media
+    if (mediaElement)
+    {
+        RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+
+        ComPtr<IMediaElement> localMediaElement{ mediaElement };
+        ComPtr<IUIElement> mediaAsUIElement;
+        RETURN_IF_FAILED(localMediaElement.As(&mediaAsUIElement));
+        RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
+
+        ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
+        THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
+
+        ComPtr<IAdaptiveCardResourceResolver> resourceResolver;
+        if (resourceResolvers != nullptr)
+        {
+            HString schemeName;
+            THROW_IF_FAILED(mediaSourceUrl->get_SchemeName(schemeName.GetAddressOf()));
+            THROW_IF_FAILED(resourceResolvers->Get(schemeName.Get(), &resourceResolver));
+        }
+
+        if (resourceResolver == nullptr)
+        {
+            // If there isn't a resource resolver, put the source directly. 
+            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl));    
+        }
+        else
+        {
+            // Create the arguments to pass to the resolver
+            ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
+
+            // Call the resolver to get the media stream
+            ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
+            RETURN_IF_FAILED(resourceResolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
+
+            // Take a reference to the mime type string for the lambda
+            HSTRING lambdaMimeType;
+            WindowsDuplicateString(mimeType, &lambdaMimeType);
+
+            RETURN_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
+                ([localMediaElement, lambdaMimeType](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
+            {
+                // Take ownership of the passed in HSTRING
+                HString localMimeType;
+                localMimeType.Attach(lambdaMimeType);
+
+                return HandleMediaResourceResolverCompleted(operation, status, localMediaElement.Get(), lambdaMimeType);
+            }).Get()));
+        }
+
+        EventRegistrationToken mediaOpenedToken;
+        THROW_IF_FAILED(mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        {
+            RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
+            RETURN_IF_FAILED(mediaElement->Play());
+            return S_OK;
+        }).Get(), &mediaOpenedToken));
+    }
+    else
+    {
+        RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
+    }
+
+    return S_OK;
 }
