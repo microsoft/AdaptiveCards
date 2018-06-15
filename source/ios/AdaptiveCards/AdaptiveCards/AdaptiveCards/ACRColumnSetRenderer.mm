@@ -53,9 +53,12 @@
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
 
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
+    auto firstColumn = columns.begin();
     for(std::shared_ptr<Column> column:columns)
     {
-        [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
+        if(*firstColumn != column) {
+            [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
+        }
         [acoColumn setElem:column];
         curView = (ACRColumnView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
 
@@ -76,10 +79,10 @@
                 relativeColumnWidth = std::stof(column->GetWidth());
                 if(prevRelColumnWidth)
                     multiplier = relativeColumnWidth / prevRelColumnWidth;
-                
+
                 if(prevView && prevRelColumnWidth)
                 {
-                    
+
                     [constraints addObject:
                      [NSLayoutConstraint constraintWithItem:curView
                                                   attribute:NSLayoutAttributeWidth
@@ -90,11 +93,11 @@
                                                    constant:0]];
                     prevRelColumnWidth = relativeColumnWidth;
                 }
-             
-        if( curView.hasStretchableView ){
-            [columnSetView setAlignmentForColumnStretch];
-        }
-        
+
+                if(curView.hasStretchableView){
+                    [columnSetView setAlignmentForColumnStretch];
+                }
+
                 prevView = curView;
                 prevRelColumnWidth = relativeColumnWidth;
             }
