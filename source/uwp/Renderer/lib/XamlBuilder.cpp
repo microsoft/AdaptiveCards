@@ -2792,12 +2792,15 @@ AdaptiveNamespaceStart
         ComPtr<IUIElement> posterContainer;
         CreatePosterContainerWithPlayButton(posterImage.Get(), renderContext, renderArgs, &posterContainer);
 
+        ComPtr<IUIElement> touchTargetUIElement;
+        WrapInTouchTarget(adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, &touchTargetUIElement);
+
         // Create a panel to hold the poster and the media element
         ComPtr<IStackPanel> mediaStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IPanel> mediaPanel;
         THROW_IF_FAILED(mediaStackPanel.As(&mediaPanel));
 
-        XamlHelpers::AppendXamlElementToPanel(posterContainer.Get(), mediaPanel.Get());
+        XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement.Get(), mediaPanel.Get());
 
         // Check if this host allows inline playback
         ComPtr<IAdaptiveMediaConfig> mediaConfig;
@@ -2866,9 +2869,6 @@ AdaptiveNamespaceStart
         ComPtr<IUIElement> mediaPanelAsUIElement;
         THROW_IF_FAILED(mediaPanel.As(&mediaPanelAsUIElement));
 
-        ComPtr<IUIElement> touchTargetUIElement;
-        WrapInTouchTarget(adaptiveCardElement, mediaPanelAsUIElement.Get(), nullptr, renderContext, true, &touchTargetUIElement);
-
         ComPtr<IButtonBase> touchTargetAsButtonBase;
         THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
 
@@ -2893,7 +2893,7 @@ AdaptiveNamespaceStart
             return HandleMediaClick(lambdaRenderContext.Get(), adaptiveMedia.Get(), mediaElement.Get(), posterContainer.Get(), mediaSourceUrl.Get(), lambdaMimeType, mediaInvoker.Get());
         }).Get(), &clickToken));
 
-        THROW_IF_FAILED(touchTargetUIElement.CopyTo(mediaControl));
+        THROW_IF_FAILED(mediaPanelAsUIElement.CopyTo(mediaControl));
     }
 
     bool XamlBuilder::SupportsInteractivity(IAdaptiveHostConfig* hostConfig)
