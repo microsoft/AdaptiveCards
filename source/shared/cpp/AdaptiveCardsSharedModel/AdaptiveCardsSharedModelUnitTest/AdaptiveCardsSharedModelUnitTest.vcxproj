@@ -165,6 +165,7 @@
     <ClCompile Include="ResourceInformationTests.cpp" />
     <ClCompile Include="MarkDownUnitTest.cpp" />
     <ClCompile Include="ObjectModelTest.cpp" />
+    <ClCompile Include="ParseUtilTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
