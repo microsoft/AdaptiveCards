@@ -128,12 +128,12 @@ void Container::PopulateKnownPropertiesSet()
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items)});
 }
 
-void Container::GetResourceUris(std::vector<std::string>& resourceUris)
+void Container::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto items = GetItems();
     for (auto item : items)
     {
-        item->GetResourceUris(resourceUris);
+        item->GetResourceInformation(resourceInfo);
     }
     return;
 }

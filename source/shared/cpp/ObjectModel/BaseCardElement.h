@@ -6,6 +6,7 @@
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
 #include "Separator.h"
+#include "RemoteResourceInformation.h"
 
 namespace AdaptiveSharedNamespace {
 class Container;
@@ -38,7 +39,7 @@ public:
 
     virtual const CardElementType GetElementType() const;
 
-    std::string Serialize() const;
+    virtual std::string Serialize() const;
     virtual Json::Value SerializeToJsonValue() const;
 
     template <typename T>
@@ -47,7 +48,7 @@ public:
     Json::Value GetAdditionalProperties() const;
     void SetAdditionalProperties(const Json::Value &additionalProperties);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris);
+    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
 
 protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
@@ -55,7 +56,7 @@ protected:
     std::unordered_set<std::string> m_knownProperties;
 
 private:
-    void PopulateKnownPropertiesSet();
+    virtual void PopulateKnownPropertiesSet();
 
     CardElementType m_type;
     Spacing m_spacing;

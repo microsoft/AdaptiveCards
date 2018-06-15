@@ -34,7 +34,8 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
-    ACRTextField *txtInput = [[ACRTextField alloc] init];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    ACRTextField *txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
     NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
                                                 encoding:NSUTF8StringEncoding];
     txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
@@ -42,12 +43,11 @@
     txtInput.placeholder = placeHolderStr;
     txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
     txtInput.allowsEditingTextAttributes = YES;
-    txtInput.borderStyle = UITextBorderStyleLine;
     txtInput.isRequired  = inputBlck->GetIsRequired();
     txtInput.delegate = txtInput;
 
     [txtInput setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-   
+
     switch(inputBlck->GetTextInputStyle())
     {
         case TextInputStyle::Text:
@@ -84,7 +84,19 @@
         }
     }
 
-    [viewGroup addArrangedSubview: txtInput];
+    if(elem->GetHeight() == HeightType::Stretch){
+        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
+        [textInputContainer addArrangedSubview: txtInput];
+
+        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+        UIView *blankTrailingSpace = [[UIView alloc] init];
+        [textInputContainer addArrangedSubview:blankTrailingSpace];
+        [textInputContainer adjustHuggingForLastElement];
+
+        [viewGroup addArrangedSubview: textInputContainer];
+    } else {
+        [viewGroup addArrangedSubview:txtInput];
+    }
 
     txtInput.translatesAutoresizingMaskIntoConstraints = false;
 

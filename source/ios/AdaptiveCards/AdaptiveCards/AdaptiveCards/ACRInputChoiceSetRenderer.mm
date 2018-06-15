@@ -26,7 +26,7 @@
     return ACRChoiceSetInput;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
@@ -53,27 +53,34 @@
 
     UIView *inputView = (UIView *)choiceSetView;
 
-    if(viewGroup)
-    {
-        [(UIStackView *)viewGroup addArrangedSubview:inputView];
+    if(elem->GetHeight() == HeightType::Stretch){
+        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
+        [textInputContainer addArrangedSubview: inputView];
+
+        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+        UIView *blankTrailingSpace = [[UIView alloc] init];
+        [textInputContainer addArrangedSubview:blankTrailingSpace];
+        [textInputContainer adjustHuggingForLastElement];
+
+        [viewGroup addArrangedSubview: textInputContainer];
+    } else {
+        [viewGroup addArrangedSubview:inputView];
     }
 
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeLeading
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeLeading
-                                 multiplier:1.0
-                                   constant:0]];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeTrailing
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeTrailing
-                                 multiplier:1.0
-                                   constant:0]];
+    [NSLayoutConstraint constraintWithItem:inputView
+                                 attribute:NSLayoutAttributeLeading
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:viewGroup
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0
+                                  constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:inputView
+                                 attribute:NSLayoutAttributeTrailing
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:viewGroup
+                                 attribute:NSLayoutAttributeTrailing
+                                multiplier:1.0
+                                  constant:0].active = YES;
 
     return inputView;
 }

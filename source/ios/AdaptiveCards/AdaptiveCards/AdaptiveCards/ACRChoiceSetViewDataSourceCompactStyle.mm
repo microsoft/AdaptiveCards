@@ -60,17 +60,15 @@ using namespace AdaptiveCards;
 // creates top view that hides selection table
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"tabCellId";
+    static NSString *identifier = @"cellForCompactMode";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:identifier];
+        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+        [tableView registerNib:[UINib nibWithNibName:@"ACRCellForCompactMode" bundle:bundle] forCellReuseIdentifier:identifier];
+        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     }
-    NSString *title = @"Make Choice";
-    cell.textLabel.text = title;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+
     return cell;
 }
 

@@ -2809,14 +2809,15 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveMediaEventInvoker> mediaInvoker;
         THROW_IF_FAILED(renderContext->get_MediaEventInvoker(&mediaInvoker));
 
+        HString mimeType;
         ComPtr<IMediaElement> mediaElement;
+        ComPtr<IUriRuntimeClass> mediaSourceUrl;
         if (allowInlinePlayback)
         {
             // Create a media element and set it's source
             mediaElement = XamlHelpers::CreateXamlClass<IMediaElement>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
 
-            ComPtr<IUriRuntimeClass> mediaSourceUrl;
-            GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf());
+            GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf(), mimeType.GetAddressOf());
 
             if (mediaSourceUrl == nullptr)
             {
@@ -2825,9 +2826,6 @@ AdaptiveNamespaceStart
                     HStringReference(L"Unsupported media element dropped").Get());
                 return;
             }
-
-            // TODO: Support loading media via resource resolvers
-            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl.Get()));
 
             // Configure Auto Play and Controls
             ComPtr<IFrameworkElement> mediaAsFrameworkElement;
@@ -2874,24 +2872,25 @@ AdaptiveNamespaceStart
         ComPtr<IButtonBase> touchTargetAsButtonBase;
         THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
 
-        // When the user clicks: hide the poster, show the media element, play the media
+        // Take a reference to the mime type string for the lambda
+        HSTRING lambdaMimeType;
+        WindowsDuplicateString(mimeType.Get(), &lambdaMimeType);
+        ComPtr<IAdaptiveRenderContext> lambdaRenderContext{ renderContext };
+
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([posterContainer, mediaElement, mediaInvoker, adaptiveMedia](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([touchTargetUIElement, lambdaRenderContext, adaptiveMedia, mediaElement, posterContainer, mediaSourceUrl, lambdaMimeType, mediaInvoker](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
         {
-            if (mediaElement)
-            {
-                RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+            // Take ownership of the passed in HSTRING
+            HString localMimeType;
+            localMimeType.Attach(lambdaMimeType);
 
-                ComPtr<IUIElement> mediaAsUIElement;
-                RETURN_IF_FAILED(mediaElement.As(&mediaAsUIElement));
-                RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
+            // Turn off the button to prevent extra clicks
+            ComPtr<ABI::Windows::UI::Xaml::Controls::IControl> buttonAsControl;
+            touchTargetUIElement.As(&buttonAsControl);
+            RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(false));
 
-                RETURN_IF_FAILED(mediaElement->Play());
-            }
-
-            RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia.Get()));
-
-            return S_OK;
+            // Handle the click
+            return HandleMediaClick(lambdaRenderContext.Get(), adaptiveMedia.Get(), mediaElement.Get(), posterContainer.Get(), mediaSourceUrl.Get(), lambdaMimeType, mediaInvoker.Get());
         }).Get(), &clickToken));
 
         THROW_IF_FAILED(touchTargetUIElement.CopyTo(mediaControl));
