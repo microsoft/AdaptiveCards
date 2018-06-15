@@ -805,7 +805,7 @@ std::string WstringToString(const std::wstring& input)
     return utfConverter.to_bytes(input);
 }
 
-void RemoteResourceElementToUriInformationVector(
+void RemoteResourceElementToRemoteResourceInformationVector(
     ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResourceElement,
     std::vector<RemoteResourceInformation>& resourceUris)
 {

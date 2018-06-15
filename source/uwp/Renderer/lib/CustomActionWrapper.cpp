@@ -55,7 +55,7 @@ void CustomActionWrapper::GetResourceInformation(std::vector<RemoteResourceInfor
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources> remoteResources;
     if (SUCCEEDED(m_actionElement.As(&remoteResources)))
     {
-        RemoteResourceElementToUriInformationVector(remoteResources.Get(), resourceInfo);
+        RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
     }
 }
 AdaptiveNamespaceEnd

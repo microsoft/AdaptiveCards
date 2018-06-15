@@ -167,7 +167,7 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     return inner;
 }
 
-void RemoteResourceElementToUriInformationVector(
+void RemoteResourceElementToRemoteResourceInformationVector(
     ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResources,
     std::vector<RemoteResourceInformation>& resourceUris);
 

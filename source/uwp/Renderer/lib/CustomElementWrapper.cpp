@@ -61,7 +61,7 @@ AdaptiveNamespaceStart
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources> remoteResources;
         if (SUCCEEDED(m_cardElement.As(&remoteResources)))
         {
-            RemoteResourceElementToUriInformationVector(remoteResources.Get(), resourceInfo);
+            RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
         }
     }
 
