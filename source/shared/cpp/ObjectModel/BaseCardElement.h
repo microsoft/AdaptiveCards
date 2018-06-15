@@ -39,7 +39,7 @@ public:
 
     virtual const CardElementType GetElementType() const;
 
-    std::string Serialize() const;
+    virtual std::string Serialize() const;
     virtual Json::Value SerializeToJsonValue() const;
 
     template <typename T>
@@ -56,7 +56,7 @@ protected:
     std::unordered_set<std::string> m_knownProperties;
 
 private:
-    void PopulateKnownPropertiesSet();
+    virtual void PopulateKnownPropertiesSet();
 
     CardElementType m_type;
     Spacing m_spacing;

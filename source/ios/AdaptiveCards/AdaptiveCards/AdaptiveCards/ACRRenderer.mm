@@ -182,7 +182,9 @@ using namespace AdaptiveCards;
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
-
+    
+    UIView *prevStretchableElem = nil, *curStretchableElem = nil;
+    
     for(const auto &elem:elems)
     {
         [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:[config getHostConfig]];
@@ -197,7 +199,29 @@ using namespace AdaptiveCards;
         }
 
         [acoElem setElem:elem];
-        [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+        
+        curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+        
+        if(elem->GetHeight() == HeightType::Stretch){
+            if(prevStretchableElem){
+                NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
+                                             attribute:NSLayoutAttributeHeight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:prevStretchableElem
+                                             attribute:NSLayoutAttributeHeight
+                                            multiplier:1
+                                              constant:0];
+                heightConstraint.priority = UILayoutPriorityDefaultLow;
+                heightConstraint.active = YES;
+            }
+            
+            if([view isKindOfClass:[ACRColumnView class]]){
+                ACRColumnView *columnView = (ACRColumnView*)view;
+                columnView.hasStretchableView = YES;
+            }
+            
+            prevStretchableElem = curStretchableElem;
+        }
     }
 
     return view;

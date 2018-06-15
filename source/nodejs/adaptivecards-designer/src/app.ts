@@ -4,6 +4,7 @@ import * as Constants from "./constants";
 import * as Designer from "./card-designer";
 import { HostContainer } from "./containers/host-container";
 import { OutlookContainer } from "./containers/outlook-container";
+import { LightTeamsContainer, DarkTeamsContainer } from "./containers/teams-container";
 import { CortanaContainer } from "./containers/cortana-container";
 import { SkypeContainer } from "./containers/skype-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
@@ -24,6 +25,10 @@ function monacoEditorLoaded() {
     isMonacoEditorLoaded = true;
 
     updateJsonFromCard();
+}
+
+function getCurrentJsonPayload(): string {
+    return isMonacoEditorLoaded ? monacoEditor.getValue() : Constants.defaultPayload;
 }
 
 var jsonUpdateTimer: NodeJS.Timer;
@@ -59,9 +64,8 @@ function updateCardFromJson() {
     try {
         preventJsonUpdate = true;
 
-        if (!preventCardUpdate && isMonacoEditorLoaded) {
-            app.card.parse(JSON.parse(monacoEditor.getValue()));
-            app.designer.render();
+        if (!preventCardUpdate) {
+            app.designer.parseCard(getCurrentJsonPayload());
         }
     }
     finally {
@@ -77,29 +81,44 @@ function scheduleCardRefresh() {
     }
 }
 
-function updateDesignerLayout() {
-    app.designer.updateLayout(false);
-}
-
 function scheduleLayoutUpdate() {
     clearTimeout(updateLayoutTimer);
 
-    updateLayoutTimer = setTimeout(updateDesignerLayout, 50);
+    updateLayoutTimer = setTimeout(
+        () => {
+            app.designer.updateLayout(false);
+        },
+        50);
 }
 
 // Monaco loads asynchronously via a call to require() from index.html
 // App initialization needs to happen after.
 declare function loadMonacoEditor(schema: any, callback: () => void);
 
-class PaletteItem extends Designer.DraggableElement {
+abstract class BasePaletteItem extends Designer.DraggableElement {
+    protected abstract getText(): string;
+
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
         element.classList.add("acd-palette-item");
-        element.innerText = this.typeRegistration.typeName;
+        // element.innerText = this.typeRegistration.typeName;
+        element.innerText = this.getText();
 
         return element;
     }
 
+    cloneElement(): HTMLElement {
+        return this.internalRender();
+    }
+
+    abstract createPeer(designer: Designer.CardDesigner): Designer.CardElementPeer;
+}
+
+class ElementPaletteItem extends BasePaletteItem {
+    protected getText(): string {
+        return this.typeRegistration.typeName;
+    }
+    
     readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
 
     constructor(typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>) {
@@ -108,15 +127,45 @@ class PaletteItem extends Designer.DraggableElement {
         this.typeRegistration = typeRegistration;
     }
 
-    cloneElement(): HTMLElement {
-        return this.internalRender();
-    }
-
-    createPeer(): Designer.CardElementPeer {
-        var peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(null, this.typeRegistration.createInstance());
+    createPeer(designer: Designer.CardDesigner): Designer.CardElementPeer {
+        let peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(designer, null, this.typeRegistration.createInstance());
         peer.initializeCardElement();
 
         return peer;
+    }
+}
+
+class SnippetPaletteItem extends BasePaletteItem {
+    protected getText(): string {
+        return this.name;
+    }
+    
+    readonly name: string;
+    snippet: object;
+
+    constructor(name: string) {
+        super();
+
+        this.name = name;
+    }
+
+    createPeer(designer: Designer.CardDesigner): Designer.CardElementPeer {
+        if (this.snippet) {
+            let rootElementTypeName = this.snippet["type"];
+
+            if (rootElementTypeName) {
+                let adaptiveElement = Adaptive.AdaptiveCard.elementTypeRegistry.createInstance(rootElementTypeName);
+
+                if (adaptiveElement) {
+                    adaptiveElement.parse(this.snippet);
+
+                    let peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
+                    peer.initializeCardElement();
+            
+                    return peer;
+                }
+            }
+        }
     }
 }
 
@@ -124,7 +173,7 @@ class DesignerApp {
     private _designer: Designer.CardDesigner;
     private _designerHostElement: HTMLElement;
     private _paletteHostElement: HTMLElement;
-    private _draggedPaletteItem: PaletteItem;
+    private _draggedPaletteItem: BasePaletteItem;
     private _draggedElement: HTMLElement;
     private _currentMousePosition: Designer.IPoint;
     private _card: Adaptive.AdaptiveCard;
@@ -167,6 +216,22 @@ class DesignerApp {
             this.propertySheetHostElement.appendChild(card.render());
         }
     }
+
+    private addPaletteItem(paletteItem: BasePaletteItem) {
+        paletteItem.render();
+        paletteItem.onStartDrag = (sender: BasePaletteItem) => {
+            this._draggedPaletteItem = sender;
+
+            this._draggedElement = sender.cloneElement();
+            this._draggedElement.style.position = "absolute";
+            this._draggedElement.style.left = this._currentMousePosition.x + "px";
+            this._draggedElement.style.top = this._currentMousePosition.y + "px";
+
+            document.body.appendChild(this._draggedElement);
+        }
+
+        this.paletteHostElement.appendChild(paletteItem.renderedElement);
+    }
     
     private buildPalette() {
         if (this.paletteHostElement) {
@@ -190,21 +255,47 @@ class DesignerApp {
             )
 
             for (var i = 0; i < sortedRegisteredTypes.length; i++) {
-                var paletteItem = new PaletteItem(sortedRegisteredTypes[i]);
-                paletteItem.render();
-                paletteItem.onStartDrag = (sender: PaletteItem) => {
-                    this._draggedPaletteItem = sender;
-        
-                    this._draggedElement = sender.cloneElement();
-                    this._draggedElement.style.position = "absolute";
-                    this._draggedElement.style.left = this._currentMousePosition.x + "px";
-                    this._draggedElement.style.top = this._currentMousePosition.y + "px";
-        
-                    document.body.appendChild(this._draggedElement);
-                }
-        
-                this.paletteHostElement.appendChild(paletteItem.renderedElement);
+                this.addPaletteItem(new ElementPaletteItem(sortedRegisteredTypes[i]));
             }
+
+            /* This is to test "snippet" support. Snippets are not yet fully baked
+            let personaHeaderSnippet = new SnippetPaletteItem("Persona header");
+            personaHeaderSnippet.snippet = {
+                type: "ColumnSet",
+                columns: [
+                    {
+                        width: "auto",
+                        items: [
+                            {
+                                type: "Image",
+                                size: "Small",
+                                style: "Person",
+                                url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                            }
+                        ]
+                    },
+                    {
+                        width: "stretch",
+                        items: [
+                            {
+                                type: "TextBlock",
+                                text: "John Doe",
+                                weight: "Bolder",
+                                wrap: true
+                            },
+                            {
+                                type: "TextBlock",
+                                spacing: "None",
+                                text: "Additional information",
+                                wrap: true
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            this.addPaletteItem(personaHeaderSnippet);
+            */
         }
     }
 
@@ -220,12 +311,14 @@ class DesignerApp {
 
     private addContainers() {
         this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+        this.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light (preview)", "css/teams-container-light.css"));
+        this.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark (preview)", "css/teams-container-dark.css"));
         this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
         this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
     }
 
     private recreateDesigner() {
-        var styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
+        let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
     
         if (styleSheetLinkElement == null) {
             styleSheetLinkElement = document.createElement("link");
@@ -237,6 +330,12 @@ class DesignerApp {
         styleSheetLinkElement.rel = "stylesheet";
         styleSheetLinkElement.type = "text/css";
         styleSheetLinkElement.href = this._selectedHostContainer.styleSheet;
+
+        let designerBackground = document.getElementById("designerBackground");
+
+        if (designerBackground) {
+            designerBackground.style.backgroundColor = this._selectedHostContainer.getBackgroundColor();
+        }
     
         this._selectedHostContainer.initialize();
     
@@ -250,6 +349,34 @@ class DesignerApp {
         this._designer.onLayoutUpdated = (isFullRefresh: boolean) => {
             if (isFullRefresh) {
                 scheduleJsonUpdate();
+            }
+        };
+        this._designer.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
+            let errorPane = document.getElementById("errorPane");
+            errorPane.innerHTML = "";
+
+            if (errors.length > 0) {
+                let errorMessages: Array<string> = [];
+
+                for (let error of errors) {
+                    if (errorMessages.indexOf(error.message) < 0) {
+                        errorMessages.push(error.message);
+                    }
+                }
+
+                for (let message of errorMessages) {
+                    let errorElement = document.createElement("div");
+                    errorElement.style.overflow = "hidden";
+                    errorElement.style.textOverflow = "ellipsis";
+                    errorElement.innerText = message;
+
+                    errorPane.appendChild(errorElement);
+                }
+
+                errorPane.style.display = null;
+            }
+            else {
+                errorPane.style.display = "none";
             }
         };
 
@@ -319,7 +446,7 @@ class DesignerApp {
         let peerDropped = false;
 
         if (this._draggedPaletteItem && isPointerOverDesigner) {
-            let peer = this._draggedPaletteItem.createPeer();
+            let peer = this._draggedPaletteItem.createPeer(this.designer);
 
             let clientCoordinates = this.designer.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
 
@@ -399,18 +526,34 @@ class Splitter {
         if (this._isPointerDown) {
             e.preventDefault();
             
+            let sizeApplied = false;
+
             if (this.isVertical) {
-                this._sizedELement.style.width = (this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x)) + "px";
+                let newWidth = this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x);
+
+                if (newWidth >= this.minimum) {
+                    this._sizedELement.style.width = newWidth + "px";
+
+                    sizeApplied = true;
+                }
             }
             else {
-                this._sizedELement.style.height = (this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y)) + "px";
+                let newHeight = this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y);
+
+                if (newHeight >= this.minimum) {
+                    this._sizedELement.style.height = newHeight + "px";
+
+                    sizeApplied = true;
+                }
             }
 
-            if (this.onRezized) {
-                this.onRezized(this);
-            }
+            if (sizeApplied) {
+                if (this.onRezized) {
+                    this.onRezized(this);
+                }
 
-            this._lastClickedOffset = { x: e.x, y: e.y };
+                this._lastClickedOffset = { x: e.x, y: e.y };
+            }
         }
     }
     
@@ -425,6 +568,7 @@ class Splitter {
     onRezized: (sender: Splitter) => void;
 
     isVertical: boolean = false;
+    minimum: number = 50;
 
     constructor(splitterElement: HTMLElement, sizedElement: HTMLElement) {
         this._splitterElement = splitterElement;
@@ -463,7 +607,6 @@ window.onload = () => {
     card.onImageLoaded = (image: Adaptive.Image) => {
         scheduleLayoutUpdate();
     }
-    card.parse(JSON.parse(Constants.defaultPayload));
 
     app = new DesignerApp(document.getElementById("designerHost"));
     app.propertySheetHostElement = document.getElementById("propertySheetHost");
@@ -479,4 +622,6 @@ window.onload = () => {
     app.card = card;
 
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
+
+    updateCardFromJson();
 };

@@ -44,7 +44,7 @@ public:
     virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
 
 private:
-    void PopulateKnownPropertiesSet();
+    virtual void PopulateKnownPropertiesSet();
 
     ActionType m_type;
     std::string m_typeString;

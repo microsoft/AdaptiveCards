@@ -11,6 +11,11 @@ class MediaSource
 {
 public:
     MediaSource();
+    MediaSource(const MediaSource&) = default;
+    MediaSource(MediaSource&&) = default;
+    MediaSource& operator=(const MediaSource&) = default;
+    MediaSource& operator=(MediaSource&&) = default;
+    virtual ~MediaSource() = default;
 
     virtual Json::Value SerializeToJsonValue() const;
 
@@ -30,6 +35,13 @@ private:
 class MediaSourceParser
 {
 public:
+    MediaSourceParser() = default;
+    MediaSourceParser(const MediaSourceParser&) = default;
+    MediaSourceParser(MediaSourceParser&&) = default;
+    MediaSourceParser& operator=(const MediaSourceParser&) = default;
+    MediaSourceParser& operator=(MediaSourceParser&&) = default;
+    virtual ~MediaSourceParser() = default;
+
     static std::shared_ptr<MediaSource> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
