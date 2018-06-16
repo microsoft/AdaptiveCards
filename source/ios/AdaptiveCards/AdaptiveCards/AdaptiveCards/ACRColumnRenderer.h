@@ -9,6 +9,11 @@
 
 @interface ACRColumnRenderer:ACRBaseCardElementRenderer
 
+@property BOOL containerHasFillAlignment;
+
 + (ACRColumnRenderer *)getInstance;
+
+- (void)setFillAlignment;
+- (void)resetFillAlignment;
 
 @end

@@ -74,9 +74,19 @@ using namespace AdaptiveCards;
 
         [rootView waitForAsyncTasksToFinish];
 
+        UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+        if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom ){
+            leadingBlankSpace = [verticalView addPaddingSpace];
+        }
+        
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
-       [[rootView card] setInputs:inputs];
+        // Dont add the trailing space if the vertical content alignment is top or default
+        if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top || (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Stretch && !(verticalView.hasStretchableView))){
+            trailingBlankSpace = [verticalView addPaddingSpace];
+        }
+        
+        [[rootView card] setInputs:inputs];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
         if(!actions.empty()) {

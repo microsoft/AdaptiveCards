@@ -27,6 +27,16 @@
     return ACRColumn;
 }
 
+- (void) setFillAlignment
+{
+    _containerHasFillAlignment = YES;
+}
+
+- (void) resetFillAlignment
+{
+    _containerHasFillAlignment = NO;
+}
+
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
@@ -45,11 +55,20 @@
         column.columnWidth = @"auto";
     }
 
+    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+    if( columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom ){
+        leadingBlankSpace = [column addPaddingSpace];
+    }
+
     [ACRRenderer render:column
                rootView:rootView
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
+    
+    if( columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || ((columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Stretch) && _containerHasFillAlignment)){
+        trailingBlankSpace = [column addPaddingSpace];
+    }
 
     [viewGroup addArrangedSubview:column];
     
@@ -68,6 +87,16 @@
     {
         [column addGestureRecognizer:gestureRecognizer];
         column.userInteractionEnabled = YES;
+    }
+    
+    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+        [NSLayoutConstraint constraintWithItem:leadingBlankSpace
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:trailingBlankSpace
+                                     attribute:NSLayoutAttributeHeight
+                                    multiplier:1.0
+                                      constant:0].active = YES;
     }
 
     return column;
