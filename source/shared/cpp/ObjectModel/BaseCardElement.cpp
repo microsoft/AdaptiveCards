@@ -143,7 +143,7 @@ void BaseCardElement::SetAdditionalProperties(Json::Value const &value)
     m_additionalProperties = value;
 }
 
-void BaseCardElement::GetResourceUris(std::vector<std::string>&)
+void BaseCardElement::GetResourceInformation(std::vector<RemoteResourceInformation>&)
 {
     return;
 }

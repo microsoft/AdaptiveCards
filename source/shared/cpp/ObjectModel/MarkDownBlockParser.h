@@ -7,7 +7,7 @@
 namespace AdaptiveSharedNamespace {
     class MarkDownBlockParser
     {
-        public:
+    public:
         MarkDownBlockParser(){};
         // Matches each MarkDown's Syntax Form
         // For each match, stream moves to the next char
@@ -24,7 +24,14 @@ namespace AdaptiveSharedNamespace {
 
     class EmphasisParser: public MarkDownBlockParser
     {
-        public:
+    public:
+        EmphasisParser() = default;
+        EmphasisParser(const EmphasisParser&) = default;
+        EmphasisParser(EmphasisParser&&) = default;
+        EmphasisParser& operator=(const EmphasisParser&) = default;
+        EmphasisParser& operator=(EmphasisParser&&) = default;
+        virtual ~EmphasisParser() = default;
+
         enum EmphasisState
         {
             // Text is being handled
@@ -35,7 +42,7 @@ namespace AdaptiveSharedNamespace {
             Captured = 0x2,
         };
 
-        virtual void Match(std::stringstream &);
+        void Match(std::stringstream &) override;
         // Captures remaining charaters in given token
         // and causes the emphasis parsing to terminate
         void Flush(int ch, std::string& currentToken);
@@ -91,8 +98,15 @@ namespace AdaptiveSharedNamespace {
 
     class LinkParser : public MarkDownBlockParser
     {
-        public:
-        void Match(std::stringstream &);
+    public:
+        LinkParser() = default;
+        LinkParser(const LinkParser&) = default;
+        LinkParser(LinkParser&&) = default;
+        LinkParser& operator=(const LinkParser&) = default;
+        LinkParser& operator=(LinkParser&&) = default;
+        virtual ~LinkParser() = default;
+
+        void Match(std::stringstream &) override;
 
         private:
         void CaptureLinkToken();
@@ -114,8 +128,15 @@ namespace AdaptiveSharedNamespace {
 
     class ListParser : public MarkDownBlockParser
     {
-        public:
-        void Match(std::stringstream &);
+    public:
+        ListParser() = default;
+        ListParser(const ListParser&) = default;
+        ListParser(ListParser&&) = default;
+        ListParser& operator=(const ListParser&) = default;
+        ListParser& operator=(ListParser&&) = default;
+        virtual ~ListParser() = default;
+
+        void Match(std::stringstream &) override;
         bool MatchNewListItem(std::stringstream &);
         bool MatchNewBlock(std::stringstream &);
         bool MatchNewOrderedListItem(std::stringstream &, std::string &);
@@ -123,20 +144,27 @@ namespace AdaptiveSharedNamespace {
         static constexpr bool IsDot(int ch) { return ch == '.'; };
         static constexpr bool IsNewLine(int ch){ return (ch == '\r') || (ch == '\n');};
 
-        protected:
+    protected:
         void ParseSubBlocks(std::stringstream &);
         bool CompleteListParsing(std::stringstream &stream);
 
-        private:
+    private:
         void CaptureListToken();
     };
 
     class OrderedListParser : public ListParser
     {
-        public:
-        void Match(std::stringstream &);
+    public:
+        OrderedListParser() = default;
+        OrderedListParser(const OrderedListParser&) = default;
+        OrderedListParser(OrderedListParser&&) = default;
+        OrderedListParser& operator=(const OrderedListParser&) = default;
+        OrderedListParser& operator=(OrderedListParser&&) = default;
+        ~OrderedListParser() = default;
 
-        private:
+        void Match(std::stringstream &) override;
+
+    private:
         void CaptureOrderedListToken(std::string&);
     };
 }

@@ -44,7 +44,7 @@
     <ClCompile Include="ExplicitDimensionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GatherImagesTest.cpp">
+    <ClCompile Include="ResourceInformationTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

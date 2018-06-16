@@ -93,12 +93,12 @@ void ColumnSet::PopulateKnownPropertiesSet()
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
 }
 
-void ColumnSet::GetResourceUris(std::vector<std::string>& resourceUris)
+void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto columns = GetColumns();
     for (auto column : columns)
     {
-        column->GetResourceUris(resourceUris);
+        column->GetResourceInformation(resourceInfo);
     }
     return;
 }
