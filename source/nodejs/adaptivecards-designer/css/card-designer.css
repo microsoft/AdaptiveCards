@@ -60,14 +60,6 @@
     color: white;
 }
 
-.acd-palette-item {
-    border: 1px solid #cccccc;
-    padding: 8px;
-    margin-bottom: 4px;
-    background-color: white;
-    cursor: default;
-}
-
 .acd-palette-item:hover {
     background-color: #eeeeee;
 }
@@ -92,9 +84,6 @@
     background-color: none;
 }
 
-.acd-peer.dragging {
-}
-
 .acd-peer.dragging:hover {
     border: 1px solid green;
 }
@@ -108,10 +97,12 @@
 }
 
 
+
 /*
-* Header menu
+* Header and Aside menus
 */
-.header-menu {
+.header-menu,
+.aside-menu {
     align-items: center;
     background-color: #d8d8d8;
     display: flex;
@@ -120,16 +111,19 @@
     padding: 6px 12px;
 }
 
-.header-menu__title {
+.header-menu__title,
+.aside-menu__title {
     color: #000000;
 }
 
-.header-menu__bullet {
+.header-menu__bullet,
+.aside-menu__bullet {
     align-items: center;
     display: flex;
 }
 
-.header-menu__icon {
+.header-menu__icon,
+.aside-menu__icon {
     background-image: url("/assets/icons/hide.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -139,9 +133,163 @@
     width: 20px;
 }
 
-.header-menu__description {
+.header-menu__description,
+.aside-menu__description {
     color: #4a4a4a;
 }
+
+
+
+/*
+* Aside
+*/
+.aside {
+    background-color: #F9F9F9;
+    border-right: 1px solid #D2D2D2;
+    flex: 1 0 180px;
+    overflow-y: auto;
+}
+
+.aside-items {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 16px;
+    padding-top: 16px;
+}
+
+.aside-item {
+    color: #4a4a4a;
+    cursor: move;
+    font-size: 14px;
+    list-style-type: none;
+    margin-bottom: 8px;
+    white-space: nowrap
+}
+
+.aside-title {
+    align-items: center;
+    color: #4a4a4a;
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+    white-space: nowrap;
+  }
+
+.aside-title::after {
+    border-bottom: 1px solid #cccccc;
+    content: '';
+    margin-left: 8px;
+    width: 100%;
+  }
+
+.aside-item__icon {
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 20px;
+    margin-right: 8px;
+    width: 20px;
+    padding-left: 36px;
+}
+
+/* .aside-item__icon--actionset {
+    background-image: url("/assets/icons/.png");
+} */
+
+.aside-item__icon--columnset {
+    background-image: url("/assets/icons/column-set.png");
+}
+
+.aside-item__icon--container {
+    background-image: url("/assets/icons/container.png");
+}
+
+.aside-item__icon--factset {
+    background-image: url("/assets/icons/fact-set.png");
+}
+
+.aside-item__icon--image {
+    background-image: url("/assets/icons/image.png");
+}
+
+.aside-item__icon--imageset {
+    background-image: url("/assets/icons/image-set.png");
+}
+
+.aside-item__icon--inputchoiceset {
+    background-image: url("/assets/icons/checkbox.png");
+}
+
+.aside-item__icon--inputdate {
+    background-image: url("/assets/icons/date.png");
+}
+
+.aside-item__icon--inputnumber {
+    background-image: url("/assets/icons/inputnumber.png");
+}
+
+.aside-item__icon--inputtext {
+    background-image: url("/assets/icons/inputtext.png");
+}
+
+.aside-item__icon--inputtime {
+    background-image: url("/assets/icons/time.png");
+}
+
+.aside-item__icon--inputtoggle {
+    background-image: url("/assets/icons/toggle.png");
+}
+
+.aside-item__icon--textblock {
+    background-image: url("/assets/icons/textblock.png");
+}
+
+
+/*.Card Elements*/
+
+
+/*
+* Toolbar
+*/
+.toolbar-btn {
+    align-items: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: flex;
+    font-style: normal;
+    font-weight: normal;
+    justify-content: center;
+    margin-right: 50px;
+    padding-bottom: 11px;
+    padding-left: 38px;
+    padding-right: 14px;
+    padding-top: 11px;
+    position: relative;
+    user-select: none;
+}
+
+.toolbar-btn:active {
+    border: 1px solid black;
+}
+
+.toolbar-btn:hover {
+    background-color: white;
+}
+
+.toolbar-btn__icon-copy::before,
+.toolbar-btn__icon-fullscreen::before {
+    left: 14px;
+    position: absolute;
+}
+
+.toolbar-btn__icon-copy::before {
+    content: url("/assets/icons/copy.png");
+}
+
+.toolbar-btn__icon-fullscreen::before {
+    content: url("/assets/icons/fullscreen.png");
+}
+
 
 
 /*

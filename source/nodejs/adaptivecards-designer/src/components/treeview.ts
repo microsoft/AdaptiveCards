@@ -1,5 +1,6 @@
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../card-designer";
+import * as Utils from "../utils"
 
 export default class Treeview {
     private _designer: Designer.CardDesigner;
@@ -89,7 +90,7 @@ export default class Treeview {
         }
 
         let icon = document.createElement("span");
-        icon.className = `treeview__icon treeview__icon--${this.sanitizeString(item.getJsonTypeName())}`;
+        icon.className = `treeview__icon treeview__icon--${Utils.sanitizeString(item.getJsonTypeName())}`;
         listItem.appendChild(icon);
 
         let title = document.createElement("span");
@@ -115,9 +116,5 @@ export default class Treeview {
             let index = this._treeViewFoldedElements.indexOf(elementId);
             this._treeViewFoldedElements.splice(index, 1);
         }
-    }
-
-    private sanitizeString(input: string): string {
-        return input.toLowerCase().replace(".", "");
     }
 }
