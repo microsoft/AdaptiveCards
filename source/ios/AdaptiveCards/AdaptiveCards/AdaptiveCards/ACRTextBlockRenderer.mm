@@ -39,7 +39,9 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
-    ACRUILabel *lab = [[ACRUILabel alloc] init];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    ACRUILabel *lab = [bundle loadNibNamed:@"ACRLabelView" owner:rootView options:nil][0];
+
     lab.style = [viewGroup style];
     NSMutableAttributedString *content = nil;
     if(rootView){
