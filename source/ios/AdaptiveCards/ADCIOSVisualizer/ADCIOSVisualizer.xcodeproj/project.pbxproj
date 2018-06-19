@@ -19,10 +19,10 @@
 		30860BCB20C9B5C9009F9D99 /* ColumnSet.Input.Text.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BBF20C9B5C9009F9D99 /* ColumnSet.Input.Text.VerticalStretch.json */; };
 		30860BCC20C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */; };
 		30860BCD20C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BC120C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json */; };
+		30A3885E20D315AA00AAEE59 /* NotificationCard.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3885C20D315AA00AAEE59 /* NotificationCard.json */; };
 		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B7B1A9B20C21CA900260731 /* SportingEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9920C21CA800260731 /* SportingEvent.json */; };
-		6B7B1A9C20C21CA900260731 /* NotificationCard.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9A20C21CA900260731 /* NotificationCard.json */; };
 		6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
@@ -137,8 +137,8 @@
 		30860BBF20C9B5C9009F9D99 /* ColumnSet.Input.Text.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.Text.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.Text.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet_Container.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet_Container.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BC120C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.Time.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.Time.VerticalStretch.json; sourceTree = "<group>"; };
+		30A3885C20D315AA00AAEE59 /* NotificationCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = NotificationCard.json; path = ../../../../samples/Tests/NotificationCard.json; sourceTree = "<group>"; };
 		6B7B1A9920C21CA800260731 /* SportingEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SportingEvent.json; path = ../../../../samples/v1.0/Scenarios/SportingEvent.json; sourceTree = "<group>"; };
-		6B7B1A9A20C21CA900260731 /* NotificationCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = NotificationCard.json; path = ../../../../samples/v1.0/Scenarios/NotificationCard.json; sourceTree = "<group>"; };
 		6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Explicit.Size.json; path = ../../../../samples/Tests/Image.Explicit.Size.json; sourceTree = "<group>"; };
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
@@ -347,6 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */,
+				30A3885C20D315AA00AAEE59 /* NotificationCard.json */,
 				30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */,
 				30860BBE20C9B5C8009F9D99 /* ColumnSet.FactSet.VerticalStretch.json */,
 				30860BBB20C9B5C8009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json */,
@@ -356,7 +357,6 @@
 				30860BBF20C9B5C9009F9D99 /* ColumnSet.Input.Text.VerticalStretch.json */,
 				30860BC120C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json */,
 				30860BBC20C9B5C8009F9D99 /* ColumnSet.Input.Toggle.VerticalStretch.json */,
-				6B7B1A9A20C21CA900260731 /* NotificationCard.json */,
 				6B7B1A9920C21CA800260731 /* SportingEvent.json */,
 				F4F44BA6204CF97100A2F24C /* CustomParsingTestUsingProgressBar.json */,
 				F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */,
@@ -530,7 +530,6 @@
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,
 				F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */,
-				6B7B1A9C20C21CA900260731 /* NotificationCard.json in Resources */,
 				30860BC620C9B5C9009F9D99 /* ColumnSet.Input.Number.VerticalStretch.json in Resources */,
 				F4933D081F79853B00F6EBFD /* WeatherLarge.json in Resources */,
 				F4933CCD1F79852C00F6EBFD /* ColumnSet.Spacing.json in Resources */,
@@ -538,6 +537,7 @@
 				6B7B1A9B20C21CA900260731 /* SportingEvent.json in Resources */,
 				F4933CC81F79852C00F6EBFD /* Column.Style.json in Resources */,
 				F4F44B8320478E1100A2F24C /* DateTimeTestTranslation.json in Resources */,
+				30A3885E20D315AA00AAEE59 /* NotificationCard.json in Resources */,
 				F4933CE81F79852C00F6EBFD /* TextBlock.Markdown.json in Resources */,
 				F4933D021F79853B00F6EBFD /* InputForm.json in Resources */,
 				6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */,

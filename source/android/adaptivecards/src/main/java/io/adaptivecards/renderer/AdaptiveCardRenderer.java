@@ -20,6 +20,7 @@ import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -253,10 +254,29 @@ public class AdaptiveCardRenderer
 
         int i = 0;
         long maxActions = hostConfig.getActions().getMaxActions();
-        for (; i < size && i < maxActions; i++)
+
+        boolean allActionsHaveIcons = true;
+        for(; i < size && i < maxActions; ++i)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
+            if(actionElement.GetIconUrl().isEmpty())
+            {
+                allActionsHaveIcons = false;
+                break;
+            }
+        }
+
+        for (i = 0; i < size && i < maxActions; i++)
+        {
+            BaseActionElement actionElement = baseActionElementList.get(i);
+
+            IconPlacement originalIconPlacement = hostConfig.getActions().getIconPlacement();
+            if(!allActionsHaveIcons)
+            {
+                hostConfig.getActions().setIconPlacement(IconPlacement.LeftOfTitle);
+            }
             ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
+            hostConfig.getActions().setIconPlacement(originalIconPlacement);
         }
 
         if (i >= maxActions && size != maxActions)

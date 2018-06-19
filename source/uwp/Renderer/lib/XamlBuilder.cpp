@@ -779,6 +779,7 @@ AdaptiveNamespaceStart
         AdaptiveRenderContext* renderContext,
         ABI::AdaptiveNamespace::ContainerStyle containerStyle,
         ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+        bool allActionsHaveIcons,
         IButton* button)
     {
         HString title;
@@ -797,7 +798,7 @@ AdaptiveNamespaceStart
 
             // Define the alignment for the button contents
             ComPtr<IStackPanel> buttonContentsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle)
+            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
             }
@@ -988,6 +989,19 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::ActionMode showCardActionMode;
         THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
+        bool allActionsHaveIcons{ true };
+        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
+        {
+            HSTRING iconUrl;
+            THROW_IF_FAILED(child->get_IconUrl(&iconUrl));
+
+            bool iconUrlIsEmpty = WindowsIsStringEmpty(iconUrl);
+            if (iconUrlIsEmpty)
+            {
+                allActionsHaveIcons = false;
+            }
+        });
+
         UINT currentAction = 0;
 
         ComPtr<AdaptiveCardRenderer> strongRenderer(renderer);
@@ -1032,7 +1046,7 @@ AdaptiveNamespaceStart
                     }
                 }
 
-                ArrangeButtonContent(action.Get(), actionsConfig.Get(), renderContext, containerStyle, hostConfig.Get(), button.Get());
+                ArrangeButtonContent(action.Get(), actionsConfig.Get(), renderContext, containerStyle, hostConfig.Get(), allActionsHaveIcons, button.Get());
 
                 ABI::AdaptiveNamespace::ActionType actionType;
                 THROW_IF_FAILED(action->get_ActionType(&actionType));

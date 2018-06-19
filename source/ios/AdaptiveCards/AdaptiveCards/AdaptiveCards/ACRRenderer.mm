@@ -71,7 +71,7 @@ using namespace AdaptiveCards;
         [verticalView setStyle:style];
 
         [rootView addTasksToConcurrentQueue:body];
-
+        
         [rootView waitForAsyncTasksToFinish];
 
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
@@ -81,6 +81,11 @@ using namespace AdaptiveCards;
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
         if(!actions.empty()) {
             [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
+            
+            [rootView addActionsToConcurrentQueue:actions];
+            
+            [rootView waitForAsyncTasksToFinish];
+            
             // renders buttons and their associated actions
             [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
         }
