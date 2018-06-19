@@ -70,17 +70,19 @@ public class ContainerRenderer extends BaseCardElementRenderer
             containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         }
 
-        if( container.GetVerticalContentAlignment() == VerticalContentAlignment.Top )
+        VerticalContentAlignment contentAlignment = container.GetVerticalContentAlignment();
+        switch(contentAlignment)
         {
-            containerView.setGravity(Gravity.TOP);
-        }
-        else if( container.GetVerticalContentAlignment() == VerticalContentAlignment.Center )
-        {
-            containerView.setGravity(Gravity.CENTER_VERTICAL);
-        }
-        else if( container.GetVerticalContentAlignment() == VerticalContentAlignment.Bottom )
-        {
-            containerView.setGravity(Gravity.BOTTOM);
+            case Center:
+                containerView.setGravity(Gravity.CENTER_VERTICAL);
+                break;
+            case Bottom:
+                containerView.setGravity(Gravity.BOTTOM);
+                break;
+            case Top:
+            default:
+                containerView.setGravity(Gravity.TOP);
+                break;
         }
 
         if (!container.GetItems().isEmpty())

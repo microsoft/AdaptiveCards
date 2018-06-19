@@ -113,7 +113,7 @@ public class CardRendererRegistration
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Stretch;
+        VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Top;
 
         if( tag instanceof BaseCardElement ){
             BaseCardElement cardElementContainer = (BaseCardElement)tag;
@@ -135,18 +135,14 @@ public class CardRendererRegistration
             verticalContentAlignment = adaptiveCard.GetVerticalContentAlignment();
         }
 
-        if( verticalContentAlignment != VerticalContentAlignment.Stretch )
+        if( verticalContentAlignment != VerticalContentAlignment.Top )
         {
             LinearLayout verticalAlignmentLayout = new LinearLayout(context);
             verticalAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
             verticalAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            if(verticalContentAlignment == VerticalContentAlignment.Top)
-            {
-                verticalAlignmentLayout.setGravity(Gravity.TOP);
-            }
-            else if (verticalContentAlignment == VerticalContentAlignment.Center)
+            if (verticalContentAlignment == VerticalContentAlignment.Center)
             {
                 verticalAlignmentLayout.setGravity(Gravity.CENTER_VERTICAL);
             }

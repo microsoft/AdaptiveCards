@@ -75,24 +75,18 @@ public class ColumnRenderer extends BaseCardElementRenderer
         verticalContentAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         VerticalContentAlignment contentAlignment = column.GetVerticalContentAlignment();
-        if(contentAlignment != VerticalContentAlignment.Stretch)
+        switch(contentAlignment)
         {
-            if(contentAlignment == VerticalContentAlignment.Top)
-            {
-                verticalContentAlignmentLayout.setGravity(Gravity.TOP);
-            }
-            else if( column.GetVerticalContentAlignment() == VerticalContentAlignment.Center )
-            {
+            case Center:
                 verticalContentAlignmentLayout.setGravity(Gravity.CENTER_VERTICAL);
-            }
-            else if( column.GetVerticalContentAlignment() == VerticalContentAlignment.Bottom )
-            {
+                break;
+            case Bottom:
                 verticalContentAlignmentLayout.setGravity(Gravity.BOTTOM);
-            }
-        }
-        else
-        {
-            verticalContentAlignmentLayout.setGravity(Gravity.TOP);
+                break;
+            case Top:
+            default:
+                verticalContentAlignmentLayout.setGravity(Gravity.TOP);
+                break;
         }
         returnedView.addView(verticalContentAlignmentLayout);
 
