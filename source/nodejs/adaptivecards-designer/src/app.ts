@@ -191,39 +191,61 @@ class DesignerApp {
         if (this.paletteHostElement) {
             this.paletteHostElement.innerHTML = "";
 
-            var sortedRegisteredTypes: Array<Adaptive.ITypeRegistration<Adaptive.CardElement>> = [];
+            let sortedRegisteredTypes = {};
 
-            for (var i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
-                sortedRegisteredTypes.push(Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i));
+            const categoriesMap = {
+                cardElements: {
+                    title: "Card Elements",
+                    items: ["TextBlock", "Image"]
+                },
+                container: {
+                    title: "Container",
+                    items: ["Container", "ColumnSet", "Column", "FactSet", "Fact", "ImageSet"]
+                },
+                actions: {
+                    title: "Actions",
+                    items: ["Action.OpenUrl", "Action.Submit", "Action.ShowCard"]
+                },
+                inputs: {
+                    title: "Inputs",
+                    items: ["Input.Text", "Input.Number", "Input.Date", "Input.Time", "Input.Toggle", "Input.ChoiceSet", "Input.Choice"]
+                }
             }
 
-            sortedRegisteredTypes.sort(
-                (a, b) => {
-                    if (a.typeName < b.typeName) {
-                        return -1
+            for (let i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
+                const element = Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i);
+                Object.keys(categoriesMap).map(category => {
+                    if (categoriesMap[category].items.includes(element.typeName)) {
+                        sortedRegisteredTypes[category] = sortedRegisteredTypes[category] || {};
+                        sortedRegisteredTypes[category].title = sortedRegisteredTypes[category].title || categoriesMap[category].title;
+                        sortedRegisteredTypes[category].items = Array.isArray(sortedRegisteredTypes[category].items) ? [...sortedRegisteredTypes[category].items, element] : [element];
                     }
-                    else {
-                        return 1;
-                    }
-                }
-            )
-
-            for (var i = 0; i < sortedRegisteredTypes.length; i++) {
-                var paletteItem = new PaletteItem(sortedRegisteredTypes[i]);
-                paletteItem.render();
-                paletteItem.onStartDrag = (sender: PaletteItem) => {
-                    this._draggedPaletteItem = sender;
-
-                    this._draggedElement = sender.cloneElement();
-                    this._draggedElement.style.position = "absolute";
-                    this._draggedElement.style.left = this._currentMousePosition.x + "px";
-                    this._draggedElement.style.top = this._currentMousePosition.y + "px";
-
-                    document.body.appendChild(this._draggedElement);
-                }
-
-                this.paletteHostElement.appendChild(paletteItem.renderedElement);
+                });
             }
+
+            Object.keys(sortedRegisteredTypes).forEach(objectKey => {
+                let node = document.createElement('li');
+                node.innerText = sortedRegisteredTypes[objectKey].title;
+                node.className = "aside-title";
+                this.paletteHostElement.appendChild(node);
+
+                for (var i = 0; i < sortedRegisteredTypes[objectKey].items.length; i++) {
+                    var paletteItem = new PaletteItem(sortedRegisteredTypes[objectKey].items[i]);
+                    paletteItem.render();
+                    paletteItem.onStartDrag = (sender: PaletteItem) => {
+                        this._draggedPaletteItem = sender;
+
+                        this._draggedElement = sender.cloneElement();
+                        this._draggedElement.style.position = "absolute";
+                        this._draggedElement.style.left = this._currentMousePosition.x + "px";
+                        this._draggedElement.style.top = this._currentMousePosition.y + "px";
+
+                        document.body.appendChild(this._draggedElement);
+                    }
+
+                    this.paletteHostElement.appendChild(paletteItem.renderedElement);
+                }
+            });
         }
     }
 
