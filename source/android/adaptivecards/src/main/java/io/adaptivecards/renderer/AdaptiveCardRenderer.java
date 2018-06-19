@@ -259,8 +259,10 @@ public class AdaptiveCardRenderer
         for(; i < size && i < maxActions; ++i)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
-            if(actionElement.GetIconUrl().isEmpty()){
+            if(actionElement.GetIconUrl().isEmpty())
+            {
                 allActionsHaveIcons = false;
+                break;
             }
         }
 

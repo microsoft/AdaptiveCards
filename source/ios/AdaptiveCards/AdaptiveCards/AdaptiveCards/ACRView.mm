@@ -265,14 +265,13 @@ using namespace AdaptiveCards;
     for(const auto &action : actions){
         if( action->GetIconUrl().empty() ){
             allActionsHaveIcons = NO;
+            break;
         }
     }
     
-    for(auto &action : actions)
-    {
+    for(auto &action : actions){
         std::string iconUrl = action->GetIconUrl();
-        if(!iconUrl.empty())
-        {
+        if(!iconUrl.empty()){
             [self tagBaseActionElement:action];
             [self processActionWithIconConcurrently:action andAllActionsHaveIcons:allActionsHaveIcons];
         }
