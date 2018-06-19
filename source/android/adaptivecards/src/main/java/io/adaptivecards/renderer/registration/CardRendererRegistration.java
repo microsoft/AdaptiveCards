@@ -115,7 +115,8 @@ public class CardRendererRegistration
 
         VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Top;
 
-        if( tag instanceof BaseCardElement ){
+        if( tag instanceof BaseCardElement )
+        {
             BaseCardElement cardElementContainer = (BaseCardElement)tag;
 
             if( cardElementContainer instanceof Column)
