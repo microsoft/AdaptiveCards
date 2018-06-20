@@ -71,7 +71,7 @@
         if(pixelHeight){
             cgsize.height = pixelHeight;
             if(isAspectRatioNeeded) {
-                cgsize.width = pixelHeight / heightToWidthRatio;
+                cgsize.width = pixelHeight * widthToHeightRatio;
             }
         }
     }
