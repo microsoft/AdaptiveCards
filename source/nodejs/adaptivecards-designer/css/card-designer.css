@@ -129,7 +129,7 @@
 .aside-menu__icon,
 .treeview-menu__icon,
 .properties-menu__icon {
-    background-image: url("/assets/icons/hide.png");
+    background-image: url("/assets/icons/hide.svg");
     background-repeat: no-repeat;
     background-position: center;
     display: inline-block;
@@ -139,7 +139,7 @@
 }
 
 .icon--expand {
-    background-image: url("/assets/icons/expand.png");
+    background-image: url("/assets/icons/expand.svg");
     margin-right: 0;
 }
 
@@ -161,22 +161,25 @@
     overflow-y: auto;
 }
 
-.is-toggled .aside-menu {
-    transform: translate(-75px, 74px) rotate(-90deg);
-    width: 179px;
+.is-toggled .aside-menu,
+.is-toggled .treeview-menu,
+.is-toggled .properties-menu {
+    width: 180px;
     height: 30px;
 }
 
-.is-toggled .ac-container,
-.is-toggled .default-ac-container {
-    display: none !important; /* The important overrides inline CSS properties added via JS */
+.is-toggled .aside-menu {
+    transform: translate(-75px, 74px) rotate(-90deg);
 }
 
 .is-toggled .treeview-menu,
 .is-toggled .properties-menu {
     transform: translate(-75px, 74px) rotate(90deg);
-    width: 180px;
-    height: 30px;
+}
+
+.is-toggled .ac-container,
+.is-toggled .default-ac-container {
+    display: none !important; /* The important overrides inline CSS properties added via JS */
 }
 
 .aside.is-toggled {
@@ -242,59 +245,59 @@
 }
 
 .aside-item__icon--actionset {
-    background-image: url("/assets/icons/actionset.png");
+    background-image: url("/assets/icons/actionset.svg");
 }
 
 .aside-item__icon--columnset {
-    background-image: url("/assets/icons/column-set.png");
+    background-image: url("/assets/icons/column-set.svg");
 }
 
 .aside-item__icon--container {
-    background-image: url("/assets/icons/container.png");
+    background-image: url("/assets/icons/container.svg");
 }
 
 .aside-item__icon--factset {
-    background-image: url("/assets/icons/fact-set.png");
+    background-image: url("/assets/icons/fact-set.svg");
 }
 
 .aside-item__icon--image {
-    background-image: url("/assets/icons/image.png");
+    background-image: url("/assets/icons/image.svg");
 }
 
 .aside-item__icon--imageset {
-    background-image: url("/assets/icons/image-set.png");
+    background-image: url("/assets/icons/image-set.svg");
 }
 
 .aside-item__icon--choice {
-    background-image: url("/assets/icons/choice.png");
+    background-image: url("/assets/icons/choice.svg");
 }
 
 .aside-item__icon--inputchoiceset {
-    background-image: url("/assets/icons/choiceset.png");
+    background-image: url("/assets/icons/choiceset.svg");
 }
 
 .aside-item__icon--inputdate {
-    background-image: url("/assets/icons/date.png");
+    background-image: url("/assets/icons/date.svg");
 }
 
 .aside-item__icon--inputnumber {
-    background-image: url("/assets/icons/inputnumber.png");
+    background-image: url("/assets/icons/inputnumber.svg");
 }
 
 .aside-item__icon--inputtext {
-    background-image: url("/assets/icons/inputtext.png");
+    background-image: url("/assets/icons/inputtext.svg");
 }
 
 .aside-item__icon--inputtime {
-    background-image: url("/assets/icons/time.png");
+    background-image: url("/assets/icons/time.svg");
 }
 
 .aside-item__icon--inputtoggle {
-    background-image: url("/assets/icons/toggle.png");
+    background-image: url("/assets/icons/toggle.svg");
 }
 
 .aside-item__icon--textblock {
-    background-image: url("/assets/icons/textblock.png");
+    background-image: url("/assets/icons/textblock.svg");
 }
 
 
@@ -334,11 +337,11 @@
 }
 
 .toolbar-btn__icon-copy::before {
-    content: url("/assets/icons/copy.png");
+    content: url("/assets/icons/copy.svg");
 }
 
 .toolbar-btn__icon-fullscreen::before {
-    content: url("/assets/icons/fullscreen.png");
+    content: url("/assets/icons/fullscreen.svg");
 }
 
 
@@ -392,72 +395,72 @@
 }
 
 .treeview__icon--arrow {
-    background-image: url("/assets/arrow.png");
+    background-image: url("/assets/arrow.svg");
     margin-right: 0;
 }
 
 .treeview__icon--textblock {
-    background-image: url("/assets/icons/textblock.png");
+    background-image: url("/assets/icons/textblock.svg");
 }
 
 .treeview__icon--factset {
-    background-image: url("/assets/icons/fact-set.png");
+    background-image: url("/assets/icons/fact-set.svg");
 }
 
 .treeview__icon--image {
-    background-image: url("/assets/icons/image.png");
+    background-image: url("/assets/icons/image.svg");
 }
 
 .treeview__icon--imageset {
-    background-image: url("/assets/icons/image-set.png");
+    background-image: url("/assets/icons/image-set.svg");
 }
 
 .treeview__icon--inputtext {
-    background-image: url("/assets/icons/inputtext.png");
+    background-image: url("/assets/icons/inputtext.svg");
 }
 
 .treeview__icon--inputtoggle {
-    background-image: url("/assets/icons/toggle.png");
+    background-image: url("/assets/icons/toggle.svg");
 }
 
 .treeview__icon--inputnumber {
-    background-image: url("/assets/icons/inputnumber.png");
+    background-image: url("/assets/icons/inputnumber.svg");
 }
 
 .treeview__icon--inputdate {
-    background-image: url("/assets/icons/icon-date.png");
+    background-image: url("/assets/icons/icon-date.svg");
 }
 
 .treeview__icon--inputtime {
-    background-image: url("/assets/icons/time.png");
+    background-image: url("/assets/icons/time.svg");
 }
 
 .treeview__icon--actionsubmit {
-    background-image: url("/assets/icons/submit.png");
+    background-image: url("/assets/icons/submit.svg");
 }
 
 .treeview__icon--actionopenurl {
-    background-image: url("/assets/icons/open-url.png");
+    background-image: url("/assets/icons/open-url.svg");
 }
 
 .treeview__icon--container {
-    background-image: url("/assets/icons/container.png");
+    background-image: url("/assets/icons/container.svg");
 }
 
 .treeview__icon--column {
-    background-image: url("/assets/icons/column.png");
+    background-image: url("/assets/icons/column.svg");
 }
 
 .treeview__icon--columnset {
-    background-image: url("/assets/icons/column-set.png");
+    background-image: url("/assets/icons/column-set.svg");
 }
 
 .treeview__icon--actionshowcard {
-    background-image: url("/assets/icons/showcard.png");
+    background-image: url("/assets/icons/showcard.svg");
 }
 
 .treeview__icon--arrow.is-rotated {
-    background-image: url("/assets/arrow-rotated.png");
+    background-image: url("/assets/arrow-rotated.svg");
 }
 
 .btn {
