@@ -97,6 +97,10 @@ using namespace AdaptiveCards;
     size_t cellCounts = _imgSet->GetImages().size();
     int dimension = (ceil(sqrt(cellCounts)));
     CGSize imageSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
-    return CGSizeMake(dimension * imageSize.width, dimension * imageSize.height);
+    float spacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumInteritemSpacing;
+    float lineSpacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumLineSpacing;
+
+    int num = self.frame.size.width / (imageSize.width + spacing);    
+    return CGSizeMake(self.frame.size.width, (cellCounts / num) * (imageSize.height + lineSpacing));
 }
 @end
