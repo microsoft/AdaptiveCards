@@ -115,16 +115,16 @@ public class CardRendererRegistration
 
         VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Top;
 
-        if( tag instanceof BaseCardElement )
+        if(tag instanceof BaseCardElement)
         {
             BaseCardElement cardElementContainer = (BaseCardElement)tag;
 
-            if( cardElementContainer instanceof Column)
+            if(cardElementContainer instanceof Column)
             {
                 Column column = (Column)cardElementContainer;
                 verticalContentAlignment = column.GetVerticalContentAlignment();
             }
-            else if( cardElementContainer instanceof Container)
+            else if(cardElementContainer instanceof Container)
             {
                 Container container = (Container)cardElementContainer;
                 verticalContentAlignment = container.GetVerticalContentAlignment();
@@ -136,7 +136,7 @@ public class CardRendererRegistration
             verticalContentAlignment = adaptiveCard.GetVerticalContentAlignment();
         }
 
-        if( verticalContentAlignment != VerticalContentAlignment.Top )
+        if(verticalContentAlignment != VerticalContentAlignment.Top)
         {
             LinearLayout verticalAlignmentLayout = new LinearLayout(context);
             verticalAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);

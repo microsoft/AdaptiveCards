@@ -129,17 +129,18 @@ public class AdaptiveCardRenderer
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
-        if(adaptiveCard.GetVerticalContentAlignment() == VerticalContentAlignment.Top)
-        {
-            layout.setGravity(Gravity.TOP);
-        }
-        else if( adaptiveCard.GetVerticalContentAlignment() == VerticalContentAlignment.Center )
-        {
-            layout.setGravity(Gravity.CENTER_VERTICAL);
-        }
-        else if( adaptiveCard.GetVerticalContentAlignment() == VerticalContentAlignment.Bottom )
-        {
-            layout.setGravity(Gravity.BOTTOM);
+        VerticalContentAlignment contentAlignment = adaptiveCard.GetVerticalContentAlignment();
+        switch (contentAlignment){
+            case Center:
+                layout.setGravity(Gravity.CENTER_VERTICAL);
+                break;
+            case Bottom:
+                layout.setGravity(Gravity.BOTTOM);
+                break;
+            case Top:
+            default:
+                layout.setGravity(Gravity.TOP);
+                break;
         }
 
         layout.setOrientation(LinearLayout.VERTICAL);
