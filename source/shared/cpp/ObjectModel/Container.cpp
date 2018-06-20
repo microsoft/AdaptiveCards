@@ -6,7 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Stretch)
+Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top)
 {
     PopulateKnownPropertiesSet();
 }
@@ -65,7 +65,7 @@ Json::Value Container::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
     }
 
-    if (m_verticalContentAlignment != VerticalContentAlignment::Stretch)
+    if (m_verticalContentAlignment != VerticalContentAlignment::Top)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
@@ -99,7 +99,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
         ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment,
-        VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString));
+        VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Items, false);

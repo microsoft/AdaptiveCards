@@ -423,8 +423,7 @@ AdaptiveNamespaceStart
 #endif
     typedef [v1_enum] enum VerticalContentAlignment
     {
-        Stretch = 0,
-        Top,
+        Top = 0,
         Center,
         Bottom
     } VerticalContentAlignment;
