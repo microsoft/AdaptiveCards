@@ -49,8 +49,8 @@
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
     
-    // Dont add the trailing space if the vertical content alignment is top or default
-    if( containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Stretch && !(container.hasStretchableView))){
+    // Dont add the trailing space if the vertical content alignment is top/default
+    if( containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))){
         trailingBlankSpace = [container addPaddingSpace];
     }
     

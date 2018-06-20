@@ -66,7 +66,7 @@
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
     
-    if( columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || ((columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Stretch) && _containerHasFillAlignment)){
+    if( columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _containerHasFillAlignment)){
         trailingBlankSpace = [column addPaddingSpace];
     }
 

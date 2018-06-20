@@ -58,7 +58,7 @@
     ACRColumnRenderer* castedRenderer = (ACRColumnRenderer*)columnRenderer;
     for(std::shared_ptr<Column> column:columns)
     {
-        if(column->GetVerticalContentAlignment() != VerticalContentAlignment::Stretch && column->GetVerticalContentAlignment() != VerticalContentAlignment::Top)
+        if(column->GetVerticalContentAlignment() != VerticalContentAlignment::Top)
         {
             [castedRenderer setFillAlignment];
         }
