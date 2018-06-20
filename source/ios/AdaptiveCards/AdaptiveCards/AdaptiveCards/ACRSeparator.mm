@@ -151,7 +151,7 @@ using namespace AdaptiveCards;
             if(elem && elem->GetSeparator())
             {
                 separator->rgb = std::stoul(config->separator.lineColor.substr(1), nullptr, 16);
-                separator->lineWidth = 1;
+                separator->lineWidth = config->separator.lineThickness;;
             }
 
             separator.backgroundColor = UIColor.clearColor;

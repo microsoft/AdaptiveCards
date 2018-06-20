@@ -805,17 +805,17 @@ std::string WstringToString(const std::wstring& input)
     return utfConverter.to_bytes(input);
 }
 
-void RemoteResourceElementToUriStringVector(
+void RemoteResourceElementToRemoteResourceInformationVector(
     ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResourceElement,
-    std::vector<std::string>& resourceUris)
+    std::vector<RemoteResourceInformation>& resourceUris)
 {
-    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>> remoteResourceUris;
-    THROW_IF_FAILED(remoteResourceElement->GetResourceUris(remoteResourceUris.GetAddressOf()));
+    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> remoteResources;
+    THROW_IF_FAILED(remoteResourceElement->GetResourceInformation(remoteResources.GetAddressOf()));
 
-    ComPtr<IIterable<ABI::Windows::Foundation::Uri*>> vectorIterable;
-    THROW_IF_FAILED(remoteResourceUris.As<IIterable<ABI::Windows::Foundation::Uri*>>(&vectorIterable));
+    ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> vectorIterable;
+    THROW_IF_FAILED(remoteResources.As<IIterable<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>>(&vectorIterable));
 
-    Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Foundation::Uri*>> vectorIterator;
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> vectorIterator;
     HRESULT hr = vectorIterable->First(&vectorIterator);
 
     boolean hasCurrent;
@@ -823,15 +823,26 @@ void RemoteResourceElementToUriStringVector(
 
     while (SUCCEEDED(hr) && hasCurrent)
     {
-        ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> uri;
-        THROW_IF_FAILED(vectorIterator->get_Current(&uri));
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveRemoteResourceInformation> resourceInformation;
+        THROW_IF_FAILED(vectorIterator->get_Current(&resourceInformation));
 
-        HString uriHString;
-        THROW_IF_FAILED(uri->get_AbsoluteUri(uriHString.GetAddressOf()));
-        std::string uriString;
-        THROW_IF_FAILED(HStringToUTF8(uriHString.Get(), uriString));
+        HString url;
+        THROW_IF_FAILED(resourceInformation->get_Url(url.GetAddressOf()));
 
-        resourceUris.push_back(uriString);
+        RemoteResourceInformation uriInfo;
+        THROW_IF_FAILED(HStringToUTF8(url.Get(), uriInfo.url));
+
+        ABI::AdaptiveNamespace::ElementType elementType;
+        THROW_IF_FAILED(resourceInformation->get_ResourceType(&elementType));
+
+        uriInfo.resourceType = (AdaptiveSharedNamespace::CardElementType) elementType;
+
+        HString mimeType;
+        THROW_IF_FAILED(resourceInformation->get_MimeType(mimeType.GetAddressOf()));
+
+        uriInfo.mimeType = HStringToUTF8(mimeType.Get());
+
+        resourceUris.push_back(uriInfo);
 
         hr = vectorIterator->MoveNext(&hasCurrent);
     }

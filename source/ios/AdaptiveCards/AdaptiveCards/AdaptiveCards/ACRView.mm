@@ -258,6 +258,26 @@ using namespace AdaptiveCards;
     }
 }
 
+// Walk through the actions found and process them concurrently
+- (void)addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions
+{
+    BOOL allActionsHaveIcons = YES;
+    for(const auto &action : actions){
+        if( action->GetIconUrl().empty() ){
+            allActionsHaveIcons = NO;
+            break;
+        }
+    }
+    
+    for(auto &action : actions){
+        std::string iconUrl = action->GetIconUrl();
+        if(!iconUrl.empty()){
+            [self tagBaseActionElement:action];
+            [self processActionWithIconConcurrently:action andAllActionsHaveIcons:allActionsHaveIcons];
+        }
+    }
+}
+
 - (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
                     elementType:(CardElementType)elementType
                      textConfig:(TextConfig const &)textConfig
@@ -362,12 +382,72 @@ using namespace AdaptiveCards;
     );
 }
 
+- (void)processActionWithIconConcurrently:(std::shared_ptr<BaseActionElement> const &)action andAllActionsHaveIcons:(BOOL)allActionsHaveIcons
+{
+    std::shared_ptr<BaseActionElement> act = action;
+    /// generate a string key to uniquely identify Image
+    if(!(act->GetIconUrl().empty()))
+    {
+        // run image downloading and processing on global queue which is concurrent and different from main queue
+        dispatch_group_async(_async_tasks_group, _global_queue,
+        ^{
+            NSString *urlStr = [NSString stringWithCString:act->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+            // generate key for imageMap from image element's id
+            NSString *key = [NSString stringWithCString:act->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            
+            // download image
+            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            ACRUIImageView *imageView = [[ACRUIImageView alloc] initWithImage:img];
+            
+            // UITask can't be run on global queue, add task to main queue
+            dispatch_async(dispatch_get_main_queue(),
+            ^{
+                __block UIButton *button = nil;
+                // synchronize access to image map
+                dispatch_sync(self->_serial_queue,
+                ^{
+                    if(!self->_actionsMap[key]) // UIButton is not ready, cache UIImageView
+                    {
+                        self->_actionsMap[key] = imageView;
+                    }
+                    else // UIButton ready, get view
+                    {
+                        button = self->_actionsMap[key];
+                    }
+                });
+                
+                // if view is available, set image to it, and continue image processing
+                if(button)
+                {
+                    [ACRView setImageView:imageView inButton:button withConfig:self->_hostConfig andAllActionsHaveIcons:allActionsHaveIcons];
+                    
+                    // remove tag
+                    std::string id = act->GetId();
+                    std::size_t idx = id.find_last_of('_');
+                    act->SetId(id.substr(0, idx));
+                }
+
+            });
+        });
+    }
+}
+
 // add postfix to existing BaseCardElement ID to be used as key
 -(void)tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
     std::string serial_number_as_string = std::to_string(_serialNumber);
     // concat a newly generated key to a existing id, the key will be removed after use
     elem->SetId(elem->GetId() + "_" + serial_number_as_string);
+    ++_serialNumber;
+}
+
+// add postfix to existing BaseCardElement ID to be used as key
+-(void)tagBaseActionElement:(std::shared_ptr<BaseActionElement> const &)action
+{
+    std::string serial_number_as_string = std::to_string(_serialNumber);
+    // concat a newly generated key to a existing id, the key will be removed after use
+    action->SetId(action->GetId() + "_" + serial_number_as_string);
     ++_serialNumber;
 }
 
@@ -395,7 +475,7 @@ using namespace AdaptiveCards;
     return _adaptiveCard;
 }
 
-+ (void)setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config
++ (void)setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config andAllActionsHaveIcons:(BOOL)allActionsHaveIcons
 {
     // Format the image so it fits in the button and is placed where it must be placed
     CGSize contentSize = [button.titleLabel intrinsicContentSize];
@@ -405,7 +485,7 @@ using namespace AdaptiveCards;
     double imageWidth = scaleRatio * originalImageSize.width;
 
     IconPlacement iconPlacement = [config getHostConfig]->actions.iconPlacement;
-    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle)
+    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle && allActionsHaveIcons)
     {
         [imageView setFrame:CGRectMake( (button.frame.size.width - imageWidth) / 2, 5, imageWidth, imageHeight)];
         [button setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, 5, -imageHeight, 5)];

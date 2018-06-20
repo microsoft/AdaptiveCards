@@ -18,15 +18,16 @@
 
 - (void)addArrangedSubview:(UIView *)view
 {
-    // if columnWidth is set to stretch, allows to fill the available space
-    if([self.columnWidth isEqualToString:@"stretch"]){
-        [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    } // if auto, maintain content size whenever possible
-    else if([self.columnWidth isEqualToString:@"auto"]){
+    // if auto, maintain content size whenever possible
+    if([self.columnWidth isEqualToString:@"auto"]){
         [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+      // if columnWidth is set to stretch or number, allow column to fill the available space
+    } else {
+        [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     }
+
     [self.stackView addArrangedSubview:view];
 }
 
