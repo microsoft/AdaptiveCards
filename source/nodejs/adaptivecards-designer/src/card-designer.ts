@@ -391,6 +391,9 @@ export abstract class DesignerPeer extends DraggableElement {
                     lineThickness: 1,
                     lineColor: "#EEEEEE"
                 },
+                textAlign: {
+                    right: "right"
+                },
                 fontSizes: {
                     small: 12,
                     default: 14,
@@ -626,6 +629,7 @@ export class ActionPeer extends DesignerPeer {
     protected _action: Adaptive.Action;
 
     protected getCardObjectTypeName(): string {
+        console.log(this.action.getJsonTypeName());
         return this.action.getJsonTypeName();
     }
 
@@ -2216,6 +2220,9 @@ export class CardDesigner {
         this._designerSurface.appendChild(this._removeCommandElement);
         this._designerSurface.appendChild(this._peerCommandsHostElement);
     }
+
+   
+
 
     updateLayout(isFullRefresh: boolean = true) {
         for (var i = 0; i < this._allPeers.length; i++) {

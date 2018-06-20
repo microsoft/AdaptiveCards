@@ -101,8 +101,9 @@
 /*
 * Header and Aside menus
 */
-.header-menu,
-.aside-menu {
+.aside-menu,
+.treeview-menu,
+.properties-menu {
     align-items: center;
     background-color: #d8d8d8;
     display: flex;
@@ -111,19 +112,23 @@
     padding: 6px 12px;
 }
 
-.header-menu__title,
-.aside-menu__title {
+.aside-menu__title,
+.treeview-menu__title,
+.properties-menu__title {
     color: #000000;
 }
 
-.header-menu__bullet,
-.aside-menu__bullet {
+.aside-menu__bullet,
+.treeview-menu__bullet,
+.properties-menu__bullet {
     align-items: center;
+    cursor: pointer;
     display: flex;
 }
 
-.header-menu__icon,
-.aside-menu__icon {
+.aside-menu__icon,
+.treeview-menu__icon,
+.properties-menu__icon {
     background-image: url("/assets/icons/hide.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -133,8 +138,14 @@
     width: 20px;
 }
 
-.header-menu__description,
-.aside-menu__description {
+.icon--expand {
+    background-image: url("/assets/icons/expand.png");
+    margin-right: 0;
+}
+
+.aside-menu__description,
+.treeview-menu__description,
+.properties-menu__description {
     color: #4a4a4a;
 }
 
@@ -148,6 +159,37 @@
     border-right: 1px solid #D2D2D2;
     flex: 1 0 180px;
     overflow-y: auto;
+}
+
+.is-toggled .aside-menu {
+    transform: translate(-75px, 74px) rotate(-90deg);
+    width: 179px;
+    height: 30px;
+}
+
+.is-toggled .ac-container,
+.is-toggled .default-ac-container {
+    display: none !important; /* The important overrides inline CSS properties added via JS */
+}
+
+.is-toggled .treeview-menu,
+.is-toggled .properties-menu {
+    transform: translate(-75px, 74px) rotate(90deg);
+    width: 180px;
+    height: 30px;
+}
+
+.aside.is-toggled {
+    flex-basis: 29px;
+}
+
+[id="treeViewSheetHost"].is-toggled,
+[id="propertySheetHost"].is-toggled {
+    width: 30px !important; /* The important overrides inline CSS properties added via JS */
+}
+
+.is-hidden {
+    display: none;
 }
 
 .aside-items {
@@ -199,9 +241,9 @@
     padding-left: 36px;
 }
 
-/* .aside-item__icon--actionset {
-    background-image: url("/assets/icons/.png");
-} */
+.aside-item__icon--actionset {
+    background-image: url("/assets/icons/actionset.png");
+}
 
 .aside-item__icon--columnset {
     background-image: url("/assets/icons/column-set.png");
@@ -223,8 +265,12 @@
     background-image: url("/assets/icons/image-set.png");
 }
 
+.aside-item__icon--choice {
+    background-image: url("/assets/icons/choice.png");
+}
+
 .aside-item__icon--inputchoiceset {
-    background-image: url("/assets/icons/checkbox.png");
+    background-image: url("/assets/icons/choiceset.png");
 }
 
 .aside-item__icon--inputdate {
@@ -251,8 +297,6 @@
     background-image: url("/assets/icons/textblock.png");
 }
 
-
-/*.Card Elements*/
 
 
 /*
@@ -302,7 +346,7 @@
 /*
 * Treeview Style
 */
-.treeview {
+.treeview-items {
     background-color: #f9f9f9;
     height: calc(100% - 30px);
     padding-bottom: 5px;

@@ -29,15 +29,24 @@ a.default-ac-anchor:visited:active {
     color: #004D84;
 }
 
-.default-ac-container.default-ac-selectable, .default-ac-columnSet.default-ac-selectable {
-    padding: 0px;
+.default-ac-container,
+.default-ac-input {
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-.default-ac-container.default-ac-selectable:hover, .default-ac-columnSet.default-ac-selectable:hover {
+.default-ac-container.default-ac-selectable,
+.default-ac-columnSet.default-ac-selectable {
+    padding: 0;
+}
+
+.default-ac-container.default-ac-selectable:hover,
+.default-ac-columnSet.default-ac-selectable:hover {
     background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-.default-ac-container.default-ac-selectable:active, .default-ac-columnSet.default-ac-selectable:active {
+.default-ac-container.default-ac-selectable:active,
+.default-ac-columnSet.default-ac-selectable:active {
     background-color: rgba(0, 0, 0, 0.15) !important;
 }
 

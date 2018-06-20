@@ -1,68 +1,80 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Adaptive Cards Designer (preview)</title>
-        <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
-        <script src="editor/monaco/min/vs/loader.js"></script>
-        <script src="editor/monaco-loader.js"></script>
+<head>
+    <title>Adaptive Cards Designer (preview)</title>
+    <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
-        <script src="dist/adaptivecards-designer.js"></script>
+    <script src="editor/monaco/min/vs/loader.js"></script>
+    <script src="editor/monaco-loader.js"></script>
 
-        <link rel="stylesheet" href="css/app.css" type="text/css" />
-        <link rel="stylesheet" href="css/adaptivecards-default.css" type="text/css" />
-        <link rel="stylesheet" href="css/card-designer.css" type="text/css" />
-        <link rel="stylesheet" href="css/adaptivecards-controls.css" type="text/css"/>
-    </head>
-    <body>
-        <div style="display: flex; flex-direction: column; height: 100%;">
-            <div id="header" style="flex: 0 0 auto; background-color: black; display: flex; align-items: center;">
-                <img src="./assets/adaptive-card-square-150.png" style="flex: 0 0 48px; height: 48px; margin-right: 20px;"/>
-                <span style="color: white; font-size: 22px;">Adaptive Cards Designer (preview)</span>
-            </div>
-            <div id="toolbar" style="flex: 0 0 auto; background-color: #F1F1F1; display: flex; align-items: center; border-bottom: 1px solid #D2D2D2;">
-                <div class="toolbar-btn toolbar-btn__icon-fullscreen js-enter-fullscreen">Enter Full Screen</div>
-                <span style="color: black;">Host:</span>
-                <div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 16px 0px 8px;"></div>
-                <div class="toolbar-btn toolbar-btn__icon-copy js-copy-json">Copy JSON</div>
-            </div>
-            <div style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
-                <div class="aside">
-                    <nav class="aside-menu">
-                        <span class="aside-menu__title">Tool box</span>
-                        <span class="aside-menu__bullet">
-                            <span class="aside-menu__icon"></span>
-                            <span class="aside-menu__description">Hide</span>
-                        </span>
-                    </nav>
-                    <ul class="aside-items"></ul>
+    <script src="dist/adaptivecards-designer.js"></script>
+
+    <link rel="stylesheet" href="css/app.css" type="text/css" />
+    <link rel="stylesheet" href="css/adaptivecards-default.css" type="text/css" />
+    <link rel="stylesheet" href="css/card-designer.css" type="text/css" />
+    <link rel="stylesheet" href="css/adaptivecards-controls.css" type="text/css" />
+</head>
+
+<body>
+    <div style="display: flex; flex-direction: column; height: 100%;">
+        <div id="header" style="flex: 0 0 auto; background-color: black; display: flex; align-items: center;">
+            <img src="./assets/adaptive-card-square-150.png" style="flex: 0 0 48px; height: 48px; margin-right: 20px;" />
+            <span style="color: white; font-size: 22px;">Adaptive Cards Designer (preview)</span>
+        </div>
+        <div id="toolbar" style="flex: 0 0 auto; background-color: #F1F1F1; display: flex; align-items: center; border-bottom: 1px solid #D2D2D2;">
+            <div class="toolbar-btn toolbar-btn__icon-fullscreen js-enter-fullscreen">Enter Full Screen</div>
+            <span style="color: black;">Host:</span>
+            <div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 16px 0px 8px;"></div>
+            <div class="toolbar-btn toolbar-btn__icon-copy js-copy-json">Copy JSON</div>
+        </div>
+        <div style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
+            <section class="aside js-aside">
+                <nav class="aside-menu">
+                    <span class="aside-menu__title">Tool box</span>
+                    <span class="aside-menu__bullet js-aside-bullet">
+                        <span class="aside-menu__icon js-aside-icon"></span>
+                        <span class="aside-menu__description js-aside-description">Hide</span>
+                    </span>
+                </nav>
+                <ul class="aside-items js-aside-items"></ul>
+            </section>
+
+            <div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
+                <div style="display: flex; flex: 1 1 100%; overflow: auto;">
+                    <div style="flex: 1 1 70%; padding: 10px 40px 10px 10px; overflow: auto; background-color: #F6F6F6;">
+                        <div id="designerHost" style="margin: 10px 30px 30px 10px;"></div>
+                    </div>
+                    <div id="treeViewVerticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
+                    <section id="treeViewSheetHost" class="js-treeview" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto;">
+                        <nav class="treeview-menu">
+                            <span class="treeview-menu__title">Visual tree view</span>
+                            <span class="treeview-menu__bullet js-treeview-bullet">
+                                <span class="treeview-menu__icon js-treeview-icon"></span>
+                                <span class="treeview-menu__description js-treeview-description">Hide</span>
+                            </span>
+                        </nav>
+                        <div class="treeview-items js-treeview-items"></div>
+                    </section>
+                    <div id="propertyVerticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
+                    <section id="propertySheetHost" class="js-properties" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto; background-color: #F9F9F9;">
+                        <nav class="properties-menu">
+                            <span class="properties-menu__title">Element properties</span>
+                            <span class="properties-menu__bullet js-properties-bullet">
+                                <span class="properties-menu__icon js-properties-icon"></span>
+                                <span class="properties-menu__description js-properties-description">Hide</span>
+                            </span>
+                        </nav>
+                        <div class="properties-items js-properties-items"></div>
+                    </section>
                 </div>
-
-                <div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
-                    <div style="display: flex; flex: 1 1 100%; overflow: auto;">
-                        <div style="flex: 1 1 70%; padding: 10px 40px 10px 10px; overflow: auto; background-color: #F6F6F6;">
-                            <div id="designerHost" style="margin: 10px 30px 30px 10px;"></div>
-                        </div>
-                        <div id="treeViewVerticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
-                        <div id="treeViewSheetHost" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto;">
-                            <nav class="header-menu">
-                                <span class="header-menu__title">Visual tree view</span>
-                                <span class="header-menu__bullet">
-                                    <span class="header-menu__icon"></span>
-                                    <span class="header-menu__description">Hide</span>
-                                </span>
-                            </nav>
-                            <section class="treeview"></section>
-                        </div>
-                        <div id="propertyVerticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
-                        <div id="propertySheetHost" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto; padding: 10px; background-color: #F9F9F9;"></div>
-                    </div>
-                    <div id="horizontalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-top: 1px solid #D2D2D2; border-bottom: 1px solid #D2D2D2; cursor: ns-resize;"></div>
-                    <div id="jsonEditorHost" style="flex: 0 0 auto; display: flex; height: 300px; overflow: hidden;">
-                        <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
-                    </div>
+                <div id="horizontalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-top: 1px solid #D2D2D2; border-bottom: 1px solid #D2D2D2; cursor: ns-resize;"></div>
+                <div id="jsonEditorHost" style="flex: 0 0 auto; display: flex; height: 300px; overflow: hidden;">
+                    <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>
