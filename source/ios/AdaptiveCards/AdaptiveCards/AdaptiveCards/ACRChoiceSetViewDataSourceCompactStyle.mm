@@ -49,14 +49,17 @@ using namespace AdaptiveCards;
         }
         NSString *defaultValues = [NSString stringWithCString:_choiceSetInput->GetValue().c_str()
                                                      encoding:NSUTF8StringEncoding];
-        NSArray *defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
-                               [NSCharacterSet characterSetWithCharactersInString:@","]];
-        NSMutableArray<NSString *> *titleArray = [[NSMutableArray alloc] init];
-        for(id defaultValue in defaultValuesArray) {
-            [titleArray addObject:valuesMap[defaultValue]];
-        }
-
-        _defaultString = [titleArray componentsJoinedByString:@", "];
+        if([defaultValues length]){
+            NSArray *defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
+                                   [NSCharacterSet characterSetWithCharactersInString:@","]];
+            NSMutableArray<NSString *> *titleArray = [[NSMutableArray alloc] init];
+            for(id defaultValue in defaultValuesArray) {
+                [titleArray addObject:valuesMap[defaultValue]];
+            }
+            _defaultString = [titleArray componentsJoinedByString:@", "];
+        } else {
+            _defaultString = @"";
+        }       
     }
     return self;
 }
