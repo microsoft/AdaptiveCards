@@ -415,13 +415,11 @@ using namespace AdaptiveCards;
                     {
                         button = self->_actionsMap[key];
                     }
-                });
-                
+                });                
                 // if view is available, set image to it, and continue image processing
                 if(button)
                 {
                     [ACRView setImageView:imageView inButton:button withConfig:self->_hostConfig andAllActionsHaveIcons:allActionsHaveIcons];
-                    
                     // remove tag
                     std::string id = act->GetId();
                     std::size_t idx = id.find_last_of('_');

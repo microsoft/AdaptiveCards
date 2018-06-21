@@ -1,6 +1,6 @@
 //
-//  ACRToggleInputDataSource
-//  ACRToggleInputDataSource.h
+//  ACRToggleInputView
+//  ACRToggleInputView.h
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
@@ -9,10 +9,10 @@
 #import "ACRIBaseInputHandler.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "HostConfig.h"
+#import "ACRColumnSetView.h"
 
-@interface ACRToggleInputDataSource:NSObject<UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler>
+@interface ACRToggleInputView:ACRColumnSetView<ACRIBaseInputHandler>
 
-@property BOOL isSelected;
 @property NSString *id;
 @property NSString *valueOn;
 @property NSString *valueOff;
