@@ -8,6 +8,7 @@ import { HostContainer } from "./containers/host-container";
 import { OutlookContainer } from "./containers/outlook-container";
 import { CortanaContainer } from "./containers/cortana-container";
 import { SkypeContainer } from "./containers/skype-container";
+import { TeamsContainer } from "./containers/teams-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import Treeview from "./components/treeview";
 import FullScreenHandler from "./components/fullscreenhandler";
@@ -270,6 +271,7 @@ class DesignerApp {
         this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
         this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
         this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
+        this.hostContainers.push(new TeamsContainer("Teams", "css/teams-container.css"));
     }
 
     private recreateDesigner() {
