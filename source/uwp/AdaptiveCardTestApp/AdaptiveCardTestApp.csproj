@@ -150,6 +150,12 @@
     <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Toggle.VerticalStretch.json">
       <Link>LinkedCards\Tests\ColumnSet.Input.Toggle.VerticalStretch.json</Link>
     </Content>
+    <Content Include="..\..\..\samples\Tests\VerticalContentAlignment_ForcedColumn.json">
+      <Link>LinkedCards\Tests\VerticalContentAlignment_ForcedColumn.json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\VerticalContentAlignment_ForcedContainer.json">
+      <Link>LinkedCards\Tests\VerticalContentAlignment_ForcedContainer.json</Link>
+    </Content>
     <None Include="AdaptiveCardTestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
