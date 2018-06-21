@@ -13,7 +13,12 @@
 
 // Walk through adaptive cards elements and if images are found, download and process images concurrently and on different thread
 // from main thread, so images process won't block UI thread.
-- (void) addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body;
-// Different method to just handle the actions so they wont be processed multiple times
-- (void) addActionsToConcurrentQueue:(std::vector<std::shared_ptr<BaseActionElement>> const &) actions;
+- (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body;
+// async method
+- (void)loadImagesForActionsAndCheckIfAllActionsHaveIconImages:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions hostconfig:(ACOHostConfig *)hostConfig;
+
++ (NSString *)generateKeyForElement:(std::shared_ptr<BaseCardElement> const &)elem;
+
++ (NSString *)generateKeyForActionElement:(std::shared_ptr<BaseActionElement> const &)elem;
+
 @end
