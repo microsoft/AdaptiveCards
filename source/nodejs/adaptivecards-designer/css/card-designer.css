@@ -399,7 +399,7 @@
 }
 
 .treeview__icon--arrow {
-    background-image: url("/assets/arrow.svg");
+    background-image: url("/assets/icons/arrow.svg");
     margin-right: 0;
 }
 
@@ -464,7 +464,7 @@
 }
 
 .treeview__icon--arrow.is-rotated {
-    background-image: url("/assets/arrow-rotated.svg");
+    background-image: url("/assets/icons/arrow-rotated.svg");
 }
 
 .btn {
