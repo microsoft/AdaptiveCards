@@ -117,16 +117,14 @@ public class CardRendererRegistration
 
         if(tag instanceof BaseCardElement)
         {
-            BaseCardElement cardElementContainer = (BaseCardElement)tag;
-
-            if(cardElementContainer instanceof Column)
+            if(tag instanceof Column)
             {
-                Column column = (Column)cardElementContainer;
+                Column column = (Column)tag;
                 verticalContentAlignment = column.GetVerticalContentAlignment();
             }
-            else if(cardElementContainer instanceof Container)
+            else if(tag instanceof Container)
             {
-                Container container = (Container)cardElementContainer;
+                Container container = (Container)tag;
                 verticalContentAlignment = container.GetVerticalContentAlignment();
             }
         }

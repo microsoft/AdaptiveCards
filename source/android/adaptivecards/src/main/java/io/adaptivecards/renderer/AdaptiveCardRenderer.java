@@ -130,7 +130,8 @@ public class AdaptiveCardRenderer
         }
 
         VerticalContentAlignment contentAlignment = adaptiveCard.GetVerticalContentAlignment();
-        switch (contentAlignment){
+        switch (contentAlignment)
+        {
             case Center:
                 layout.setGravity(Gravity.CENTER_VERTICAL);
                 break;
