@@ -103,8 +103,8 @@ using namespace AdaptiveCards;
     if(!imageSize.width || !self.frame.size.width || !cellCounts){
         return CGSizeMake(0, 0);
     }
-    int frameWidth = self.frame.size.width;
-    int imageWidthWithSpacing = imageSize.width + spacing;
+    float frameWidth = self.frame.size.width;
+    float imageWidthWithSpacing = imageSize.width + spacing;
 
     // if there is spacing to the right edge, it's o.k.
     int numbersOfItemsInRow = frameWidth / imageWidthWithSpacing;
