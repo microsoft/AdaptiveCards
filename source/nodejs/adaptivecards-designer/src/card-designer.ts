@@ -1,6 +1,6 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
-import { SizeAndUnit } from "adaptivecards";
+import { SizeAndUnit, HorizontalAlignment, PaddingDefinition } from "adaptivecards";
 
 const DRAG_THRESHOLD = 10;
 
@@ -37,6 +37,7 @@ function addLabelAndInput<TInput extends Adaptive.Input>(
     columnSet.addColumn(rightColumn);
 
     var result = { label: new Adaptive.TextBlock(), input: new inputType() };
+    result.label.horizontalAlignment = HorizontalAlignment.Right;
     result.label.text = label;
     result.label.wrap = true;
 
@@ -926,7 +927,7 @@ export class CardElementPeer extends DesignerPeer {
                 Adaptive.Spacing.Small);
 
             let elementType = new Adaptive.TextBlock();
-            elementType.text = "Element type: **" + this.cardElement.getJsonTypeName() + "**";
+            elementType.text = "**" + this.cardElement.getJsonTypeName() + "**";
 
             container.addItem(elementType);
 
@@ -2221,7 +2222,7 @@ export class CardDesigner {
         this._designerSurface.appendChild(this._peerCommandsHostElement);
     }
 
-   
+
 
 
     updateLayout(isFullRefresh: boolean = true) {

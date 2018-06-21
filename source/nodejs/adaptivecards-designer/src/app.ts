@@ -185,6 +185,12 @@ class DesignerApp {
             }
 
             properties.appendChild(card.render());
+            let cardNodes = card.renderedElement.children;
+            (cardNodes[0] as HTMLElement).style.backgroundColor = "transparent";
+
+            for (let element = 0; element < cardNodes.length; element++) {
+                (cardNodes[element] as HTMLElement).className += " wrapper";
+             }
         }
     }
 
