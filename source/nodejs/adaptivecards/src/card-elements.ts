@@ -347,7 +347,9 @@ export abstract class CardElement {
 
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "id", this.id);
-        Utils.setEnumProperty(Enums.HorizontalAlignment, result, "horizontalAlignment", this.horizontalAlignment);
+        if (this.horizontalAlignment !== null) {
+            Utils.setEnumProperty(Enums.HorizontalAlignment, result, "horizontalAlignment", this.horizontalAlignment);
+        }
         Utils.setEnumProperty(Enums.Spacing, result, "spacing", this.spacing, Enums.Spacing.Default);
         Utils.setProperty(result, "separator", this.separator, false);
         Utils.setProperty(result, "height", this.height, "auto");
@@ -1706,7 +1708,7 @@ export class TextInput extends Input {
         Utils.setProperty(result, "placeholder", this.placeholder);
         Utils.setProperty(result, "maxLength", this.maxLength, 0);
         Utils.setProperty(result, "isMultiline", this.isMultiline, false);
-        Utils.setProperty(result, "style", this.style, Enums.InputTextStyle.Text);
+        Utils.setEnumProperty(Enums.InputTextStyle, result, "style", this.style, Enums.InputTextStyle.Text);
 
         return result;
     }
