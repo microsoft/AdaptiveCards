@@ -12,6 +12,7 @@ import { TeamsContainer } from "./containers/teams-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import Treeview from "./components/treeview";
 import FullScreenHandler from "./components/fullscreenhandler";
+import { WebChatContainer } from "./containers/webchat-container";
 
 declare var monacoEditor: any;
 declare function loadMonacoEditor(schema, callback);
@@ -268,10 +269,11 @@ class DesignerApp {
     }
 
     private addContainers() {
-        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+        this.hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
         this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
         this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
-        this.hostContainers.push(new TeamsContainer("Teams", "css/teams-container.css"));
+        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+        this.hostContainers.push(new TeamsContainer("Microsoft Teams (Preview)", "css/teams-container.css"));
     }
 
     private recreateDesigner() {
