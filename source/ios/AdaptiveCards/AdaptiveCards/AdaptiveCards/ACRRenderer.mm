@@ -65,6 +65,10 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
 
+    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)adaptiveCard.get()];
+    NSString *key = [number stringValue];
+    NSString *urlStr = [NSString stringWithCString:adaptiveCard->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
+    [rootView loadImage:urlStr key:key];
     if(!body.empty()) {
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
