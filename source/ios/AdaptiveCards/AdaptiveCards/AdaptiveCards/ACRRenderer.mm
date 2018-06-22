@@ -71,21 +71,22 @@ using namespace AdaptiveCards;
         [verticalView setStyle:style];
 
         [rootView addTasksToConcurrentQueue:body];
-        
+
+        std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+
+        if(!actions.empty()) {
+            [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
+        }
+
         [rootView waitForAsyncTasksToFinish];
 
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
-       [[rootView card] setInputs:inputs];
+        [[rootView card] setInputs:inputs];
 
-        std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
         if(!actions.empty()) {
             [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
-            
-            [rootView addActionsToConcurrentQueue:actions];
-            
-            [rootView waitForAsyncTasksToFinish];
-            
+
             // renders buttons and their associated actions
             [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
         }
@@ -104,7 +105,8 @@ using namespace AdaptiveCards;
     ACRRegistration *reg = [ACRRegistration getInstance];
     UIView<ACRIContentHoldingView> *childview = nil;
     NSDictionary<NSString *, NSNumber*> *attributes =
-        @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->actions.buttonSpacing]};          
+        @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->actions.buttonSpacing],
+          @"distribution":[NSNumber numberWithInt:UIStackViewDistributionFillProportionally] };
 
     if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
         childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
@@ -147,7 +149,6 @@ using namespace AdaptiveCards;
         contentWidth = maxWidth;
     }
     childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
-
     containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight);
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
     [containingView addSubview:childview];
@@ -187,9 +188,9 @@ using namespace AdaptiveCards;
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
-    
+
     UIView *prevStretchableElem = nil, *curStretchableElem = nil;
-    
+
     auto firstelem = elems.begin();
     for(const auto &elem:elems)
     {
@@ -207,9 +208,9 @@ using namespace AdaptiveCards;
         }
 
         [acoElem setElem:elem];
-        
+
         curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
-        
+
         if(elem->GetHeight() == HeightType::Stretch){
             if(prevStretchableElem){
                 NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
@@ -222,12 +223,12 @@ using namespace AdaptiveCards;
                 heightConstraint.priority = UILayoutPriorityDefaultLow;
                 heightConstraint.active = YES;
             }
-            
+
             if([view isKindOfClass:[ACRColumnView class]]){
                 ACRColumnView *columnView = (ACRColumnView*)view;
                 columnView.hasStretchableView = YES;
             }
-            
+
             prevStretchableElem = curStretchableElem;
         }
     }
