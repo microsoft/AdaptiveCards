@@ -1,59 +1,54 @@
 import { HostContainer } from "./host-container";
+import * as Adaptive from "adaptivecards";
 import {
-    AdaptiveCard,
-    HostConfig,
-    Size,
-    TextSize,
-    TextColor,
-    TextWeight,
-    Spacing,
-    ShowCardActionMode,
-    Orientation,
-    ActionAlignment,
-} from "adaptivecards";
+        Spacing,
+        ShowCardActionMode,
+        Orientation,
+        ActionAlignment,
+        Size,
+        TextColor,
+        TextSize,
+        TextWeight,
+        AdaptiveCard
+    } from "adaptivecards";
 
 export class TimelineContainer extends HostContainer {
-    // static backgroundColor: string = "#0078D7";
-
     private _width: number;
     private _height: number;
 
-    constructor(width: number, height: number, styleSheet: string) {
-        super(styleSheet);
+    // constructor(width: number, height: number, styleSheet: string) {
+    //     super(name, styleSheet);
 
-        this._width = width;
-        this._height = height;
-        this.supportsActionBar = false;
-    }
+    //     this._width = width;
+    //     this._height = height;
+    //     // this.supportsActionBar = false;
+    // }
 
-    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
+    renderTo(hostElement: HTMLElement) {
         AdaptiveCard.useAdvancedCardBottomTruncation = true;
 
-        var wrapper = document.createElement("div");
-        wrapper.className = "timeline-frame";
-        target.appendChild(wrapper);
+        let cardHost = this.cardHost;
 
-        var cardContainer = document.createElement("div");
+        let timelineCardChild = document.querySelector('.timeline-card > div') as HTMLElement;
+
+        let target = document.getElementById("designerHost");
+        let frame = document.createElement("div");
+        frame.className = "timeline-frame";
+        target.appendChild(frame);
+
+        let cardContainer = document.createElement("div");
         cardContainer.className = "timeline-card";
-        wrapper.appendChild(cardContainer);
+        frame.appendChild(cardContainer);
+        cardHost.style.height = "178px";
+        cardHost.style.width = "328px";
+        cardHost.style.overflow = "hidden";
 
-        // Style must be set in code for fixed-height clipping to work
-        var clippingDiv = document.createElement("div");
-        clippingDiv.style.height = this._height + "px";
-        clippingDiv.style.width = this._width + "px";
-        clippingDiv.style.overflow = "hidden";
-        cardContainer.appendChild(clippingDiv);
-
-        var renderedCard = adaptiveCard.render();
-        renderedCard.style.height = "100%";
-        clippingDiv.appendChild(renderedCard);
-        adaptiveCard.updateLayout();
-
-        return wrapper;
+        cardContainer.appendChild(cardHost);
+        hostElement.appendChild(frame);
     }
 
-    public getHostConfig(): HostConfig {
-        return new HostConfig({
+    public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig({
             spacing: {
                 small: 4,
                 default: 12,
