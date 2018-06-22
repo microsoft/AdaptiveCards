@@ -33,7 +33,7 @@ AdaptiveNamespaceStart
         IAdaptiveRenderArgs* renderArgs,
         ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        m_xamlBuilder->BuildImage(cardElement, renderContext, renderArgs, result);
+        m_xamlBuilder->BuildImage(cardElement, renderContext, renderArgs, true/* isStandaloneImage */, result);
         return S_OK;
     }
 

@@ -41,6 +41,7 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+            _In_ bool isStandaloneImage,
             _Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
 
         static void BuildTextBlock(

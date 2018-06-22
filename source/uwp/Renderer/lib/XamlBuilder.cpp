@@ -419,7 +419,7 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
         ComPtr<IUIElement> backgroundImage;
-        BuildImage(adaptiveCardElement.Get(), renderContext, renderArgs, &backgroundImage);
+        BuildImage(adaptiveCardElement.Get(), renderContext, renderArgs, false /* isStandaloneImage */, &backgroundImage);
         if (backgroundImage == nullptr)
         {
             return;
@@ -822,7 +822,7 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, buttonContentsStackPanel.Get()));
 
             ComPtr<IUIElement> buttonIcon;
-            BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+            BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), true /* isStandaloneImage */, &buttonIcon);
             if (buttonIcon == nullptr)
             {
                 XamlHelpers::SetContent(localButton.Get(), title.Get());
@@ -1512,6 +1512,7 @@ AdaptiveNamespaceStart
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs,
+        bool isStandaloneImage,
         IUIElement** imageControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -1771,7 +1772,11 @@ AdaptiveNamespaceStart
                 break;
         }
 
-        THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
+        if (isStandaloneImage) 
+        {
+            THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
+        }
+        
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement.Get()));
 
         ComPtr<IAdaptiveActionElement> selectAction;
@@ -2281,6 +2286,9 @@ AdaptiveNamespaceStart
 
                 ComPtr<IFrameworkElement> imageAsFrameworkElement;
                 THROW_IF_FAILED(uiImage.As(&imageAsFrameworkElement));
+
+                // Cant pass the flag to the renderer so force the alignment here
+                THROW_IF_FAILED(imageAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Stretch));
 
                 UINT32 maxImageHeight;
                 THROW_IF_FAILED(imageSetConfig->get_MaxImageHeight(&maxImageHeight));
