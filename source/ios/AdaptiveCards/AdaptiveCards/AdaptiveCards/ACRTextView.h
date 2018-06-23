@@ -1,6 +1,6 @@
 //
-//  ACRTextField
-//  ACRTextField.h
+//  ACRTextView
+//  ACRTextView.h
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
@@ -9,10 +9,12 @@
 #import "ACRIBaseInputHandler.h"
 #import "ACOBaseCardElement.h"
 
-@interface ACRTextField:UITextField<ACRIBaseInputHandler, UITextFieldDelegate>
+@interface ACRTextView:UITextView<ACRIBaseInputHandler, UITextViewDelegate>
 @property NSString* id;
+@property NSString* placeholderText;
 @property bool isRequired;
 @property NSUInteger maxLength;
 
-- (void) dismissNumPad;
+-(instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element;
+
 @end

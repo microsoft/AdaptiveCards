@@ -8,6 +8,7 @@
 #import "ACRInputRenderer.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRTextField.h"
+#import "ACRTextView.h"
 #import "TextInput.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
@@ -34,18 +35,52 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    ACRTextField *txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
-    NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
-                                                encoding:NSUTF8StringEncoding];
-    txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
-                                     encoding:NSUTF8StringEncoding];
-    txtInput.placeholder = placeHolderStr;
-    txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
-    txtInput.allowsEditingTextAttributes = YES;
-    txtInput.isRequired  = inputBlck->GetIsRequired();
-    txtInput.delegate = txtInput;
+    
+    if(inputBlck->GetIsMultiline()) {
+        ACRTextView *txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) element:acoElem];
+        NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
+                                                      encoding:NSUTF8StringEncoding];
+        txtview.id = [NSString stringWithCString:inputBlck->GetId().c_str()
+                                         encoding:NSUTF8StringEncoding];
+        txtview.text = placeHolderStr;//[NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
+        txtview.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        txtview.allowsEditingTextAttributes = YES;
+        txtview.isRequired  = inputBlck->GetIsRequired();
+        txtview.delegate = txtview;
+        txtview.layer.borderWidth = 0.5;
+        txtview.layer.borderColor = [[UIColor grayColor] CGColor];
+        CGRect boundingrect = [txtview.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
+        boundingrect.size.height *= 4;
+        boundingrect.size.width = viewGroup.frame.size.width;
+        txtview.frame = boundingrect;
+        [viewGroup addArrangedSubview:txtview];
+    
+        txtview.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
+        
+        NSDictionary *viewsMap = NSDictionaryOfVariableBindings(txtview);
+        
+        [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
+        
+        [inputs addObject:txtview];
 
+        return txtview;
+
+    } else {
+        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+        ACRTextField *txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
+        NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
+                                                    encoding:NSUTF8StringEncoding];
+        txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
+                                         encoding:NSUTF8StringEncoding];
+        txtInput.maxLength = inputBlck->GetMaxLength();
+        txtInput.placeholder = placeHolderStr;
+        txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
+        txtInput.allowsEditingTextAttributes = YES;
+        txtInput.isRequired  = inputBlck->GetIsRequired();
+        txtInput.delegate = txtInput;
+    
     [txtInput setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     switch(inputBlck->GetTextInputStyle())
@@ -107,8 +142,8 @@
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
     [inputs addObject:txtInput];
-
     return txtInput;
+    }
 }
 
 @end

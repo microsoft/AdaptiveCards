@@ -63,7 +63,8 @@ using namespace AdaptiveCards;
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
-    }
+    }    
+  
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
@@ -71,6 +72,9 @@ using namespace AdaptiveCards;
                                                       encoding:NSUTF8StringEncoding];
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    [cell.accessoryView.layer setBorderWidth:1.5];
+    [cell.accessoryView.layer setBorderColor:UIColor.blueColor.CGColor];
 
     if([_defaultValuesSet containsObject:keyForDefaultValue]){
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];

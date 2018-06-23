@@ -37,6 +37,8 @@
 		6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */; };
 		6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30120D32A89005C8E15 /* ACRButton.xib */; };
+		6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */; };
+		6B9AB31120DD82A2005C8E15 /* ACRTextView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9AB30F20DD82A2005C8E15 /* ACRTextView.mm */; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
 		F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */; };
@@ -282,6 +284,8 @@
 		6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRUIImageView.h; sourceTree = "<group>"; };
 		6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRCellForCompactMode.xib; sourceTree = "<group>"; };
 		6B9AB30120D32A89005C8E15 /* ACRButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRButton.xib; sourceTree = "<group>"; };
+		6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTextView.h; sourceTree = "<group>"; };
+		6B9AB30F20DD82A2005C8E15 /* ACRTextView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTextView.mm; sourceTree = "<group>"; };
 		F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
 		F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetRenderer.h; sourceTree = "<group>"; };
@@ -693,6 +697,8 @@
 				F4C1F5DC1F218F920018CB78 /* ACRInputNumberRenderer.mm */,
 				F42979481F323BA700E89914 /* ACRDateTextField.h */,
 				F429794C1F32684900E89914 /* ACRDateTextField.mm */,
+				6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */,
+				6B9AB30F20DD82A2005C8E15 /* ACRTextView.mm */,
 				F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */,
 				F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */,
 				F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */,
@@ -865,6 +871,7 @@
 				F448731D1EE2261F00FCAFAE /* ParseUtil.h in Headers */,
 				6B7B1A9320B4D2AB00260731 /* MediaSource.h in Headers */,
 				F448731E1EE2261F00FCAFAE /* pch.h in Headers */,
+				6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */,
 				F448730A1EE2261F00FCAFAE /* Enums.h in Headers */,
 				F44872F61EE2261F00FCAFAE /* AdaptiveCardParseException.h in Headers */,
 				F44872FA1EE2261F00FCAFAE /* BaseCardElement.h in Headers */,
@@ -1179,6 +1186,7 @@
 				F4C1F5DA1F218ABC0018CB78 /* ACRInputTimeRenderer.mm in Sources */,
 				F4D402121F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm in Sources */,
 				F43110441F357487001AAE30 /* ACRInputTableView.mm in Sources */,
+				6B9AB31120DD82A2005C8E15 /* ACRTextView.mm in Sources */,
 				F4F6BA32204F18D8003741B6 /* AdaptiveCardParseWarning.cpp in Sources */,
 				F4C1F5E41F2A62190018CB78 /* ACRActionOpenURLRenderer.mm in Sources */,
 				F4071C7F1FCCBAEF00AF4FEA /* ElementParserRegistration.cpp in Sources */,
