@@ -219,10 +219,10 @@ using namespace AdaptiveCards;
                     img->SetImageSize(imgSetElem->GetImageSize());
 
                     if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) CardElementType::Image] == NO){
-                    NSString *urlStr = [NSString stringWithCString:img->GetUrl().c_str()
-                                                          encoding:[NSString defaultCStringEncoding]];
-                    NSString *key = [ACRView generateKeyForElement:img];
-                    [self loadImage:urlStr key:key];
+                        NSString *urlStr = [NSString stringWithCString:img->GetUrl().c_str()
+                                                              encoding:[NSString defaultCStringEncoding]];
+                        NSString *key = [ACRView generateKeyForElement:img];
+                        [self loadImage:urlStr key:key];
                     }
                 }
                 break;
@@ -272,7 +272,7 @@ using namespace AdaptiveCards;
             NSString *key = [ACRView generateKeyForActionElement:action];
             [self loadImage:urlStr key:key];
         } else {
-            hostConfig.areAllActionsHaveIcons = NO;
+            hostConfig.allActionsHaveIcons = NO;
         }
     }
 }

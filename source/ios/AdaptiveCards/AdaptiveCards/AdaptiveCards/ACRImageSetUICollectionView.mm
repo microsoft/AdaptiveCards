@@ -95,8 +95,25 @@ using namespace AdaptiveCards;
 - (CGSize) collectionViewContentSize
 {
     size_t cellCounts = _imgSet->GetImages().size();
-    int dimension = (ceil(sqrt(cellCounts)));
     CGSize imageSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
-    return CGSizeMake(dimension * imageSize.width, dimension * imageSize.height);
+    float spacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumInteritemSpacing;
+    float lineSpacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumLineSpacing;
+
+    // sanity check
+    if(!imageSize.width || !self.frame.size.width || !cellCounts){
+        return CGSizeMake(0, 0);
+    }
+    float frameWidth = self.frame.size.width;
+    float imageWidthWithSpacing = imageSize.width + spacing;
+
+    // if there is spacing to the right edge, it's o.k.
+    int numbersOfItemsInRow = frameWidth / imageWidthWithSpacing;
+    // if addtional image can be fit by removing spacing, do so
+    if(numbersOfItemsInRow * imageWidthWithSpacing + imageSize.width <= frameWidth){
+        numbersOfItemsInRow++;
+    }
+
+    int numbersOfRows = ceil(((float) cellCounts) / numbersOfItemsInRow);
+    return CGSizeMake(self.frame.size.width, (numbersOfRows) * (imageSize.height) + (numbersOfRows - 1) * lineSpacing);
 }
 @end

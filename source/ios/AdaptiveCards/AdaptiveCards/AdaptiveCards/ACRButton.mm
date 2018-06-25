@@ -49,7 +49,7 @@
                                 multiplier:1.0
                                   constant:imageSize.height].active = YES;
 
-    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle && config.areAllActionsHaveIcons) {
+    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle && config.allActionsHaveIcons) {
         // fix image view to top and center x of the button
         [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:button
             attribute:NSLayoutAttributeTop multiplier:1.0 constant:config.buttonPadding].active = YES;
