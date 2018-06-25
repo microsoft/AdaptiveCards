@@ -14,6 +14,7 @@ import Treeview from "./components/treeview";
 import FullScreenHandler from "./components/fullscreenhandler";
 import { TimelineContainer } from "./containers/timeline-container";
 import { WebChatContainer } from "./containers/webchat-container";
+import { ToastContainer } from "./containers/toast-container";
 
 declare var monacoEditor: any;
 declare function loadMonacoEditor(schema, callback);
@@ -276,7 +277,7 @@ class DesignerApp {
         this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
         this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
         this.hostContainers.push(new TeamsContainer("Microsoft Teams (Preview)", "css/teams-container.css"));
-        // this.hostContainers.push(new WindowsNotificationsContainer("Windows Notifications(Preview)", "css/windows-notifications-container.css"));
+        this.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
         // this.hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bot-framework-container.css"));
     }
 
