@@ -109,6 +109,7 @@ using namespace AdaptiveCards;
         UIView *imgView = nil;
         if([[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
             std::shared_ptr<Image> imageElement = std::make_shared<Image>();
+            imageElement->SetImageSize(ImageSize::Stretch);
             imageElement->SetUrl([_adaptiveCard card]->GetBackgroundImage());
             ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
             [acoElem setElem:imageElement];
