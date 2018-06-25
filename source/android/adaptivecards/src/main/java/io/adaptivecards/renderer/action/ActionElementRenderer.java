@@ -1,5 +1,6 @@
 package io.adaptivecards.renderer.action;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -111,6 +112,14 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         @Override
         public void onClick(View v)
         {
+            Activity hostingActivity = (Activity)v.getContext();
+
+            View currentFocusedView = hostingActivity.getCurrentFocus();
+            if (currentFocusedView != null)
+            {
+                currentFocusedView.clearFocus();
+            }
+
             v.setPressed(m_invisibleCard.getVisibility() != View.VISIBLE);
             for(int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
             {
@@ -130,6 +139,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             if (m_invisibleCard.getVisibility() == View.VISIBLE)
             {
                 mainCardView.setPadding(padding, padding, padding, 0);
+                m_invisibleCard.requestFocus();
             }
             else
             {
