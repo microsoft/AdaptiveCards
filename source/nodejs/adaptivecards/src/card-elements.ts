@@ -347,9 +347,11 @@ export abstract class CardElement {
 
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "id", this.id);
+
         if (this.horizontalAlignment !== null) {
             Utils.setEnumProperty(Enums.HorizontalAlignment, result, "horizontalAlignment", this.horizontalAlignment);
         }
+
         Utils.setEnumProperty(Enums.Spacing, result, "spacing", this.spacing, Enums.Spacing.Default);
         Utils.setProperty(result, "separator", this.separator, false);
         Utils.setProperty(result, "height", this.height, "auto");
