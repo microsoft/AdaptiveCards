@@ -36,6 +36,8 @@ using namespace AdaptiveCards;
         if([UIFont.familyNames containsObject:requestedFontFamilyName]){
             _fontFamilyNames = @[requestedFontFamilyName];
         }
+        _allActionsHaveIcons = YES;
+        _buttonPadding = 5;
     }
     return self;
 }

@@ -4,6 +4,7 @@
 #include "BaseCardElement.h"
 #include "Enums.h"
 #include "ElementParserRegistration.h"
+#include "util.h"
 
 namespace AdaptiveSharedNamespace {
 class MediaSource
@@ -23,6 +24,8 @@ public:
 
     std::string GetUrl() const;
     void SetUrl(const std::string& value);
+
+    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo);
 
 private:
     std::string m_mimeType;

@@ -329,8 +329,7 @@ enum class IconPlacement
 
 enum class VerticalContentAlignment
 {
-    Stretch = 0,
-    Top,
+    Top = 0,
     Center,
     Bottom
 };

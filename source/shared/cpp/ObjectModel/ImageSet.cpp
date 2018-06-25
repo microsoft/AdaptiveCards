@@ -90,12 +90,12 @@ void ImageSet::PopulateKnownPropertiesSet()
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)});
 }
 
-void ImageSet::GetResourceUris(std::vector<std::string>& resourceUris)
+void ImageSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto images = GetImages();
     for (auto image : images)
     {
-        image->GetResourceUris(resourceUris);
+        image->GetResourceInformation(resourceInfo);
     }
     return;
 }

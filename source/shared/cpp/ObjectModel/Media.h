@@ -23,6 +23,8 @@ public:
 
     std::vector<std::shared_ptr<MediaSource>>& GetSources();
 
+    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+
 private:
     std::string m_poster;
     std::string m_altText;

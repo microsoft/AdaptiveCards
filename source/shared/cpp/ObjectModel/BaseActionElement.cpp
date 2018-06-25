@@ -95,7 +95,7 @@ void BaseActionElement::PopulateKnownPropertiesSet()
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)});
 }
 
-void BaseActionElement::GetResourceUris(std::vector<std::string>&)
+void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>&)
 {
     return;
 }
