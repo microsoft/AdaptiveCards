@@ -226,7 +226,7 @@ class DesignerApp {
             for (let i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
                 const element = Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i);
                 Object.keys(categoriesMap).map(category => {
-                    if (categoriesMap[category].items.includes(element.typeName)) {
+                    if (categoriesMap[category].items.indexOf(element.typeName) !== -1) {
                         sortedRegisteredTypes[category] = sortedRegisteredTypes[category] || {};
                         sortedRegisteredTypes[category].title = sortedRegisteredTypes[category].title || categoriesMap[category].title;
                         sortedRegisteredTypes[category].items = Array.isArray(sortedRegisteredTypes[category].items) ? [...sortedRegisteredTypes[category].items, element] : [element];
