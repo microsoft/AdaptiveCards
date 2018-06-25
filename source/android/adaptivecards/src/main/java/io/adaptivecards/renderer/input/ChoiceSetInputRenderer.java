@@ -33,7 +33,7 @@ import java.util.Vector;
 
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
-    private ChoiceSetInputRenderer()
+    protected ChoiceSetInputRenderer()
     {
     }
 

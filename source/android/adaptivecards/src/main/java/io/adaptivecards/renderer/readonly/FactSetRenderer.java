@@ -29,7 +29,7 @@ import java.util.Vector;
 
 public class FactSetRenderer extends BaseCardElementRenderer
 {
-    private FactSetRenderer()
+    protected FactSetRenderer()
     {
     }
 

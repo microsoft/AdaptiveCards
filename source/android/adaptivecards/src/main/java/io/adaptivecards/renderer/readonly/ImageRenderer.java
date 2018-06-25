@@ -38,7 +38,7 @@ import java.io.IOException;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
-    private ImageRenderer()
+    protected ImageRenderer()
     {
     }
 
