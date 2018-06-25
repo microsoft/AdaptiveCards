@@ -26,7 +26,7 @@ import java.util.Locale;
 
 public class ColumnRenderer extends BaseCardElementRenderer
 {
-    private ColumnRenderer()
+    protected ColumnRenderer()
     {
     }
 
