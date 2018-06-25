@@ -1,22 +1,14 @@
 import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
-import {
-        Spacing,
-        ShowCardActionMode,
-        Orientation,
-        ActionAlignment,
-        Size,
-        TextColor,
-        TextSize,
-        TextWeight
-    } from "adaptivecards";
+import { Spacing, ShowCardActionMode, Orientation, ActionAlignment, Size, TextColor, TextSize, TextWeight } from "adaptivecards";
 
-export class BTImageContainer extends HostContainer {
+export class BotFrameworkContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
-        this.cardHost.classList.add("bf-image-card");
+        this.cardHost.classList.add("bf-images-card");
 
-        var frame = document.createElement("div");
-        frame.className = "bf-image-frame";
+        let frame = document.createElement("div");
+        frame.className = "bf-images-frame";
+        frame.appendChild(this.cardHost);
 
         hostElement.appendChild(frame);
     }

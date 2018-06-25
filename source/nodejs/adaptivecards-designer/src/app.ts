@@ -9,12 +9,13 @@ import { OutlookContainer } from "./containers/outlook-container";
 import { CortanaContainer } from "./containers/cortana-container";
 import { SkypeContainer } from "./containers/skype-container";
 import { TeamsContainer } from "./containers/teams-container";
-import { adaptiveCardSchema } from "./adaptive-card-schema";
-import Treeview from "./components/treeview";
-import FullScreenHandler from "./components/fullscreenhandler";
 import { TimelineContainer } from "./containers/timeline-container";
 import { WebChatContainer } from "./containers/webchat-container";
 import { ToastContainer } from "./containers/toast-container";
+import { BotFrameworkContainer } from "./containers/bf-image-container";
+import { adaptiveCardSchema } from "./adaptive-card-schema";
+import Treeview from "./components/treeview";
+import FullScreenHandler from "./components/fullscreenhandler";
 
 declare var monacoEditor: any;
 declare function loadMonacoEditor(schema, callback);
@@ -278,7 +279,7 @@ class DesignerApp {
         this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
         this.hostContainers.push(new TeamsContainer("Microsoft Teams (Preview)", "css/teams-container.css"));
         this.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
-        // this.hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bot-framework-container.css"));
+        this.hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
     }
 
     private recreateDesigner() {
