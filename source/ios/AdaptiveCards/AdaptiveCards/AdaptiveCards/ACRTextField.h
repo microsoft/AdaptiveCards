@@ -14,5 +14,5 @@
 @property bool isRequired;
 @property NSUInteger maxLength;
 
-- (void) dismissNumPad;
+- (void)dismissNumPad;
 @end

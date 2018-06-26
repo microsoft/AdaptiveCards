@@ -15,6 +15,6 @@
 @property bool isRequired;
 @property NSUInteger maxLength;
 
--(instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element;
+- (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element;
 
 @end

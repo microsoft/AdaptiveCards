@@ -11,7 +11,7 @@
 
 @implementation ACRTextView
 
--(instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element
+- (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -66,11 +66,11 @@
     if (!_maxLength){
         return YES;
     }
-    
+
     if (range.length + range.location > textView.text.length) {
         return NO;
     }
-    
+
     NSUInteger newLength = [textView.text length] + [text length] - range.length;
     return newLength <= _maxLength;
 }

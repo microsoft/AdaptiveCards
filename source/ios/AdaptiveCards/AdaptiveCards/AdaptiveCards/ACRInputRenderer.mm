@@ -36,17 +36,17 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
     UIView *inputview = nil;
-    
+
     if(inputBlck->GetIsMultiline()) {
         ACRTextView *txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) element:acoElem];
         txtview.id = [NSString stringWithCString:inputBlck->GetId().c_str()
-                                         encoding:NSUTF8StringEncoding];        
+                                         encoding:NSUTF8StringEncoding];
         txtview.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         txtview.allowsEditingTextAttributes = YES;
         txtview.isRequired  = inputBlck->GetIsRequired();
         txtview.delegate = txtview;
-        
-	txtview.layer.borderWidth = 0.5;
+
+        txtview.layer.borderWidth = 0.5;
         txtview.layer.borderColor = [[UIColor grayColor] CGColor];
         CGRect boundingrect = [txtview.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
         boundingrect.size.height *= 4;
@@ -128,7 +128,7 @@
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
     [inputs addObject:inputview];
-    
+
     return inputview;
 }
 
