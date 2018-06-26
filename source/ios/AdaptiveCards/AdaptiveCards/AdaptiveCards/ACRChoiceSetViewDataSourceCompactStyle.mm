@@ -59,7 +59,7 @@ using namespace AdaptiveCards;
             _defaultString = [titleArray componentsJoinedByString:@", "];
         } else {
             _defaultString = @"";
-        }       
+        }
     }
     return self;
 }

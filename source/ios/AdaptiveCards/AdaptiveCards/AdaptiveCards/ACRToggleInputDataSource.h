@@ -1,6 +1,6 @@
 //
-//  ACRToggleInputView
-//  ACRToggleInputView.h
+//  ACRToggleInputDataSource
+//  ACRToggleInputDataSource.h
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
@@ -11,7 +11,7 @@
 #import "HostConfig.h"
 #import "ACRColumnSetView.h"
 
-@interface ACRToggleInputView:ACRColumnSetView<ACRIBaseInputHandler>
+@interface ACRToggleInputDataSource:NSObject<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler> 
 
 @property NSString *id;
 @property NSString *valueOn;
