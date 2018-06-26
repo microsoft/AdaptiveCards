@@ -34,7 +34,8 @@
     if (self.isRequired && !self.hasText) {
         if (error) {
             *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
-        } return NO;
+        }
+        return NO;
     } else {
         return YES;
     }
