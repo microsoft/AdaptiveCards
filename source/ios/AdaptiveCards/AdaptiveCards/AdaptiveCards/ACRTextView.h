@@ -2,7 +2,7 @@
 //  ACRTextView
 //  ACRTextView.h
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

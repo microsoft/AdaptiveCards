@@ -14,7 +14,7 @@
 -(instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element
 {
     self = [super initWithFrame:frame];
-    if(self) {
+    if (self) {
         std::shared_ptr<BaseCardElement> elem = [element element];
         std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
         _maxLength = inputBlck->GetMaxLength();
@@ -31,16 +31,13 @@
 
 - (BOOL)validate:(NSError **)error
 {
-    if(self.isRequired && !self.hasText)
-    {
-        if(error)
-        {
+    if (self.isRequired && !self.hasText) {
+        if (error) {
             *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
-        }
-        return NO;
-    }
-    else
+        } return NO;
+    } else {
         return YES;
+    }
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
@@ -69,9 +66,11 @@
     if (!_maxLength){
         return YES;
     }
-    if(range.length + range.location > textView.text.length) {
+    
+    if (range.length + range.location > textView.text.length) {
         return NO;
     }
+    
     NSUInteger newLength = [textView.text length] + [text length] - range.length;
     return newLength <= _maxLength;
 }

@@ -35,37 +35,25 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
+    UIView *inputview = nil;
     
     if(inputBlck->GetIsMultiline()) {
         ACRTextView *txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) element:acoElem];
-        NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
-                                                      encoding:NSUTF8StringEncoding];
         txtview.id = [NSString stringWithCString:inputBlck->GetId().c_str()
-                                         encoding:NSUTF8StringEncoding];
-        txtview.text = placeHolderStr;//[NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
+                                         encoding:NSUTF8StringEncoding];        
         txtview.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         txtview.allowsEditingTextAttributes = YES;
         txtview.isRequired  = inputBlck->GetIsRequired();
         txtview.delegate = txtview;
-        txtview.layer.borderWidth = 0.5;
+        
+	txtview.layer.borderWidth = 0.5;
         txtview.layer.borderColor = [[UIColor grayColor] CGColor];
         CGRect boundingrect = [txtview.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
         boundingrect.size.height *= 4;
         boundingrect.size.width = viewGroup.frame.size.width;
         txtview.frame = boundingrect;
-        [viewGroup addArrangedSubview:txtview];
-    
-        txtview.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
-        
-        NSDictionary *viewsMap = NSDictionaryOfVariableBindings(txtview);
-        
-        [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
-        
-        [inputs addObject:txtview];
 
-        return txtview;
+        inputview = txtview;
 
     } else {
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
@@ -80,70 +68,68 @@
         txtInput.allowsEditingTextAttributes = YES;
         txtInput.isRequired  = inputBlck->GetIsRequired();
         txtInput.delegate = txtInput;
-    
-    [txtInput setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
-    switch(inputBlck->GetTextInputStyle())
-    {
-        case TextInputStyle::Text:
+        switch(inputBlck->GetTextInputStyle())
         {
-            txtInput.keyboardType = UIKeyboardTypeAlphabet;
-            break;
+            case TextInputStyle::Text:
+            {
+                txtInput.keyboardType = UIKeyboardTypeAlphabet;
+                break;
+            }
+            case TextInputStyle::Email:
+            {
+                txtInput.keyboardType = UIKeyboardTypeEmailAddress;
+                break;
+            }
+            case TextInputStyle::Tel:
+            {
+                txtInput.keyboardType = UIKeyboardTypePhonePad;
+                CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
+                UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+                UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+                UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtInput action:@selector(dismissNumPad)];
+                [toolBar setItems:@[doneButton, flexSpace] animated:NO];
+                [toolBar sizeToFit];
+                txtInput.inputAccessoryView = toolBar;
+                break;
+            }
+            case TextInputStyle::Url:
+            {
+                txtInput.keyboardType = UIKeyboardTypeURL;
+                break;
+            }
+            default:
+            {
+                txtInput.keyboardType = UIKeyboardTypeAlphabet;
+                break;
+            }
         }
-        case TextInputStyle::Email:
-        {
-            txtInput.keyboardType = UIKeyboardTypeEmailAddress;
-            break;
-        }
-        case TextInputStyle::Tel:
-        {
-            txtInput.keyboardType = UIKeyboardTypePhonePad;
-            CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
-            UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
-            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-            UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtInput action:@selector(dismissNumPad)];
-            [toolBar setItems:@[doneButton, flexSpace] animated:NO];
-            [toolBar sizeToFit];
-            txtInput.inputAccessoryView = toolBar;
-            break;
-        }
-        case TextInputStyle::Url:
-        {
-            txtInput.keyboardType = UIKeyboardTypeURL;
-            break;
-        }
-        default:
-        {
-            txtInput.keyboardType = UIKeyboardTypeAlphabet;
-            break;
-        }
+        inputview = txtInput;
     }
+    [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     if(elem->GetHeight() == HeightType::Stretch){
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview: txtInput];
+        [textInputContainer addArrangedSubview:inputview];
 
         // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
         UIView *blankTrailingSpace = [[UIView alloc] init];
         [textInputContainer addArrangedSubview:blankTrailingSpace];
         [textInputContainer adjustHuggingForLastElement];
 
-        [viewGroup addArrangedSubview: textInputContainer];
+        [viewGroup addArrangedSubview:textInputContainer];
     } else {
-        [viewGroup addArrangedSubview:txtInput];
+        [viewGroup addArrangedSubview:inputview];
     }
 
-    txtInput.translatesAutoresizingMaskIntoConstraints = false;
-
+    inputview.translatesAutoresizingMaskIntoConstraints = false;
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
-
-    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(txtInput);
-
+    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(inputview);
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
-    [inputs addObject:txtInput];
-    return txtInput;
-    }
+    [inputs addObject:inputview];
+    
+    return inputview;
 }
 
 @end
