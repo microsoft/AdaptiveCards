@@ -11,6 +11,7 @@
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
+#import "CustomImageRenderer.h"
 
 @interface ViewController ()
 {
@@ -69,11 +70,13 @@
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
+        [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
     } else
     {
         [registration setActionRenderer:nil cardElementType:@3];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
+        [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
     }
     [self update:self.editableStr];
 }
