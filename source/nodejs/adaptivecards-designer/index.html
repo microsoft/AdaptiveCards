@@ -28,7 +28,7 @@
             <div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 16px 0px 8px;"></div>
             <div class="toolbar-btn toolbar-btn__icon-copy js-copy-json">Copy JSON</div>
         </div>
-        <div style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
+        <div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
             <section class="aside js-aside">
                 <nav class="aside-menu">
                     <span class="aside-menu__title">Tool box</span>
@@ -45,9 +45,9 @@
                     <div style="flex: 1 1 70%; padding: 10px 40px 10px 10px; overflow: auto; background-color: #F6F6F6;">
                         <div id="designerHost" style="margin: 10px 30px 30px 10px;"></div>
                     </div>
-                    <div id="treeViewVerticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
+                    <div id="treeViewVerticalSplitter" class="js-treeview-splitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
                     <section id="treeViewSheetHost" class="js-treeview" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto;">
-                        <nav class="treeview-menu">
+                        <nav class="treeview-menu js-treeview-menu">
                             <span class="treeview-menu__title">Visual tree view</span>
                             <span class="treeview-menu__bullet js-treeview-bullet">
                                 <span class="treeview-menu__icon js-treeview-icon"></span>
@@ -56,9 +56,9 @@
                         </nav>
                         <div class="treeview-items js-treeview-items"></div>
                     </section>
-                    <div id="propertyVerticalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
+                    <div id="propertyVerticalSplitter" class="js-properties-splitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
                     <section id="propertySheetHost" class="js-properties" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto; background-color: #F9F9F9;">
-                        <nav class="properties-menu">
+                        <nav class="properties-menu js-properties-menu">
                             <span class="properties-menu__title">Element properties</span>
                             <span class="properties-menu__bullet js-properties-bullet">
                                 <span class="properties-menu__icon js-properties-icon"></span>
@@ -73,6 +73,7 @@
                     <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
                 </div>
             </div>
+            <div class="aside-panel js-aside-panel"></div>
         </div>
     </div>
 </body>

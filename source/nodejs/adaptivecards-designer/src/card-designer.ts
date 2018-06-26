@@ -354,7 +354,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
     protected internalUpdateLayout() {
         if (this.renderedElement) {
-            var clientRect = this.getBoundingRect();
+            let clientRect = this.getBoundingRect();
 
             this.renderedElement.style.width = clientRect.width + "px";
             this.renderedElement.style.height = clientRect.height + "px";
@@ -630,7 +630,6 @@ export class ActionPeer extends DesignerPeer {
     protected _action: Adaptive.Action;
 
     protected getCardObjectTypeName(): string {
-        console.log(this.action.getJsonTypeName());
         return this.action.getJsonTypeName();
     }
 

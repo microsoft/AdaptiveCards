@@ -73,7 +73,7 @@
 }
 
 .acd-peer.selected {
-    border: 1px solid red !important;
+    border: solid 1px #78dd03 !important;
 }
 
 .acd-peer.dragover {
@@ -116,6 +116,10 @@
 .treeview-menu__title,
 .properties-menu__title {
     color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 120px;
 }
 
 .aside-menu__bullet,
@@ -168,27 +172,13 @@
     height: 30px;
 }
 
+
 .is-toggled .aside-menu {
     transform: translate(-75px, 74px) rotate(-90deg);
 }
 
-.is-toggled .treeview-menu,
-.is-toggled .properties-menu {
-    transform: translate(-75px, 74px) rotate(90deg);
-}
-
-.is-toggled .ac-container,
-.is-toggled .default-ac-container {
-    display: none !important; /* The important overrides inline CSS properties added via JS */
-}
-
 .aside.is-toggled {
     flex-basis: 29px;
-}
-
-[id="treeViewSheetHost"].is-toggled,
-[id="propertySheetHost"].is-toggled {
-    width: 30px !important; /* The important overrides inline CSS properties added via JS */
 }
 
 .default-ac-container:last-of-type {
@@ -302,6 +292,44 @@
 
 .aside-item__icon--textblock {
     background-image: url("/assets/icons/textblock.svg");
+}
+
+
+
+/*
+* Aside Panel
+*/
+.aside-panel {
+    display: none;
+}
+
+.aside-panel.is-active {
+    display: block;
+    height: 100vh;
+    position: relative;
+    width: 31px;
+    border-left: 1px solid #D2D2D2;
+}
+
+.aside-panel .treeview-menu,
+.aside-panel .properties-menu {
+    height: 30px;
+    transform: translate(-85px, 85px) rotate(90deg);
+    width: 200px;
+    align-items: center;
+    background-color: #d8d8d8;
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 12px;
+}
+
+.aside-panel nav:nth-child(2) {
+    transform: translate(-85px, 256px) rotate(90deg);
+}
+
+.aside-panel .treeview-menu__icon,
+.aside-panel .properties-menu__icon {
+    background-image: url("/assets/icons/expand.svg");
 }
 
 
