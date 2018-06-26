@@ -376,6 +376,10 @@
     content: url("/assets/icons/fullscreen.svg");
 }
 
+.toolbar-btn__icon-fullscreen.is-fullscreen::before {
+    content: url("/assets/icons/exitfullscreen.svg");
+}
+
 
 
 /*

@@ -24,6 +24,7 @@ export default class FullScreenHandler {
                 } else if (this._fullScreenDocument.msExitFullscreen) {
                     this._fullScreenDocument.msExitFullscreen();
                 }
+                document.querySelector(".js-enter-fullscreen").classList.remove("is-fullscreen");
             } else {
                 if (this._body.requestFullscreen) {
                     this._body.requestFullscreen();
@@ -36,6 +37,7 @@ export default class FullScreenHandler {
                 } else {
                     alert("Your browser doesn't support fullscreen.");
                 }
+                document.querySelector(".js-enter-fullscreen").classList.add("is-fullscreen");
             }
         });
 
