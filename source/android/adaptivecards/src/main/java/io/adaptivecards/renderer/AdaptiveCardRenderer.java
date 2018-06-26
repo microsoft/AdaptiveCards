@@ -275,7 +275,9 @@ public class AdaptiveCardRenderer
             {
                 hostConfig.getActions().setIconPlacement(IconPlacement.LeftOfTitle);
             }
-            ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
+
+            IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer();
+            actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
             hostConfig.getActions().setIconPlacement(originalIconPlacement);
         }
 
