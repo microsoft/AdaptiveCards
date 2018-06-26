@@ -1,40 +1,37 @@
 //
-//  ACRImageRenderer
-//  ACRImageRenderer.mm
+//  CustomImageRenderer
+//  CustomImageRenderer.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRImageRenderer.h"
-#import "Image.h"
-#import "ImageSet.h"
-#import "Enums.h"
-#import "SharedAdaptiveCard.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
-#import "ACRView.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACRUIImageView.h"
+#import "CustomImageRenderer.h"
+#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/TextBlock.h>
+#import <AdaptiveCards/ACRTextBlockRenderer.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACRContentHoldingUIView.h>
+#import <AdaptiveCards/MarkDownParser.h>
+#import <AdaptiveCards/HostConfig.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRUIImageView.h>
+#import <AdaptiveCards/Image.h>
+#import <AdaptiveCards/ACRLongPressGestureRecognizerFactory.h>
 
-@implementation ACRImageRenderer
+@implementation CustomImageRenderer
 
-+ (ACRImageRenderer *)getInstance
++ (CustomImageRenderer *)getInstance
 {
-    static ACRImageRenderer *singletonInstance = [[self alloc] init];
+    static CustomImageRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (ACRCardElementType)elemType
-{
-    return ACRImage;
-}
-
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
+            rootView:(ACRView *)rootView
+            inputs:(NSArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+        hostConfig:(ACOHostConfig *)acoConfig
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
@@ -44,11 +41,11 @@
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
 
-    NSMutableDictionary *imageViewMap = [rootView getImageMap];
-    // Syncronize access to imageViewMap
-    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
-    NSString *key = [number stringValue];
-    UIImage *img = imageViewMap[key];
+    NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
+                                          encoding:[NSString defaultCStringEncoding]];
+    NSURL *nsurl = [NSURL URLWithString:urlStr];
+    // download image
+    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:nsurl]];
 
     CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
     if(img){

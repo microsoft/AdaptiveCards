@@ -26,7 +26,7 @@ import static android.text.InputType.TYPE_NULL;
 
 public class DateInputRenderer extends TextInputRenderer
 {
-    private DateInputRenderer()
+    protected DateInputRenderer()
     {
     }
 

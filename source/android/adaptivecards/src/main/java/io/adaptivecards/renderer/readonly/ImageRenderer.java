@@ -33,7 +33,7 @@ import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
-    private ImageRenderer()
+    protected ImageRenderer()
     {
     }
 

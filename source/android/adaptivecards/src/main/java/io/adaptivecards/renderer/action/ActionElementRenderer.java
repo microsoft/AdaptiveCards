@@ -30,7 +30,7 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class ActionElementRenderer implements IBaseActionElementRenderer
 {
-    private ActionElementRenderer()
+    protected ActionElementRenderer()
     {
     }
 
