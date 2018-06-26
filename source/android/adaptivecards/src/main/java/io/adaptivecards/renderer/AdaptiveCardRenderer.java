@@ -116,6 +116,8 @@ public class AdaptiveCardRenderer
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setFocusable(true);
+        rootLayout.setFocusableInTouchMode(true);
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(adaptiveCard);
