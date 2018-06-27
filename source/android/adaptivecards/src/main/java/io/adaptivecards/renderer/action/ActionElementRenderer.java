@@ -111,9 +111,12 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             m_hiddenCardsLayout = hiddenCardsLayout;
         }
 
-        private Activity getActivity(Context context) {
-            while (context instanceof ContextWrapper) {
-                if (context instanceof Activity) {
+        private Activity getActivity(Context context)
+        {
+            while (context instanceof ContextWrapper)
+            {
+                if (context instanceof Activity)
+                {
                     return (Activity)context;
                 }
                 context = ((ContextWrapper)context).getBaseContext();
@@ -125,10 +128,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         public void onClick(View v)
         {
             Activity hostingActivity = getActivity(v.getContext());
-            View currentFocusedView = hostingActivity.getCurrentFocus();
-            if (currentFocusedView != null)
+            if(hostingActivity != null)
             {
-                currentFocusedView.clearFocus();
+                View currentFocusedView = hostingActivity.getCurrentFocus();
+                if (currentFocusedView != null)
+                {
+                    currentFocusedView.clearFocus();
+                }
             }
 
             v.setPressed(m_invisibleCard.getVisibility() != View.VISIBLE);
