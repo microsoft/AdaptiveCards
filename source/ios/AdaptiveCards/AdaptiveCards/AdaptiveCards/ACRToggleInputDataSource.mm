@@ -57,7 +57,6 @@ using namespace AdaptiveCards;
     return 1;
 }
 
-// creates top view that hides selection table
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"cellForCompactMode";
@@ -72,11 +71,6 @@ using namespace AdaptiveCards;
     }
 
     return cell;
-}
-
-// when cell is selected, create a tableView with a navigator control bar.
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
