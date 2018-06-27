@@ -183,7 +183,8 @@ using namespace AdaptiveCards;
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
-
+    
+    auto firstelem = elems.begin();
     for(const auto &elem:elems)
     {
         if(*firstelem != elem){
