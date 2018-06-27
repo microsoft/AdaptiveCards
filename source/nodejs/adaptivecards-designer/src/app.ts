@@ -224,15 +224,21 @@ class DesignerApp {
                 }
             }
 
-            for (let i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
-                const element = Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i);
-                Object.keys(categoriesMap).map(category => {
-                    if (categoriesMap[category].items.indexOf(element.typeName) !== -1) {
+            let categoriesMapKeys = Object.keys(categoriesMap);
+            for (let i = 0; i < categoriesMapKeys.length; i++) {
+                const category = categoriesMapKeys[i];
+                const categoryItems = categoriesMap[category].items;
+                for (let j = 0; j < categoryItems.length; j++) {
+                    let item = categoryItems[j];
+                    let itemType = Adaptive.AdaptiveCard.elementTypeRegistry.getItems().find(elementType => {
+                        return elementType.typeName === item;
+                    });
+                    if (typeof itemType !== "undefined") {
                         sortedRegisteredTypes[category] = sortedRegisteredTypes[category] || {};
                         sortedRegisteredTypes[category].title = sortedRegisteredTypes[category].title || categoriesMap[category].title;
-                        sortedRegisteredTypes[category].items = Array.isArray(sortedRegisteredTypes[category].items) ? [...sortedRegisteredTypes[category].items, element] : [element];
+                        sortedRegisteredTypes[category].items = Array.isArray(sortedRegisteredTypes[category].items) ? [...sortedRegisteredTypes[category].items, itemType] : [itemType];
                     }
-                });
+                }
             }
 
             Object.keys(sortedRegisteredTypes).forEach(objectKey => {
@@ -274,7 +280,7 @@ class DesignerApp {
     private addContainers() {
         this.hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
         this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
-        this.hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css"));
+        // this.hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css")); This element overflows it's container and can't fit the content
         this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
         this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
         this.hostContainers.push(new TeamsContainer("Microsoft Teams (Preview)", "css/teams-container.css"));
@@ -401,7 +407,7 @@ class DesignerApp {
 
         if (aside.childNodes.length === 0) {
             document.querySelector(`.js-${panelType}-bullet`).addEventListener("click", () => {
-                description.innerHTML = "Show";
+                description.innerHTML = "";
                 const elementNode = typeOfPanel.cloneNode(true);
                 elementNode.addEventListener("click", () => {
                     description.innerHTML = "Hide";

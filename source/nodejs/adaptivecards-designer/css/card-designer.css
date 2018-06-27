@@ -1,17 +1,44 @@
 .acd-icon-bolt::before {
-    content: "\E945";
+    content: url("/assets/icons/icon-actions.svg");
+}
+
+.acd-icon-bolt:hover::before {
+    content: url("/assets/icons/icon-actions-hover.svg");
 }
 
 .acd-icon-addColumn::before {
-    content: "\F1D6";
+    content: url("/assets/icons/icon-column.svg");
+}
+
+.acd-icon-addColumn:hover::before {
+    content: url("/assets/icons/icon-column-hover.svg");
 }
 
 .acd-icon-remove::before {
-    content: "\E711";
+    content: url("/assets/icons/icon-close.svg");
 }
 
+.acd-icon-remove:hover::before {
+    content: url("/assets/icons/icon-close-hover.svg");
+}
+
+
 .acd-icon-drag::before {
-    content: "\E7C2";
+    content: url("/assets/icons/icon-move.svg");
+}
+
+.acd-icon-drag:hover::before {
+    content: url("/assets/icons/icon-move-hover.svg");
+}
+
+.acd-icon-bolt:hover::before,
+.acd-icon-remove:hover::before,
+.acd-icon-addColumn:hover::before {
+    cursor: pointer;
+}
+
+.acd-icon-drag:hover::before {
+    cursor: move;
 }
 
 .acd-designersurface {
@@ -28,36 +55,15 @@
 }
 
 .acd-peerButton {
-    width: 20px;
-    height: 20px;
-    font-family: "FabricMDL2Icons";
-    font-size: 14px;
-    font-weight: bold;
-    font-style: normal;
-    font-weight: normal;
-    display: flex;
     align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 0;
+    display: flex;
+    height: 18px;
     justify-content: center;
-    border: 1px solid red;
-    color: red;
-    background-color: white;
-    cursor: default;
     user-select: none;
-}
-
-.acd-circularButton {
-    border-radius: 50%;
-}
-
-.acd-peerButton:hover {
-    background-color: red;
-    color: white;
-}
-
-.acd-peerButton:active {
-    background-color: firebrick;
-    border: 1px solid firebrick;
-    color: white;
+    width: 18px;
 }
 
 .acd-palette-item:hover {
@@ -73,7 +79,8 @@
 }
 
 .acd-peer.selected {
-    border: solid 1px #78dd03 !important;
+    /* background-color: rgba(227, 255, 218, 0.1); */
+    border: solid 1px #78dd03;
 }
 
 .acd-peer.dragover {
@@ -95,8 +102,6 @@
 .acd-separation.selected {
     background-color: rgba(255, 0, 0, 0.2);
 }
-
-
 
 /*
 * Header and Aside menus
@@ -153,28 +158,23 @@
     color: #4a4a4a;
 }
 
-
-
 /*
 * Aside
 */
 .aside {
-    background-color: #F9F9F9;
-    border-right: 1px solid #D2D2D2;
+    background-color: #f9f9f9;
+    border-right: 1px solid #d2d2d2;
     flex: 1 0 180px;
     overflow-y: auto;
 }
 
-.is-toggled .aside-menu,
-.is-toggled .treeview-menu,
-.is-toggled .properties-menu {
-    width: 180px;
+.is-toggled .aside-menu {
+    width: 170px;
     height: 30px;
 }
 
-
 .is-toggled .aside-menu {
-    transform: translate(-75px, 74px) rotate(-90deg);
+    transform: translate(-72px, 70px) rotate(-90deg);
 }
 
 .aside.is-toggled {
@@ -202,7 +202,7 @@
     font-size: 14px;
     list-style-type: none;
     margin-bottom: 8px;
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 .aside-title {
@@ -215,7 +215,7 @@
     margin-bottom: 6px;
     position: relative;
     white-space: nowrap;
-  }
+}
 
 .aside-title:not(:first-of-type) {
     margin-top: 12px;
@@ -223,11 +223,11 @@
 
 .aside-title::after {
     border-bottom: 1px solid #e0e0e0;
-    content: '';
+    content: "";
     margin-bottom: -3px;
     margin-left: 8px;
     width: 100%;
-  }
+}
 
 .aside-item__icon {
     background-repeat: no-repeat;
@@ -294,8 +294,6 @@
     background-image: url("/assets/icons/textblock.svg");
 }
 
-
-
 /*
 * Aside Panel
 */
@@ -308,14 +306,14 @@
     height: 100vh;
     position: relative;
     width: 31px;
-    border-left: 1px solid #D2D2D2;
+    border-left: 1px solid #d2d2d2;
 }
 
 .aside-panel .treeview-menu,
 .aside-panel .properties-menu {
     height: 30px;
-    transform: translate(-85px, 85px) rotate(90deg);
-    width: 200px;
+    transform: translate(-70px, 70px) rotate(90deg);
+    width: 170px;
     align-items: center;
     background-color: #d8d8d8;
     display: flex;
@@ -324,15 +322,13 @@
 }
 
 .aside-panel nav:nth-child(2) {
-    transform: translate(-85px, 256px) rotate(90deg);
+    transform: translate(-70px, 211px) rotate(90deg);
 }
 
 .aside-panel .treeview-menu__icon,
 .aside-panel .properties-menu__icon {
     background-image: url("/assets/icons/expand.svg");
 }
-
-
 
 /*
 * Toolbar
@@ -379,8 +375,6 @@
 .toolbar-btn__icon-fullscreen.is-fullscreen::before {
     content: url("/assets/icons/exitfullscreen.svg");
 }
-
-
 
 /*
 * Treeview Style

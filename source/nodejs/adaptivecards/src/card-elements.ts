@@ -97,19 +97,19 @@ export class SizeAndUnit {
 
         let regExp = /^([0-9]+)(px|\*)?$/g;
         let matches = regExp.exec(input);
-    
+
         if (matches && matches.length >= 2) {
             result.physicalSize = parseInt(matches[1]);
-    
+
             if (matches.length == 3) {
                 if (matches[2] == "px") {
                     result.unit = Enums.SizeUnit.Pixel;
                 }
             }
-    
+
             return result;
         }
-    
+
         throw new Error("Invalid size: " + input);
     }
 
@@ -155,7 +155,7 @@ export abstract class CardElement {
 
         if (this._separatorElement) {
             if (this.parent && this.parent.isFirstElement(this)) {
-                this._separatorElement.style.display = "none";                
+                this._separatorElement.style.display = "none";
             }
             else {
                 this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
@@ -294,7 +294,7 @@ export abstract class CardElement {
 
     protected isDesignMode(): boolean {
         var rootElement = this.getRootElement();
-            
+
         return rootElement instanceof AdaptiveCard && rootElement.designMode;
     }
 
@@ -744,13 +744,13 @@ export class TextBlock extends CardElement {
                         break;
                     default:
                         this._computedLineHeight = this.hostConfig.lineHeights.default;
-                        break;    
+                        break;
                 }
             }
             else {
                 // Looks like 1.33 is the magic number to compute line-height
                 // from font size.
-                this._computedLineHeight = fontSize * 1.33;                
+                this._computedLineHeight = fontSize * 1.33;
             }
 
             element.style.fontSize = fontSize + "px";
@@ -1162,7 +1162,7 @@ export class Image extends CardElement {
                 {
                     error: Enums.ValidationError.InvalidPropertyValue,
                     message: "Invalid image " + name + ": " + value
-                });    
+                });
         }
 
         return 0;
@@ -1196,7 +1196,7 @@ export class Image extends CardElement {
                     element.style.width = this.hostConfig.imageSizes.medium + "px";
                     break;
             }
-        }    
+        }
     }
 
     protected get useDefaultSizing() {
@@ -2285,7 +2285,7 @@ export abstract class Action {
             }
             else {
                 buttonElement.classList.add("iconLeft");
-                
+
                 if (hasTitle) {
                     iconElement.style.marginRight = "4px";
                 }
@@ -3547,7 +3547,7 @@ export class Container extends CardElementContainer {
         for (let item of this._items) {
             handleElement(item);
         }
-        
+
         return true;
     }
 
@@ -4224,7 +4224,7 @@ export class ColumnSet extends CardElementContainer {
         super.updateLayout(processChildren);
 
         this.applyPadding();
-        
+
         if (processChildren) {
             for (var i = 0; i < this._columns.length; i++) {
                 this._columns[i].updateLayout();
@@ -4656,6 +4656,10 @@ export abstract class TypeRegistry<T> {
     getItemAt(index: number): ITypeRegistration<T> {
         return this._items[index];
     }
+
+    getItems(): ITypeRegistration<T>[] {
+        return this._items;
+    }
 }
 
 export class ElementTypeRegistry extends TypeRegistry<CardElement> {
@@ -4859,7 +4863,7 @@ export class AdaptiveCard extends ContainerWithActions {
                     {
                         error: Enums.ValidationError.InvalidPropertyValue,
                         message: e.message
-                    });                        
+                    });
             }
         }
 

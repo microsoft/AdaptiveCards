@@ -2194,7 +2194,7 @@ export class CardDesigner {
         }
 
         this._removeCommandElement = document.createElement("div");
-        this._removeCommandElement.classList.add("acd-peerButton", "acd-circularButton", "acd-icon-remove");
+        this._removeCommandElement.classList.add("acd-peerButton", "acd-icon-remove");
         this._removeCommandElement.title = "Remove";
         this._removeCommandElement.style.visibility = "hidden";
         this._removeCommandElement.style.position = "absolute";
