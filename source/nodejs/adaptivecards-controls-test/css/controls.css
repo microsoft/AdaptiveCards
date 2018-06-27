@@ -96,7 +96,7 @@
 
 .ms-ctrl-dropdown {
   border: 1px solid #EEEEEE;
-  height: 32px;
+  height: 25px;
   display: flex;
   padding-left: 12px;
   padding-right: 12px;
@@ -110,7 +110,7 @@
   outline: 0; }
 
 .ms-dropdown-label {
-  line-height: 30px;
+  line-height: 24px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -124,7 +124,7 @@
   color: gray; }
 
 .ms-ctrl-dropdown-button {
-  line-height: 32px;
+  line-height: 25px;
   flex: 0 0 auto; }
 
 .ms-ctrl-dropdown-button:hover {
@@ -204,7 +204,7 @@
 
 .ms-ctrl-datePicker {
   border: 1px solid #EEEEEE;
-  height: 32px;
+  height: 25px;
   display: flex;
   padding-left: 12px;
   padding-right: 12px;

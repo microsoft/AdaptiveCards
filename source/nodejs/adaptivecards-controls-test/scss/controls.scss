@@ -13,8 +13,8 @@ $border-color-dark: #A6A6A6;
 $border-color-darker: #767676;
 $border-color-hover: #0078D7;
 $border-color-focused: #0078D7;
-$dropdown-height: 32px;
-$dropdown-label-height: 30px;
+$dropdown-height: 25px;
+$dropdown-label-height: 24px;
 
 .ms-ctrl-overlay {
     position: absolute;
@@ -299,7 +299,7 @@ $checkbox-size: 18px;
 .ms-ctrl-checkbox label span {
     margin-left: $checkbox-size + 6;
     line-height: $checkbox-size;
-    color: $text-color-normal;    
+    color: $text-color-normal;
     display: inline-block;
 }
 
@@ -321,7 +321,7 @@ $checkbox-size: 18px;
 }
 
 .ms-ctrl-checkbox label:hover::before {
-    border: 1px solid $border-color-darker;    
+    border: 1px solid $border-color-darker;
 }
 
 .ms-ctrl-checkbox input[type=checkbox]:checked + label::before {
@@ -390,7 +390,7 @@ $radiobutton-size: 16px;
 }
 
 .ms-ctrl-radiobutton label:hover::before {
-    border: 1px solid $border-color-darker;    
+    border: 1px solid $border-color-darker;
 }
 
 .ms-ctrl-radiobutton input[type=radio]:checked + label::before {
@@ -457,5 +457,5 @@ $radiobutton-size: 16px;
 }
 
 .ms-ctrl-textbox:focus, .ms-ctrl-textbox:active {
-    border: 1px solid $border-color-focused;    
+    border: 1px solid $border-color-focused;
 }
