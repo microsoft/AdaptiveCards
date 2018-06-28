@@ -143,7 +143,6 @@ using namespace AdaptiveCards;
         [_tableView cellForRowAtIndexPath:_indexPath].selected = NO;
         NSString *choice = [(ACRChoiceSetViewDataSource *)_dataSource getTitlesOfChoices];
         [_tableView cellForRowAtIndexPath:_indexPath].textLabel.text = (choice)? choice : @"";
-
         _indexPath = nil;
         _tableView = nil;
     }

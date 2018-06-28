@@ -20,13 +20,14 @@ using namespace AdaptiveCards;
     std::shared_ptr<HostConfig> _config;
     UISwitch *_toggleSwitch;
     NSString *_title;
+    CGFloat _padding;
 }
 
 - (instancetype)initWithInputToggle:(std::shared_ptr<ToggleInput> const&)toggleInput
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
 {
     self = [super init];
-    
+
     if(self) {
         _title = [NSString stringWithCString:toggleInput->GetTitle().c_str()
                                     encoding:NSUTF8StringEncoding];
@@ -43,6 +44,7 @@ using namespace AdaptiveCards;
                                            encoding:NSUTF8StringEncoding];
         self.valueOff = [[NSString alloc]initWithCString:_toggleInputDataSource->GetValueOff().c_str()
                                            encoding:NSUTF8StringEncoding];
+        _padding = 16.0f;
     }
     return self;
 }
@@ -65,9 +67,10 @@ using namespace AdaptiveCards;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
         cell.textLabel.text = _title;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
         cell.accessoryView = _toggleSwitch;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-
     return cell;
 }
 
@@ -90,6 +93,15 @@ using namespace AdaptiveCards;
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
     dictionary[self.id] = _toggleSwitch.on? self.valueOn : self.valueOff;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    CGFloat height = [cell.textLabel intrinsicContentSize].height;
+    CGFloat toggleHeight = [_toggleSwitch intrinsicContentSize].height;
+    height = MAX(height, toggleHeight);
+    return height + _padding;
 }
 
 @end
