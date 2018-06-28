@@ -26,7 +26,7 @@ import static android.text.InputType.TYPE_NULL;
 
 public class TimeInputRenderer extends TextInputRenderer
 {
-    private TimeInputRenderer()
+    protected TimeInputRenderer()
     {
     }
 

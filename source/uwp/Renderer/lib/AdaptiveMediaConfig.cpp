@@ -17,6 +17,8 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(UTF8ToHString(mediaConfig.defaultPoster, m_defaultPoster.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(mediaConfig.playButton, m_playButton.GetAddressOf()));
 
+        m_allowInlinePlayback = mediaConfig.allowInlinePlayback;
+
         return S_OK;
     }
 
@@ -42,6 +44,20 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveMediaConfig::put_PlayButton(HSTRING playButton)
     {
         return m_playButton.Set(playButton);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveMediaConfig::get_AllowInlinePlayback(boolean* allowInlinePlayback)
+    {
+        *allowInlinePlayback = m_allowInlinePlayback;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveMediaConfig::put_AllowInlinePlayback(boolean allowInlinePlayback)
+    {
+        m_allowInlinePlayback = allowInlinePlayback;
+        return S_OK;
     }
 
 AdaptiveNamespaceEnd

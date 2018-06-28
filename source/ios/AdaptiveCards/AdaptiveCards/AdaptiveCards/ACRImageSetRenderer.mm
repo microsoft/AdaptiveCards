@@ -28,7 +28,7 @@ using namespace AdaptiveCards;
     return ACRImageSet;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
@@ -43,7 +43,7 @@ using namespace AdaptiveCards;
                                                                          rootView:rootView];
     [view registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"cellId"];
 
-    [(UIStackView *)viewGroup addArrangedSubview:view];
+    [viewGroup addArrangedSubview:view];
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:view
                                   attribute:NSLayoutAttributeLeading

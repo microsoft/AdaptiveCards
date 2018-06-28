@@ -40,6 +40,14 @@
     cursor: move;
 }
 
+.acd-icon-image::before {
+    content: "\ECAB";
+}
+
+.acd-icon-image::before {
+    content: "\ECAB";
+}
+
 .acd-designersurface {
     outline: none;
 }
@@ -477,6 +485,10 @@
     background-image: url("/assets/icons/time.svg");
 }
 
+.treeview__icon--inputchoiceset {
+    background-image: url("/assets/icons/choiceset.svg");
+}
+
 .treeview__icon--actionsubmit {
     background-image: url("/assets/icons/submit.svg");
 }
@@ -527,11 +539,11 @@
     justify-content: flex-end !important;
     align-items: center;
     padding-right: 6px !important;
-    flex: 1 1 60px !important;
+    flex: 1 1 140px !important;
     margin-left: 10px;
 }
 
 .default-ac-columnSet.wrapper .default-ac-container:nth-child(3) {
     padding-left: 0 !important;
-    flex: 1 1 125px !important;
+    flex: 2 1 125px !important;
 }

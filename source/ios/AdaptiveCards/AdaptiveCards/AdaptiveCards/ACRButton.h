@@ -6,8 +6,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SharedAdaptiveCard.h"
-#import "HostConfig.h"
 #import "ACRView.h"
 
 @interface UIButton(ACRButton)

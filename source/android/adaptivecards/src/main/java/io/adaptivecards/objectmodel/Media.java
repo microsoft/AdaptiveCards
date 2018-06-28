@@ -65,6 +65,10 @@ public class Media extends BaseCardElement {
     return new MediaSourceVector(AdaptiveCardObjectModelJNI.Media_GetSources(swigCPtr, this), false);
   }
 
+  public void GetResourceInformation(SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t resourceInfo) {
+    AdaptiveCardObjectModelJNI.Media_GetResourceInformation(swigCPtr, this, SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t.getCPtr(resourceInfo));
+  }
+
   public static Media dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.Media_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new Media(cPtr, true);

@@ -11,7 +11,7 @@ class NumberInput : public BaseInputElement
 public:
     NumberInput();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     std::string GetPlaceholder() const;
     void SetPlaceholder(const std::string &value);
@@ -26,7 +26,7 @@ public:
     void SetMin(const int value);
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_placeholder;
     int m_value;
@@ -37,6 +37,13 @@ private:
 class NumberInputParser : public BaseCardElementParser
 {
 public:
+    NumberInputParser() = default;
+    NumberInputParser(const NumberInputParser&) = default;
+    NumberInputParser(NumberInputParser&&) = default;
+    NumberInputParser& operator=(const NumberInputParser&) = default;
+    NumberInputParser& operator=(NumberInputParser&&) = default;
+    virtual ~NumberInputParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
