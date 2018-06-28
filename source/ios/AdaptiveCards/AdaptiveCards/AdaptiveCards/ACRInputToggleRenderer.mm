@@ -43,6 +43,8 @@
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
     inputTableView.delegate = dataSource;
     inputTableView.dataSource = dataSource;
+    inputTableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
+
     [inputs addObject:dataSource];
 
     if(elem->GetHeight() == HeightType::Stretch){
