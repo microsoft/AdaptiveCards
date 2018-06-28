@@ -6,6 +6,7 @@
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
 #include "Separator.h"
+#include "RemoteResourceInformation.h"
 
 namespace AdaptiveSharedNamespace {
 class Container;
@@ -15,7 +16,11 @@ public:
     BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
     BaseCardElement(CardElementType type);
 
-    virtual ~BaseCardElement();
+    BaseCardElement(const BaseCardElement&) = default;
+    BaseCardElement(BaseCardElement&&) = default;
+    BaseCardElement& operator=(const BaseCardElement&) = default;
+    BaseCardElement& operator=(BaseCardElement&&) = default;
+    virtual ~BaseCardElement() = default;
 
     virtual std::string GetElementTypeString() const;
     virtual void SetElementTypeString(const std::string &value);
@@ -34,7 +39,7 @@ public:
 
     virtual const CardElementType GetElementType() const;
 
-    std::string Serialize() const;
+    virtual std::string Serialize() const;
     virtual Json::Value SerializeToJsonValue() const;
 
     template <typename T>
@@ -43,7 +48,7 @@ public:
     Json::Value GetAdditionalProperties() const;
     void SetAdditionalProperties(const Json::Value &additionalProperties);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris);
+    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
 
 protected:
     static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
@@ -51,7 +56,7 @@ protected:
     std::unordered_set<std::string> m_knownProperties;
 
 private:
-    void PopulateKnownPropertiesSet();
+    virtual void PopulateKnownPropertiesSet();
 
     CardElementType m_type;
     Spacing m_spacing;
@@ -78,7 +83,7 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
         ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
 
     // Walk all properties and put any unknown ones in the additional properties json
-    for (Json::Value::const_iterator it = json.begin(); it != json.end(); it++)
+    for (auto it = json.begin(); it != json.end(); ++it)
     {
         std::string key = it.key().asCString();
         if (baseCardElement->m_knownProperties.find(key) == baseCardElement->m_knownProperties.end())

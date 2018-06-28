@@ -45,8 +45,12 @@ public class SubmitAction extends BaseActionElement {
     return AdaptiveCardObjectModelJNI.SubmitAction_GetDataJson(swigCPtr, this);
   }
 
-  public void SetDataJson(String value) {
-    AdaptiveCardObjectModelJNI.SubmitAction_SetDataJson(swigCPtr, this, value);
+  public JsonValue GetDataJsonAsValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.SubmitAction_GetDataJsonAsValue(swigCPtr, this), true);
+  }
+
+  public void SetDataJson(JsonValue value) {
+    AdaptiveCardObjectModelJNI.SubmitAction_SetDataJson(swigCPtr, this, JsonValue.getCPtr(value), value);
   }
 
   public JsonValue SerializeToJsonValue() {

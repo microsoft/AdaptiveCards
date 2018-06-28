@@ -40,6 +40,10 @@
     cursor: move;
 }
 
+.acd-icon-image::before {
+    content: "\ECAB";
+}
+
 .acd-designersurface {
     outline: none;
 }
@@ -475,6 +479,10 @@
 
 .treeview__icon--inputtime {
     background-image: url("/assets/icons/time.svg");
+}
+
+.treeview__icon--inputchoiceset {
+    background-image: url("/assets/icons/choiceset.svg");
 }
 
 .treeview__icon--actionsubmit {

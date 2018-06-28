@@ -231,6 +231,7 @@
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
     <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
+    <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\ObjectModel\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

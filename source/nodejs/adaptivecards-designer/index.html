@@ -4,7 +4,6 @@
 <head>
     <title>Adaptive Cards Designer (preview)</title>
     <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
-
     <script src="editor/monaco/min/vs/loader.js"></script>
     <script src="editor/monaco-loader.js"></script>
 
@@ -40,9 +39,12 @@
                 <ul class="aside-items js-aside-items"></ul>
             </section>
             <div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
-                <div style="display: flex; flex: 1 1 100%; overflow: auto;">
-                    <div style="flex: 1 1 70%; padding: 10px 40px 10px 10px; overflow: auto; background-color: #F6F6F6;">
-                        <div id="designerHost" style="margin: 10px 30px 30px 10px;"></div>
+                <div style="display: flex; flex: 1 1 100%; overflow: hidden;">
+                    <div id="designerBackground" style="flex: 1 1 70%; background-color: #F6F6F6; display: flex; flex-direction: column; overflow: auto;">
+                        <div style="flex: 1 1 100%; overflow: auto;">
+                            <div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>
+                        </div>
+                        <div id="errorPane" style="display: none; flex: 0 0 65px; color: white; background-color: #3a96dd; border-top: 1px solid #D2D2D2; padding: 4px 8px; overflow-x: hidden; overflow-y: auto; white-space: nowrap;"></div>
                     </div>
                     <div id="treeViewVerticalSplitter" class="js-treeview-splitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
                     <section id="treeViewSheetHost" class="js-treeview" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto;">
