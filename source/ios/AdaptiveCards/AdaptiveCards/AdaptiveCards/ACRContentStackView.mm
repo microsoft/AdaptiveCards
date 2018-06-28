@@ -40,7 +40,7 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes{
-    self = [super initWithFrame:CGRectMake(0,0,frame.size.width,0)];
+    self = [super initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height)];
     if(self) {
         _stackView = [[UIStackView alloc] initWithFrame:frame];
         [self config:attributes];
@@ -49,7 +49,7 @@ using namespace AdaptiveCards;
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [self initWithFrame:CGRectMake(0,0,frame.size.width,0) attributes:nil];
+    self = [self initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height) attributes:nil];
     return self;
 }
 
