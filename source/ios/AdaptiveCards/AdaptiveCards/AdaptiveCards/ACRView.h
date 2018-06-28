@@ -24,13 +24,9 @@
 
 - (NSMutableDictionary *)getTextMap;
 
-- (NSMutableDictionary *)getActionsMap;
-
 - (ACOAdaptiveCard *)card;
 
 - (UIView *)render;
-
-+ (void)setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config;
 
 - (void)waitForAsyncTasksToFinish;
 @end

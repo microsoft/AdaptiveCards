@@ -12,6 +12,7 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRColumnSetView.h"
 #import "ACRColumnView.h"
+#import "ACRImageRenderer.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
@@ -65,6 +66,12 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
 
+    if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
+        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)adaptiveCard.get()];
+        NSString *key = [number stringValue];
+        NSString *urlStr = [NSString stringWithCString:adaptiveCard->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
+        [rootView loadImage:urlStr key:key];
+    }
     if(!body.empty()) {
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;

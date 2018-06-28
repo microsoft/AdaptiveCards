@@ -59,7 +59,7 @@ using namespace AdaptiveCards;
             _defaultString = [titleArray componentsJoinedByString:@", "];
         } else {
             _defaultString = @"";
-        }       
+        }
     }
     return self;
 }
@@ -90,7 +90,7 @@ using namespace AdaptiveCards;
         cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     }
 
-    cell.textLabel.text = ([_defaultString length])? _defaultString : @"Make Choice";
+    cell.textLabel.text = ([_defaultString length])? _defaultString : @"";
     return cell;
 }
 
@@ -133,7 +133,7 @@ using namespace AdaptiveCards;
     {
         [_tableView cellForRowAtIndexPath:_indexPath].selected = NO;
         NSString *choice = [(ACRChoiceSetViewDataSource *)_dataSource getTitlesOfChoices];
-        [_tableView cellForRowAtIndexPath:_indexPath].textLabel.text = (choice)? choice : @"Make Choice";
+        [_tableView cellForRowAtIndexPath:_indexPath].textLabel.text = (choice)? choice : @"";
 
         _indexPath = nil;
         _tableView = nil;
