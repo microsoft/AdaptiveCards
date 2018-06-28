@@ -36,9 +36,9 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
     ACRUIImageView *view;
-    NSInteger pixelWidth = imgElem->GetPixelWidth(), pixelHeight = imgElem->GetPixelHeight();
-    BOOL hasExplicitMeasurements = (pixelWidth || pixelHeight);
-    BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
+//    NSInteger pixelWidth = imgElem->GetPixelWidth(), pixelHeight = imgElem->GetPixelHeight();
+//    BOOL hasExplicitMeasurements = (pixelWidth || pixelHeight);
+//    BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
 
     NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
@@ -58,30 +58,30 @@
         }
     }
 
-    if(hasExplicitMeasurements) {
-        if(pixelWidth){
-            cgsize.width = pixelWidth;
-            if(isAspectRatioNeeded) {
-                cgsize.height = pixelWidth * heightToWidthRatio;
-            }
-        }
-        if(pixelHeight){
-            cgsize.height = pixelHeight;
-            if(isAspectRatioNeeded) {
-                cgsize.width = pixelHeight * widthToHeightRatio;
-            }
-        }
-    }
+//    if(hasExplicitMeasurements) {
+//        if(pixelWidth){
+//            cgsize.width = pixelWidth;
+//            if(isAspectRatioNeeded) {
+//                cgsize.height = pixelWidth * heightToWidthRatio;
+//            }
+//        }
+//        if(pixelHeight){
+//            cgsize.height = pixelHeight;
+//            if(isAspectRatioNeeded) {
+//                cgsize.width = pixelHeight * widthToHeightRatio;
+//            }
+//        }
+//    }
     view = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
     view.image = img;
 
     ImageSize size = ImageSize::None;
-    if (!hasExplicitMeasurements){
+//    if (!hasExplicitMeasurements){
         size = imgElem->GetImageSize();
         if (size == ImageSize::None) {
             size = [acoConfig getHostConfig]->image.imageSize;
         }
-    }
+//    }
 
     if(size != ImageSize::Auto && size != ImageSize::Stretch){
         [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
@@ -117,11 +117,11 @@
                                                                  constant:0]]];
     }
 
-    if(!isAspectRatioNeeded){
-        view.contentMode = UIViewContentModeScaleToFill;
-    } else {
+//    if(!isAspectRatioNeeded){
+//        view.contentMode = UIViewContentModeScaleToFill;
+//    } else {
         view.contentMode = UIViewContentModeScaleAspectFit;
-    }
+//    }
     view.clipsToBounds = NO;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
         CALayer *imgLayer = view.layer;
@@ -154,12 +154,6 @@
         [view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-
-        if(imgElem->GetHeight() == HeightType::Stretch) {
-            UIView *blankTrailingSpace = [[UIView alloc] init];
-            [blankTrailingSpace setContentHuggingPriority:(UILayoutPriorityDefaultLow) forAxis:UILayoutConstraintAxisVertical];
-            [viewGroup addArrangedSubview:blankTrailingSpace];
-        }
     }
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     // instantiate and add tap gesture recognizer

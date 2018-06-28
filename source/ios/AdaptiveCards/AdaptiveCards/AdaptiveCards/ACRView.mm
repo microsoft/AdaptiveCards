@@ -205,8 +205,10 @@ using namespace AdaptiveCards;
             {
                 /// tag a base card element with unique key
                 std::shared_ptr<Image>imgElem = std::static_pointer_cast<Image>(elem);
-                // dispatch to concurrent queue
-                [self processImageConcurrently:imgElem];
+                NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
+                                                      encoding:[NSString defaultCStringEncoding]];
+                NSString *key = [ACRView generateKeyForElement:imgElem];
+                [self loadImage:urlStr key:key];
                 break;
             }
             case CardElementType::ImageSet:
@@ -217,8 +219,10 @@ using namespace AdaptiveCards;
                     img->SetImageSize(imgSetElem->GetImageSize());
 
                     if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) CardElementType::Image] == NO){
-                        /// tag a base card element with unique key
-                        [self processImageConcurrently:img];
+                        NSString *urlStr = [NSString stringWithCString:img->GetUrl().c_str()
+                                                              encoding:[NSString defaultCStringEncoding]];
+                        NSString *key = [ACRView generateKeyForElement:img];
+                        [self loadImage:urlStr key:key];
                     }
                 }
                 break;
@@ -342,34 +346,40 @@ using namespace AdaptiveCards;
          });
 }
 
-- (void)processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
+- (void)loadImage:(NSString *)url key:(NSString *)key
 {
-    /// generate a string key to uniquely identify Image
-    std::shared_ptr<Image> imgElem = imageElem;
-    // run image downloading and processing on global queue which is concurrent and different from main queue
     dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
-            NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
-                                                  encoding:[NSString defaultCStringEncoding]];
-            // generate key for imageMap from image element's id
-            NSURL *url = [NSURL URLWithString:urlStr];
+            NSURL *nsurl = [NSURL URLWithString:url];
             // download image
-            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:nsurl]];
 
-            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
-            NSString *key = [number stringValue];
-            dispatch_sync(self->_serial_queue, ^{self->_imageViewMap[key] = img; });
+            dispatch_sync(self->_serial_queue, ^{self->_imageViewMap[key] = img;});
          }
     );
 }
 
 // add postfix to existing BaseCardElement ID to be used as key
--(void)tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
+- (void)tagBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
     std::string serial_number_as_string = std::to_string(_serialNumber);
     // concat a newly generated key to a existing id, the key will be removed after use
     elem->SetId(elem->GetId() + "_" + serial_number_as_string);
     ++_serialNumber;
+}
+
++ (NSString *)generateKeyForElement:(std::shared_ptr<BaseCardElement> const &)elem
+{
+    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
+    NSString *key = [number stringValue];
+    return key;
+}
+
++ (NSString *)generateKeyForActionElement:(std::shared_ptr<BaseActionElement> const &)elem
+{
+    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
+    NSString *key = [number stringValue];
+    return key;
 }
 
 - (NSMutableDictionary *)getImageMap
