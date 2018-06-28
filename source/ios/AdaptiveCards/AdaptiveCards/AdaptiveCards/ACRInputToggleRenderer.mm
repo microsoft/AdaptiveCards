@@ -38,16 +38,15 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
 
-    ACRInputTableView *inputView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
+    ACRInputTableView *inputTableView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     [inputTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
     inputTableView.delegate = dataSource;
     inputTableView.dataSource = dataSource;
     [inputs addObject:dataSource];
 
-
-    [viewGroup addArrangedSubview:inputView];
-    }
+    [viewGroup addArrangedSubview:inputTableView];
+    
     [NSLayoutConstraint constraintWithItem:inputTableView
                                  attribute:NSLayoutAttributeLeading
                                  relatedBy:NSLayoutRelationLessThanOrEqual

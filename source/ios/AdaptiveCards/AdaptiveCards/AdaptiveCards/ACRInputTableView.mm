@@ -25,9 +25,10 @@ using namespace AdaptiveCards;
 }
 
 - (CGSize)intrinsicContentSize
-{
-    [self layoutIfNeeded];
-    return self.contentSize;
+{    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    float height = [self.delegate tableView:self heightForRowAtIndexPath:indexPath] * [self.dataSource tableView:self numberOfRowsInSection:0];
+    return CGSizeMake(self.frame.size.width, height);
 }
 
 @end

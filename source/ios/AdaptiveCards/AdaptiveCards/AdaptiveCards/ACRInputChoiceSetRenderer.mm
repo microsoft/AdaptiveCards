@@ -26,7 +26,7 @@
     return ACRChoiceSetInput;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
@@ -37,6 +37,7 @@
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     // creates a tableview with pre-defined style
     ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
+    choiceSetView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
     if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact) {
@@ -44,20 +45,16 @@
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
+        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLineEtched];
     }
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
-    [inputs addObject:dataSource];
-
-    UIView *inputView = (UIView *)choiceSetView;
-
-    if(viewGroup)
-    {
-        [(UIStackView *)viewGroup addArrangedSubview:inputView];
-    }
+    [inputs addObject:dataSource];    
+    
+    [viewGroup addArrangedSubview:choiceSetView];
 
     [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
+     [NSLayoutConstraint constraintWithItem:choiceSetView
                                   attribute:NSLayoutAttributeLeading
                                   relatedBy:NSLayoutRelationLessThanOrEqual
                                      toItem:viewGroup
@@ -65,7 +62,7 @@
                                  multiplier:1.0
                                    constant:0]];
     [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
+     [NSLayoutConstraint constraintWithItem:choiceSetView
                                   attribute:NSLayoutAttributeTrailing
                                   relatedBy:NSLayoutRelationLessThanOrEqual
                                      toItem:viewGroup
@@ -73,7 +70,7 @@
                                  multiplier:1.0
                                    constant:0]];
 
-    return inputView;
+    return choiceSetView;
 }
 
 @end
