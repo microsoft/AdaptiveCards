@@ -40,7 +40,7 @@
     numInput.placeholder = [NSString stringWithCString:numInputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
     numInput.text = [NSString stringWithFormat: @"%d", numInputBlck->GetValue()];
     numInput.allowsEditingTextAttributes = YES;
-    numInput.borderStyle = UITextBorderStyleLine;
+    numInput.borderStyle = UITextBorderStyleRoundedRect;
     numInput.keyboardType = UIKeyboardTypeNumberPad;
     numInput.min = numInputBlck->GetMin();
     numInput.max = numInputBlck->GetMax();

@@ -7,35 +7,41 @@
 
 #import <Foundation/Foundation.h>
 #import "ACRToggleInputDataSource.h"
-#import "ToggleInput.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "HostConfig.h"
+#import "ACRUILabel.h"
+#import "ACRColumnSetView.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRToggleInputDataSource
 {
-    std::shared_ptr<ToggleInput> toggleInputDataSource;
-    std::shared_ptr<HostConfig> config;
+    std::shared_ptr<ToggleInput> _toggleInputDataSource;
+    std::shared_ptr<HostConfig> _config;
+    UISwitch *_toggleSwitch;
+    NSString *_title;
 }
 
 - (instancetype)initWithInputToggle:(std::shared_ptr<ToggleInput> const&)toggleInput
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
 {
     self = [super init];
-    if(self)
-    {
-        toggleInputDataSource = toggleInput;
-        config = hostConfig;
-        self.id = [[NSString alloc]initWithCString:toggleInputDataSource->GetId().c_str()
+    
+    if(self) {
+        _title = [NSString stringWithCString:toggleInput->GetTitle().c_str()
+                                    encoding:NSUTF8StringEncoding];
+        _toggleSwitch = [[UISwitch alloc] init];
+        _toggleInputDataSource = toggleInput;
+        _config = hostConfig;
+        self.id = [[NSString alloc]initWithCString:_toggleInputDataSource->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
-        if(toggleInputDataSource->GetValue() == toggleInputDataSource->GetValueOn())
-        {
-            self.isSelected = YES;
+        if(_toggleInputDataSource->GetValue() == _toggleInputDataSource->GetValueOn()) {
+            _toggleSwitch.on = YES;
         }
-        self.valueOn  = [[NSString alloc]initWithCString:toggleInputDataSource->GetValueOn().c_str()
+
+        self.valueOn  = [[NSString alloc]initWithCString:_toggleInputDataSource->GetValueOn().c_str()
                                            encoding:NSUTF8StringEncoding];
-        self.valueOff = [[NSString alloc]initWithCString:toggleInputDataSource->GetValueOff().c_str()
+        self.valueOff = [[NSString alloc]initWithCString:_toggleInputDataSource->GetValueOff().c_str()
                                            encoding:NSUTF8StringEncoding];
     }
     return self;
@@ -51,6 +57,22 @@ using namespace AdaptiveCards;
     return 1;
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"cellForCompactMode";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if(!cell)
+    {
+        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+        [tableView registerNib:[UINib nibWithNibName:@"ACRCellForCompactMode" bundle:bundle] forCellReuseIdentifier:identifier];
+        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        cell.textLabel.text = _title;
+        cell.accessoryView = _toggleSwitch;
+    }
+
+    return cell;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return nil;
@@ -61,44 +83,6 @@ using namespace AdaptiveCards;
     return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *identifier = @"tabCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if(!cell)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:identifier];
-    }
-    NSString *title = [NSString stringWithCString:toggleInputDataSource->GetTitle().c_str()
-                                         encoding:NSUTF8StringEncoding];
-    if(self.isSelected)
-    {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
-
-    cell.textLabel.text = title;
-
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
-    if([tableView cellForRowAtIndexPath:indexPath].accessoryType ==
-       UITableViewCellAccessoryCheckmark)
-    {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
-        self.isSelected = NO;
-    }
-    else
-    {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType =
-        UITableViewCellAccessoryCheckmark;
-        self.isSelected = YES;
-    }
-}
-
 - (BOOL)validate:(NSError **)error
 {
     // no need to validate
@@ -107,7 +91,7 @@ using namespace AdaptiveCards;
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    dictionary[self.id] = self.isSelected? self.valueOn : self.valueOff;
+    dictionary[self.id] = _toggleSwitch.on? self.valueOn : self.valueOff;
 }
 
 @end

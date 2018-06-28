@@ -7,13 +7,13 @@
 
 #import "ACRInputToggleRenderer.h"
 #import "ACRInputTableView.h"
-#import "ACRToggleInputDataSource.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRSeparator.h"
 #import "ToggleInput.h"
 #import "ACRColumnSetView.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRToggleInputDataSource.h"
 
 @implementation ACRInputToggleRenderer
 
@@ -28,7 +28,7 @@
     return ACRToggleInput;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
@@ -39,33 +39,30 @@
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
 
     ACRInputTableView *inputView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
+    [inputTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
+    inputTableView.delegate = dataSource;
+    inputTableView.dataSource = dataSource;
     [inputs addObject:dataSource];
-    inputView.dataSource = dataSource;
-    inputView.delegate = (NSObject<UITableViewDelegate> *)dataSource;
 
-    if(viewGroup)
-    {
-        [(UIStackView *)viewGroup addArrangedSubview:inputView];
+
+    [viewGroup addArrangedSubview:inputView];
     }
-    [inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeLeading
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeLeading
-                                 multiplier:1.0
-                                   constant:0]];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeTrailing
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeTrailing
-                                 multiplier:1.0
-                                   constant:0]];
-    return inputView;
+    [NSLayoutConstraint constraintWithItem:inputTableView
+                                 attribute:NSLayoutAttributeLeading
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:viewGroup
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0
+                                  constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:inputTableView
+                                 attribute:NSLayoutAttributeTrailing
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:viewGroup
+                                 attribute:NSLayoutAttributeTrailing
+                                multiplier:1.0
+                                  constant:0].active = YES;
+    return inputTableView;
 }
 
 @end
