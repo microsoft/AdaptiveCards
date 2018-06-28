@@ -14,7 +14,6 @@ using namespace AdaptiveCards;
 {
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
     NSMutableDictionary *_userSelections;
-    NSUInteger _numberOfUserSelections;
     NSIndexPath *_lastSelectedIndexPath;
     NSMutableSet *_defaultValuesSet;
     NSArray *_defaultValuesArray;
@@ -76,7 +75,6 @@ using namespace AdaptiveCards;
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         [_defaultValuesSet removeObject:keyForDefaultValue];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        _numberOfUserSelections++;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
@@ -95,7 +93,6 @@ using namespace AdaptiveCards;
         [self tableView:tableView didSelectRowAtIndexPath:indexPath];
         [cell setSelected:YES animated:NO];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        _numberOfUserSelections--;
         _lastSelectedIndexPath = indexPath;
     }
 }
@@ -114,17 +111,13 @@ using namespace AdaptiveCards;
 {
     if([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryCheckmark)
     {
-        if(_numberOfUserSelections > 1){
-            [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
-            _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
-            _numberOfUserSelections--;
-        }
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
     }
     else
     {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
-        _numberOfUserSelections++;
     }
 
     // didDeselectRowAtIndexPath doesn't get called for the cells that was already selected before the tableView came to view
@@ -143,7 +136,6 @@ using namespace AdaptiveCards;
     {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
-        _numberOfUserSelections--;
     }
 }
 
@@ -173,26 +165,6 @@ using namespace AdaptiveCards;
         }
     }
     dictionary[self.id] = [values componentsJoinedByString:@";"];
-}
-
-- (NSString *)getTitlesOfChoices
-{
-    NSMutableArray *values = [[NSMutableArray alloc] init];
-    NSEnumerator *enumerator = [_userSelections keyEnumerator];
-    NSNumber *key;
-    while(key = [enumerator nextObject])
-    {
-        if([_userSelections[key] boolValue] == YES)
-        {
-            [values addObject:
-             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[[key integerValue]]->GetTitle().c_str()
-                                encoding:NSUTF8StringEncoding]];
-        }
-    }
-    if([values count] == 0) {
-        return nil;
-    }
-    return [values componentsJoinedByString:@", "];
 }
 
 @end

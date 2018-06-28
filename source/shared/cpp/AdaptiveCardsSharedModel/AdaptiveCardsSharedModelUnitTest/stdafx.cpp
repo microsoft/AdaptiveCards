@@ -4,9 +4,5 @@
 
 #include "stdafx.h"
 
-#pragma managed(push, off)
-ExcludeFromCodeCoverage(BasicStringExclusion, L"*std::*");
-ExcludeFromCodeCoverage(TestExclusion, L"AdaptiveCardsSharedModelUnitTest::*");
-ExcludeSourceFromCodeCoverage(JsonCppExclusion, L"*\\jsoncpp.cpp");
-ExcludeSourceFromCodeCoverage(JsonHeaderExclusion, L"*\\json.h");
-#pragma managed(pop)
+// TODO: reference any additional headers you need in STDAFX.H
+// and not in this file

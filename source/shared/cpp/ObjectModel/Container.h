@@ -13,7 +13,7 @@ friend class ContainerParser;
 public:
     Container();
 
-    Json::Value SerializeToJsonValue() const override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
@@ -29,10 +29,10 @@ public:
     VerticalContentAlignment GetVerticalContentAlignment() const;
     void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
-    void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet() override;
+    void PopulateKnownPropertiesSet();
 
     ContainerStyle m_style;
     VerticalContentAlignment m_verticalContentAlignment;
@@ -43,13 +43,6 @@ private:
 class ContainerParser : public BaseCardElementParser
 {
 public:
-    ContainerParser() = default;
-    ContainerParser(const ContainerParser&) = default;
-    ContainerParser(ContainerParser&&) = default;
-    ContainerParser& operator=(const ContainerParser&) = default;
-    ContainerParser& operator=(ContainerParser&&) = default;
-    virtual ~ContainerParser() = default;
-
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

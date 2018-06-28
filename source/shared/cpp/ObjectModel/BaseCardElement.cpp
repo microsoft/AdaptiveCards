@@ -21,18 +21,22 @@ BaseCardElement::BaseCardElement(
     PopulateKnownPropertiesSet();
 }
 
-BaseCardElement::BaseCardElement(CardElementType type) : m_type(type), m_spacing(Spacing::Default),
-    m_typeString(CardElementTypeToString(type)), m_separator(false), m_height(HeightType::Auto)
+BaseCardElement::BaseCardElement(CardElementType type) :
+    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type)), m_separator(false), m_height(HeightType::Auto)
 {
     PopulateKnownPropertiesSet();
 }
 
 void BaseCardElement::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)});
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height));
+}
+
+BaseCardElement::~BaseCardElement()
+{
 }
 
 std::string BaseCardElement::GetElementTypeString() const
@@ -124,7 +128,7 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
     return root;
 }
 
-Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
+Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction) 
 {
     if (selectAction != nullptr)
     {
@@ -143,7 +147,7 @@ void BaseCardElement::SetAdditionalProperties(Json::Value const &value)
     m_additionalProperties = value;
 }
 
-void BaseCardElement::GetResourceInformation(std::vector<RemoteResourceInformation>&)
+void BaseCardElement::GetResourceUris(std::vector<std::string>&)
 {
     return;
 }

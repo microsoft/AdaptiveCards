@@ -42,7 +42,6 @@ enum class AdaptiveCardSchemaKey
     ActionsOrientation,
     AdaptiveCard,
     AllowCustomStyle,
-    AllowInlinePlayback,
     AltText,
     Attention,
     BackgroundColor,
@@ -329,7 +328,8 @@ enum class IconPlacement
 
 enum class VerticalContentAlignment
 {
-    Top = 0,
+    Stretch = 0,
+    Top,
     Center,
     Bottom
 };

@@ -39,17 +39,15 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes{
-    self = [super initWithFrame:CGRectMake(0,0,frame.size.width,0)];
-    if(self) {
-        _stackView = [[UIStackView alloc] initWithFrame:frame];
-        [self config:attributes];
-    }
-    return self;
-}
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [self initWithFrame:CGRectMake(0,0,frame.size.width,0) attributes:nil];
+    self = [super initWithFrame:CGRectMake(0,0,frame.size.width,0)];
+    if(self)
+    {
+        _stackView = [[UIStackView alloc] initWithFrame:frame];
+        [self config];
+    }
+
     return self;
 }
 
@@ -60,7 +58,7 @@ using namespace AdaptiveCards;
     if (self)
     {
         _stackView = [[UIStackView alloc] init];
-        [self config:nil];
+        [self config];
     }
 
     return self;
@@ -114,7 +112,7 @@ using namespace AdaptiveCards;
     [[self layer] setBorderWidth:borderWidth];
 }
 
-- (void)config:(nullable NSDictionary<NSString *, id> *)attributes
+- (void)config
 {
     if(!self.stackView){
         return;
@@ -126,21 +124,6 @@ using namespace AdaptiveCards;
 
     _targets = [[NSMutableArray alloc] init];
     _showcardTargets = [[NSMutableArray alloc] init];
-
-    if(attributes){
-        NSNumber *distribAttrib = attributes[@"distribution"];
-        if(distribAttrib){
-            self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
-        }
-        NSNumber *alignAttrib = attributes[@"alignment"];
-        if(alignAttrib){
-            self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
-        }
-        NSNumber *spacingAttrib = attributes[@"spacing"];
-        if(spacingAttrib){
-            self.stackView.spacing = [spacingAttrib floatValue];
-        }
-    }
 }
 
 - (CGSize)intrinsicContentSize

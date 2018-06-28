@@ -5,22 +5,13 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spannable;
 import android.text.TextUtils;
-import android.text.method.MovementMethod;
-import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Scroller;
-import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -33,7 +24,6 @@ import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.Vector;
-import java.util.zip.CheckedOutputStream;
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
@@ -101,18 +91,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             editText.setHint(placeHolder);
         }
 
-        if(baseInputElement.GetHeight() == HeightType.Stretch)
-        {
-            LinearLayout containerLayout = new LinearLayout(context);
-            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-
-            containerLayout.addView(editText);
-            viewGroup.addView(containerLayout);
-        }
-        else
-        {
-            viewGroup.addView(editText);
-        }
+        viewGroup.addView(editText);
         return editText;
     }
 
@@ -158,9 +137,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         if (textInput.GetIsMultiline())
         {
             editText.setLines(3);
-            editText.setScroller(new Scroller((context)));
-            editText.setVerticalScrollBarEnabled(true);
-            editText.setMovementMethod(new ScrollingMovementMethod());
         }
         setTextInputStyle(editText, textInput.GetTextInputStyle());
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);

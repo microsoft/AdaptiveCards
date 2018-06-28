@@ -173,7 +173,6 @@ AdaptiveNamespaceStart
             _In_ AdaptiveNamespace::AdaptiveRenderContext* renderContext,
              ABI::AdaptiveNamespace::ContainerStyle containerStyle,
             _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-            _In_ bool allActionsHaveIcons,
             _Inout_ ABI::Windows::UI::Xaml::Controls::IButton* button);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,

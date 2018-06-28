@@ -13,6 +13,5 @@
 @property ACRContainerStyle style;
 @property BOOL isFactSetLabel;
 @property BOOL isTitle;
-@property BOOL isStretchable;
 
 @end

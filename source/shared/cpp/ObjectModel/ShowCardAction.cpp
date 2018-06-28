@@ -49,9 +49,9 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card);
 
     auto parseResult = AdaptiveCard::Deserialize(json.get(propertyName, Json::Value()), std::numeric_limits<double>::max(), elementParserRegistration, actionParserRegistration);
-
+    
     auto showCardWarnings = parseResult->GetWarnings();
-    auto warningsEnd = warnings.insert(warnings.end(), showCardWarnings.begin(), showCardWarnings.end());
+    warnings.insert(warnings.end(), showCardWarnings.begin(), showCardWarnings.end());
 
     showCardAction->SetCard(parseResult->GetAdaptiveCard());
 
@@ -67,15 +67,15 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::DeserializeFromString(
     return ShowCardActionParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ShowCardAction::PopulateKnownPropertiesSet()
+void ShowCardAction::PopulateKnownPropertiesSet() 
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card)});
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card));
 }
 
-void ShowCardAction::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+void ShowCardAction::GetResourceUris(std::vector<std::string>& resourceUris)
 {
     auto card = GetCard();
-    auto showCardResources = card->GetResourceInformation();
-    auto resourceInfoEnd = resourceInfo.insert(resourceInfo.end(), showCardResources.begin(), showCardResources.end());
+    auto showCardImages = card->GetResourceUris();
+    resourceUris.insert(resourceUris.end(), showCardImages.begin(), showCardImages.end());
     return;
 }

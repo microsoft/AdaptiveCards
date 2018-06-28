@@ -1,6 +1,6 @@
 {
     "supportsInteractivity": true,
-    "fontFamily": "Helvetica Neue",
+    "fontFamily": "Segoe UI",
     "fontSizes": {
         "small": 12,
         "default": 14,
@@ -11,7 +11,7 @@
     "fontWeights": {
         "lighter": 200,
         "default": 400,
-        "bolder": 700
+        "bolder": 600
     },
     "imageSizes": {
         "small": 40,
@@ -82,7 +82,7 @@
     },
     "separator": {
         "lineThickness": 1,
-        "lineColor": "#FF000000"
+        "lineColor": "#EEEEEE"
     },
     "actions": {
         "maxActions": 5,
@@ -94,7 +94,7 @@
             "style": "Emphasis"
         },
         "preExpandSingleShowCardAction": false,
-        "actionsOrientation": "Horizontal",
+        "actionsOrientation": "Vertical",
         "actionAlignment": "Stretch"
     },
     "adaptiveCard": {

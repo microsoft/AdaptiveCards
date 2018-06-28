@@ -3,7 +3,7 @@ export const adaptiveCardSchema =
   "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
-  "title": "Microsoft Adaptive Card Schema",  
+  "title": "Microsoft Adaptive Card Schema",
   "additionalProperties": true,
   "allOf": [
     {
@@ -177,7 +177,7 @@ export const adaptiveCardSchema =
         "type"
       ]
     },
-    "CardElements": { 
+    "CardElements": {
       "type": "array",
       "additionalItems": true,
       "items": [
@@ -375,7 +375,7 @@ export const adaptiveCardSchema =
         "title": {
           "type": "string",
           "description": "The title of the fact"
-          
+
         },
         "value": {
           "type": "string",
@@ -524,7 +524,7 @@ export const adaptiveCardSchema =
     "Input.ChoiceSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Shows an array of Choice objects",      
+      "description": "Shows an array of Choice objects",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -902,3 +902,21 @@ export const adaptiveCardSchema =
     }
   }
 };
+
+export interface FullScreenElement extends HTMLElement {
+    mozRequestFullScreen: () => void
+    msRequestFullscreen: () => void
+    onfullscreenchange: (this: Element, ev: Event) => any;
+    onmozfullscreenchange: (this: Element, ev: Event) => any;
+    MSFullscreenChange: (this: Element, ev: Event) => any;
+}
+
+export interface FullScreenDocument extends Document {
+    exitFullscreen: () => void
+    webkitExitFullscreen: () => void
+    mozCancelFullScreen: () => void
+    msExitFullscreen: () => void
+    fullscreen: boolean
+    webkitIsFullScreen: boolean
+    mozFullScreen: boolean
+}

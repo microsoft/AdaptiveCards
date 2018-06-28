@@ -126,36 +126,6 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="..\..\..\samples\Tests\InvalidMediaMix.json" />
-    <Content Include="..\..\..\samples\Tests\ColumnSet.FactSet.VerticalStretch.json">
-      <Link>LinkedCards\Tests\ColumnSet.FactSet.VerticalStretch.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\ColumnSet.Image.VerticalStretch.json">
-      <Link>LinkedCards\Tests\ColumnSet.Image.VerticalStretch.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\ColumnSet.ImageSet.VerticalStretch.json">
-      <Link>LinkedCards\Tests\ColumnSet.ImageSet.VerticalStretch.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.ChoiceSet.VerticalStretch.json">
-      <Link>LinkedCards\Tests\ColumnSet.Input.ChoiceSet.VerticalStretch.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Date.VerticalStretch.json">
-      <Link>LinkedCards\Tests\ColumnSet.Input.Date.VerticalStretch.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Number.VerticalStretch.json">
-      <Link>LinkedCards\Tests\ColumnSet.Input.Number.VerticalStretch.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Time.VerticalStretch.json">
-      <Link>LinkedCards\Tests\ColumnSet.Input.Time.VerticalStretch.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\ColumnSet.Input.Toggle.VerticalStretch.json">
-      <Link>LinkedCards\Tests\ColumnSet.Input.Toggle.VerticalStretch.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\IconsInSomeActions.json">
-      <Link>LinkedCards\Tests\IconsInSomeActions.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Tests\NotificationCard.json">
-      <Link>LinkedCards\Tests\NotificationCard.json</Link>
-    </Content>
     <None Include="AdaptiveCardTestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -169,47 +139,8 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="..\..\..\samples\v1.0\Scenarios\ActivityUpdate.json">
-      <Link>LinkedCards\v1.0\Scenarios\ActivityUpdate</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\CalendarReminder.json">
-      <Link>LinkedCards\v1.0\Scenarios\CalendarReminder</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightItinerary.json">
-      <Link>LinkedCards\v1.0\Scenarios\FlightItinerary</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightUpdate.json">
-      <Link>LinkedCards\v1.0\Scenarios\FlightUpdate</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\FoodOrder.json">
-      <Link>LinkedCards\v1.0\Scenarios\FoodOrder</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\ImageGallery.json">
-      <Link>LinkedCards\v1.0\Scenarios\ImageGallery</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\InputForm.json">
-      <Link>LinkedCards\v1.0\Scenarios\InputForm</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\Inputs.json">
-      <Link>LinkedCards\v1.0\Scenarios\Inputs</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\Restaurant.json">
-      <Link>LinkedCards\v1.0\Scenarios\Restaurant</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\Solitaire.json">
-      <Link>LinkedCards\v1.0\Scenarios\Solitaire</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\SportingEvent.json">
-      <Link>LinkedCards\v1.0\Scenarios\SportingEvent</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\StockUpdate.json">
-      <Link>LinkedCards\v1.0\Scenarios\StockUpdate</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\WeatherCompact.json">
-      <Link>LinkedCards\v1.0\Scenarios\WeatherCompact</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\WeatherLarge.json">
-      <Link>LinkedCards\v1.0\Scenarios\WeatherLarge</Link>
+    <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
+      <Link>LinkedCards\v1.0\Scenarios\%(FileName)</Link>
     </Content>
     <Content Include="..\..\..\samples\v1.0\Elements\*.json">
       <Link>LinkedCards\v1.0\Elements\%(FileName)</Link>

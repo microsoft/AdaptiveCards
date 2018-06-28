@@ -86,9 +86,6 @@
     <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />
-    <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
-    <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -182,9 +179,6 @@
     <ClInclude Include="lib\AdaptiveMediaSource.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
     <ClInclude Include="lib\AdaptiveMediaConfig.h" />
-    <ClInclude Include="lib\AdaptiveMediaEventInvoker.h" />
-    <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
-    <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

@@ -86,12 +86,20 @@
         lab.numberOfLines = 1;
     }
 
-    [viewGroup addArrangedSubview:lab];
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] init];
 
-    lab.backgroundColor = UIColor.lightGrayColor;
+    [wrappingview addSubview:lab];
+
+    [wrappingview setAlignmentForSubview:textBlockElement->GetHorizontalAlignment()];
+
+    [viewGroup addArrangedSubview:wrappingview];
+
+    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
+    
+    wrappingview.backgroundColor = UIColor.lightGrayColor;
 
     lab.translatesAutoresizingMaskIntoConstraints = false;
 
-    return lab;
+    return wrappingview;
 }
 @end

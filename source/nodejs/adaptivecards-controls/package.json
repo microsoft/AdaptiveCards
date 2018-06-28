@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "build-dist": "webpack",
-    "tsc": "tsc -p .",
+    "tsc": "tsc -p .",    
+    "compile:watch": "npm run clean && tsc -w",
     "build": "npm run tsc && npm run build-dist && npm run dts",
     "watch": "webpack --watch",    
     "dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
@@ -22,7 +23,8 @@
     "ts-loader": "^2.0.0",
     "tslint": "^4.4.2",
     "typescript": "^2.1.5",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "glob": "7.1.2"
   },
   "author": "Microsoft",
   "license": "MIT"

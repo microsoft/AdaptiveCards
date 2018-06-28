@@ -7,7 +7,7 @@
 namespace AdaptiveSharedNamespace {
     class MarkDownBlockParser
     {
-    public:
+        public:
         MarkDownBlockParser(){};
         // Matches each MarkDown's Syntax Form
         // For each match, stream moves to the next char
@@ -24,14 +24,7 @@ namespace AdaptiveSharedNamespace {
 
     class EmphasisParser: public MarkDownBlockParser
     {
-    public:
-        EmphasisParser() = default;
-        EmphasisParser(const EmphasisParser&) = default;
-        EmphasisParser(EmphasisParser&&) = default;
-        EmphasisParser& operator=(const EmphasisParser&) = default;
-        EmphasisParser& operator=(EmphasisParser&&) = default;
-        virtual ~EmphasisParser() = default;
-
+        public:
         enum EmphasisState
         {
             // Text is being handled
@@ -42,7 +35,7 @@ namespace AdaptiveSharedNamespace {
             Captured = 0x2,
         };
 
-        void Match(std::stringstream &) override;
+        virtual void Match(std::stringstream &);
         // Captures remaining charaters in given token
         // and causes the emphasis parsing to terminate
         void Flush(int ch, std::string& currentToken);
@@ -69,7 +62,7 @@ namespace AdaptiveSharedNamespace {
         bool TryCapturingLeftEmphasisToken(int ch, std::string &currentToken);
         void CaptureEmphasisToken(int ch, std::string &currentToken);
         void UpdateLookBehind(int ch);
-        static constexpr DelimiterType GetDelimiterTypeForCharAtCurrentPosition(int ch) { return (ch == '*')? Asterisk : Underscore; };
+        static DelimiterType GetDelimiterTypeForCharAtCurrentPosition(int ch) { return (ch == '*')? Asterisk : Underscore; };
 
         typedef EmphasisState (* MatchWithChar)(EmphasisParser&, std::stringstream &, std::string &);
         // Callback function that handles the Text State
@@ -98,15 +91,8 @@ namespace AdaptiveSharedNamespace {
 
     class LinkParser : public MarkDownBlockParser
     {
-    public:
-        LinkParser() = default;
-        LinkParser(const LinkParser&) = default;
-        LinkParser(LinkParser&&) = default;
-        LinkParser& operator=(const LinkParser&) = default;
-        LinkParser& operator=(LinkParser&&) = default;
-        virtual ~LinkParser() = default;
-
-        void Match(std::stringstream &) override;
+        public:
+        void Match(std::stringstream &);
 
         private:
         void CaptureLinkToken();
@@ -128,43 +114,29 @@ namespace AdaptiveSharedNamespace {
 
     class ListParser : public MarkDownBlockParser
     {
-    public:
-        ListParser() = default;
-        ListParser(const ListParser&) = default;
-        ListParser(ListParser&&) = default;
-        ListParser& operator=(const ListParser&) = default;
-        ListParser& operator=(ListParser&&) = default;
-        virtual ~ListParser() = default;
-
-        void Match(std::stringstream &) override;
+        public:
+        void Match(std::stringstream &);
         bool MatchNewListItem(std::stringstream &);
         bool MatchNewBlock(std::stringstream &);
         bool MatchNewOrderedListItem(std::stringstream &, std::string &);
-        static constexpr bool IsHyphen(int ch) { return ch == '-'; };
-        static constexpr bool IsDot(int ch) { return ch == '.'; };
-        static constexpr bool IsNewLine(int ch){ return (ch == '\r') || (ch == '\n');};
+        static bool IsHyphen(int ch) { return ch == '-'; };
+        static bool IsDot(int ch) { return ch == '.'; };
+        static bool IsNewLine(int ch){ return (ch == '\r') || (ch == '\n');};
 
-    protected:
+        protected:
         void ParseSubBlocks(std::stringstream &);
         bool CompleteListParsing(std::stringstream &stream);
 
-    private:
+        private:
         void CaptureListToken();
     };
 
     class OrderedListParser : public ListParser
     {
-    public:
-        OrderedListParser() = default;
-        OrderedListParser(const OrderedListParser&) = default;
-        OrderedListParser(OrderedListParser&&) = default;
-        OrderedListParser& operator=(const OrderedListParser&) = default;
-        OrderedListParser& operator=(OrderedListParser&&) = default;
-        ~OrderedListParser() = default;
+        public:
+        void Match(std::stringstream &);
 
-        void Match(std::stringstream &) override;
-
-    private:
+        private:
         void CaptureOrderedListToken(std::string&);
     };
 }

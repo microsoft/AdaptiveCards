@@ -56,12 +56,12 @@ AdaptiveNamespaceStart
         return jsonCppValue;
     }
 
-    void CustomElementWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+    void CustomElementWrapper::GetResourceUris(std::vector<std::string>& resourceUris)
     {
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources> remoteResources;
         if (SUCCEEDED(m_cardElement.As(&remoteResources)))
         {
-            RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
+            RemoteResourceElementToUriStringVector(remoteResources.Get(), resourceUris);
         }
     }
 

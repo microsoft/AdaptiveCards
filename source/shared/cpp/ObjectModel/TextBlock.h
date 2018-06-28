@@ -13,7 +13,7 @@ class TextBlock : public BaseCardElement
 public:
     TextBlock();
 
-    Json::Value SerializeToJsonValue() const override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::string GetText() const;
     void SetText(const std::string &value);
@@ -52,20 +52,13 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
-    void PopulateKnownPropertiesSet() override;
+    void PopulateKnownPropertiesSet();
     std::string m_language;
 };
 
 class TextBlockParser : public BaseCardElementParser
 {
 public:
-    TextBlockParser() = default;
-    TextBlockParser(const TextBlockParser&) = default;
-    TextBlockParser(TextBlockParser&&) = default;
-    TextBlockParser& operator=(const TextBlockParser&) = default;
-    TextBlockParser& operator=(TextBlockParser&&) = default;
-    virtual ~TextBlockParser() = default;
-
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

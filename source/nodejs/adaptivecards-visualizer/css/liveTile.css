@@ -30,15 +30,18 @@ a.ac-anchor:visited:active {
   color: #004D84;
 }
 
-.ac-container.ac-selectable, .ac-columnSet.ac-selectable {
-  padding: 0px;
+.ac-container.ac-selectable,
+.ac-columnSet.ac-selectable {
+  padding: 0;
 }
 
-.ac-container.ac-selectable:hover, .ac-columnSet.ac-selectable:hover {
+.ac-container.ac-selectable:hover,
+.ac-columnSet.ac-selectable:hover {
   background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-.ac-container.ac-selectable:active, .ac-columnSet.ac-selectable:active {
+.ac-container.ac-selectable:active,
+.ac-columnSet.ac-selectable:active {
   background-color: rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -83,11 +86,18 @@ a.ac-anchor:visited:active {
   height: 72px;
 }
 
-.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput {
+.ac-input.ac-textInput,
+.ac-input.ac-numberInput,
+.ac-input.ac-dateInput,
+.ac-input.ac-timeInput {
   height: 31px;
 }
 
-.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
+.ac-input.ac-textInput,
+.ac-input.ac-numberInput,
+.ac-input.ac-dateInput,
+.ac-input.ac-timeInput,
+.ac-input.ac-multichoiceInput {
   border: 1px solid #DDDDDD;
   padding: 4px 8px 4px 8px;
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -166,29 +165,20 @@ namespace AdaptiveCards.Rendering.Wpf
 
         private async Task<RenderedAdaptiveCardImage> RenderCardToImageInternalAsync(AdaptiveCard card, int width, CancellationToken cancellationToken)
         {
-            RenderedAdaptiveCardImage renderCard = null;
+            var cardAssets = await LoadAssetsForCardAsync(card, cancellationToken);
 
-            try
+            var context = new AdaptiveRenderContext(null, null)
             {
-                var cardAssets = await LoadAssetsForCardAsync(card, cancellationToken);
+                CardAssets = cardAssets,
+                ResourceResolvers = ResourceResolvers,
+                ActionHandlers = ActionHandlers,
+                Config = HostConfig ?? new AdaptiveHostConfig(),
+                Resources = Resources,
+                ElementRenderers = ElementRenderers
+            };
 
-                var context = new AdaptiveRenderContext(null, null)
-                {
-                    CardAssets = cardAssets,
-                    ResourceResolvers = ResourceResolvers,
-                    ActionHandlers = ActionHandlers,
-                    Config = HostConfig ?? new AdaptiveHostConfig(),
-                    Resources = Resources,
-                    ElementRenderers = ElementRenderers
-                };
-
-                var stream = context.Render(card).RenderToImage(width);
-                renderCard = new RenderedAdaptiveCardImage(stream, card, context.Warnings);
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine($"RENDER Failed. {e.Message}");
-            }
+            var stream = context.Render(card).RenderToImage(width);
+            var renderCard = new RenderedAdaptiveCardImage(stream, card, context.Warnings);
 
             return renderCard;
         }

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -26,7 +25,7 @@ import java.util.Locale;
 
 public class ColumnRenderer extends BaseCardElementRenderer
 {
-    protected ColumnRenderer()
+    private ColumnRenderer()
     {
     }
 
@@ -85,22 +84,21 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
         {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.weight = 1;
             returnedView.setLayoutParams(layoutParams);
         }
         else if (columnSize.equals(g_columnSizeAuto))
         {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             returnedView.setLayoutParams(layoutParams);
         }
         else
         {
             try
             {
-                // I'm not sure what's going on here
                 float columnWeight = Float.parseFloat(columnSize);
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.width = 0;
                 layoutParams.weight = columnWeight;
                 returnedView.setLayoutParams(layoutParams);

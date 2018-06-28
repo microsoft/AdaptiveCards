@@ -11,8 +11,7 @@
 @interface ACOHostConfig:NSObject
 
 @property NSArray<NSString *> *fontFamilyNames;
-@property BOOL allActionsHaveIcons;
-@property CGFloat buttonPadding;
+
 - (instancetype)init;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;

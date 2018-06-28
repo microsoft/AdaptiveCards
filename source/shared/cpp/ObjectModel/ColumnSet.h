@@ -13,7 +13,7 @@ friend class ColumnSetParser;
 public:
     ColumnSet();
 
-    Json::Value SerializeToJsonValue() const override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::vector<std::shared_ptr<Column>>& GetColumns();
     const std::vector<std::shared_ptr<Column>>& GetColumns() const;
@@ -23,10 +23,10 @@ public:
 
     void SetLanguage(const std::string& language);
 
-    void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+    virtual void GetResourceUris(std::vector<std::string>& resourceUris) override;
 
 private:
-    void PopulateKnownPropertiesSet() override;
+    void PopulateKnownPropertiesSet();
 
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
     std::vector<std::shared_ptr<Column>> m_columns;
@@ -36,13 +36,6 @@ private:
 class ColumnSetParser : public BaseCardElementParser
 {
 public:
-    ColumnSetParser() = default;
-    ColumnSetParser(const ColumnSetParser&) = default;
-    ColumnSetParser(ColumnSetParser&&) = default;
-    ColumnSetParser& operator=(const ColumnSetParser&) = default;
-    ColumnSetParser& operator=(ColumnSetParser&&) = default;
-    virtual ~ColumnSetParser() = default;
-
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

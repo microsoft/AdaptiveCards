@@ -8,7 +8,6 @@
 #include "XamlHelpers.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveActionEventArgs.h"
-#include "AdaptiveMediaEventArgs.h"
 #include "AdaptiveError.h"
 #include "vector.h"
 
@@ -30,7 +29,10 @@ AdaptiveNamespaceStart
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize()
     {
-        RETURN_IF_FAILED(RenderedAdaptiveCard::RuntimeClassInitialize(Make<Vector<IAdaptiveError*>>().Get(), Make<Vector<IAdaptiveWarning*>>().Get()));
+        m_errors = Make<Vector<IAdaptiveError*>>();
+        m_warnings = Make<Vector<IAdaptiveWarning*>>();
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveInputs>(&m_inputs));
+        m_events = std::make_shared<ActionEventSource>();
         return S_OK;
     }
 
@@ -41,9 +43,7 @@ AdaptiveNamespaceStart
         m_errors = errors;
         m_warnings = warnings;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveInputs>(&m_inputs));
-        m_actionEvents = std::make_shared<ActionEventSource>();
-        m_mediaPlayEvents = std::make_shared<MediaEventSource>();
-        m_mediaEndedEvents = std::make_shared<MediaEventSource>();
+        m_events = std::make_shared<ActionEventSource>();
         return S_OK;
     }
 
@@ -70,41 +70,13 @@ AdaptiveNamespaceStart
         ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
         EventRegistrationToken* token)
     {
-        return m_actionEvents->Add(handler, token);
+        return m_events->Add(handler, token);
     }
 
     _Use_decl_annotations_
     HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token)
     {
-        return m_actionEvents->Remove(token);
-    }
-
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::add_MediaPlay(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
-        EventRegistrationToken* token)
-    {
-        return m_mediaPlayEvents->Add(handler, token);
-    }
-
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::remove_MediaPlay(EventRegistrationToken token)
-    {
-        return m_mediaPlayEvents->Remove(token);
-    }
-
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::add_MediaEnded(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
-        EventRegistrationToken* token)
-    {
-        return m_mediaEndedEvents->Add(handler, token);
-    }
-
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::remove_MediaEnded(EventRegistrationToken token)
-    {
-        return m_mediaEndedEvents->Remove(token);
+        return m_events->Remove(token);
     }
 
     _Use_decl_annotations_
@@ -127,23 +99,7 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveActionEventArgs> eventArgs;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
 
-        return m_actionEvents->InvokeAll(this, eventArgs.Get());
-    }
-
-    HRESULT RenderedAdaptiveCard::SendMediaPlayEvent(IAdaptiveMedia* mediaElement)
-    {
-        ComPtr<IAdaptiveMediaEventArgs> eventArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventArgs>(&eventArgs, mediaElement));
-
-        return m_mediaPlayEvents->InvokeAll(this, eventArgs.Get());
-    }
-
-    HRESULT RenderedAdaptiveCard::SendMediaEndedEvent(IAdaptiveMedia* mediaElement)
-    {
-        ComPtr<IAdaptiveMediaEventArgs> eventArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventArgs>(&eventArgs, mediaElement));
-
-        return m_mediaEndedEvents->InvokeAll(this, eventArgs.Get());
+        return m_events->InvokeAll(this, eventArgs.Get());
     }
 
     void RenderedAdaptiveCard::SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value)

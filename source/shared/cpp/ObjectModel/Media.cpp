@@ -59,28 +59,6 @@ std::vector<std::shared_ptr<MediaSource>>& Media::GetSources()
     return m_sources;
 }
 
-void Media::PopulateKnownPropertiesSet()
-{
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources)});
-}
-
-void Media::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
-{
-    RemoteResourceInformation posterResourceInfo;
-    posterResourceInfo.url = GetPoster();
-    posterResourceInfo.resourceType = CardElementType::Image;
-    resourceInfo.push_back(posterResourceInfo);
-
-    auto sources = GetSources();
-    for (auto source : sources)
-    {
-        source->GetResourceInformation(resourceInfo);
-    }
-    return;
-}
-
 std::shared_ptr<BaseCardElement> MediaParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
@@ -102,7 +80,7 @@ std::shared_ptr<BaseCardElement> MediaParser::Deserialize(
         std::string currentMimeType = source->GetMimeType();
 
         std::string slash("/");
-        const size_t slashPosition = currentMimeType.find(slash, 0);
+        size_t slashPosition = currentMimeType.find(slash, 0);
         std::string currentMimeBaseType = currentMimeType.substr(0, slashPosition);
 
         if (mimeBaseType.empty())
@@ -128,4 +106,11 @@ std::shared_ptr<BaseCardElement> MediaParser::DeserializeFromString(
     const std::string& jsonString)
 {
     return MediaParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void Media::PopulateKnownPropertiesSet() 
+{
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources));
 }

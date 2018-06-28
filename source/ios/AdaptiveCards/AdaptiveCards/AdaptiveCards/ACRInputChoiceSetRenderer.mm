@@ -26,7 +26,7 @@
     return ACRChoiceSetInput;
 }
 
-- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+- (UIView *)render:(UIView *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
@@ -39,10 +39,12 @@
     ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact) {
+    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact)
+    {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
-        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    } else {
+    }
+    else
+    {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
     }
     choiceSetView.delegate = dataSource;
@@ -51,34 +53,27 @@
 
     UIView *inputView = (UIView *)choiceSetView;
 
-    if(elem->GetHeight() == HeightType::Stretch){
-        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview: inputView];
-
-        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-        UIView *blankTrailingSpace = [[UIView alloc] init];
-        [textInputContainer addArrangedSubview:blankTrailingSpace];
-        [textInputContainer adjustHuggingForLastElement];
-
-        [viewGroup addArrangedSubview: textInputContainer];
-    } else {
-        [viewGroup addArrangedSubview:inputView];
+    if(viewGroup)
+    {
+        [(UIStackView *)viewGroup addArrangedSubview:inputView];
     }
 
-    [NSLayoutConstraint constraintWithItem:inputView
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:viewGroup
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1.0
-                                  constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:inputView
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:viewGroup
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1.0
-                                  constant:0].active = YES;
+    [viewGroup addConstraint:
+     [NSLayoutConstraint constraintWithItem:inputView
+                                  attribute:NSLayoutAttributeLeading
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:viewGroup
+                                  attribute:NSLayoutAttributeLeading
+                                 multiplier:1.0
+                                   constant:0]];
+    [viewGroup addConstraint:
+     [NSLayoutConstraint constraintWithItem:inputView
+                                  attribute:NSLayoutAttributeTrailing
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:viewGroup
+                                  attribute:NSLayoutAttributeTrailing
+                                 multiplier:1.0
+                                   constant:0]];
 
     return inputView;
 }

@@ -25,19 +25,24 @@
 
 .ms-ctrl-slide {
   animation-duration: 0.5s;
-  animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+  animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1);
+}
 
 .ms-ctrl-slide.ms-ctrl-slideTopToBottom {
-  animation-name: fadeIn,slideTopToBottom; }
+  animation-name: fadeIn,slideTopToBottom;
+}
 
 .ms-ctrl-slide.ms-ctrl-slideBottomToTop {
-  animation-name: fadeIn,slideBottomToTop; }
+  animation-name: fadeIn,slideBottomToTop;
+}
 
 .ms-ctrl-slide.ms-ctrl-slideLeftToRight {
-  animation-name: fadeIn,slideLeftToRight; }
+  animation-name: fadeIn,slideLeftToRight;
+}
 
 .ms-ctrl-slide.ms-ctrl-slideRightToLeft {
-  animation-name: fadeIn,slideRightToLeft; }
+  animation-name: fadeIn,slideRightToLeft;
+}
 
 @font-face {
   font-family: 'FabricMDL2Icons';
@@ -91,7 +96,7 @@
 
 .ms-ctrl-dropdown {
   border: 1px solid #EEEEEE;
-  height: 32px;
+  height: 25px;
   display: flex;
   padding-left: 12px;
   padding-right: 12px;
@@ -105,7 +110,7 @@
   outline: 0; }
 
 .ms-dropdown-label {
-  line-height: 30px;
+  line-height: 24px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -119,7 +124,7 @@
   color: gray; }
 
 .ms-ctrl-dropdown-button {
-  line-height: 32px;
+  line-height: 25px;
   flex: 0 0 auto; }
 
 .ms-ctrl-dropdown-button:hover {
@@ -199,7 +204,7 @@
 
 .ms-ctrl-datePicker {
   border: 1px solid #EEEEEE;
-  height: 32px;
+  height: 25px;
   display: flex;
   padding-left: 12px;
   padding-right: 12px;

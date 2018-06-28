@@ -36,8 +36,10 @@ using namespace AdaptiveCards;
         if([UIFont.familyNames containsObject:requestedFontFamilyName]){
             _fontFamilyNames = @[requestedFontFamilyName];
         }
-        _allActionsHaveIcons = YES;
-        _buttonPadding = 5;
+    }
+    // if the requested font family name is not supported, use system font instead
+    if(self && !_fontFamilyNames){
+        _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
     }
     return self;
 }

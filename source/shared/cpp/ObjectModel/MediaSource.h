@@ -4,18 +4,12 @@
 #include "BaseCardElement.h"
 #include "Enums.h"
 #include "ElementParserRegistration.h"
-#include "util.h"
 
 namespace AdaptiveSharedNamespace {
 class MediaSource
 {
 public:
     MediaSource();
-    MediaSource(const MediaSource&) = default;
-    MediaSource(MediaSource&&) = default;
-    MediaSource& operator=(const MediaSource&) = default;
-    MediaSource& operator=(MediaSource&&) = default;
-    virtual ~MediaSource() = default;
 
     virtual Json::Value SerializeToJsonValue() const;
 
@@ -25,8 +19,6 @@ public:
     std::string GetUrl() const;
     void SetUrl(const std::string& value);
 
-    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo);
-
 private:
     std::string m_mimeType;
     std::string m_url;
@@ -35,13 +27,6 @@ private:
 class MediaSourceParser
 {
 public:
-    MediaSourceParser() = default;
-    MediaSourceParser(const MediaSourceParser&) = default;
-    MediaSourceParser(MediaSourceParser&&) = default;
-    MediaSourceParser& operator=(const MediaSourceParser&) = default;
-    MediaSourceParser& operator=(MediaSourceParser&&) = default;
-    virtual ~MediaSourceParser() = default;
-
     static std::shared_ptr<MediaSource> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

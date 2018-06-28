@@ -59,7 +59,7 @@ public:
     std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
     const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
-    std::vector<RemoteResourceInformation> GetResourceInformation();
+    std::vector<std::string> GetResourceUris();
 
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__

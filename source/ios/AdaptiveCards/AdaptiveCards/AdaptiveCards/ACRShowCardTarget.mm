@@ -51,7 +51,7 @@
     if(!inputs){
         inputs = [[NSMutableArray alloc] init];
     }
-    ACRColumnView *containingView = [[ACRColumnView alloc] initWithFrame:_rootView.frame];
+    ACRColumnView *containingView = [[ACRColumnView alloc] init];
     UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                     inputs:inputs
                                                   context:_rootView

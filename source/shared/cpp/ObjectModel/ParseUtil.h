@@ -11,52 +11,55 @@ namespace AdaptiveSharedNamespace {
 class BaseCardElement;
 class BaseActionElement;
 
-namespace ParseUtil
+class ParseUtil
 {
-    void ThrowIfNotJsonObject(const Json::Value& json);
 
-    void ExpectString(const Json::Value& json);
+public:
 
-    std::string GetTypeAsString(const Json::Value& json);
+    static void ThrowIfNotJsonObject(const Json::Value& json);
 
-    std::string TryGetTypeAsString(const Json::Value& json);
+    static void ExpectString(const Json::Value& json);
 
-    std::string GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+    static std::string GetTypeAsString(const Json::Value& json);
+
+    static std::string TryGetTypeAsString(const Json::Value& json);
+
+    static std::string GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
     // Gets the specified property and returns a JSON string of the value
-    std::string GetJsonString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+    static std::string GetJsonString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
-    std::string GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+    static std::string GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
-    bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired = false);
+    static bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired = false);
 
-    unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue, bool isRequired = false);
+    static unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue, bool isRequired = false);
 
-    int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
+    static int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
 
-    CardElementType GetCardElementType(const Json::Value& json);
+    static CardElementType GetCardElementType(const Json::Value& json);
 
-    CardElementType TryGetCardElementType(const Json::Value& json);
+    static CardElementType TryGetCardElementType(const Json::Value& json);
 
-    ActionType GetActionType(const Json::Value& json);
+    static ActionType GetActionType(const Json::Value& json);
 
-    ActionType TryGetActionType(const Json::Value& json);
+    static ActionType TryGetActionType(const Json::Value& json);
 
-    Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+    static Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
-    Json::Value GetJsonValueFromString(const std::string &jsonString);
+    static Json::Value GetJsonValueFromString(const std::string &jsonString);
 
-    Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
+    static Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
 
     template <typename T>
-    T GetEnumValue(
+    static T GetEnumValue(
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
         T defaultEnumValue,
         std::function<T(const std::string& name)> enumConverter,
         bool isRequired = false);
 
-    std::vector<std::shared_ptr<BaseCardElement>> GetElementCollection(
+    static std::vector<std::shared_ptr<BaseCardElement>> GetElementCollection(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
@@ -65,7 +68,7 @@ namespace ParseUtil
         bool isRequired = false);
 
     template <typename T>
-    std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
+    static std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
@@ -74,7 +77,7 @@ namespace ParseUtil
         const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>, std::shared_ptr<ActionParserRegistration>, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&, const Json::Value&)>& deserializer,
         bool isRequired = false);
 
-    std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(
+    static std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
@@ -82,7 +85,7 @@ namespace ParseUtil
         AdaptiveCardSchemaKey key,
         bool isRequired = false);
 
-    std::shared_ptr<BaseActionElement> GetSelectAction(
+    static std::shared_ptr<BaseActionElement> GetSelectAction(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
@@ -91,24 +94,28 @@ namespace ParseUtil
         bool isRequired = false);
 
     template <typename T>
-    T ExtractJsonValueAndMergeWithDefault(
+    static T ExtractJsonValueAndMergeWithDefault(
         const Json::Value& rootJson,
         AdaptiveCardSchemaKey key,
         const T &defaultValue,
         const std::function<T(const Json::Value&, const T&)>& deserializer);
 
-    std::shared_ptr<BaseActionElement> GetActionFromJsonValue(
+    static std::shared_ptr<BaseActionElement> GetActionFromJsonValue(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& json);
 
-    void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
+    static void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
 
     // throws if the key is missing or the value mapped to the key is the wrong type
-    void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
+    static void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
 
-    std::string ToLowercase(const std::string &value);
+    static std::string ToLowercase(const std::string &value);
+
+private:
+    ParseUtil();
+    ~ParseUtil();
 
 };
 

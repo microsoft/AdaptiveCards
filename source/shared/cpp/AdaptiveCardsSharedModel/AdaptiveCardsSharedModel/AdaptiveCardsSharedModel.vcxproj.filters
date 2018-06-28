@@ -275,8 +275,5 @@
     <ClInclude Include="..\..\ObjectModel\MediaSource.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

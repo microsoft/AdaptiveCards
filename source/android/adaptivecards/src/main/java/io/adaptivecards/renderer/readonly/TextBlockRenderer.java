@@ -1,7 +1,6 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.MarkDownParser;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -45,7 +43,7 @@ import java.util.Vector;
 
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
-    protected TextBlockRenderer()
+    private TextBlockRenderer()
     {
         // Set up Text Weight Map
         m_textWeightMap.put(TextWeight.Default, g_textWeightDefault);
@@ -230,7 +228,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
                     }
 
                     return true;
-
                 }
                 else
                 {
@@ -291,16 +288,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), containerStyle);
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
-
-        if( textBlock.GetHeight() == HeightType.Stretch )
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
-
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();
         if (maxLines > 0 && textBlock.GetWrap())
         {
