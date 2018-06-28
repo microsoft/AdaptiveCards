@@ -566,7 +566,7 @@ window.onload = () => {
     fullScreenHandler.init();
 
     new Clipboard(".js-copy-json", {
-        text: function() {
+        text: function () {
             return JSON.stringify(app.card.toJSON(), null, 4);
         }
     });

@@ -1,6 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../card-designer";
 import * as Utils from "../utils"
+import { AdaptiveCard } from "adaptivecards";
 
 export default class Treeview {
     private _designer: Designer.CardDesigner;
@@ -12,9 +13,10 @@ export default class Treeview {
 
     public updateDesigner(designer: Designer.CardDesigner) {
         this._designer = designer;
+        this.createTreeviewTitle();
     }
 
-    public generateTreeViewElements(cardItems: Array < Adaptive.CardElement | Adaptive.Action >, peer: Designer.DesignerPeer, identationLevel: number = 0): HTMLElement {
+    public generateTreeViewElements(cardItems: Array<Adaptive.CardElement | Adaptive.Action>, peer: Designer.DesignerPeer, identationLevel: number = 0): HTMLElement {
         if (!cardItems || cardItems.length === 0) {
             let node = document.createElement("ul");
             return node;
@@ -56,6 +58,16 @@ export default class Treeview {
             itemIndex++;
         }
         return itemList;
+    }
+
+    private createTreeviewTitle(): HTMLElement {
+        const treeviewItems = document.querySelector(".js-treeview-items");
+        let node = document.createElement("h2");
+        let newtext = document.createTextNode("AdaptiveCard");
+        node.className = "treeview__section-title";
+        node.appendChild(newtext);
+        treeviewItems.appendChild(node);
+        return treeviewItems as HTMLElement;
     }
 
     private createChildList(items, peer, identationLevel, isFolded): HTMLElement {
