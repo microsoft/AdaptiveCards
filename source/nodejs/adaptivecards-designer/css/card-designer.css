@@ -383,7 +383,19 @@
     background-color: #f9f9f9;
     height: calc(100% - 30px);
     padding-bottom: 5px;
-    padding-top: 30px;
+}
+
+.treeview__section-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 0;
+    overflow: hidden;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 .treeview__container {
