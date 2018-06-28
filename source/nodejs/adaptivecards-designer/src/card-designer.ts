@@ -75,17 +75,10 @@ class NameValuePairEditor {
                 removeAction.title = "X";
                 removeAction.onExecute = (sender) => {
                     this.nameValuePairs.splice(i, 1);
-<<<<<<< HEAD
 
                     this.changed(true);
                 }
 
-=======
-        
-                    this.changed(true);
-                }
-        
->>>>>>> microsoft/master
                 let actionSet = new Adaptive.ActionSet();
                 actionSet.addAction(removeAction);
 
@@ -927,11 +920,7 @@ export class CardElementPeer extends DesignerPeer {
         if (cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < cardElement.getItemCount(); i++) {
                 this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, cardElement.getItemAt(i)));
-<<<<<<< HEAD
             }
-=======
-            }            
->>>>>>> microsoft/master
         }
 
         for (var i = 0; i < this.cardElement.getActionCount(); i++) {
@@ -1005,11 +994,6 @@ export class CardElementPeer extends DesignerPeer {
     }
 
     boundingRect: Rect = null;
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> microsoft/master
     getBoundingRect(): Rect {
         let designSurfaceOffset = this.designer.getDesignerSurfaceOffset();
         let cardElementBoundingRect = this.cardElement.renderedElement.getBoundingClientRect();
@@ -1221,11 +1205,6 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> microsoft/master
         let width = addLabelAndInput(card, "Width:", Adaptive.TextInput);
 
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
@@ -1263,11 +1242,6 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
             this.changed(false);
         }
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> microsoft/master
         let actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
@@ -1545,11 +1519,6 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                 catch (e) {
                     this.cardElement.pixelWidth = null;
                 }
-<<<<<<< HEAD
-
-=======
-                
->>>>>>> microsoft/master
                 this.changed(false);
             }
 
@@ -1571,7 +1540,6 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                 catch (e) {
                     this.cardElement.pixelHeight = null;
                 }
-<<<<<<< HEAD
 
                 this.changed(false);
             }
@@ -1592,36 +1560,11 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
             backgroundColor.input.defaultValue = this.cardElement.backgroundColor;
             backgroundColor.input.onValueChanged = () => {
                 this.cardElement.backgroundColor = backgroundColor.input.value;
-=======
-                
-                this.changed(false);
-            }
-
-            var style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
-            style.input.isCompact = true;
-            style.input.choices.push(new Adaptive.Choice("Default", Adaptive.ImageStyle.Default.toString()));
-            style.input.choices.push(new Adaptive.Choice("Person", Adaptive.ImageStyle.Person.toString()));
-            style.input.defaultValue = this.cardElement.style.toString();
-            style.input.onValueChanged = () => {
-                this.cardElement.style = <Adaptive.ImageStyle>parseInt(style.input.value);
->>>>>>> microsoft/master
 
                 this.changed(false);
             }
 
-<<<<<<< HEAD
             var actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
-=======
-            var backgroundColor = addLabelAndInput(card, "Background color:", Adaptive.TextInput);
-            backgroundColor.input.placeholder = "(not set) Format: #RRGGBB";
-            backgroundColor.input.defaultValue = this.cardElement.backgroundColor;
-            backgroundColor.input.onValueChanged = () => {
-                this.cardElement.backgroundColor = backgroundColor.input.value;
-                
-                this.changed(false);
-            }
-        }
->>>>>>> microsoft/master
 
             actionSelector.input.onValueChanged = () => {
                 if (actionSelector.input.value == "none") {
@@ -1634,21 +1577,11 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                 this.changed(true);
             }
 
-<<<<<<< HEAD
             if (this.cardElement.selectAction) {
                 let selectActionPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, null, this.cardElement.selectAction);
                 selectActionPeer.addPropertySheetEntries(card, false);
                 selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
             }
-=======
-            this.changed(true);
-        }
-
-        if (this.cardElement.selectAction) {
-            let selectActionPeer = CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, null, this.cardElement.selectAction);
-            selectActionPeer.addPropertySheetEntries(card, false);
-            selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
->>>>>>> microsoft/master
         }
     }
 }
@@ -2323,17 +2256,10 @@ export class CardDesigner {
             if (canDrop) {
                 for (var i = 0; i < currentPeer.getChildCount(); i++) {
                     var deeperResult = this.internalFindDropTarget(pointerPosition, currentPeer.getChildAt(i), forPeer);
-<<<<<<< HEAD
 
                     if (deeperResult) {
                         result = deeperResult;
 
-=======
-
-                    if (deeperResult) {
-                        result = deeperResult;
-
->>>>>>> microsoft/master
                         break;
                     }
                 }
@@ -2373,11 +2299,6 @@ export class CardDesigner {
         if (isExpanded) {
             if (!peer) {
                 peer = new AdaptiveCardPeer(this, action.card);
-<<<<<<< HEAD
-
-=======
-                
->>>>>>> microsoft/master
                 var parentPeer = this.findActionPeer(action);
 
                 if (parentPeer) {
@@ -2548,21 +2469,8 @@ export class CardDesigner {
         this._designerSurface.appendChild(this._dragHandle.renderedElement);
         this._designerSurface.appendChild(this._removeCommandElement);
         this._designerSurface.appendChild(this._peerCommandsHostElement);
-<<<<<<< HEAD
 
         this.updateLayout();
-=======
-        
-        this.updateLayout();
-    }
-
-    parseCard(json: string) {
-        this._lastParseErrors = [];
-
-        this.card.parse(JSON.parse(json), this._lastParseErrors);
-
-        this.render();
->>>>>>> microsoft/master
     }
 
     parseCard(json: string) {

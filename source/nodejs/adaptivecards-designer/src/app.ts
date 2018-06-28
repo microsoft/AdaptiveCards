@@ -716,8 +716,4 @@ window.onload = () => {
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 
     updateCardFromJson();
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> microsoft/master
