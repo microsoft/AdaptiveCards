@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -85,6 +86,16 @@ public class CardRendererRegistration
         return m_typeToRendererMap.get(cardElementType);
     }
 
+    public void registerOnlineImageLoader(IOnlineImageLoader imageLoader)
+    {
+        onlineImageLoader = imageLoader;
+    }
+
+    public  IOnlineImageLoader getOnlineImageLoader()
+    {
+        return onlineImageLoader;
+    }
+
     public View render(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -129,6 +140,8 @@ public class CardRendererRegistration
     }
 
     private static CardRendererRegistration s_instance = null;
+
+    private IOnlineImageLoader onlineImageLoader = null;
 
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
 }
