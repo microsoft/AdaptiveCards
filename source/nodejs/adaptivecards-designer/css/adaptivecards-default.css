@@ -29,8 +29,10 @@ a.default-ac-anchor:visited:active {
     color: #004D84;
 }
 
-.default-ac-container,
-.ac-container {
+#treeViewSheetHost .default-ac-container,
+#propertySheetHost .default-ac-container,
+#treeViewSheetHost .ac-container,
+#propertySheetHost .ac-container {
     background-color: #f9f9f9 !important; /* The important overrides inline CSS properties added via JS */
 }
 
@@ -38,11 +40,6 @@ a.default-ac-anchor:visited:active {
 .default-ac-input {
     padding-left: 20px;
     padding-right: 20px;
-}
-
-.default-ac-container:first-child {
-    background-color: #f9f9f9 !important;
-    padding-right: 0 !important; /* The important overrides inline CSS properties added via JS */
 }
 
 .default-ac-container + div {
