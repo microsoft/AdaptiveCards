@@ -22,6 +22,7 @@ using namespace AdaptiveCards;
     NSObject<UITableViewDelegate> *_delegate;
     NSObject<UITableViewDataSource, ACRIBaseInputHandler> *_dataSource;
     NSString *_defaultString;
+    CGFloat _padding;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -40,6 +41,7 @@ using namespace AdaptiveCards;
         _tableView = nil;
         _indexPath = nil;
         _tableViewController = nil;
+        _padding = 16.0f;
 
         NSMutableDictionary *valuesMap = [[NSMutableDictionary alloc] init];
         for(auto choice : _choiceSetInput->GetChoices()){
@@ -91,6 +93,7 @@ using namespace AdaptiveCards;
     }
 
     cell.textLabel.text = ([_defaultString length])? _defaultString : @"";
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
@@ -102,6 +105,13 @@ using namespace AdaptiveCards;
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    CGSize contentSize = [cell.textLabel intrinsicContentSize];
+    return contentSize.height + _padding;
 }
 
 // when cell is selected, create a tableView with a navigator control bar.

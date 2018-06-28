@@ -53,7 +53,7 @@
         [textInputContainer addArrangedSubview:blankTrailingSpace];
         [textInputContainer adjustHuggingForLastElement];
 
-        [viewGroup addArrangedSubview: textInputContainer];
+        [viewGroup addArrangedSubview:textInputContainer];
     } else {
         [viewGroup addArrangedSubview:inputTableView];
     }
