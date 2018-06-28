@@ -25,6 +25,7 @@
             self.text = _placeholderText;
             self.textColor = [UIColor lightGrayColor];
         }
+        [self.layer setCornerRadius:5.0f];
     }
     return self;
 }

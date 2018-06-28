@@ -26,11 +26,11 @@ using namespace AdaptiveCards;
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
 {
     self = [super init];
-    _title = [NSString stringWithCString:toggleInput->GetTitle().c_str()
-                                encoding:NSUTF8StringEncoding];
-    _toggleSwitch = [[UISwitch alloc] init];
-    if(self)
-    {
+    
+    if(self) {
+        _title = [NSString stringWithCString:toggleInput->GetTitle().c_str()
+                                    encoding:NSUTF8StringEncoding];
+        _toggleSwitch = [[UISwitch alloc] init];
         _toggleInputDataSource = toggleInput;
         _config = hostConfig;
         self.id = [[NSString alloc]initWithCString:_toggleInputDataSource->GetId().c_str()
