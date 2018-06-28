@@ -21,6 +21,9 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" text="Make Choice" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" highlighted="YES" id="Zi9-4G-d2d">
                         <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" button="YES" staticText="YES" notEnabled="YES"/>
+                        </accessibility>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>

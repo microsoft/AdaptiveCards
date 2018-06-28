@@ -5,11 +5,18 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.MovementMethod;
+import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Scroller;
+import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -151,6 +158,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
         if (textInput.GetIsMultiline())
         {
             editText.setLines(3);
+            editText.setScroller(new Scroller((context)));
+            editText.setVerticalScrollBarEnabled(true);
+            editText.setMovementMethod(new ScrollingMovementMethod());
         }
         setTextInputStyle(editText, textInput.GetTextInputStyle());
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);

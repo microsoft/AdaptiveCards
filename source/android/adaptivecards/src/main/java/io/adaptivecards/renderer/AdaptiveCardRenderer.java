@@ -31,7 +31,7 @@ public class AdaptiveCardRenderer
 {
     public static final double VERSION = 1.0;
 
-    private AdaptiveCardRenderer()
+    protected AdaptiveCardRenderer()
     {
     }
 

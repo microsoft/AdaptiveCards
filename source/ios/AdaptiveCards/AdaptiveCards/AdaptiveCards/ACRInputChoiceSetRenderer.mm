@@ -39,12 +39,10 @@
     ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact)
-    {
+    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact) {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
-    }
-    else
-    {
+        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
     }
     choiceSetView.delegate = dataSource;

@@ -7,6 +7,7 @@
 
 #import "ACRView.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRRendererPrivate.h"
@@ -100,26 +101,28 @@ using namespace AdaptiveCards;
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
-    std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
-    NSString* imgUrl = nil;
-    if(!backgroundImage.empty()){
-        imgUrl = [[NSString alloc] initWithCString:backgroundImage.c_str() encoding:NSUTF8StringEncoding];
-    }
-    if (imgUrl){
-        NSURL *url = [NSURL URLWithString:imgUrl];
-        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-        if(img){
-            ACRUIImageView *imgView = [[ACRUIImageView alloc] initWithImage:img];
-            [newView addSubview:imgView];
-            [newView sendSubviewToBack:imgView];
-            [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-            NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:|[imgView]", @"V:|[imgView]", nil];
-            NSDictionary *viewMap = NSDictionaryOfVariableBindings(imgView);
-            for(NSString *constraint in visualFormats){
-                [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
-            }
+    //store key
+    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)[_adaptiveCard card].get()];
+    NSString *key = [number stringValue];
+    if([key length]){
+        ACRBaseCardElementRenderer *imageRenderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInteger:ACRImage]];
+        UIView *imgView = nil;
+        if([[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
+            std::shared_ptr<Image> imageElement = std::make_shared<Image>();
+            imageElement->SetImageSize(ImageSize::Stretch);
+            imageElement->SetUrl([_adaptiveCard card]->GetBackgroundImage());
+            ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
+            [acoElem setElem:imageElement];
+            imgView = [imageRenderer render:nil rootView:self inputs:nil baseCardElement:acoElem hostConfig:_hostConfig];
+        } else {
+            UIImage *img = _imageViewMap[key];
+            imgView = [[ACRUIImageView alloc] initWithImage:img];
         }
+        imgView.translatesAutoresizingMaskIntoConstraints = NO;
+        [newView addSubview:imgView];
+        [newView sendSubviewToBack:imgView];
+        [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+        [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
     }
     [self callDidLoadElementsIfNeeded];
     return newView;

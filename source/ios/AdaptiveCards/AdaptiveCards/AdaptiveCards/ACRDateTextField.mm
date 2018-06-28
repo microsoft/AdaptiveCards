@@ -153,4 +153,5 @@ using namespace AdaptiveCards;
 {
     dictionary[self.id] = self.text;
 }
+
 @end
