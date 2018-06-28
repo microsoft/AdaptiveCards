@@ -48,6 +48,10 @@
     content: "\ECAB";
 }
 
+.acd-icon-image::before {
+    content: "\ECAB";
+}
+
 .acd-designersurface {
     outline: none;
 }
