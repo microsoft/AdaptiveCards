@@ -22,7 +22,6 @@
     content: url("/assets/icons/icon-close-hover.svg");
 }
 
-
 .acd-icon-drag::before {
     content: url("/assets/icons/icon-move.svg");
 }
@@ -514,4 +513,25 @@
 
 .is-folded {
     display: none;
+}
+
+/*
+* Fixes Properties Panel CSS inline styles added via JavaScript
+*/
+.default-ac-columnSet.wrapper .default-ac-container:nth-child(1),
+.default-ac-columnSet.wrapper .default-ac-container:nth-child(3) {
+    flex-direction: row !important;
+}
+
+.default-ac-columnSet.wrapper .default-ac-container:nth-child(1) {
+    justify-content: flex-end !important;
+    align-items: center;
+    padding-right: 6px !important;
+    flex: 1 1 60px !important;
+    margin-left: 10px;
+}
+
+.default-ac-columnSet.wrapper .default-ac-container:nth-child(3) {
+    padding-left: 0 !important;
+    flex: 1 1 125px !important;
 }
