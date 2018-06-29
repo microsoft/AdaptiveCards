@@ -1058,7 +1058,7 @@ export class CardElementPeer extends DesignerPeer {
             let targetChild: DesignerPeer = null;
             let insertAfter: boolean;
 
-            for (var i = 0; i< this.getChildCount(); i++) {
+            for (var i = 0; i < this.getChildCount(); i++) {
                 let rect = this.getChildAt(i).getBoundingRect();
 
                 if (rect.isInside(insertionPoint)) {
@@ -2407,15 +2407,13 @@ export class CardDesigner {
                 result = currentPeer;
             }
 
-            if (canDrop) {
-                for (var i = 0; i < currentPeer.getChildCount(); i++) {
-                    var deeperResult = this.internalFindDropTarget(pointerPosition, currentPeer.getChildAt(i), forPeer);
+            for (var i = 0; i < currentPeer.getChildCount(); i++) {
+                var deeperResult = this.internalFindDropTarget(pointerPosition, currentPeer.getChildAt(i), forPeer);
 
-                    if (deeperResult) {
-                        result = deeperResult;
+                if (deeperResult) {
+                    result = deeperResult;
 
-                        break;
-                    }
+                    break;
                 }
             }
         }
