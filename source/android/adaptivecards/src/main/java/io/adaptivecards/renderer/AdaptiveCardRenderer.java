@@ -200,7 +200,10 @@ public class AdaptiveCardRenderer
                 showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 rootLayout.addView(showCardsLayout);
 
-                renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                IActionLayoutRenderer actionLayoutRenderer = CardRendererRegistration.getInstance().getActionLayoutRenderer();
+                if(actionLayoutRenderer != null) {
+                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                }
             }
         }
         else
@@ -216,69 +219,6 @@ public class AdaptiveCardRenderer
         }
 
         return rootLayout;
-    }
-
-    private void renderActions(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElementVector baseActionElementList, ICardActionHandler cardActionHandler, HostConfig hostConfig) {
-        long size;
-        if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
-        {
-            return;
-        }
-
-        LinearLayout actionButtonsLayout = new LinearLayout(context);
-        actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
-        if (alignment == ActionAlignment.Right.swigValue())
-        {
-            actionButtonsLayout.setGravity(Gravity.RIGHT);
-        }
-        else if (alignment == ActionAlignment.Center.swigValue())
-        {
-            actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-        }
-
-        int actionButtonsLayoutOrientation = hostConfig.getActions().getActionsOrientation().swigValue();
-        if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
-        {
-            actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
-        }
-        else
-        {
-            actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
-        }
-
-
-        Spacing spacing = hostConfig.getActions().getSpacing();
-        /* Passing false for seperator since we do not have any configuration for seperator in actionsConfig */
-        BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);
-
-        if (viewGroup != null)
-        {
-            if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
-            {
-                HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
-                actionButtonsContainer.setHorizontalScrollBarEnabled(false);
-                actionButtonsContainer.addView(actionButtonsLayout);
-                viewGroup.addView(actionButtonsContainer);
-            }
-            else
-            {
-                viewGroup.addView(actionButtonsLayout);
-            }
-        }
-
-        int i = 0;
-        long maxActions = hostConfig.getActions().getMaxActions();
-        for (; i < size && i < maxActions; i++)
-        {
-            BaseActionElement actionElement = baseActionElementList.get(i);
-            ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
-        }
-
-        if (i >= maxActions && size != maxActions)
-        {
-            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
-        }
     }
 
     private static AdaptiveCardRenderer s_instance = null;
