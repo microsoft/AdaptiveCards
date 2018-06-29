@@ -12,7 +12,7 @@ import io.adaptivecards.renderer.http.HttpRequestResult;
 public class OnlineImageLoader implements IOnlineImageLoader
 {
     @Override
-    public HttpRequestResult<Bitmap> loadOnlineImage(String url) throws IOException, URISyntaxException
+    public HttpRequestResult<Bitmap> loadOnlineImage(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException
     {
         byte[] bytes = HttpRequestHelper.get(url);
         if (bytes == null)
@@ -21,6 +21,7 @@ public class OnlineImageLoader implements IOnlineImageLoader
         }
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        bitmap = loader.styleBitmap(bitmap);
 
         if (bitmap == null)
         {

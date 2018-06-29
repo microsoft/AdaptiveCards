@@ -37,7 +37,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
             // Try loading online using only the path first
             try
             {
-                return m_onlineImageLoader.loadOnlineImage(path);
+                return m_onlineImageLoader.loadOnlineImage(path, this);
             }
             catch (MalformedURLException e1) {
                 // Then try using image base URL to load online
@@ -52,7 +52,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                     URL urlContext = new URL(m_imageBaseUrl);
                     URL url = new URL(urlContext, path);
 
-                    return m_onlineImageLoader.loadOnlineImage(url.toString());
+                    return m_onlineImageLoader.loadOnlineImage(url.toString(), this);
                     // return loadOnlineImage(url.toString());
                 }
                 catch (MalformedURLException e2)

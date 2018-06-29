@@ -8,5 +8,5 @@ import java.net.URISyntaxException;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 
 public interface IOnlineImageLoader {
-    HttpRequestResult<Bitmap> loadOnlineImage(String url) throws IOException, URISyntaxException;
+    HttpRequestResult<Bitmap> loadOnlineImage(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException;
 }
