@@ -26,6 +26,14 @@
     content: "\E70E";
 }
 
+.acd-icon-chevronRight::before {
+    content: "\E76C";
+}
+
+.acd-icon-chevronLeft::before {
+    content: "\E76B";
+}
+
 .acd-tree-item-label {
     cursor: pointer;
 }

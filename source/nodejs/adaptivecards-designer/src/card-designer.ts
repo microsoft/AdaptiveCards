@@ -362,6 +362,9 @@ class PeerCommand {
 }
 
 export class TreeItem {
+    private static collapsedIconClass = "acd-icon-chevronRight";
+    private static expandedIconClass = "acd-icon-chevronDown";
+
     private _isExpanded: boolean = true;
     private _labelElement: HTMLElement;
     private _expandCollapseElement: HTMLElement;
@@ -391,7 +394,7 @@ export class TreeItem {
         }
 
         this._expandCollapseElement = document.createElement("div");
-        this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton", "acd-icon-chevronUp");
+        this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
         this._expandCollapseElement.style.flex = "0 0 auto";
         this._expandCollapseElement.style.visibility = this.owner.getChildCount() > 0 ? "visible" : "hidden";
 
@@ -448,13 +451,13 @@ export class TreeItem {
     updateLayout() {
         if (this._isExpanded) {
             this._childContainerElement.style.display = null;
-            this._expandCollapseElement.classList.remove("acd-icon-chevronDown");
-            this._expandCollapseElement.classList.add("acd-icon-chevronUp");
+            this._expandCollapseElement.classList.remove(TreeItem.collapsedIconClass);
+            this._expandCollapseElement.classList.add(TreeItem.expandedIconClass);
         }
         else {
             this._childContainerElement.style.display = "none";
-            this._expandCollapseElement.classList.add("acd-icon-chevronDown");
-            this._expandCollapseElement.classList.remove("acd-icon-chevronUp");
+            this._expandCollapseElement.classList.add(TreeItem.collapsedIconClass);
+            this._expandCollapseElement.classList.remove(TreeItem.expandedIconClass);
         }
 
         if (this.owner.isSelected) {
