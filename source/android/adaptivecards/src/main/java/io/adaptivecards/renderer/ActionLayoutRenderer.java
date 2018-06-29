@@ -67,7 +67,6 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
         }
 
-
         Spacing spacing = hostConfig.getActions().getSpacing();
         /* Passing false for separator since we do not have any configuration for separator in actionsConfig */
         BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);

@@ -103,9 +103,9 @@ public class CardRendererRegistration
         return m_actionRenderer;
     }
 
-    public void registerActionLayoutRenderer(IActionLayoutRenderer actionRenderer)
+    public void registerActionLayoutRenderer(IActionLayoutRenderer actionLayoutRenderer)
     {
-        m_actionLayoutRenderer = actionRenderer;
+        m_actionLayoutRenderer = actionLayoutRenderer;
     }
 
     public IActionLayoutRenderer getActionLayoutRenderer()
