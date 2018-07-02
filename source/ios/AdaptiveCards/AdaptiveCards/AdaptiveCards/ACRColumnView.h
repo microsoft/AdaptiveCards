@@ -11,6 +11,6 @@
 @property NSString *columnWidth;
 @property BOOL hasStretchableView;
 
-- (UIView*)addPaddingSpace;
+- (UIView *)addPaddingSpace;
 
 @end

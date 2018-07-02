@@ -55,12 +55,11 @@
     float multiplier = 1.0;
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
     
-    ACRColumnRenderer* castedRenderer = (ACRColumnRenderer*)columnRenderer;
+    ACRColumnRenderer *castedRenderer = (ACRColumnRenderer *)columnRenderer;
     for(std::shared_ptr<Column> column:columns)
     {
-        if(column->GetVerticalContentAlignment() != VerticalContentAlignment::Top)
-        {
-            [castedRenderer setFillAlignment];
+        if(column->GetVerticalContentAlignment() != VerticalContentAlignment::Top) {
+            castedRenderer.fillAlignment = YES;
         }
     }
     
@@ -121,7 +120,7 @@
         }
     }
 
-    [castedRenderer resetFillAlignment];
+    castedRenderer.fillAlignment = NO;
     
     if([constraints count]) [columnSetView addConstraints:constraints];
 

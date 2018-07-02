@@ -27,16 +27,6 @@
     return ACRColumn;
 }
 
-- (void) setFillAlignment
-{
-    _containerHasFillAlignment = YES;
-}
-
-- (void) resetFillAlignment
-{
-    _containerHasFillAlignment = NO;
-}
-
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
@@ -56,7 +46,7 @@
     }
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if( columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom ){
+    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
         leadingBlankSpace = [column addPaddingSpace];
     }
 
@@ -66,7 +56,7 @@
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
     
-    if( columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _containerHasFillAlignment)){
+    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)){
         trailingBlankSpace = [column addPaddingSpace];
     }
 
