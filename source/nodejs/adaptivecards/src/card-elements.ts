@@ -961,11 +961,11 @@ export class TextBlock extends CardElement {
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak + '\n';
-		}
+        }
 
         if (this.text) {
             return '<s>' + this.text + '</s>\n';
-		}
+        }
 
         return null;
     }
@@ -2396,7 +2396,7 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-	    
+        
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
@@ -4470,45 +4470,66 @@ export class MediaSource {
 export class Media extends CardElement {
     private _mediaType: string;
     private _mediaElement: HTMLMediaElement;
-	private _playButton: HTMLAnchorElement;
-	private _pauseButton: HTMLAnchorElement;
-	private _resetButton: HTMLAnchorElement;
-	private _poster: Image;
+    private _playButton: HTMLAnchorElement;
+    private _pauseButton: HTMLAnchorElement;
+    private _resetButton: HTMLAnchorElement;
+    private _poster: Image;
 
     static readonly acceptedMediaTypes = ["audio", "video"];
 
     private processSources(): Array<MediaSource> {
-		let goodSources: Array<MediaSource> = [];
+        let goodSources: Array<MediaSource> = [];
 
-		for (let source of this.sources) {
-			let mimeComponents = source.mimeType.split('/');
+        for (let source of this.sources) {
+            let mimeComponents = source.mimeType.split('/');
 
-			if (mimeComponents.length == 2) {
-				if (!this._mediaType) {
-					let index = Media.acceptedMediaTypes.indexOf(mimeComponents[0]);
+            if (mimeComponents.length == 2) {
+                if (!this._mediaType) {
+                    let index = Media.acceptedMediaTypes.indexOf(mimeComponents[0]);
 
-					if (index >= 0) {
-						this._mediaType = Media.acceptedMediaTypes[index];
-					}
-				}
+                    if (index >= 0) {
+                        this._mediaType = Media.acceptedMediaTypes[index];
+                    }
+                }
 
-				if (mimeComponents[0] == this._mediaType) {
-					goodSources.push(source);
-				}
-			} 
-		}
+                if (mimeComponents[0] == this._mediaType) {
+                    goodSources.push(source);
+                }
+            } 
+        }
 
-		return goodSources;
+        return goodSources;
     }
 
     private static makeButton(label: string, buttonHint: string, handler: ()=>void): HTMLAnchorElement {
         let button = document.createElement("a");
         button.classList.add("ac-media-button", buttonHint);
-		button.title = buttonHint;
-		button.onclick = e => { handler(); e.preventDefault(); return false; };
+        button.title = buttonHint;
+        button.onclick = e => { handler(); e.preventDefault(); return false; };
         button.text = label;
-		
+        
         return button;
+    }
+    
+    private static overlayPlay(img: HTMLImageElement) {
+        img.style.width = "100%";
+        img.style.minWidth = "100%";
+        let playOverlay = document.createElement("div");
+        playOverlay.style.position = "relative";
+        playOverlay.style.minWidth = "100%";
+        playOverlay.style.left = "-100%";
+        playOverlay.style.textAlign = "center";
+        let playChar = document.createElement("p");
+        playChar.style.backgroundColor = "rgba(255,255,255,0.8)";
+        playChar.style.borderStyle = "solid";
+        playChar.style.borderRadius = "100px";
+        playChar.style.boxShadow = "0 0 5px white";
+        playChar.style.fontSize = "48px";
+        playChar.style.margin = "25%";
+        playChar.style.padding = "8%";
+        playChar.innerHTML = "▶";
+        playOverlay.appendChild(playChar);
+        img.parentElement.appendChild(playOverlay);
     }
 
     protected internalRender(): HTMLElement {
@@ -4526,60 +4547,62 @@ export class Media extends CardElement {
                 src.type = s.mimeType;
                 this._mediaElement.appendChild(src);
             });
-			
+            
             element.appendChild(this._mediaElement);
-			
-			let controlBar = <HTMLDivElement>document.createElement("div");
-			controlBar.className = this.hostConfig.makeCssClassName("ac-controlbar");
-			controlBar.style.whiteSpace = "nowrap";
+            
+            let controlBar = document.createElement("div");
+            controlBar.className = this.hostConfig.makeCssClassName("ac-controlbar");
+            controlBar.style.whiteSpace = "nowrap";
 
             this._playButton = Media.makeButton("▶️", "play", ()=>this.play());
             controlBar.appendChild(this._playButton);
 
             this._pauseButton = Media.makeButton("⏸️", "pause", ()=>this.pause());
-			this._pauseButton.style.display = "none";
+            this._pauseButton.style.display = "none";
             controlBar.appendChild(this._pauseButton);
 
             this._resetButton = Media.makeButton("⏮️", "reset", ()=>this.reset());
             controlBar.appendChild(this._resetButton);
-			
-			element.appendChild(controlBar);
+            
+            element.appendChild(controlBar);
         }
-		else {
-			let img = new Image();
-			img.url = this.poster;
-			if (this.sources.length > 0) {
-				let openAction = new OpenUrlAction();
-				openAction.url = this.sources[0].url;
-				img.selectAction = openAction;
-			}
-			let renderedImage = img.render();
-			
-			element.appendChild(renderedImage);
-		}
+        else {
+            let img = new Image();
+            img.url = this.poster;
+            
+            if (this.sources.length > 0) {
+                let openAction = new OpenUrlAction();
+                openAction.url = this.sources[0].url;
+                img.selectAction = openAction;
+            }
+            
+            let renderedImage = img.render();
+            Media.overlayPlay(renderedImage.querySelector("img"));
+            element.appendChild(renderedImage);
+        }
 
         return element;
     }
-	
-	poster: string;
+    
+    poster: string;
     altText: string;
     sources: Array<MediaSource> = [];
 
     play() {
         this._mediaElement.play();
-		this._playButton.style.display = "none";
-		this._pauseButton.style.display = "";
+        this._playButton.style.display = "none";
+        this._pauseButton.style.display = "";
     }
 
     reset() {
         this._mediaElement.load();
-        this._mediaElement.pause();
+        this.pause();
     }
 
     pause() {
         this._mediaElement.pause();
-		this._playButton.style.display = "";
-		this._pauseButton.style.display = "none";
+        this._playButton.style.display = "";
+        this._pauseButton.style.display = "none";
     }
 
     toJSON() {
@@ -4618,7 +4641,7 @@ export class Media extends CardElement {
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak + '\n';
-		}
+        }
 
         return null;
     }
@@ -4735,12 +4758,12 @@ function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<
 }
 
 function raiseParseActionEvent(action: Action, json: any, errors?: Array<IValidationError>) {
-	let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
-	let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
+    let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
-	if (onParseActionHandler != null) {
-		onParseActionHandler(action, json, errors);
-	}
+    if (onParseActionHandler != null) {
+        onParseActionHandler(action, json, errors);
+    }
 }
 
 function raiseParseError(error: IValidationError, errors: Array<IValidationError>) {
@@ -5088,7 +5111,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
-	onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
+    onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
 
     version?: Version = new Version(1, 0);
     fallbackText: string;

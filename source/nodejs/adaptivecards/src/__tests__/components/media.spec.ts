@@ -20,7 +20,7 @@ const card_audio_video = {
 		{
 			"type": "Media",
 			"poster": cat_url,
-			"altText": "This is a video",
+			"altText": "This is audio",
 			"sources": [
 				{
 					"mimeType": "audio/mp3",
