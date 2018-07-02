@@ -113,7 +113,8 @@ export default class Treeview {
         listItem.addEventListener("click", () => {
             this._designer.setSelectedPeerById(item.elementId);
         });
-        listItem.style.paddingLeft = `${identationLevel * 46 + 24}px`;
+        //listItem.style.paddingLeft = `${identationLevel * 46 + 24}px`;
+        listItem.style.paddingLeft = `${identationLevel * 20 + 24}px`;
         return listItem;
     }
 
