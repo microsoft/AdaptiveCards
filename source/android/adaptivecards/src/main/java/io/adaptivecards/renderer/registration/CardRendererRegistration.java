@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -93,6 +94,16 @@ public class CardRendererRegistration
         return m_typeToRendererMap.get(cardElementType);
     }
 
+    public void registerOnlineImageLoader(IOnlineImageLoader imageLoader)
+    {
+        m_onlineImageLoader = imageLoader;
+    }
+
+    public  IOnlineImageLoader getOnlineImageLoader()
+    {
+        return m_onlineImageLoader;
+    }
+
     public void registerActionRenderer(IBaseActionElementRenderer actionRenderer)
     {
         m_actionRenderer = actionRenderer;
@@ -161,4 +172,5 @@ public class CardRendererRegistration
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
     private IBaseActionElementRenderer m_actionRenderer = null;
     private IActionLayoutRenderer m_actionLayoutRenderer = null;
+    private IOnlineImageLoader m_onlineImageLoader = null;
 }

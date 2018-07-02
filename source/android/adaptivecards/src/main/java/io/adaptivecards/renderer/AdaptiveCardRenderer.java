@@ -184,6 +184,12 @@ public class AdaptiveCardRenderer
         if (!imageUrl.isEmpty())
         {
             BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, "");
+
+            IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
+            if(onlineImageLoader != null)
+            {
+                loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
+            }
             loaderAsync.execute(imageUrl);
         }
 
@@ -191,6 +197,8 @@ public class AdaptiveCardRenderer
     }
 
     private static AdaptiveCardRenderer s_instance = null;
+
+    private IOnlineImageLoader m_onlineImageLoader = null;
 
     private HostConfig defaultHostConfig = new HostConfig();
 }

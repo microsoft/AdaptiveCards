@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
@@ -34,6 +36,7 @@ import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.io.IOException;
 
@@ -63,53 +66,19 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         @Override
-        protected HttpRequestResult<Bitmap> doInBackground(String... args)
+        protected Bitmap styleBitmap(Bitmap bitmap)
         {
-            try
+            if (bitmap != null && m_imageStyle == ImageStyle.Person)
             {
-                Bitmap bitmap = null;
-                byte[] bytes = HttpRequestHelper.get(args[0]);
-                if (bytes == null)
-                {
-                    throw new IOException("Failed to retrieve content from " + args[0]);
-                }
-
-                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                if (bitmap != null && m_imageStyle == ImageStyle.Person)
-                {
-                    Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-                    BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-                    Paint paint = new Paint();
-                    paint.setShader(shader);
-                    Canvas c = new Canvas(circleBitmap);
-                    c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
-                    bitmap = circleBitmap;
-                }
-
-                if (bitmap == null)
-                {
-                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
-                }
-
-                return new HttpRequestResult<Bitmap>(bitmap);
+                Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+                Paint paint = new Paint();
+                paint.setShader(shader);
+                Canvas c = new Canvas(circleBitmap);
+                c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
+                bitmap = circleBitmap;
             }
-            catch (Exception excep)
-            {
-                return new HttpRequestResult<Bitmap>(excep);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(HttpRequestResult<Bitmap> result)
-        {
-            if (result.isSuccessful())
-            {
-                m_imageView.setImageBitmap(result.getResult());
-            }
-            else
-            {
-                m_renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNABLE_TO_LOAD_IMAGE, result.getException().getMessage()));
-            }
+            return bitmap;
         }
 
         @Override
@@ -168,6 +137,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         ImageView imageView = new ImageView(context);
         imageView.setTag(image);
         ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, "", image.GetImageStyle());
+        IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
+        if(onlineImageLoader != null)
+        {
+            imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
+        }
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
