@@ -86,5 +86,15 @@ namespace AdaptiveCards
                 }
             }
         }
+
+        /// <summary>
+        ///     Height for the element (either ElementHeight string or number which is relative size of the element)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
+        public string Height { get; set; } // TODO: this should be a ElementHeight type with implict converter
     }
 }
