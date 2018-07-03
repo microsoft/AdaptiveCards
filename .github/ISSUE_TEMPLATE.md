@@ -19,6 +19,6 @@ If you're an author, who are you sending cards to?
 
 What version are you using? Ex: NuGet 1.0.2, or latest master, etc...
 
-# Issue or question
+# Issue
 
-Explain your issue or question here.
+Explain your issue. If you just have a question, please post [on StackOverflow instead](https://stackoverflow.com/questions/tagged/adaptive-cards).
