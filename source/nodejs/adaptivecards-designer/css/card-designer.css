@@ -42,10 +42,6 @@
     content: "\ECAB";
 }
 
-.acd-icon-image::before {
-    content: "\ECAB";
-}
-
 .acd-designersurface {
     outline: none;
 }
@@ -57,18 +53,6 @@
 .acd-designersurface.dragging > .acd-peer:hover {
     background-color: transparent;
     border-color: transparent;
-}
-
-.acd-peerButton {
-    align-items: center;
-    background-position: center;
-    background-repeat: no-repeat;
-    border: 0;
-    display: flex;
-    height: 18px;
-    justify-content: center;
-    user-select: none;
-    width: 18px;
 }
 
 .acd-palette-item:hover {
