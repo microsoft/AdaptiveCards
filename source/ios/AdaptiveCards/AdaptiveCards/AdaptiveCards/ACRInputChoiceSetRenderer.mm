@@ -37,7 +37,6 @@
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     // creates a tableview with pre-defined style
     ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
-    choiceSetView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
     if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact) {
@@ -63,6 +62,7 @@
         [viewGroup addArrangedSubview:textInputContainer];
     } else {
         [viewGroup addArrangedSubview:choiceSetView];
+    }
 
     [NSLayoutConstraint constraintWithItem:choiceSetView
                                  attribute:NSLayoutAttributeLeading

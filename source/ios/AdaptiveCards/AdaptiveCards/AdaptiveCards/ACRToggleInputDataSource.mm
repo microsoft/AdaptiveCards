@@ -66,11 +66,12 @@ using namespace AdaptiveCards;
     if(!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
-        cell.textLabel.text = _title;
-        cell.textLabel.adjustsFontSizeToFitWidth = YES;
-        cell.accessoryView = _toggleSwitch;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    cell.textLabel.text = _title;
+    cell.textLabel.adjustsFontSizeToFitWidth = NO;
+    cell.textLabel.numberOfLines = 0;
+    cell.accessoryView = _toggleSwitch;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

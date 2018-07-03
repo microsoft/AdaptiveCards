@@ -18,6 +18,7 @@ using namespace AdaptiveCards;
     NSMutableSet *_defaultValuesSet;
     NSArray *_defaultValuesArray;
     CGFloat _padding;
+    CGFloat _accessoryViewWidth;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -39,6 +40,7 @@ using namespace AdaptiveCards;
             _defaultValuesSet = [NSMutableSet setWithArray:_defaultValuesArray];
         }
         _padding = 16.0f;
+        _accessoryViewWidth = 50.0f;
     }
     return self;
 }
@@ -68,6 +70,9 @@ using namespace AdaptiveCards;
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    cell.textLabel.adjustsFontSizeToFitWidth = NO;
     NSString *keyForDefaultValue = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetValue().c_str()
                                                       encoding:NSUTF8StringEncoding];
 
@@ -139,10 +144,12 @@ using namespace AdaptiveCards;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-    CGSize contentSize = [cell.textLabel intrinsicContentSize];
-    return contentSize.height + _padding;
+    CGSize labelStringSize = [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - _accessoryViewWidth, CGFLOAT_MAX)
+                                                               options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                            attributes:@{NSFontAttributeName:cell.textLabel.font}
+                                                               context:nil].size;
+    return labelStringSize.height + _padding;
 }
-
 - (BOOL)validate:(NSError **)error
 {
     // no need to validate
