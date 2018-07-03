@@ -1,42 +1,40 @@
-.acd-icon-bolt::before {
-    content: url("/assets/icons/icon-actions.svg");
+.acd-icon-bolt::before,
+.acd-icon-addColumn::before,
+.acd-icon-remove::before,
+.acd-icon-drag::before {
+    border: 1px solid #78dd03;
+    background-color: #ffffff;
+    color: #979797;
+    font-family: "FabricMDL2Icons";
 }
 
-.acd-icon-bolt:hover::before {
-    content: url("/assets/icons/icon-actions-hover.svg");
+.acd-icon-bolt::before {
+    content: "\E945";
 }
 
 .acd-icon-addColumn::before {
-    content: url("/assets/icons/icon-column.svg");
-}
-
-.acd-icon-addColumn:hover::before {
-    content: url("/assets/icons/icon-column-hover.svg");
+    content: "\F1D6";
 }
 
 .acd-icon-remove::before {
-    content: url("/assets/icons/icon-close.svg");
-}
-
-.acd-icon-remove:hover::before {
-    content: url("/assets/icons/icon-close-hover.svg");
+    content: "\E711";
 }
 
 .acd-icon-drag::before {
-    content: url("/assets/icons/icon-move.svg");
-}
-
-.acd-icon-drag:hover::before {
-    content: url("/assets/icons/icon-move-hover.svg");
+    content: "\E7C2";
 }
 
 .acd-icon-bolt:hover::before,
 .acd-icon-remove:hover::before,
 .acd-icon-addColumn:hover::before {
+    background-color: #e3ffda;
+    color: #000000;
     cursor: pointer;
 }
 
 .acd-icon-drag:hover::before {
+    background-color: #e3ffda;
+    color: #000000;
     cursor: move;
 }
 
