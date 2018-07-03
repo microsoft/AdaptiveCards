@@ -51,7 +51,7 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(
     auto parseResult = AdaptiveCard::Deserialize(json.get(propertyName, Json::Value()), std::numeric_limits<double>::max(), elementParserRegistration, actionParserRegistration);
 
     auto showCardWarnings = parseResult->GetWarnings();
-    auto warningsEnd = warnings.insert(warnings.end(), showCardWarnings.begin(), showCardWarnings.end());
+    warnings.insert(warnings.end(), showCardWarnings.begin(), showCardWarnings.end());
 
     showCardAction->SetCard(parseResult->GetAdaptiveCard());
 
@@ -76,6 +76,5 @@ void ShowCardAction::GetResourceInformation(std::vector<RemoteResourceInformatio
 {
     auto card = GetCard();
     auto showCardResources = card->GetResourceInformation();
-    auto resourceInfoEnd = resourceInfo.insert(resourceInfo.end(), showCardResources.begin(), showCardResources.end());
-    return;
+    resourceInfo.insert(resourceInfo.end(), showCardResources.begin(), showCardResources.end());
 }
