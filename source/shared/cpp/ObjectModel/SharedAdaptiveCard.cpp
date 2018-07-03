@@ -8,8 +8,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-AdaptiveCard::AdaptiveCard(): m_style(ContainerStyle::None), m_height(HeightType::Auto),
-    m_verticalContentAlignment(VerticalContentAlignment::Top)
+AdaptiveCard::AdaptiveCard(): m_style(ContainerStyle::None),
+    m_verticalContentAlignment(VerticalContentAlignment::Top), m_height(HeightType::Auto)
 {
 }
 
