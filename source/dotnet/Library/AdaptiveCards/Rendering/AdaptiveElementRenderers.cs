@@ -59,7 +59,7 @@ namespace AdaptiveCards.Rendering
                 element = _dictionary.TryGetValue(typeof(AdaptiveAction), out Func<AdaptiveTypedElement, TContext, TUIElement> __element) ?
                     __element : null;
          
-            return (element is null);
+            return !(element is null);
         }
 
         public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Type type)

@@ -1,10 +1,35 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AdaptiveCards.Rendering.Html.Test
 {
     [TestClass]
     public class HtmlRendererTests
     {
+        [TestMethod]
+        public void TextBlockConfig_TryGetRenderer()
+        {
+            var renderers = new AdaptiveElementRenderers<HtmlTag,AdaptiveRenderContext>();
+            renderers.Set<AdaptiveTextBlock>((element,context) => new HtmlTag("div"));
+            
+            var foundHtmlTextBlockRenderer = renderers.TryGet<AdaptiveTextBlock>(
+                out Func<AdaptiveTypedElement, AdaptiveRenderContext, HtmlTag> htmlTextBlockRenderer);
+            Assert.IsTrue(foundHtmlTextBlockRenderer);
+            Assert.IsNotNull(htmlTextBlockRenderer);
+        }
+
+        [TestMethod]
+        public void TextBlockConfig_MissingTryGetRenderer()
+        {
+            var renderers = new AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext>();
+            var foundHtmlTextBlockRenderer = renderers.TryGet<AdaptiveTextBlock>(
+                out Func<AdaptiveTypedElement, AdaptiveRenderContext, HtmlTag> htmlTextBlockRenderer);
+            
+            Assert.IsFalse(foundHtmlTextBlockRenderer);
+            Assert.IsNull(htmlTextBlockRenderer);
+        }
+
+
         [TestMethod]
         public void TextBlockRender_ParagraphElementStylesAdded()
         {
