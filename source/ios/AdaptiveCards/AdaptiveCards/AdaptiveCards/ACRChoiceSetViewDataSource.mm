@@ -144,8 +144,9 @@ using namespace AdaptiveCards;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-    CGSize labelStringSize = [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - _accessoryViewWidth, CGFLOAT_MAX)
-                                                               options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+    CGSize labelStringSize =
+        [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - _accessoryViewWidth, CGFLOAT_MAX)
+                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                                             attributes:@{NSFontAttributeName:cell.textLabel.font}
                                                                context:nil].size;
     return labelStringSize.height + _padding;
