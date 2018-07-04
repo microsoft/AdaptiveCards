@@ -8,8 +8,15 @@ namespace AdaptiveCards.Rendering
         where TUIElement : class
         where TContext : class
     {
-        private readonly Dictionary<Type, Func<AdaptiveTypedElement, TContext, TUIElement>> _dictionary = new Dictionary<Type, Func<AdaptiveTypedElement, TContext, TUIElement>>();
+        /// <summary>
+        /// </summary>
+        private readonly Dictionary<Type, Func<AdaptiveTypedElement, TContext, TUIElement>> _dictionary 
+            = new Dictionary<Type, Func<AdaptiveTypedElement, TContext, TUIElement>>();
 
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="TElement"></typeparam>
+        /// <param name="renderer"></param>
         public void Set<TElement>(Func<TElement, TContext, TUIElement> renderer)
             where TElement : AdaptiveTypedElement
         {
@@ -22,10 +29,37 @@ namespace AdaptiveCards.Rendering
             _dictionary.Remove(typeof(TElement));
         }
 
+        public virtual bool TryRemove<TElement>( )
+            where TElement : AdaptiveTypedElement
+        { 
+            if(!_dictionary.ContainsKey(typeof(TElement)))
+                return false;
+            _dictionary.Remove(typeof(TElement));
+            return true;
+        }
+
         public Func<TElement, TContext, TUIElement> Get<TElement>()
             where TElement : AdaptiveTypedElement
         {
             return Get(typeof(TElement));
+        }
+
+        public virtual bool TryGet<TElement>(out Func<AdaptiveTypedElement, TContext, TUIElement> element)
+            where TElement : AdaptiveTypedElement =>
+                TryGet(typeof(TElement),out element);
+
+        public virtual bool TryGet(Type type, out Func<AdaptiveTypedElement, TContext, TUIElement> element)
+        {
+            bool _isAssignableFrom = typeof(AdaptiveAction).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            
+            element = _dictionary.TryGetValue(type, out Func<AdaptiveTypedElement, TContext, TUIElement> _element) 
+                ? _element : null;
+            
+            if (_isAssignableFrom && element is null)
+                element = _dictionary.TryGetValue(typeof(AdaptiveAction), out Func<AdaptiveTypedElement, TContext, TUIElement> __element) ?
+                    __element : null;
+         
+            return (element is null);
         }
 
         public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Type type)
