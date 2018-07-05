@@ -1,15 +1,12 @@
 package io.adaptivecards.renderer.action;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -111,32 +108,9 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             m_hiddenCardsLayout = hiddenCardsLayout;
         }
 
-        private Activity getActivity(Context context)
-        {
-            while (context instanceof ContextWrapper)
-            {
-                if (context instanceof Activity)
-                {
-                    return (Activity)context;
-                }
-                context = ((ContextWrapper)context).getBaseContext();
-            }
-            return null;
-        }
-
         @Override
         public void onClick(View v)
         {
-            Activity hostingActivity = getActivity(v.getContext());
-            if(hostingActivity != null)
-            {
-                View currentFocusedView = hostingActivity.getCurrentFocus();
-                if (currentFocusedView != null)
-                {
-                    currentFocusedView.clearFocus();
-                }
-            }
-
             v.setPressed(m_invisibleCard.getVisibility() != View.VISIBLE);
             for(int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
             {
@@ -156,7 +130,6 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             if (m_invisibleCard.getVisibility() == View.VISIBLE)
             {
                 mainCardView.setPadding(padding, padding, padding, 0);
-                m_invisibleCard.requestFocus();
             }
             else
             {
