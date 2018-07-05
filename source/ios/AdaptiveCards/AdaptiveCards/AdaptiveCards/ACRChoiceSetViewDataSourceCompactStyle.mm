@@ -12,6 +12,8 @@
 #import "ACRActionDelegate.h"
 
 using namespace AdaptiveCards;
+const CGFloat padding = 16.0f;
+const CGFloat accessoryViewWidth = 8.0f;
 
 @implementation ACRChoiceSetViewDataSourceCompactStyle
 {
@@ -22,8 +24,6 @@ using namespace AdaptiveCards;
     NSObject<UITableViewDelegate> *_delegate;
     NSObject<UITableViewDataSource, ACRIBaseInputHandler> *_dataSource;
     NSString *_defaultString;
-    CGFloat _padding;
-    CGFloat _accessoryViewWidth;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -42,8 +42,6 @@ using namespace AdaptiveCards;
         _tableView = nil;
         _indexPath = nil;
         _tableViewController = nil;
-        _padding = 16.0f;
-        _accessoryViewWidth = 8.0f;
 
         NSMutableDictionary *valuesMap = [[NSMutableDictionary alloc] init];
         for(auto choice : _choiceSetInput->GetChoices()){
@@ -115,11 +113,11 @@ using namespace AdaptiveCards;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-    CGSize labelStringSize = [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - _accessoryViewWidth, CGFLOAT_MAX)
+    CGSize labelStringSize = [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
                                                      options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                                   attributes:@{NSFontAttributeName:cell.textLabel.font}
                                                      context:nil].size;
-    return labelStringSize.height + _padding;
+    return labelStringSize.height + padding;
 }
 
 // when cell is selected, create a tableView with a navigator control bar.

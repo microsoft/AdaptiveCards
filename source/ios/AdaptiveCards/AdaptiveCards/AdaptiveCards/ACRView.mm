@@ -394,6 +394,7 @@ using namespace AdaptiveCards;
 {
     return _imageViewMap;
 }
+
 - (dispatch_queue_t)getSerialQueue
 {
     return _serial_queue;

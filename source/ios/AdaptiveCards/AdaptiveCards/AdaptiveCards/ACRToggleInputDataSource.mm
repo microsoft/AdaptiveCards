@@ -13,6 +13,7 @@
 #import "ACRColumnSetView.h"
 
 using namespace AdaptiveCards;
+const CGFloat padding = 16.0f;
 
 @implementation ACRToggleInputDataSource
 {
@@ -20,7 +21,6 @@ using namespace AdaptiveCards;
     std::shared_ptr<HostConfig> _config;
     UISwitch *_toggleSwitch;
     NSString *_title;
-    CGFloat _padding;
 }
 
 - (instancetype)initWithInputToggle:(std::shared_ptr<ToggleInput> const&)toggleInput
@@ -44,7 +44,6 @@ using namespace AdaptiveCards;
                                            encoding:NSUTF8StringEncoding];
         self.valueOff = [[NSString alloc]initWithCString:_toggleInputDataSource->GetValueOff().c_str()
                                            encoding:NSUTF8StringEncoding];
-        _padding = 16.0f;
     }
     return self;
 }
@@ -106,7 +105,7 @@ using namespace AdaptiveCards;
                                    attributes:@{NSFontAttributeName:cell.textLabel.font}
                                       context:nil].size;
     CGFloat height = MAX(labelStringSize.height, toggleHeight);
-    return height + _padding;
+    return height + padding;
 }
 
 @end

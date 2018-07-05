@@ -10,6 +10,9 @@
 
 using namespace AdaptiveCards;
 
+const CGFloat padding = 16.0f;
+const CGFloat accessoryViewWidth = 50.0f;
+
 @implementation ACRChoiceSetViewDataSource
 {
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
@@ -17,8 +20,6 @@ using namespace AdaptiveCards;
     NSIndexPath *_lastSelectedIndexPath;
     NSMutableSet *_defaultValuesSet;
     NSArray *_defaultValuesArray;
-    CGFloat _padding;
-    CGFloat _accessoryViewWidth;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -39,8 +40,6 @@ using namespace AdaptiveCards;
         if (_isMultiChoicesAllowed || [_defaultValuesArray count] == 1){
             _defaultValuesSet = [NSMutableSet setWithArray:_defaultValuesArray];
         }
-        _padding = 16.0f;
-        _accessoryViewWidth = 50.0f;
     }
     return self;
 }
@@ -145,11 +144,11 @@ using namespace AdaptiveCards;
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     CGSize labelStringSize =
-        [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - _accessoryViewWidth, CGFLOAT_MAX)
+        [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
                                           options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                        attributes:@{NSFontAttributeName:cell.textLabel.font}
                                           context:nil].size;
-    return labelStringSize.height + _padding;
+    return labelStringSize.height + padding;
 }
 
 - (BOOL)validate:(NSError **)error
