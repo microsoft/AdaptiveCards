@@ -89,14 +89,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
             if (v.getTag() == m_tag)
             {
                 v.getParent().requestDisallowInterceptTouchEvent(true);
-                switch (event.getAction()&MotionEvent.ACTION_MASK)
+                switch (event.getAction() & MotionEvent.ACTION_MASK)
                 {
                     case MotionEvent.ACTION_UP:
                         v.getParent().requestDisallowInterceptTouchEvent(false);
                         break;
                 }
             }
-                return false;
+            return false;
         }
 
         private Object m_tag = null;
