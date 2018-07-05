@@ -98,8 +98,7 @@ using namespace AdaptiveCards;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-    //CGFloat height = [cell.textLabel intrinsicContentSize].height;
+    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];   
     CGFloat toggleHeight = [_toggleSwitch intrinsicContentSize].height;
     CGSize labelStringSize =
     [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width, CGFLOAT_MAX)

@@ -147,10 +147,11 @@ using namespace AdaptiveCards;
     CGSize labelStringSize =
         [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - _accessoryViewWidth, CGFLOAT_MAX)
                                           options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                            attributes:@{NSFontAttributeName:cell.textLabel.font}
-                                                               context:nil].size;
+                                       attributes:@{NSFontAttributeName:cell.textLabel.font}
+                                          context:nil].size;
     return labelStringSize.height + _padding;
 }
+
 - (BOOL)validate:(NSError **)error
 {
     // no need to validate
