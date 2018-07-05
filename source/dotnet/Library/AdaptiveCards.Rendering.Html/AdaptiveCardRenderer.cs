@@ -90,7 +90,13 @@ namespace AdaptiveCards.Rendering.Html
 
             ActionTransformers.Register<AdaptiveOpenUrlAction>((action, tag, context) => tag.Attr("data-ac-url", action.Url));
             ActionTransformers.Register<AdaptiveSubmitAction>((action, tag, context) => tag.Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
-            ActionTransformers.Register<AdaptiveShowCardAction>((action, tag, context) => tag.Attr("data-ac-showCardId", GenerateRandomId()));
+            ActionTransformers.Register<AdaptiveShowCardAction>((action, tag, context) =>
+            {
+                var showCardId = GenerateRandomId();
+                tag.Attr("data-ac-showCardId", showCardId);
+                tag.Attr("aria-controls", showCardId);
+                tag.Attr("aria-expanded", bool.FalseString);
+            });
         }
 
         protected static HtmlTag AddActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
@@ -762,7 +768,8 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("type", "date")
                 .AddClass("ac-input")
                 .AddClass("ac-dateInput")
-                .Style("width", "100%");
+                .Style("width", "100%")
+                .Attr("aria-name", input.Placeholder ?? "Select date in mm/dd/yyyy format");
 
             if (!string.IsNullOrEmpty(input.Value))
             {
