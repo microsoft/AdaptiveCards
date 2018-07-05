@@ -28,7 +28,7 @@ import java.util.Vector;
 
 public class ImageSetRenderer extends BaseCardElementRenderer
 {
-    private ImageSetRenderer()
+    protected ImageSetRenderer()
     {
     }
 

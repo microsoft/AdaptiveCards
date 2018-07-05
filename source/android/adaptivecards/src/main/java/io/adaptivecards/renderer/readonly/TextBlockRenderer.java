@@ -43,7 +43,7 @@ import java.util.Vector;
 
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
-    private TextBlockRenderer()
+    protected TextBlockRenderer()
     {
         // Set up Text Weight Map
         m_textWeightMap.put(TextWeight.Default, g_textWeightDefault);

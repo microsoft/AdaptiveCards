@@ -1,6 +1,5 @@
 package io.adaptivecards.renderer.http;
 
-import android.net.Uri;
 import android.text.TextUtils;
 
 import java.io.BufferedInputStream;

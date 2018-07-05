@@ -17,13 +17,14 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
+import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class ActionElementRenderer implements IBaseActionElementRenderer
 {
-    private ActionElementRenderer()
+    protected ActionElementRenderer()
     {
     }
 
@@ -99,8 +100,6 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         private ViewGroup m_hiddenCardsLayout;
     }
 
-
-
     public Button renderButton(
             Context context,
             ViewGroup viewGroup,
@@ -129,6 +128,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
 
         button.setLayoutParams(layoutParams);
+
         viewGroup.addView(button);
         return button;
     }

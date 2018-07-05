@@ -23,7 +23,7 @@ import java.util.Vector;
 
 public class ContainerRenderer extends BaseCardElementRenderer
 {
-    private ContainerRenderer()
+    protected ContainerRenderer()
     {
     }
 
