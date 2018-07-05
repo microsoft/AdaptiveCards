@@ -1179,7 +1179,7 @@ export class Image extends CardElement {
                     message: "Invalid image " + name + ": " + value
                 },
                 errors
-            );    
+            );
         }
 
         return 0;
@@ -1272,7 +1272,7 @@ export class Image extends CardElement {
                     errorElement.style.display = "flex";
                     errorElement.style.alignItems = "center";
                     errorElement.style.justifyContent = "center";
-                    errorElement.style.backgroundColor = "#EEEEEE";
+                    errorElement.style.backgroundColor = "#eeeeee";
                     errorElement.style.color = "black";
                     errorElement.innerText = ":-(";
                     errorElement.style.padding = "10px";
@@ -2374,7 +2374,7 @@ export abstract class Action {
         if (this.onExecute) {
             this.onExecute(this);
         }
-        
+
         raiseExecuteActionEvent(this);
     }
 
@@ -2405,7 +2405,7 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-	    
+
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
@@ -5009,7 +5009,7 @@ export class AdaptiveCard extends ContainerWithActions {
                         message: e.message
                     },
                     errors
-                );                        
+                );
             }
         }
 
@@ -5140,7 +5140,7 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
         },
         containerStyles: {
             default: {
-                backgroundColor: "#FFFFFF",
+                backgroundColor: "#F9F9F9",
                 foregroundColors: {
                     default: {
                         default: "#333333",

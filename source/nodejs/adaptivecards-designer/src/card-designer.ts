@@ -497,7 +497,7 @@ export abstract class DesignerPeer extends DraggableElement {
                 },
                 containerStyles: {
                     default: {
-                        backgroundColor: "#FFFFFF",
+                        backgroundColor: "#f9f9f9",
                         foregroundColors: {
                             default: {
                                 default: "#333333",
@@ -1021,7 +1021,6 @@ export class CardElementPeer extends DesignerPeer {
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         if (includeHeader) {
             let container = new Adaptive.Container();
-            container.style = "emphasis";
             container.padding = new Adaptive.PaddingDefinition(
                 Adaptive.Spacing.Small,
                 Adaptive.Spacing.Small,

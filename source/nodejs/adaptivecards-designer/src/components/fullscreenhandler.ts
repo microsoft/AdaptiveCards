@@ -1,4 +1,4 @@
-import { FullScreenDocument, FullScreenElement } from "../adaptive-card-schema";
+import { FullScreenDocument, FullScreenElement } from "../IVendors";
 
 export default class FullScreenHandler {
     private _body: FullScreenElement;

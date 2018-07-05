@@ -68,7 +68,6 @@
 }
 
 .acd-peer.selected {
-    /* background-color: rgba(227, 255, 218, 0.1); */
     border: solid 1px #78dd03;
 }
 
@@ -95,7 +94,7 @@
 /*
 * Header and Aside menus
 */
-.aside-menu,
+.acd-aside-menu,
 .treeview-menu,
 .properties-menu {
     align-items: center;
@@ -106,7 +105,7 @@
     padding: 6px 12px;
 }
 
-.aside-menu__title,
+.acd-aside-menu__title,
 .treeview-menu__title,
 .properties-menu__title {
     color: #000000;
@@ -116,7 +115,7 @@
     width: 120px;
 }
 
-.aside-menu__bullet,
+.acd-aside-menu__bullet,
 .treeview-menu__bullet,
 .properties-menu__bullet {
     align-items: center;
@@ -124,7 +123,7 @@
     display: flex;
 }
 
-.aside-menu__icon,
+.acd-aside-menu__icon,
 .treeview-menu__icon,
 .properties-menu__icon {
     background-image: url("/assets/icons/hide.svg");
@@ -141,7 +140,7 @@
     margin-right: 0;
 }
 
-.aside-menu__description,
+.acd-aside-menu__description,
 .treeview-menu__description,
 .properties-menu__description {
     color: #4a4a4a;
@@ -157,12 +156,12 @@
     overflow-y: auto;
 }
 
-.is-toggled .aside-menu {
+.is-toggled .acd-aside-menu {
     width: 170px;
     height: 30px;
 }
 
-.is-toggled .aside-menu {
+.is-toggled .acd-aside-menu {
     transform: translate(-72px, 70px) rotate(-90deg);
 }
 
@@ -512,14 +511,9 @@
 /*
 * Fixes Properties Panel CSS inline styles added via JavaScript
 */
-.default-ac-columnSet.wrapper .default-ac-container:nth-child(1),
-.default-ac-columnSet.wrapper .default-ac-container:nth-child(3) {
-    flex-direction: row !important;
-}
+
 
 .default-ac-columnSet.wrapper .default-ac-container:nth-child(1) {
-    justify-content: flex-end !important;
-    align-items: center;
     padding-right: 6px !important;
     flex: 1 1 140px !important;
     margin-left: 10px;
@@ -528,4 +522,10 @@
 .default-ac-columnSet.wrapper .default-ac-container:nth-child(3) {
     padding-left: 0 !important;
     flex: 2 1 125px !important;
+}
+
+.acd-peerButton[type="button"] {
+    background-color: transparent;
+    border: 0;
+    padding: 0;
 }
