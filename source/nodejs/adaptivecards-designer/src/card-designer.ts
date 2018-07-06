@@ -1,6 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
 import { SizeAndUnit, HorizontalAlignment, PaddingDefinition } from "adaptivecards";
+import TreeItem from "./components/treeitem";
 
 const DRAG_THRESHOLD = 10;
 
@@ -367,7 +368,7 @@ export abstract class DesignerPeer extends DraggableElement {
     private _isSelected: boolean;
     private _propertySheetHostConfig: Adaptive.HostConfig;
 
-    protected abstract getCardObjectTypeName(): string;
+    abstract getCardObjectTypeName(): string;
 
     protected isContainer(): boolean {
         return false;
@@ -446,6 +447,7 @@ export abstract class DesignerPeer extends DraggableElement {
     protected abstract internalRemove(): boolean;
 
     readonly designer: CardDesigner;
+    readonly treeItem: TreeItem;
     parent: DesignerPeer;
 
     onSelectedChanged: (sender: DesignerPeer) => void;
@@ -453,10 +455,12 @@ export abstract class DesignerPeer extends DraggableElement {
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
+
     constructor(designer: CardDesigner) {
         super();
 
         this.designer = designer;
+        this.treeItem = new TreeItem(this);
 
         this._propertySheetHostConfig = new Adaptive.HostConfig(
             {
@@ -701,6 +705,7 @@ export abstract class DesignerPeer extends DraggableElement {
             this._isSelected = value;
 
             this.updateLayout();
+            this.treeItem.updateLayout();
 
             if (this.onSelectedChanged) {
                 this.onSelectedChanged(this);
@@ -712,7 +717,7 @@ export abstract class DesignerPeer extends DraggableElement {
 export class ActionPeer extends DesignerPeer {
     protected _action: Adaptive.Action;
 
-    protected getCardObjectTypeName(): string {
+    getCardObjectTypeName(): string {
         return this.action.getJsonTypeName();
     }
 
@@ -894,7 +899,7 @@ export class OpenUrlActionPeer extends TypedActionPeer<Adaptive.OpenUrlAction> {
 export class CardElementPeer extends DesignerPeer {
     protected _cardElement: Adaptive.CardElement;
 
-    protected getCardObjectTypeName(): string {
+    getCardObjectTypeName(): string {
         return this.cardElement.getJsonTypeName();
     }
 
@@ -2570,6 +2575,10 @@ export class CardDesigner {
             x: x - clientRect.left,
             y: y - clientRect.top
         }
+    }
+
+    get rootPeer(): DesignerPeer {
+        return this._rootPeer;
     }
 
     get selectedPeer(): DesignerPeer {

@@ -396,8 +396,13 @@
 */
 .treeview-items {
     background-color: #f9f9f9;
-    height: calc(100% - 30px);
+    height: calc(100% - 50px);
     padding-bottom: 5px;
+}
+
+.treeview-items > .treeview__container {
+    margin-bottom: 20px;
+    padding-top: 20px;
 }
 
 .treeview__section-title {
@@ -416,7 +421,10 @@
 .treeview__container {
     background-color: #f9f9f9;
     list-style: none;
-    margin: 0;
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
     padding-left: 0;
     width: 100%;
 }
@@ -428,7 +436,7 @@
 }
 
 .treeview__element:not(:last-child) {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .treeview__element.is-empty {
@@ -444,13 +452,25 @@
 }
 
 .treeview__icon {
+    background-color: transparent;
     background-repeat: no-repeat;
     background-position: center;
+    border: none;
     cursor: pointer;
-    height: 20px;
-    margin-right: 2px;
-    margin-top: -3px;
-    width: 20px;
+    height: 14px;
+    margin-right: 6px;
+    margin-top: -2px;
+    padding: 0;
+    width: 14px;
+}
+
+button.treeview__icon {
+    margin-bottom: -2px;
+    width: 18px;
+}
+
+button.treeview__icon:focus {
+    outline-style: none;
 }
 
 .treeview__icon--arrow::before,
@@ -480,6 +500,7 @@
 
 .treeview__icon--arrow::before {
     content: "\F08E";
+    margin-bottom: -3px;
     margin-right: 0;
 }
 
@@ -546,12 +567,6 @@
 
 .treeview__icon--arrow.is-rotated::before {
     content: "\F08F";
-}
-
-.btn {
-    background-color: transparent;
-    border: none;
-    padding: 0;
 }
 
 .is-folded {
