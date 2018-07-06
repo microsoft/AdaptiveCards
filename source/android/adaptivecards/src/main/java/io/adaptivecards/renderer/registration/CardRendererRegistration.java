@@ -28,6 +28,7 @@ import io.adaptivecards.renderer.readonly.ContainerRenderer;
 import io.adaptivecards.renderer.readonly.FactSetRenderer;
 import io.adaptivecards.renderer.readonly.ImageRenderer;
 import io.adaptivecards.renderer.readonly.ImageSetRenderer;
+import io.adaptivecards.renderer.readonly.MediaRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class CardRendererRegistration
         registerRenderer(CardElementTypeToString(CardElementType.Image), ImageRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.ImageSet), ImageSetRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.Media), MediaRenderer.getInstance());
 
         // Register Input Renderers
         registerRenderer(CardElementTypeToString(CardElementType.TextInput), TextInputRenderer.getInstance());
