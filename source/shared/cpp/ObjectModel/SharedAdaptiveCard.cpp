@@ -92,16 +92,18 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 
+    bool enforceVersion = (rendererVersion != std::numeric_limits<double>::max());
+
     // Verify this is an adaptive card
     ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard);
 
     std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
 
-    std::string version = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Version, true);
+    std::string version = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Version, enforceVersion);
     std::string fallbackText = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FallbackText);
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
 
-    if (rendererVersion != std::numeric_limits<double>::max())
+    if (enforceVersion)
     {
         double versionAsDouble;
         try
