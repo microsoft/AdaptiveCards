@@ -131,12 +131,6 @@ export abstract class CardElement {
     private _defaultRenderedElementDisplayMode: string = null;
     private _padding: PaddingDefinition = null;
 
-    public elementId: string;
-
-    public constructor(){
-        this.elementId = Utils.guidGenerator();
-    }
-
     private internalRenderSeparator(): HTMLElement {
         return Utils.renderSeparation(
             {
@@ -2266,11 +2260,6 @@ export abstract class Action {
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
     private _renderedElement: HTMLElement = null;
-    public elementId: string;
-
-    public constructor() {
-        this.elementId = Utils.guidGenerator();
-    }
 
     private setCollection(actionCollection: ActionCollection) {
         this._actionCollection = actionCollection;

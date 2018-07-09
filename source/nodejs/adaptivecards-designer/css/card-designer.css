@@ -94,26 +94,20 @@
 /*
 * Header and Aside menus
 */
-.acd-aside-menu,
-.treeview-menu,
-.properties-menu {
+.aside-panel .bullet_wrapper  {
+    cursor: pointer;
+}
+
+.bullet__wrapper {
     align-items: center;
     background-color: #d8d8d8;
     display: flex;
     height: 30px;
     justify-content: space-between;
     padding: 6px 12px;
-    user-select: none;
 }
 
-.aside-panel .treeview-menu,
-.aside-panel .properties-menu  {
-    cursor: pointer;
-}
-
-.acd-aside-menu__title,
-.treeview-menu__title,
-.properties-menu__title {
+.bullet__title {
     color: #000000;
     white-space: nowrap;
     overflow: hidden;
@@ -121,17 +115,13 @@
     width: 120px;
 }
 
-.acd-aside-menu__bullet,
-.treeview-menu__bullet,
-.properties-menu__bullet {
+.bullet {
     align-items: center;
     cursor: pointer;
     display: flex;
 }
 
-.acd-aside-menu__icon::before,
-.treeview-menu__icon::before,
-.properties-menu__icon::before {
+.bullet__icon::before {
     content: "\F166";
     display: inline-block;
     font-family: "FabricMDL2Icons";
@@ -145,10 +135,13 @@
     font-family: "FabricMDL2Icons";
 }
 
-.acd-aside-menu__description,
-.treeview-menu__description,
-.properties-menu__description {
+.bullet__description {
     color: #4a4a4a;
+}
+
+.is-closed .bullet__icon::before {
+    content: "\F164";
+    font-family: "FabricMDL2Icons";
 }
 
 /*
@@ -161,12 +154,12 @@
     overflow-y: auto;
 }
 
-.is-toggled .acd-aside-menu {
+.is-toggled .bullet__wrapper {
     width: 170px;
     height: 30px;
 }
 
-.is-toggled .acd-aside-menu {
+.is-toggled .bullet__wrapper {
     transform: translate(-72px, 70px) rotate(-90deg);
 }
 
@@ -308,6 +301,7 @@
 }
 
 .aside-panel.is-active {
+    background-color: #f9f9f9;
     display: block;
     height: 100vh;
     position: relative;
@@ -315,8 +309,7 @@
     border-left: 1px solid #d2d2d2;
 }
 
-.aside-panel .treeview-menu,
-.aside-panel .properties-menu {
+.aside-panel .bullet__wrapper {
     height: 30px;
     transform: translate(-70px, 70px) rotate(90deg);
     width: 170px;
@@ -331,8 +324,7 @@
     transform: translate(-70px, 211px) rotate(90deg);
 }
 
-.aside-panel .treeview-menu__icon::before,
-.aside-panel .properties-menu__icon::before {
+.aside-panel .bullet__icon::before {
     content: "\F164";
     margin-right: 0;
     font-family: "FabricMDL2Icons";
@@ -591,4 +583,8 @@ button.treeview__icon:focus {
     background-color: transparent;
     border: 0;
     padding: 0;
+}
+
+.content {
+    overflow-x: hidden !important;
 }
