@@ -507,7 +507,7 @@ AdaptiveNamespaceStart
                 // the tracker to subscribe to the ImageLoaded/Failed events
                 ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
 
-                if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+                if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
                 {
                     m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
                 }
