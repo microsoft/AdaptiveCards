@@ -52,6 +52,10 @@ void GetMediaPosterAsImage(
     THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveImage>(&adaptiveImage));
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
 
+    HString altText;
+    THROW_IF_FAILED(adaptiveMedia->get_AltText(altText.GetAddressOf()));
+    THROW_IF_FAILED(adaptiveImage->put_AltText(altText.Get()));
+
     ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
     THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
     ComPtr<IAdaptiveElementRenderer> imageRenderer;
