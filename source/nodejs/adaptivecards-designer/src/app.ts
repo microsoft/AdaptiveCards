@@ -303,7 +303,6 @@ class DesignerApp {
                 for (var i = 0; i < sortedRegisteredTypes[objectKey].items.length; i++) {
                     var paletteItem = new ElementPaletteItem(sortedRegisteredTypes[objectKey].items[i]);
                     this.addPaletteItem(paletteItem);
-
                 }
             });
 
