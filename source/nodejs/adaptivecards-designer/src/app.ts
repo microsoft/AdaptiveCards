@@ -13,7 +13,6 @@ import { WebChatContainer } from "./containers/webchat-container";
 import { ToastContainer } from "./containers/toast-container";
 import { BotFrameworkContainer } from "./containers/bf-image-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
-import Treeview from "./components/treeview";
 import FullScreenHandler from "./components/fullscreenhandler";
 
 declare var monacoEditor: any;
@@ -28,10 +27,19 @@ function monacoEditorLoaded() {
         function (e) {
             scheduleCardRefresh();
         });
-    document.querySelector(".monaco-editor").insertAdjacentHTML("afterbegin", "<div class='jsonEditorHost-title'>JSON</div>");
+    const jsonSectlionTitle = `
+    <div class='bullet__wrapper'>
+        <span class='bullet__title'>JSON</span>
+        <span class='bullet js-host-json__bullet'>
+            <span class='bullet__icon js-host-json__icon'></span>
+            <span class='bullet__description js-host-json__description'>Hide</span>
+        </span>
+    </div>
+    `;
+    document.querySelector(".monaco-editor").insertAdjacentHTML("afterbegin", jsonSectlionTitle);
     isMonacoEditorLoaded = true;
-
     updateJsonFromCard();
+    app.toggleHostJsonPanel();
 }
 
 function getCurrentJsonPayload(): string {
@@ -50,7 +58,6 @@ function updateJsonFromCard() {
 
         if (!preventJsonUpdate && isMonacoEditorLoaded) {
             monacoEditor.setValue(JSON.stringify(app.card.toJSON(), null, 4));
-            app.buildTreeViewSheet(app.designer.selectedPeer);
         }
     }
     finally {
@@ -73,7 +80,6 @@ function updateCardFromJson() {
         preventJsonUpdate = true;
         if (!preventCardUpdate) {
             app.designer.parseCard(getCurrentJsonPayload());
-            app.buildTreeViewSheet(app.designer.selectedPeer);
         }
     }
     finally {
@@ -125,7 +131,7 @@ class ElementPaletteItem extends BasePaletteItem {
     protected getText(): string {
         return this.typeRegistration.typeName;
     }
-    
+
     readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
 
     constructor(typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>) {
@@ -146,7 +152,7 @@ class SnippetPaletteItem extends BasePaletteItem {
     protected getText(): string {
         return this.name;
     }
-    
+
     readonly name: string;
     snippet: object;
 
@@ -168,7 +174,7 @@ class SnippetPaletteItem extends BasePaletteItem {
 
                     let peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
                     peer.initializeCardElement();
-            
+
                     return peer;
                 }
             }
@@ -186,17 +192,13 @@ class DesignerApp {
     private _card: Adaptive.AdaptiveCard;
     private _hostContainerPicker: Controls.DropDown;
     private _selectedHostContainer: HostContainer;
-    private _treeViewComponent: Treeview;
 
-    public buildTreeViewSheet(peer: Designer.DesignerPeer) {
+    public buildTreeViewSheet() {
         if (this.treeViewSheetHostElement) {
             let treeview = this.treeViewSheetHostElement.getElementsByClassName("treeview-items")[0];
             treeview.innerHTML = "";
 
-            const items = [...this._card.getItems(), ...this._card.getActions()];
-            this._treeViewComponent.updateDesigner(this._designer);
-            const listItems = this._treeViewComponent.generateTreeViewElements(items, peer);
-            treeview.appendChild(listItems);
+            treeview.appendChild(this.designer.rootPeer.treeItem.render());
         }
     }
 
@@ -236,7 +238,6 @@ class DesignerApp {
 
             properties.appendChild(card.render());
             let cardNodes = card.renderedElement.children;
-            (cardNodes[0] as HTMLElement).style.backgroundColor = "transparent";
 
             for (let element = 0; element < cardNodes.length; element++) {
                 (cardNodes[element] as HTMLElement).className += " wrapper";
@@ -259,7 +260,7 @@ class DesignerApp {
 
         this.paletteHostElement.appendChild(paletteItem.renderedElement);
     }
-    
+
     private buildPalette() {
         if (this.paletteHostElement) {
             this.paletteHostElement.innerHTML = "";
@@ -311,9 +312,47 @@ class DesignerApp {
                 for (var i = 0; i < sortedRegisteredTypes[objectKey].items.length; i++) {
                     var paletteItem = new ElementPaletteItem(sortedRegisteredTypes[objectKey].items[i]);
                     this.addPaletteItem(paletteItem);
-                    
                 }
             });
+
+            /* This is to test "snippet" support. Snippets are not yet fully baked
+            let personaHeaderSnippet = new SnippetPaletteItem("Persona header");
+            personaHeaderSnippet.snippet = {
+                type: "ColumnSet",
+                columns: [
+                    {
+                        width: "auto",
+                        items: [
+                            {
+                                type: "Image",
+                                size: "Small",
+                                style: "Person",
+                                url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                            }
+                        ]
+                    },
+                    {
+                        width: "stretch",
+                        items: [
+                            {
+                                type: "TextBlock",
+                                text: "John Doe",
+                                weight: "Bolder",
+                                wrap: true
+                            },
+                            {
+                                type: "TextBlock",
+                                spacing: "None",
+                                text: "Additional information",
+                                wrap: true
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            this.addPaletteItem(personaHeaderSnippet);
+            */
         }
     }
 
@@ -341,7 +380,7 @@ class DesignerApp {
 
     private recreateDesigner() {
         let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
-    
+
         if (styleSheetLinkElement == null) {
             styleSheetLinkElement = document.createElement("link");
             styleSheetLinkElement.id = "adaptiveCardStylesheet";
@@ -358,7 +397,7 @@ class DesignerApp {
         if (designerBackground) {
             designerBackground.style.backgroundColor = this._selectedHostContainer.getBackgroundColor();
         }
-    
+
         this._selectedHostContainer.initialize();
 
         this._designerHostElement.innerHTML = "";
@@ -367,12 +406,12 @@ class DesignerApp {
         this._designer = new Designer.CardDesigner(this._selectedHostContainer.cardHost);
         this._designer.onSelectedPeerChanged = (peer: Designer.CardElementPeer) => {
             this.buildPropertySheet(peer);
-            this.buildTreeViewSheet(peer);
         };
         this._designer.onLayoutUpdated = (isFullRefresh: boolean) => {
             if (isFullRefresh) {
                 scheduleJsonUpdate();
             }
+            this.buildTreeViewSheet();
         };
         this._designer.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
             let errorPane = document.getElementById("errorPane");
@@ -405,7 +444,6 @@ class DesignerApp {
 
         this.buildPalette();
         this.buildPropertySheet(null);
-        this.buildTreeViewSheet(null);
 
         if (this._card) {
             this._card.hostConfig = this._selectedHostContainer.getHostConfig();
@@ -432,7 +470,6 @@ class DesignerApp {
         this._selectedHostContainer = this.hostContainers[0];
 
         this.recreateDesigner();
-        this._treeViewComponent = new Treeview();
     }
 
     createContainerPicker(): Controls.DropDown {
@@ -522,6 +559,31 @@ class DesignerApp {
         }
     }
 
+    private addEvents(): void {
+        const jsonBtn = document.querySelector(".js-host-json__bullet");
+
+        jsonBtn.addEventListener("click", this.toggleClass);
+    }
+
+    private toggleClass(): void {
+        const jsonEditorPanel = document.getElementById("jsonEditorHost");
+        const jsonBulletDescription = document.querySelector(".js-host-json__description") as HTMLElement;
+
+        if (jsonEditorPanel.classList.contains("is-closed")) {
+            jsonEditorPanel.classList.remove("is-closed");
+            jsonEditorPanel.style.height = "300px";
+            jsonBulletDescription.style.display = "block";
+            return;
+        }
+        jsonEditorPanel.classList.add("is-closed");
+        jsonEditorPanel.style.height = "52px";
+        jsonBulletDescription.style.display = "none";
+    }
+
+    public toggleHostJsonPanel(): void {
+        this.addEvents();
+    }
+
     public cloneNodesTrees(): void {
         this.handleClosePanel("treeview");
         this.handleClosePanel("properties");
@@ -602,7 +664,7 @@ class Splitter {
     private pointerMove(e: PointerEvent) {
         if (this._isPointerDown) {
             e.preventDefault();
-            
+
             let sizeApplied = false;
 
             if (this.isVertical) {
@@ -700,7 +762,7 @@ window.onload = () => {
     app.propertySheetHostElement = document.getElementById("propertySheetHost");
     app.treeViewSheetHostElement = document.getElementById("treeViewSheetHost");
     app.commandListHostElement = document.getElementById("commandsHost");
-    app.paletteHostElement = document.querySelector(".aside-items");
+    app.paletteHostElement = document.getElementById("toolPalette");
 
     app.createContainerPicker().attach(document.getElementById("containerPickerHost"));
 

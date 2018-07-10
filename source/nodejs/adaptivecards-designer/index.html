@@ -29,14 +29,14 @@
         </div>
         <div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
             <section class="aside js-aside">
-                <nav class="aside-menu">
-                    <span class="aside-menu__title">Tool box</span>
-                    <span class="aside-menu__bullet js-aside-bullet">
-                        <span class="aside-menu__icon js-aside-icon"></span>
-                        <span class="aside-menu__description js-aside-description">Hide</span>
+                <nav class="bullet__wrapper">
+                    <span class="bullet__title">Tool box</span>
+                    <span class="bullet js-aside-bullet">
+                        <span class="bullet__icon js-aside-icon"></span>
+                        <span class="bullet__description js-aside-description">Hide</span>
                     </span>
                 </nav>
-                <ul class="aside-items js-aside-items"></ul>
+                <ul id="toolPalette" class="aside-items js-aside-items"></ul>
             </section>
             <div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
                 <div style="display: flex; flex: 1 1 100%; overflow: hidden;">
@@ -48,22 +48,22 @@
                     </div>
                     <div id="treeViewVerticalSplitter" class="js-treeview-splitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
                     <section id="treeViewSheetHost" class="js-treeview" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto;">
-                        <nav class="treeview-menu js-treeview-menu">
-                            <span class="treeview-menu__title">Visual tree view</span>
-                            <span class="treeview-menu__bullet js-treeview-bullet">
-                                <span class="treeview-menu__icon js-treeview-icon"></span>
-                                <span class="treeview-menu__description js-treeview-description">Hide</span>
+                        <nav class="bullet__wrapper js-treeview-menu">
+                            <span class="bullet__title">Visual tree view</span>
+                            <span class="bullet js-treeview-bullet">
+                                <span class="bullet__icon js-treeview-icon"></span>
+                                <span class="bullet__description js-treeview-description">Hide</span>
                             </span>
                         </nav>
                         <div class="treeview-items js-treeview-items"></div>
                     </section>
                     <div id="propertyVerticalSplitter" class="js-properties-splitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
                     <section id="propertySheetHost" class="js-properties" style="flex: 0 0 auto; width: 360px; height: 100%; overflow: auto; background-color: #F9F9F9;">
-                        <nav class="properties-menu js-properties-menu">
-                            <span class="properties-menu__title">Element properties</span>
-                            <span class="properties-menu__bullet js-properties-bullet">
-                                <span class="properties-menu__icon js-properties-icon"></span>
-                                <span class="properties-menu__description js-properties-description">Hide</span>
+                        <nav class="bullet__wrapper js-properties-menu">
+                            <span class="bullet__title">Element properties</span>
+                            <span class="bullet js-properties-bullet">
+                                <span class="bullet__icon js-properties-icon"></span>
+                                <span class="bullet__description js-properties-description">Hide</span>
                             </span>
                         </nav>
                         <div class="properties-items js-properties-items"></div>

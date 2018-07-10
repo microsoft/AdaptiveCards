@@ -1,6 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
 import { SizeAndUnit, HorizontalAlignment, PaddingDefinition } from "adaptivecards";
+import TreeItem from "./components/treeitem";
 
 const DRAG_THRESHOLD = 10;
 
@@ -367,7 +368,7 @@ export abstract class DesignerPeer extends DraggableElement {
     private _isSelected: boolean;
     private _propertySheetHostConfig: Adaptive.HostConfig;
 
-    protected abstract getCardObjectTypeName(): string;
+    abstract getCardObjectTypeName(): string;
 
     protected isContainer(): boolean {
         return false;
@@ -446,6 +447,7 @@ export abstract class DesignerPeer extends DraggableElement {
     protected abstract internalRemove(): boolean;
 
     readonly designer: CardDesigner;
+    readonly treeItem: TreeItem;
     parent: DesignerPeer;
 
     onSelectedChanged: (sender: DesignerPeer) => void;
@@ -453,10 +455,12 @@ export abstract class DesignerPeer extends DraggableElement {
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
+
     constructor(designer: CardDesigner) {
         super();
 
         this.designer = designer;
+        this.treeItem = new TreeItem(this);
 
         this._propertySheetHostConfig = new Adaptive.HostConfig(
             {
@@ -497,7 +501,7 @@ export abstract class DesignerPeer extends DraggableElement {
                 },
                 containerStyles: {
                     default: {
-                        backgroundColor: "#FFFFFF",
+                        backgroundColor: "#f9f9f9",
                         foregroundColors: {
                             default: {
                                 default: "#333333",
@@ -701,6 +705,7 @@ export abstract class DesignerPeer extends DraggableElement {
             this._isSelected = value;
 
             this.updateLayout();
+            this.treeItem.updateLayout();
 
             if (this.onSelectedChanged) {
                 this.onSelectedChanged(this);
@@ -712,7 +717,7 @@ export abstract class DesignerPeer extends DraggableElement {
 export class ActionPeer extends DesignerPeer {
     protected _action: Adaptive.Action;
 
-    protected getCardObjectTypeName(): string {
+    getCardObjectTypeName(): string {
         return this.action.getJsonTypeName();
     }
 
@@ -894,7 +899,7 @@ export class OpenUrlActionPeer extends TypedActionPeer<Adaptive.OpenUrlAction> {
 export class CardElementPeer extends DesignerPeer {
     protected _cardElement: Adaptive.CardElement;
 
-    protected getCardObjectTypeName(): string {
+    getCardObjectTypeName(): string {
         return this.cardElement.getJsonTypeName();
     }
 
@@ -1021,7 +1026,6 @@ export class CardElementPeer extends DesignerPeer {
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         if (includeHeader) {
             let container = new Adaptive.Container();
-            container.style = "emphasis";
             container.padding = new Adaptive.PaddingDefinition(
                 Adaptive.Spacing.Small,
                 Adaptive.Spacing.Small,
@@ -2117,21 +2121,6 @@ export class CardDesigner {
         }
     }
 
-    public setSelectedPeerById(id: string) {
-        let selected = this._allPeers.find(peer => {
-            let elementId;
-            if (peer instanceof ActionPeer) {
-                elementId = peer ? peer.action.elementId : "";
-            } else if (peer instanceof CardElementPeer) {
-                elementId = peer ? peer.cardElement.elementId : "";
-            }
-            return elementId === id;
-        });
-        if (selected) {
-            this.setSelectedPeer(selected);
-        }
-    }
-
     private setSelectedPeer(value: DesignerPeer) {
         if (this._selectedPeer != value) {
             if (this._selectedPeer) {
@@ -2571,6 +2560,10 @@ export class CardDesigner {
             x: x - clientRect.left,
             y: y - clientRect.top
         }
+    }
+
+    get rootPeer(): DesignerPeer {
+        return this._rootPeer;
     }
 
     get selectedPeer(): DesignerPeer {

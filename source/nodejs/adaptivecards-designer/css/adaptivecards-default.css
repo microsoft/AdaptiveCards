@@ -29,11 +29,9 @@ a.default-ac-anchor:visited:active {
     color: #004D84;
 }
 
-#treeViewSheetHost .default-ac-container,
-#propertySheetHost .default-ac-container,
-#treeViewSheetHost .ac-container,
-#propertySheetHost .ac-container {
-    background-color: #f9f9f9 !important; /* The important overrides inline CSS properties added via JS */
+[id="treeViewSheetHost"],
+[id="propertySheetHost"] {
+    min-width: 205px;
 }
 
 .default-ac-container,
