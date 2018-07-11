@@ -769,7 +769,7 @@ namespace AdaptiveCards.Rendering.Html
                 .AddClass("ac-input")
                 .AddClass("ac-dateInput")
                 .Style("width", "100%")
-                .Attr("aria-name", input.Placeholder ?? "Select date in mm/dd/yyyy format");
+                .Attr("aria-label", (input.Placeholder ?? "Select date") + " in mm/dd/yyyy format");
 
             if (!string.IsNullOrEmpty(input.Value))
             {
