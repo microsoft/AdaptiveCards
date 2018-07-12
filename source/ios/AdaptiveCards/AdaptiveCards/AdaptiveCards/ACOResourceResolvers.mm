@@ -9,7 +9,7 @@
 
 @implementation ACOResourceResolvers
 {
-    NSMutableDictionary<NSString *, ImageLoadBlock> *_resolvers;
+    NSMutableDictionary<NSString *, NSObject<ACOIResourceResolver> *> *_resolvers;
 }
 
 - (instancetype)init
@@ -21,20 +21,20 @@
     return self;
 }
 
-- (void)setResolverBlock:(ImageLoadBlock)resolver scheme:(NSString *)scheme
+- (void)setResourceResolver:(NSObject<ACOIResourceResolver> *)resolver scheme:(NSString *)scheme
 {
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         self->_resolvers[scheme] = resolver;
     });
 }
 
-- (ImageLoadBlock)getResolverBlockForScheme:(NSString *)scheme
+- (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme
 {
-    __block ImageLoadBlock blockToReturn = nil;
+    __block NSObject<ACOIResourceResolver> *resolver = nil;
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        blockToReturn = self->_resolvers[scheme];
+        resolver = self->_resolvers[scheme];
     });
-    return blockToReturn;
+    return resolver;
 }
 
 @end

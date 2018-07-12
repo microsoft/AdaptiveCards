@@ -7,13 +7,12 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
-typedef UIImage* (^ImageLoadBlock)(NSString *urlString);
+#import "ACOIResourceResolver.h"
 
 @interface ACOResourceResolvers:NSObject
 
 - (instancetype)init;
-- (ImageLoadBlock)getResolverBlockForScheme:(NSString *)scheme;
-- (void)setResolverBlock:(ImageLoadBlock)resolver scheme:(NSString *)scheme;
+- (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme;
+- (void)setResourceResolver:(NSObject<ACOIResourceResolver> *)resolver scheme:(NSString *)scheme;
 
 @end    

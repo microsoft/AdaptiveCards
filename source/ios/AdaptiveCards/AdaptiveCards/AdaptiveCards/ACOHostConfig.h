@@ -18,7 +18,7 @@
 
 - (instancetype)init;
 
-- (ImageLoadBlock)getResourceResolverForScheme:(NSString *)scheme;
+- (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 

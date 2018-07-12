@@ -12,6 +12,7 @@
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
 #import "CustomImageRenderer.h"
+#import "ADCResolver.h"
 
 @interface ViewController ()
 {
@@ -103,11 +104,8 @@
     [super viewDidLoad];
     [self registerForKeyboardNotifications];
     _resolvers = [[ACOResourceResolvers alloc] init];
-    [_resolvers setResolverBlock:^(NSString *urlString){
-        NSURL *nsurl = [NSURL URLWithString:urlString];
-        // download image
-        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:nsurl]];
-        return img;} scheme:@"http"];
+    ADCResolver *resolver = [[ADCResolver alloc] init];
+    [_resolvers setResourceResolver:resolver scheme:@"http"];
     _enableCustomRenderer = NO;
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];

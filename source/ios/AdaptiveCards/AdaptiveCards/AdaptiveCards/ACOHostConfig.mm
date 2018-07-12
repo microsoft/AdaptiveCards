@@ -86,13 +86,13 @@ using namespace AdaptiveCards;
     _config = config;
 }
 
-- (ImageLoadBlock)getResourceResolverForScheme:(NSString *)scheme
+- (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme
 {
     if(!scheme) {
         return nil;
     }
     
-    return [_resolvers getResolverBlockForScheme:scheme];
+    return [_resolvers getResourceResolverForScheme:scheme];
 }
 
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
