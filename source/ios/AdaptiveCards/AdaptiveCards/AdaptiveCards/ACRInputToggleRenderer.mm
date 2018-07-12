@@ -43,6 +43,7 @@
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
     inputTableView.delegate = dataSource;
     inputTableView.dataSource = dataSource;
+
     [inputs addObject:dataSource];
 
     if(elem->GetHeight() == HeightType::Stretch){
@@ -53,7 +54,7 @@
         [textInputContainer addArrangedSubview:blankTrailingSpace];
         [textInputContainer adjustHuggingForLastElement];
 
-        [viewGroup addArrangedSubview: textInputContainer];
+        [viewGroup addArrangedSubview:textInputContainer];
     } else {
         [viewGroup addArrangedSubview:inputTableView];
     }

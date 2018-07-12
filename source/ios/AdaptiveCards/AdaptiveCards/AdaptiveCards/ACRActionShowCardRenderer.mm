@@ -31,9 +31,8 @@
     std::shared_ptr<ShowCardAction> action = std::dynamic_pointer_cast<ShowCardAction>(elem);
 
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-    NSString *iconUrl = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:NSUTF8StringEncoding];
     
-    UIButton *button = [UIButton rootView:rootView baseActionElement:acoElem title:title iconUrl:iconUrl andHostConfig:acoConfig];
+    UIButton *button = [UIButton rootView:rootView baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
     ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithActionElement:action
                                                                           config:acoConfig

@@ -105,24 +105,18 @@ using namespace AdaptiveCards;
     NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)[_adaptiveCard card].get()];
     NSString *key = [number stringValue];
     if([key length]){
-        ACRBaseCardElementRenderer *imageRenderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInteger:ACRImage]];
         UIView *imgView = nil;
-        if([[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
-            std::shared_ptr<Image> imageElement = std::make_shared<Image>();
-            imageElement->SetImageSize(ImageSize::Stretch);
-            imageElement->SetUrl([_adaptiveCard card]->GetBackgroundImage());
-            ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
-            [acoElem setElem:imageElement];
-            imgView = [imageRenderer render:nil rootView:self inputs:nil baseCardElement:acoElem hostConfig:_hostConfig];
-        } else {
+        if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
             UIImage *img = _imageViewMap[key];
             imgView = [[ACRUIImageView alloc] initWithImage:img];
         }
-        imgView.translatesAutoresizingMaskIntoConstraints = NO;
-        [newView addSubview:imgView];
-        [newView sendSubviewToBack:imgView];
-        [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+        if(imgView) {
+            imgView.translatesAutoresizingMaskIntoConstraints = NO;
+            [newView addSubview:imgView];
+            [newView sendSubviewToBack:imgView];
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+        }
     }
     [self callDidLoadElementsIfNeeded];
     return newView;
@@ -400,6 +394,7 @@ using namespace AdaptiveCards;
 {
     return _imageViewMap;
 }
+
 - (dispatch_queue_t)getSerialQueue
 {
     return _serial_queue;

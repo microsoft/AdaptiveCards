@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     numberPicker.Minimum = Convert.ToInt32(input.Min);
 
                 if (!Double.IsNaN(input.Max))
-                    numberPicker.Minimum = Convert.ToInt32(input.Max);
+                    numberPicker.Maximum = Convert.ToInt32(input.Max);
 
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");

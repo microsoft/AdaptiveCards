@@ -20,11 +20,13 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
 {
     RenderedAdaptiveCard m_renderedCard;
     String m_imageBaseUrl;
+    IOnlineImageLoader m_onlineImageLoader = null;
 
     GenericImageLoaderAsync(RenderedAdaptiveCard renderedCard, String imageBaseUrl)
     {
         m_renderedCard = renderedCard;
         m_imageBaseUrl = imageBaseUrl;
+        m_onlineImageLoader = new OnlineImageLoader();
     }
 
     // Main function to try different ways to load an image
@@ -35,7 +37,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
             // Try loading online using only the path first
             try
             {
-                return loadOnlineImage(path);
+                return m_onlineImageLoader.loadOnlineImage(path, this);
             }
             catch (MalformedURLException e1) {
                 // Then try using image base URL to load online
@@ -50,7 +52,8 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                     URL urlContext = new URL(m_imageBaseUrl);
                     URL url = new URL(urlContext, path);
 
-                    return loadOnlineImage(url.toString());
+                    return m_onlineImageLoader.loadOnlineImage(url.toString(), this);
+                    // return loadOnlineImage(url.toString());
                 }
                 catch (MalformedURLException e2)
                 {
@@ -63,26 +66,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         {
             return new HttpRequestResult<>(e);
         }
-    }
-
-    // Helper function to load online image URL
-    private HttpRequestResult<Bitmap> loadOnlineImage(String url) throws IOException, URISyntaxException
-    {
-        byte[] bytes = HttpRequestHelper.get(url);
-        if (bytes == null)
-        {
-            throw new IOException("Failed to retrieve content from " + url);
-        }
-
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        bitmap = styleBitmap(bitmap);
-
-        if (bitmap == null)
-        {
-            throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
-        }
-
-        return new HttpRequestResult<>(bitmap);
     }
 
     // Helper function to load local image URL from res/
@@ -125,6 +108,11 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         {
             m_renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNABLE_TO_LOAD_IMAGE, result.getException().getMessage()));
         }
+    }
+
+    public void registerCustomOnlineImageLoader(IOnlineImageLoader onlineImageLoader)
+    {
+        m_onlineImageLoader = onlineImageLoader;
     }
 
     abstract void onSuccessfulPostExecute(Bitmap result);

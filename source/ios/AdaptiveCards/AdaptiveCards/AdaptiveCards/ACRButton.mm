@@ -74,7 +74,6 @@
 + (UIButton* )rootView:(ACRView *)rootView
      baseActionElement:(ACOBaseActionElement *)acoAction
                  title:(NSString *)title
-               iconUrl:(NSString *)iconUrl
          andHostConfig:(ACOHostConfig *)config;
 {
     NSBundle* bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];

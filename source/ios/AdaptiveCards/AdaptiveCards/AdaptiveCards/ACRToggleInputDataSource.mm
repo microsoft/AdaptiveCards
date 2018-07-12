@@ -13,6 +13,7 @@
 #import "ACRColumnSetView.h"
 
 using namespace AdaptiveCards;
+const CGFloat padding = 16.0f;
 
 @implementation ACRToggleInputDataSource
 {
@@ -26,7 +27,7 @@ using namespace AdaptiveCards;
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
 {
     self = [super init];
-    
+
     if(self) {
         _title = [NSString stringWithCString:toggleInput->GetTitle().c_str()
                                     encoding:NSUTF8StringEncoding];
@@ -61,15 +62,15 @@ using namespace AdaptiveCards;
 {
     static NSString *identifier = @"cellForCompactMode";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if(!cell)
-    {
-        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-        [tableView registerNib:[UINib nibWithNibName:@"ACRCellForCompactMode" bundle:bundle] forCellReuseIdentifier:identifier];
-        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        cell.textLabel.text = _title;
-        cell.accessoryView = _toggleSwitch;
+    if(!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:identifier];
     }
-
+    cell.textLabel.text = _title;
+    cell.textLabel.adjustsFontSizeToFitWidth = NO;
+    cell.textLabel.numberOfLines = 0;
+    cell.accessoryView = _toggleSwitch;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -92,6 +93,19 @@ using namespace AdaptiveCards;
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
     dictionary[self.id] = _toggleSwitch.on? self.valueOn : self.valueOff;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];   
+    CGFloat toggleHeight = [_toggleSwitch intrinsicContentSize].height;
+    CGSize labelStringSize =
+    [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width, CGFLOAT_MAX)
+                                      options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                   attributes:@{NSFontAttributeName:cell.textLabel.font}
+                                      context:nil].size;
+    CGFloat height = MAX(labelStringSize.height, toggleHeight);
+    return height + padding;
 }
 
 @end
