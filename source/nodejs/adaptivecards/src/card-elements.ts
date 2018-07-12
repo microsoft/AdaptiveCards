@@ -3110,6 +3110,14 @@ class ActionCollection {
 
             invokeSetCollection(action, null);
 
+            for (let i = 0; i < this.buttons.length; i++) {
+                if (this.buttons[i].action == action) {
+                    this.buttons.splice(i, 1);
+
+                    break;
+                }
+            }
+
             return true;
         }
 
