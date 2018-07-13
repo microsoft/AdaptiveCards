@@ -70,8 +70,17 @@
                     </section>
                 </div>
                 <div id="horizontalSplitter" style="flex: 0 0 6px; background-color: #EEEEEE; border-top: 1px solid #D2D2D2; border-bottom: 1px solid #D2D2D2; cursor: ns-resize;"></div>
-                <div id="jsonEditorHost" style="flex: 0 0 auto; display: flex; height: 300px; overflow: hidden;">
-                    <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
+                <div class="json-wrapper">
+                    <nav class='bullet__wrapper js-json-menu'>
+                        <span class='bullet__title'>JSON</span>
+                        <span class='bullet js-host-json__bullet'>
+                            <span class='bullet__icon js-host-json__icon'></span>
+                            <span class='bullet__description js-host-json__description'>Hide</span>
+                        </span>
+                    </nav>
+                    <div id="jsonEditorHost" style="flex: 0 0 auto; display: flex; height: 300px; overflow: hidden;">
+                        <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
+                    </div>
                 </div>
             </div>
             <div class="aside-panel js-aside-panel"></div>
