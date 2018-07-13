@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as ts from "typescript";
+import * as prepend from "prepend-file";
 
 const fileName = 'card-elements.ts';
 let sourceFile = ts.createSourceFile(fileName, fs.readFileSync(fileName).toString(), ts.ScriptTarget.ES2015, /*setParentNodes */ true);
@@ -11,12 +12,18 @@ const preserve_for_prolog = (node: ts.Node) => {
 	prolog += node.getFullText();
 };
 
-const create_prolog = () => {
-	return prolog +
+const create_prolog = (exclude_file: string) => {
+	const rex = new RegExp("^.*'\\.\\/" + exclude_file.substr(0, exclude_file.length - 3) + "'.*$", "gm");
+	
+	let result = prolog +
 		"\nimport {" +
 		declared_in_utility.join(",") +
 		"} from './utility'\n\n";
+		
+	return result.replace(rex, "");
 };
+
+let files_created = ["utility.ts"];
 
 let modules_created: {[key: string]: string} = {};
 const move_to_its_own_file = (cl: ts.Node) => {
@@ -26,20 +33,18 @@ const move_to_its_own_file = (cl: ts.Node) => {
 	let is_export = (cl.modifiers && cl.modifiers[0].kind == ts.SyntaxKind.ExportKeyword);
 	let module_name = declared_name.toLowerCase();
 	let file_name = module_name + ".ts";
-	fs.writeFileSync(file_name, create_prolog() + (is_export ? "" : "export ") + cl.getFullText());
+	fs.writeFileSync(file_name, (is_export ? "" : "\n\nexport ") + cl.getFullText().trim());
+	files_created.push(file_name);
 	modules_created[declared_name] = file_name;
 	prolog += "import {" + declared_name + "} from './" + module_name + "'\n";
 };
 
-let prologued_utilty = false;
 const move_to_utility_file = (cl: ts.Node) => {
-	if (!prologued_utilty) {
-		fs.writeFileSync("utility.ts", prolog + "\n\n");
-		prologued_utilty = true;
-	}
 	if (ts.isVariableStatement(cl)) {
 		let stmt = <ts.VariableStatement>cl;
-		declared_in_utility.concat(stmt.declarationList.declarations.map(vd => vd.name.getFullText().trim()));
+		declared_in_utility = declared_in_utility.concat(stmt.declarationList.declarations.map(vd => {
+			return vd.name.getFullText().trim();
+		}));
 	}
 	else {
 		let declaration_node = <ts.DeclarationStatement>cl;
@@ -51,7 +56,8 @@ const move_to_utility_file = (cl: ts.Node) => {
 			console.log(declaration_node.getFullText());
 		}
 	}
-	fs.appendFileSync("utility.ts", cl.getFullText());
+	let is_export = (cl.modifiers && cl.modifiers[0].kind == ts.SyntaxKind.ExportKeyword);	
+	fs.appendFileSync("utility.ts",  (is_export ? "" : "\n\nexport ") + cl.getFullText().trim());
 };
 
 const ignore = () => null;
@@ -85,3 +91,17 @@ sourceFile.forEachChild(node => {
 	strategy(node);
 });
 
+// second pass - prolog
+files_created.forEach(fname => {
+	prepend.sync(fname, create_prolog(fname));
+});
+
+// final pass - rewrite global import
+const contents = files_created.map(f => "export * from \"./" + f.substr(0, f.length-3) + "\";").join("\n") + 
+"\
+export * from \"./enums\";\n\
+export * from \"./host-config\";\n\
+export { getEnumValueOrDefault } from \"./utils\";\n\
+export { IAdaptiveCard, ICardElement } from \"./schema\";";
+
+fs.writeFileSync("adaptivecards.ts", contents);
