@@ -27,16 +27,6 @@ function monacoEditorLoaded() {
         function (e) {
             scheduleCardRefresh();
         });
-    const jsonSectlionTitle = `
-    <div class='bullet__wrapper'>
-        <span class='bullet__title'>JSON</span>
-        <span class='bullet js-host-json__bullet'>
-            <span class='bullet__icon js-host-json__icon'></span>
-            <span class='bullet__description js-host-json__description'>Hide</span>
-        </span>
-    </div>
-    `;
-    document.querySelector(".monaco-editor").insertAdjacentHTML("afterbegin", jsonSectlionTitle);
     isMonacoEditorLoaded = true;
     updateJsonFromCard();
     app.toggleHostJsonPanel();
@@ -568,16 +558,19 @@ class DesignerApp {
     private toggleClass(): void {
         const jsonEditorPanel = document.getElementById("jsonEditorHost");
         const jsonBulletDescription = document.querySelector(".js-host-json__description") as HTMLElement;
+        const jsonMenu = document.querySelector(".js-json-menu") as HTMLElement;
 
         if (jsonEditorPanel.classList.contains("is-closed")) {
             jsonEditorPanel.classList.remove("is-closed");
             jsonEditorPanel.style.height = "300px";
             jsonBulletDescription.style.display = "block";
+            jsonMenu.style.marginBottom = "10px";
             return;
         }
         jsonEditorPanel.classList.add("is-closed");
-        jsonEditorPanel.style.height = "52px";
+        jsonEditorPanel.style.height = "0";
         jsonBulletDescription.style.display = "none";
+        jsonMenu.style.marginBottom = "0";
     }
 
     public toggleHostJsonPanel(): void {
