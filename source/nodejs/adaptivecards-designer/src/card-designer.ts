@@ -2121,21 +2121,6 @@ export class CardDesigner {
         }
     }
 
-    public setSelectedPeerById(id: string) {
-        let selected = this._allPeers.find(peer => {
-            let elementId;
-            if (peer instanceof ActionPeer) {
-                elementId = peer ? peer.action.elementId : "";
-            } else if (peer instanceof CardElementPeer) {
-                elementId = peer ? peer.cardElement.elementId : "";
-            }
-            return elementId === id;
-        });
-        if (selected) {
-            this.setSelectedPeer(selected);
-        }
-    }
-
     private setSelectedPeer(value: DesignerPeer) {
         if (this._selectedPeer != value) {
             if (this._selectedPeer) {
