@@ -416,6 +416,16 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    @Override
+    public void onMediaPlay(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
+    {
+    }
+
+    @Override
+    public void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
+    {
+    }
+
     public void showToast(String text, int duration)
     {
         class RunnableExtended implements Runnable

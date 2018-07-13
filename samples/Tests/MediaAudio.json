@@ -1,0 +1,36 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This is a media element which specifies a poster:",
+			"wrap": true
+		},
+		{
+			"type": "Media",
+			"poster": "http://adaptivecards.io/content/cats/1.png",
+			"sources": [
+				{
+					"mimeType": "audio/mp4",
+					"url": "https://www.mfiles.co.uk/mp3-downloads/chopin-nocturne-op9-no2.mp3"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "This is a media element which doesn't specify a poster. It will use the poster from the host config if present:",
+			"wrap": true
+		},
+		{
+			"type": "Media",
+			"sources": [
+				{
+					"mimeType": "audio/mp3",
+					"url": "https://www.mfiles.co.uk/mp3-downloads/chopin-nocturne-op9-no2.mp3"
+				}
+			]
+		}
+	]
+}
