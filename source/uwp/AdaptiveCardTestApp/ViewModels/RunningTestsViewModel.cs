@@ -306,6 +306,9 @@ namespace AdaptiveCardTestApp.ViewModels
         private static async Task WaitOnAllImagesAsync(UIElement el)
         {
             int countRemaining = 0;
+            int loops = 0;
+            const int maxLoops = 500;
+
 
             ExceptionRoutedEventHandler failedHandler = new ExceptionRoutedEventHandler(delegate
             {
@@ -333,9 +336,10 @@ namespace AdaptiveCardTestApp.ViewModels
                 img.ImageOpened += openedHandler;
             }
 
-            while (countRemaining > 0)
+            while (countRemaining > 0 && loops < maxLoops)
             {
                 await Task.Delay(10);
+                loops++;
             }
         }
 
