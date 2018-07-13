@@ -9,14 +9,6 @@
 
 @protocol ACOIResourceResolver
 
-- (UIImage *)resolveImageResource:(NSString *)url;
-/*
-typedef UIImage* (^ImageLoadBlock)(NSString *urlString);
+- (UIImage *)resolveImageResource:(NSURL *)url;
 
-@interface ACOIResourceResolver:NSObject
-
-- (instancetype)init;
-- (ImageLoadBlock)getResolverBlockForScheme:(NSString *)scheme;
-- (void)setResolverBlock:(ImageLoadBlock)resolver scheme:(NSString *)scheme;
-*/
 @end    

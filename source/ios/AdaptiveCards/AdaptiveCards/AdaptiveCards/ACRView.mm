@@ -27,7 +27,7 @@
 #import "FactSet.h"
 
 using namespace AdaptiveCards;
-typedef UIImage* (^ImageLoadBlock)(NSString *urlString);
+typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
 @implementation ACRView
 {
@@ -355,10 +355,9 @@ typedef UIImage* (^ImageLoadBlock)(NSString *urlString);
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
     ImageLoadBlock imageloadblock = nil;
     if(!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {
-        imageloadblock = ^(NSString *urlString){
-            NSURL *nsurl = [NSURL URLWithString:urlString];
+        imageloadblock = ^(NSURL *url){
             // download image
-            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:nsurl]];
+            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
             return img;
         };
     }
@@ -367,9 +366,9 @@ typedef UIImage* (^ImageLoadBlock)(NSString *urlString);
         ^{
             UIImage *img = nil;
             if(imageloadblock) {
-                img = imageloadblock(nSUrlStr);
+                img = imageloadblock(url);
             } else if(imageResourceResolver){
-                img = [imageResourceResolver resolveImageResource: nSUrlStr];
+                img = [imageResourceResolver resolveImageResource:url];
             }
 
             dispatch_sync(self->_serial_queue, ^{self->_imageViewMap[nSUrlStr] = img;});

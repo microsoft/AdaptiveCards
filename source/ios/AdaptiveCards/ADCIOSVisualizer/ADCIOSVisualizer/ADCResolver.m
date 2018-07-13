@@ -10,10 +10,9 @@
 
 @implementation ADCResolver
 
-- (UIImage *)resolveImageResource:(NSString *)url { 
-    NSURL *nsurl = [NSURL URLWithString:url];
+- (UIImage *)resolveImageResource:(NSURL *)url { 
     // download image
-    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:nsurl]];
+    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     return img;
 }
 

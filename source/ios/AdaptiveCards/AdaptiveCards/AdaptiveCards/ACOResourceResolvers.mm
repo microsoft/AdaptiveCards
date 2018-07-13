@@ -23,18 +23,12 @@
 
 - (void)setResourceResolver:(NSObject<ACOIResourceResolver> *)resolver scheme:(NSString *)scheme
 {
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self->_resolvers[scheme] = resolver;
-    });
+    self->_resolvers[scheme] = resolver;
 }
 
 - (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme
 {
-    __block NSObject<ACOIResourceResolver> *resolver = nil;
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        resolver = self->_resolvers[scheme];
-    });
-    return resolver;
+    return self->_resolvers[scheme];
 }
 
 @end
