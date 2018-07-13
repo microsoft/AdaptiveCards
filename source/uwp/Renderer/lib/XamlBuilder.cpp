@@ -2867,15 +2867,6 @@ AdaptiveNamespaceStart
             // Make the media element collapsed until the user clicks
             THROW_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
 
-            // Add an event for media ended
-            EventRegistrationToken mediaEndedToken;
-            THROW_IF_FAILED(mediaElement->add_MediaEnded(Callback<IRoutedEventHandler>([mediaInvoker, adaptiveMedia](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-            {
-                RETURN_IF_FAILED(mediaInvoker->SendMediaEndedEvent(adaptiveMedia.Get()));
-
-                return S_OK;
-            }).Get(), &mediaEndedToken));
-
             XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
         }
 

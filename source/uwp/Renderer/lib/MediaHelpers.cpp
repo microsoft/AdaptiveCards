@@ -366,14 +366,13 @@ HRESULT HandleMediaClick(
         EventRegistrationToken mediaOpenedToken;
         THROW_IF_FAILED(mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
         {
-            RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
             RETURN_IF_FAILED(mediaElement->Play());
             return S_OK;
         }).Get(), &mediaOpenedToken));
     }
     else
     {
-        RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
+        RETURN_IF_FAILED(mediaInvoker->SendMediaClickedEvent(adaptiveMedia));
     }
 
     return S_OK;
