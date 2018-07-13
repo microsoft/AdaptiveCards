@@ -107,6 +107,10 @@
     padding: 6px 12px;
 }
 
+.json-wrapper .bullet__wrapper {
+    margin-bottom: 10px;
+}
+
 .bullet__title {
     color: #000000;
     white-space: nowrap;
@@ -165,10 +169,7 @@
 
 .aside.is-toggled {
     flex-basis: 29px;
-}
-
-.default-ac-container:last-of-type {
-    padding-left: 6px;
+    overflow: hidden;
 }
 
 .is-hidden {
@@ -572,6 +573,7 @@ button.treeview__icon:focus {
     padding-right: 6px !important;
     flex: 1 1 140px !important;
     margin-left: 10px;
+    max-width: 34% !important;
 }
 
 .default-ac-columnSet.wrapper .default-ac-container:nth-child(3) {
@@ -587,4 +589,9 @@ button.treeview__icon:focus {
 
 .content {
     overflow-x: hidden !important;
+}
+
+.monaco-editor,
+.overflow-guard {
+    width: 100% !important;
 }
