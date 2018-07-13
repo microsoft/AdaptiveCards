@@ -20,6 +20,7 @@ using namespace ABI::Windows::Storage::Streams;
 const DOUBLE c_playIconSize = 30;
 const DOUBLE c_playIconCornerRadius = 5;
 const DOUBLE c_playIconOpacity = .5;
+const DOUBLE c_audioHeight = 100;
 
 void GetMediaPosterAsImage(
     IAdaptiveRenderContext* renderContext,
@@ -316,12 +317,13 @@ HRESULT HandleMediaClick(
     HSTRING mimeType,
     IAdaptiveMediaEventInvoker* mediaInvoker)
 {
+    ComPtr<IMediaElement> localMediaElement{ mediaElement };
+
     // When the user clicks: hide the poster, show the media element, open and play the media
     if (mediaElement)
     {
         RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
 
-        ComPtr<IMediaElement> localMediaElement{ mediaElement };
         ComPtr<IUIElement> mediaAsUIElement;
         RETURN_IF_FAILED(localMediaElement.As(&mediaAsUIElement));
         RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
@@ -370,8 +372,23 @@ HRESULT HandleMediaClick(
         EventRegistrationToken mediaOpenedToken;
         THROW_IF_FAILED(mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
         {
+            boolean audioOnly;
+            RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
+
+            ComPtr<IImageSource> posterSource;
+            RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
+
+            if (audioOnly && posterSource == nullptr)
+            {
+                // If this is audio only and there's no poster, set the height so that the 
+                // controls are visible.
+                ComPtr<IFrameworkElement> mediaAsUiElement;
+                RETURN_IF_FAILED(localMediaElement.As(&mediaAsUiElement));
+                RETURN_IF_FAILED(mediaAsUiElement->put_Height(c_audioHeight));
+            }
+
             RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
-            RETURN_IF_FAILED(mediaElement->Play());
+            RETURN_IF_FAILED(localMediaElement->Play());
             return S_OK;
         }).Get(), &mediaOpenedToken));
     }
