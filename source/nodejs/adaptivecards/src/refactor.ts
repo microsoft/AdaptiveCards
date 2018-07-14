@@ -96,7 +96,7 @@ files_created.forEach(fname => {
 	prepend.sync(fname, create_prolog(fname));
 });
 
-// final pass - rewrite global import
+// third pass - rewrite imports
 const contents = files_created.map(f => "export * from \"./" + f.substr(0, f.length-3) + "\";").join("\n") + 
 "\
 export * from \"./enums\";\n\
@@ -105,3 +105,4 @@ export { getEnumValueOrDefault } from \"./utils\";\n\
 export { IAdaptiveCard, ICardElement } from \"./schema\";";
 
 fs.writeFileSync("adaptivecards.ts", contents);
+fs.writeFileSync("card-elements.ts", contents);

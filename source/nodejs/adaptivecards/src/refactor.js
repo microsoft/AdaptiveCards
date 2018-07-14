@@ -35,9 +35,7 @@ var move_to_its_own_file = function (cl) {
 var move_to_utility_file = function (cl) {
     if (ts.isVariableStatement(cl)) {
         var stmt = cl;
-        console.log("got a declaration for " + stmt.declarationList.declarations.length);
         declared_in_utility = declared_in_utility.concat(stmt.declarationList.declarations.map(function (vd) {
-            console.log(vd.name.getFullText().trim());
             return vd.name.getFullText().trim();
         }));
     }
@@ -83,7 +81,7 @@ sourceFile.forEachChild(function (node) {
 files_created.forEach(function (fname) {
     prepend.sync(fname, create_prolog(fname));
 });
-// final pass - rewrite global import
+// third pass - rewrite imports
 var contents = files_created.map(function (f) { return "export * from \"./" + f.substr(0, f.length - 3) + "\";"; }).join("\n") +
     "\
 export * from \"./enums\";\n\
@@ -91,3 +89,4 @@ export * from \"./host-config\";\n\
 export { getEnumValueOrDefault } from \"./utils\";\n\
 export { IAdaptiveCard, ICardElement } from \"./schema\";";
 fs.writeFileSync("adaptivecards.ts", contents);
+fs.writeFileSync("card-elements.ts", contents);
