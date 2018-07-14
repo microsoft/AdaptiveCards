@@ -53,15 +53,22 @@ var move_to_utility_file = function (cl) {
     fs.appendFileSync("utility.ts", (is_export ? "" : "\n\nexport ") + cl.getFullText().trim());
 };
 var ignore = function () { return null; };
-var show_error = function (node) { console.log("I have no rule for " + node.kind); process.abort(); };
+var kill_this = function (text) { return function (node) {
+    console.log("Found the following node:\n\t" + node.getFullText().trim().substr(0, 50));
+    console.log("So I have to abort: " + text + ".\n");
+    process.abort();
+}; };
+var show_error = kill_this("I have no rule for it");
 // 229 - ClassDeclaration - move to its own file
 // 238 - ImportDeclaration - preserve then copy on every file
+// 243 - ExportAssignment - preserve then copy on every file
 // 228 - FunctionDeclaration - move to Utilty file
 // 231 - TypeAliasDeclaration - move to utilty
 // 208 - VariableStatement - move to Utilty file
 // 230 - InterfaceDeclaration - move to its own file?
 // 232 - EnumDeclaration - move to its own file?
 // 1 - EndOfFileToken - do nothing
+// 244 - ExportDeclaration - stop (an export declaration -export another module- means it's refactored)
 var kind_to_strategy = {
     229: move_to_its_own_file,
     230: move_to_its_own_file,
@@ -70,7 +77,9 @@ var kind_to_strategy = {
     228: move_to_utility_file,
     208: move_to_utility_file,
     231: move_to_utility_file,
-    238: preserve_for_prolog
+    238: preserve_for_prolog,
+    243: preserve_for_prolog,
+    244: kill_this("This means the refactoring is probably done already")
 };
 // first pass - process all
 sourceFile.forEachChild(function (node) {
