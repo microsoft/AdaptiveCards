@@ -386,14 +386,13 @@ HRESULT HandleMediaClick(
                 RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
             }
 
-            RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
             RETURN_IF_FAILED(localMediaElement->Play());
             return S_OK;
         }).Get(), &mediaOpenedToken));
     }
     else
     {
-        RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
+        RETURN_IF_FAILED(mediaInvoker->SendMediaClickedEvent(adaptiveMedia));
     }
 
     return S_OK;
