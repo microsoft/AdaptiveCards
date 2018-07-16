@@ -236,7 +236,6 @@ void GetMediaSource(
     LPWSTR supportedMimeTypes[] =
     {
         L"video/mp4",
-        L"audio/mp4",
         L"audio/mpeg",
     };
 
@@ -265,7 +264,7 @@ void GetMediaSource(
         {
             THROW_IF_FAILED(WindowsCompareStringOrdinal(mimeType.Get(), HStringReference(supportedMimeTypes[i]).Get(), &isSupported));
 
-            if (isSupported)
+            if (isSupported == 0)
             {
                 selectedSource = currentSource;
                 break;
@@ -317,12 +316,12 @@ HRESULT HandleMediaClick(
     HSTRING mimeType,
     IAdaptiveMediaEventInvoker* mediaInvoker)
 {
-    ComPtr<IMediaElement> localMediaElement{ mediaElement };
-
     // When the user clicks: hide the poster, show the media element, open and play the media
     if (mediaElement)
     {
-        RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+		ComPtr<IMediaElement> localMediaElement{ mediaElement };
+
+		RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
 
         ComPtr<IUIElement> mediaAsUIElement;
         RETURN_IF_FAILED(localMediaElement.As(&mediaAsUIElement));
@@ -382,9 +381,9 @@ HRESULT HandleMediaClick(
             {
                 // If this is audio only and there's no poster, set the height so that the 
                 // controls are visible.
-                ComPtr<IFrameworkElement> mediaAsUiElement;
-                RETURN_IF_FAILED(localMediaElement.As(&mediaAsUiElement));
-                RETURN_IF_FAILED(mediaAsUiElement->put_Height(c_audioHeight));
+                ComPtr<IFrameworkElement> mediaAsFrameworkElement;
+                RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
+                RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
             }
 
             RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
