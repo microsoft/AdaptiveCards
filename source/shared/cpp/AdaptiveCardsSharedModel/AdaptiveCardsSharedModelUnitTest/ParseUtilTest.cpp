@@ -167,12 +167,15 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             auto jsonObj = s_GetValidJsonObject();
             Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetCardElementType(jsonObj); });
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObj) == CardElementType::Unsupported);
 
             auto jsonObjWithInvalidType = s_GetJsonObjectWithType("Invalid"s);
             Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithInvalidType) == CardElementType::Unsupported);
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithInvalidType) == CardElementType::Unsupported);
 
             auto jsonObjWithValidType = s_GetJsonObjectWithType("AdaptiveCard"s);
             Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithValidType) == CardElementType::AdaptiveCard);
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithValidType) == CardElementType::AdaptiveCard);
         }
 
         TEST_METHOD(GetIntTests)
@@ -188,6 +191,38 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto jsonObjWithValidType = s_GetJsonObjectWithAccent("1"s);
             auto actualValue = ParseUtil::GetInt(jsonObjWithValidType, AdaptiveCardSchemaKey::Accent, 0, false);
             Assert::AreEqual(actualValue, 1);
+        }
+
+        TEST_METHOD(GetUIntTests)
+        {
+            auto jsonObj = s_GetValidJsonObject();
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetUInt(jsonObj, AdaptiveCardSchemaKey::Accent, 0, true); });
+            auto defaultValue = ParseUtil::GetUInt(jsonObj, AdaptiveCardSchemaKey::Accent, 0, false);
+            Assert::AreEqual(defaultValue, 0U);
+
+            auto jsonObjWithInvalidType = s_GetJsonObjectWithAccent("\"Invalid\""s);
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetUInt(jsonObjWithInvalidType, AdaptiveCardSchemaKey::Accent, 0, true); });
+
+            auto jsonObjWithNegativeNumber = s_GetJsonObjectWithAccent("-1"s);
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetUInt(jsonObjWithNegativeNumber, AdaptiveCardSchemaKey::Accent, 0, true); });
+
+            auto jsonObjWithValidType = s_GetJsonObjectWithAccent("1"s);
+            auto actualValue = ParseUtil::GetUInt(jsonObjWithValidType, AdaptiveCardSchemaKey::Accent, 0, false);
+            Assert::AreEqual(actualValue, 1U);
+        }
+
+        TEST_METHOD(GetStringTests)
+        {
+            auto jsonObj = s_GetValidJsonObject();
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetString(jsonObj, AdaptiveCardSchemaKey::Accent, true); });
+            Assert::AreEqual(""s, ParseUtil::GetString(jsonObj, AdaptiveCardSchemaKey::Accent, false));
+
+            auto jsonObjWithIntType = s_GetJsonObjectWithAccent("1"s);
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetString(jsonObjWithIntType, AdaptiveCardSchemaKey::Accent, true); });
+
+            auto jsonObjWithValidType = s_GetJsonObjectWithAccent("\"Valid\""s);
+            auto actualString = ParseUtil::GetString(jsonObjWithValidType, AdaptiveCardSchemaKey::Accent, true);
+            Assert::AreEqual(actualString, "Valid"s);
         }
 
         TEST_METHOD(GetJsonStringTests)
