@@ -62,7 +62,7 @@ const CGFloat accessoryViewWidth = 8.0f;
         } else {
             NSString *firstChoice = nil;
             if(!_choiceSetInput->GetChoices().empty()){
-                firstChoice = [NSString stringWithCString:(_choiceSetInput->GetChoices().begin()[0])->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+                firstChoice = [NSString stringWithCString:(_choiceSetInput->GetChoices()[0])->GetTitle().c_str() encoding:NSUTF8StringEncoding];
                 _defaultString = firstChoice;
             } else {
                 _defaultString = @"";
