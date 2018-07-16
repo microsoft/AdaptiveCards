@@ -592,8 +592,14 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
     
-    addChild(peer: DesignerPeer) {
-        this._children.push(peer);
+    insertChild(peer: DesignerPeer, index: number = -1) {
+        if (index == -1) {
+            this._children.push(peer);
+        }
+        else {
+            this._children.splice(index, 0, peer);
+        }
+
         peer.parent = this;
 
         this.peerAdded(peer);
@@ -917,12 +923,12 @@ export class CardElementPeer extends DesignerPeer {
 
         if (cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < cardElement.getItemCount(); i++) {
-                this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, cardElement.getItemAt(i)));
+                this.insertChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, cardElement.getItemAt(i)));
             }            
         }
 
         for (var i = 0; i < this.cardElement.getActionCount(); i++) {
-            this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, cardElement.getActionAt(i)));
+            this.insertChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, cardElement.getActionAt(i)));
         }
     }
 
@@ -981,7 +987,7 @@ export class CardElementPeer extends DesignerPeer {
                     }
                 }
     
-                this.addChild(peer);
+                this.insertChild(peer, peer.cardElement.index);
                 this.changed(false);
 
                 return true;
@@ -1128,7 +1134,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
-        this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, action));
+        this.insertChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, action));
     }
 
     protected internalRemove(): boolean {
@@ -1303,7 +1309,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
                         this.cardElement.addColumn(column);
 
-                        this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, column));
+                        this.insertChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, column));
                     }
                 })
             );
@@ -1383,7 +1389,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
-        this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, action));
+        this.insertChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, action));
     }
 
     protected internalAddCommands(commands: Array<PeerCommand>) {
@@ -1467,7 +1473,7 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
 
                         this.cardElement.addImage(newImage);
 
-                        this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, newImage));
+                        this.insertChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, newImage));
                     }
                 })
         );
@@ -2340,10 +2346,10 @@ export class CardDesigner {
                 var parentPeer = this.findActionPeer(action);
 
                 if (parentPeer) {
-                    parentPeer.addChild(peer);
+                    parentPeer.insertChild(peer);
                 }
                 else {
-                    this._rootPeer.addChild(peer);
+                    this._rootPeer.insertChild(peer);
                 }
             }
             else {
