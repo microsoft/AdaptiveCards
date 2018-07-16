@@ -67,10 +67,7 @@ using namespace AdaptiveCards;
     ACRColumnView *verticalView = containingView;
 
     if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
-        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)adaptiveCard.get()];
-        NSString *key = [number stringValue];
-        NSString *urlStr = [NSString stringWithCString:adaptiveCard->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
-        [rootView loadImage:urlStr key:key];
+        [rootView loadImage:adaptiveCard->GetBackgroundImage()];
     }
     if(!body.empty()) {
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
