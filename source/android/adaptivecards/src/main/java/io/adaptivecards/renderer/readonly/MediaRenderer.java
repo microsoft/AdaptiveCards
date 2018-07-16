@@ -36,7 +36,7 @@ public class MediaRenderer extends BaseCardElementRenderer
     {
     }
 
-    public static  MediaRenderer getInstance()
+    public static MediaRenderer getInstance()
     {
         if(s_instance == null)
         {
@@ -47,11 +47,10 @@ public class MediaRenderer extends BaseCardElementRenderer
 
     private class PosterOnClickListener implements View.OnClickListener
     {
-
         public PosterOnClickListener(ImageView poster, ImageView playButton, VideoView videoView, boolean allowedInlinePlayback, BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler)
         {
             m_poster = poster;
-            m_playButon = playButton;
+            m_playButton = playButton;
             m_videoView = videoView;
             m_allowedInlinePlayback = allowedInlinePlayback;
 
@@ -75,17 +74,16 @@ public class MediaRenderer extends BaseCardElementRenderer
                     // If it's a video, hide the poster
                     m_poster.setVisibility(View.GONE);
                 }
-
                 m_videoView.start();
                 m_videoView.setVisibility(View.VISIBLE);
-                m_playButon.setVisibility(View.GONE);
+                m_playButton.setVisibility(View.GONE);
             }
 
             m_cardActionHandler.onMediaPlay(m_cardMediaElement, m_renderedAdaptiveCard);
         }
 
         private ImageView m_poster;
-        private ImageView m_playButon;
+        private ImageView m_playButton;
         private VideoView m_videoView;
         private boolean m_allowedInlinePlayback = true;
 
@@ -228,7 +226,8 @@ public class MediaRenderer extends BaseCardElementRenderer
         VideoViewResizeable videoView = new VideoViewResizeable(context);
         videoView.setTag(media);
 
-        for(int i = 0; i < media.GetSources().size(); i++)
+        long sourcesSize = media.GetSources().size();
+        for(int i = 0; i < sourcesSize; i++)
         {
             String mediaUrl = media.GetSources().get(i).GetUrl();
             if(onlineFileExists(mediaUrl))

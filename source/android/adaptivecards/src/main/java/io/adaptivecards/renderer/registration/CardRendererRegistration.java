@@ -46,8 +46,8 @@ public class CardRendererRegistration
         registerRenderer(CardElementTypeToString(CardElementType.FactSet), FactSetRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.Image), ImageRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.ImageSet), ImageSetRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.Media), MediaRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
 
         // Register Input Renderers
         registerRenderer(CardElementTypeToString(CardElementType.TextInput), TextInputRenderer.getInstance());
