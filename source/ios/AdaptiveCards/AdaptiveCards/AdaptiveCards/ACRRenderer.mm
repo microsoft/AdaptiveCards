@@ -153,7 +153,7 @@ using namespace AdaptiveCards;
         contentWidth = maxWidth;
     }
     childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
-    containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight);
+    containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight + spacing);
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
     [containingView addSubview:childview];
     [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
