@@ -228,6 +228,7 @@
             [self.curView removeFromSuperview];
 
         self.curView = ad;
+        self.curView.actionsetView.showsHorizontalScrollIndicator = NO;
 
         [_scrView addSubview:self.curView];
         UIView *view = self.curView;

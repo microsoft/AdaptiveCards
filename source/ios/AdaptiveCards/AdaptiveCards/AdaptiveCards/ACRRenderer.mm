@@ -121,6 +121,7 @@ using namespace AdaptiveCards;
 
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
+    rootView.actionsetView = containingView;
     [superview addArrangedSubview:containingView];
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = [config getHostConfig]->actions.buttonSpacing, maxWidth = 0, maxHeight = 0;
     for(const auto &elem:elems){
