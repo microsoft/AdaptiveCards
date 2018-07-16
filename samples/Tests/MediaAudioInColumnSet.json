@@ -44,6 +44,10 @@
                                     "url": "https://www.mfiles.co.uk/mp3-downloads/chopin-nocturne-op9-no2.mp3"
                                 }
                             ]
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "This text is here to check that we are not blocking the text below"
                         }
                     ]
                 }

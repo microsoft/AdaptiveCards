@@ -6,12 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -24,6 +21,7 @@ import java.net.URLConnection;
 
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSize;
@@ -67,16 +65,17 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             if(m_allowedInlinePlayback)
             {
-                if (((VideoViewResizeable) m_videoView).containsVideo())
-                {
-                    // If it's a video, hide the poster
-                    m_poster.setVisibility(View.GONE);
-                }
-                else
+                if(((VideoViewResizeable) m_videoView).isAudioOnly())
                 {
                     // if it's audio, just move the video to the top
                     m_videoView.setZOrderOnTop(true);
                 }
+                else
+                {
+                    // If it's a video, hide the poster
+                    m_poster.setVisibility(View.GONE);
+                }
+
                 m_videoView.start();
                 m_videoView.setVisibility(View.VISIBLE);
                 m_playButon.setVisibility(View.GONE);
@@ -95,10 +94,10 @@ public class MediaRenderer extends BaseCardElementRenderer
         private ICardActionHandler m_cardActionHandler;
     }
 
-    private class VideoViewOnCompletionListener implements MediaPlayer.OnCompletionListener
+    private class MediaOnCompletionListener implements MediaPlayer.OnCompletionListener
     {
 
-        VideoViewOnCompletionListener(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler)
+        MediaOnCompletionListener(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler)
         {
             m_cardMediaElement = mediaElement;
             m_renderedAdaptiveCard = renderedAdaptiveCard;
@@ -114,6 +113,23 @@ public class MediaRenderer extends BaseCardElementRenderer
         private BaseCardElement m_cardMediaElement;
         private RenderedAdaptiveCard m_renderedAdaptiveCard;
         private ICardActionHandler m_cardActionHandler;
+    }
+
+    private class MediaOnPreparedListener implements MediaPlayer.OnPreparedListener
+    {
+        public MediaOnPreparedListener(MediaController mediaController)
+        {
+            m_mediaController = mediaController;
+        }
+
+        @Override
+        public void onPrepared(MediaPlayer mp)
+        {
+            m_mediaController.show(0);
+            m_mediaController.requestLayout();
+        }
+
+        private MediaController m_mediaController;
     }
 
     class OnlineFileCheckerTask extends AsyncTask<String, Void, Boolean>
@@ -135,70 +151,103 @@ public class MediaRenderer extends BaseCardElementRenderer
 
     }
 
-    private View renderPoster(RenderedAdaptiveCard renderedCard,
-                              Context context,
-                              FragmentManager fragmentManager,
-                              ViewGroup viewGroup,
-                              Media media,
-                              ICardActionHandler cardActionHandler,
-                              HostConfig hostConfig,
-                              ContainerStyle containerStyle,
-                              VideoView videoView)
+    private ImageView renderPoster(
+            RenderedAdaptiveCard renderedCard,
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            Media media,
+            ICardActionHandler cardActionHandler,
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
     {
-        RelativeLayout posterLayout = new RelativeLayout(context);
+        ImageView posterView = null;
         if(!(media.GetPoster().isEmpty()) || !(hostConfig.getMedia().getDefaultPoster().isEmpty()))
         {
-            // Draw poster in layout
+            // Draw poster in posterLayout
             Image poster = new Image();
 
-            if(!media.GetPoster().isEmpty())
-            {
+            if (!media.GetPoster().isEmpty()) {
                 poster.SetUrl(media.GetPoster());
-            }
-            else
-            {
+            } else {
                 poster.SetUrl(hostConfig.getMedia().getDefaultPoster());
             }
 
             poster.SetImageSize(ImageSize.Auto);
-            ImageView posterView = (ImageView)ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, posterLayout, poster, cardActionHandler, hostConfig, containerStyle);
+            posterView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, hostConfig, containerStyle);
 
             RelativeLayout.LayoutParams posterLayoutParams = (RelativeLayout.LayoutParams) posterView.getLayoutParams();
             posterLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
             posterView.setLayoutParams(posterLayoutParams);
+        }
+        return posterView;
+    }
 
-            // Draw play button on top of poster
-            ImageView playButtonView;
-            String playButtonUrl = hostConfig.getMedia().getPlayButton();
+    private ImageView renderPlayButton(
+            RenderedAdaptiveCard renderedCard,
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            ICardActionHandler cardActionHandler,
+            HostConfig hostConfig,
+            ContainerStyle containerStyle)
+    {
+        // Draw play button on top of poster (or instead of the poster if no poster defined)
+        ImageView playButtonView;
+        String playButtonUrl = hostConfig.getMedia().getPlayButton();
+        if(!playButtonUrl.isEmpty())
+        {
+            Image playButton = new Image();
+            playButton.SetUrl(playButtonUrl);
+            playButton.SetImageSize(ImageSize.Auto);
 
-            if(!playButtonUrl.isEmpty())
-            {
-                Image playButton = new Image();
-                playButton.SetUrl(playButtonUrl);
-                playButton.SetImageSize(ImageSize.Auto);
+            playButtonView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, hostConfig, containerStyle);
+        }
+        else
+        {
+            Resources resources = context.getResources();
+            Bitmap playButton = BitmapFactory.decodeResource(resources, android.R.drawable.ic_media_play);
 
-                playButtonView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, posterLayout, playButton, cardActionHandler, hostConfig, containerStyle);
-            }
-            else
-            {
-                Resources resources = context.getResources();
-                Bitmap playButton = BitmapFactory.decodeResource(resources, android.R.drawable.ic_media_play);
-
-                playButtonView = new ImageView(context);
-                playButtonView.setImageBitmap(playButton);
-                posterLayout.addView(playButtonView);
-            }
-
-            RelativeLayout.LayoutParams playButtonLayoutParams = (RelativeLayout.LayoutParams) playButtonView.getLayoutParams();
-            playButtonLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-            playButtonView.setLayoutParams(playButtonLayoutParams);
-
-            posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, videoView, hostConfig.getMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler));
-            videoView.setVisibility(View.GONE);
+            playButtonView = new ImageView(context);
+            playButtonView.setImageBitmap(playButton);
+            viewGroup.addView(playButtonView);
         }
 
-        viewGroup.addView(posterLayout);
-        return posterLayout;
+        RelativeLayout.LayoutParams playButtonLayoutParams = (RelativeLayout.LayoutParams) playButtonView.getLayoutParams();
+        playButtonLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        playButtonView.setLayoutParams(playButtonLayoutParams);
+
+        return playButtonView;
+    }
+
+    private VideoViewResizeable renderMediaPlayer(
+            Context context,
+            ViewGroup viewGroup,
+            Media media)
+    {
+        VideoViewResizeable videoView = new VideoViewResizeable(context);
+        videoView.setTag(media);
+
+        for(int i = 0; i < media.GetSources().size(); i++)
+        {
+            String mediaUrl = media.GetSources().get(i).GetUrl();
+            if(onlineFileExists(mediaUrl))
+            {
+                videoView.setVideoURI(mediaUrl);
+                break;
+            }
+        }
+
+        RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        videoViewLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        videoView.setLayoutParams(videoViewLayoutParams);
+
+        videoView.setVisibility(View.GONE);
+        viewGroup.addView(videoView);
+
+        return videoView;
     }
 
     @Override
@@ -226,57 +275,46 @@ public class MediaRenderer extends BaseCardElementRenderer
         setSpacingAndSeparator(context, viewGroup, media.GetSpacing(), media.GetSeparator(), hostConfig, true);
 
         LinearLayout mediaLayout = new LinearLayout(context);
-        mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        mediaLayout.setOrientation(LinearLayout.VERTICAL);
-
-        VideoViewResizeable videoView = new VideoViewResizeable(context);
-        videoView.setTag(media);
-
-        RelativeLayout posterLayout = (RelativeLayout)renderPoster(renderedCard, context, fragmentManager, mediaLayout, media, cardActionHandler, hostConfig, containerStyle, videoView);
-        ImageView posterImage = null;
-
-        if(posterLayout != null)
+        if( media.GetHeight() == HeightType.Stretch )
         {
-            posterImage = (ImageView) posterLayout.getChildAt(0);
-        }
-
-        for(int i = 0; i < media.GetSources().size(); i++)
-        {
-            String mediaUrl = media.GetSources().get(i).GetUrl();
-            if(onlineFileExists(mediaUrl))
-            {
-                videoView.setVideoURI(mediaUrl);
-                break;
-            }
-        }
-
-        RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        videoViewLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        videoView.setLayoutParams(videoViewLayoutParams);
-
-        MediaController mediaController = new MediaController(context);
-        videoView.setMediaController(mediaController);
-
-        if(videoView.containsVideo())
-        {
-            mediaController.setAnchorView(videoView);
+            mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {
-            mediaController.show();
-            mediaController.setAnchorView(posterImage);
+            mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
+        mediaLayout.setOrientation(LinearLayout.VERTICAL);
+
+        RelativeLayout posterLayout = new RelativeLayout(context);
+        ImageView posterView = renderPoster(renderedCard, context, fragmentManager, posterLayout, media, cardActionHandler, hostConfig, containerStyle);
+        ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, hostConfig, containerStyle);
+        VideoViewResizeable mediaView = renderMediaPlayer(context, posterLayout, media);
+
+        MediaController mediaController = new MediaController(context);
+        mediaView.setMediaController(mediaController);
+
+        if(!mediaView.isAudioOnly())
+        {
+            mediaController.setAnchorView(mediaView);
+        }
+        else
+        {
+            mediaController.setAnchorView(posterView);
         }
 
-        mediaController.setMediaPlayer(videoView);
+        mediaController.setMediaPlayer(mediaView);
 
-        videoView.setOnCompletionListener(new VideoViewOnCompletionListener(media, renderedCard, cardActionHandler));
+        posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.getMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler));
+        if (mediaView.isAudioOnly() && media.GetPoster().isEmpty() && hostConfig.getMedia().getDefaultPoster().isEmpty())
+        {
+            mediaView.setOnPreparedListener(new MediaOnPreparedListener(mediaController));
+        }
+        mediaView.setOnCompletionListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler));
 
-        posterLayout.addView(videoView);
+        mediaLayout.addView(posterLayout);
         viewGroup.addView(mediaLayout);
 
-        return videoView;
+        return mediaView;
     }
 
     private long getMediaSize(String uri)

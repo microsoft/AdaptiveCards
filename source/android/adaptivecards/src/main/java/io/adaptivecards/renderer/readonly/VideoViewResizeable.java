@@ -1,17 +1,10 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.VideoView;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 
 // Taken from here: https://stackoverflow.com/questions/13603553/videoview-to-match-parent-height-and-keep-aspect-ratio/40475998
@@ -37,9 +30,6 @@ public class VideoViewResizeable extends VideoView {
         else
         {
             m_isAudio = true;
-            // Hard coded values, not sure what to do here, but this works
-            m_videoHeight = 300;
-            m_videoWidth = 1000;
         }
     }
 
@@ -64,12 +54,17 @@ public class VideoViewResizeable extends VideoView {
                 width = (height * m_videoWidth) / m_videoHeight;
             }
         }
+        else
+        {
+            // Give some height so the media controller fits
+            height = 200;
+        }
         setMeasuredDimension(width, height);
     }
 
-    public boolean containsVideo()
+    public boolean isAudioOnly()
     {
-        return !m_isAudio;
+        return m_isAudio;
     }
 
     private int m_videoWidth;
