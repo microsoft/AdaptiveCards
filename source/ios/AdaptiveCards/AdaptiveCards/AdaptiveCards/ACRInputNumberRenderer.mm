@@ -40,7 +40,7 @@
     numInput.placeholder = [NSString stringWithCString:numInputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
     numInput.text = [NSString stringWithFormat: @"%d", numInputBlck->GetValue()];
     numInput.allowsEditingTextAttributes = YES;
-    numInput.borderStyle = UITextBorderStyleLine;
+    numInput.borderStyle = UITextBorderStyleRoundedRect;
     numInput.keyboardType = UIKeyboardTypeNumberPad;
     numInput.min = numInputBlck->GetMin();
     numInput.max = numInputBlck->GetMax();
@@ -52,8 +52,20 @@
     [toolBar sizeToFit];
     numInput.inputAccessoryView = toolBar;
 
-    [viewGroup addArrangedSubview: numInput];
-
+    if(elem->GetHeight() == HeightType::Stretch){
+        ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
+        [inputContainer addArrangedSubview: numInput];
+        
+        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+        UIView *blankTrailingSpace = [[UIView alloc] init];
+        [inputContainer addArrangedSubview:blankTrailingSpace];
+        [inputContainer adjustHuggingForLastElement];
+        
+        [viewGroup addArrangedSubview: inputContainer];
+    } else {
+        [viewGroup addArrangedSubview: numInput];
+    }
+    
     numInput.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];

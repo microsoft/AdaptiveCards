@@ -28,7 +28,7 @@ import java.util.Vector;
 
 public class ColumnSetRenderer extends BaseCardElementRenderer
 {
-    private ColumnSetRenderer()
+    protected ColumnSetRenderer()
     {
     }
 

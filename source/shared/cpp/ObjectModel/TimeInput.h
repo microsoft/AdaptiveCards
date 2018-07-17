@@ -11,7 +11,7 @@ class TimeInput : public BaseInputElement
 public:
     TimeInput();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     std::string GetMax() const;
     void SetMax(const std::string &value);
@@ -26,7 +26,7 @@ public:
     void SetValue(const std::string &value);
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_max;
     std::string m_min;
@@ -37,6 +37,13 @@ private:
 class TimeInputParser : public BaseCardElementParser
 {
 public:
+    TimeInputParser() = default;
+    TimeInputParser(const TimeInputParser&) = default;
+    TimeInputParser(TimeInputParser&&) = default;
+    TimeInputParser& operator=(const TimeInputParser&) = default;
+    TimeInputParser& operator=(TimeInputParser&&) = default;
+    virtual ~TimeInputParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

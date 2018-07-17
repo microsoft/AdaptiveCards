@@ -40,6 +40,7 @@ using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Input;
+using namespace ABI::Windows::UI::Xaml::Automation; 
 using namespace ABI::Windows::Web::Http;
 using namespace ABI::Windows::Web::Http::Filters;
 
@@ -507,7 +508,7 @@ AdaptiveNamespaceStart
                 // the tracker to subscribe to the ImageLoaded/Failed events
                 ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
 
-                if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+                if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
                 {
                     m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
                 }
@@ -779,6 +780,7 @@ AdaptiveNamespaceStart
         AdaptiveRenderContext* renderContext,
         ABI::AdaptiveNamespace::ContainerStyle containerStyle,
         ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+        bool allActionsHaveIcons,
         IButton* button)
     {
         HString title;
@@ -797,7 +799,7 @@ AdaptiveNamespaceStart
 
             // Define the alignment for the button contents
             ComPtr<IStackPanel> buttonContentsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle)
+            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
             }
@@ -988,6 +990,19 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::ActionMode showCardActionMode;
         THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
+        bool allActionsHaveIcons{ true };
+        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
+        {
+            HSTRING iconUrl;
+            THROW_IF_FAILED(child->get_IconUrl(&iconUrl));
+
+            bool iconUrlIsEmpty = WindowsIsStringEmpty(iconUrl);
+            if (iconUrlIsEmpty)
+            {
+                allActionsHaveIcons = false;
+            }
+        });
+
         UINT currentAction = 0;
 
         ComPtr<AdaptiveCardRenderer> strongRenderer(renderer);
@@ -1032,7 +1047,7 @@ AdaptiveNamespaceStart
                     }
                 }
 
-                ArrangeButtonContent(action.Get(), actionsConfig.Get(), renderContext, containerStyle, hostConfig.Get(), button.Get());
+                ArrangeButtonContent(action.Get(), actionsConfig.Get(), renderContext, containerStyle, hostConfig.Get(), allActionsHaveIcons, button.Get());
 
                 ABI::AdaptiveNamespace::ActionType actionType;
                 THROW_IF_FAILED(action->get_ActionType(&actionType));
@@ -1765,6 +1780,17 @@ AdaptiveNamespaceStart
 
         ComPtr<IUIElement> imageAsUIElement;
         THROW_IF_FAILED(frameworkElement.As(&imageAsUIElement));
+
+        HString altText;
+        THROW_IF_FAILED(adaptiveImage->get_AltText(altText.GetAddressOf()));
+
+        ComPtr<IDependencyObject> imageAsDependencyObject;
+        THROW_IF_FAILED(imageAsUIElement.As(&imageAsDependencyObject));
+
+        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(), &automationPropertiesStatics));
+
+        THROW_IF_FAILED(automationPropertiesStatics->SetName(imageAsDependencyObject.Get(), altText.Get()));
 
         HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, imageAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, imageControl);
     }
@@ -2792,12 +2818,15 @@ AdaptiveNamespaceStart
         ComPtr<IUIElement> posterContainer;
         CreatePosterContainerWithPlayButton(posterImage.Get(), renderContext, renderArgs, &posterContainer);
 
+        ComPtr<IUIElement> touchTargetUIElement;
+        WrapInTouchTarget(adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, &touchTargetUIElement);
+
         // Create a panel to hold the poster and the media element
         ComPtr<IStackPanel> mediaStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IPanel> mediaPanel;
         THROW_IF_FAILED(mediaStackPanel.As(&mediaPanel));
 
-        XamlHelpers::AppendXamlElementToPanel(posterContainer.Get(), mediaPanel.Get());
+        XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement.Get(), mediaPanel.Get());
 
         // Check if this host allows inline playback
         ComPtr<IAdaptiveMediaConfig> mediaConfig;
@@ -2809,14 +2838,15 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveMediaEventInvoker> mediaInvoker;
         THROW_IF_FAILED(renderContext->get_MediaEventInvoker(&mediaInvoker));
 
+        HString mimeType;
         ComPtr<IMediaElement> mediaElement;
+        ComPtr<IUriRuntimeClass> mediaSourceUrl;
         if (allowInlinePlayback)
         {
             // Create a media element and set it's source
             mediaElement = XamlHelpers::CreateXamlClass<IMediaElement>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
 
-            ComPtr<IUriRuntimeClass> mediaSourceUrl;
-            GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf());
+            GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf(), mimeType.GetAddressOf());
 
             if (mediaSourceUrl == nullptr)
             {
@@ -2825,9 +2855,6 @@ AdaptiveNamespaceStart
                     HStringReference(L"Unsupported media element dropped").Get());
                 return;
             }
-
-            // TODO: Support loading media via resource resolvers
-            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl.Get()));
 
             // Configure Auto Play and Controls
             ComPtr<IFrameworkElement> mediaAsFrameworkElement;
@@ -2852,15 +2879,6 @@ AdaptiveNamespaceStart
             // Make the media element collapsed until the user clicks
             THROW_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
 
-            // Add an event for media ended
-            EventRegistrationToken mediaEndedToken;
-            THROW_IF_FAILED(mediaElement->add_MediaEnded(Callback<IRoutedEventHandler>([mediaInvoker, adaptiveMedia](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-            {
-                RETURN_IF_FAILED(mediaInvoker->SendMediaEndedEvent(adaptiveMedia.Get()));
-
-                return S_OK;
-            }).Get(), &mediaEndedToken));
-
             XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
         }
 
@@ -2868,33 +2886,31 @@ AdaptiveNamespaceStart
         ComPtr<IUIElement> mediaPanelAsUIElement;
         THROW_IF_FAILED(mediaPanel.As(&mediaPanelAsUIElement));
 
-        ComPtr<IUIElement> touchTargetUIElement;
-        WrapInTouchTarget(adaptiveCardElement, mediaPanelAsUIElement.Get(), nullptr, renderContext, true, &touchTargetUIElement);
-
         ComPtr<IButtonBase> touchTargetAsButtonBase;
         THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
 
-        // When the user clicks: hide the poster, show the media element, play the media
+        // Take a reference to the mime type string for the lambda
+        HSTRING lambdaMimeType;
+        WindowsDuplicateString(mimeType.Get(), &lambdaMimeType);
+        ComPtr<IAdaptiveRenderContext> lambdaRenderContext{ renderContext };
+
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([posterContainer, mediaElement, mediaInvoker, adaptiveMedia](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        THROW_IF_FAILED(touchTargetAsButtonBase->add_Click(Callback<IRoutedEventHandler>([touchTargetUIElement, lambdaRenderContext, adaptiveMedia, mediaElement, posterContainer, mediaSourceUrl, lambdaMimeType, mediaInvoker](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
         {
-            if (mediaElement)
-            {
-                RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+            // Take ownership of the passed in HSTRING
+            HString localMimeType;
+            localMimeType.Attach(lambdaMimeType);
 
-                ComPtr<IUIElement> mediaAsUIElement;
-                RETURN_IF_FAILED(mediaElement.As(&mediaAsUIElement));
-                RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
+            // Turn off the button to prevent extra clicks
+            ComPtr<ABI::Windows::UI::Xaml::Controls::IControl> buttonAsControl;
+            touchTargetUIElement.As(&buttonAsControl);
+            RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(false));
 
-                RETURN_IF_FAILED(mediaElement->Play());
-            }
-
-            RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia.Get()));
-
-            return S_OK;
+            // Handle the click
+            return HandleMediaClick(lambdaRenderContext.Get(), adaptiveMedia.Get(), mediaElement.Get(), posterContainer.Get(), mediaSourceUrl.Get(), lambdaMimeType, mediaInvoker.Get());
         }).Get(), &clickToken));
 
-        THROW_IF_FAILED(touchTargetUIElement.CopyTo(mediaControl));
+        THROW_IF_FAILED(mediaPanelAsUIElement.CopyTo(mediaControl));
     }
 
     bool XamlBuilder::SupportsInteractivity(IAdaptiveHostConfig* hostConfig)

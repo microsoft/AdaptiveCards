@@ -11,10 +11,13 @@
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
+#import "CustomImageRenderer.h"
+#import "ADCResolver.h"
 
 @interface ViewController ()
 {
     BOOL _enableCustomRenderer;
+    ACOResourceResolvers *_resolvers;
 }
 
 @end
@@ -69,11 +72,15 @@
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
+        [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
+        _enableCustomRendererButton.backgroundColor = UIColor.redColor;
     } else
     {
         [registration setActionRenderer:nil cardElementType:@3];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
+        [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
+        _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
     }
     [self update:self.editableStr];
 }
@@ -96,6 +103,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self registerForKeyboardNotifications];
+    _resolvers = [[ACOResourceResolvers alloc] init];
+    ADCResolver *resolver = [[ADCResolver alloc] init];
+    [_resolvers setResourceResolver:resolver scheme:@"http"];
     _enableCustomRenderer = NO;
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
@@ -199,7 +209,7 @@
 {
     self.editableStr = jsonStr;
     ACRRenderResult *renderResult;
-    ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig];
+    ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig resourceResolvers:_resolvers];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
     if(cardParseResult.isValid){
         ACRRegistration *registration = [ACRRegistration getInstance];
@@ -207,7 +217,7 @@
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
 
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:300];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335];
     }	
     
     if(renderResult.succeeded)
@@ -225,9 +235,9 @@
             
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:3].active = YES;
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-
+        
     }
 }
 

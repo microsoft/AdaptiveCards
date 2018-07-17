@@ -12,6 +12,8 @@
 #import "ACRActionDelegate.h"
 
 using namespace AdaptiveCards;
+const CGFloat padding = 16.0f;
+const CGFloat accessoryViewWidth = 8.0f;
 
 @implementation ACRChoiceSetViewDataSourceCompactStyle
 {
@@ -21,6 +23,7 @@ using namespace AdaptiveCards;
     UITableViewController *_tableViewController;
     NSObject<UITableViewDelegate> *_delegate;
     NSObject<UITableViewDataSource, ACRIBaseInputHandler> *_dataSource;
+    NSString *_defaultString;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -39,6 +42,32 @@ using namespace AdaptiveCards;
         _tableView = nil;
         _indexPath = nil;
         _tableViewController = nil;
+
+        NSMutableDictionary *valuesMap = [[NSMutableDictionary alloc] init];
+        for(auto choice : _choiceSetInput->GetChoices()){
+            NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+            NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
+            valuesMap[value] = title;
+        }
+        NSString *defaultValues = [NSString stringWithCString:_choiceSetInput->GetValue().c_str()
+                                                     encoding:NSUTF8StringEncoding];
+        if([defaultValues length]){
+            NSArray *defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
+                                   [NSCharacterSet characterSetWithCharactersInString:@","]];
+            NSMutableArray<NSString *> *titleArray = [[NSMutableArray alloc] init];
+            for(id defaultValue in defaultValuesArray) {
+                [titleArray addObject:valuesMap[defaultValue]];
+            }
+            _defaultString = [titleArray componentsJoinedByString:@", "];
+        } else {
+            NSString *firstChoice = nil;
+            if(!_choiceSetInput->GetChoices().empty()){
+                firstChoice = [NSString stringWithCString:(_choiceSetInput->GetChoices()[0])->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+                _defaultString = firstChoice;
+            } else {
+                _defaultString = @"";
+            }
+        }
     }
     return self;
 }
@@ -60,17 +89,20 @@ using namespace AdaptiveCards;
 // creates top view that hides selection table
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"tabCellId";
+    static NSString *identifier = @"cellForCompactMode";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
     }
-    NSString *title = @"Make Choice";
-    cell.textLabel.text = title;
+
+    cell.textLabel.text = ([_defaultString length])? _defaultString : @"";
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.adjustsFontSizeToFitWidth = NO;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
 
@@ -82,6 +114,16 @@ using namespace AdaptiveCards;
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    CGSize labelStringSize = [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
+                                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                  attributes:@{NSFontAttributeName:cell.textLabel.font}
+                                                     context:nil].size;
+    return labelStringSize.height + padding;
 }
 
 // when cell is selected, create a tableView with a navigator control bar.
@@ -112,6 +154,8 @@ using namespace AdaptiveCards;
     if(_indexPath && _tableView)
     {
         [_tableView cellForRowAtIndexPath:_indexPath].selected = NO;
+        NSString *choice = [(ACRChoiceSetViewDataSource *)_dataSource getTitlesOfChoices];
+        [_tableView cellForRowAtIndexPath:_indexPath].textLabel.text = (choice)? choice : @"";
         _indexPath = nil;
         _tableView = nil;
     }

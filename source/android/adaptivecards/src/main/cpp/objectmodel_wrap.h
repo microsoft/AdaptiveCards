@@ -28,7 +28,7 @@ public:
     virtual void SetId(std::string const &value);
     virtual AdaptiveCards::CardElementType const GetElementType() const;
     virtual Json::Value SerializeToJsonValue() const;
-    virtual void GetResourceUris(std::vector< std::string > &resourceUris);
+    virtual void GetResourceInformation(std::vector< RemoteResourceInformation > &resourceUris);
 public:
     bool swig_overrides(int n) {
       return (n < 11 ? swig_override[n] : false);
@@ -53,7 +53,7 @@ public:
     virtual void SetIconUrl(std::string const &value);
     virtual AdaptiveCards::ActionType const GetElementType() const;
     virtual Json::Value SerializeToJsonValue() const;
-    virtual void GetResourceUris(std::vector< std::string > &resourceUris);
+    virtual void GetResourceInformation(std::vector< RemoteResourceInformation > &resourceUris);
 public:
     bool swig_overrides(int n) {
       return (n < 11 ? swig_override[n] : false);

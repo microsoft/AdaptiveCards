@@ -82,7 +82,7 @@
     },
     "separator": {
         "lineThickness": 1,
-        "lineColor": "#EEEEEE"
+        "lineColor": "#FF000000"
     },
     "actions": {
         "maxActions": 5,
@@ -110,6 +110,7 @@
             "color": "Default",
             "isSubtle": false,
             "weight": "Bolder",
+            "maxWidth":150,
             "warp": true
         },
         "value": {

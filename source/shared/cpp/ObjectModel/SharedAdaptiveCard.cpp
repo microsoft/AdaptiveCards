@@ -8,8 +8,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-AdaptiveCard::AdaptiveCard(): m_style(ContainerStyle::None), m_height(HeightType::Auto),
-    m_verticalContentAlignment(VerticalContentAlignment::Stretch)
+AdaptiveCard::AdaptiveCard(): m_style(ContainerStyle::None),
+    m_verticalContentAlignment(VerticalContentAlignment::Top), m_height(HeightType::Auto)
 {
 }
 
@@ -92,25 +92,35 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 
+    bool enforceVersion = (rendererVersion != std::numeric_limits<double>::max());
+
     // Verify this is an adaptive card
     ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard);
 
     std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
 
-    std::string version = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Version);
+    std::string version = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Version, enforceVersion);
     std::string fallbackText = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FallbackText);
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
 
-    if (rendererVersion != std::numeric_limits<double>::max())
+    if (enforceVersion)
     {
         double versionAsDouble;
         try
         {
             versionAsDouble = std::stod(version.c_str());
         }
+        catch (const std::invalid_argument&)
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Card version invalid: " + version);
+        }
+        catch (const std::out_of_range&)
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Card version out of range: " + version);
+        }
         catch (...)
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Card version not valid");
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Unable to parse card version: " + version);
         }
 
         if (rendererVersion < versionAsDouble)
@@ -131,7 +141,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
     ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
     VerticalContentAlignment verticalContentAlignment = ParseUtil::GetEnumValue<VerticalContentAlignment>(json, AdaptiveCardSchemaKey::VerticalContentAlignment,
-        VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString);
+        VerticalContentAlignment::Top, VerticalContentAlignmentFromString);
     HeightType height = ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString);
 
     if (elementParserRegistration == nullptr)
@@ -200,7 +210,7 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
     }
-    if (m_verticalContentAlignment != VerticalContentAlignment::Stretch)
+    if (m_verticalContentAlignment != VerticalContentAlignment::Top)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
@@ -238,7 +248,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
     const std::string& language)
 #endif // __ANDROID__
 {
-    std::shared_ptr<AdaptiveCard> fallbackCard = std::make_shared<AdaptiveCard>("1.0", fallbackText, "", ContainerStyle::Default, "", language, VerticalContentAlignment::Stretch, HeightType::Auto);
+    std::shared_ptr<AdaptiveCard> fallbackCard = std::make_shared<AdaptiveCard>("1.0", fallbackText, "", ContainerStyle::Default, "", language, VerticalContentAlignment::Top, HeightType::Auto);
 
     std::shared_ptr<TextBlock> textBlock = std::make_shared<TextBlock>();
     textBlock->SetText(fallbackText);
@@ -384,25 +394,28 @@ void AdaptiveCard::SetVerticalContentAlignment(const VerticalContentAlignment va
     m_verticalContentAlignment = value;
 }
 
-std::vector<std::string> AdaptiveCard::GetResourceUris()
+std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()
 {
-    auto uriVector = std::vector<std::string>();
+    auto resourceVector = std::vector<RemoteResourceInformation>();
 
     auto backgroundImage = GetBackgroundImage();
     if (!backgroundImage.empty())
     {
-        uriVector.push_back(backgroundImage);
+        RemoteResourceInformation backgroundImageInfo;
+        backgroundImageInfo.url = backgroundImage;
+        backgroundImageInfo.resourceType = CardElementType::Image;
+        resourceVector.push_back(backgroundImageInfo);
     }
 
     for (auto item : m_body)
     {
-        item->GetResourceUris(uriVector);
+        item->GetResourceInformation(resourceVector);
     }
 
     for (auto item : m_actions)
     {
-        item->GetResourceUris(uriVector);
+        item->GetResourceInformation(resourceVector);
     }
 
-    return uriVector;
+    return resourceVector;
 }

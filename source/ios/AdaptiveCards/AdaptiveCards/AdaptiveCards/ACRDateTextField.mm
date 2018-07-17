@@ -21,8 +21,8 @@ using namespace AdaptiveCards;
 - (instancetype)initWithTimeDateInput:(std::shared_ptr<BaseInputElement> const &)elem
                             dateStyle:(NSDateFormatterStyle)dateStyle
 {
-    self = [self initWithFrame:CGRectMake(0,0,0,0)];
-
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    self = [super init];
     if(self)
     {
         NSString *valueStr = nil;
@@ -33,8 +33,7 @@ using namespace AdaptiveCards;
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateStyle = dateStyle;
         formatter.locale = [NSLocale currentLocale];        
-        
-        UIDatePicker *picker = [[UIDatePicker alloc] init];
+        UIDatePicker *picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
         
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
@@ -85,6 +84,7 @@ using namespace AdaptiveCards;
         self.text = valueStr;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleRoundedRect;
+        self.backgroundColor = UIColor.groupTableViewBackgroundColor;
 
         if(date)
         {
@@ -112,7 +112,7 @@ using namespace AdaptiveCards;
 }
 
 - (IBAction)dismiss
-{
+{    
     [self endEditing:YES];
     self.text = [self.formatter stringFromDate:((UIDatePicker *)self.inputView).date];
 }
@@ -154,4 +154,5 @@ using namespace AdaptiveCards;
 {
     dictionary[self.id] = self.text;
 }
+
 @end
