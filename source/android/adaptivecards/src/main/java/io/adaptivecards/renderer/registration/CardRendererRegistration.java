@@ -9,7 +9,12 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.IOnlineImageLoader;
+import io.adaptivecards.renderer.IActionLayoutRenderer;
+import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
+import io.adaptivecards.renderer.ActionLayoutRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
@@ -56,6 +61,10 @@ public class CardRendererRegistration
         registerRenderer(CardElementTypeToString(CardElementType.TimeInput), TimeInputRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.ToggleInput), ToggleInputRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.ChoiceSetInput), ChoiceSetInputRenderer.getInstance());
+
+        // Register Action Renderer
+        m_actionRenderer = ActionElementRenderer.getInstance();
+        m_actionLayoutRenderer = ActionLayoutRenderer.getInstance();
     }
 
     public static CardRendererRegistration getInstance()
@@ -85,6 +94,36 @@ public class CardRendererRegistration
     public IBaseCardElementRenderer getRenderer(String cardElementType)
     {
         return m_typeToRendererMap.get(cardElementType);
+    }
+
+    public void registerOnlineImageLoader(IOnlineImageLoader imageLoader)
+    {
+        m_onlineImageLoader = imageLoader;
+    }
+
+    public  IOnlineImageLoader getOnlineImageLoader()
+    {
+        return m_onlineImageLoader;
+    }
+
+    public void registerActionRenderer(IBaseActionElementRenderer actionRenderer)
+    {
+        m_actionRenderer = actionRenderer;
+    }
+
+    public IBaseActionElementRenderer getActionRenderer()
+    {
+        return m_actionRenderer;
+    }
+
+    public void registerActionLayoutRenderer(IActionLayoutRenderer actionLayoutRenderer)
+    {
+        m_actionLayoutRenderer = actionLayoutRenderer;
+    }
+
+    public IActionLayoutRenderer getActionLayoutRenderer()
+    {
+        return m_actionLayoutRenderer;
     }
 
     public View render(
@@ -133,4 +172,7 @@ public class CardRendererRegistration
     private static CardRendererRegistration s_instance = null;
 
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
+    private IBaseActionElementRenderer m_actionRenderer = null;
+    private IActionLayoutRenderer m_actionLayoutRenderer = null;
+    private IOnlineImageLoader m_onlineImageLoader = null;
 }

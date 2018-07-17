@@ -7,21 +7,23 @@
 ## 2. Do you have a question?
 
 Please use the issue tracker for bugs and suggestions.
-If you have a *question*, please use [Stack Overflow](http://stackoverflow.com/questions/tagged/adaptive-cards)
+
+If you have a *question*, please use [Stack Overflow](https://stackoverflow.com/questions/tagged/adaptive-cards)
 
 ## 3. Did you find a bug?
 
-I'm not surprised, we're still in early preview so there are plenty of them right now :)
+I'm not surprised, we're still in the early stages, so there are plenty of them right now :)
 
 When logging a bug, please be sure to include the following:
  * The platform you were using
  * If at all possible, an *isolated* way to reproduce the behavior
  * The behavior you expect to see, and the actual behavior
+ 
 ## 4. Do you have a suggestion?
 
 We also accept suggestions in the issue tracker. 
 
-Please take a look at our [Core Design Principles](http://adaptivecards.io/documentation/#about-overview) to make sure the suggestion is aligned with the project goals.
+Please take a look at our [Core Design Principles](https://docs.microsoft.com/en-us/adaptive-cards/#core-design-principles) to make sure the suggestion is aligned with the project goals.
 
 In general, things we find useful when reviewing suggestions are:
 * A description of the problem you're trying to solve
@@ -32,13 +34,15 @@ In general, things we find useful when reviewing suggestions are:
 
 ## Contributing bug fixes
 
-Adaptive Cards are current in early preview so there's a lot of churn in the code. We're still accepting contributions in the form of bug fixes. 
+Our local dev team is in active development, but we are still accepting external contributions in the form of bug fixes.
+
 A bug must have an issue tracking it in the issue tracker that has been approved by the Adaptive Cards team. Your pull request should include a link to the bug that you are fixing. If you've submitted a PR for a bug, please post a comment in the bug to avoid duplication of effort.
 
 ## Contributing features
 
 We're happy to discuss schema proposals as long as they align with our [Core Design Principles](http://adaptivecards.io/documentation/#about-overview). 
-Please open an issue with the `Schema` label to get a discussion started.
+
+Please open an issue with your schema proposal to get a discussion started.
 
 ## Legal
 
