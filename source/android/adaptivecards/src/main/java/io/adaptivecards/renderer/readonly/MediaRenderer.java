@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -26,6 +24,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.Media;
+import io.adaptivecards.objectmodel.MediaSource;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -47,11 +46,11 @@ public class MediaRenderer extends BaseCardElementRenderer
 
     private class PosterOnClickListener implements View.OnClickListener
     {
-        public PosterOnClickListener(ImageView poster, ImageView playButton, VideoView videoView, boolean allowedInlinePlayback, BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler)
+        public PosterOnClickListener(ImageView poster, ImageView playButton, VideoView mediaView, boolean allowedInlinePlayback, BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler)
         {
             m_poster = poster;
             m_playButton = playButton;
-            m_videoView = videoView;
+            m_mediaView = mediaView;
             m_allowedInlinePlayback = allowedInlinePlayback;
 
             m_cardMediaElement = mediaElement;
@@ -64,18 +63,21 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             if(m_allowedInlinePlayback)
             {
-                if(((VideoViewResizeable) m_videoView).isAudioOnly())
+                if(((VideoViewResizeable) m_mediaView).isAudioOnly())
                 {
                     // if it's audio, just move the video to the top
-                    m_videoView.setZOrderOnTop(true);
+                    m_mediaView.setZOrderOnTop(true);
                 }
                 else
                 {
-                    // If it's a video, hide the poster
-                    m_poster.setVisibility(View.GONE);
+                    // If it's a video, hide the poster (if it exists)
+                    if(m_poster != null)
+                    {
+                        m_poster.setVisibility(View.GONE);
+                    }
                 }
-                m_videoView.start();
-                m_videoView.setVisibility(View.VISIBLE);
+                m_mediaView.start();
+                m_mediaView.setVisibility(View.VISIBLE);
                 m_playButton.setVisibility(View.GONE);
             }
 
@@ -84,7 +86,7 @@ public class MediaRenderer extends BaseCardElementRenderer
 
         private ImageView m_poster;
         private ImageView m_playButton;
-        private VideoView m_videoView;
+        private VideoView m_mediaView;
         private boolean m_allowedInlinePlayback = true;
 
         private BaseCardElement m_cardMediaElement;
@@ -94,7 +96,6 @@ public class MediaRenderer extends BaseCardElementRenderer
 
     private class MediaOnCompletionListener implements MediaPlayer.OnCompletionListener
     {
-
         MediaOnCompletionListener(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler)
         {
             m_cardMediaElement = mediaElement;
@@ -130,23 +131,17 @@ public class MediaRenderer extends BaseCardElementRenderer
         private MediaController m_mediaController;
     }
 
-    class OnlineFileCheckerTask extends AsyncTask<String, Void, Boolean>
+    private boolean isSupportedMimeType(String mimetype)
     {
-
-        protected Boolean doInBackground(String... url)
+        final String supportedMimeTypes[] = {"video/mp4", "audio/mp3", "audio/mpeg"};
+        for(String supportedMimeType : supportedMimeTypes)
         {
-            try
+            if(supportedMimeType.compareTo(mimetype) == 0)
             {
-                HttpURLConnection connection = (HttpURLConnection)new URL(url[0]).openConnection();
-                connection.setRequestMethod("HEAD");
-                return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
-            }
-            catch (Exception e)
-            {
-                return false;
+                return true;
             }
         }
-
+        return false;
     }
 
     private ImageView renderPoster(
@@ -226,16 +221,17 @@ public class MediaRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             Media media)
     {
-        VideoViewResizeable videoView = new VideoViewResizeable(context);
-        videoView.setTag(media);
+        VideoViewResizeable mediaView = new VideoViewResizeable(context);
+        mediaView.setTag(media);
 
-        long sourcesSize = media.GetSources().size();
+        final long sourcesSize = media.GetSources().size();
         for(int i = 0; i < sourcesSize; i++)
         {
-            String mediaUrl = media.GetSources().get(i).GetUrl();
-            if(onlineFileExists(mediaUrl))
+            MediaSource mediaSource = media.GetSources().get(i);
+            String mimeType = mediaSource.GetMimeType();
+            if(isSupportedMimeType(mimeType))
             {
-                videoView.setVideoURI(mediaUrl);
+                mediaView.setVideoURI(mediaSource.GetUrl(), mimeType.startsWith("audio"));
                 break;
             }
         }
@@ -244,12 +240,12 @@ public class MediaRenderer extends BaseCardElementRenderer
         videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         videoViewLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        videoView.setLayoutParams(videoViewLayoutParams);
+        mediaView.setLayoutParams(videoViewLayoutParams);
 
-        videoView.setVisibility(View.GONE);
-        viewGroup.addView(videoView);
+        mediaView.setVisibility(View.GONE);
+        viewGroup.addView(mediaView);
 
-        return videoView;
+        return mediaView;
     }
 
     @Override
@@ -317,34 +313,6 @@ public class MediaRenderer extends BaseCardElementRenderer
         viewGroup.addView(mediaLayout);
 
         return mediaView;
-    }
-
-    private long getMediaSize(String uri)
-    {
-        long mediaSize = 0;
-        try
-        {
-            URL url = new URL(uri);
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.connect();
-            mediaSize = urlConnection.getContentLength();
-        }
-        catch(Exception e)
-        {
-        }
-        return mediaSize;
-    }
-
-    boolean onlineFileExists(String url)
-    {
-        try
-        {
-            return new OnlineFileCheckerTask().execute(url).get().booleanValue();
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
     }
 
     private static MediaRenderer s_instance = null;

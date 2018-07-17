@@ -9,33 +9,29 @@ import java.util.HashMap;
 
 // Taken from here: https://stackoverflow.com/questions/13603553/videoview-to-match-parent-height-and-keep-aspect-ratio/40475998
 
-public class VideoViewResizeable extends VideoView {
-
+public class VideoViewResizeable extends VideoView
+{
     public VideoViewResizeable(Context context)
     {
         super(context);
     }
 
-    public void retrieveMetadata(String uri)
+    public void retrieveVideoDimensions(String uri)
     {
         MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
         metadataRetriever.setDataSource(uri, new HashMap<String, String>());
 
-        String mimetype = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE);
-        if(!mimetype.startsWith("audio"))
-        {
-            m_videoHeight = Integer.parseInt(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
-            m_videoWidth = Integer.parseInt(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
-        }
-        else
-        {
-            m_isAudio = true;
-        }
+        m_videoHeight = Integer.parseInt(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+        m_videoWidth = Integer.parseInt(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
     }
 
-    public void setVideoURI(String uri)
+    public void setVideoURI(String uri, boolean isAudio)
     {
-        retrieveMetadata(uri);
+        m_isAudio = isAudio;
+        if(!m_isAudio)
+        {
+            retrieveVideoDimensions(uri);
+        }
         super.setVideoURI(Uri.parse(uri));
     }
 
