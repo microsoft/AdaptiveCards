@@ -160,17 +160,20 @@ public class MediaRenderer extends BaseCardElementRenderer
             ContainerStyle containerStyle)
     {
         ImageView posterView = null;
-        if(!(media.GetPoster().isEmpty()) || !(hostConfig.getMedia().getDefaultPoster().isEmpty()))
+
+        Image poster = new Image();
+        if (!media.GetPoster().isEmpty())
+        {
+            poster.SetUrl(media.GetPoster());
+        }
+        else
+        {
+            poster.SetUrl(hostConfig.getMedia().getDefaultPoster());
+        }
+
+        if(!poster.GetUrl().isEmpty())
         {
             // Draw poster in posterLayout
-            Image poster = new Image();
-
-            if (!media.GetPoster().isEmpty()) {
-                poster.SetUrl(media.GetPoster());
-            } else {
-                poster.SetUrl(hostConfig.getMedia().getDefaultPoster());
-            }
-
             poster.SetImageSize(ImageSize.Auto);
             posterView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, hostConfig, containerStyle);
 
@@ -197,7 +200,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             Image playButton = new Image();
             playButton.SetUrl(playButtonUrl);
-            playButton.SetImageSize(ImageSize.Auto);
+            playButton.SetImageSize(ImageSize.Small);
 
             playButtonView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, hostConfig, containerStyle);
         }

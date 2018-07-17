@@ -156,6 +156,18 @@
     <Content Include="..\..\..\samples\Tests\NotificationCard.json">
       <Link>LinkedCards\Tests\NotificationCard.json</Link>
     </Content>
+    <Content Include="..\..\..\samples\Tests\ColumnSet.Media.VerticalStretch.json">
+      <Link>LinkedCards\Tests\ColumnSet.Media.VerticalStretch.json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\MediaAudio.json">
+      <Link>LinkedCards\Tests\MediaAudio.json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\MediaAudioInColumnSet.json">
+      <Link>LinkedCards\Tests\MediaAudioInColumnSet.json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\Tests\MediaInColumnSet.json">
+      <Link>LinkedCards\Tests\MediaInColumnSet.json</Link>
+    </Content>
     <None Include="AdaptiveCardTestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
