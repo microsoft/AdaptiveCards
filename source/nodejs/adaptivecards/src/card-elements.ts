@@ -4785,10 +4785,6 @@ export abstract class TypeRegistry<T> {
     getItemAt(index: number): ITypeRegistration<T> {
         return this._items[index];
     }
-
-    getItems(): ITypeRegistration<T>[] {
-        return this._items;
-    }
 }
 
 export class ElementTypeRegistry extends TypeRegistry<CardElement> {

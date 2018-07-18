@@ -1941,28 +1941,41 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     }
 }
 
-type CardElementType = { new(): Adaptive.CardElement };
-type ActionType = { new(): Adaptive.Action };
-type CardElementPeerType = { new(designer: CardDesigner, cardElement: Adaptive.CardElement): CardElementPeer };
-type ActionPeerType = { new(designer: CardDesigner, action: Adaptive.Action): ActionPeer };
+export type CardElementType = { new(): Adaptive.CardElement };
+export type ActionType = { new(): Adaptive.Action };
+export type CardElementPeerType = { new(designer: CardDesigner, cardElement: Adaptive.CardElement): CardElementPeer };
+export type ActionPeerType = { new(designer: CardDesigner, action: Adaptive.Action): ActionPeer };
 
-interface IDesignerPeerRegistration<TSource, TPeer> {
-    sourceType: TSource,
-    peerType: TPeer
+class DesignerPeerCategory {
+    static Containers = "Containers";
+    static Elements = "Elements";
+    static Inputs = "Inputs";
+    static Actions = "Actions";
+}
+
+export abstract class DesignerPeerRegistrationBase {
+    readonly category: string;
+
+    constructor(category: string) {
+        this.category = category;
+    }
+}
+
+export class DesignerPeerRegistration<TSource, TPeer> extends DesignerPeerRegistrationBase{
+    readonly sourceType: TSource;
+
+    peerType: TPeer;
+
+    constructor(sourceType: TSource, peerType: TPeer, category: string) {
+        super(category);
+
+        this.sourceType = sourceType;
+        this.peerType = peerType;
+    }
 }
 
 export abstract class DesignerPeerRegistry<TSource, TPeer> {
-    protected _items: Array<IDesignerPeerRegistration<TSource, TPeer>> = [];
-
-    protected findTypeRegistration(sourceType: TSource): IDesignerPeerRegistration<TSource, TPeer> {
-        for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].sourceType === sourceType) {
-                return this._items[i];
-            }
-        }
-
-        return null;
-    }
+    protected _items: Array<DesignerPeerRegistration<TSource, TPeer>> = [];
 
     constructor() {
         this.reset();
@@ -1974,17 +1987,27 @@ export abstract class DesignerPeerRegistry<TSource, TPeer> {
         this._items = [];
     }
 
-    registerPeer(sourceType: TSource, peerType: TPeer) {
+    findTypeRegistration(sourceType: TSource): DesignerPeerRegistration<TSource, TPeer> {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].sourceType === sourceType) {
+                return this._items[i];
+            }
+        }
+
+        return null;
+    }
+
+    registerPeer(sourceType: TSource, peerType: TPeer, category: string) {
         var registrationInfo = this.findTypeRegistration(sourceType);
 
         if (registrationInfo != null) {
             registrationInfo.peerType = peerType;
         }
         else {
-            registrationInfo = {
-                sourceType: sourceType,
-                peerType: peerType
-            }
+            registrationInfo = new DesignerPeerRegistration<TSource, TPeer> (
+                sourceType,
+                peerType,
+                category);
 
             this._items.push(registrationInfo);
         }
@@ -2005,20 +2028,22 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
     reset() {
         this.clear();
 
-        this.registerPeer(Adaptive.Container, ContainerPeer);
-        this.registerPeer(Adaptive.AdaptiveCard, AdaptiveCardPeer);
-        this.registerPeer(Adaptive.TextBlock, TextBlockPeer);
-        this.registerPeer(Adaptive.FactSet, FactSetPeer);
-        this.registerPeer(Adaptive.ImageSet, ImageSetPeer);
-        this.registerPeer(Adaptive.Image, ImagePeer);
-        this.registerPeer(Adaptive.ActionSet, ActionSetPeer);
-        this.registerPeer(Adaptive.ColumnSet, ColumnSetPeer);
-        this.registerPeer(Adaptive.Column, ColumnPeer);
-        this.registerPeer(Adaptive.TextInput, TextInputPeer);
-        this.registerPeer(Adaptive.DateInput, DateInputPeer);
-        this.registerPeer(Adaptive.NumberInput, NumberInputPeer);
-        this.registerPeer(Adaptive.ToggleInput, ToggleInputPeer);
-        this.registerPeer(Adaptive.ChoiceSetInput, ChoiceSetInputPeer);
+        this.registerPeer(Adaptive.AdaptiveCard, AdaptiveCardPeer, DesignerPeerCategory.Containers);
+        this.registerPeer(Adaptive.Container, ContainerPeer, DesignerPeerCategory.Containers);
+        this.registerPeer(Adaptive.ImageSet, ImageSetPeer, DesignerPeerCategory.Containers);
+        this.registerPeer(Adaptive.ColumnSet, ColumnSetPeer, DesignerPeerCategory.Containers);
+        this.registerPeer(Adaptive.Column, ColumnPeer, DesignerPeerCategory.Containers);
+
+        this.registerPeer(Adaptive.TextBlock, TextBlockPeer, DesignerPeerCategory.Elements);
+        this.registerPeer(Adaptive.FactSet, FactSetPeer, DesignerPeerCategory.Elements);
+        this.registerPeer(Adaptive.Image, ImagePeer, DesignerPeerCategory.Elements);
+        this.registerPeer(Adaptive.ActionSet, ActionSetPeer, DesignerPeerCategory.Elements);
+
+        this.registerPeer(Adaptive.TextInput, TextInputPeer, DesignerPeerCategory.Inputs);
+        this.registerPeer(Adaptive.DateInput, DateInputPeer, DesignerPeerCategory.Inputs);
+        this.registerPeer(Adaptive.NumberInput, NumberInputPeer, DesignerPeerCategory.Inputs);
+        this.registerPeer(Adaptive.ToggleInput, ToggleInputPeer, DesignerPeerCategory.Inputs);
+        this.registerPeer(Adaptive.ChoiceSetInput, ChoiceSetInputPeer, DesignerPeerCategory.Inputs);
     }
 
     createPeerInstance(designer: CardDesigner, parent: DesignerPeer, cardElement: Adaptive.CardElement): CardElementPeer {
@@ -2047,9 +2072,9 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
     reset() {
         this.clear();
 
-        this.registerPeer(Adaptive.HttpAction, HttpActionPeer);
-        this.registerPeer(Adaptive.SubmitAction, SubmitActionPeer);
-        this.registerPeer(Adaptive.OpenUrlAction, OpenUrlActionPeer);
+        this.registerPeer(Adaptive.HttpAction, HttpActionPeer, DesignerPeerCategory.Actions);
+        this.registerPeer(Adaptive.SubmitAction, SubmitActionPeer, DesignerPeerCategory.Actions);
+        this.registerPeer(Adaptive.OpenUrlAction, OpenUrlActionPeer, DesignerPeerCategory.Actions);
     }
 
     createPeerInstance(designer: CardDesigner, parent: DesignerPeer, action: Adaptive.Action): ActionPeer {

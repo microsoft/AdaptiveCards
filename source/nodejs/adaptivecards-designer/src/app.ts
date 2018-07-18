@@ -121,13 +121,15 @@ class ElementPaletteItem extends BasePaletteItem {
     protected getText(): string {
         return this.typeRegistration.typeName;
     }
-
+    
     readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
+    readonly peerRegistration: Designer.DesignerPeerRegistrationBase;
 
-    constructor(typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>) {
+    constructor(typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>, peerRegistration: Designer.DesignerPeerRegistrationBase) {
         super();
 
         this.typeRegistration = typeRegistration;
+        this.peerRegistration = peerRegistration;
     }
 
     createPeer(designer: Designer.CardDesigner): Designer.CardElementPeer {
@@ -255,55 +257,36 @@ class DesignerApp {
         if (this.paletteHostElement) {
             this.paletteHostElement.innerHTML = "";
 
-            let sortedRegisteredTypes = {};
+            let categorizedTypes: Object = {};
 
-            const categoriesMap = {
-                cardElements: {
-                    title: "Card Elements",
-                    items: ["TextBlock", "Image"]
-                },
-                container: {
-                    title: "Container",
-                    items: ["Container", "ColumnSet", "Column", "FactSet", "Fact", "ImageSet"]
-                },
-                actions: {
-                    title: "Actions",
-                    items: ["Action.OpenUrl", "Action.Submit", "Action.ShowCard"]
-                },
-                inputs: {
-                    title: "Inputs",
-                    items: ["Input.Text", "Input.Number", "Input.Date", "Input.Time", "Input.Toggle", "Input.ChoiceSet", "Input.Choice"]
-                }
-            }
+            for (let i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
+                let dummyCardElement = Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i).createInstance();
+                let peerRegistration = Designer.CardDesigner.cardElementPeerRegistry.findTypeRegistration((<any>dummyCardElement).constructor);
 
-            let categoriesMapKeys = Object.keys(categoriesMap);
-            for (let i = 0; i < categoriesMapKeys.length; i++) {
-                const category = categoriesMapKeys[i];
-                const categoryItems = categoriesMap[category].items;
-                for (let j = 0; j < categoryItems.length; j++) {
-                    let item = categoryItems[j];
-                    let itemType = Adaptive.AdaptiveCard.elementTypeRegistry.getItems().find(elementType => {
-                        return elementType.typeName === item;
-                    });
-                    if (typeof itemType !== "undefined") {
-                        sortedRegisteredTypes[category] = sortedRegisteredTypes[category] || {};
-                        sortedRegisteredTypes[category].title = sortedRegisteredTypes[category].title || categoriesMap[category].title;
-                        sortedRegisteredTypes[category].items = Array.isArray(sortedRegisteredTypes[category].items) ? [...sortedRegisteredTypes[category].items, itemType] : [itemType];
+                if (peerRegistration) {
+                    if (!categorizedTypes.hasOwnProperty(peerRegistration.category)) {
+                        categorizedTypes[peerRegistration.category] = [];
                     }
+
+                    let paletteItem = new ElementPaletteItem(
+                        Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i),
+                        peerRegistration
+                    )
+
+                    categorizedTypes[peerRegistration.category].push(paletteItem);
                 }
             }
 
-            Object.keys(sortedRegisteredTypes).forEach(objectKey => {
+            for (let category in categorizedTypes) {
                 let node = document.createElement('li');
-                node.innerText = sortedRegisteredTypes[objectKey].title;
+                node.innerText = category;
                 node.className = "aside-title";
                 this.paletteHostElement.appendChild(node);
 
-                for (var i = 0; i < sortedRegisteredTypes[objectKey].items.length; i++) {
-                    var paletteItem = new ElementPaletteItem(sortedRegisteredTypes[objectKey].items[i]);
-                    this.addPaletteItem(paletteItem);
+                for (var i = 0; i < categorizedTypes[category].length; i++) {
+                    this.addPaletteItem(categorizedTypes[category][i]);
                 }
-            });
+            }
 
             /* This is to test "snippet" support. Snippets are not yet fully baked
             let personaHeaderSnippet = new SnippetPaletteItem("Persona header");
