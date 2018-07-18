@@ -46,8 +46,7 @@
 
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
     // Syncronize access to imageViewMap
-    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
-    NSString *key = [number stringValue];
+    NSString *key = [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
     UIImage *img = imageViewMap[key];
 
     CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;

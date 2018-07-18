@@ -27,6 +27,7 @@
 #import "FactSet.h"
 
 using namespace AdaptiveCards;
+typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
 @implementation ACRView
 {
@@ -105,24 +106,18 @@ using namespace AdaptiveCards;
     NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)[_adaptiveCard card].get()];
     NSString *key = [number stringValue];
     if([key length]){
-        ACRBaseCardElementRenderer *imageRenderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInteger:ACRImage]];
         UIView *imgView = nil;
-        if([[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
-            std::shared_ptr<Image> imageElement = std::make_shared<Image>();
-            imageElement->SetImageSize(ImageSize::Stretch);
-            imageElement->SetUrl([_adaptiveCard card]->GetBackgroundImage());
-            ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
-            [acoElem setElem:imageElement];
-            imgView = [imageRenderer render:nil rootView:self inputs:nil baseCardElement:acoElem hostConfig:_hostConfig];
-        } else {
+        if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
             UIImage *img = _imageViewMap[key];
             imgView = [[ACRUIImageView alloc] initWithImage:img];
         }
-        imgView.translatesAutoresizingMaskIntoConstraints = NO;
-        [newView addSubview:imgView];
-        [newView sendSubviewToBack:imgView];
-        [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+        if(imgView) {
+            imgView.translatesAutoresizingMaskIntoConstraints = NO;
+            [newView addSubview:imgView];
+            [newView sendSubviewToBack:imgView];
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+        }
     }
     [self callDidLoadElementsIfNeeded];
     return newView;
@@ -205,10 +200,7 @@ using namespace AdaptiveCards;
             {
                 /// tag a base card element with unique key
                 std::shared_ptr<Image>imgElem = std::static_pointer_cast<Image>(elem);
-                NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
-                                                      encoding:[NSString defaultCStringEncoding]];
-                NSString *key = [ACRView generateKeyForElement:imgElem];
-                [self loadImage:urlStr key:key];
+                [self loadImage:imgElem->GetUrl()];
                 break;
             }
             case CardElementType::ImageSet:
@@ -219,10 +211,7 @@ using namespace AdaptiveCards;
                     img->SetImageSize(imgSetElem->GetImageSize());
 
                     if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) CardElementType::Image] == NO){
-                        NSString *urlStr = [NSString stringWithCString:img->GetUrl().c_str()
-                                                              encoding:[NSString defaultCStringEncoding]];
-                        NSString *key = [ACRView generateKeyForElement:img];
-                        [self loadImage:urlStr key:key];
+                        [self loadImage:img->GetUrl()];
                     }
                 }
                 break;
@@ -267,10 +256,8 @@ using namespace AdaptiveCards;
 - (void)loadImagesForActionsAndCheckIfAllActionsHaveIconImages:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions hostconfig:(ACOHostConfig *)hostConfig;
 {
     for(auto &action : actions){
-        NSString *urlStr = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
-        if([urlStr length]) {
-            NSString *key = [ACRView generateKeyForActionElement:action];
-            [self loadImage:urlStr key:key];
+        if(action->GetIconUrl().size()) {
+            [self loadImage:action->GetIconUrl()];
         } else {
             hostConfig.allActionsHaveIcons = NO;
         }
@@ -360,15 +347,31 @@ using namespace AdaptiveCards;
          });
 }
 
-- (void)loadImage:(NSString *)url key:(NSString *)key
+- (void)loadImage:(std::string const &)urlStr
 {
+    NSString *nSUrlStr = [NSString stringWithCString:urlStr.c_str()
+                                          encoding:[NSString defaultCStringEncoding]];
+    NSURL *url = [NSURL URLWithString:nSUrlStr];
+    NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
+    ImageLoadBlock imageloadblock = nil;
+    if(!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {
+        imageloadblock = ^(NSURL *url){
+            // download image
+            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            return img;
+        };
+    }
+
     dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
-            NSURL *nsurl = [NSURL URLWithString:url];
-            // download image
-            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:nsurl]];
+            UIImage *img = nil;
+            if(imageloadblock) {
+                img = imageloadblock(url);
+            } else if(imageResourceResolver){
+                img = [imageResourceResolver resolveImageResource:url];
+            }
 
-            dispatch_sync(self->_serial_queue, ^{self->_imageViewMap[key] = img;});
+            dispatch_sync(self->_serial_queue, ^{self->_imageViewMap[nSUrlStr] = img;});
          }
     );
 }
@@ -382,24 +385,11 @@ using namespace AdaptiveCards;
     ++_serialNumber;
 }
 
-+ (NSString *)generateKeyForElement:(std::shared_ptr<BaseCardElement> const &)elem
-{
-    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
-    NSString *key = [number stringValue];
-    return key;
-}
-
-+ (NSString *)generateKeyForActionElement:(std::shared_ptr<BaseActionElement> const &)elem
-{
-    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
-    NSString *key = [number stringValue];
-    return key;
-}
-
 - (NSMutableDictionary *)getImageMap
 {
     return _imageViewMap;
 }
+
 - (dispatch_queue_t)getSerialQueue
 {
     return _serial_queue;

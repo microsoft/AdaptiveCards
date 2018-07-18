@@ -38,6 +38,7 @@
 
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig];
+    container.frame = viewGroup.frame;
     [ACRRenderer render:container
                rootView:rootView
                  inputs:inputs

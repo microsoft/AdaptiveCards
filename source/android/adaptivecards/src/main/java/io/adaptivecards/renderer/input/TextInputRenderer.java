@@ -75,6 +75,33 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
     }
 
+    private class EditTextTouchListener implements View.OnTouchListener
+    {
+        EditTextTouchListener(Object tag)
+        {
+            m_tag = tag;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            // Solution taken from here: https://stackoverflow.com/questions/6123973/android-edittext-vertical-scrolling-problem
+            if (v.getTag() == m_tag)
+            {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK)
+                {
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+            }
+            return false;
+        }
+
+        private Object m_tag = null;
+    }
+
     protected EditText renderInternal(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -145,7 +172,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
         setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
-        EditText editText = renderInternal(
+        final EditText editText = renderInternal(
                 renderedCard,
                 context,
                 viewGroup,
@@ -155,12 +182,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 textInputHandler,
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
+        editText.setTag(textInput);
         if (textInput.GetIsMultiline())
         {
             editText.setLines(3);
-            editText.setScroller(new Scroller((context)));
-            editText.setVerticalScrollBarEnabled(true);
-            editText.setMovementMethod(new ScrollingMovementMethod());
+            // Solution taken from here: https://stackoverflow.com/questions/6123973/android-edittext-vertical-scrolling-problem
+            editText.setOnTouchListener(new EditTextTouchListener(textInput));
+
         }
         setTextInputStyle(editText, textInput.GetTextInputStyle());
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);

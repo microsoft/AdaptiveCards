@@ -40,6 +40,7 @@ using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Input;
+using namespace ABI::Windows::UI::Xaml::Automation; 
 using namespace ABI::Windows::Web::Http;
 using namespace ABI::Windows::Web::Http::Filters;
 
@@ -507,7 +508,7 @@ AdaptiveNamespaceStart
                 // the tracker to subscribe to the ImageLoaded/Failed events
                 ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
 
-                if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+                if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
                 {
                     m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
                 }
@@ -1780,6 +1781,17 @@ AdaptiveNamespaceStart
         ComPtr<IUIElement> imageAsUIElement;
         THROW_IF_FAILED(frameworkElement.As(&imageAsUIElement));
 
+        HString altText;
+        THROW_IF_FAILED(adaptiveImage->get_AltText(altText.GetAddressOf()));
+
+        ComPtr<IDependencyObject> imageAsDependencyObject;
+        THROW_IF_FAILED(imageAsUIElement.As(&imageAsDependencyObject));
+
+        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(), &automationPropertiesStatics));
+
+        THROW_IF_FAILED(automationPropertiesStatics->SetName(imageAsDependencyObject.Get(), altText.Get()));
+
         HandleSelectAction(adaptiveCardElement, selectAction.Get(), renderContext, imageAsUIElement.Get(), SupportsInteractivity(hostConfig.Get()), true, imageControl);
     }
 
@@ -2866,15 +2878,6 @@ AdaptiveNamespaceStart
 
             // Make the media element collapsed until the user clicks
             THROW_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
-
-            // Add an event for media ended
-            EventRegistrationToken mediaEndedToken;
-            THROW_IF_FAILED(mediaElement->add_MediaEnded(Callback<IRoutedEventHandler>([mediaInvoker, adaptiveMedia](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-            {
-                RETURN_IF_FAILED(mediaInvoker->SendMediaEndedEvent(adaptiveMedia.Get()));
-
-                return S_OK;
-            }).Get(), &mediaEndedToken));
 
             XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
         }

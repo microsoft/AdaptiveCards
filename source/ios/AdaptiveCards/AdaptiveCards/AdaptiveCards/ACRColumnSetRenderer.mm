@@ -63,7 +63,15 @@
         curView = (ACRColumnView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
 
         // when stretch, views with stretch properties should have equal width
-        if([curView.columnWidth isEqualToString:@"stretch"]){
+        if(curView.pixelWidth){
+            [NSLayoutConstraint constraintWithItem:curView
+                                attribute:NSLayoutAttributeWidth
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:nil
+                                attribute:NSLayoutAttributeNotAnAttribute
+                                multiplier:1
+                                constant:curView.pixelWidth].active = YES;
+        } else if([curView.columnWidth isEqualToString:@"stretch"]){
             if(stretchView){
                 [NSLayoutConstraint constraintWithItem:curView
                                     attribute:NSLayoutAttributeWidth
