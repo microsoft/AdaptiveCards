@@ -40,7 +40,7 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes{
-    self = [super initWithFrame:CGRectMake(0,0,frame.size.width,0)];
+    self = [super initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height)];
     if(self) {
         _stackView = [[UIStackView alloc] initWithFrame:frame];
         [self config:attributes];
@@ -49,7 +49,7 @@ using namespace AdaptiveCards;
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [self initWithFrame:CGRectMake(0,0,frame.size.width,0) attributes:nil];
+    self = [self initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height) attributes:nil];
     return self;
 }
 
@@ -129,15 +129,15 @@ using namespace AdaptiveCards;
 
     if(attributes){
         NSNumber *distribAttrib = attributes[@"distribution"];
-        if(distribAttrib){
+        if([distribAttrib boolValue]){
             self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
         }
         NSNumber *alignAttrib = attributes[@"alignment"];
-        if(alignAttrib){
+        if([alignAttrib boolValue]){
             self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
         }
         NSNumber *spacingAttrib = attributes[@"spacing"];
-        if(spacingAttrib){
+        if([spacingAttrib boolValue]){
             self.stackView.spacing = [spacingAttrib floatValue];
         }
     }

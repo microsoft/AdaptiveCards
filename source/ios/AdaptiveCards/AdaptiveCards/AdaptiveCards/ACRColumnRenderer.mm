@@ -39,8 +39,9 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig];
 
+    column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
-        column.columnWidth = @"stretch";        
+        column.columnWidth = @"stretch";
     } else if(columnElem->GetWidth() == "auto"){
         column.columnWidth = @"auto";
     }
@@ -52,7 +53,7 @@
           andHostConfig:acoConfig];
 
     [viewGroup addArrangedSubview:column];
-    
+
     [column setClipsToBounds:TRUE];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();

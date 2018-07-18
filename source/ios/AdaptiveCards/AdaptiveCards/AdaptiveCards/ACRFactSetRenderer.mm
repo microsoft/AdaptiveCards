@@ -131,9 +131,11 @@
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         titleLab.isTitle = YES;
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->factSet.title.maxWidth];
-        constraint.active = YES;
-        constraint.priority = UILayoutPriorityDefaultHigh;
+        if (config->factSet.title.maxWidth) {
+            NSLayoutConstraint *constraintForTitleLab = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->factSet.title.maxWidth];
+            constraintForTitleLab.active = YES;
+            constraintForTitleLab.priority = UILayoutPriorityRequired;
+        }
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
         UILabel *valueLab = [ACRFactSetRenderer buildLabel:value
                                                 hostConfig:acoConfig

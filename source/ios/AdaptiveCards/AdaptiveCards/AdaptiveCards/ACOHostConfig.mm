@@ -42,20 +42,17 @@ using namespace AdaptiveCards;
     return self;
 }
 
-+ (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
++ (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
 {
     ACOHostConfigParseResult *result = nil;
-
-    if(payload)
-    {
-        try
-        {
+    
+    if(payload) {
+        try {
             std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
             ACOHostConfig *config= [[ACOHostConfig alloc] initWithConfig:cHostConfig];
             result = [[ACOHostConfigParseResult alloc] init:config errors:nil];
-        }
-        catch(const AdaptiveCardParseException& e)
-        {
+            config->_resolvers = resolvers;
+        } catch(const AdaptiveCardParseException& e) {
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
@@ -69,6 +66,16 @@ using namespace AdaptiveCards;
     return result;
 }
 
++ (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
+{
+    ACOHostConfigParseResult *result = nil;
+
+    if(payload) {
+        result = [ACOHostConfig fromJson:payload resourceResolvers:nil];
+    }
+    return result;
+}
+
 - (std::shared_ptr<HostConfig>)getHostConfig
 {
     return _config;
@@ -77,6 +84,15 @@ using namespace AdaptiveCards;
 - (void)setHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     _config = config;
+}
+
+- (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme
+{
+    if(!scheme) {
+        return nil;
+    }
+    
+    return [_resolvers getResourceResolverForScheme:scheme];
 }
 
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr

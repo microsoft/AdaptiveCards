@@ -92,7 +92,7 @@ using namespace AdaptiveCards;
     return [self collectionViewContentSize];
 }
 
-- (CGSize) collectionViewContentSize
+- (CGSize)collectionViewContentSize
 {
     size_t cellCounts = _imgSet->GetImages().size();
     CGSize imageSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
