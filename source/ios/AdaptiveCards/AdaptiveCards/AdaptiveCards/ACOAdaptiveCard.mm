@@ -91,4 +91,10 @@ using namespace AdaptiveCards;
 {
     return _adaptiveCard;
 }
+
+- (void)card:(std::shared_ptr<AdaptiveCard> const &)card
+{
+    _adaptiveCard = card;
+}
+
 @end
