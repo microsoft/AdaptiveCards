@@ -1,0 +1,11 @@
+.timeline-frame {
+    background: url('../assets/timeline.jpg');
+    height: 400px;
+    background-repeat: no-repeat;
+  }
+
+  .timeline-card {
+    overflow: hidden;
+    padding-left: 48px;
+    padding-top: 158px;
+  }

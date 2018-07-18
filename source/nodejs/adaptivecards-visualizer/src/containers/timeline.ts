@@ -34,7 +34,7 @@ export class TimelineContainer extends HostContainer {
         target.appendChild(wrapper);
 
         var cardContainer = document.createElement("div");
-        cardContainer.className = "timeline-card"; 
+        cardContainer.className = "timeline-card";
         wrapper.appendChild(cardContainer);
 
         // Style must be set in code for fixed-height clipping to work
@@ -48,7 +48,7 @@ export class TimelineContainer extends HostContainer {
         renderedCard.style.height = "100%";
         clippingDiv.appendChild(renderedCard);
         adaptiveCard.updateLayout();
-        
+
         return wrapper;
     }
 
