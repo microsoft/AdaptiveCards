@@ -97,7 +97,7 @@
     if (!_maxLength){
         return YES;
     }
-    
+
     if (range.length + range.location > textView.text.length) {
         return NO;
     }

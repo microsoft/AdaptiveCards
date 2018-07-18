@@ -31,8 +31,8 @@ using namespace AdaptiveCards;
                              andHostConfig:(ACOHostConfig *)config;
 
 + (UIView *)renderActions:(ACRView *)rootView
-                  inputs:(NSMutableArray *)inputs
-               superview:(UIView<ACRIContentHoldingView> *)superview
-             actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
-              hostConfig:(ACOHostConfig *)config;
+                   inputs:(NSMutableArray *)inputs
+                superview:(UIView<ACRIContentHoldingView> *)superview
+              actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
+               hostConfig:(ACOHostConfig *)config;
 @end
