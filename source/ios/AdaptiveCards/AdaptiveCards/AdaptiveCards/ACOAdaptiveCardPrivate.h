@@ -2,7 +2,7 @@
 //  ACOAdaptiveCardPrivate.h
 //  ACOAdaptiveCardPrivate
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
 //
 
 #import "ACOAdaptiveCard.h"
