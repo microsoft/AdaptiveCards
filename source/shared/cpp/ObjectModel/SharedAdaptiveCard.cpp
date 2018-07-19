@@ -146,11 +146,11 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
 
     if (elementParserRegistration == nullptr)
     {
-        elementParserRegistration.reset(new ElementParserRegistration());
+        elementParserRegistration = std::make_shared<ElementParserRegistration>();
     }
     if (actionParserRegistration == nullptr)
     {
-        actionParserRegistration.reset(new ActionParserRegistration());
+        actionParserRegistration = std::make_shared<ActionParserRegistration>();
     }
 
     // Parse body

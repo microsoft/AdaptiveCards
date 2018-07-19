@@ -34,7 +34,11 @@
 #pragma warning(default: CPPCORECHECK_CONCURRENCY_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONST_WARNINGS)
 #pragma warning(default: CPPCORECHECK_DECLARATION_WARNINGS)
+#pragma warning(default: CPPCORECHECK_OWNER_POINTER_WARNINGS)
+#pragma warning(default: CPPCORECHECK_RAW_POINTER_WARNINGS)
+#pragma warning(default: CPPCORECHECK_SHARED_POINTER_WARNINGS)
 #pragma warning(default: CPPCORECHECK_STYLE_WARNINGS)
+#pragma warning(default: CPPCORECHECK_TYPE_WARNINGS)
 #pragma warning(default: CPPCORECHECK_UNIQUE_POINTER_WARNINGS)
 
 // ECppCoreCheckWarningCodes::WARNING_MEMBER_UNINIT

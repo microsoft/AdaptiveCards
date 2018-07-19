@@ -63,7 +63,7 @@ std::string DateTimePreparser::Concatenate() const
     return formedString;
 }
 
-bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
+bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, const int hours, const int minutes)
 {
     if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 &&
         parsedTm.tm_min <= 60 && parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
@@ -115,7 +115,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
     while (std::regex_search(text, matches, pattern))
     {
         time_t offset{};
-        int  formatStyle{};
+        int formatStyle{};
         // Date is matched
         const bool isDate = matches[IsDate].matched;
         int hours{}, minutes{};
