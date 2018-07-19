@@ -16,13 +16,31 @@ public class VideoViewResizeable extends VideoView
         super(context);
     }
 
-    public void retrieveVideoDimensions(String uri)
+    public void retrieveVideoDimensions(String uri, boolean isOnlineSource)
     {
         MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-        metadataRetriever.setDataSource(uri, new HashMap<String, String>());
+
+        if(isOnlineSource)
+        {
+            metadataRetriever.setDataSource(uri, new HashMap<String, String>());
+        }
+        else
+        {
+            metadataRetriever.setDataSource(getContext(), Uri.parse(uri));
+        }
 
         m_videoHeight = Integer.parseInt(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
         m_videoWidth = Integer.parseInt(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+    }
+
+    public void setVideoPath(String path, boolean isAudio)
+    {
+        m_isAudio = isAudio;
+        if(!m_isAudio)
+        {
+            retrieveVideoDimensions(path, false);
+        }
+        super.setVideoPath(path);
     }
 
     public void setVideoURI(String uri, boolean isAudio)
@@ -30,7 +48,7 @@ public class VideoViewResizeable extends VideoView
         m_isAudio = isAudio;
         if(!m_isAudio)
         {
-            retrieveVideoDimensions(uri);
+            retrieveVideoDimensions(uri, true);
         }
         super.setVideoURI(Uri.parse(uri));
     }
