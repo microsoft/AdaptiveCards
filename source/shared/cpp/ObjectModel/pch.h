@@ -29,6 +29,7 @@
 #include <CppCoreCheck\warnings.h>
 #pragma warning(disable: ALL_CPPCORECHECK_WARNINGS)
 #pragma warning(default: CPPCORECHECK_ARITHMETIC_WARNINGS)
+#pragma warning(default: CPPCORECHECK_BOUNDS_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CLASS_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONCURRENCY_WARNINGS)
 #pragma warning(default: CPPCORECHECK_CONST_WARNINGS)

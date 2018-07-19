@@ -92,7 +92,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 
-    bool enforceVersion = (rendererVersion != std::numeric_limits<double>::max());
+    const bool enforceVersion = (rendererVersion != std::numeric_limits<double>::max());
 
     // Verify this is an adaptive card
     ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard);

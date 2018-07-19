@@ -72,7 +72,7 @@ void EmphasisParser::Match(std::stringstream &stream)
 {
     while (m_current_state != EmphasisState::Captured)
     {
-        m_current_state = m_stateMachine[m_current_state](*this, stream, m_current_token);
+        m_current_state = m_stateMachine.at(m_current_state)(*this, stream, m_current_token);
     }
 }
 
