@@ -213,15 +213,7 @@ void ParseUtil::ExpectKeyAndValueType(const Json::Value& json, const char* expec
 
 CardElementType ParseUtil::GetCardElementType(const Json::Value& json)
 {
-    std::string actualType = GetTypeAsString(json);
-    try
-    {
-        return CardElementTypeFromString(actualType);
-    }
-    catch (const std::out_of_range&)
-    {
-        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid CardElementType");
-    }
+    return CardElementTypeFromString(GetTypeAsString(json));
 }
 
 CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
@@ -238,15 +230,7 @@ CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
 
 ActionType ParseUtil::GetActionType(const Json::Value& json)
 {
-    std::string actualType = GetTypeAsString(json);
-    try
-    {
-        return ActionTypeFromString(actualType);
-    }
-    catch (const std::out_of_range&)
-    {
-        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid ActionType");
-    }
+    return ActionTypeFromString(GetTypeAsString(json));
 }
 
 ActionType ParseUtil::TryGetActionType(const Json::Value& json)
