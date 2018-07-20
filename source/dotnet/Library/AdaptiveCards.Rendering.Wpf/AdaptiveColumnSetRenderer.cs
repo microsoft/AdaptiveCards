@@ -9,6 +9,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public static FrameworkElement Render(AdaptiveColumnSet columnSet, AdaptiveRenderContext context)
         {
             var uiColumnSet = new Grid();
+            Grid.SetIsSharedSizeScope(uiColumnSet, true);
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 
             foreach (var column in columnSet.Columns)
