@@ -114,7 +114,6 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
 
     while (std::regex_search(text, matches, pattern))
     {
-        time_t offset{};
         int formatStyle{};
         // Date is matched
         const bool isDate = matches[IsDate].matched;
@@ -154,6 +153,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
         // check for date and time validation
         if (IsValidTimeAndDate(parsedTm, hours, minutes))
         {
+			time_t offset{};
             // maches offset sign,
             // Z == UTC,
             // + == time added from UTC
@@ -163,7 +163,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
                 // converts to seconds
                 hours *= 3600;
                 minutes *= 60;
-                offset = (time_t)hours + (time_t)minutes;
+                offset = static_cast<time_t>(hours) + static_cast<time_t>(minutes);
 
                 wchar_t zone = matches[TimeZone].str().at(0);
                 // time zone offset calculation
