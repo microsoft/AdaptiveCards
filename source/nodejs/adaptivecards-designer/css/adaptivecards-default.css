@@ -29,26 +29,6 @@ a.default-ac-anchor:visited:active {
     color: #004D84;
 }
 
-[id="treeViewSheetHost"],
-[id="propertySheetHost"] {
-    background-color: #f9f9f9;
-    min-width: 205px;
-    position: relative;
-}
-
-.properties-items {
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.default-ac-container:not(:last-of-type) {
-    padding-right: 10px;;
-}
-
-.default-ac-container + div {
-    display: none !important; /* The important overrides inline CSS properties added via JS */
-}
-
 .default-ac-container.default-ac-selectable,
 .default-ac-columnSet.default-ac-selectable {
     padding: 0;
@@ -133,8 +113,6 @@ a.default-ac-anchor:visited:active {
     font-family: "Segoe UI", sans-serif;
     font-size: 14px;
     color: black;
-    justify-content: flex-end;
-    align-items: center;
 }
 
 .default-ac-input.default-ac-textInput {

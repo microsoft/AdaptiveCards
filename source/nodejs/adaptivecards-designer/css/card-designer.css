@@ -1,11 +1,8 @@
-.acd-icon-bolt::before,
-.acd-icon-addColumn::before,
-.acd-icon-remove::before,
-.acd-icon-drag::before {
-    border: 1px solid #78dd03;
-    background-color: #ffffff;
-    color: #979797;
-    font-family: "FabricMDL2Icons";
+.acd-icon {
+    font-family: 'FabricMDL2Icons';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
 }
 
 .acd-icon-bolt::before {
@@ -24,26 +21,116 @@
     content: "\E7C2";
 }
 
-.acd-icon-bolt:hover::before,
-.acd-icon-remove:hover::before,
-.acd-icon-addColumn:hover::before {
-    background-color: #e3ffda;
-    color: #000000;
-    cursor: pointer;
-}
-
-.acd-icon-drag:hover::before {
-    background-color: #e3ffda;
-    color: #000000;
-    cursor: move;
-}
-
 .acd-icon-image::before {
     content: "\ECAB";
 }
 
+.acd-icon-adaptiveCard::before {
+    content: "\EEBD";
+}
+
+.acd-icon-column::before {
+    content: "\E799";
+}
+
+.acd-icon-columnSet::before {
+    content: "\F1D5";
+}
+
+.acd-icon-container::before {
+    content: "\E739";
+}
+
+.acd-icon-factSet::before {
+    content: "\F2A2";
+}
+
+.acd-icon-image::before {
+    content: "\EB9F";
+}
+
+.acd-icon-imageSet::before {
+    content: "\E7AA";
+}
+
+.acd-icon-inputChoiceSet::before {
+    content: "\F2C7";
+}
+
+.acd-icon-inputDate::before {
+    content: "\E787";
+}
+
+.acd-icon-inputNumber::before {
+    content: "\EDC4";
+}
+
+.acd-icon-inputText::before {
+    content: "\EDC3";
+}
+
+.acd-icon-inputTime::before {
+    content: "\E917";
+}
+
+.acd-icon-inputToggle::before {
+    content: "\E73A";
+}
+
+.acd-icon-textBlock::before {
+    content: "\E8E9";
+}
+
+.acd-icon-chevronDown::before {
+    content: "\E70D";
+}
+
+.acd-icon-chevronUp::before {
+    content: "\E70E";
+}
+
+.acd-icon-chevronRight::before {
+    content: "\E76C";
+}
+
+.acd-icon-chevronLeft::before {
+    content: "\E76B";
+}
+
+.acd-icon-newCard::before {
+    content: "\F321";
+}
+
+.acd-icon-fullScreen::before {
+    content: "\E740";
+}
+
 .acd-designersurface {
     outline: none;
+}
+
+.acd-icon-actionShowCard::before {
+    content: "\EEBD";
+}
+
+.acd-icon-actionOpenUrl::before {
+    content: "\E71B";
+}
+
+.acd-icon-actionSubmit::before {
+    content: "\E73E";
+}
+
+.acd-icon-actionToggleVisibility::before {
+    content: "\E7B3";
+}
+
+.acd-icon-actionHttp::before {
+    content: "\E774";
+}
+
+.acd-icon-copy::before {
+    content: "\E8C8";
 }
 
 .acd-designersurface.dragging {
@@ -55,8 +142,67 @@
     border-color: transparent;
 }
 
+.acd-peerButton {
+    width: 20px;
+    height: 20px;
+    font-family: 'FabricMDL2Icons';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid red;
+    color: red;
+    background-color: white;
+    cursor: default;
+    user-select: none;
+}
+
+.acd-peerButton:hover {
+    background-color: red;
+    color: white;
+}
+
+.acd-palette-category {
+    align-items: center;
+    color: #4a4a4a;
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    list-style-type: none;
+    position: relative;
+    white-space: nowrap;
+    padding: 4px 16px 4px 16px;
+    cursor: default;
+}
+
+.acd-palette-category::after {
+    border-bottom: 1px solid #e0e0e0;
+    content: "";
+    margin-bottom: -3px;
+    margin-left: 8px;
+    width: 100%;
+}
+
+.acd-palette-item {
+    cursor: move;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 16px 4px 16px;
+}
+
+.acd-palette-item-label {
+    font-size: 14px;
+    white-space: nowrap;
+    margin-left: 8px;
+    flex: 1 1 100%;
+}
+
 .acd-palette-item:hover {
-    background-color: #eeeeee;
+    background-color: #EEEEEE;
 }
 
 .acd-peer {
@@ -68,7 +214,7 @@
 }
 
 .acd-peer.selected {
-    border: solid 1px #78dd03;
+    border: solid 1px red;
 }
 
 .acd-peer.dragover {
@@ -89,6 +235,44 @@
 
 .acd-separation.selected {
     background-color: rgba(255, 0, 0, 0.2);
+}
+
+.acd-tree-item {
+    cursor: pointer;
+}
+
+.acd-tree-item.selected {
+    background-color: #BCE2FF;
+}
+
+.acd-tree-item:hover {
+    background-color: #EEEEEE;
+}
+
+.acd-tree-item.selected:hover {
+    background-color: #A3D8FF;
+}
+
+.acd-tree-item-expandCollapseButton {
+    font-family: 'FabricMDL2Icons';
+    font-size: 10px;
+}
+
+.acd-tree-item-text {
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    padding: 4px 4px 4px 8px;
+}
+
+.acd-tree-item-typeName {
+    margin-left: 8px;
+}
+
+.acd-tree-item-additionalText {
+    color: gray;
+    margin-left: 8px;
 }
 
 /*
@@ -220,78 +404,7 @@
     background-repeat: no-repeat;
     background-position: center;
     height: 20px;
-    margin-right: 8px;
     width: 20px;
-    padding-left: 36px;
-}
-
-.aside-item__icon--actionset::before,
-.aside-item__icon--columnset::before,
-.aside-item__icon--container::before,
-.aside-item__icon--factset::before,
-.aside-item__icon--image::before,
-.aside-item__icon--imageset::before,
-.aside-item__icon--choice::before,
-.aside-item__icon--inputchoiceset::before,
-.aside-item__icon--inputdate::before,
-.aside-item__icon--inputnumber::before,
-.aside-item__icon--inputtext::before,
-.aside-item__icon--inputtime::before,
-.aside-item__icon--inputtoggle::before,
-.aside-item__icon--textblock::before {
-    font-family: "FabricMDL2Icons";
-    left: 28px;
-    margin-top: 3px;
-    position: absolute;
-}
-
-.aside-item__icon--columnset::before {
-    content: "\F1D5";
-}
-
-.aside-item__icon--container::before {
-    content: "\E739";
-}
-
-.aside-item__icon--factset::before {
-    content: "\F2A2";
-}
-
-.aside-item__icon--image::before {
-    content: "\EB9F";
-}
-
-.aside-item__icon--imageset::before {
-    /* TODO: Can't find content value in FabricUI */
-    content: "\EEC2";
-}
-
-.aside-item__icon--inputchoiceset::before {
-    content: "\F2C7";
-}
-
-.aside-item__icon--inputdate::before {
-    content: "\E787";
-}
-
-.aside-item__icon--inputnumber::before {
-    content: "\EDC4";
-}
-
-.aside-item__icon--inputtext::before {
-    content: "\EDC3";
-}
-
-.aside-item__icon--inputtime::before {
-    content: "\E917";
-}
-
-.aside-item__icon--inputtoggle::before {
-    content: "\E73A";
-}
-
-.aside-item__icon--textblock::before {
-    content: "\EC7D";
 }
 
 /*
@@ -331,9 +444,36 @@
     font-family: "FabricMDL2Icons";
 }
 
+.acd-toolbar-button {
+    padding: 11px;
+    border: 1px solid transparent;
+    font-style: normal;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    user-select: none;
+}
+
+.acd-toolbar-button:before {
+    font-family: 'FabricMDL2Icons';
+    font-size: 20px;
+    margin-right: 6px;
+}
+
+.acd-toolbar-button:hover {
+    background-color: white;
+}
+
+.acd-toolbar-button:active {
+    border: 1px solid black;
+}
+
 /*
 * Toolbar
 */
+/*
 .toolbar-btn {
     align-items: center;
     border: 1px solid transparent;
@@ -383,215 +523,4 @@
 .toolbar-btn__icon-fullscreen.is-fullscreen::before {
     content: "\E73F";
 }
-
-/*
-* Treeview Style
 */
-.treeview-items {
-    background-color: #f9f9f9;
-    height: calc(100% - 50px);
-    padding-bottom: 5px;
-}
-
-.treeview-items > .treeview__container {
-    margin-bottom: 20px;
-    padding-top: 20px;
-}
-
-.treeview__section-title {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 0;
-    margin-top: 0;
-    overflow: hidden;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-top: 10px;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
-.treeview__container {
-    background-color: #f9f9f9;
-    list-style: none;
-    margin-bottom: 10px;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    padding-left: 0;
-    width: 100%;
-}
-
-.treeview__element {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.treeview__element:not(:last-child) {
-    margin-bottom: 10px;
-}
-
-.treeview__element.is-empty {
-    margin-bottom: 0;
-}
-
-.treeview__element:hover {
-    cursor: pointer;
-}
-
-.treeview__element.is-selected {
-    background-color: #e7e7e7;
-}
-
-.treeview__icon {
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center;
-    border: none;
-    cursor: pointer;
-    height: 14px;
-    margin-right: 6px;
-    margin-top: -2px;
-    padding: 0;
-    width: 14px;
-}
-
-button.treeview__icon {
-    margin-bottom: -2px;
-    width: 18px;
-}
-
-button.treeview__icon:focus {
-    outline-style: none;
-}
-
-.treeview__icon--arrow::before,
-.treeview__icon--textblock::before,
-.treeview__icon--factset::before,
-.treeview__icon--image::before,
-.treeview__icon--imageset::before,
-.treeview__icon--inputtext::before,
-.treeview__icon--inputtoggle::before,
-.treeview__icon--inputnumber::before,
-.treeview__icon--inputdate::before,
-.treeview__icon--inputtime::before,
-.treeview__icon--inputchoiceset::before,
-.treeview__icon--actionsubmit::before,
-.treeview__icon--actionopenurl::before,
-.treeview__icon--container::before,
-.treeview__icon--column::before,
-.treeview__icon--columnset::before,
-.treeview__icon--actionshowcard::before,
-.treeview__icon--arrow.is-rotated::before {
-    font-family: "FabricMDL2Icons";
-}
-
-.treeview__icon--adaptivecard {
-    display: none;
-}
-
-.treeview__icon--arrow::before {
-    content: "\F08E";
-    margin-bottom: -3px;
-    margin-right: 0;
-}
-
-.treeview__icon--textblock::before {
-    content: "\EC7D";
-}
-
-.treeview__icon--factset::before {
-    content: "\F2A2";
-}
-
-.treeview__icon--image::before {
-    content: "\EB9F";
-}
-
-.treeview__icon--imageset::before {
-    /* TODO: Can't find content value in FabricUI */
-    content: "\EEC2";
-}
-
-.treeview__icon--inputtext::before {
-    content: "\EDC3";
-}
-
-.treeview__icon--inputtoggle::before {
-    content: "\E73A";
-}
-
-.treeview__icon--inputnumber::before {
-    content: "\EDC4";
-}
-
-.treeview__icon--inputdate::before {
-    content: "\E787";
-}
-
-.treeview__icon--inputtime::before {
-    content: "\E917";
-}
-
-.treeview__icon--inputchoiceset::before {
-    content: "\F2C7";
-}
-
-.treeview__icon--actionopenurl::before {
-    content: "\E89F";
-}
-
-.treeview__icon--container::before {
-    content: "\E739";
-}
-
-.treeview__icon--column::before {
-    content: "\F1D4";
-}
-
-.treeview__icon--columnset::before {
-    content: "\F1D5";
-}
-
-.treeview__icon--actionshowcard::before {
-    content: "\EEBD";
-}
-
-.treeview__icon--arrow.is-rotated::before {
-    content: "\F08F";
-}
-
-.is-folded {
-    display: none;
-}
-
-/*
-* Fixes Properties Panel CSS inline styles added via JavaScript
-*/
-.default-ac-columnSet.wrapper .default-ac-container:nth-child(1) {
-    padding-right: 6px !important;
-    flex: 1 1 140px !important;
-    margin-left: 10px;
-    max-width: 34% !important;
-}
-
-.default-ac-columnSet.wrapper .default-ac-container:nth-child(3) {
-    padding-left: 0 !important;
-    flex: 2 1 125px !important;
-}
-
-.acd-peerButton[type="button"] {
-    background-color: transparent;
-    border: 0;
-    padding: 0;
-}
-
-.content {
-    overflow-x: hidden !important;
-}
-
-.monaco-editor,
-.overflow-guard {
-    width: 100% !important;
-}

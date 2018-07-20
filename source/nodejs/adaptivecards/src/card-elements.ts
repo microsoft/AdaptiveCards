@@ -463,6 +463,10 @@ export abstract class CardElement {
         this.updateRenderedElementVisibility();
     }
 
+    indexOf(cardElement: CardElement): number {
+        return -1;
+    }
+
     isRendered(): boolean {
         return this._renderedElement && this._renderedElement.offsetHeight > 0;
     }
@@ -591,6 +595,15 @@ export abstract class CardElement {
 
     set hostConfig(value: HostConfig.HostConfig) {
         this._hostConfig = value;
+    }
+
+    get index(): number {
+        if (this.parent) {
+            return this.parent.indexOf(this);
+        }
+        else {
+            return 0;
+        }
     }
 
     get isInteractive(): boolean {
@@ -1562,6 +1575,10 @@ export class ImageSet extends CardElementContainer {
         }
     }
 
+    indexOf(cardElement: CardElement): number {
+        return cardElement instanceof Image ? this._images.indexOf(cardElement) : -1;
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak;
@@ -1758,20 +1775,21 @@ export class ToggleInput extends Input {
 
         this._checkboxInputElement.onchange = () => { this.valueChanged(); }
 
-        var label = new TextBlock();
-        label.hostConfig = this.hostConfig;
-        label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
-        label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
-
-        var labelElement = label.render();
-        labelElement.style.display = "inline-block";
-        labelElement.style.marginLeft = "6px";
-        labelElement.style.verticalAlign = "middle";
-
-        var compoundInput = document.createElement("div");
-
         Utils.appendChild(element, this._checkboxInputElement);
-        Utils.appendChild(element, labelElement);
+
+        if (!Utils.isNullOrEmpty(this.title) || this.isDesignMode()) {
+            var label = new TextBlock();
+            label.hostConfig = this.hostConfig;
+            label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
+            label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+
+            var labelElement = label.render();
+            labelElement.style.display = "inline-block";
+            labelElement.style.marginLeft = "6px";
+            labelElement.style.verticalAlign = "middle";
+
+            Utils.appendChild(element, labelElement);
+        }
 
         return element;
     }
@@ -3829,6 +3847,10 @@ export class Container extends CardElementContainer {
         this.insertItemAt(item, -1);
     }
 
+    indexOf(cardElement: CardElement): number {
+        return this._items.indexOf(cardElement);
+    }
+
     insertItemBefore(item: CardElement, insertBefore: CardElement) {
         this.insertItemAt(item, this._items.indexOf(insertBefore));
     }
@@ -4370,6 +4392,10 @@ export class ColumnSet extends CardElementContainer {
         }
 
         return false;
+    }
+
+    indexOf(cardElement: CardElement): number {
+        return cardElement instanceof Column ? this._columns.indexOf(cardElement) : -1;
     }
 
     isLeftMostElement(element: CardElement): boolean {

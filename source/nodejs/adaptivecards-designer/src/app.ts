@@ -27,9 +27,12 @@ function monacoEditorLoaded() {
         function (e) {
             scheduleCardRefresh();
         });
+
     isMonacoEditorLoaded = true;
+
     updateJsonFromCard();
-    app.toggleHostJsonPanel();
+
+    // app.toggleHostJsonPanel();
 }
 
 function getCurrentJsonPayload(): string {
@@ -68,6 +71,7 @@ var preventJsonUpdate: boolean = false;
 function updateCardFromJson() {
     try {
         preventJsonUpdate = true;
+
         if (!preventCardUpdate) {
             app.designer.parseCard(getCurrentJsonPayload());
         }
@@ -101,11 +105,27 @@ declare function loadMonacoEditor(schema: any, callback: () => void);
 
 abstract class BasePaletteItem extends Designer.DraggableElement {
     protected abstract getText(): string;
+    protected abstract getIconClass(): string;
 
     protected internalRender(): HTMLElement {
-        let element = document.createElement("li");
-        element.className = `aside-item aside-item__icon aside-item__icon--${Utils.sanitizeString(this.getText())}`;
-        element.innerText = this.getText();
+        let element = document.createElement("div");
+        element.className = "acd-palette-item";
+        element.style.display = "flex";
+
+        let iconElement = document.createElement("div");
+        iconElement.classList.add("acd-icon", this.getIconClass());
+        iconElement.style.flex = "0 0 auto";
+        
+        let labelElement = document.createElement("div");
+        labelElement.className = "acd-palette-item-label";
+        labelElement.style.flex = "1 1 100%";
+        labelElement.innerText = this.getText();
+
+        element.appendChild(iconElement);
+        element.appendChild(labelElement);
+
+        // element.className = `acd-palette-item aside-item__icon--${Utils.sanitizeString(this.getText())}`;
+        // element.innerText = this.getText();
 
         return element;
     }
@@ -120,6 +140,10 @@ abstract class BasePaletteItem extends Designer.DraggableElement {
 class ElementPaletteItem extends BasePaletteItem {
     protected getText(): string {
         return this.typeRegistration.typeName;
+    }
+
+    protected getIconClass(): string {
+        return this.peerRegistration.iconClass;
     }
     
     readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
@@ -143,6 +167,10 @@ class ElementPaletteItem extends BasePaletteItem {
 class SnippetPaletteItem extends BasePaletteItem {
     protected getText(): string {
         return this.name;
+    }
+
+    protected getIconClass(): string {
+        return null;
     }
 
     readonly name: string;
@@ -185,19 +213,16 @@ class DesignerApp {
     private _hostContainerPicker: Controls.DropDown;
     private _selectedHostContainer: HostContainer;
 
-    public buildTreeViewSheet() {
-        if (this.treeViewSheetHostElement) {
-            let treeview = this.treeViewSheetHostElement.getElementsByClassName("treeview-items")[0];
-            treeview.innerHTML = "";
-
-            treeview.appendChild(this.designer.rootPeer.treeItem.render());
+    public buildTreeView() {
+        if (this.treeViewHostElement) {
+            this.treeViewHostElement.innerHTML = "";
+            this.treeViewHostElement.appendChild(this.designer.rootPeer.treeItem.render());
         }
     }
 
     private buildPropertySheet(peer: Designer.DesignerPeer) {
-        let properties = document.getElementsByClassName("js-properties-items")[0];
         if (this.propertySheetHostElement) {
-            properties.innerHTML = "";
+            this.propertySheetHostElement.innerHTML = "";
 
             let card: Adaptive.AdaptiveCard;
 
@@ -215,7 +240,6 @@ class DesignerApp {
                             {
                                 type: "TextBlock",
                                 wrap: true,
-                                size: "medium",
                                 text: "**Nothing is selected**"
                             },
                             {
@@ -226,14 +250,23 @@ class DesignerApp {
                         ]
                     }
                 );
+                card.padding = new Adaptive.PaddingDefinition(
+                    Adaptive.Spacing.Small,
+                    Adaptive.Spacing.Small,
+                    Adaptive.Spacing.Small,
+                    Adaptive.Spacing.Small
+                )
             }
 
-            properties.appendChild(card.render());
+            this.propertySheetHostElement.appendChild(card.render());
+
+            /*
             let cardNodes = card.renderedElement.children;
 
             for (let element = 0; element < cardNodes.length; element++) {
                 (cardNodes[element] as HTMLElement).className += " wrapper";
              }
+             */
         }
     }
 
@@ -280,7 +313,7 @@ class DesignerApp {
             for (let category in categorizedTypes) {
                 let node = document.createElement('li');
                 node.innerText = category;
-                node.className = "aside-title";
+                node.className = "acd-palette-category";
                 this.paletteHostElement.appendChild(node);
 
                 for (var i = 0; i < categorizedTypes[category].length; i++) {
@@ -384,7 +417,8 @@ class DesignerApp {
             if (isFullRefresh) {
                 scheduleJsonUpdate();
             }
-            this.buildTreeViewSheet();
+
+            this.buildTreeView();
         };
         this._designer.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
             let errorPane = document.getElementById("errorPane");
@@ -432,7 +466,7 @@ class DesignerApp {
     readonly hostContainers: Array<HostContainer> = [];
 
     propertySheetHostElement: HTMLElement;
-    treeViewSheetHostElement: HTMLElement;
+    treeViewHostElement: HTMLElement;
     commandListHostElement: HTMLElement;
 
     constructor(designerHostElement: HTMLElement) {
@@ -462,6 +496,17 @@ class DesignerApp {
         }
 
         return this._hostContainerPicker;
+    }
+
+    newCard() {
+        let card = {
+            type: "AdaptiveCard",
+            version: "1.0",
+            body: [                
+            ]
+        }
+        
+        monacoEditor.setValue(JSON.stringify(card, null, 4));
     }
 
     handlePointerMove(e: PointerEvent) {
@@ -532,11 +577,13 @@ class DesignerApp {
         }
     }
 
+    /*
     private addEvents(): void {
         const jsonBtn = document.querySelector(".js-host-json__bullet");
 
         jsonBtn.addEventListener("click", this.toggleClass);
     }
+    */
 
     private toggleClass(): void {
         const jsonEditorPanel = document.getElementById("jsonEditorHost");
@@ -556,6 +603,7 @@ class DesignerApp {
         jsonMenu.style.marginBottom = "0";
     }
 
+    /*
     public toggleHostJsonPanel(): void {
         this.addEvents();
     }
@@ -580,10 +628,7 @@ class DesignerApp {
             description.classList.toggle("is-hidden");
         })
     }
-
-    public togglePanels(): void {
-        this.toggleAside();
-    }
+    */
 
     get paletteHostElement(): HTMLElement {
         return this._paletteHostElement;
@@ -697,37 +742,51 @@ class Splitter {
 }
 
 var app: DesignerApp;
-var horizontalSplitter: Splitter;
-var propertyVerticalSplitter: Splitter;
+var jsonEditorHorizontalSplitter: Splitter;
+var propertySheetVerticalSplitter: Splitter;
 var treeViewVerticalSplitter: Splitter;
 
 window.onload = () => {
-    const fullScreenHandler = new FullScreenHandler(document.querySelector(".js-enter-fullscreen"));
+    let fullScreenHandler = new FullScreenHandler(document.getElementById("btnFullScreen"));
     fullScreenHandler.init();
 
-    new Clipboard(".js-copy-json", {
-        text: function () {
-            return JSON.stringify(app.card.toJSON(), null, 4);
-        }
-    });
+    new Clipboard(
+        "btnCopyToClipboard",
+        {
+            text: function () {
+                return JSON.stringify(app.card.toJSON(), null, 4);
+            }
+        });
 
-    horizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
-    horizontalSplitter.onRezized = (splitter: Splitter) => {
+    document.getElementById("btnNewCard").onclick = (e) => {
+        app.newCard();
+    }
+
+    jsonEditorHorizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorPane"));
+    jsonEditorHorizontalSplitter.onRezized = (splitter: Splitter) => {
         if (isMonacoEditorLoaded) {
+            // Monaco is very finicky. It will apparently only properly layout if
+            // its direct container has an explicit height.
+            let jsonEditorPane = document.getElementById("jsonEditorPane");
+            let jsonEditorHost = document.getElementById("jsonEditorHost");
+
+            jsonEditorHost.style.height = jsonEditorPane.style.height;
+
             monacoEditor.layout();
         }
     }
 
-    propertyVerticalSplitter
-        = new Splitter(document.getElementById("propertyVerticalSplitter"), document.getElementById("propertySheetHost"));
-    propertyVerticalSplitter.isVertical = true;
-    propertyVerticalSplitter.onRezized = (splitter: Splitter) => {
+    propertySheetVerticalSplitter = new Splitter(document.getElementById("propertyVerticalSplitter"), document.getElementById("propertySheetPane"));
+    propertySheetVerticalSplitter.isVertical = true;
+    propertySheetVerticalSplitter.onRezized = (splitter: Splitter) => {
         scheduleLayoutUpdate();
     }
 
-    treeViewVerticalSplitter
-        = new Splitter(document.getElementById("treeViewVerticalSplitter"), document.getElementById("treeViewSheetHost"));
+    treeViewVerticalSplitter = new Splitter(document.getElementById("treeViewVerticalSplitter"), document.getElementById("treeViewPane"));
     treeViewVerticalSplitter.isVertical = true;
+    treeViewVerticalSplitter.onRezized = (splitter: Splitter) => {
+        scheduleLayoutUpdate();
+    }
 
     let card = new Adaptive.AdaptiveCard();
     card.onImageLoaded = (image: Adaptive.Image) => {
@@ -736,15 +795,26 @@ window.onload = () => {
 
     app = new DesignerApp(document.getElementById("designerHost"));
     app.propertySheetHostElement = document.getElementById("propertySheetHost");
-    app.treeViewSheetHostElement = document.getElementById("treeViewSheetHost");
+    app.treeViewHostElement = document.getElementById("treeViewHost");
     app.commandListHostElement = document.getElementById("commandsHost");
     app.paletteHostElement = document.getElementById("toolPalette");
 
     app.createContainerPicker().attach(document.getElementById("containerPickerHost"));
 
+    /*
     app.togglePanels();
     app.cloneNodesTrees();
+    */
+    let toolPalettePane = document.getElementById("toolPalettePane");
+    toolPalettePane.onclick = (e) => {
+        document.getElementById("toolPalette").style.visibility = "hidden";
+    };
 
+    /*
+    .addEventListener("click", () => {
+    const aside = document.querySelector(".js-aside");
+    aside.classList.toggle("is-toggled");
+*/
     window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
     window.addEventListener("resize", () => { scheduleLayoutUpdate(); });
     window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });

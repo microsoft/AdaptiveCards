@@ -2,10 +2,15 @@ import { DesignerPeer } from "../card-designer";
 import * as Utils from "../utils";
 
 export default class TreeItem {
-    readonly owner: DesignerPeer;
-    private _listElement: HTMLElement;
-    private _childContainerElement: HTMLElement;
+    private static collapsedIconClass = "acd-icon-chevronRight";
+    private static expandedIconClass = "acd-icon-chevronDown";
+
     private _isExpanded: boolean = true;
+    private _treeItemElement: HTMLElement;
+    private _expandCollapseElement: HTMLElement;
+    private _childContainerElement: HTMLElement;
+
+    readonly owner: DesignerPeer;
 
     constructor(owner: DesignerPeer) {
         this.owner = owner;
@@ -13,78 +18,106 @@ export default class TreeItem {
 
     render(indentationLevel: number = 0): HTMLElement {
         let rootElement = document.createElement("div");
-        rootElement.className = "treeview__container";
 
-        this._listElement = this.internalRender(indentationLevel);
-        rootElement.appendChild(this._listElement);
+        this._treeItemElement = document.createElement("div");
+        this._treeItemElement.classList.add("acd-tree-item");
+        this._treeItemElement.style.display = "flex";
+        this._treeItemElement.style.alignItems = "center";
+        this._treeItemElement.style.paddingLeft = 8 + 8 * indentationLevel + "px";
+        this._treeItemElement.onclick = (e: MouseEvent) => {
+            this._isExpanded = !this._isExpanded;
 
-        if (this.owner.getChildCount() > 0) {
-            rootElement.appendChild(this.renderChildList(indentationLevel));
+            this.updateLayout();
+
+            e.cancelBubble = true;
+            e.preventDefault();
         }
 
-        this.updateLayout();
-        return rootElement;
-    }
+        this._expandCollapseElement = document.createElement("div");
+        this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
+        this._expandCollapseElement.style.flex = "0 0 auto";
+        this._expandCollapseElement.style.visibility = this.owner.getChildCount() > 0 ? "visible" : "hidden";
 
-    private renderChildList(indentationLevel: number): HTMLElement {
-        this._childContainerElement = document.createElement("div");
-        this._childContainerElement.className = "treeview__container";
+        this._treeItemElement.appendChild(this._expandCollapseElement);
 
-        for (let i = 0; i < this.owner.getChildCount(); i++) {
-            let currentItem = this.owner.getChildAt(i);
-            this._childContainerElement.appendChild(currentItem.treeItem.render(indentationLevel + 1));
-        }
-
-        if (!this._isExpanded) {
-            this._childContainerElement.classList.add("is-folded");
-        }
-
-        return this._childContainerElement;
-    }
-
-    private internalRender (indentationLevel: number): HTMLElement {
-        let listItem = document.createElement("div");
-        listItem.className = "treeview__element";
-
-        listItem.onclick = (e: MouseEvent) => {
+        let textElement = document.createElement("div");
+        textElement.classList.add("acd-tree-item-text");
+        textElement.style.flex = "1 1 auto";
+        textElement.style.display = "flex";
+        textElement.style.alignItems = "center";
+        textElement.style.whiteSpace = "nowrap";
+        textElement.style.textOverflow = "ellipsis";
+        textElement.style.overflow = "hidden";
+        textElement.onclick = (e: MouseEvent) => {
             this.owner.isSelected = true;
 
             e.cancelBubble = true;
             e.preventDefault();
         }
 
-        if (this.owner.getChildCount() > 0) {
-            let foldArrow = document.createElement("button");
-            foldArrow.onclick = (e: MouseEvent) => {
-                e.cancelBubble = true;
-                e.preventDefault();
-                foldArrow.classList.toggle("is-rotated");
-                this.foldTreeViewContainer();
-            }
+        let iconElement = document.createElement("div");
+        iconElement.classList.add("acd-icon", this.owner.registration.iconClass);
 
-            foldArrow.className = `treeview__icon treeview__icon--arrow ${!this._isExpanded ? "is-rotated" : ""}`;
-            listItem.appendChild(foldArrow);
+        textElement.appendChild(iconElement);
+
+        let typeNameSpan = document.createElement("span");
+        typeNameSpan.classList.add("acd-tree-item-typeName");
+        typeNameSpan.innerText = this.owner.getCardObjectTypeName();
+
+        textElement.appendChild(typeNameSpan);
+
+        let text = this.owner.getTreeItemText();
+
+        if (text && text != "") {
+            let additionalTextSpan = document.createElement("span");
+            additionalTextSpan.classList.add("acd-tree-item-additionalText");
+            additionalTextSpan.innerText = " [" + text + "]";
+
+            textElement.appendChild(additionalTextSpan);
         }
 
-        let icon = document.createElement("span");
-        icon.className = `treeview__icon treeview__icon--${Utils.sanitizeString(this.owner.getCardObjectTypeName())}`;
-        listItem.appendChild(icon);
+        this._treeItemElement.appendChild(textElement);
 
-        let title = document.createElement("span");
-        title.className = `treeview__title`;
-        title.textContent = this.owner.getCardObjectTypeName();
-        listItem.appendChild(title);
+        rootElement.appendChild(this._treeItemElement);
 
-        listItem.style.paddingLeft = `${indentationLevel * 20 + 24}px`;
-        return listItem;
+        this._childContainerElement = document.createElement("div");
+
+        for (let i = 0; i < this.owner.getChildCount(); i++) {
+            let renderedChildItem = this.owner.getChildAt(i).treeItem.render(indentationLevel + 1);
+
+            this._childContainerElement.appendChild(renderedChildItem);
+        }
+
+        rootElement.appendChild(this._childContainerElement);
+
+        this.updateLayout();
+
+        return rootElement;
     }
 
-    updateLayout(): void {
-        this._listElement.classList.toggle("is-selected", this.owner.isSelected || false);
+    updateLayout() {
+        if (this._isExpanded) {
+            this._childContainerElement.style.display = null;
+            this._expandCollapseElement.classList.remove(TreeItem.collapsedIconClass);
+            this._expandCollapseElement.classList.add(TreeItem.expandedIconClass);
+        }
+        else {
+            this._childContainerElement.style.display = "none";
+            this._expandCollapseElement.classList.add(TreeItem.collapsedIconClass);
+            this._expandCollapseElement.classList.remove(TreeItem.expandedIconClass);
+        }
+
+        if (this.owner.isSelected) {
+            this._treeItemElement.classList.add("selected");
+        }
+        else {
+            this._treeItemElement.classList.remove("selected");
+        }
     }
 
-    private foldTreeViewContainer(): void {
-        this._isExpanded = !this._isExpanded;
-        this._childContainerElement.classList.toggle("is-folded");
+    expand() {
+        this._isExpanded = true;
+
+        this.updateLayout();
     }
 }
