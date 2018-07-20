@@ -110,10 +110,10 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                         if (!MainPageViewModel.HostConfigEditor.HostConfig.Media.AllowInlinePlayback)
                         {
-                            renderResult.MediaPlay += async (sender, e) =>
+                            renderResult.MediaClicked += async (sender, e) =>
                             {
                                 var onPlayDialog = new ContentDialog();
-                                onPlayDialog.Content = "MediaPlayEvent:";
+                                onPlayDialog.Content = "MediaClickedEvent:";
 
                                 foreach (var source in e.Media.Sources)
                                 {
@@ -123,23 +123,6 @@ namespace AdaptiveCardVisualizer.ViewModel
                                 onPlayDialog.PrimaryButtonText = "Close";
 
                                 await onPlayDialog.ShowAsync();
-                            };
-                        }
-                        else
-                        {
-                            renderResult.MediaEnded += async (sender, e) =>
-                            {
-                                var mediaEndedDialog = new ContentDialog();
-                                mediaEndedDialog.Content = "Media Ended Event:";
-
-                                foreach (var source in e.Media.Sources)
-                                {
-                                    mediaEndedDialog.Content += "\n" + source.Url + " (" + source.MimeType + ")";
-                                }
-
-                                mediaEndedDialog.PrimaryButtonText = "Close";
-
-                                await mediaEndedDialog.ShowAsync();
                             };
                         }
                     }

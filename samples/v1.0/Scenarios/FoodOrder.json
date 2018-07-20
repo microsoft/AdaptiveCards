@@ -19,15 +19,15 @@
 			"images": [
 				{
 					"type": "Image",
-					"url": "http://contososcubabot.azurewebsites.net/assets/steak.jpg"
+					"url": "http://contososcubademo.azurewebsites.net/assets/steak.jpg"
 				},
 				{
 					"type": "Image",
-					"url": "http://contososcubabot.azurewebsites.net/assets/chicken.jpg"
+					"url": "http://contososcubademo.azurewebsites.net/assets/chicken.jpg"
 				},
 				{
 					"type": "Image",
-					"url": "http://contososcubabot.azurewebsites.net/assets/tofu.jpg"
+					"url": "http://contososcubademo.azurewebsites.net/assets/tofu.jpg"
 				}
 			]
 		}
