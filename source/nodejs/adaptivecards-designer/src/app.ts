@@ -103,6 +103,61 @@ function scheduleLayoutUpdate() {
 // App initialization needs to happen after.
 declare function loadMonacoEditor(schema: any, callback: () => void);
 
+class SidePaneHeader {
+    private _titleElement: HTMLElement;
+    private _iconElement: HTMLElement;
+    private _statusTextElement: HTMLElement;
+    private _isExpanded: boolean = true;
+
+    constructor(hostElement: HTMLElement, title: string) {
+        hostElement.innerHTML = "";
+        hostElement.className = "acd-sidePane-header";
+
+        this._titleElement = document.createElement("span");
+        this._titleElement.className = "acd-sidePane-header-title";
+        this._titleElement.innerText = title;
+
+        hostElement.appendChild(this._titleElement);
+
+        let expandCollapseElement = document.createElement("span");
+        expandCollapseElement.className = "acd-sidePane-header-expandCollapseButton";
+
+        this._iconElement = document.createElement("span")
+        this._iconElement.classList.add("acd-icon", "acd-icon-header-expanded");
+        
+        expandCollapseElement.appendChild(this._iconElement);
+
+        this._statusTextElement = document.createElement("span");
+        this._statusTextElement.className = "acd-sidePane-header-status";
+        this._statusTextElement.innerText = "Hide";
+
+        expandCollapseElement.appendChild(this._statusTextElement);
+
+        expandCollapseElement.onclick = (e) => {
+            this.toggle();
+
+            e.preventDefault();
+        }
+
+        hostElement.appendChild(expandCollapseElement);
+    }
+
+    toggle() {
+        if (this._isExpanded) {
+            this._iconElement.classList.add("acd-icon-header-collapsed");
+            this._iconElement.classList.remove("acd-icon-header-expanded");
+            this._statusTextElement.style.display = "none";
+        }
+        else {
+            this._iconElement.classList.add("acd-icon-header-expanded");
+            this._iconElement.classList.remove("acd-icon-header-collapsed");
+            this._statusTextElement.style.display = null;
+        }
+
+        this._isExpanded = !this._isExpanded;
+    }
+}
+
 abstract class BasePaletteItem extends Designer.DraggableElement {
     protected abstract getText(): string;
     protected abstract getIconClass(): string;
@@ -880,6 +935,11 @@ var propertySheetVerticalSplitter: Splitter;
 var treeViewVerticalSplitter: Splitter;
 
 window.onload = () => {
+    new SidePaneHeader(document.getElementById("toolPalettePaneHeader"), "Tool box");
+    new SidePaneHeader(document.getElementById("treeViewPaneHeader"), "Visual tree view");
+    new SidePaneHeader(document.getElementById("propertySheetPaneHeader"), "Element properties");
+    new SidePaneHeader(document.getElementById("jsonEditorPaneHeader"), "JSON");
+
     let fullScreenHandler = new FullScreenHandler();
     fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
         document.getElementById("btnToggleFullScreen").innerText = isFullScreen ? "Exit full screen" : "Enter full screen";
@@ -911,7 +971,7 @@ window.onload = () => {
             // Monaco is very finicky. It will apparently only properly layout if
             // its direct container has an explicit height.
             let jsonEditorPaneRect = document.getElementById("jsonEditorPane").getBoundingClientRect();
-            let jsonEditorHeaderRect = document.getElementById("jsonEditorHeader").getBoundingClientRect();
+            let jsonEditorHeaderRect = document.getElementById("jsonEditorPaneHeader").getBoundingClientRect();
 
             let jsonEditorHost = document.getElementById("jsonEditorHost");
 
@@ -952,10 +1012,6 @@ window.onload = () => {
     app.togglePanels();
     app.cloneNodesTrees();
     */
-    let toolPalettePane = document.getElementById("toolPalettePane");
-    toolPalettePane.onclick = (e) => {
-        document.getElementById("toolPalette").style.visibility = "hidden";
-    };
 
     /*
     .addEventListener("click", () => {

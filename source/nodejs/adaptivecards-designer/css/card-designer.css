@@ -133,6 +133,34 @@
     content: "\E8C8";
 }
 
+.acd-icon-header-expanded::before {
+    content: "\F166";
+}
+
+.acd-icon-header-collapsed::before {
+    content: "\F164";
+}
+
+.acd-sidePane-header {
+    cursor: default;
+}
+
+.acd-sidePane-header-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.acd-sidePane-header-expandCollapseButton {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.acd-sidePane-header-status {
+    margin-left: 4px;
+}
+
 .acd-designersurface.dragging {
     cursor: move;
 }
@@ -275,7 +303,7 @@
     margin-left: 8px;
 }
 
-.acd-sidePaneHeader {
+.acd-sidePane-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
