@@ -275,6 +275,16 @@
     margin-left: 8px;
 }
 
+.acd-sidePaneHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 10px;
+    flex: 0 0 auto;
+    height: 30px;
+    background-color: #EEEEEE;
+}
+
 /*
 * Header and Aside menus
 */

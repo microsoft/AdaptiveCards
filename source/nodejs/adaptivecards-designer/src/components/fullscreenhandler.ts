@@ -1,78 +1,82 @@
-interface FullScreenElement extends HTMLElement {
-    mozRequestFullScreen: () => void
-    msRequestFullscreen: () => void
-    onfullscreenchange: (this: Element, ev: Event) => any;
-    onmozfullscreenchange: (this: Element, ev: Event) => any;
-    MSFullscreenChange: (this: Element, ev: Event) => any;
-}
-
-interface FullScreenDocument extends Document {
-    exitFullscreen: () => void
-    webkitExitFullscreen: () => void
-    mozCancelFullScreen: () => void
-    msExitFullscreen: () => void
-    fullscreen: boolean
-    webkitIsFullScreen: boolean
-    mozFullScreen: boolean
-}
-
-export default class FullScreenHandler {
-    private _body: FullScreenElement;
-    private _fullScreenBtn: HTMLElement;
-    private _fullScreenDocument: FullScreenDocument;
-
-
-    public constructor(button: HTMLElement) {
-        this._body = document.body as FullScreenElement;
-        this._fullScreenBtn = button;
-        this._fullScreenDocument = document as FullScreenDocument;
+export class FullScreenHandler {
+    private fullScrerenChanged() {
+        if (this.onFullScreenChanged) {
+            this.onFullScreenChanged(this.isFullScreen);
+        }
     }
 
-    public init() {
-        this._fullScreenBtn.addEventListener("click", () => {
-            if (this._fullScreenDocument.fullscreen || this._fullScreenDocument.webkitIsFullScreen || this._fullScreenDocument.mozFullScreen) {
-                if (this._fullScreenDocument.exitFullscreen) {
-                    this._fullScreenDocument.exitFullscreen();
-                } else if (this._fullScreenDocument.webkitExitFullscreen) {
-                    this._fullScreenDocument.webkitExitFullscreen();
-                } else if (this._fullScreenDocument.mozCancelFullScreen) {
-                    this._fullScreenDocument.mozCancelFullScreen();
-                } else if (this._fullScreenDocument.msExitFullscreen) {
-                    this._fullScreenDocument.msExitFullscreen();
-                }
-                document.querySelector(".js-enter-fullscreen").classList.remove("is-fullscreen");
-            } else {
-                if (this._body.requestFullscreen) {
-                    this._body.requestFullscreen();
-                } else if (this._body.webkitRequestFullscreen) {
-                    this._body.webkitRequestFullscreen();
-                } else if (this._body.mozRequestFullScreen) {
-                    this._body.mozRequestFullScreen();
-                } else if (this._body.msRequestFullscreen) {
-                    this._body.msRequestFullscreen();
-                } else {
-                    alert("Your browser doesn't support fullscreen.");
-                }
-                document.querySelector(".js-enter-fullscreen").classList.add("is-fullscreen");
+    onFullScreenChanged: (isFullScreen: boolean) => void;
+
+    constructor() {
+        let untypedBody = <any>document.body;
+
+        if (typeof untypedBody.onfullscreenchange !== "undefined") {
+            untypedBody.onfullscreenchange = () => this.fullScrerenChanged();
+        }
+        else if (typeof untypedBody.onwebkitfullscreenchange !== "undefined") {
+            untypedBody.onwebkitfullscreenchange = () => this.fullScrerenChanged();
+        }
+        else if (typeof untypedBody.onwebkitfullscreenchange !== "undefined") {
+            untypedBody.onmozfullscreenchange = () => this.fullScrerenChanged();
+        }
+        else if (typeof untypedBody.onwebkitfullscreenchange !== "undefined") {
+            untypedBody.MSFullscreenChange = () => this.fullScrerenChanged();
+        }
+    }
+
+    enterFullScreen() {
+        if (!this.isFullScreen) {
+            let untypedBody = <any>document.body;
+
+            if (untypedBody.requestFullscreen) {
+                untypedBody.requestFullscreen();
             }
-        });
-
-        if (typeof this._body.onfullscreenchange !== "undefined") {
-            this._body.onfullscreenchange = () => this.fullScreenHandle();
-        } else if (typeof this._body.onwebkitfullscreenchange !== "undefined") {
-            this._body.onwebkitfullscreenchange = () => this.fullScreenHandle();
-        } else if (typeof this._body.onwebkitfullscreenchange !== "undefined") {
-            this._body.onmozfullscreenchange = () => this.fullScreenHandle();
-        } else if (typeof this._body.onwebkitfullscreenchange !== "undefined") {
-            this._body.MSFullscreenChange = () => this.fullScreenHandle();
+            else if (untypedBody.webkitRequestFullscreen) {
+                untypedBody.webkitRequestFullscreen();
+            }
+            else if (untypedBody.mozRequestFullScreen) {
+                untypedBody.mozRequestFullScreen();
+            }
+            else if (untypedBody.msRequestFullscreen) {
+                untypedBody.msRequestFullscreen();
+            }
+            else {
+                alert("Your browser doesn't support fullscreen.");
+            }
         }
     }
 
-    private fullScreenHandle() {
-        if (this._fullScreenDocument.fullscreen || this._fullScreenDocument.webkitIsFullScreen || this._fullScreenDocument.mozFullScreen) {
-            this._fullScreenBtn.innerHTML = "Exit Full Screen";
-        } else {
-            this._fullScreenBtn.innerHTML = "Enter Full Screen";
+    exitFullScreen() {
+        if (this.isFullScreen) {
+            let untypedDocument = <any>document;
+
+            if (untypedDocument.exitFullscreen) {
+                untypedDocument.exitFullscreen();
+            }
+            else if (untypedDocument.webkitExitFullscreen) {
+                untypedDocument.webkitExitFullscreen();
+            }
+            else if (untypedDocument.mozCancelFullScreen) {
+                untypedDocument.mozCancelFullScreen();
+            }
+            else if (untypedDocument.msExitFullscreen) {
+                untypedDocument.msExitFullscreen();
+            }
         }
+    }
+
+    toggleFullScreen() {
+        if (this.isFullScreen) {
+            this.exitFullScreen();
+        }
+        else {
+            this.enterFullScreen();
+        }
+    }
+
+    get isFullScreen(): boolean {
+        let untypedDocument = <any>document;
+
+        return untypedDocument.fullscreen || untypedDocument.webkitIsFullScreen || untypedDocument.mozFullScreen;
     }
 }

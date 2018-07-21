@@ -1,5 +1,4 @@
 import { DesignerPeer } from "../card-designer";
-import * as Utils from "../utils";
 
 export default class TreeItem {
     private static collapsedIconClass = "acd-icon-chevronRight";

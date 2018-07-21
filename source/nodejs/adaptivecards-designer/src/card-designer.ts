@@ -367,7 +367,6 @@ class PeerCommand {
 export abstract class DesignerPeer extends DraggableElement {
     private _children: Array<DesignerPeer> = [];
     private _isSelected: boolean;
-    private _propertySheetHostConfig: Adaptive.HostConfig;
 
     abstract getCardObjectTypeName(): string;
 
@@ -468,136 +467,6 @@ export abstract class DesignerPeer extends DraggableElement {
         this.registration = registration;
         this.designer = designer;
         this.treeItem = new TreeItem(this);
-
-        this._propertySheetHostConfig = new Adaptive.HostConfig(
-            {
-                preExpandSingleShowCardAction: true,
-                supportsInteractivity: true,
-                fontFamily: "Segoe UI",
-                spacing: {
-                    small: 10,
-                    default: 20,
-                    medium: 30,
-                    large: 40,
-                    extraLarge: 50,
-                    padding: 20
-                },
-                separator: {
-                    lineThickness: 1,
-                    lineColor: "#EEEEEE"
-                },
-                textAlign: {
-                    right: "right"
-                },
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
-                },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
-                },
-                imageSizes: {
-                    small: 40,
-                    medium: 80,
-                    large: 160
-                },
-                containerStyles: {
-                    default: {
-                        backgroundColor: "#f9f9f9",
-                        foregroundColors: {
-                            default: {
-                                default: "#333333",
-                                subtle: "#EE333333"
-                            },
-                            accent: {
-                                default: "#2E89FC",
-                                subtle: "#882E89FC"
-                            },
-                            attention: {
-                                default: "#cc3300",
-                                subtle: "#DDcc3300"
-                            },
-                            good: {
-                                default: "#54a254",
-                                subtle: "#DD54a254"
-                            },
-                            warning: {
-                                default: "#e69500",
-                                subtle: "#DDe69500"
-                            }
-                        }
-                    },
-                    emphasis: {
-                        backgroundColor: "#08000000",
-                        foregroundColors: {
-                            default: {
-                                default: "#333333",
-                                subtle: "#EE333333"
-                            },
-                            accent: {
-                                default: "#2E89FC",
-                                subtle: "#882E89FC"
-                            },
-                            attention: {
-                                default: "#cc3300",
-                                subtle: "#DDcc3300"
-                            },
-                            good: {
-                                default: "#54a254",
-                                subtle: "#DD54a254"
-                            },
-                            warning: {
-                                default: "#e69500",
-                                subtle: "#DDe69500"
-                            }
-                        }
-                    }
-                },
-                actions: {
-                    maxActions: 5,
-                    spacing: Adaptive.Spacing.Default,
-                    buttonSpacing: 10,
-                    showCard: {
-                        actionMode: Adaptive.ShowCardActionMode.Inline,
-                        inlineTopMargin: 16
-                    },
-                    actionsOrientation: Adaptive.Orientation.Horizontal,
-                    actionAlignment: Adaptive.ActionAlignment.Left
-                },
-                adaptiveCard: {
-                    allowCustomStyle: true
-                },
-                imageSet: {
-                    imageSize: Adaptive.Size.Medium,
-                    maxImageHeight: 100
-                },
-                factSet: {
-                    title: {
-                        color: Adaptive.TextColor.Default,
-                        size: Adaptive.TextSize.Default,
-                        isSubtle: false,
-                        weight: Adaptive.TextWeight.Bolder,
-                        wrap: true,
-                        maxWidth: 150,
-                    },
-                    value: {
-                        color: Adaptive.TextColor.Default,
-                        size: Adaptive.TextSize.Default,
-                        isSubtle: false,
-                        weight: Adaptive.TextWeight.Default,
-                        wrap: true,
-                    },
-                    spacing: 10
-                }
-            }
-        );
-
-        this._propertySheetHostConfig.cssClassNamePrefix = "default";
     }
 
     abstract getBoundingRect(): Rect;
@@ -701,7 +570,6 @@ export abstract class DesignerPeer extends DraggableElement {
 
     buildPropertySheetCard(): Adaptive.AdaptiveCard {
         let result = new Adaptive.AdaptiveCard();
-        result.hostConfig = this._propertySheetHostConfig;
         result.padding = new Adaptive.PaddingDefinition(
             Adaptive.Spacing.Small,
             Adaptive.Spacing.Small,
@@ -1786,6 +1654,9 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
 export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
 }
 
+export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
+}
+
 export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
@@ -2066,19 +1937,20 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
 
         this.registerPeer(Adaptive.AdaptiveCard, AdaptiveCardPeer, DesignerPeerCategory.Containers, "acd-icon-adaptiveCard");
         this.registerPeer(Adaptive.Container, ContainerPeer, DesignerPeerCategory.Containers, "acd-icon-container");
-        this.registerPeer(Adaptive.ImageSet, ImageSetPeer, DesignerPeerCategory.Containers, "acd-icon-imageSet");
         this.registerPeer(Adaptive.ColumnSet, ColumnSetPeer, DesignerPeerCategory.Containers, "acd-icon-columnSet");
         this.registerPeer(Adaptive.Column, ColumnPeer, DesignerPeerCategory.Containers, "acd-icon-column");
+        this.registerPeer(Adaptive.ImageSet, ImageSetPeer, DesignerPeerCategory.Containers, "acd-icon-imageSet");
+        this.registerPeer(Adaptive.FactSet, FactSetPeer, DesignerPeerCategory.Containers, "acd-icon-factSet");
 
         this.registerPeer(Adaptive.TextBlock, TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
-        this.registerPeer(Adaptive.FactSet, FactSetPeer, DesignerPeerCategory.Elements, "acd-icon-factSet");
         this.registerPeer(Adaptive.Image, ImagePeer, DesignerPeerCategory.Elements, "acd-icon-image");
         this.registerPeer(Adaptive.ActionSet, ActionSetPeer, DesignerPeerCategory.Elements, "acd-icon-actionSet");
 
         this.registerPeer(Adaptive.TextInput, TextInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputText");
         this.registerPeer(Adaptive.DateInput, DateInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputDate");
-        this.registerPeer(Adaptive.NumberInput, NumberInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputNumber");
+        this.registerPeer(Adaptive.TimeInput, TimeInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputTime");
         this.registerPeer(Adaptive.ToggleInput, ToggleInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputToggle");
+        this.registerPeer(Adaptive.NumberInput, NumberInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputNumber");
         this.registerPeer(Adaptive.ChoiceSetInput, ChoiceSetInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputChoiceSet");
     }
 
