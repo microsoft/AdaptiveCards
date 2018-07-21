@@ -31,8 +31,6 @@ function monacoEditorLoaded() {
     isMonacoEditorLoaded = true;
 
     updateJsonFromCard();
-
-    // app.toggleHostJsonPanel();
 }
 
 function getCurrentJsonPayload(): string {
@@ -104,20 +102,35 @@ function scheduleLayoutUpdate() {
 declare function loadMonacoEditor(schema: any, callback: () => void);
 
 class SidePaneHeader {
+    private _sidePaneElement: HTMLElement;
+    private _rootElement: HTMLElement;
+    private _contentElement: HTMLElement;
     private _titleElement: HTMLElement;
     private _iconElement: HTMLElement;
     private _statusTextElement: HTMLElement;
     private _isExpanded: boolean = true;
 
-    constructor(hostElement: HTMLElement, title: string) {
-        hostElement.innerHTML = "";
-        hostElement.className = "acd-sidePane-header";
+    collapsedTabContainer: HTMLElement = null;
+    collapsedTabClass: string = null;
+    targetElementsSelector: string = null;
+
+    onToggled: (sender: SidePaneHeader) => void;
+
+    constructor(sidePaneElement: HTMLElement, title: string) {
+        this._sidePaneElement = sidePaneElement;
+
+        this._rootElement = document.createElement("div");
+        this._rootElement.innerHTML = "";
+        this._rootElement.className = "acd-sidePane-header";
+
+        this._contentElement = document.createElement("div");
+        this._contentElement.className = "acd-sidePane-header-content";
 
         this._titleElement = document.createElement("span");
         this._titleElement.className = "acd-sidePane-header-title";
         this._titleElement.innerText = title;
 
-        hostElement.appendChild(this._titleElement);
+        this._contentElement.appendChild(this._titleElement);
 
         let expandCollapseElement = document.createElement("span");
         expandCollapseElement.className = "acd-sidePane-header-expandCollapseButton";
@@ -133,13 +146,24 @@ class SidePaneHeader {
 
         expandCollapseElement.appendChild(this._statusTextElement);
 
+        expandCollapseElement.onmousedown = (e) => {
+            e.preventDefault();
+
+            return true;
+        }
+
         expandCollapseElement.onclick = (e) => {
             this.toggle();
 
             e.preventDefault();
+
+            return true;
         }
 
-        hostElement.appendChild(expandCollapseElement);
+        this._contentElement.appendChild(expandCollapseElement);
+        this._rootElement.appendChild(this._contentElement);
+
+        this._sidePaneElement.insertBefore(this._rootElement, this._sidePaneElement.firstChild);
     }
 
     toggle() {
@@ -147,14 +171,45 @@ class SidePaneHeader {
             this._iconElement.classList.add("acd-icon-header-collapsed");
             this._iconElement.classList.remove("acd-icon-header-expanded");
             this._statusTextElement.style.display = "none";
+
+            if (this.collapsedTabContainer) {
+                this._rootElement.remove();
+                this.collapsedTabContainer.appendChild(this._rootElement);
+            }
         }
         else {
             this._iconElement.classList.add("acd-icon-header-expanded");
             this._iconElement.classList.remove("acd-icon-header-collapsed");
             this._statusTextElement.style.display = null;
+
+            if (this.collapsedTabContainer) {
+                this._rootElement.remove();
+                this._sidePaneElement.insertBefore(this._rootElement, this._sidePaneElement.firstChild);
+            }
         }
 
         this._isExpanded = !this._isExpanded;
+
+        if (this.collapsedTabClass) {
+            this._rootElement.classList.toggle(this.collapsedTabClass, !this._isExpanded);
+            this._contentElement.classList.toggle(this.collapsedTabClass, !this._isExpanded);
+        }
+
+        if (this.targetElementsSelector) {
+            let targetNodes = document.getElementsByClassName(this.targetElementsSelector);
+
+            for (let i = 0; i < targetNodes.length; i++) {
+                (<HTMLElement>targetNodes[i]).style.display = this._isExpanded ? null : "none";
+            }
+        }
+
+        if (this.onToggled) {
+            this.onToggled(this);
+        }
+    }
+
+    getBoundingRect(): ClientRect {
+        return this._rootElement.getBoundingClientRect();
     }
 }
 
@@ -178,9 +233,6 @@ abstract class BasePaletteItem extends Designer.DraggableElement {
 
         element.appendChild(iconElement);
         element.appendChild(labelElement);
-
-        // element.className = `acd-palette-item aside-item__icon--${Utils.sanitizeString(this.getText())}`;
-        // element.innerText = this.getText();
 
         return element;
     }
@@ -317,14 +369,6 @@ class DesignerApp {
             card.hostConfig = this._propertySheetHostConfig;
 
             this.propertySheetHostElement.appendChild(card.render());
-
-            /*
-            let cardNodes = card.renderedElement.children;
-
-            for (let element = 0; element < cardNodes.length; element++) {
-                (cardNodes[element] as HTMLElement).className += " wrapper";
-             }
-             */
         }
     }
 
@@ -728,96 +772,6 @@ class DesignerApp {
         this.designer.endDrag();
     }
 
-    private handleClosePanel(panelType: string): void {
-        const typeOfPanel = document.querySelector(`.js-${panelType}-menu`);
-        let description = document.querySelector(`.js-${panelType}-description`);
-        let aside = document.querySelector(".js-aside-panel");
-
-        if (aside.childNodes.length === 0) {
-            document.querySelector(`.js-${panelType}-bullet`).addEventListener("click", () => {
-                description.innerHTML = "";
-                const elementNode = typeOfPanel.cloneNode(true);
-                elementNode.addEventListener("click", () => {
-                    description.innerHTML = "Hide";
-                    this.openPanel(panelType);
-                });
-                aside.classList.add("is-active");
-                aside.appendChild(elementNode);
-
-                (document.querySelector(`.js-${panelType}`) as HTMLElement).style.display = "none";
-                (document.querySelector(`.js-${panelType}-splitter`) as HTMLElement).style.display = "none";
-            });
-        }
-    }
-
-    private openPanel(panelType: string): void {
-        if (document.querySelector(".js-aside-panel").hasChildNodes()) {
-            let foldedPanel = document.querySelector(`.js-aside-panel.is-active > .js-${panelType}-menu`);
-            let aside = document.querySelector(".js-aside-panel");
-
-            (document.querySelector(`.js-${panelType}`) as HTMLElement).style.display = "block";
-            (document.querySelector(`.js-${panelType}-splitter`) as HTMLElement).style.display = "block";
-            foldedPanel.remove();
-
-            if (aside.childNodes.length === 0) {
-                (aside as HTMLElement).classList.toggle("is-active");
-            }
-        }
-    }
-
-    /*
-    private addEvents(): void {
-        const jsonBtn = document.querySelector(".js-host-json__bullet");
-
-        jsonBtn.addEventListener("click", this.toggleClass);
-    }
-    */
-
-    private toggleClass(): void {
-        const jsonEditorPanel = document.getElementById("jsonEditorHost");
-        const jsonBulletDescription = document.querySelector(".js-host-json__description") as HTMLElement;
-        const jsonMenu = document.querySelector(".js-json-menu") as HTMLElement;
-
-        if (jsonEditorPanel.classList.contains("is-closed")) {
-            jsonEditorPanel.classList.remove("is-closed");
-            jsonEditorPanel.style.height = "300px";
-            jsonBulletDescription.style.display = "block";
-            jsonMenu.style.marginBottom = "10px";
-            return;
-        }
-        jsonEditorPanel.classList.add("is-closed");
-        jsonEditorPanel.style.height = "0";
-        jsonBulletDescription.style.display = "none";
-        jsonMenu.style.marginBottom = "0";
-    }
-
-    /*
-    public toggleHostJsonPanel(): void {
-        this.addEvents();
-    }
-
-    public cloneNodesTrees(): void {
-        this.handleClosePanel("treeview");
-        this.handleClosePanel("properties");
-    }
-
-    private toggleAside():void {
-        document.querySelector(".js-aside-bullet").addEventListener("click", () => {
-            const aside = document.querySelector(".js-aside");
-            aside.classList.toggle("is-toggled");
-
-            const items = document.querySelector(".js-aside-items");
-            items.classList.toggle("is-hidden");
-
-            const icon = document.querySelector(".js-aside-icon");
-            icon.classList.toggle("icon--expand");
-
-            const description = document.querySelector(".js-aside-description");
-            description.classList.toggle("is-hidden");
-        })
-    }
-    */
-
     get paletteHostElement(): HTMLElement {
         return this._paletteHostElement;
     }
@@ -933,20 +887,65 @@ var app: DesignerApp;
 var jsonEditorHorizontalSplitter: Splitter;
 var propertySheetVerticalSplitter: Splitter;
 var treeViewVerticalSplitter: Splitter;
+var jsonEditorPaneHeader: SidePaneHeader;
+
+function updateJsonEditorLayout() {
+    if (isMonacoEditorLoaded) {
+        // Monaco is very finicky. It will apparently only properly layout if
+        // its direct container has an explicit height.
+        let jsonEditorPaneRect = document.getElementById("jsonEditorPane").getBoundingClientRect();
+        let jsonEditorHeaderRect = jsonEditorPaneHeader.getBoundingRect();
+
+        let jsonEditorHost = document.getElementById("jsonEditorHost");
+
+        jsonEditorHost.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
+
+        monacoEditor.layout();
+    }
+}
+
+function updateFullLayout() {
+    scheduleLayoutUpdate();
+    updateJsonEditorLayout();
+}
 
 window.onload = () => {
-    new SidePaneHeader(document.getElementById("toolPalettePaneHeader"), "Tool box");
-    new SidePaneHeader(document.getElementById("treeViewPaneHeader"), "Visual tree view");
-    new SidePaneHeader(document.getElementById("propertySheetPaneHeader"), "Element properties");
-    new SidePaneHeader(document.getElementById("jsonEditorPaneHeader"), "JSON");
+    let treeViewPaneHeader = new SidePaneHeader(document.getElementById("treeViewPane"), "Visual tree view");
+    treeViewPaneHeader.collapsedTabContainer = document.getElementById("rightCollapsedPaneTabHost");
+    treeViewPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
+    treeViewPaneHeader.targetElementsSelector = "selector-treeView";
+    treeViewPaneHeader.onToggled = (sender: SidePaneHeader) => {
+        updateFullLayout();
+    };
+
+    let propertySheetPaneHeader = new SidePaneHeader(document.getElementById("propertySheetPane"), "Element properties");
+    propertySheetPaneHeader.collapsedTabContainer = treeViewPaneHeader.collapsedTabContainer;
+    propertySheetPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
+    propertySheetPaneHeader.targetElementsSelector = "selector-propertySheet";
+    propertySheetPaneHeader.onToggled = (sender: SidePaneHeader) => {
+        updateFullLayout();
+    };
+
+    let toolPalettePaneHeader = new SidePaneHeader(document.getElementById("toolPalettePane"), "Tool box");
+    toolPalettePaneHeader.collapsedTabContainer = document.getElementById("leftCollapsedPaneTabHost");
+    toolPalettePaneHeader.collapsedTabClass = "rotated90DegreesCounterClockwise";
+    toolPalettePaneHeader.targetElementsSelector = "selector-toolPalette";
+    toolPalettePaneHeader.onToggled = (sender: SidePaneHeader) => {
+        updateFullLayout();
+    };
+
+    jsonEditorPaneHeader = new SidePaneHeader(document.getElementById("jsonEditorPane"), "JSON");
+    jsonEditorPaneHeader.collapsedTabContainer = document.getElementById("bottomCollapsedPaneTabHost");
+    jsonEditorPaneHeader.targetElementsSelector = "selector-jsonEditor";
+    jsonEditorPaneHeader.onToggled = (sender: SidePaneHeader) => {
+        updateFullLayout();
+    };
 
     let fullScreenHandler = new FullScreenHandler();
     fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
         document.getElementById("btnToggleFullScreen").innerText = isFullScreen ? "Exit full screen" : "Enter full screen";
 
-        scheduleLayoutUpdate();
-
-        monacoEditor.layout();
+        updateFullLayout();
     }
 
     document.getElementById("btnToggleFullScreen").onclick = (e) => {
@@ -967,18 +966,7 @@ window.onload = () => {
 
     jsonEditorHorizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorPane"));
     jsonEditorHorizontalSplitter.onRezized = (splitter: Splitter) => {
-        if (isMonacoEditorLoaded) {
-            // Monaco is very finicky. It will apparently only properly layout if
-            // its direct container has an explicit height.
-            let jsonEditorPaneRect = document.getElementById("jsonEditorPane").getBoundingClientRect();
-            let jsonEditorHeaderRect = document.getElementById("jsonEditorPaneHeader").getBoundingClientRect();
-
-            let jsonEditorHost = document.getElementById("jsonEditorHost");
-
-            jsonEditorHost.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
-
-            monacoEditor.layout();
-        }
+        updateJsonEditorLayout();
     }
 
     propertySheetVerticalSplitter = new Splitter(document.getElementById("propertyVerticalSplitter"), document.getElementById("propertySheetPane"));
@@ -1008,16 +996,6 @@ window.onload = () => {
 
     app.createContainerPicker().attach(document.getElementById("containerPickerHost"));
 
-    /*
-    app.togglePanels();
-    app.cloneNodesTrees();
-    */
-
-    /*
-    .addEventListener("click", () => {
-    const aside = document.querySelector(".js-aside");
-    aside.classList.toggle("is-toggled");
-*/
     window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
     window.addEventListener("resize", () => { scheduleLayoutUpdate(); });
     window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
