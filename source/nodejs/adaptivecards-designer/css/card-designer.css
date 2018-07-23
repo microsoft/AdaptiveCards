@@ -1,6 +1,95 @@
 /*
+    Miscellaneous
+*/
+
+.acd-designersurface {
+    outline: none;
+}
+
+.acd-hidden {
+    display: none !important;
+}
+
+.acd-toolbar {
+    display: flex;
+    flex: 0 0 auto;
+    background-color: #F1F1F1;
+    align-items: center;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.acd-treeView-pane {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    width: 360px;
+    height: 100%;
+}
+
+.acd-treeView-host {
+    flex: 1 1 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 6px;
+    background-color: white;
+}
+
+.acd-propertySheet-pane {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    width: 360px;
+    height: 100%;
+    background-color: #F9F9F9;
+}
+
+.acd-propertySheet-host {
+    flex: 1 1 100%;
+    overflow: auto;
+}
+
+.acd-vertical-splitter {
+    flex: 0 0 6px;
+    background-color: #EEEEEE;
+    border-left: 1px solid #D2D2D2;
+    border-right: 1px solid #D2D2D2;
+    cursor: ew-resize;
+}
+
+.acd-horizontal-splitter {
+    flex: 0 0 6px;
+    background-color: #EEEEEE;
+    border-top: 1px solid #D2D2D2;
+    border-bottom: 1px solid #D2D2D2;
+    cursor: ns-resize;
+}
+
+.acd-json-editor-pane {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 360px;
+}
+
+.acd-json-editor-host {
+    flex: 1 1 100%;
+}
+
+.acd-error-pane {
+    flex: 0 0 65px;
+    color: white;
+    background-color: #3a96dd;
+    border-top: 1px solid #D2D2D2;
+    padding: 4px 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
+}
+
+/*
     Icons
 */
+
 .acd-icon {
     font-family: 'FabricMDL2Icons';
     font-size: 14px;
@@ -141,16 +230,9 @@
 }
 
 /*
-    Miscellaneous
-*/
-
-.acd-designersurface {
-    outline: none;
-}
-
-/*
     Side panes
 */
+
 .acd-verticalCollapsedTabContainer {
     max-width: 32px;
     overflow-x: hidden;

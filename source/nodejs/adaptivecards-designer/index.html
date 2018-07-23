@@ -19,9 +19,9 @@
     <div style="display: flex; flex-direction: column; height: 100%;">
         <div id="header" style="flex: 0 0 auto; background-color: black; display: flex; align-items: center;">
             <img src="./assets/adaptive-card-square-150.png" style="flex: 0 0 48px; height: 48px; margin-right: 20px;" />
-            <span style="color: white; font-size: 22px;">Adaptive Cards Designer (preview)</span>
+            <span style="color: white; font-size: 22px;">Adaptive Card Designer (preview)</span>
         </div>
-        <div id="toolbar" style="flex: 0 0 auto; background-color: #F1F1F1; display: flex; align-items: center; border-bottom: 1px solid #D2D2D2;">
+        <div id="toolbar" class="acd-toolbar">
             <div id="btnToggleFullScreen" class="acd-toolbar-button acd-icon-fullScreen">Enter Full Screen</div>
             <span style="color: black; margin-left: 8px;">Select Host App:</span>
             <div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 8px 0px 8px;"></div>
@@ -39,20 +39,20 @@
                         <div style="flex: 1 1 100%; overflow: auto;">
                             <div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>
                         </div>
-                        <div id="errorPane" style="display: none; flex: 0 0 65px; color: white; background-color: #3a96dd; border-top: 1px solid #D2D2D2; padding: 4px 8px; overflow-x: hidden; overflow-y: auto; white-space: nowrap;"></div>
+                        <div id="errorPane" class="acd-error-pane acd-hidden"></div>
                     </div>
-                    <div id="treeViewVerticalSplitter" class="selector-treeView" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
-                    <section id="treeViewPane" class="selector-treeView" style="flex: 0 0 auto; display: flex; flex-direction: column; width: 360px; height: 100%;">
-                        <div id="treeViewHost" style="flex: 1 1 100%; overflow-y: auto; overflow-x: hidden; padding-top: 6px; background-color: white;  "></div>
-                    </section>
-                    <div id="propertyVerticalSplitter" class="selector-propertySheet" style="flex: 0 0 6px; background-color: #EEEEEE; border-left: 1px solid #D2D2D2; border-right: 1px solid #D2D2D2; cursor: ew-resize;"></div>
-                    <section id="propertySheetPane" class="selector-propertySheet" style="flex: 0 0 auto; display: flex; flex-direction: column; width: 360px; height: 100%; background-color: #F9F9F9;">
-                        <div id="propertySheetHost" style="flex: 1 1 100%; overflow: auto;"></div>
-                    </section>
+                    <div id="treeViewVerticalSplitter" class="acd-vertical-splitter selector-treeView"></div>
+                    <div id="treeViewPane" class="acd-treeView-pane selector-treeView">
+                        <div id="treeViewHost" class="acd-treeView-host"></div>
+                    </div>
+                    <div id="propertyVerticalSplitter" class="acd-vertical-splitter selector-propertySheet"></div>
+                    <div id="propertySheetPane" class="acd-propertySheet-pane selector-propertySheet">
+                        <div id="propertySheetHost" class="acd-propertySheet-host"></div>
+                    </div>
                 </div>
-                <div id="horizontalSplitter" class="selector-jsonEditor" style="flex: 0 0 6px; background-color: #EEEEEE; border-top: 1px solid #D2D2D2; border-bottom: 1px solid #D2D2D2; cursor: ns-resize;"></div>
-                <div id="jsonEditorPane" class="selector-jsonEditor" style="flex: 0 0 auto; display: flex; flex-direction: column; height: 360px;">
-                    <div id="jsonEditorHost" style="flex: 1 1 100%;">
+                <div id="horizontalSplitter" class="acd-horizontal-splitter selector-jsonEditor"></div>
+                <div id="jsonEditorPane" class="acd-json-editor-pane selector-jsonEditor">
+                    <div id="jsonEditorHost" class="acd-json-editor-host">
                         <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
                     </div>
                 </div>

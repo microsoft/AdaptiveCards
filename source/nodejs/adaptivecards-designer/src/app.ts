@@ -170,7 +170,7 @@ class SidePaneHeader {
         if (this._isExpanded) {
             this._iconElement.classList.add("acd-icon-header-collapsed");
             this._iconElement.classList.remove("acd-icon-header-expanded");
-            this._statusTextElement.style.display = "none";
+            this._statusTextElement.classList.add("acd-hidden");
 
             if (this.collapsedTabContainer) {
                 this._rootElement.remove();
@@ -180,7 +180,7 @@ class SidePaneHeader {
         else {
             this._iconElement.classList.add("acd-icon-header-expanded");
             this._iconElement.classList.remove("acd-icon-header-collapsed");
-            this._statusTextElement.style.display = null;
+            this._statusTextElement.classList.remove("acd-hidden");
 
             if (this.collapsedTabContainer) {
                 this._rootElement.remove();
@@ -199,7 +199,7 @@ class SidePaneHeader {
             let targetNodes = document.getElementsByClassName(this.targetElementsSelector);
 
             for (let i = 0; i < targetNodes.length; i++) {
-                (<HTMLElement>targetNodes[i]).style.display = this._isExpanded ? null : "none";
+                (<HTMLElement>targetNodes[i]).classList.toggle("acd-hidden", !this._isExpanded);
             }
         }
 
@@ -544,10 +544,10 @@ class DesignerApp {
                     errorPane.appendChild(errorElement);
                 }
 
-                errorPane.style.display = null;
+                errorPane.classList.remove("acd-hidden");
             }
             else {
-                errorPane.style.display = "none";
+                errorPane.classList.add("acd-hidden");
             }
         };
 

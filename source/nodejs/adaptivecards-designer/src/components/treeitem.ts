@@ -96,12 +96,12 @@ export default class TreeItem {
 
     updateLayout() {
         if (this._isExpanded) {
-            this._childContainerElement.style.display = null;
+            this._childContainerElement.classList.remove("acd-hidden");
             this._expandCollapseElement.classList.remove(TreeItem.collapsedIconClass);
             this._expandCollapseElement.classList.add(TreeItem.expandedIconClass);
         }
         else {
-            this._childContainerElement.style.display = "none";
+            this._childContainerElement.classList.add("acd-hidden");
             this._expandCollapseElement.classList.add(TreeItem.collapsedIconClass);
             this._expandCollapseElement.classList.remove(TreeItem.expandedIconClass);
         }
