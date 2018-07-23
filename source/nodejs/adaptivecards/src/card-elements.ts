@@ -1859,6 +1859,7 @@ export class ChoiceSetInput extends Input {
                 option.selected = true;
                 option.disabled = true;
                 option.hidden = true;
+                option.value = "";
 
                 if (this.placeholder) {
                     option.text = this.placeholder;
@@ -2009,7 +2010,10 @@ export class ChoiceSetInput extends Input {
             Utils.setProperty(result, "choices", choices);
         }
 
-        Utils.setProperty(result, "isCompact", this.isCompact, false);
+        if (!this.isCompact) {
+            Utils.setProperty(result, "style", "expanded", false);
+        }
+
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
 
         return result;
