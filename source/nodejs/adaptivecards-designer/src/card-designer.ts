@@ -1147,8 +1147,9 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             if (this.cardElement.width.unit == Adaptive.SizeUnit.Pixel) {
                 width.input.defaultValue = "explicit";
 
-                let explicitWidth = addLabelAndInput(card, "Explicit width:", Adaptive.NumberInput);
+                let explicitWidth = addLabelAndInput(card, "Explicit width (in pixels):", Adaptive.NumberInput);
                 explicitWidth.input.defaultValue = this.cardElement.width.physicalSize.toString();
+                explicitWidth.input.placeholder = "(not set)"
                 explicitWidth.input.onValueChanged = () => {
                     try {
                         this.cardElement.width = new Adaptive.SizeAndUnit(parseInt(explicitWidth.input.value), Adaptive.SizeUnit.Pixel);
