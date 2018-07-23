@@ -2,6 +2,7 @@
 #include "ConsoleRender.h"
 #include "TextBlock.h"
 #include "Container.h"
+#include "Image.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -16,6 +17,9 @@ void RenderElements(std::vector<std::shared_ptr<BaseCardElement>> elements, std:
 				break;
 			case CardElementType::TextBlock:
 				consoleString += std::dynamic_pointer_cast<TextBlock>(element)->GetText() + "\n";
+				break;
+			case CardElementType::Image:
+				consoleString += std::dynamic_pointer_cast<Image>(element)->GetAltText() + "\n";
 				break;
 			default:
 				break;
