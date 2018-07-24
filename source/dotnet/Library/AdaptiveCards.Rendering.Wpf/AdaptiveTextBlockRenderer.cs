@@ -74,39 +74,54 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiTextBlock.MaxWidth = textBlock.MaxWidth;
             }
 
-            if (textBlock.MaxLines > 0)
+            if (textBlock.Wrap || textBlock.MaxLines > 0)
             {
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                uiGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 
-
-                // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
-                // using same style, fontWeight settings as original textblock
-                var measureBlock = new TextBlock()
+                if (textBlock.Wrap)
                 {
-                    Style = uiTextBlock.Style,
-                    FontWeight = uiTextBlock.FontWeight,
-                    FontSize = uiTextBlock.FontSize,
-                    Visibility = Visibility.Hidden,
-                    TextWrapping = TextWrapping.NoWrap,
-                    HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    DataContext = textBlock.MaxLines
-                };
+                    // WPF's TextBlock won't wrap properly if its container allows it to have as much space as it wants.
+                    // This fixes it by having the TextBlock's width match its container's width.
+                    uiTextBlock.SetBinding(FrameworkElement.WidthProperty, new Binding()
+                    {
+                        Path = new PropertyPath("ActualWidth"),
+                        Source = uiGrid,
+                        Mode = BindingMode.OneWay
+                    });
+                }
 
-                measureBlock.Inlines.Add(uiTextBlock.Text);
-
-                // bind the real textBlock's Height => MeasureBlock.ActualHeight
-                uiTextBlock.SetBinding(FrameworkElement.MaxHeightProperty, new Binding()
+                if (textBlock.MaxLines > 0)
                 {
-                    Path = new PropertyPath("ActualHeight"),
-                    Source = measureBlock,
-                    Mode = BindingMode.OneWay,
-                    Converter = new MultiplyConverter(textBlock.MaxLines)
-                });
+                    // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
+                    // using same style, fontWeight settings as original textblock
+                    var measureBlock = new TextBlock()
+                    {
+                        Style = uiTextBlock.Style,
+                        FontWeight = uiTextBlock.FontWeight,
+                        FontSize = uiTextBlock.FontSize,
+                        Visibility = Visibility.Hidden,
+                        TextWrapping = TextWrapping.NoWrap,
+                        HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        DataContext = textBlock.MaxLines
+                    };
 
-                // Add both to a grid so they go as a unit
-                uiGrid.Children.Add(measureBlock);
+                    measureBlock.Inlines.Add(uiTextBlock.Text);
+
+                    // bind the real textBlock's Height => MeasureBlock.ActualHeight
+                    uiTextBlock.SetBinding(FrameworkElement.MaxHeightProperty, new Binding()
+                    {
+                        Path = new PropertyPath("ActualHeight"),
+                        Source = measureBlock,
+                        Mode = BindingMode.OneWay,
+                        Converter = new MultiplyConverter(textBlock.MaxLines)
+                    });
+
+                    // Add both to a grid so they go as a unit
+                    uiGrid.Children.Add(measureBlock);
+                }
 
                 uiGrid.Children.Add(uiTextBlock);
                 return uiGrid;
@@ -159,7 +174,9 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             if (textBlock.Wrap)
+            {
                 uiTextBlock.TextWrapping = TextWrapping.Wrap;
+            }
 
             return uiTextBlock;
         }
