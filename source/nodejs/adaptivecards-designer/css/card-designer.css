@@ -75,6 +75,10 @@
     flex: 1 1 100%;
 }
 
+/*
+    In-place editors
+*/
+
 .acd-error-pane {
     flex: 0 0 65px;
     color: white;
@@ -84,6 +88,28 @@
     overflow-x: hidden;
     overflow-y: auto;
     white-space: nowrap;
+}
+
+.acd-inplace-editor-host {
+    box-sizing: content-box;
+    position: absolute;
+    display: flex;
+    margin: -1px;
+    border: 1px dashed red;
+    background-color: white;
+}
+
+.acd-inplace-editor {
+    flex: 1 1 100%;
+    align-items: stretch;
+}
+
+.acd-textBlock-inplace-editor {
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    resize: none;
 }
 
 /*

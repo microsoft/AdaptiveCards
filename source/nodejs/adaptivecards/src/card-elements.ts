@@ -709,118 +709,7 @@ export class TextBlock extends CardElement {
             var element = document.createElement("div");
             element.style.overflow = "hidden";
 
-            if (this.hostConfig.fontFamily) {
-                element.style.fontFamily = this.hostConfig.fontFamily;
-            }
-
-            switch (this.horizontalAlignment) {
-                case Enums.HorizontalAlignment.Center:
-                    element.style.textAlign = "center";
-                    break;
-                case Enums.HorizontalAlignment.Right:
-                    element.style.textAlign = "right";
-                    break;
-                default:
-                    element.style.textAlign = "left";
-                    break;
-            }
-
-            var cssStyle = "text ";
-            var fontSize: number;
-
-            switch (this.size) {
-                case Enums.TextSize.Small:
-                    fontSize = this.hostConfig.fontSizes.small;
-                    break;
-                case Enums.TextSize.Medium:
-                    fontSize = this.hostConfig.fontSizes.medium;
-                    break;
-                case Enums.TextSize.Large:
-                    fontSize = this.hostConfig.fontSizes.large;
-                    break;
-                case Enums.TextSize.ExtraLarge:
-                    fontSize = this.hostConfig.fontSizes.extraLarge;
-                    break;
-                default:
-                    fontSize = this.hostConfig.fontSizes.default;
-                    break;
-            }
-
-            if (this.hostConfig.lineHeights) {
-                switch (this.size) {
-                    case Enums.TextSize.Small:
-                        this._computedLineHeight = this.hostConfig.lineHeights.small;
-                        break;
-                    case Enums.TextSize.Medium:
-                        this._computedLineHeight = this.hostConfig.lineHeights.medium;
-                        break;
-                    case Enums.TextSize.Large:
-                        this._computedLineHeight = this.hostConfig.lineHeights.large;
-                        break;
-                    case Enums.TextSize.ExtraLarge:
-                        this._computedLineHeight = this.hostConfig.lineHeights.extraLarge;
-                        break;
-                    default:
-                        this._computedLineHeight = this.hostConfig.lineHeights.default;
-                        break;    
-                }
-            }
-            else {
-                // Looks like 1.33 is the magic number to compute line-height
-                // from font size.
-                this._computedLineHeight = fontSize * 1.33;                
-            }
-
-            element.style.fontSize = fontSize + "px";
-            element.style.lineHeight = this._computedLineHeight + "px";
-
-            var parentContainer = this.getParentContainer();
-            var styleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default, this.hostConfig.containerStyles.default);
-
-            var actualTextColor = this.color ? this.color : Enums.TextColor.Default;
-            var colorDefinition: HostConfig.TextColorDefinition;
-
-            switch (actualTextColor) {
-                case Enums.TextColor.Accent:
-                    colorDefinition = styleDefinition.foregroundColors.accent;
-                    break;
-                case Enums.TextColor.Dark:
-                    colorDefinition = styleDefinition.foregroundColors.dark;
-                    break;
-                case Enums.TextColor.Light:
-                    colorDefinition = styleDefinition.foregroundColors.light;
-                    break;
-                case Enums.TextColor.Good:
-                    colorDefinition = styleDefinition.foregroundColors.good;
-                    break;
-                case Enums.TextColor.Warning:
-                    colorDefinition = styleDefinition.foregroundColors.warning;
-                    break;
-                case Enums.TextColor.Attention:
-                    colorDefinition = styleDefinition.foregroundColors.attention;
-                    break;
-                default:
-                    colorDefinition = styleDefinition.foregroundColors.default;
-                    break;
-            }
-
-            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
-
-            var fontWeight: number;
-
-            switch (this.weight) {
-                case Enums.TextWeight.Lighter:
-                    fontWeight = this.hostConfig.fontWeights.lighter;
-                    break;
-                case Enums.TextWeight.Bolder:
-                    fontWeight = this.hostConfig.fontWeights.bolder;
-                    break;
-                default:
-                    fontWeight = this.hostConfig.fontWeights.default;
-                    break;
-            }
-
-            element.style.fontWeight = fontWeight.toString();
+            this.applyStylesTo(element);
 
             if (!this._processedText) {
                 var formattedText = TextFormatters.formatText(this.lang, this.text);
@@ -871,8 +760,7 @@ export class TextBlock extends CardElement {
                 element.style.textOverflow = "ellipsis";
             }
 
-            if (AdaptiveCard.useAdvancedTextBlockTruncation
-                || AdaptiveCard.useAdvancedCardBottomTruncation) {
+            if (AdaptiveCard.useAdvancedTextBlockTruncation || AdaptiveCard.useAdvancedCardBottomTruncation) {
                 this._originalInnerHtml = element.innerHTML;
             }
 
@@ -920,6 +808,121 @@ export class TextBlock extends CardElement {
         Utils.setProperty(result, "maxLines", this.maxLines, 0);
 
         return result;
+    }
+
+    applyStylesTo(targetElement: HTMLElement) {
+        if (this.hostConfig.fontFamily) {
+            targetElement.style.fontFamily = this.hostConfig.fontFamily;
+        }
+
+        switch (this.horizontalAlignment) {
+            case Enums.HorizontalAlignment.Center:
+                targetElement.style.textAlign = "center";
+                break;
+            case Enums.HorizontalAlignment.Right:
+                targetElement.style.textAlign = "right";
+                break;
+            default:
+                targetElement.style.textAlign = "left";
+                break;
+        }
+
+        var cssStyle = "text ";
+        var fontSize: number;
+
+        switch (this.size) {
+            case Enums.TextSize.Small:
+                fontSize = this.hostConfig.fontSizes.small;
+                break;
+            case Enums.TextSize.Medium:
+                fontSize = this.hostConfig.fontSizes.medium;
+                break;
+            case Enums.TextSize.Large:
+                fontSize = this.hostConfig.fontSizes.large;
+                break;
+            case Enums.TextSize.ExtraLarge:
+                fontSize = this.hostConfig.fontSizes.extraLarge;
+                break;
+            default:
+                fontSize = this.hostConfig.fontSizes.default;
+                break;
+        }
+
+        if (this.hostConfig.lineHeights) {
+            switch (this.size) {
+                case Enums.TextSize.Small:
+                    this._computedLineHeight = this.hostConfig.lineHeights.small;
+                    break;
+                case Enums.TextSize.Medium:
+                    this._computedLineHeight = this.hostConfig.lineHeights.medium;
+                    break;
+                case Enums.TextSize.Large:
+                    this._computedLineHeight = this.hostConfig.lineHeights.large;
+                    break;
+                case Enums.TextSize.ExtraLarge:
+                    this._computedLineHeight = this.hostConfig.lineHeights.extraLarge;
+                    break;
+                default:
+                    this._computedLineHeight = this.hostConfig.lineHeights.default;
+                    break;    
+            }
+        }
+        else {
+            // Looks like 1.33 is the magic number to compute line-height
+            // from font size.
+            this._computedLineHeight = fontSize * 1.33;                
+        }
+
+        targetElement.style.fontSize = fontSize + "px";
+        targetElement.style.lineHeight = this._computedLineHeight + "px";
+
+        var parentContainer = this.getParentContainer();
+        var styleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default, this.hostConfig.containerStyles.default);
+
+        var actualTextColor = this.color ? this.color : Enums.TextColor.Default;
+        var colorDefinition: HostConfig.TextColorDefinition;
+
+        switch (actualTextColor) {
+            case Enums.TextColor.Accent:
+                colorDefinition = styleDefinition.foregroundColors.accent;
+                break;
+            case Enums.TextColor.Dark:
+                colorDefinition = styleDefinition.foregroundColors.dark;
+                break;
+            case Enums.TextColor.Light:
+                colorDefinition = styleDefinition.foregroundColors.light;
+                break;
+            case Enums.TextColor.Good:
+                colorDefinition = styleDefinition.foregroundColors.good;
+                break;
+            case Enums.TextColor.Warning:
+                colorDefinition = styleDefinition.foregroundColors.warning;
+                break;
+            case Enums.TextColor.Attention:
+                colorDefinition = styleDefinition.foregroundColors.attention;
+                break;
+            default:
+                colorDefinition = styleDefinition.foregroundColors.default;
+                break;
+        }
+
+        targetElement.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
+
+        var fontWeight: number;
+
+        switch (this.weight) {
+            case Enums.TextWeight.Lighter:
+                fontWeight = this.hostConfig.fontWeights.lighter;
+                break;
+            case Enums.TextWeight.Bolder:
+                fontWeight = this.hostConfig.fontWeights.bolder;
+                break;
+            default:
+                fontWeight = this.hostConfig.fontWeights.default;
+                break;
+        }
+
+        targetElement.style.fontWeight = fontWeight.toString();
     }
 
     parse(json: any, errors?: Array<IValidationError>) {

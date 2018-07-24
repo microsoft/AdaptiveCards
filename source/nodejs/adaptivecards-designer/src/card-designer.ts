@@ -365,11 +365,96 @@ class PeerCommand {
     }
 }
 
+abstract class DesignerPeerInplaceEditor {
+    onClose: (applyChanges: boolean) => void;
+
+    abstract initialize();
+    abstract applyChanges();
+    abstract render(): HTMLElement;
+}
+
+abstract class CardElementPeerInplaceEditor<TCardElement extends Adaptive.CardElement> extends DesignerPeerInplaceEditor {
+    readonly cardElement: TCardElement;
+
+    constructor(cardElement: TCardElement) {
+        super();
+
+        this.cardElement = cardElement;
+    }
+}
+
 export abstract class DesignerPeer extends DraggableElement {
     private _children: Array<DesignerPeer> = [];
-    private _isSelected: boolean;
+    private _isSelected: boolean = false;
+    private _inplaceEditorOverlay: HTMLElement;
+    private _inplaceEditor: DesignerPeerInplaceEditor = null;
 
-    abstract getCardObjectTypeName(): string;
+    private closeInplaceEditor(applyChanges: boolean) {
+        if (this._inplaceEditor) {
+            if (applyChanges) {
+                this._inplaceEditor.applyChanges();
+
+                this.changed(true);
+            }
+
+            this._inplaceEditor = null;
+
+            this._inplaceEditorOverlay.remove();
+        }
+    }
+
+    private tryOpenInplaceEditor(): boolean {
+        this._inplaceEditor = this.createInplaceEditor();
+
+        if (this._inplaceEditor) {
+            this._inplaceEditor.onClose = (applyChanges: boolean) => {
+                this.closeInplaceEditor(applyChanges);
+            }
+
+            this._inplaceEditorOverlay = document.createElement("div");
+            this._inplaceEditorOverlay.tabIndex = 0;
+            this._inplaceEditorOverlay.style.zIndex = "600";
+            this._inplaceEditorOverlay.style.backgroundColor = "transparent";
+            this._inplaceEditorOverlay.style.position = "absolute";
+            this._inplaceEditorOverlay.style.left = "0";
+            this._inplaceEditorOverlay.style.top = "0";
+            this._inplaceEditorOverlay.style.width = document.documentElement.scrollWidth + "px";
+            this._inplaceEditorOverlay.style.height = document.documentElement.scrollHeight + "px";
+            this._inplaceEditorOverlay.onfocus = (e) => { this.closeInplaceEditor(true); };
+
+            let boundingRect = this.getCardObjectBoundingRect();
+
+            let inplaceEditorHost = document.createElement("div");
+            inplaceEditorHost.className = "acd-inplace-editor-host";
+            inplaceEditorHost.style.left = Math.floor(boundingRect.left + pageXOffset) + "px";
+            inplaceEditorHost.style.top = Math.floor(boundingRect.top + pageYOffset) + "px";
+            inplaceEditorHost.style.width = Math.ceil(boundingRect.width) + "px";
+            inplaceEditorHost.style.height = Math.ceil(boundingRect.height) + "px";
+
+            let renderedInplaceEditor = this._inplaceEditor.render();
+            renderedInplaceEditor.classList.add("acd-inplace-editor");
+            renderedInplaceEditor.tabIndex = 0;
+            renderedInplaceEditor.onblur = (e) => { this.closeInplaceEditor(true); };
+
+            inplaceEditorHost.appendChild(renderedInplaceEditor);
+
+            this._inplaceEditorOverlay.appendChild(inplaceEditorHost);
+
+            document.body.appendChild(this._inplaceEditorOverlay);
+
+            this._inplaceEditor.initialize();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected doubleClick(e: MouseEvent) {
+        super.doubleClick(e);
+
+        this.tryOpenInplaceEditor();
+    }
 
     protected isContainer(): boolean {
         return false;
@@ -455,6 +540,10 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
+    protected createInplaceEditor(): DesignerPeerInplaceEditor {
+        return null;
+    }
+
     protected abstract internalRemove(): boolean;
     protected abstract internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean);
 
@@ -469,6 +558,8 @@ export abstract class DesignerPeer extends DraggableElement {
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
+    abstract getCardObjectTypeName(): string;
+
     constructor(designer: CardDesigner, registration: DesignerPeerRegistrationBase) {
         super();
 
@@ -482,6 +573,7 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     abstract getBoundingRect(): Rect;
+    abstract getCardObjectBoundingRect(): Rect;
 
     getTreeItemText(): string {
         return null;
@@ -680,6 +772,17 @@ export class ActionPeer extends DesignerPeer {
             actionBoundingRect.right - designSurfaceOffset.x,
             actionBoundingRect.bottom - designSurfaceOffset.y,
             actionBoundingRect.left - designSurfaceOffset.x
+        );
+    }
+
+    getCardObjectBoundingRect(): Rect {
+        let actionBoundingRect = this.action.renderedElement.getBoundingClientRect();
+
+        return new Rect(
+            actionBoundingRect.top,
+            actionBoundingRect.right,
+            actionBoundingRect.bottom,
+            actionBoundingRect.left
         );
     }
 
@@ -924,7 +1027,6 @@ export class CardElementPeer extends DesignerPeer {
         return false;
     }
 
-    boundingRect: Rect = null;
     getBoundingRect(): Rect {
         let designSurfaceOffset = this.designer.getDesignerSurfaceOffset();
         let cardElementBoundingRect = this.cardElement.renderedElement.getBoundingClientRect();
@@ -947,6 +1049,17 @@ export class CardElementPeer extends DesignerPeer {
                 cardElementBoundingRect.left - designSurfaceOffset.x
             );
         }
+    }
+
+    getCardObjectBoundingRect(): Rect {
+        let cardElementBoundingRect = this.cardElement.renderedElement.getBoundingClientRect();
+
+        return new Rect(
+            cardElementBoundingRect.top,
+            cardElementBoundingRect.right,
+            cardElementBoundingRect.bottom,
+            cardElementBoundingRect.left
+        );
     }
 
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
@@ -1815,7 +1928,63 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
     }
 }
 
+class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.TextBlock> {
+    private _renderedElement: HTMLTextAreaElement;
+
+    private close(applyChanges: boolean) {
+        if (this.onClose) {
+            this.onClose(applyChanges);
+        }
+    }
+
+    initialize() {
+        this._renderedElement.select();
+    }
+
+    applyChanges() {
+        this.cardElement.text = this._renderedElement.value;
+    }
+
+    render() {
+        this._renderedElement = document.createElement("textarea");
+        this._renderedElement.className = "acd-textBlock-inplace-editor";
+        this._renderedElement.value = this.cardElement.text;
+        this._renderedElement.onkeydown = (e) => {
+            switch (e.keyCode) {
+                case Controls.KEY_ESCAPE:
+                   this.close(false);
+
+                   e.preventDefault();
+                   e.cancelBubble = true;
+
+                   break;
+                case Controls.KEY_ENTER:
+                    this.close(true);
+
+                    e.preventDefault();
+                    e.cancelBubble = true;
+
+                    break;
+            }
+
+            return !e.cancelBubble;
+        };
+
+        this.cardElement.applyStylesTo(this._renderedElement);
+
+        return this._renderedElement;
+    }
+}
+
 export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
+    protected createInplaceEditor(): DesignerPeerInplaceEditor {
+        return new TextBlockPeerInplaceEditor(this.cardElement);
+    }
+
+    getToolTip(): string {
+        return "Double click to edit";
+    }
+
     getTreeItemText(): string {
         return this.cardElement.text;
     }
@@ -2076,7 +2245,7 @@ class DragHandle extends DraggableElement {
         element.title = "Drag to move this element";
         element.style.visibility = "hidden";
         element.style.position = "absolute";
-        element.style.zIndex = "1000";
+        element.style.zIndex = "500";
 
         return element;
     }
@@ -2446,7 +2615,7 @@ export class CardDesigner {
         this._removeCommandElement.title = "Remove";
         this._removeCommandElement.style.visibility = "hidden";
         this._removeCommandElement.style.position = "absolute";
-        this._removeCommandElement.style.zIndex = "1000";
+        this._removeCommandElement.style.zIndex = "500";
         this._removeCommandElement.onclick = (e) => {
             this.removeSelected();
         }
@@ -2462,7 +2631,7 @@ export class CardDesigner {
         this._peerCommandsHostElement.style.visibility = "hidden";
         this._peerCommandsHostElement.style.position = "absolute";
         this._peerCommandsHostElement.style.display = "flex";
-        this._peerCommandsHostElement.style.zIndex = "1000";
+        this._peerCommandsHostElement.style.zIndex = "500";
 
         this._designerSurface.appendChild(this._dragHandle.renderedElement);
         this._designerSurface.appendChild(this._removeCommandElement);
