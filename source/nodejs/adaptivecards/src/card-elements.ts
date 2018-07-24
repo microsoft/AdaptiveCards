@@ -96,19 +96,19 @@ export class SizeAndUnit {
 
         let regExp = /^([0-9]+)(px|\*)?$/g;
         let matches = regExp.exec(input);
-
+    
         if (matches && matches.length >= 2) {
             result.physicalSize = parseInt(matches[1]);
-
+    
             if (matches.length == 3) {
                 if (matches[2] == "px") {
                     result.unit = Enums.SizeUnit.Pixel;
                 }
             }
-
+    
             return result;
         }
-
+    
         throw new Error("Invalid size: " + input);
     }
 
@@ -148,7 +148,7 @@ export abstract class CardElement {
 
         if (this._separatorElement) {
             if (this.parent && this.parent.isFirstElement(this)) {
-                this._separatorElement.style.display = "none";
+                this._separatorElement.style.display = "none";                
             }
             else {
                 this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
@@ -287,7 +287,7 @@ export abstract class CardElement {
 
     protected isDesignMode(): boolean {
         var rootElement = this.getRootElement();
-
+            
         return rootElement instanceof AdaptiveCard && rootElement.designMode;
     }
 
@@ -762,13 +762,13 @@ export class TextBlock extends CardElement {
                         break;
                     default:
                         this._computedLineHeight = this.hostConfig.lineHeights.default;
-                        break;
+                        break;    
                 }
             }
             else {
                 // Looks like 1.33 is the magic number to compute line-height
                 // from font size.
-                this._computedLineHeight = fontSize * 1.33;
+                this._computedLineHeight = fontSize * 1.33;                
             }
 
             element.style.fontSize = fontSize + "px";
@@ -1125,7 +1125,9 @@ export class FactSet extends CardElement {
 
         if (json["facts"] != null) {
             var jsonFacts = json["facts"] as Array<any>;
+
             this.facts = [];
+
             for (var i = 0; i < jsonFacts.length; i++) {
                 let fact = new Fact();
 
@@ -1186,7 +1188,7 @@ export class Image extends CardElement {
                     message: "Invalid image " + name + ": " + value
                 },
                 errors
-            );
+            );    
         }
 
         return 0;
@@ -1220,7 +1222,7 @@ export class Image extends CardElement {
                     element.style.width = this.hostConfig.imageSizes.medium + "px";
                     break;
             }
-        }
+        }    
     }
 
     protected get useDefaultSizing() {
@@ -1279,7 +1281,7 @@ export class Image extends CardElement {
                     errorElement.style.display = "flex";
                     errorElement.style.alignItems = "center";
                     errorElement.style.justifyContent = "center";
-                    errorElement.style.backgroundColor = "#eeeeee";
+                    errorElement.style.backgroundColor = "#EEEEEE";
                     errorElement.style.color = "black";
                     errorElement.innerText = ":-(";
                     errorElement.style.padding = "10px";
@@ -2364,7 +2366,7 @@ export abstract class Action {
             }
             else {
                 buttonElement.classList.add("iconLeft");
-
+                
                 if (hasTitle) {
                     iconElement.style.marginRight = "4px";
                 }
@@ -2385,7 +2387,7 @@ export abstract class Action {
         if (this.onExecute) {
             this.onExecute(this);
         }
-
+        
         raiseExecuteActionEvent(this);
     }
 
@@ -2416,7 +2418,7 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-
+	    
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
@@ -2873,6 +2875,16 @@ class ActionCollection {
         }
     }
 
+    private findActionButton(action: Action): ActionButton {
+        for (let actionButton of this.buttons) {
+            if (actionButton.action == action) {
+                return actionButton;
+            }
+        }
+
+        return null;
+    }
+
     items: Array<Action> = [];
     buttons: Array<ActionButton> = [];
 
@@ -2965,22 +2977,19 @@ class ActionCollection {
             return null;
         }
 
-        var element = document.createElement("div");
+        let element = document.createElement("div");
+        let maxActions = this._owner.hostConfig.actions.maxActions ? Math.min(this._owner.hostConfig.actions.maxActions, this.items.length) : this.items.length;
+        let forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         this._actionCardContainer = document.createElement("div");
-
         this._renderedActionCount = 0;
 
-        var maxActions = this._owner.hostConfig.actions.maxActions ? Math.min(this._owner.hostConfig.actions.maxActions, this.items.length) : this.items.length;
-
-        var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
-
-        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
+        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[0], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
         else {
-            var buttonStrip = document.createElement("div");
+            let buttonStrip = document.createElement("div");
             buttonStrip.className = this._owner.hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
 
@@ -3050,15 +3059,19 @@ class ActionCollection {
 
             let parentContainerStyle = this.getParentContainer().style;
 
-            for (var i = 0; i < this.items.length; i++) {
+            for (let i = 0; i < this.items.length; i++) {
                 if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
-                    var actionButton = new ActionButton(this.items[i], parentContainerStyle);
-                    actionButton.action.renderedElement.style.overflow = "hidden";
-                    actionButton.action.renderedElement.style.overflow = "table-cell";
-                    actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
-                    actionButton.onClick = (ab) => { this.actionClicked(ab); };
+                    let actionButton: ActionButton = this.findActionButton(this.items[i]);
+                    
+                    if (!actionButton) {
+                        actionButton = new ActionButton(this.items[i], parentContainerStyle);
+                        actionButton.action.renderedElement.style.overflow = "hidden";
+                        actionButton.action.renderedElement.style.overflow = "table-cell";
+                        actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
+                        actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
-                    this.buttons.push(actionButton);
+                        this.buttons.push(actionButton);
+                    }
 
                     buttonStrip.appendChild(actionButton.action.renderedElement);
 
@@ -3083,7 +3096,7 @@ class ActionCollection {
                 }
             }
 
-            var buttonStripContainer = document.createElement("div");
+            let buttonStripContainer = document.createElement("div");
             buttonStripContainer.style.overflow = "hidden";
             buttonStripContainer.appendChild(buttonStrip);
 
@@ -3092,7 +3105,7 @@ class ActionCollection {
 
         Utils.appendChild(element, this._actionCardContainer);
 
-        for (var i = 0; i < this.buttons.length; i++) {
+        for (let i = 0; i < this.buttons.length; i++) {
             if (this.buttons[i].state == ActionButtonState.Expanded) {
                 this.expandShowCardAction(<ShowCardAction>this.buttons[i].action, false);
 
@@ -3131,6 +3144,14 @@ class ActionCollection {
             action.setParent(null);
 
             invokeSetCollection(action, null);
+
+            for (let i = 0; i < this.buttons.length; i++) {
+                if (this.buttons[i].action == action) {
+                    this.buttons.splice(i, 1);
+
+                    break;
+                }
+            }
 
             return true;
         }
@@ -3321,10 +3342,6 @@ export class Container extends CardElementContainer {
     private _items: Array<CardElement> = [];
     private _renderedItems: Array<CardElement> = [];
     private _style?: string = null;
-
-    public getItems(): Array<CardElement> {
-        return this._items;
-    }
 
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
@@ -3655,7 +3672,7 @@ export class Container extends CardElementContainer {
         for (let item of this._items) {
             handleElement(item);
         }
-
+        
         return true;
     }
 
@@ -4299,10 +4316,6 @@ export class ColumnSet extends CardElementContainer {
         return "ColumnSet";
     }
 
-    getColumns(): Array<Column> {
-        return this._columns;
-    }
-
     parse(json: any, errors?: Array<IValidationError>) {
         super.parse(json, errors);
 
@@ -4319,7 +4332,9 @@ export class ColumnSet extends CardElementContainer {
 
         if (json["columns"] != null) {
             let jsonColumns = json["columns"] as Array<any>;
+
             this._columns = [];
+
             for (let i = 0; i < jsonColumns.length; i++) {
                 var column = new Column();
 
@@ -4361,7 +4376,7 @@ export class ColumnSet extends CardElementContainer {
         super.updateLayout(processChildren);
 
         this.applyPadding();
-
+        
         if (processChildren) {
             for (var i = 0; i < this._columns.length; i++) {
                 this._columns[i].updateLayout();
@@ -4672,10 +4687,6 @@ export abstract class ContainerWithActions extends Container {
         Utils.setProperty(result, "actions", this._actionCollection.toJSON());
 
         return result;
-    }
-
-    getActions(): Array<Action> {
-        return this._actionCollection.items;
     }
 
     getActionCount(): number {
@@ -5024,7 +5035,7 @@ export class AdaptiveCard extends ContainerWithActions {
                         message: e.message
                     },
                     errors
-                );
+                );                        
             }
         }
 
@@ -5155,7 +5166,7 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
         },
         containerStyles: {
             default: {
-                backgroundColor: "#F9F9F9",
+                backgroundColor: "#FFFFFF",
                 foregroundColors: {
                     default: {
                         default: "#333333",
