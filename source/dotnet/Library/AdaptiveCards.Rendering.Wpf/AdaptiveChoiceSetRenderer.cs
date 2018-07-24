@@ -19,12 +19,7 @@ namespace AdaptiveCards.Rendering.Wpf
             uiComboBox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.ComboBox");
             uiComboBox.DataContext = input;
 
-            var uiChoices = new ListBox();
-            ScrollViewer.SetHorizontalScrollBarVisibility(uiChoices, ScrollBarVisibility.Disabled);
-            var itemsPanelTemplate = new ItemsPanelTemplate();
-            var factory = new FrameworkElementFactory(typeof(WrapPanel));
-            itemsPanelTemplate.VisualTree = factory;
-            uiChoices.ItemsPanel = itemsPanelTemplate;
+            var uiChoices = new StackPanel();
             uiChoices.DataContext = input;
             uiChoices.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput");
 
@@ -37,7 +32,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     uiCheckbox.IsChecked = chosen.Contains(choice.Value);
                     uiCheckbox.DataContext = choice;
                     uiCheckbox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.CheckBox");
-                    uiChoices.Items.Add(uiCheckbox);
+                    uiChoices.Children.Add(uiCheckbox);
                 }
                 else
                 {
@@ -59,7 +54,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiRadio.GroupName = input.Id;
                         uiRadio.DataContext = choice;
                         uiRadio.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.Radio");
-                        uiChoices.Items.Add(uiRadio);
+                        uiChoices.Children.Add(uiRadio);
                     }
                 }
             }
@@ -68,7 +63,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 if (input.IsMultiSelect == true)
                 {
                     string values = string.Empty;
-                    foreach (var item in uiChoices.Items)
+                    foreach (var item in uiChoices.Children)
                     {
                         CheckBox checkBox = (CheckBox)item;
                         AdaptiveChoice adaptiveChoice = checkBox.DataContext as AdaptiveChoice;
@@ -91,7 +86,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                     else
                     {
-                        foreach (var item in uiChoices.Items)
+                        foreach (var item in uiChoices.Children)
                         {
                             RadioButton radioBox = (RadioButton)item;
                             AdaptiveChoice adaptiveChoice = radioBox.DataContext as AdaptiveChoice;
@@ -102,7 +97,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
             });
-            if (input.Style == AdaptiveChoiceInputStyle.Compact)
+            if (!input.IsMultiSelect && input.Style == AdaptiveChoiceInputStyle.Compact)
             {
                 Grid.SetRow(uiComboBox, 1);
                 uiGrid.Children.Add(uiComboBox);
