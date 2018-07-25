@@ -138,3 +138,12 @@ a.default-ac-anchor:visited:active {
     border: 1px solid #DDDDDD;
     padding: 4px 8px 4px 8px;
 }
+
+.default-ac-textBlock {
+    cursor: default;
+}
+
+.default-ac-textBlock.default-ac-selectable:hover {
+    color: #3A96DD !important;
+    cursor: pointer;
+}

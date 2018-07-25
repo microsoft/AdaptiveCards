@@ -125,7 +125,6 @@ export abstract class CardElement {
     private _parent: CardElement = null;
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
-    private _rootCard: AdaptiveCard;
     private _isVisible: boolean = true;
     private _truncatedDueToOverflow: boolean = false;
     private _defaultRenderedElementDisplayMode: string = null;
@@ -338,6 +337,7 @@ export abstract class CardElement {
     spacing: Enums.Spacing = Enums.Spacing.Default;
     separator: boolean = false;
     height: "auto" | "stretch" = "auto";
+    customCssSelector: string = null;
 
     abstract getJsonTypeName(): string;
     abstract renderSpeech(): string;
@@ -446,6 +446,10 @@ export abstract class CardElement {
         this._separatorElement = this.internalRenderSeparator();
 
         if (this._renderedElement) {
+            if (this.customCssSelector) {
+                this._renderedElement.classList.add(this.customCssSelector);
+            }
+
             this._renderedElement.style.boxSizing = "border-box";
             this._defaultRenderedElementDisplayMode = this._renderedElement.style.display;
 
@@ -672,6 +676,7 @@ export class TextBlock extends CardElement {
     private _originalInnerHtml: string;
     private _text: string;
     private _processedText: string = null;
+    private _selectAction: Action = null;
 
     private restoreOriginalContent() {
         var maxHeight = this.maxLines
@@ -706,10 +711,21 @@ export class TextBlock extends CardElement {
 
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
+            let hostConfig = this.hostConfig;
+
             var element = document.createElement("div");
+            element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
             element.style.overflow = "hidden";
 
             this.applyStylesTo(element);
+
+            if (this.selectAction) {
+                element.onclick = (e) => {
+                    this.selectAction.execute();
+
+                    e.cancelBubble = true;
+                }
+            }
 
             if (!this._processedText) {
                 var formattedText = TextFormatters.formatText(this.lang, this.text);
@@ -762,6 +778,13 @@ export class TextBlock extends CardElement {
 
             if (AdaptiveCard.useAdvancedTextBlockTruncation || AdaptiveCard.useAdvancedCardBottomTruncation) {
                 this._originalInnerHtml = element.innerHTML;
+            }
+
+            if (this.selectAction != null && hostConfig.supportsInteractivity) {
+                element.tabIndex = 0
+                element.setAttribute("role", "button");
+                element.setAttribute("aria-label", this.selectAction.title);
+                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
             return element;
@@ -1005,6 +1028,18 @@ export class TextBlock extends CardElement {
             this._text = value;
 
             this._processedText = null;
+        }
+    }
+
+    get selectAction(): Action {
+        return this._selectAction;
+    }
+
+    set selectAction(value: Action) {
+        this._selectAction = value;
+
+        if (this._selectAction) {
+            this._selectAction.setParent(this);
         }
     }
 }

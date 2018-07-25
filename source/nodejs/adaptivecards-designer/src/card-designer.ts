@@ -142,10 +142,19 @@ function addLabelAndInput<TInput extends Adaptive.Input>(
     columnSet.addColumn(leftColumn);
     columnSet.addColumn(rightColumn);
 
-    var result = { label: new Adaptive.TextBlock(), input: new inputType() };
+    var result = {
+        label: new Adaptive.TextBlock(),
+        input: new inputType()
+    };
     result.label.horizontalAlignment = Adaptive.HorizontalAlignment.Right;
     result.label.text = label;
     result.label.wrap = true;
+    /*
+    result.label.selectAction = new Adaptive.SubmitAction();
+    result.label.selectAction.onExecute = (sender: Adaptive.Action) => {
+        alert("Clicked: " + label);
+    }
+    */
 
     leftColumn.addItem(result.label);
     rightColumn.addItem(result.input);

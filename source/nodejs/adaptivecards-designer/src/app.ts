@@ -19,6 +19,71 @@ declare function loadMonacoEditor(schema, callback);
 
 const MAX_UNDO_STACK_SIZE = 50;
 
+var isLocalStorageAvailable: boolean = false;
+
+function isStorageAvailable(type: string) {
+    try {
+        var storage = window[type],
+            x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0;
+    }
+}
+
+function trySaveSetting(name: string, value: string) {
+    if (isLocalStorageAvailable) {
+        localStorage.setItem(name, value);
+    }
+}
+
+interface ILoadSettingResult<T> {
+    succeeded: boolean;
+    value?: T;
+}
+
+function tryLoadNumberSetting(name: string): ILoadSettingResult<number> {
+    if (isLocalStorageAvailable) {
+        let returnValue = localStorage.getItem(name);
+
+        return {
+            succeeded: true,
+            value: returnValue ? parseFloat(returnValue) : undefined
+        };
+    }
+    else {
+        return { succeeded: false };
+    }
+}
+
+function tryLoadBooleanSetting(name: string, defaultValue: boolean): ILoadSettingResult<boolean> {
+    if (isLocalStorageAvailable) {
+        let returnValue = localStorage.getItem(name);
+
+        return {
+            succeeded: true,
+            value: returnValue ? returnValue == "true" : defaultValue
+        };
+    }
+    else {
+        return { succeeded: false };
+    }
+}
+
 var isMonacoEditorLoaded: boolean = false;
 
 function monacoEditorLoaded() {
@@ -38,6 +103,35 @@ function getCurrentJsonPayload(): string {
     return isMonacoEditorLoaded ? monacoEditor.getValue() : Constants.defaultPayload;
 }
 
+function sortObjByKey(value: any) {
+    if (typeof value === 'object') {
+        if (Array.isArray(value)) {
+            return value.map(sortObjByKey);
+        }
+        else {
+            return Object.keys(value).sort(
+                (a: string, b: string) => {
+                    return (a == "type" || a == "version") ? -1 : 1;
+                }
+            ).reduce(
+                (o, key) => {
+                    const v = value[key];
+                    o[key] = sortObjByKey(v);
+                    return o;
+                },
+                { }
+            )
+        }
+    }
+    else {
+        return value;
+    }
+}
+
+function setJsonPayload(payload: object) {
+    monacoEditor.setValue(JSON.stringify(payload, null, 4));
+}
+
 var jsonUpdateTimer: NodeJS.Timer;
 var cardUpdateTimer: NodeJS.Timer;
 var updateLayoutTimer: NodeJS.Timer;
@@ -53,7 +147,7 @@ function updateJsonFromCard() {
 
             app.addToUndoStack(cardPayload);
 
-            monacoEditor.setValue(JSON.stringify(cardPayload, null, 4));
+            setJsonPayload(cardPayload);
         }
     }
     finally {
@@ -215,6 +309,10 @@ class SidePaneHeader {
 
     getBoundingRect(): ClientRect {
         return this._rootElement.getBoundingClientRect();
+    }
+
+    get isExpanded(): boolean {
+        return this._isExpanded;
     }
 }
 
@@ -753,7 +851,7 @@ class DesignerApp {
             
             let card = this._undoStack[this._undoStackIndex];
 
-            monacoEditor.setValue(JSON.stringify(card, null, 4));
+            setJsonPayload(card);
 
             this.updateToolbar();
         }
@@ -769,7 +867,7 @@ class DesignerApp {
             
             let card = this._undoStack[this._undoStackIndex];
 
-            monacoEditor.setValue(JSON.stringify(card, null, 4));
+            setJsonPayload(card);
 
             this.updateToolbar();
         }
@@ -802,7 +900,7 @@ class DesignerApp {
             ]
         }
         
-        monacoEditor.setValue(JSON.stringify(card, null, 4));
+        setJsonPayload(card);
     }
 
     handlePointerMove(e: PointerEvent) {
@@ -893,29 +991,30 @@ class Splitter {
             e.preventDefault();
 
             let sizeApplied = false;
+            let newSize: number;
 
             if (this.isVertical) {
-                let newWidth = this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x);
+                newSize = this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x);
 
-                if (newWidth >= this.minimum) {
-                    this._sizedELement.style.width = newWidth + "px";
+                if (newSize >= this.minimum) {
+                    this._sizedELement.style.width = newSize + "px";
 
                     sizeApplied = true;
                 }
             }
             else {
-                let newHeight = this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y);
+                newSize = this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y);
 
-                if (newHeight >= this.minimum) {
-                    this._sizedELement.style.height = newHeight + "px";
+                if (newSize >= this.minimum) {
+                    this._sizedELement.style.height = newSize + "px";
 
                     sizeApplied = true;
                 }
             }
 
             if (sizeApplied) {
-                if (this.onRezized) {
-                    this.onRezized(this);
+                if (this.onResized) {
+                    this.onResized(this, newSize);
                 }
 
                 this._lastClickedOffset = { x: e.x, y: e.y };
@@ -931,7 +1030,7 @@ class Splitter {
         this._isPointerDown = false;
     }
 
-    onRezized: (sender: Splitter) => void;
+    onResized: (sender: Splitter, newSize: number) => void;
 
     isVertical: boolean = false;
     minimum: number = 50;
@@ -974,36 +1073,13 @@ function updateFullLayout() {
 }
 
 window.onload = () => {
-    let treeViewPaneHeader = new SidePaneHeader(document.getElementById("treeViewPane"), "Visual tree view");
-    treeViewPaneHeader.collapsedTabContainer = document.getElementById("rightCollapsedPaneTabHost");
-    treeViewPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
-    treeViewPaneHeader.targetElementsSelector = "selector-treeView";
-    treeViewPaneHeader.onToggled = (sender: SidePaneHeader) => {
-        updateFullLayout();
-    };
+    isLocalStorageAvailable = isStorageAvailable("localStorage");
 
-    let propertySheetPaneHeader = new SidePaneHeader(document.getElementById("propertySheetPane"), "Element properties");
-    propertySheetPaneHeader.collapsedTabContainer = treeViewPaneHeader.collapsedTabContainer;
-    propertySheetPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
-    propertySheetPaneHeader.targetElementsSelector = "selector-propertySheet";
-    propertySheetPaneHeader.onToggled = (sender: SidePaneHeader) => {
-        updateFullLayout();
-    };
+    if (!isLocalStorageAvailable) {
+        console.log("Local storage is not available.");
+    }
 
-    let toolPalettePaneHeader = new SidePaneHeader(document.getElementById("toolPalettePane"), "Tool box");
-    toolPalettePaneHeader.collapsedTabContainer = document.getElementById("leftCollapsedPaneTabHost");
-    toolPalettePaneHeader.collapsedTabClass = "rotated90DegreesCounterClockwise";
-    toolPalettePaneHeader.targetElementsSelector = "selector-toolPalette";
-    toolPalettePaneHeader.onToggled = (sender: SidePaneHeader) => {
-        updateFullLayout();
-    };
-
-    jsonEditorPaneHeader = new SidePaneHeader(document.getElementById("jsonEditorPane"), "JSON");
-    jsonEditorPaneHeader.collapsedTabContainer = document.getElementById("bottomCollapsedPaneTabHost");
-    jsonEditorPaneHeader.targetElementsSelector = "selector-jsonEditor";
-    jsonEditorPaneHeader.onToggled = (sender: SidePaneHeader) => {
-        updateFullLayout();
-    };
+    // Prepare toolbar
 
     let fullScreenHandler = new FullScreenHandler();
     fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
@@ -1028,24 +1104,119 @@ window.onload = () => {
         app.newCard();
     }
 
-    jsonEditorHorizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorPane"));
-    jsonEditorHorizontalSplitter.onRezized = (splitter: Splitter) => {
+    // Prepare tool palette pane
+
+    let toolPalettePaneHeader = new SidePaneHeader(document.getElementById("toolPalettePane"), "Tool box");
+    toolPalettePaneHeader.collapsedTabContainer = document.getElementById("leftCollapsedPaneTabHost");
+    toolPalettePaneHeader.collapsedTabClass = "rotated90DegreesCounterClockwise";
+    toolPalettePaneHeader.targetElementsSelector = "selector-toolPalette";
+    toolPalettePaneHeader.onToggled = (sender: SidePaneHeader) => {
+        updateFullLayout();
+    };
+
+    // Prepare JSON editor pane
+
+    jsonEditorPaneHeader = new SidePaneHeader(document.getElementById("jsonEditorPane"), "JSON");
+    jsonEditorPaneHeader.collapsedTabContainer = document.getElementById("bottomCollapsedPaneTabHost");
+    jsonEditorPaneHeader.targetElementsSelector = "selector-jsonEditor";
+    jsonEditorPaneHeader.onToggled = (sender: SidePaneHeader) => {
+        updateFullLayout();
+
+        trySaveSetting("jsonEditorIsExpanded", sender.isExpanded.toString());
+    };
+
+    let jsonEditorPane =  document.getElementById("jsonEditorPane");
+
+    jsonEditorHorizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), jsonEditorPane);
+    jsonEditorHorizontalSplitter.onResized = (splitter: Splitter, newSize: number) => {
         updateJsonEditorLayout();
+
+        trySaveSetting("jsonEditorHeight", newSize.toString());
     }
 
-    propertySheetVerticalSplitter = new Splitter(document.getElementById("propertyVerticalSplitter"), document.getElementById("propertySheetPane"));
+    let jsonEditorHeightSetting = tryLoadNumberSetting("jsonEditorHeight");
+
+    if (jsonEditorHeightSetting.succeeded && jsonEditorHeightSetting.value != undefined) {
+        jsonEditorPane.style.height = jsonEditorHeightSetting.value + "px";
+    }
+
+    let jsonEditorIsExpandedSetting = tryLoadBooleanSetting("jsonEditorIsExpanded", true);
+
+    if (jsonEditorIsExpandedSetting.succeeded && !jsonEditorIsExpandedSetting.value) {
+        jsonEditorPaneHeader.toggle();
+    }
+
+    // Prepare property sheet pane
+
+    let propertySheetPaneHeader = new SidePaneHeader(document.getElementById("propertySheetPane"), "Element properties");
+    propertySheetPaneHeader.collapsedTabContainer = document.getElementById("rightCollapsedPaneTabHost");
+    propertySheetPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
+    propertySheetPaneHeader.targetElementsSelector = "selector-propertySheet";
+    propertySheetPaneHeader.onToggled = (sender: SidePaneHeader) => {
+        updateFullLayout();
+
+        trySaveSetting("propertySheetIsExpanded", sender.isExpanded.toString());
+    };
+
+    let propertySheetPane = document.getElementById("propertySheetPane");
+
+    propertySheetVerticalSplitter = new Splitter(document.getElementById("propertyVerticalSplitter"), propertySheetPane);
     propertySheetVerticalSplitter.isVertical = true;
     propertySheetVerticalSplitter.minimum = 230;
-    propertySheetVerticalSplitter.onRezized = (splitter: Splitter) => {
+    propertySheetVerticalSplitter.onResized = (splitter: Splitter, newSize: number) => {
         scheduleLayoutUpdate();
+
+        trySaveSetting("propertySheetWidth", newSize.toString());
     }
 
-    treeViewVerticalSplitter = new Splitter(document.getElementById("treeViewVerticalSplitter"), document.getElementById("treeViewPane"));
+    let propertySheetWidthSetting = tryLoadNumberSetting("propertySheetWidth");
+
+    if (propertySheetWidthSetting.succeeded && propertySheetWidthSetting.value != undefined) {
+        propertySheetPane.style.width = propertySheetWidthSetting.value + "px";
+    }
+
+    let propertySheetIsExpandedSetting = tryLoadBooleanSetting("propertySheetIsExpanded", true);
+
+    if (propertySheetIsExpandedSetting.succeeded && !propertySheetIsExpandedSetting.value) {
+        propertySheetPaneHeader.toggle();
+    }
+
+    // Prepare tree view pane
+
+    let treeViewPaneHeader = new SidePaneHeader(document.getElementById("treeViewPane"), "Visual tree view");
+    treeViewPaneHeader.collapsedTabContainer = document.getElementById("rightCollapsedPaneTabHost");
+    treeViewPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
+    treeViewPaneHeader.targetElementsSelector = "selector-treeView";
+    treeViewPaneHeader.onToggled = (sender: SidePaneHeader) => {
+        updateFullLayout();
+
+        trySaveSetting("treeViewIsExpanded", sender.isExpanded.toString());
+    };
+
+    let treeViewPane = document.getElementById("treeViewPane");
+
+    treeViewVerticalSplitter = new Splitter(document.getElementById("treeViewVerticalSplitter"), treeViewPane);
     treeViewVerticalSplitter.isVertical = true;
     treeViewVerticalSplitter.minimum = 140;
-    treeViewVerticalSplitter.onRezized = (splitter: Splitter) => {
+    treeViewVerticalSplitter.onResized = (splitter: Splitter, newSize: number) => {
         scheduleLayoutUpdate();
+
+        trySaveSetting("treeViewWidth", newSize.toString());
     }
+
+    let treeViewWidthSetting = tryLoadNumberSetting("treeViewWidth");
+
+    if (treeViewWidthSetting.succeeded && treeViewWidthSetting.value != undefined) {
+        treeViewPane.style.width = treeViewWidthSetting.value + "px";
+    }
+
+    let treeViewIsExpandedSetting = tryLoadBooleanSetting("treeViewIsExpanded", true);
+
+    if (treeViewIsExpandedSetting.succeeded && !treeViewIsExpandedSetting.value) {
+        treeViewPaneHeader.toggle();
+    }
+
+    // Setup designer
 
     let card = new Adaptive.AdaptiveCard();
     card.onImageLoaded = (image: Adaptive.Image) => {
