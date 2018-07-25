@@ -10,14 +10,6 @@
     display: none !important;
 }
 
-.acd-toolbar {
-    display: flex;
-    flex: 0 0 auto;
-    background-color: #F1F1F1;
-    align-items: center;
-    border-bottom: 1px solid #D2D2D2;
-}
-
 .acd-treeView-pane {
     display: flex;
     flex: 0 0 auto;
@@ -255,6 +247,14 @@
     content: "\F164";
 }
 
+.acd-icon-undo::before {
+    content: "\E7A7";
+}
+
+.acd-icon-redo::before {
+    content: "\E7A6";
+}
+
 /*
     Side panes
 */
@@ -471,8 +471,22 @@
     Toolbar
 */
 
+.acd-toolbar {
+    display: flex;
+    flex: 0 0 auto;
+    background-color: #F1F1F1;
+    align-items: center;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.acd-toolbar-separator {
+    width: 1px;
+    height: 70%;
+    border-left: 1px solid #D2D2D2;
+}
+
 .acd-toolbar-button {
-    padding: 11px;
+    padding: 10px;
     border: 1px solid transparent;
     font-style: normal;
     font-weight: normal;
@@ -483,12 +497,6 @@
     user-select: none;
 }
 
-.acd-toolbar-button:before {
-    font-family: 'FabricMDL2Icons';
-    font-size: 20px;
-    margin-right: 6px;
-}
-
 .acd-toolbar-button:hover {
     background-color: white;
 }
@@ -496,3 +504,19 @@
 .acd-toolbar-button:active {
     border: 1px solid black;
 }
+
+.acd-toolbar-button:disabled {
+    color: lightgray;
+    background-color: transparent;
+}
+
+.acd-toolbar-button-iconOnly::before {
+    margin-right: 0 !important;
+}
+
+.acd-toolbar-button::before {
+    font-family: 'FabricMDL2Icons';
+    font-size: 20px;
+    margin-right: 8px;
+}
+

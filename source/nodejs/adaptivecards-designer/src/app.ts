@@ -18,6 +18,8 @@ import { FullScreenHandler } from "./components/fullscreenhandler";
 declare var monacoEditor: any;
 declare function loadMonacoEditor(schema, callback);
 
+const MAX_UNDO_STACK_SIZE = 50;
+
 var isMonacoEditorLoaded: boolean = false;
 
 function monacoEditorLoaded() {
@@ -25,7 +27,7 @@ function monacoEditorLoaded() {
 
     monacoEditor.onDidChangeModelContent(
         function (e) {
-            scheduleCardRefresh();
+            scheduleUpdateCardFromJson();
         });
 
     isMonacoEditorLoaded = true;
@@ -48,7 +50,11 @@ function updateJsonFromCard() {
         preventCardUpdate = true;
 
         if (!preventJsonUpdate && isMonacoEditorLoaded) {
-            monacoEditor.setValue(JSON.stringify(app.card.toJSON(), null, 4));
+            let cardPayload = app.card.toJSON();
+
+            app.addToUndoStack(cardPayload);
+
+            monacoEditor.setValue(JSON.stringify(cardPayload, null, 4));
         }
     }
     finally {
@@ -56,7 +62,7 @@ function updateJsonFromCard() {
     }
 }
 
-function scheduleJsonUpdate() {
+function scheduleUpdateJsonFromCard() {
     clearTimeout(jsonUpdateTimer);
 
     if (!preventJsonUpdate) {
@@ -79,11 +85,11 @@ function updateCardFromJson() {
     }
 }
 
-function scheduleCardRefresh() {
+function scheduleUpdateCardFromJson() {
     clearTimeout(cardUpdateTimer);
 
     if (!preventCardUpdate) {
-        cardUpdateTimer = setTimeout(updateCardFromJson, 200);
+        cardUpdateTimer = setTimeout(updateCardFromJson, 100);
     }
 }
 
@@ -320,6 +326,8 @@ class DesignerApp {
     private _card: Adaptive.AdaptiveCard;
     private _hostContainerPicker: Controls.DropDown;
     private _selectedHostContainer: HostContainer;
+    private _undoStack: Array<object> = [];
+    private _undoStackIndex: number = -1;
 
     public buildTreeView() {
         if (this.treeViewHostElement) {
@@ -517,7 +525,7 @@ class DesignerApp {
         };
         this._designer.onLayoutUpdated = (isFullRefresh: boolean) => {
             if (isFullRefresh) {
-                scheduleJsonUpdate();
+                scheduleUpdateJsonFromCard();
             }
 
             this.buildTreeView();
@@ -570,6 +578,8 @@ class DesignerApp {
     propertySheetHostElement: HTMLElement;
     treeViewHostElement: HTMLElement;
     commandListHostElement: HTMLElement;
+    undoButtonElement: HTMLButtonElement;
+    redoButtonElement: HTMLButtonElement;
 
     constructor(designerHostElement: HTMLElement) {
         this._propertySheetHostConfig = new Adaptive.HostConfig(
@@ -709,6 +719,61 @@ class DesignerApp {
         this._selectedHostContainer = this.hostContainers[0];
 
         this.recreateDesigner();
+    }
+
+    updateToolbar() {
+        this.undoButtonElement.disabled = !this.canUndo;
+        this.redoButtonElement.disabled = !this.canRedo;
+    }
+
+    addToUndoStack(payload: object) {
+        let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
+
+        if (undoPayloadsToDiscard > 0) {
+            this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
+        }
+        
+        this._undoStack.push(payload);
+
+        if (this._undoStack.length > MAX_UNDO_STACK_SIZE) {
+            this._undoStack.splice(0, 1);
+        }
+
+        this._undoStackIndex = this._undoStack.length - 1;
+
+        this.updateToolbar();
+    }
+
+    get canUndo(): boolean {
+        return this._undoStackIndex >= 1;
+    }
+
+    undo() {
+        if (this.canUndo) {
+            this._undoStackIndex--;
+            
+            let card = this._undoStack[this._undoStackIndex];
+
+            monacoEditor.setValue(JSON.stringify(card, null, 4));
+
+            this.updateToolbar();
+        }
+    }
+
+    get canRedo(): boolean {
+        return this._undoStackIndex < this._undoStack.length - 1;
+    }
+
+    redo() {
+        if (this._undoStackIndex < this._undoStack.length - 1) {
+            this._undoStackIndex++;
+            
+            let card = this._undoStack[this._undoStackIndex];
+
+            monacoEditor.setValue(JSON.stringify(card, null, 4));
+
+            this.updateToolbar();
+        }
     }
 
     createContainerPicker(): Controls.DropDown {
@@ -993,6 +1058,16 @@ window.onload = () => {
     app.treeViewHostElement = document.getElementById("treeViewHost");
     app.commandListHostElement = document.getElementById("commandsHost");
     app.paletteHostElement = document.getElementById("toolPalette");
+
+    app.undoButtonElement = <HTMLButtonElement>document.getElementById("btnUndo");
+    app.undoButtonElement.onclick = (e) => {
+        app.undo();
+    }
+
+    app.redoButtonElement = <HTMLButtonElement>document.getElementById("btnRedo");
+    app.redoButtonElement.onclick = (e) => {
+        app.redo();
+    }
 
     app.createContainerPicker().attach(document.getElementById("containerPickerHost"));
 
