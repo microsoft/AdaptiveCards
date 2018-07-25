@@ -1,15 +1,5 @@
 import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
-import {
-        Spacing,
-        ShowCardActionMode,
-        Orientation,
-        ActionAlignment,
-        Size,
-        TextColor,
-        TextSize,
-        TextWeight
-    } from "adaptivecards";
 
 export class ToastContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
@@ -109,36 +99,36 @@ export class ToastContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: Spacing.Default,
+                spacing: Adaptive.Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: ShowCardActionMode.Inline,
+                    actionMode: Adaptive.ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: Orientation.Horizontal,
-                actionAlignment: ActionAlignment.Stretch
+                actionsOrientation: Adaptive.Orientation.Horizontal,
+                actionAlignment: Adaptive.ActionAlignment.Stretch
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
             imageSet: {
-                imageSize: Size.Medium,
+                imageSize: Adaptive.Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
+                    color: Adaptive.TextColor.Default,
+                    size: Adaptive.TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Bolder,
+                    weight: Adaptive.TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150,
                 },
                 value: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
+                    color: Adaptive.TextColor.Default,
+                    size: Adaptive.TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Default,
+                    weight: Adaptive.TextWeight.Default,
                     wrap: true,
                 },
                 spacing: 10

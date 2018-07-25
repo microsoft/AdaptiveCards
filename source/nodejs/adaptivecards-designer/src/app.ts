@@ -3,7 +3,6 @@ import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
 import * as Constants from "./constants";
 import * as Designer from "./card-designer";
-import * as Utils from "./utils";
 import { HostContainer } from "./containers/host-container";
 import { OutlookContainer } from "./containers/outlook-container";
 import { LightTeamsContainer, DarkTeamsContainer } from "./containers/teams-container";
@@ -13,7 +12,7 @@ import { WebChatContainer } from "./containers/webchat-container";
 import { ToastContainer } from "./containers/toast-container";
 import { BotFrameworkContainer } from "./containers/bf-image-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
-import { FullScreenHandler } from "./components/fullscreenhandler";
+import { FullScreenHandler } from "./fullscreenhandler";
 
 declare var monacoEditor: any;
 declare function loadMonacoEditor(schema, callback);

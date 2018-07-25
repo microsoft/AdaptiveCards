@@ -1,8 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
-import { SizeAndUnit, HorizontalAlignment, PaddingDefinition } from "adaptivecards";
-import TreeItem from "./components/treeitem";
 import * as Outlook from "./containers/outlook-container";
+import TreeItem from "./treeitem";
 
 const DRAG_THRESHOLD = 10;
 
@@ -144,7 +143,7 @@ function addLabelAndInput<TInput extends Adaptive.Input>(
     columnSet.addColumn(rightColumn);
 
     var result = { label: new Adaptive.TextBlock(), input: new inputType() };
-    result.label.horizontalAlignment = HorizontalAlignment.Right;
+    result.label.horizontalAlignment = Adaptive.HorizontalAlignment.Right;
     result.label.text = label;
     result.label.wrap = true;
 

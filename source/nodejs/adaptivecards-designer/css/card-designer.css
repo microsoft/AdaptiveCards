@@ -67,10 +67,6 @@
     flex: 1 1 100%;
 }
 
-/*
-    In-place editors
-*/
-
 .acd-error-pane {
     flex: 0 0 65px;
     color: white;
@@ -81,6 +77,10 @@
     overflow-y: auto;
     white-space: nowrap;
 }
+
+/*
+    In-place editors
+*/
 
 .acd-inplace-editor-host {
     box-sizing: content-box;
@@ -102,6 +102,7 @@
     margin: 0;
     outline: none;
     resize: none;
+    color: black !important;
 }
 
 /*
