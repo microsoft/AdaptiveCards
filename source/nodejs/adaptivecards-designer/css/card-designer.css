@@ -486,6 +486,9 @@
 }
 
 .acd-toolbar-button {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
     padding: 10px;
     border: 1px solid transparent;
     font-style: normal;
@@ -495,6 +498,7 @@
     justify-content: center;
     cursor: default;
     user-select: none;
+    background-color: transparent;
 }
 
 .acd-toolbar-button:hover {
