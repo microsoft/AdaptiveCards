@@ -2539,11 +2539,8 @@ AdaptiveNamespaceStart
         [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
         [eventremove] HRESULT Action([in] EventRegistrationToken token);
 
-        [eventadd] HRESULT MediaPlay([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveMediaEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
-        [eventremove] HRESULT MediaPlay([in] EventRegistrationToken token);
-
-        [eventadd] HRESULT MediaEnded([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveMediaEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
-        [eventremove] HRESULT MediaEnded([in] EventRegistrationToken token);
+        [eventadd] HRESULT MediaClicked([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveMediaEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
+        [eventremove] HRESULT MediaClicked([in] EventRegistrationToken token);
     };
 
     [
@@ -2770,8 +2767,7 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveMediaEventInvoker : IInspectable
     {
-        HRESULT SendMediaPlayEvent([in] AdaptiveMedia* mediaElement);
-        HRESULT SendMediaEndedEvent([in] AdaptiveMedia* mediaElement);
+        HRESULT SendMediaClickedEvent([in] AdaptiveMedia* mediaElement);
     };
 
     [

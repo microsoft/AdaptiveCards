@@ -70,7 +70,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+                            "url": "http://adaptivecards.io/content/airplane.png",
                             "size": "small",
                             "spacing": "none"
                         }
@@ -142,7 +142,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+                            "url": "http://adaptivecards.io/content/airplane.png",
                             "size": "small",
                             "spacing": "none"
                         }

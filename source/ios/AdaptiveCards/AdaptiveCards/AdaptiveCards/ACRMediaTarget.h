@@ -14,11 +14,15 @@
 
 - (instancetype)initWithMediaEvent:(ACOMediaEvent *)mediaEvent rootView:(ACRView *)rootView config:(ACOHostConfig *)config;
 
-- (instancetype)initWithMediaViewController:(AVPlayerViewController *)mediaViewController
-                                   rootView:(ACRView *)rootView
-                                     config:(ACOHostConfig *)config
-                                     poster:(UIView *)poster
-                                  superview:(UIView<ACRIContentHoldingView> *)superview;
+- (instancetype)initWithMediaEvent:(ACOMediaEvent *)mediaEvent
+                          rootView:(ACRView *)rootView
+                            config:(ACOHostConfig *)config
+                    containingview:(UIView *)containingview
+                         superview:(UIView<ACRIContentHoldingView> *)superview;
 - (void)doSelectAction;
+
+- (void)getNaturalSize:(AVAssetTrack *)track asset:(AVURLAsset *)asset;
+
+- (void)getAVTrack:(AVURLAsset *)asset;
 
 @end
