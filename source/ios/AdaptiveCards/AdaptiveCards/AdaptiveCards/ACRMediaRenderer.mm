@@ -6,6 +6,7 @@
 //
 
 #import <CoreGraphics/CoreGraphics.h>
+#import <AVKit/AVKit.h>
 #import "ACRMediaRenderer.h"
 #import "ACOMediaEventPrivate.h"
 #import "ACRMediaTarget.h"
@@ -51,7 +52,7 @@
         view = [[ACRAVPlayerViewHoldingUIView alloc] initWithImage:img];
         view.translatesAutoresizingMaskIntoConstraints = NO;
         view.contentMode = UIViewContentModeScaleAspectFill;
-        
+
         if(img.size.width > 0) {
             heightToWidthRatio = img.size.height / img.size.width;
         }
@@ -67,7 +68,7 @@
     [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
     [viewGroup addArrangedSubview:contentholdingview];
-    
+
     [NSLayoutConstraint constraintWithItem:contentholdingview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:viewGroup attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:contentholdingview
                                  attribute:NSLayoutAttributeHeight
@@ -76,7 +77,7 @@
                                  attribute:NSLayoutAttributeWidth
                                 multiplier:heightToWidthRatio
                                   constant:0].active = YES;
-    
+
     [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:view
                                  attribute:NSLayoutAttributeHeight
