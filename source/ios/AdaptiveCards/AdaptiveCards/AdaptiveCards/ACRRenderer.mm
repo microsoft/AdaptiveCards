@@ -93,7 +93,7 @@ using namespace AdaptiveCards;
 
             // renders buttons and their associated actions
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            [card card:adaptiveCard];
+            [card setCard:adaptiveCard];
             [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
         }
         [verticalView adjustHuggingForLastElement];
