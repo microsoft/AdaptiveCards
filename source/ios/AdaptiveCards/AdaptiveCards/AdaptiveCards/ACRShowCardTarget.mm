@@ -58,36 +58,13 @@
                                            containingView:containingView
                                                 hostconfig:_config];
     [[_rootView card] setInputs:inputs];
-    unsigned int padding = 0;
+    unsigned int padding = [_config getHostConfig] ->actions.showCard.inlineTopMargin;
 
-    switch ([_config getHostConfig] ->actions.spacing)
-    {
-        case Spacing::ExtraLarge:
-            padding = [_config getHostConfig]->spacing.extraLargeSpacing;
-            break;
-        case Spacing::Large:
-            padding = [_config getHostConfig]->spacing.largeSpacing;
-            break;
-        case Spacing::Medium:
-            padding = [_config getHostConfig]->spacing.mediumSpacing;
-            break;
-        case Spacing::Small:
-            padding = [_config getHostConfig]->spacing.smallSpacing;
-            break;
-        case Spacing::Default:
-            padding =  [_config getHostConfig]->spacing.defaultSpacing;
-            break;
-        default:
-            break;
-    }
-    ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
+        ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
     [wrappingView addSubview:adcView];
 
-    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-%u-[adcView]-%u-|",
-                           padding,
-                           padding];
-    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-%u-|",
-                           padding,
+    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-0-[adcView]-0-|"];
+    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-0-|",
                            padding];
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(wrappingView, adcView);
     NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString

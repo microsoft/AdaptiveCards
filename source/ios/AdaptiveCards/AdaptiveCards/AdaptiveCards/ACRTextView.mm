@@ -26,8 +26,37 @@
             self.textColor = [UIColor lightGrayColor];
         }
         [self.layer setCornerRadius:5.0f];
+        [self registerForKeyboardNotifications];
     }
     return self;
+}
+
+-(BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    [textView resignFirstResponder];
+    return YES;
+}
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
+}
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    self.scrollEnabled = YES;
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    self.scrollEnabled = NO;
 }
 
 - (BOOL)validate:(NSError **)error
@@ -53,7 +82,7 @@
     return YES;
 }
 
-- (void)dismissNumPad
+- (void)dismissKeyboard
 {
     [self resignFirstResponder];
 }
