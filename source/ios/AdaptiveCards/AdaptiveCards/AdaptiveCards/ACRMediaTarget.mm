@@ -148,7 +148,7 @@
     self->_mediaViewController = [[AVPlayerViewController alloc] init];
     self->_mediaViewController.player = player;
 
-    UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
+    //UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
     
     self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
     CGRect frame = AVMakeRectWithAspectRatioInsideRect(size, CGRectMake(0, 0, self->_containingview.frame.size.width, self->_containingview.frame.size.height));
@@ -163,7 +163,7 @@
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
     
-    [parentViewController didMoveToParentViewController:self->_mediaViewController];
+    //[parentViewController didMoveToParentViewController:self->_mediaViewController];
     [player play];
     NSLog(@"media view width = %f height = %f", mediaView.frame.size.width, mediaView.frame.size.height);
 }
@@ -176,7 +176,7 @@
     self->_mediaViewController = [[AVPlayerViewController alloc] init];
     self->_mediaViewController.player = player;
     
-    UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
+    //UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
     
     self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
     CGRect frame = self->_containingview.frame;
@@ -192,7 +192,7 @@
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
     
     [self->_superview addArrangedSubview:mediaView];
-    [parentViewController didMoveToParentViewController:self->_mediaViewController];
+    //[parentViewController didMoveToParentViewController:self->_mediaViewController];
     [player play];
     
     
