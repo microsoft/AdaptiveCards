@@ -55,6 +55,8 @@
 
         [self.layer addSublayer:canvas];
         [self.layer addSublayer:triangleCanvas];
+    } else{
+        self.layer.sublayers = nil;
     }
 }
 

@@ -10,6 +10,9 @@
 @interface ACOMediaSource:NSObject
 @property NSString *url;
 @property NSString *mimeType;
+@property BOOL isVideo;
+@property NSString *mediaFormat;
+@property BOOL isValid;
 
 @end
 

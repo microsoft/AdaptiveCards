@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVMediaFormat.h>
 #import "ACRMediaTarget.h"
 #import "ACRAVPlayerViewHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
@@ -71,46 +72,62 @@
     } else {
         BOOL validMediaTypeFound = NO;
         for(ACOMediaSource *source in _mediaEvent.sources){
-            if([source.mimeType compare:@"video/mp4" options:NSLiteralSearch] == NSOrderedSame){
-                NSURL *url = [[NSURL alloc] initWithString:source.url];
-                AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:nil];
-                _mimeType = source.mimeType;
-                [asset loadValuesAsynchronouslyForKeys:@[@"tracks"] completionHandler:^{
-                    AVKeyValueStatus status = [asset statusOfValueForKey:@"tracks" error:nil];
-                    if(status == AVKeyValueStatusLoaded) {
-                        dispatch_async(dispatch_get_main_queue(), ^{[self getAVTrack:asset];});
-                    }
-                }];
-                validMediaTypeFound = YES;
-                break;
-            } else if([source.mimeType compare:@"audio/mp3" options:NSLiteralSearch] == NSOrderedSame ||
-                      [source.mimeType compare:@"audio/mpeg" options:NSLiteralSearch] == NSOrderedSame) {
-                validMediaTypeFound = YES;
-                NSURL *url = [[NSURL alloc] initWithString:source.url];
-                AVPlayer *player = [AVPlayer playerWithURL:url];
-                
-                self->_mediaViewController = [[AVPlayerViewController alloc] init];
-                self->_mediaViewController.player = player;
-                
-                UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
-                
-                self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
-                CGRect frame = self->_containingview.frame;
-                UIView *mediaView = self->_mediaViewController.view;
-                mediaView.frame = frame;
-                mediaView.translatesAutoresizingMaskIntoConstraints = NO;
-                [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
-                [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
-                
-                self->_containingview.hidden = YES;
-                [self->_superview addArrangedSubview:mediaView];
-                [parentViewController didMoveToParentViewController:self->_mediaViewController];
-                [player play];
-                NSLog(@"media view width = %f height = %f", mediaView.frame.size.width, mediaView.frame.size.height);
-                break;
+            if(source.isValid){
+                if(source.isVideo){
+                    NSURL *url = [[NSURL alloc] initWithString:source.url];
+                    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:nil];
+                    _mimeType = source.mimeType;
+                    [asset loadValuesAsynchronouslyForKeys:@[@"tracks"] completionHandler:^{
+                        AVKeyValueStatus status = [asset statusOfValueForKey:@"tracks" error:nil];
+                        if(status == AVKeyValueStatusLoaded) {
+                            dispatch_async(dispatch_get_main_queue(), ^{[self getAVTrack:asset];});
+                        }
+                    }];
+                    validMediaTypeFound = YES;
+                    break;
+                } else{
+                    NSURL *url = [[NSURL alloc] initWithString:source.url];
+                    AVPlayer *player = [AVPlayer playerWithURL:url];
+
+                    self->_mediaViewController = [[AVPlayerViewController alloc] init];
+                    self->_mediaViewController.player = player;
+
+                    UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
+
+                    self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
+                    CGRect frame = self->_containingview.frame;
+                    UIView *mediaView = self->_mediaViewController.view;
+                    mediaView.frame = frame;
+                    mediaView.translatesAutoresizingMaskIntoConstraints = NO;
+                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
+                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
+
+                    ACRAVPlayerViewHoldingUIView *poster = self->_containingview.subviews[0];
+                    poster.hidePlayIcon = YES;
+                    [poster layoutSubviews];
+                    [poster removeFromSuperview];
+
+                    [self->_containingview addSubview:mediaView];
+                    UIView *overlayview = self->_mediaViewController.contentOverlayView;
+
+                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+
+                    overlayview.backgroundColor = UIColor.blackColor;
+                    [overlayview addSubview:poster];
+                    [overlayview bringSubviewToFront:poster];
+
+                    [NSLayoutConstraint activateConstraints:@[[poster.topAnchor constraintEqualToAnchor:overlayview.topAnchor], [poster.bottomAnchor constraintEqualToAnchor:overlayview.bottomAnchor], [poster.leadingAnchor constraintEqualToAnchor:overlayview.leadingAnchor], [poster.trailingAnchor constraintEqualToAnchor:overlayview.trailingAnchor]]];
+
+                    [parentViewController didMoveToParentViewController:self->_mediaViewController];
+
+                    [player play];
+                    NSLog(@"media view width = %f height = %f", mediaView.frame.size.width, mediaView.frame.size.height);
+                    validMediaTypeFound = YES;
+                    break;
+                }
             }
         }
-        
         if(!validMediaTypeFound) {
             // TODO: add as renderer warning
             NSLog(@"Warnig: supported media types not found");
@@ -120,20 +137,12 @@
 
 - (void)getAVTrack:(AVURLAsset *)asset
 {
-    AVMediaCharacteristic mediacharacteristic = AVMediaCharacteristicVisual;
-    AVAssetTrack *track = [asset tracksWithMediaCharacteristic:mediacharacteristic][0];
+    AVAssetTrack *track = [asset tracksWithMediaCharacteristic:AVMediaCharacteristicVisual][0];
     if([_mimeType compare:@"video/mp4"] == NSOrderedSame) {
         [track loadValuesAsynchronouslyForKeys:@[@"naturalSize"] completionHandler:^{
             AVKeyValueStatus status = [asset statusOfValueForKey:@"naturalSize" error:nil];
             if(status == AVKeyValueStatusLoaded) {
                 dispatch_async(dispatch_get_main_queue(), ^{[self getNaturalSize:track asset:asset];});
-            }
-        }];
-    } else {
-        [track loadValuesAsynchronouslyForKeys:@[@"audioTrackReady"] completionHandler:^{
-            AVKeyValueStatus status = [asset statusOfValueForKey:@"audioTrackReady" error:nil];
-            if(status == AVKeyValueStatusLoaded) {
-                dispatch_async(dispatch_get_main_queue(), ^{[self playMusic:track asset:asset];});
             }
         }];
     }
@@ -144,12 +153,15 @@
     CGSize size = track.naturalSize;
     AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:asset];
     AVPlayer *player = [AVPlayer playerWithPlayerItem:item];
+    UIViewController *parentViewController = nil;
 
     self->_mediaViewController = [[AVPlayerViewController alloc] init];
     self->_mediaViewController.player = player;
 
-    //UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
-    
+    if([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaViewController: card:)]){
+        parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
+    }
+
     self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
     CGRect frame = AVMakeRectWithAspectRatioInsideRect(size, CGRectMake(0, 0, self->_containingview.frame.size.width, self->_containingview.frame.size.height));
     UIView *mediaView = self->_mediaViewController.view;
@@ -162,40 +174,11 @@
     [self->_containingview addSubview:mediaView];
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
-    
-    //[parentViewController didMoveToParentViewController:self->_mediaViewController];
-    [player play];
-    NSLog(@"media view width = %f height = %f", mediaView.frame.size.width, mediaView.frame.size.height);
-}
 
-- (void)playMusic:(AVAssetTrack *)track asset:(AVURLAsset *)asset
-{
-    AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:asset];
-    AVPlayer *player = [AVPlayer playerWithPlayerItem:item];
-    
-    self->_mediaViewController = [[AVPlayerViewController alloc] init];
-    self->_mediaViewController.player = player;
-    
-    //UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
-    
-    self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    CGRect frame = self->_containingview.frame;
-    UIView *mediaView = self->_mediaViewController.view;
-    mediaView.frame = frame;
-    mediaView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
-    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
-
-    self->_containingview.subviews[0].hidden = YES;
-    [self->_containingview addSubview:mediaView];
-    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
-    
-    [self->_superview addArrangedSubview:mediaView];
-    //[parentViewController didMoveToParentViewController:self->_mediaViewController];
+    if([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaViewController: card:)]){
+        [parentViewController didMoveToParentViewController:self->_mediaViewController];
+    }
     [player play];
-    
-    
     NSLog(@"media view width = %f height = %f", mediaView.frame.size.width, mediaView.frame.size.height);
 }
 
