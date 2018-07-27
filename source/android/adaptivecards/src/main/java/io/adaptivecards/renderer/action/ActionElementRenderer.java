@@ -1,15 +1,19 @@
 package io.adaptivecards.renderer.action;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
@@ -22,15 +26,14 @@ import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
-import io.adaptivecards.renderer.ImageLoaderAsync;
+import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.http.HttpRequestResult;
 
 public class ActionElementRenderer implements IBaseActionElementRenderer
 {
-    private ActionElementRenderer()
+    protected ActionElementRenderer()
     {
     }
 
@@ -108,9 +111,32 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             m_hiddenCardsLayout = hiddenCardsLayout;
         }
 
+        private Activity getActivity(Context context)
+        {
+            while (context instanceof ContextWrapper)
+            {
+                if (context instanceof Activity)
+                {
+                    return (Activity)context;
+                }
+                context = ((ContextWrapper)context).getBaseContext();
+            }
+            return null;
+        }
+
         @Override
         public void onClick(View v)
         {
+            Activity hostingActivity = getActivity(v.getContext());
+            if(hostingActivity != null)
+            {
+                View currentFocusedView = hostingActivity.getCurrentFocus();
+                if (currentFocusedView != null)
+                {
+                    currentFocusedView.clearFocus();
+                }
+            }
+
             v.setPressed(m_invisibleCard.getVisibility() != View.VISIBLE);
             for(int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
             {
@@ -130,6 +156,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             if (m_invisibleCard.getVisibility() == View.VISIBLE)
             {
                 mainCardView.setPadding(padding, padding, padding, 0);
+                m_invisibleCard.requestFocus();
             }
             else
             {
@@ -140,12 +167,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         private ViewGroup m_hiddenCardsLayout;
     }
 
-    private class ActionElementRendererImageLoaderAsync extends ImageLoaderAsync
+    private class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
     {
+        private IconPlacement m_iconPlacement;
 
-        protected ActionElementRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, IconPlacement iconPlacement)
+        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement)
         {
-            super(renderedCard, containerView);
+            super(renderedCard, containerView, imageBaseUrl);
             m_iconPlacement = iconPlacement;
         }
 
@@ -174,8 +202,6 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 button.requestLayout();
             }
         }
-
-        private IconPlacement m_iconPlacement;
     }
 
     public Button renderButton(
@@ -193,6 +219,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         if (orientation == ActionsOrientation.Horizontal)
         {
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            long spacing = hostConfig.getActions().getButtonSpacing();
+            layoutParams.rightMargin = Util.dpToPixels(context, spacing);
         }
         else
         {
@@ -208,7 +236,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         String iconUrl = baseActionElement.GetIconUrl();
         if( !iconUrl.isEmpty() ) {
-            ActionElementRendererImageLoaderAsync imageLoader = new ActionElementRendererImageLoaderAsync(renderedCard, button, hostConfig.getActions().getIconPlacement());
+            ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(renderedCard, button, hostConfig.getImageBaseUrl(), hostConfig.getActions().getIconPlacement());
             imageLoader.execute(baseActionElement.GetIconUrl());
 
             // Only when the icon must be placed to the left of the title, we have to do this
@@ -261,7 +289,15 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()), 0, 0);
             invisibleCard.setLayoutParams(layoutParams);
 
-            ViewGroup parent = (ViewGroup) viewGroup.getParent().getParent();
+            ViewGroup parent = (ViewGroup) viewGroup.getParent();
+            if(parent instanceof HorizontalScrollView) // Required when the actions are set in horizontal
+            {
+                parent = (ViewGroup) parent.getParent().getParent();
+            }
+            else
+            {
+                parent = (ViewGroup) parent.getParent();
+            }
 
             ViewGroup hiddenCards = (ViewGroup) parent.getChildAt(1);
             hiddenCards.addView(invisibleCard);

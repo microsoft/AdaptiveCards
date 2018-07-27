@@ -7,10 +7,6 @@ AdaptiveCardParseException::AdaptiveCardParseException(ErrorStatusCode statusCod
 {
 }
 
-AdaptiveCardParseException::~AdaptiveCardParseException()
-{
-}
-
 const char* AdaptiveCardParseException::what() const throw()
 {
     return m_message.c_str();

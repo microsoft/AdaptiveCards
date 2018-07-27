@@ -40,58 +40,81 @@
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
     ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] init];
+    [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [columnSetView setStyle:[viewGroup style]];
 
     ACRBaseCardElementRenderer *columRenderer =
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]] ;
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
 
-    UIView *prevView = nil, *curView = nil;
+    ACRColumnView *prevView = nil, *curView = nil, *stretchView = nil;
     float relativeColumnWidth = 0, prevRelColumnWidth = 0;
     float multiplier = 1.0;
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
 
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
+    auto firstColumn = columns.begin();
     for(std::shared_ptr<Column> column:columns)
     {
-        [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
+        if(*firstColumn != column) {
+            [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
+        }
         [acoColumn setElem:column];
-        curView = (UIStackView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
-        try
-        {
-            relativeColumnWidth = std::stof(column->GetWidth());
-            if(prevRelColumnWidth)
-                multiplier = relativeColumnWidth / prevRelColumnWidth;
-        }
-        catch(...){ ;}
+        curView = (ACRColumnView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
 
-        if(prevView && prevRelColumnWidth)
-        {
+        // when stretch, views with stretch properties should have equal width
+        if(curView.pixelWidth){
+            [NSLayoutConstraint constraintWithItem:curView
+                                attribute:NSLayoutAttributeWidth
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:nil
+                                attribute:NSLayoutAttributeNotAnAttribute
+                                multiplier:1
+                                constant:curView.pixelWidth].active = YES;
+        } else if([curView.columnWidth isEqualToString:@"stretch"]){
+            if(stretchView){
+                [NSLayoutConstraint constraintWithItem:curView
+                                    attribute:NSLayoutAttributeWidth
+                                    relatedBy:NSLayoutRelationEqual
+                                    toItem:stretchView
+                                    attribute:NSLayoutAttributeWidth
+                                    multiplier:1
+                                    constant:0].active = YES;
+            }
+            stretchView = curView;
+        } else if(![curView.columnWidth isEqualToString:@"auto"]){
+            try{
+                relativeColumnWidth = std::stof(column->GetWidth());
+                if(prevRelColumnWidth)
+                    multiplier = relativeColumnWidth / prevRelColumnWidth;
 
-            [constraints addObject:
-             [NSLayoutConstraint constraintWithItem:curView
-                                          attribute:NSLayoutAttributeWidth
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:prevView
-                                          attribute:NSLayoutAttributeWidth
-                                         multiplier:multiplier
-                                           constant:0]];
-            prevRelColumnWidth = relativeColumnWidth;
-        }
-        else if(!prevView)
-        {
-            [constraints addObject:
-             [NSLayoutConstraint constraintWithItem:curView
-                                          attribute:NSLayoutAttributeLeading
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:columnSetView
-                                          attribute:NSLayoutAttributeLeading
-                                         multiplier:1.0
-                                           constant:0]];
-        }
+                if(prevView && prevRelColumnWidth)
+                {
 
-        prevView = curView;
-        prevRelColumnWidth = relativeColumnWidth;
+                    [constraints addObject:
+                     [NSLayoutConstraint constraintWithItem:curView
+                                                  attribute:NSLayoutAttributeWidth
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:prevView
+                                                  attribute:NSLayoutAttributeWidth
+                                                 multiplier:multiplier
+                                                   constant:0]];
+                    prevRelColumnWidth = relativeColumnWidth;
+                }
+
+                if(curView.hasStretchableView){
+                    [columnSetView setAlignmentForColumnStretch];
+                }
+
+                prevView = curView;
+                prevRelColumnWidth = relativeColumnWidth;
+            }
+            catch(...){
+                multiplier = 1;
+                relativeColumnWidth = 1;
+                NSLog(@"unexpected column width property is given");
+            }
+        }
     }
 
     if([constraints count]) [columnSetView addConstraints:constraints];

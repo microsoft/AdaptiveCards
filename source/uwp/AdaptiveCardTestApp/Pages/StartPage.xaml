@@ -36,6 +36,11 @@
                 ItemsSource="{Binding Cards}"
                 DisplayMemberPath="Name"/>
 
+            <CheckBox 
+                x:Name="TimelineCheckBox"
+                Content="Add to Timeline"
+                Checked="TimelineCheckBox_Checked"
+                Unchecked="TimelineCheckBox_Checked"/>
         </Grid>
 
         <Button

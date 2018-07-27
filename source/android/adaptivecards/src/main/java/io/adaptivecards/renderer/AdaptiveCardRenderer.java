@@ -2,14 +2,13 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
@@ -19,21 +18,20 @@ import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.IconPlacement;
+import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-
-import java.io.IOException;
-import java.util.Vector;
 
 public class AdaptiveCardRenderer
 {
     public static final double VERSION = 1.0;
 
-    private AdaptiveCardRenderer()
+    protected AdaptiveCardRenderer()
     {
     }
 
@@ -47,59 +45,34 @@ public class AdaptiveCardRenderer
         return s_instance;
     }
 
-    private class BackgroundImageLoader extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
+    private class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
     {
         private Context m_context;
         private LinearLayout m_layout;
-        private RenderedAdaptiveCard m_renderedCard;
 
-        public BackgroundImageLoader(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout)
+        public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl)
         {
+            super(renderedCard, imageBaseUrl);
+
             m_context = context;
             m_layout = layout;
-            m_renderedCard = renderedCard;
         }
 
         @Override
         protected HttpRequestResult<Bitmap> doInBackground(String... args)
         {
-            try
+            if (args.length == 0)
             {
-                Bitmap bitmap;
-                byte[] bytes = HttpRequestHelper.get(args[0]);
-                if (bytes == null)
-                {
-                    throw new IOException("Failed to retrieve content from " + args[0]);
-                }
-
-                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                if (bitmap == null)
-                {
-                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
-                }
-
-                return new HttpRequestResult<>(bitmap);
+                return null;
             }
-            catch (Exception excep)
-            {
-                return new HttpRequestResult<>(excep);
-            }
+            return loadImage(args[0], m_context);
         }
 
-        @Override
-        protected void onPostExecute(HttpRequestResult<Bitmap> result)
+        void onSuccessfulPostExecute(Bitmap bitmap)
         {
-            if(result.isSuccessful())
-            {
-                BitmapDrawable background = new BitmapDrawable(m_context.getResources(), result.getResult());
-                m_layout.setBackground(background);
-                m_layout.bringChildToFront(m_layout.getChildAt(0));
-            }
-            else
-            {
-                m_renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNABLE_TO_LOAD_IMAGE, result.getException().getMessage()));
-            }
+            BitmapDrawable background = new BitmapDrawable(m_context.getResources(), bitmap);
+            m_layout.setBackground(background);
+            m_layout.bringChildToFront(m_layout.getChildAt(0));
         }
     }
 
@@ -143,10 +116,21 @@ public class AdaptiveCardRenderer
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setFocusable(true);
+        rootLayout.setFocusableInTouchMode(true);
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(adaptiveCard);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        if( adaptiveCard.GetHeight() == HeightType.Stretch )
+        {
+            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        }
+        else
+        {
+            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
         layout.setOrientation(LinearLayout.VERTICAL);
         int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
         layout.setPadding(padding, padding, padding, padding);
@@ -196,7 +180,10 @@ public class AdaptiveCardRenderer
                 showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 rootLayout.addView(showCardsLayout);
 
-                renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                IActionLayoutRenderer actionLayoutRenderer = CardRendererRegistration.getInstance().getActionLayoutRenderer();
+                if(actionLayoutRenderer != null) {
+                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                }
             }
         }
         else
@@ -207,61 +194,30 @@ public class AdaptiveCardRenderer
         String imageUrl = adaptiveCard.GetBackgroundImage();
         if (!imageUrl.isEmpty())
         {
-            BackgroundImageLoader loaderAsync = new BackgroundImageLoader(renderedCard, context, layout);
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.getImageBaseUrl());
+
+            IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
+            if(onlineImageLoader != null)
+            {
+                loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
+            }
+
             loaderAsync.execute(imageUrl);
+        }
+
+        BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
+        if (selectAction != null)
+        {
+            rootLayout.setClickable(true);
+            rootLayout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, selectAction, cardActionHandler));
         }
 
         return rootLayout;
     }
 
-    private void renderActions(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElementVector baseActionElementList, ICardActionHandler cardActionHandler, HostConfig hostConfig) {
-        long size;
-        if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
-        {
-            return;
-        }
-
-        LinearLayout actionButtonsLayout = new LinearLayout(context);
-        actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
-        if (alignment == ActionAlignment.Right.swigValue())
-        {
-            actionButtonsLayout.setGravity(Gravity.RIGHT);
-        }
-        else if (alignment == ActionAlignment.Center.swigValue())
-        {
-            actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-        }
-
-        if (hostConfig.getActions().getActionsOrientation().swigValue() == ActionsOrientation.Vertical.swigValue())
-        {
-            actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
-        }
-        else
-        {
-            actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
-        }
-
-        if (viewGroup != null)
-        {
-            viewGroup.addView(actionButtonsLayout);
-        }
-
-        int i = 0;
-        long maxActions = hostConfig.getActions().getMaxActions();
-        for (; i < size && i < maxActions; i++)
-        {
-            BaseActionElement actionElement = baseActionElementList.get(i);
-            ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
-        }
-
-        if (i >= maxActions && size != maxActions)
-        {
-            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
-        }
-    }
-
     private static AdaptiveCardRenderer s_instance = null;
+
+    private IOnlineImageLoader m_onlineImageLoader = null;
 
     private HostConfig defaultHostConfig = new HostConfig();
 }

@@ -98,6 +98,7 @@ void TextInput::SetTextInputStyle(const TextInputStyle value)
 std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
     std::shared_ptr<ActionParserRegistration>,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
     const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TextInput);
@@ -116,16 +117,17 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(
 std::shared_ptr<BaseCardElement> TextInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return TextInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return TextInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void TextInput::PopulateKnownPropertiesSet() 
+void TextInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextInput));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextInput)});
 }

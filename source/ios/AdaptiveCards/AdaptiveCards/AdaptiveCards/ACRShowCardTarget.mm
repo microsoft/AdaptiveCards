@@ -11,7 +11,9 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
+#import "ACOBaseActionElementPrivate.h"
 #import "ACRView.h"
+#import "BaseActionElement.h"
 
 @implementation ACRShowCardTarget
 {
@@ -20,9 +22,10 @@
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak ACRView *_rootView;
     __weak UIView *_adcView;
+    ACOBaseActionElement *_actionElement;
 }
 
-- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
+- (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ShowCardAction> const &)showCardActionElement
                               config:(ACOHostConfig *)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                             rootView:(ACRView *)rootView
@@ -30,11 +33,14 @@
     self = [super init];
     if(self)
     {
-        _adaptiveCard = adaptiveCard;
+        _adaptiveCard = showCardActionElement->GetCard();
         _config = config;
         _superview = superview;
         _rootView = rootView;
         _adcView = nil;
+        std::shared_ptr<ShowCardAction> showCardAction = std::make_shared<ShowCardAction>();
+        showCardAction->SetCard(showCardActionElement->GetCard());
+        _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:std::dynamic_pointer_cast<BaseActionElement>(showCardAction)];
     }
     return self;
 }
@@ -45,43 +51,20 @@
     if(!inputs){
         inputs = [[NSMutableArray alloc] init];
     }
-    ACRColumnView *containingView = [[ACRColumnView alloc] init];
+    ACRColumnView *containingView = [[ACRColumnView alloc] initWithFrame:_rootView.frame];
     UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                     inputs:inputs
                                                   context:_rootView
                                            containingView:containingView
                                                 hostconfig:_config];
     [[_rootView card] setInputs:inputs];
-    unsigned int padding = 0;
+    unsigned int padding = [_config getHostConfig] ->actions.showCard.inlineTopMargin;
 
-    switch ([_config getHostConfig] ->actions.spacing)
-    {
-        case Spacing::ExtraLarge:
-            padding = [_config getHostConfig]->spacing.extraLargeSpacing;
-            break;
-        case Spacing::Large:
-            padding = [_config getHostConfig]->spacing.largeSpacing;
-            break;
-        case Spacing::Medium:
-            padding = [_config getHostConfig]->spacing.mediumSpacing;
-            break;
-        case Spacing::Small:
-            padding = [_config getHostConfig]->spacing.smallSpacing;
-            break;
-        case Spacing::Default:
-            padding =  [_config getHostConfig]->spacing.defaultSpacing;
-            break;
-        default:
-            break;
-    }
-    ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
+        ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
     [wrappingView addSubview:adcView];
 
-    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-%u-[adcView]-%u-|",
-                           padding,
-                           padding];
-    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-%u-|",
-                           padding,
+    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-0-[adcView]-0-|"];
+    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-0-|",
                            padding];
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(wrappingView, adcView);
     NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
@@ -125,12 +108,20 @@
 
 - (IBAction)toggleVisibilityOfShowCard
 {
-    _adcView.hidden = (_adcView.hidden == YES)? NO: YES;
+    BOOL hidden = _adcView.hidden;
+    [_superview hideAllShowCards];
+    _adcView.hidden = (hidden == YES)? NO: YES;
+    [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 
 - (void)doSelectAction
 {
     [self toggleVisibilityOfShowCard];
+}
+
+- (void)hideShowCard
+{
+    _adcView.hidden = YES;
 }
 
 @end

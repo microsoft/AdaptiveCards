@@ -14,6 +14,8 @@
 #include "AdaptiveFactSet.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveImageSet.h"
+#include "AdaptiveMedia.h"
+#include "AdaptiveMediaSource.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
 #include "AdaptiveSeparator.h"
@@ -23,6 +25,7 @@
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveToggleInput.h"
+#include "AdaptiveWarning.h"
 #include "CustomActionWrapper.h"
 #include "CustomElementWrapper.h"
 #include "enums.h"
@@ -39,7 +42,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace AdaptiveNamespace;
-using namespace Windows::Foundation;
+using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
 HRESULT WStringToHString(const std::wstring& in, HSTRING* out)
@@ -138,6 +141,9 @@ HRESULT GenerateSharedElements(
                 break;
             case ABI::AdaptiveNamespace::ElementType::NumberInput:
                 baseCardElement = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveNumberInput>(item);
+                break;
+            case ABI::AdaptiveNamespace::ElementType::Media:
+                baseCardElement = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveMedia>(item);
                 break;
             case ABI::AdaptiveNamespace::ElementType::TextBlock:
                 baseCardElement = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTextBlock>(item);
@@ -278,6 +284,43 @@ HRESULT GenerateSharedChoices(
     return S_OK;
 }
 
+HRESULT GenerateSharedMediaSources(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* sources,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements)
+{
+    containedElements.clear();
+
+    ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>> localSources(sources);
+    ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveMediaSource*>> vectorIterable;
+    THROW_IF_FAILED(localSources.As<IIterable<ABI::AdaptiveNamespace::AdaptiveMediaSource*>>(&vectorIterable));
+
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveNamespace::AdaptiveMediaSource*>> vectorIterator;
+    HRESULT hr = vectorIterable->First(&vectorIterator);
+
+    boolean hasCurrent;
+    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
+
+    while (SUCCEEDED(hr) && hasCurrent)
+    {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveMediaSource> source;
+        THROW_IF_FAILED(vectorIterator->get_Current(&source));
+
+        ComPtr<AdaptiveNamespace::AdaptiveMediaSource> adaptiveElement = PeekInnards<AdaptiveNamespace::AdaptiveMediaSource>(source);
+        if (adaptiveElement == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        std::shared_ptr<AdaptiveSharedNamespace::MediaSource> sharedSource;
+        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedSource));
+        containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::MediaSource>(sharedSource));
+
+        hr = vectorIterator->MoveNext(&hasCurrent);
+    }
+
+    return S_OK;
+}
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
@@ -318,6 +361,10 @@ HRESULT GenerateContainedElementsProjection(
         case CardElementType::DateInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveDateInput>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveSharedNamespace::DateInput>(containedElement)));
+            break;
+        case CardElementType::Media:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveMedia>(&projectedContainedElement,
+                std::AdaptivePointerCast<AdaptiveSharedNamespace::Media>(containedElement)));
             break;
         case CardElementType::NumberInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveNumberInput>(&projectedContainedElement,
@@ -455,6 +502,21 @@ HRESULT GenerateInputChoicesProjection(
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveChoiceInput> projectedContainedElement;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveChoiceInput>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveSharedNamespace::ChoiceInput>(containedElement)));
+
+        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateMediaSourcesProjection(
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* projectedParentContainer) noexcept try
+{
+    for (auto& containedElement : containedElements)
+    {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveMediaSource> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveMediaSource>(&projectedContainedElement,
+            std::static_pointer_cast<AdaptiveSharedNamespace::MediaSource>(containedElement))); 
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }
@@ -751,17 +813,17 @@ std::string WstringToString(const std::wstring& input)
     return utfConverter.to_bytes(input);
 }
 
-void RemoteResourceElementToUriStringVector(
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResourceElement,
-    std::vector<std::string>& resourceUris)
+void RemoteResourceElementToRemoteResourceInformationVector(
+    ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResourceElement,
+    std::vector<RemoteResourceInformation>& resourceUris)
 {
-    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>> remoteResourceUris;
-    THROW_IF_FAILED(remoteResourceElement->GetResourceUris(remoteResourceUris.GetAddressOf()));
+    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> remoteResources;
+    THROW_IF_FAILED(remoteResourceElement->GetResourceInformation(remoteResources.GetAddressOf()));
 
-    ComPtr<IIterable<ABI::Windows::Foundation::Uri*>> vectorIterable;
-    THROW_IF_FAILED(remoteResourceUris.As<IIterable<ABI::Windows::Foundation::Uri*>>(&vectorIterable));
+    ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> vectorIterable;
+    THROW_IF_FAILED(remoteResources.As<IIterable<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>>(&vectorIterable));
 
-    Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Foundation::Uri*>> vectorIterator;
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> vectorIterator;
     HRESULT hr = vectorIterable->First(&vectorIterator);
 
     boolean hasCurrent;
@@ -769,16 +831,113 @@ void RemoteResourceElementToUriStringVector(
 
     while (SUCCEEDED(hr) && hasCurrent)
     {
-        ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> uri;
-        THROW_IF_FAILED(vectorIterator->get_Current(&uri));
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveRemoteResourceInformation> resourceInformation;
+        THROW_IF_FAILED(vectorIterator->get_Current(&resourceInformation));
 
-        HString uriHString;
-        THROW_IF_FAILED(uri->get_AbsoluteUri(uriHString.GetAddressOf()));
-        std::string uriString;
-        THROW_IF_FAILED(HStringToUTF8(uriHString.Get(), uriString));
+        HString url;
+        THROW_IF_FAILED(resourceInformation->get_Url(url.GetAddressOf()));
 
-        resourceUris.push_back(uriString);
+        RemoteResourceInformation uriInfo;
+        THROW_IF_FAILED(HStringToUTF8(url.Get(), uriInfo.url));
+
+        ABI::AdaptiveNamespace::ElementType elementType;
+        THROW_IF_FAILED(resourceInformation->get_ResourceType(&elementType));
+
+        uriInfo.resourceType = (AdaptiveSharedNamespace::CardElementType) elementType;
+
+        HString mimeType;
+        THROW_IF_FAILED(resourceInformation->get_MimeType(mimeType.GetAddressOf()));
+
+        uriInfo.mimeType = HStringToUTF8(mimeType.Get());
+
+        resourceUris.push_back(uriInfo);
 
         hr = vectorIterator->MoveNext(&hasCurrent);
     }
+}
+
+void GetUrlFromString(
+    ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    HSTRING urlString,
+    ABI::Windows::Foundation::IUriRuntimeClass** url)
+{
+    ComPtr<ABI::Windows::Foundation::IUriRuntimeClassFactory> uriActivationFactory;
+    THROW_IF_FAILED(GetActivationFactory(
+        HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+        &uriActivationFactory));
+
+    ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> localUrl;
+
+    // Try to treat URI as absolute
+    boolean isUrlRelative = FAILED(uriActivationFactory->CreateUri(urlString, localUrl.GetAddressOf()));
+
+    // Otherwise, try to treat URI as relative
+    if (isUrlRelative)
+    {
+        HSTRING imageBaseUrl;
+        THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(&imageBaseUrl));
+
+        if (imageBaseUrl != nullptr)
+        {
+            THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(
+                imageBaseUrl,
+                urlString,
+                localUrl.GetAddressOf()));
+        }
+    }
+
+    THROW_IF_FAILED(localUrl.CopyTo(url));
+}
+
+HRESULT SharedWarningsToAdaptiveWarnings(
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings)
+{
+    for (auto sharedWarning : sharedWarnings)
+    {
+        HString warningMessage;
+        RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
+
+        ABI::AdaptiveNamespace::WarningStatusCode statusCode = static_cast<ABI::AdaptiveNamespace::WarningStatusCode>(sharedWarning->GetStatusCode());
+
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveWarning> adaptiveWarning;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
+
+        RETURN_IF_FAILED(adaptiveWarnings->Append(adaptiveWarning.Get()));
+    }
+
+    return S_OK;
+}
+
+HRESULT AdaptiveWarningsToSharedWarnings(
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings)
+{
+    ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>> localAdaptiveWarnings{ adaptiveWarnings };
+    ComPtr<IIterable<ABI::AdaptiveNamespace::IAdaptiveWarning*>> vectorIterable;
+    RETURN_IF_FAILED(localAdaptiveWarnings.As<IIterable<ABI::AdaptiveNamespace::IAdaptiveWarning*>>(&vectorIterable));
+
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveNamespace::IAdaptiveWarning*>> vectorIterator;
+    HRESULT hr = vectorIterable->First(&vectorIterator);
+
+    boolean hasCurrent;
+    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
+
+    while (SUCCEEDED(hr) && hasCurrent)
+    {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveWarning> adaptiveWarning;
+        RETURN_IF_FAILED(vectorIterator->get_Current(&adaptiveWarning));
+
+        HString message;
+        RETURN_IF_FAILED(adaptiveWarning->get_Message(message.GetAddressOf()));
+
+        ABI::AdaptiveNamespace::WarningStatusCode statusCode;
+        RETURN_IF_FAILED(adaptiveWarning->get_StatusCode(&statusCode));
+
+        sharedWarnings.push_back(std::make_shared<AdaptiveCardParseWarning>(static_cast<AdaptiveSharedNamespace::WarningStatusCode>(statusCode), HStringToUTF8(message.Get())));
+
+        hr = vectorIterator->MoveNext(&hasCurrent);
+    }
+
+    return S_OK;
 }

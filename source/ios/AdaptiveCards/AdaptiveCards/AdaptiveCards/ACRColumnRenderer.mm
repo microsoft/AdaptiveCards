@@ -38,6 +38,14 @@
 
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig];
+
+    column.pixelWidth = columnElem->GetPixelWidth();
+    if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
+        column.columnWidth = @"stretch";
+    } else if(columnElem->GetWidth() == "auto"){
+        column.columnWidth = @"auto";
+    }
+
     [ACRRenderer render:column
                rootView:rootView
                  inputs:inputs
@@ -46,14 +54,7 @@
 
     [viewGroup addArrangedSubview:column];
 
-    [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [column setClipsToBounds:TRUE];
-    if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "")
-    {
-        [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-    }
-
-    [column adjustHuggingForLastElement];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     // instantiate and add tap gesture recognizer

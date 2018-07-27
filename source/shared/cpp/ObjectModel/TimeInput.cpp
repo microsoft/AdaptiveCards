@@ -80,6 +80,7 @@ void TimeInput::SetValue(const std::string &value)
 std::shared_ptr<BaseCardElement> TimeInputParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
     std::shared_ptr<ActionParserRegistration>,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
     const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TimeInput);
@@ -97,15 +98,16 @@ std::shared_ptr<BaseCardElement> TimeInputParser::Deserialize(
 std::shared_ptr<BaseCardElement> TimeInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return TimeInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return TimeInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void TimeInput::PopulateKnownPropertiesSet() 
+void TimeInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)});
 }

@@ -158,6 +158,15 @@ public class HostConfig {
     return (cPtr == 0) ? null : new ContainerStylesDefinition(cPtr, false);
   }
 
+  public void setMedia(MediaConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_media_set(swigCPtr, this, MediaConfig.getCPtr(value), value);
+  }
+
+  public MediaConfig getMedia() {
+    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_media_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new MediaConfig(cPtr, false);
+  }
+
   public static HostConfig Deserialize(JsonValue json) {
     return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_Deserialize(JsonValue.getCPtr(json), json), true);
   }

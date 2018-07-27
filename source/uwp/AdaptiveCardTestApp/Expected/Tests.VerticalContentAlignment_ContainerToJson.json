@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"text":"Hi,","type":"TextBlock"},{"isSubtle":true,"text":"MasterHip","type":"TextBlock"},{"height":"Stretch","items":[{"text":"Column 1","type":"TextBlock"}],"type":"Container","verticalContentAlignment":"Center"}],"height":"Stretch","type":"AdaptiveCard","version":"1.0","verticalContentAlignment":"Center"}

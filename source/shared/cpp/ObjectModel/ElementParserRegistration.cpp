@@ -8,6 +8,7 @@
 #include "FactSet.h"
 #include "Image.h"
 #include "ImageSet.h"
+#include "Media.h"
 #include "NumberInput.h"
 #include "TextBlock.h"
 #include "TextInput.h"
@@ -15,7 +16,7 @@
 #include "ToggleInput.h"
 #include "UnknownElement.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
     ElementParserRegistration::ElementParserRegistration()
     {
         m_knownElements.insert({ 
@@ -27,6 +28,7 @@ AdaptiveSharedNamespaceStart
             CardElementTypeToString(CardElementType::ImageSet),
             CardElementTypeToString(CardElementType::ChoiceSetInput),
             CardElementTypeToString(CardElementType::DateInput),
+            CardElementTypeToString(CardElementType::Media),
             CardElementTypeToString(CardElementType::NumberInput),
             CardElementTypeToString(CardElementType::TextBlock),
             CardElementTypeToString(CardElementType::TextInput),
@@ -44,6 +46,7 @@ AdaptiveSharedNamespaceStart
             { CardElementTypeToString(CardElementType::ImageSet), std::make_shared<ImageSetParser>() },
             { CardElementTypeToString(CardElementType::ChoiceSetInput), std::make_shared<ChoiceSetInputParser>() },
             { CardElementTypeToString(CardElementType::DateInput), std::make_shared<DateInputParser>() },
+            { CardElementTypeToString(CardElementType::Media), std::make_shared<MediaParser>() },
             { CardElementTypeToString(CardElementType::NumberInput), std::make_shared<NumberInputParser>() },
             { CardElementTypeToString(CardElementType::TextBlock), std::make_shared<TextBlockParser>() },
             { CardElementTypeToString(CardElementType::TextInput),  std::make_shared<TextInputParser>() },
@@ -89,4 +92,4 @@ AdaptiveSharedNamespaceStart
             return std::shared_ptr<BaseCardElementParser>(nullptr);
         }
     }
-AdaptiveSharedNamespaceEnd
+}

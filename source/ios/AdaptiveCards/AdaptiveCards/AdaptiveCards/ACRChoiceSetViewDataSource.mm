@@ -10,6 +10,9 @@
 
 using namespace AdaptiveCards;
 
+const CGFloat padding = 16.0f;
+const CGFloat accessoryViewWidth = 50.0f;
+
 @implementation ACRChoiceSetViewDataSource
 {
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
@@ -66,6 +69,9 @@ using namespace AdaptiveCards;
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    cell.textLabel.adjustsFontSizeToFitWidth = NO;
     NSString *keyForDefaultValue = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetValue().c_str()
                                                       encoding:NSUTF8StringEncoding];
 
@@ -109,34 +115,40 @@ using namespace AdaptiveCards;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryCheckmark)
-    {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
-        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
-    }
-    else
-    {
+    if (!_isMultiChoicesAllowed) {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
-    }
-
-    // didDeselectRowAtIndexPath doesn't get called for the cells that was already selected before the tableView came to view
-    // if multi choice is not allowed, then uncheck pre-selection
-    if(_isMultiChoicesAllowed == NO && _lastSelectedIndexPath.row != indexPath.row)
-    {
-        [tableView cellForRowAtIndexPath:_lastSelectedIndexPath].accessoryType = UITableViewCellAccessoryNone;
-        _userSelections[[NSNumber numberWithInteger:_lastSelectedIndexPath.row]] = [NSNumber numberWithBool:NO];
+        if (_lastSelectedIndexPath && _lastSelectedIndexPath != indexPath) {
+            [self tableView:tableView didDeselectRowAtIndexPath:_lastSelectedIndexPath];
+            _lastSelectedIndexPath = nil;
+        }
+    } else if ([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryCheckmark) {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+    } else {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
     }
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     // uncheck selection if multi choice is not allowed
-    if(_isMultiChoicesAllowed == NO)
-    {
+    if (!_isMultiChoicesAllowed) {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    CGSize labelStringSize =
+        [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
+                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                       attributes:@{NSFontAttributeName:cell.textLabel.font}
+                                          context:nil].size;
+    return labelStringSize.height + padding;
 }
 
 - (BOOL)validate:(NSError **)error
@@ -165,6 +177,26 @@ using namespace AdaptiveCards;
         }
     }
     dictionary[self.id] = [values componentsJoinedByString:@";"];
+}
+
+- (NSString *)getTitlesOfChoices
+{
+    NSMutableArray *values = [[NSMutableArray alloc] init];
+    NSEnumerator *enumerator = [_userSelections keyEnumerator];
+    NSNumber *key;
+    while(key = [enumerator nextObject])
+    {
+        if([_userSelections[key] boolValue] == YES)
+        {
+            [values addObject:
+             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[[key integerValue]]->GetTitle().c_str()
+                                encoding:NSUTF8StringEncoding]];
+        }
+    }
+    if([values count] == 0) {
+        return nil;
+    }
+    return [values componentsJoinedByString:@", "];
 }
 
 @end

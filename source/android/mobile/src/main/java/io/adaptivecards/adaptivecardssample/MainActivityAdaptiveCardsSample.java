@@ -129,7 +129,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     public class CustomBlahParser extends BaseCardElementParser
     {
         @Override
-        public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue value)
+        public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue value)
         {
             CustomCardElement element = new CustomCardElement(CardElementType.Custom);
             element.SetElementTypeString("blah");
