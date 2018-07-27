@@ -108,5 +108,10 @@ namespace AdaptiveCardTestApp.Pages
                 viewModelList.Add(selected);
             }
         }
+
+        private void TimelineCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AddToTimeline = (TimelineCheckBox.IsChecked == true);
+        }
     }
 }
