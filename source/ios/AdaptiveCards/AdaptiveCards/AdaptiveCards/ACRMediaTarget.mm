@@ -15,6 +15,9 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 
+const int playIconTag = 0x49434F4E;
+const int posterTag = 0x504F5354;
+
 @implementation ACRMediaTarget
 {
     ACOMediaEvent *_mediaEvent;
@@ -67,6 +70,7 @@
         if([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaEvent: card:)]) {
             [_view.mediaDelegate didFetchMediaEvent:_mediaEvent card:[_view card]];
         } else {
+            // TODO: implemented as a renderer warning -joswo
             NSLog(@"Warning: inline media play is disabled and host doesn't handles media event");
         }
     } else {
@@ -102,9 +106,14 @@
                     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
                     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
 
-                    ACRAVPlayerViewHoldingUIView *poster = self->_containingview.subviews[0];
+                    ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
                     poster.hidePlayIcon = YES;
+
                     [poster layoutSubviews];
+                    UIView *playIconView = [poster viewWithTag:playIconTag];
+                    if(playIconView){
+                        [playIconView removeFromSuperview];
+                    }
                     [poster removeFromSuperview];
 
                     [self->_containingview addSubview:mediaView];
@@ -122,14 +131,13 @@
                     [parentViewController didMoveToParentViewController:self->_mediaViewController];
 
                     [player play];
-                    NSLog(@"media view width = %f height = %f", mediaView.frame.size.width, mediaView.frame.size.height);
                     validMediaTypeFound = YES;
                     break;
                 }
             }
         }
         if(!validMediaTypeFound) {
-            // TODO: add as renderer warning
+            // TODO: implemented as a renderer warning -joswo
             NSLog(@"Warnig: supported media types not found");
         }
     }
@@ -138,14 +146,12 @@
 - (void)getAVTrack:(AVURLAsset *)asset
 {
     AVAssetTrack *track = [asset tracksWithMediaCharacteristic:AVMediaCharacteristicVisual][0];
-    if([_mimeType compare:@"video/mp4"] == NSOrderedSame) {
-        [track loadValuesAsynchronouslyForKeys:@[@"naturalSize"] completionHandler:^{
-            AVKeyValueStatus status = [asset statusOfValueForKey:@"naturalSize" error:nil];
-            if(status == AVKeyValueStatusLoaded) {
-                dispatch_async(dispatch_get_main_queue(), ^{[self getNaturalSize:track asset:asset];});
-            }
-        }];
-    }
+    [track loadValuesAsynchronouslyForKeys:@[@"naturalSize"] completionHandler:^{
+        AVKeyValueStatus status = [asset statusOfValueForKey:@"naturalSize" error:nil];
+        if(status == AVKeyValueStatusLoaded) {
+            dispatch_async(dispatch_get_main_queue(), ^{[self getNaturalSize:track asset:asset];});
+        }
+    }];
 }
 
 - (void) getNaturalSize:(AVAssetTrack *)track asset:(AVURLAsset *)asset
@@ -169,8 +175,10 @@
     mediaView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
-
-    self->_containingview.subviews[0].hidden = YES;
+    
+    ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
+    poster.hidden = YES;
+    
     [self->_containingview addSubview:mediaView];
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
@@ -179,7 +187,6 @@
         [parentViewController didMoveToParentViewController:self->_mediaViewController];
     }
     [player play];
-    NSLog(@"media view width = %f height = %f", mediaView.frame.size.width, mediaView.frame.size.height);
 }
 
 @end

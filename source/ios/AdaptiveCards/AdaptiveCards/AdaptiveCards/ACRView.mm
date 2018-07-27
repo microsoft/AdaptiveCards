@@ -228,7 +228,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
                 if(!poster.empty()){
                     [self loadImage:poster];
-                }
+                }                
+                
                 break;
             }
             // continue on search

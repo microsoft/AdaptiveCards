@@ -11,6 +11,8 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
+    
     if(!_hidePlayIcon){
         CGFloat radius = 30.0f;
         CGPoint centerPoint = CGPointMake((self.frame.size.width) / 2, (self.frame.size.height) / 2);
@@ -53,10 +55,22 @@
         triangleCanvas.miterLimit = 10.0;
         triangleCanvas.strokeColor = canvas.fillColor;
 
+        [canvas setName:@"circle"];
+        [triangleCanvas setName:@"triangle"];
         [self.layer addSublayer:canvas];
         [self.layer addSublayer:triangleCanvas];
     } else{
-        self.layer.sublayers = nil;
+        NSMutableArray<CALayer *> *shapes = [[NSMutableArray alloc] init];
+        for(CALayer *layer in [self.layer sublayers]) {
+            if([[layer name] isEqualToString:@"circle"] ||
+               [[layer name] isEqualToString:@"triangle"]){
+                [shapes addObject:layer];
+            }
+        }
+        
+        for(CALayer *layer in shapes){
+            [layer removeFromSuperlayer];
+        }
     }
 }
 

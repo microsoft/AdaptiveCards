@@ -11,6 +11,9 @@
 #import "ACOMediaEvent.h"
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 
+extern const int playIconTag;
+extern const int posterTag;
+
 @interface ACRMediaTarget:NSObject<ACRSelectActionDelegate>
 
 - (instancetype)initWithMediaEvent:(ACOMediaEvent *)mediaEvent rootView:(ACRView *)rootView config:(ACOHostConfig *)config;

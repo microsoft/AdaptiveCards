@@ -62,8 +62,32 @@
         view.backgroundColor = UIColor.blackColor;
         view.translatesAutoresizingMaskIntoConstraints = NO;
     }
+    
+    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig]->media.playButton.c_str() encoding:[NSString defaultCStringEncoding]];
+    UIImage *playIconImage = imageViewMap[piikey];
+    UIImageView *playIconImageView = nil;
+    BOOL drawDefaultPlayIcon = YES;
+    
+    if(playIconImage) {
+        drawDefaultPlayIcon = NO;
+        playIconImageView = [[UIImageView alloc]initWithImage:playIconImage];
+        playIconImageView.tag = playIconTag;
+        playIconImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    
     view.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.width * heightToWidthRatio);
+    view.tag = posterTag;
     ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+    
+    if(!drawDefaultPlayIcon) {
+        view.hidePlayIcon = YES;
+        [view setNeedsLayout];
+        [view addSubview:playIconImageView];
+        
+        [NSLayoutConstraint constraintWithItem:playIconImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+        [NSLayoutConstraint constraintWithItem:playIconImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+         
+    }
     [contentholdingview addSubview:view];
     [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
